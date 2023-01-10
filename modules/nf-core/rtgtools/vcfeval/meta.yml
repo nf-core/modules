@@ -35,11 +35,11 @@ input:
       type: file
       description: The index of the called VCF (optional)
       pattern: "*.tbi"
-  - truth_regions:
+  - truth_bed:
       type: file
       description: A BED file containining the strict regions where VCFeval should only evaluate the fully overlapping variants (optional)
       pattern: "*.bed"
-  - evaluation_regions:
+  - evaluation_bed:
       type: file
       description: A BED file containing the regions where VCFeval will evaluate every fully and partially overlapping variant (optional)
       pattern: "*.bed"

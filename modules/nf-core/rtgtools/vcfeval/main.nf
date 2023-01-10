@@ -8,10 +8,7 @@ process RTGTOOLS_VCFEVAL {
         'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(query_vcf), path(query_vcf_tbi)
-    tuple path(truth_vcf), path(truth_vcf_tbi)
-    path(truth_regions)
-    path(evaluation_regions)
+    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(evaluation_bed)
     path(sdf)
 
     output:
@@ -31,8 +28,8 @@ process RTGTOOLS_VCFEVAL {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed_regions = truth_regions ? "--bed-regions=$truth_regions" : ""
-    def eval_regions = evaluation_regions ? "--evaluation-regions=$evaluation_regions" : ""
+    def bed_regions = truth_regions ? "--bed-regions=${truth_bed}" : ""
+    def eval_regions = evaluation_regions ? "--evaluation-regions=${evaluation_bed}" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
     def avail_mem = task.memory.toGiga() + "G"
