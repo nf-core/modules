@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { MAGECK_TEST } from '../../../../../modules/nf-core/mageck/test/main.nf'
-include { MAGECK_TEST as MAGECK_TEST_DAY0_LABEL } from '../../../../../modules/nf-core/mageck/test/main.nf'
 
 workflow test_mageck_test {
 
@@ -24,5 +23,5 @@ workflow test_mageck_test_day0_label {
     ]
 
 
-    MAGECK_TEST_DAY0_LABEL ( input )
+    MAGECK_TEST ( input )
 }

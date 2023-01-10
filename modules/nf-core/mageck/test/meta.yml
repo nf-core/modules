@@ -1,5 +1,5 @@
 name: "mageck_test"
-description: write your description here
+description: Mageck test performs a robust ranking aggregation (RRA) to identify positively or negatively selected genes in functional genomics screens.
 keywords:
   - sort
   - rra
@@ -27,11 +27,6 @@ input:
         sgRNA name (1st column), target gene (2nd column)
         and read counts in each sample.
       pattern: "*.{txt,tsv}"
-  - contrast:
-      type: string
-      description: |
-        Column names of either the control or treatment samples
-      pattern: "*"
 
 output:
   - meta:
