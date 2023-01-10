@@ -130,4 +130,3 @@ workflow test_happy_stratification {
     )
 
 }
-
