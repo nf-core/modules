@@ -10,10 +10,11 @@ process HAPPY_HAPPY {
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
-    path(fasta)
-    path(fasta_fai)
-    path(false_positives_bed)
-    path(stratification_tsv)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(false_positives_bed)
+    tuple val(meta5), path(stratification_tsv)
+    tuple val(meta6), path(stratification_beds)
 
     output:
     tuple val(meta), path('*.summary.csv')                      , emit: summary_csv
