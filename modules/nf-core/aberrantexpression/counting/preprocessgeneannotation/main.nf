@@ -13,8 +13,10 @@ process PREPROCESSGENEANNOTATION {
         path(gtf)
 
     output:
-        tuple path("txdb.db"), path("*.tsv"), path("count_ranges.Rds") , emit: count_ranges
-        path "versions.yml"           , emit: versions
+        tuple path("txdb.db"), path("*.tsv"), path("count_ranges.Rds")      , emit: count_reads
+        path("txdb.db")                                                     , emit: txtdb_out
+        path("count_ranges.Rds")                                            , emit: count_ranges
+        path "versions.yml"                                                 , emit: versions
 
     script:
     """

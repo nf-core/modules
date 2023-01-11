@@ -13,7 +13,7 @@ process COUNTREADS {
         each path(bam)
 
     output:
-        path("*.Rds"), emit: counts
+        path("*.Rds")                 , emit: counts
         path "versions.yml"           , emit: versions
     
     shell:
