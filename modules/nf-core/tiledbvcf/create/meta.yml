@@ -1,0 +1,30 @@
+name: "tiledbvcf_create"
+description: Create an empty TileDB-VCF dataset.
+keywords:
+  - create
+tools:
+  - "tiledbvcf":
+      description: "A C++ library for efficient storage and retrieval of genomic variant-call data using TileDB Embedded."
+      homepage: "https://docs.tiledb.com/main/"
+      documentation: "https://docs.tiledb.com/main/integrations-and-extensions/genomics/population-genomics"
+      tool_dev_url: "https://github.com/TileDB-Inc/TileDB-VCF"
+      licence: "MIT"
+
+input:
+  - uri:
+      type: uri
+      description: TileDB dataset URI.
+      pattern: ""
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - uri:
+      type: uri
+      description: TileDB dataset URI.
+      pattern: ""
+
+authors:
+  - "leipzig"
