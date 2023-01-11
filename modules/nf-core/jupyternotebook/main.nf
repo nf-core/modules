@@ -71,7 +71,7 @@ process JUPYTERNOTEBOOK {
     export OMP_NUM_THREADS="$task.cpus"
     export NUMBA_NUM_THREADS="$task.cpus"
 
-     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
+    # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
     ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
