@@ -1,0 +1,42 @@
+name: "tiledbvcf_store"
+description: Ingests registered samples into a TileDB-VCF dataset.
+keywords:
+  - store
+tools:
+  - "tiledbvcf":
+      description: "A C++ library for efficient storage and retrieval of genomic variant-call data using TileDB Embedded."
+      homepage: "https://docs.tiledb.com/main/"
+      documentation: "https://docs.tiledb.com/main/integrations-and-extensions/genomics/population-genomics"
+      tool_dev_url: "https://github.com/TileDB-Inc/TileDB-VCF"
+      licence: "MIT"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf.gz}"
+  - tbi:
+      type: file
+      description: TBI index file
+      pattern: "*.{.vcf.gz.tbi}"
+  - tiledb_array_uri:
+      type: path
+      description: Path to TileDB-VCF URI
+      pattern: "/path/to/uri"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - updateddb:
+      type: path
+      description: Path to updated TileDB-VCF URI
+      pattern: "/path/to/updated/uri"
+
+authors:
+  - "@atrigila"
