@@ -8,9 +8,7 @@ process EPANG_PLACE {
         'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
 
     input:
-    tuple val(meta), path(queryaln)
-    path referencealn
-    path referencetree
+    tuple val(meta), path(queryaln), path(referencealn), path(referencetree)
     path bfastfile
     path binaryfile
 
