@@ -5,7 +5,8 @@ workflow VCF_VALIDATE_SNPS {
 
     take:
     ch_vcf // channel: [ meta, vcf, tbi, truth_vcf, truth_tbi, bed ]
-    ch_fasta // channel: []
+    ch_fasta // channel: [ fasta ]
+    ch_fasta_fai
     tools  // A comma-delimited list of the tools to use for validation (happy,vcfeval)
 
     main:
