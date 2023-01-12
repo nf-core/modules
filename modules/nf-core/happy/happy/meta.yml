@@ -52,6 +52,10 @@ input:
       type: file
       description: Stratification file list in TSV format
       pattern: "*.tsv"
+  - stratification_beds:
+      type: file(s)
+      description: One or more BED files used for stratification (these should be referenced in the stratification TSV)
+      pattern: "*.bed"
 
 output:
   - meta:
@@ -59,22 +63,50 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - summary:
+  - summary_csv:
       type: file
       description: A CSV file containing the summary of the benchmarking
       pattern: "*.summary.csv"
-  - extended:
+  - roc_all_csv:
+      type: file
+      description: A CSV file containing ROC values for all variants
+      pattern: "*.roc.all.csv.gz"
+  - roc_indel_locations_csv:
+      type: file
+      description: A CSV file containing ROC values for all indels
+      pattern: "*.roc.Locations.INDEL.csv.gz"
+  - roc_indel_locations_pass_csv:
+      type: file
+      description: A CSV file containing ROC values for all indels that passed all filters
+      pattern: "*.roc.Locations.INDEL.PASS.csv.gz"
+  - roc_snp_locations_csv:
+      type: file
+      description: A CSV file containing ROC values for all SNPs
+      pattern: "*.roc.Locations.SNP.csv.gz"
+  - roc_snp_locations_pass_csv:
+      type: file
+      description: A CSV file containing ROC values for all SNPs that passed all filters
+      pattern: "*.roc.Locations.SNP.PASS.csv.gz"
+  - extended_csv:
       type: file
       description: A CSV file containing extended info of the benchmarking
       pattern: "*.extended.csv"
   - json:
       type: file
       description: A JSON file containing the run info
-      pattern: "*.json"
+      pattern: "*.runinfo.json"
+  - runinfo:
+      type: file
+      description: A JSON file containing the benchmarking metrics
+      pattern: "*.metrics.json.gz"
   - vcf:
       type: file
       description: An annotated VCF
-      pattern: "*.vcf"
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: The index of the annotated VCF
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions
