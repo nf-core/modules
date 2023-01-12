@@ -1,0 +1,45 @@
+name: "bbmap_sendsketch"
+description: Compares query sketches to reference sketches hosted on a 
+remote server via the Internet.
+keywords:
+  - sort
+tools:
+  - "bbmap":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "BBMap is a short read aligner, as well as various other bioinformatic tools."
+      homepage: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
+      documentation: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
+      tool_dev_url: "None"
+      doi: ""
+      licence: "['UC-LBL license (see package)']"
+
+input:
+  ## TODO nf-core: Delete / customise this example input
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: fasta
+      description: fasta formatted file with nucleotide sequences
+      pattern: "*.{fna, fa, fasta}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: txt
+      description: .txt file containing comparison output/sketch
+      pattern: "*.{txt}"
+
+authors:
+  - "@phanhung2"
