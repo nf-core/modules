@@ -5,7 +5,8 @@ workflow VCF_VALIDATE_SNPS {
 
     take:
     ch_vcf // channel: [ meta, vcf, tbi, truth_vcf, truth_tbi, bed ]
-    tools  // A comma-delimited list of the tools to use for validation (happy,rtgtools)
+    ch_fasta // channel: []
+    tools  // A comma-delimited list of the tools to use for validation (happy,vcfeval)
 
     main:
 
@@ -15,6 +16,10 @@ workflow VCF_VALIDATE_SNPS {
     list_tools = tools.tokenize(",")
 
     if("happy" in list_tools){
+        happy_input = ch_vcf
+            .map { meta, vcf, tbi, truth_vcf, truth_tbi, bed ->
+                [ meta, vcf, truth_vcf, bed, [] ] // TODO write logic for regions and target bed
+            }
         HAPPY_HAPPY (
 
         )
