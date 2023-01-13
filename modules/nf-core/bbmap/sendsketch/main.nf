@@ -22,7 +22,7 @@ process BBMAP_SENDSKETCH {
     """    
     sendsketch.sh \\
         in=${fasta} \\
-        outsketch='results.txt' \\
+        out='results.txt' \\
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
