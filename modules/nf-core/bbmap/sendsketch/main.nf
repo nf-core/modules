@@ -1,16 +1,17 @@
 process BBMAP_SENDSKETCH {
+    tag "$fasta"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::bbmap=39.01" : null)
+    conda ("bioconda::bbmap=39.01")
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
+        'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    path  fasta
 
     output:
-    tuple val(meta), path("*.txt"), emit: results 
+    path 'results'                , emit: results 
     path "versions.yml"           , emit: versions
 
     when:
@@ -18,12 +19,9 @@ process BBMAP_SENDSKETCH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """    
-    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     sendsketch.sh \\
-        in=${fasta}.fasta \\
-        outsketch=${prefix}.txt \\
+        in=${fasta} \\
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
