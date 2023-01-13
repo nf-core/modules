@@ -8,11 +8,11 @@ process BBMAP_SENDSKETCH {
         'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
 
     input:
-    path  fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path 'results'                , emit: results 
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path('results.txt')  , emit: hits
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +22,7 @@ process BBMAP_SENDSKETCH {
     """    
     sendsketch.sh \\
         in=${fasta} \\
+        outsketch='results.txt' \\
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
