@@ -1,5 +1,5 @@
 process BBMAP_SENDSKETCH {
-    tag "$fasta"
+    tag "$file"
     label 'process_low'
 
     conda ("bioconda::bbmap=39.01")
@@ -8,7 +8,7 @@ process BBMAP_SENDSKETCH {
         'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(file)
 
     output:
     tuple val(meta), path('results.txt')  , emit: hits
@@ -21,7 +21,7 @@ process BBMAP_SENDSKETCH {
     def args = task.ext.args ?: ''
     """    
     sendsketch.sh \\
-        in=${fasta} \\
+        in=${file} \\
         out='results.txt' \\
         $args \\
         -Xmx${task.memory.toGiga()}g
