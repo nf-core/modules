@@ -5,7 +5,6 @@ keywords:
   - sort
 tools:
   - "bbmap":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "BBMap is a short read aligner, as well as various other bioinformatic tools."
       homepage: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
       documentation: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
@@ -14,18 +13,16 @@ tools:
       licence: "['UC-LBL license (see package)']"
 
 input:
-  ## TODO nf-core: Delete / customise this example input
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - fasta:
-      type: fasta
-      description: fasta formatted file with nucleotide sequences
-      pattern: "*.{fna, fa, fasta}"
+      type: file
+      description: file with nucleotide sequences
+      pattern: "*.{fna, fa, fasta, fa.gz, fasta.gz, fna.gz, fastq.gz, fastq, fq.gz, fq}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -36,9 +33,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - txt:
+  - results.txt:
       type: txt
-      description: .txt file containing comparison output/sketch
+      description: .txt file containing hits from a query seuqnce to various reference sequences output
       pattern: "*.{txt}"
 
 authors:

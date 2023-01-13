@@ -1,6 +1,6 @@
 process BBMAP_SENDSKETCH {
     tag "$fasta"
-    label 'process_high'
+    label 'process_low'
 
     conda ("bioconda::bbmap=39.01")
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,7 +24,6 @@ process BBMAP_SENDSKETCH {
         in=${fasta} \\
         out='results.txt' \\
         $args \\
-        threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
     cat <<-END_VERSIONS > versions.yml
