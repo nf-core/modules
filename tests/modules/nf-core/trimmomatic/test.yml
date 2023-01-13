@@ -1,7 +1,7 @@
 - name: trimmomatic test_trimmomatic_single_end
   command: nextflow run ./tests/modules/nf-core/trimmomatic -entry test_trimmomatic_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trimmomatic/nextflow.config
   tags:
-    - trimmomatic
+    - "trimmomatic"
   files:
     - path: output/trimmomatic/test.SE.paired.trim.fastq.gz
       md5sum: 089a57f61d7197566b8a3ce71df79113
@@ -14,7 +14,7 @@
 - name: trimmomatic test_trimmomatic_paired_end
   command: nextflow run ./tests/modules/nf-core/trimmomatic -entry test_trimmomatic_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trimmomatic/nextflow.config
   tags:
-    - trimmomatic
+    - "trimmomatic"
   files:
     - path: output/trimmomatic/test.log
       md5sum: 9629761761a34576b3484bf4174f681f
@@ -29,3 +29,9 @@
     - path: output/trimmomatic/test.unpaired.trim_2.fastq.gz
       md5sum: 096ad7f876b6b704ef7f9f2c5af3cf74
     - path: output/trimmomatic/versions.yml
+
+- name: trimmomatic no adapter specified
+  command: nextflow run ./tests/modules/nf-core/trimmomatic -entry test_trimmomatic_no_adaptor -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trimmomatic/nextflow.config
+  tags:
+    - "trimmomatic"
+  exit_code: 1
