@@ -40,6 +40,12 @@ input:
       description: |
         String indicating which of the classes in the cls file should be used
         as the target level of the comparison.
+  - chip:
+      type: file
+      description: |
+        optional Broad-style chip file mapping identifiers in gct to
+        those in gene_sets
+      pattern: "*.{chip}"
 
 output:
   - meta:
