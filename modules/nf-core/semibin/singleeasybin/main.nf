@@ -39,7 +39,8 @@ process SEMIBIN_SINGLEEASYBIN {
     mv $prefix/* .
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}": \$( SemiBin --version )
-END_VERSIONS
+    "${task.process}": 
+        SemiBin: \$( SemiBin --version )
+    END_VERSIONS
 """
 }
