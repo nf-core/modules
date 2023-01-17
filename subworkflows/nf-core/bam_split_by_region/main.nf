@@ -8,30 +8,35 @@ include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index/main'
 workflow BAM_SPLIT_BY_REGION {
 
     take:
-    ch_bam          // channel: [ val(meta), bam , bai ]
-    ch_regions_file // channel: [ regions_file ]
+    ch_bam          // channel: [ val(meta), bam , bai, regions_file ]
 
     main:
 
     ch_versions = Channel.empty()
 
     // Create channel containing the region names from the bed file.
-    ch_regions = ch_regions_file
-                    .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t' )
-                .map{ stats ->
-                    // If the regions file contains just a sequence name provide that
-                    if (! stats['start'] ) [ stats['seq_name'] ]
-                    // If a specific position is given, use that
-                    else if ( ! stats['stop']) [ [ stats['seq_name'], stats['start'] ].join(":") ]
-                    // If a region between specific bps is requested use that
-                    else [ [ [ stats['seq_name'], stats['start'] ].join(":"), stats['stop'] ].join('-') ]
-                }
+    ch_regions = ch_bam
+        .map{
+            meta, bam, bai, regions_file ->
+            [ meta, regions_file ]
+        }
+        .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t', elem: 1)
+        .map{ meta, stats ->
+            // If the regions file contains just a sequence name provide that
+            if (! stats['start'] ) [ chrom = stats['seq_name'] ]
+            // If a specific position is given, use that
+            else if ( ! stats['stop']) [ chrom = [ stats['seq_name'], stats['start'] ].join(":") ]
+            // If a region between specific bps is requested use that
+            else [ chrom = [ [ stats['seq_name'], stats['start'] ].join(":"), stats['stop'] ].join('-') ]
+
+            [ meta, chrom ]
+        }
 
     // Combine input bam with regions.
     ch_bam
-        .combine(ch_regions)
+        .combine(ch_regions, by: 0)
         // Place region into map
-        .map{ meta, bam, bai, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
+        .map{ meta, bam, bai, regions, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
         .set{ ch_bam_for_splitting }
 
     // The specified region is put into ext.args2 from the meta. See nextflow.config of the subworkflow.
