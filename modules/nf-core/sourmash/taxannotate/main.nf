@@ -2,7 +2,7 @@ process SOURMASH_TAXANNOTATE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::sourmash=4.6.1" : null)
+    conda "bioconda::sourmash=4.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sourmash:4.6.1--hdfd78af_0':
         'quay.io/biocontainers/sourmash:4.6.1--hdfd78af_0' }"
