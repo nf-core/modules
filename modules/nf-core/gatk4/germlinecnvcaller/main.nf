@@ -1,15 +1,14 @@
 process GATK4_GERMLINECNVCALLER {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     if(params.enable_conda){
-        error "Conda environments cannot be used for GATK4/DetermineGermlineContigPloidy at the moment. Please use docker or singularity containers."
+        error "Conda environments cannot be used for GATK4/GermlineCNVCaller at the moment. Please use docker or singularity containers."
     }
     container "broadinstitute/gatk:4.3.0.0"
 
     input:
-    tuple val(meta), path(tsv)
-    path intervals
+    tuple val(meta), path(tsv), path(intervals)
     path model
     path ploidy
 
