@@ -1,5 +1,4 @@
 name: "somalier_ancestry"
-## TODO nf-core: Add a description of the module and list keywords
 description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
@@ -15,7 +14,6 @@ keywords:
   - family
 tools:
   - "somalier":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier"
@@ -23,47 +21,43 @@ tools:
       doi: "https://doi.org/10.1186/s13073-020-00761-2"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
   - query_somalier_files:
       type: file
-      description: Set of somalier files for query samples
+      description: Set of somalier files for query samples. Obtained via somalier extract.
       pattern: "*.{somalier}"
   - labelled_somalier_files:
       type: file
-      description: Set of somalier files for labelled samples
+      description: Set of somalier files for labelled samples. e.g. Somalier files for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
       pattern: "*.{somalier}"
   - labels_tsv:
       type: file
-      description: TSV for labelled samples. e.g. https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
+      description: TSV for labelled samples. e.g. Somalier labels for 1kg https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
       pattern: "*.{tsv}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - tsv:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TSV with ancestry information for query and labelled samples.
+      pattern: "*.{-ancestry.tsv}"
+  - html:
+      type: file
+      description: html file with ancestry information for query and labelled samples.
+      pattern: "*.{-ancestry.tsv}"
 
 authors:
   - "@atrigila"
