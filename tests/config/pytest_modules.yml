@@ -278,6 +278,10 @@ bclconvert:
   - modules/nf-core/bclconvert/**
   - tests/modules/nf-core/bclconvert/**
 
+beagle5/beagle:
+  - modules/nf-core/beagle5/beagle/**
+  - tests/modules/nf-core/beagle5/beagle/**
+
 bedtools/bamtobed:
   - modules/nf-core/bedtools/bamtobed/**
   - tests/modules/nf-core/bedtools/bamtobed/**
@@ -528,6 +532,10 @@ cat/cat:
 cat/fastq:
   - modules/nf-core/cat/fastq/**
   - tests/modules/nf-core/cat/fastq/**
+
+cdhit/cdhit:
+  - modules/nf-core/cdhit/cdhit/**
+  - tests/modules/nf-core/cdhit/cdhit/**
 
 cellranger/count:
   - modules/nf-core/cellranger/count/**
@@ -911,9 +919,13 @@ entrezdirect/xtract:
   - modules/nf-core/entrezdirect/xtract/**
   - tests/modules/nf-core/entrezdirect/xtract/**
 
-epang:
-  - modules/nf-core/epang/**
-  - tests/modules/nf-core/epang/
+epang/place:
+  - modules/nf-core/epang/place/**
+  - tests/modules/nf-core/epang/place/
+
+epang/split:
+  - modules/nf-core/epang/split/**
+  - tests/modules/nf-core/epang/split/**
 
 expansionhunter:
   - modules/nf-core/expansionhunter/**
@@ -1027,9 +1039,17 @@ flye:
   - modules/nf-core/flye/**
   - tests/modules/nf-core/flye/**
 
+fq/generate:
+  - modules/nf-core/fq/generate/**
+  - tests/modules/nf-core/fq/generate/**
+
 fq/lint:
   - modules/nf-core/fq/lint/**
   - tests/modules/nf-core/fq/lint/**
+
+fq/subsample:
+  - modules/nf-core/fq/subsample/**
+  - tests/modules/nf-core/fq/subsample/**
 
 freebayes:
   - modules/nf-core/freebayes/**
@@ -1770,6 +1790,10 @@ mageck/mle:
   - modules/nf-core/mageck/mle/**
   - tests/modules/nf-core/mageck/mle/**
 
+mageck/test:
+  - modules/nf-core/mageck/test/**
+  - tests/modules/nf-core/mageck/test/**
+
 malt/build:
   - modules/nf-core/malt/build/**
   - tests/modules/nf-core/malt/build_test/**
@@ -2195,6 +2219,10 @@ picard/collectmultiplemetrics:
   - modules/nf-core/picard/collectmultiplemetrics/**
   - tests/modules/nf-core/picard/collectmultiplemetrics/**
 
+picard/collectrnaseqmetrics:
+  - modules/nf-core/picard/collectrnaseqmetrics/**
+  - tests/modules/nf-core/picard/collectrnaseqmetrics/**
+
 picard/collectwgsmetrics:
   - modules/nf-core/picard/collectwgsmetrics/**
   - tests/modules/nf-core/picard/collectwgsmetrics/**
@@ -2263,9 +2291,17 @@ plasmidid:
   - modules/nf-core/plasmidid/**
   - tests/modules/nf-core/plasmidid/**
 
+platypus:
+  - modules/nf-core/platypus/**
+  - tests/modules/nf-core/platypus/**
+
 plink/extract:
   - modules/nf-core/plink/extract/**
   - tests/modules/nf-core/plink/extract/**
+
+plink/recode:
+  - modules/nf-core/plink/recode/**
+  - tests/modules/nf-core/plink/recode/**
 
 plink/vcf:
   - modules/nf-core/plink/vcf/**
@@ -2451,6 +2487,10 @@ rtgtools/pedfilter:
   - modules/nf-core/rtgtools/pedfilter/**
   - tests/modules/nf-core/rtgtools/pedfilter/**
 
+rtgtools/rocplot:
+  - modules/nf-core/rtgtools/rocplot/**
+  - tests/modules/nf-core/rtgtools/rocplot/**
+
 rtgtools/vcfeval:
   - modules/nf-core/rtgtools/vcfeval/**
   - tests/modules/nf-core/rtgtools/vcfeval/**
@@ -2582,6 +2622,10 @@ segemehl/align:
 segemehl/index:
   - modules/nf-core/segemehl/index/**
   - tests/modules/nf-core/segemehl/index/**
+
+semibin/singleeasybin:
+  - modules/nf-core/semibin/singleeasybin/**
+  - tests/modules/nf-core/semibin/singleeasybin/**
 
 seqkit/pair:
   - modules/nf-core/seqkit/pair/**
@@ -2847,6 +2891,10 @@ subworkflows/bam_sort_stats_samtools:
   - subworkflows/nf-core/bam_sort_stats_samtools/**
   - tests/subworkflows/nf-core/bam_sort_stats_samtools/**
 
+subworkflows/bam_split_by_region:
+  - subworkflows/nf-core/bam_split_by_region/**
+  - tests/subworkflows/nf-core/bam_split_by_region/**
+
 subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
@@ -2910,6 +2958,10 @@ subworkflows/fastq_download_prefetch_fasterqdump_sratools:
 subworkflows/fastq_fastqc_umitools_trimgalore:
   - subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
   - tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
+
+subworkflows/fastq_subsample_fq_salmon:
+  - subworkflows/nf-core/fastq_subsample_fq_salmon/**
+  - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
 
 subworkflows/gatk_create_som_pon:
   - subworkflows/nf-core/gatk_create_som_pon/**
@@ -3151,6 +3203,10 @@ wgsim:
 whamg:
   - modules/nf-core/whamg/**
   - tests/modules/nf-core/whamg/**
+
+yahs:
+  - modules/nf-core/yahs/**
+  - tests/modules/nf-core/yahs/**
 
 yara/index:
   - modules/nf-core/yara/index/**

@@ -1,4 +1,4 @@
-process EPANG {
+process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
 
@@ -8,11 +8,8 @@ process EPANG {
         'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
 
     input:
-    tuple val(meta), path(queryaln)
-    path referencealn
-    path referencetree
+    tuple val(meta), path(queryaln), path(referencealn), path(referencetree)
     path bfastfile
-    path splitfile
     path binaryfile
 
     output:
@@ -31,7 +28,6 @@ process EPANG {
     def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
     def reftreearg = referencetree   ? "--tree $referencetree"   : ""
     def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
-    def splitarg   = splitfile       ? "--split $splitfile"      : ""
     def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
     if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
     """
@@ -42,7 +38,6 @@ process EPANG {
         $refalnarg \\
         $reftreearg \\
         $bfastarg \\
-        $splitarg \\
         $binaryarg
 
     if [ -e epa_result.jplace ]; then
