@@ -19,9 +19,7 @@ process SOURMASH_TAXANNOTATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    prefix="${gather_results.getBaseName().replaceAll(/.csv/, '')}"
-
+    def args = task.ext.args ?: ''
     """
     sourmash \\
         tax annotate \
@@ -30,10 +28,8 @@ process SOURMASH_TAXANNOTATE {
         --taxonomy ${taxonomy} \\
         --output-dir "."
 
-    ## Output file name = "${prefix}".with-lineages.csv
-
     ## Compress output
-    gzip --no-name "${prefix}".with-lineages.csv
+    gzip --no-name *.with-lineages.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
