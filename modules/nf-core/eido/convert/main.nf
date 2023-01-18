@@ -2,7 +2,7 @@ process EIDO_CONVERT {
     tag "$samplesheet"
     label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::eido=0.1.9" : null)
+    conda "conda-forge::eido=0.1.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
         'biocontainers/eido:0.1.9_cv1' }"

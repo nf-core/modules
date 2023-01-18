@@ -4,7 +4,7 @@ process BRACKEN_BRACKEN {
 
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::bracken=2.7" : null)
+    conda "bioconda::bracken=2.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
         'quay.io/biocontainers/bracken:2.7--py39hc16433a_0' }"

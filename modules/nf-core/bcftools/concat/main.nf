@@ -2,13 +2,13 @@ process BCFTOOLS_CONCAT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.16" : null)
+    conda "bioconda::bcftools=1.16"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.16--hfe4b78e_1':
         'quay.io/biocontainers/bcftools:1.16--hfe4b78e_1' }"
 
     input:
-    tuple val(meta), path(vcfs, stageAs: "?/*"), path(tbi, stageAs: "?/*")
+    tuple val(meta), path(vcfs), path(tbi)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf

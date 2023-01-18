@@ -2,7 +2,7 @@ process LISSERO {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::lissero=0.4.9" : null)
+    conda "bioconda::lissero=0.4.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0' :
         'quay.io/biocontainers/lissero:0.4.9--py_0' }"
