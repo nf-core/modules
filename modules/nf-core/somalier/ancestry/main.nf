@@ -11,7 +11,7 @@ process SOMALIER_ANCESTRY {
     input:
     tuple val(meta), path(query_somalier_files)
     path(labels_tsv)
-    path(labelled_somalier_files)
+    path(labelled_somalier_files_directory)
 
     output:
     tuple val(meta), path("*-ancestry.tsv"), emit: tsv
@@ -24,6 +24,7 @@ process SOMALIER_ANCESTRY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    labelled_somalier_files = "${labelled_somalier_files_directory}/*.somalier"
 
     """
     somalier  \\
