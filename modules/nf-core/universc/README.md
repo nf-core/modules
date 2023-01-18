@@ -67,8 +67,11 @@ These are set as default in universc/main.nf:
 
 ```
     container "tomkellygenetics/universc:1.2.5.1"
-    if (workflow.containerEngine == 'docker' | workflow.containerEngine == 'podman'){
-        containerOptions = "--user root"
+    if (workflow.containerEngine == 'docker'){
+        containerOptions = "--privileged"
+    }
+    if (workflow.containerEngine == 'podman'){
+        containerOptions = "--runtime /usr/bin/crun --userns=keep-id --user root --systemd=always"
     }
     if (workflow.containerEngine == 'singularity'){
         containerOptions = "--writable"

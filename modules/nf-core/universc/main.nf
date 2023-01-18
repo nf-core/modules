@@ -8,10 +8,10 @@ process UNIVERSC {
     }
     container "tomkellygenetics/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
-        containerOptions = "--user root"
+        containerOptions = "--privileged"
     }
     if ( workflow.containerEngine == 'podman'){
-        containerOptions = "--systemd=always"
+        containerOptions = "--runtime /usr/bin/crun --userns=keep-id --systemd=always"
     }
     if (workflow.containerEngine == 'singularity'){
         containerOptions = "--writable"
