@@ -46,7 +46,12 @@ process UNIVERSC {
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
         --per-cell-data \\
-        $args
+        $args 1> _log 2> _err
+
+    # save log files
+    echo !! > sample-${meta.id}/outs/_invocation
+    cp _log sample-${meta.id}/outs/_log
+    cp _err sample-${meta.id}/outs/_err
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
