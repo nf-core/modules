@@ -1,10 +1,11 @@
 - name: graphtyper genotype test_graphtyper_genotype
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-  - graphtyper/genotype
-  - graphtyper
+    - graphtyper/genotype
+    - graphtyper
   files:
-  - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
-    md5sum: 97073fd698782bfd10d53515db80eec5
-  - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
-    md5sum: 6cf39cb5edec1dad83e9bd85b68ae9d9
+    - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
+      md5sum: 7ebb5e078d4b9a5f94c24af0b3b09283
+    - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
+      md5sum: 6cf39cb5edec1dad83e9bd85b68ae9d9
+    - path: output/graphtyper/versions.yml
