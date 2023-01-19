@@ -2,9 +2,9 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
-        conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     container "tomkellygenetics/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
