@@ -6,7 +6,12 @@ include { HMMCOPY_GENERATEMAP } from '../../../../../modules/nf-core/hmmcopy/gen
 
 workflow test_hmmcopy_generatemap {
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = Channel.of(
+        tuple(
+            [id: "test"],
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        )
+    )
 
     HMMCOPY_GENERATEMAP ( fasta )
 }
