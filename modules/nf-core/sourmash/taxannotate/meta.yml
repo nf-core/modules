@@ -1,0 +1,59 @@
+name: "sourmash_taxannotate"
+description: Annotate list of metagenome members (based on sourmash signature matches) with taxonomic information.
+keywords:
+  - fracminhash sketch
+  - signature
+  - kmer
+  - containment
+  - sourmash
+  - genomics
+  - metagenomics
+  - taxonomic classification
+  - taxonomic profiling
+tools:
+  - "sourmash":
+      description: Compute and compare FracMinHash signatures for DNA data sets.
+      homepage: https://sourmash.readthedocs.io/
+      documentation: https://sourmash.readthedocs.io/
+      tool_dev_url: https://github.com/sourmash-bio/sourmash
+      doi: "10.21105/joss.00027"
+      licence: ["BSD-3-clause"]
+
+## Description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gather_results:
+      type: file
+      description: |
+        Mandatory table with signatures classified as belonging to any of the genomes
+        in the sourmash database(s), result of `sourmash gather` command.
+  - taxonomy:
+      type: file
+      description: One or more databases with lineages (in CSV format, Mandatory)
+
+## Description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - result:
+      type: file
+      description: |
+        Table with signatures classified as belonging to any of the genomes
+        in the sourmash database(s) with an additional 'lineage' column
+        containing the taxonomic information for each database match.
+      pattern: "*{csv.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@vmikk"
+  - "@taylorreiter"
