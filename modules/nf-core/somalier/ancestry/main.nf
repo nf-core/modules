@@ -9,9 +9,8 @@ process SOMALIER_ANCESTRY {
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
-    tuple val(meta), path(query_somalier_files)
-    path(labels_tsv)
-    path(labelled_somalier_files_directory)
+    tuple val(meta), path(query_somalier_files, stageAs: "query_files/*")
+    tuple val(meta2) path(labels_tsv), path(labelled_somalier_files, stageAs: "labelled_files/*")
 
     output:
     tuple val(meta), path("*-ancestry.tsv"), emit: tsv
@@ -24,7 +23,6 @@ process SOMALIER_ANCESTRY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    labelled_somalier_files = "${labelled_somalier_files_directory}/*.somalier"
 
     """
     somalier  \\
