@@ -9,8 +9,8 @@ process SOMALIER_ANCESTRY {
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
-    tuple val(meta), path(query_somalier_files, stageAs: "query_files/*")
-    tuple val(meta2) path(labels_tsv), path(labelled_somalier_files, stageAs: "labelled_files/*")
+    tuple val(meta),  path(query_somalier_files, stageAs: "query_files/*")
+    tuple val(meta2), path(labels_tsv), path(labelled_somalier_files, stageAs: "labelled_files/*")
 
     output:
     tuple val(meta), path("*-ancestry.tsv"), emit: tsv

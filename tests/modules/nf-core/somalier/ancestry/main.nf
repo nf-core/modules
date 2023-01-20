@@ -8,7 +8,6 @@ include { UNTAR      } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_somalier_ancestry {
 
-    // Generate somalier files from bam
     input = [
         [ id:'test', single_end:false ], // meta map
         file("https://storage.googleapis.com/genomics-public-data/simons-genome-diversity-project/vcf/LP6005441-DNA_A01.annotated.nh2.variants.vcf.gz", checkIfExists: true),
@@ -22,32 +21,19 @@ workflow test_somalier_ancestry {
 
     SOMALIER_EXTRACT ( input, fasta, fasta_fai, sites )
 
-    ch_query_somalier_files = SOMALIER_EXTRACT.out.extract
-
-//    // Import reference labels and somalier files
-
-    ch_labels_tsv = file("https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
-
-    labelled_somalier_files = [
+    // Import reference labels and somalier files
+    labelled_somalier_tar = [
         [],
         file("https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz", checkIfExists: true)
     ]
+    UNTAR ( labelled_somalier_tar )
 
-    UNTAR ( labelled_somalier_files )
-
-    ch_labelled_somalier_files = UNTAR.out.untar
-
-
-    UNTAR.out.untar.multiMap { meta, directory ->
-        ch_meta_dir: [meta, directory]
-        ch_directory: [directory]
-    }
-    .set { ch_untar_multimap}
-
-    ch_labelled_somalier_files = ch_untar_multimap.ch_directory
+    ch_labelled_somalier_files = [
+        [:],
+        file("https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
+        UNTAR.out.untar.map {meta, dir -> dir}
+    ]
 
     // Run somalier ancestry
-
-
-    SOMALIER_ANCESTRY ( ch_query_somalier_files, ch_labels_tsv, ch_labelled_somalier_files )
+    SOMALIER_ANCESTRY ( SOMALIER_EXTRACT.out.extract, ch_labelled_somalier_files )
 }
