@@ -34,8 +34,8 @@ input:
       description: Reference index file. This is automatically found based on referece input file name.
       pattern: "*.{.fai}"
   - region:
-      type: string
-      description: Name/location of reference genome to genotype.
+      type: file
+      description: File with a list of chromosome/locations in reference genome to genotype. One region per line in the format <chr>:<start>-<stop>.
       pattern: "*"
 
 output:

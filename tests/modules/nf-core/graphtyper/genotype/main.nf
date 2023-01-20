@@ -14,7 +14,7 @@ workflow test_graphtyper_genotype {
     ]
     reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    region = [ 'MT192765.1' ]
+    region = file('https://raw.githubusercontent.com/zachary-foster/test-datasets/modules/data/genomics/sarscov2/genome/graphtyper/regions.txt', checkIfExists: true)
 
     GRAPHTYPER_GENOTYPE ( input, reference, ref_index, region )
 }

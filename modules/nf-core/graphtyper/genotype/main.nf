@@ -11,7 +11,7 @@ process GRAPHTYPER_GENOTYPE {
     tuple val(meta), path(bam), path(bai)
     path ref
     path ref_fai
-    val region
+    path region
 
     output:
     tuple val(meta), path("results/*/*.vcf.gz"), emit: vcf
@@ -25,17 +25,15 @@ process GRAPHTYPER_GENOTYPE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_path_text = bam.join('\n')
-    def region_text = region.join('\n')
     """
     printf "$bam_path_text" > bam_list.txt
-    printf "$region_text" > region_list.txt 
     graphtyper \\
         genotype \\
         $args \\
         $ref \\
         --threads $task.cpus \\
         --sams bam_list.txt \\
-        --region_file region_list.txt
+        --region_file $region
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
