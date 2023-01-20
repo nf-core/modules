@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SOMALIER_EXTRACT } from '../../../../../modules/nf-core/somalier/extract/main.nf'
+include { SOMALIER_EXTRACT  } from '../../../../../modules/nf-core/somalier/extract/main.nf'
 include { SOMALIER_ANCESTRY } from '../../../../../modules/nf-core/somalier/ancestry/main.nf'
-include { UNTAR      } from '../../../../modules/nf-core/untar/main.nf'
+include { UNTAR             } from '../../../../../modules/nf-core/untar/main.nf'
 
 workflow test_somalier_ancestry {
 
@@ -29,9 +29,12 @@ workflow test_somalier_ancestry {
     UNTAR ( labelled_somalier_tar )
 
     ch_labelled_somalier_files = [
-        [:],
+        [id:'test'],
         file("https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
-        UNTAR.out.untar.map {meta, dir -> dir}
+        UNTAR.out.untar.map { meta, dir ->
+            list = dir.eachFile {it}
+            return list
+        }
     ]
 
     // Run somalier ancestry
