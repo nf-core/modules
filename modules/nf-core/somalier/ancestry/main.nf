@@ -13,9 +13,9 @@ process SOMALIER_ANCESTRY {
     tuple val(meta2), path(labels_tsv), path(labelled_somalier_files, stageAs: "labelled_files/*")
 
     output:
-    tuple val(meta), path("*-ancestry.tsv"), emit: tsv
-    tuple val(meta), path("*-ancestry.html"), emit: html
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*-ancestry.tsv")     , emit: tsv
+    tuple val(meta), path("*-ancestry.html")    , emit: html
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
