@@ -15,6 +15,7 @@ process UNIVERSC {
     }
     if (workflow.containerEngine == 'singularity'){
         containerOptions = "--writable"
+        params.singularity_autoMounts = true
     }
 
     input:
