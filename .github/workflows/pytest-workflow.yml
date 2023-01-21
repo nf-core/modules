@@ -127,8 +127,8 @@ jobs:
         if: matrix.profile == 'singularity'
         run: |
           sudo apt-get install -y uidmap
-          sudo singularity config fakeroot --add $(whoami 2> /dev/null || id -ur)
-          sudo singularity config fakeroot --enable $(whoami 2> /dev/null || id -ur)
+          sudo ${SINGULARITY_ROOT}/singularity config fakeroot --add $(whoami 2> /dev/null || id -ur)
+          sudo ${SINGULARITY_ROOT}/singularity config fakeroot --enable $(whoami 2> /dev/null || id -ur)
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
