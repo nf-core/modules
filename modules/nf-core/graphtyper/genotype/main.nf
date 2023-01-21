@@ -24,7 +24,7 @@ process GRAPHTYPER_GENOTYPE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bam_path_text = bam.join('\n')
+    def bam_path_text = bam.join('\\n')
     """
     printf "$bam_path_text" > bam_list.txt
     graphtyper \\
