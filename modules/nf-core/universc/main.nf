@@ -14,7 +14,7 @@ process UNIVERSC {
         containerOptions = "--runtime /usr/bin/crun --userns=keep-id --systemd=always"
     }
     if (workflow.containerEngine == 'singularity'){
-        containerOptions = "--writable"
+        containerOptions = "--fakeroot"
         params.singularity_autoMounts = true
     }
 
