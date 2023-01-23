@@ -1,4 +1,4 @@
-name: "smoove"
+name: "smoove_call"
 description: smoove simplifies and speeds calling and genotyping SVs for short reads. It also improves specificity by removing many spurious alignment signals that are indicative of low-level noise and often contribute to spurious calls. Developped by Brent Pedersen.
 keywords:
   - structural variants
@@ -28,10 +28,14 @@ input:
       type: file
       description: Index of BAM/CRAM file
       pattern: "*.{bai,crai}"
+  - exclude_beds:
+      type: file
+      description: A BED file containing the regions to exclude from the SV calling
+      pattern: "*.bed"
   - fasta:
       type: file
       description: The reference fasta file
-      pattern: "*.fasta"
+      pattern: "*.{fasta,fna,fa}"
   - fai:
       type: file
       description: Index of reference fasta file
@@ -54,3 +58,4 @@ output:
 
 authors:
   - "@scorreard"
+  - "@nvnieuwk"
