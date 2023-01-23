@@ -27,7 +27,7 @@ process SOMALIER_ANCESTRY {
     """
     somalier  \\
         ancestry  \\
-        --labels $labels_tsv $labelled_somalier_files  \\
+        --labels $labels_tsv \$(find -L labelled_files -type f -name "*.somalier")  \\
         ++ $query_somalier_files  \\
         $args
 

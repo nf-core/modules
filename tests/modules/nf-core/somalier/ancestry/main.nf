@@ -22,18 +22,12 @@ workflow test_somalier_ancestry {
     labels      = file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
 
     labelled_somalier_tar = [
-        [],
+        [id:"1kg"],
         file("https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz", checkIfExists: true)
     ]
 
     UNTAR ( labelled_somalier_tar )
-
-    UNTAR.out.untar.multiMap { meta, directory ->
-        ch_meta_dir: [meta, labels, directory]
-    }
-    .set { ch_untar_multimap}
-
-    ch_labelled_somalier_files = ch_untar_multimap.ch_meta_dir
+    ch_labelled_somalier_files = labels.join(UNTAR.out.untar)
 
     SOMALIER_EXTRACT ( input, fasta, fasta_fai, sites )
     SOMALIER_ANCESTRY ( SOMALIER_EXTRACT.out.extract, ch_labelled_somalier_files )
