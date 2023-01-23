@@ -15,6 +15,7 @@ process SGDEMUX {
     tuple val(meta), path(run_manifest), path(run_dir)
 
     output:
+    // TODO output/Samples/*/*_R*...
     tuple val(meta), path('output/*_R*.fastq.gz'), emit: sample_fastq
     tuple val(meta), path('output/metrics.tsv'), emit: metrics
     tuple val(meta), path('output/most_frequent_unmatched.tsv'), emit: most_frequent_unmatched
