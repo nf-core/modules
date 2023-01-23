@@ -31,7 +31,7 @@ process GLIMPSE_PHASE {
     def samples_file_command = samples_file ? "--samples-files $samples_file":""
     def input_region_command = input_region ? "--input-region $input_region":""
     def output_region_command = output_region ? "--output-region $output_region":""
-    
+
     def by_file = region_file ? true : false
 
     if(by_file) {
@@ -53,7 +53,6 @@ process GLIMPSE_PHASE {
                 --output-region \${ORG} \\
                 --thread $task.cpus \\
                 --output \${OUT}
-            # bcftools index -f \${OUT}
 
         done < $region_file
 
@@ -63,7 +62,6 @@ process GLIMPSE_PHASE {
             "${task.process}":
                 glimpse: "\$version_glimpse"
         END_VERSIONS
-
         """
     }
     else {
