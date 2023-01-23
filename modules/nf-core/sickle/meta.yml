@@ -20,7 +20,8 @@ input:
         e.g. [ id:'test', single_end:false]
   - reads:
       type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second
+      description:
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second
         e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
   - qual_type:
