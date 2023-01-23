@@ -39,4 +39,4 @@ workflow test_trimmomatic_paired_end {
 //            ]
 
 //    TRIMMOMATIC ( input )
-}
+//}
