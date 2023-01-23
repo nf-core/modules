@@ -8,7 +8,7 @@ process SICKLE {
         'quay.io/biocontainers/sickle-trim:1.33--h5bf99c6_6' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), val(qual_type)
 
     output:
     tuple val(meta), path("${prefix}.se.trimmed.fastq.gz"),        optional:true, emit: single_trimmed
@@ -23,7 +23,6 @@ process SICKLE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def qual_type = "${meta.qual}"
 
     if (meta.single_end){
     """
