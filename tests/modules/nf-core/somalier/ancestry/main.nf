@@ -19,7 +19,10 @@ workflow test_somalier_ancestry {
 
     sites       = file("https://github.com/brentp/somalier/files/3412453/sites.hg19.vcf.gz", checkIfExists: true)
 
-    labels      = file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+    labels      = Channel.of([
+        [id:"1kg"],
+        file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+    ])
 
     labelled_somalier_tar = [
         [id:"1kg"],
