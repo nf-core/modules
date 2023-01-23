@@ -32,11 +32,11 @@ workflow test_trimmomatic_paired_end {
 //
 // Failing test with no adaptor
 //
-// workflow test_trimmomatic_no_adaptor {
-//    input = [ [ id:'test', single_end:false ], // meta map
-//              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-//                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-//            ]
+workflow test_trimmomatic_no_adaptor {
+   input = [ [ id:'test', single_end:false ], // meta map
+             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+           ]
 
-//    TRIMMOMATIC ( input )
-//}
+   TRIMMOMATIC ( input )
+}
