@@ -13,7 +13,8 @@ process TRIMMOMATIC {
     output:
     tuple val(meta), path("*.paired.trim*.fastq.gz")   , emit: trimmed_reads
     tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), optional:true, emit: unpaired_reads
-    tuple val(meta), path("*.log")                     , emit: log
+    tuple val(meta), path("*.trimmomatic.log")         , emit: trimlog
+    tuple val(meta), path("*.trim_out.log")            , emit: mqc_log
     tuple val(meta), path("*.summary")                 , emit: summary
     path "versions.yml"                                , emit: versions
 
@@ -33,12 +34,13 @@ process TRIMMOMATIC {
     trimmomatic \\
         $trimmed \\
         -threads $task.cpus \\
-        -trimlog ${prefix}.log \\
+        -trimlog ${prefix}.trimmomatic.log \\
         -summary ${prefix}.summary \\
         $reads \\
         $output \\
         $qual_trim \\
-        $args
+        $args \\
+        2> ${prefix}.trim_out.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
