@@ -1,5 +1,5 @@
 - name: bcl2fastq test_bcl2fastq
-  command: nextflow run ./tests/modules/nf-core/bcl2fastq -entry test_bcl2fastq -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcl2fastq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcl2fastq -entry test_bcl2fastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcl2fastq/nextflow.config
   tags:
     - bcl2fastq
   files:
@@ -31,3 +31,4 @@
       md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
     - path: output/bcl2fastq/flowcell/InterOp/TileMetricsOut.bin
       md5sum: 83891751ec1c91a425a524b476b6ca3c
+    - path: output/bcl2fastq/versions.yml

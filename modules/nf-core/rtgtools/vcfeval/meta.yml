@@ -19,14 +19,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - truth_vcf:
-      type: file
-      description: A standard VCF to compare against
-      pattern: "*.{vcf,vcf.gz}"
-  - truth_vcf_index:
-      type: file
-      description: The index of the standard VCF (optional)
-      pattern: "*.tbi"
   - query_vcf:
       type: file
       description: A VCF with called variants to benchmark against the standard
@@ -35,18 +27,25 @@ input:
       type: file
       description: The index of the called VCF (optional)
       pattern: "*.tbi"
-  - truth_regions:
+  - truth_vcf:
+      type: file
+      description: A standard VCF to compare against
+      pattern: "*.{vcf,vcf.gz}"
+  - truth_vcf_index:
+      type: file
+      description: The index of the standard VCF (optional)
+      pattern: "*.tbi"
+  - truth_bed:
       type: file
       description: A BED file containining the strict regions where VCFeval should only evaluate the fully overlapping variants (optional)
       pattern: "*.bed"
-  - evaluation_regions:
+  - evaluation_bed:
       type: file
       description: A BED file containing the regions where VCFeval will evaluate every fully and partially overlapping variant (optional)
       pattern: "*.bed"
   - sdf:
       type: file
       description: The SDF (RTG Sequence Data File) folder of the reference genome
-      pattern: "*"
 
 output:
   - meta:
@@ -58,38 +57,58 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - logging:
+  - tp_vcf:
       type: file
-      description: Files containing logging from vcfeval
-      pattern: "*{done,progress,.log}"
-  - tp:
+      description: A VCF file for the true positive variants
+      pattern: "*.tp.vcf.gz"
+  - tp_tbi:
       type: file
-      description: A tuple containing the VCF and TBI file for the true positive variants
-      pattern: "tp.vcf{.gz,.gz.tbi}"
-  - baseline:
+      description: The index of the VCF file for the true positive variants
+      pattern: "*.tp.vcf.gz.tbi"
+  - fn_vcf:
       type: file
-      description: A tuple containing the VCF and TBI file for the baseline true positive variants
-      pattern: "tp-baseline.vcf{.gz,.gz.tbi}"
-  - fp:
+      description: A VCF file for the false negative variants
+      pattern: "*.fn.vcf.gz"
+  - fn_tbi:
       type: file
-      description: A tuple containing the VCF and TBI file for the false positive variants
-      pattern: "fp.vcf{.gz,.gz.tbi}"
-  - fn:
+      description: The index of the VCF file for the false negative variants
+      pattern: "*.fn.vcf.gz.tbi"
+  - fp_vcf:
       type: file
-      description: A tuple containing the VCF and TBI file for the false negative variants
-      pattern: "fn.vcf{.gz,.gz.tbi}"
-  - roc:
+      description: A VCF file for the false positive variants
+      pattern: "*.fp.vcf.gz"
+  - fp_tbi:
       type: file
-      description: TSV files containing ROC data for the evaluated variants
-      pattern: "*.tsv.gz"
+      description: The index of the VCF file for the false positive variants
+      pattern: "*.fp.vcf.gz.tbi"
+  - baseline_vcf:
+      type: file
+      description: A VCF file for the true positive variants from the baseline
+      pattern: "*.tp-baseline.vcf.gz"
+  - baseline_tbi:
+      type: file
+      description: The index of the VCF file for the true positive variants from the baseline
+      pattern: "*.tp-baseline.vcf.gz.tbi"
+  - snp_roc:
+      type: file
+      description: TSV files containing ROC data for the SNPs
+      pattern: "*.snp_roc.tsv.gz"
+  - non_snp_roc:
+      type: file
+      description: TSV files containing ROC data for all variants except SNPs
+      pattern: "*.non_snp_roc.tsv.gz"
+  - weighted_roc:
+      type: file
+      description: TSV files containing weighted ROC data for all variants
+      pattern: "*.weighted_snp_roc.tsv.gz"
   - summary:
       type: file
       description: A TXT file containing the summary of the evaluation
-      pattern: "summary.txt"
+      pattern: "*.summary.txt"
   - phasing:
       type: file
       description: A TXT file containing the data on the phasing
-      pattern: "phasing.txt"
+      pattern: "*.phasing.txt"
 
 authors:
   - "@nvnieuwk"

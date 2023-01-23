@@ -1,0 +1,35 @@
+- name: platypus test_platypus_nocontrol
+  command: nextflow run ./tests/modules/nf-core/platypus -entry test_platypus_nocontrol -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/platypus/nextflow.config
+  tags:
+    - platypus
+  files:
+    - path: output/platypus/test.log
+    - path: output/platypus/test.vcf.gz
+      md5sum: b657e4e48a332615a3fb30ee08a29f14
+    - path: output/platypus/test.vcf.gz.tbi
+      md5sum: 92107b23b1b8b4b725fc02e347fefc3d
+    - path: output/platypus/versions.yml
+
+- name: platypus test_platypus
+  command: nextflow run ./tests/modules/nf-core/platypus -entry test_platypus -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/platypus/nextflow.config
+  tags:
+    - platypus
+  files:
+    - path: output/platypus/test.log
+    - path: output/platypus/test.vcf.gz
+      md5sum: 34d678c4ebfc4e17ee45aa75e9e85977
+    - path: output/platypus/test.vcf.gz.tbi
+      md5sum: cc7168158eb6e1df88b27b41cb4e8c47
+    - path: output/platypus/versions.yml
+
+- name: platypus test_platypus_exclude_regions
+  command: nextflow run ./tests/modules/nf-core/platypus -entry test_platypus_exclude_regions -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/platypus/nextflow.config
+  tags:
+    - platypus
+  files:
+    - path: output/platypus/test.log
+    - path: output/platypus/test.vcf.gz
+      md5sum: 47f548e70d339fa480f521746c2ec01a
+    - path: output/platypus/test.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+    - path: output/platypus/versions.yml

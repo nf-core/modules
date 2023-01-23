@@ -2,10 +2,10 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     tag "$sample"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.4.2"
+    conda "bioconda::r-shinyngs=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.4.2--r41hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.4.2--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.5.1--r42hdfd78af_0':
+        'quay.io/biocontainers/r-shinyngs:1.5.1--r42hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
@@ -27,11 +27,11 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     """
     validate_fom_components.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrasts_file $contrasts \\
-        --output_directory $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrasts_file "$contrasts" \\
+        --output_directory "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
