@@ -2,24 +2,26 @@ process ICHORCNA_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::r-ichorcna=0.3.2"
+    conda "bioconda::r-ichorcna=0.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--pl5321r42hdfd78af_2' :
-        'quay.io/biocontainers/r-ichorcna:0.3.2--pl5321r42hdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.5.0--pl5321r42hdfd78af_0' :
+        'quay.io/biocontainers/r-ichorcna:0.5.0--pl5321r42hdfd78af_0' }"
 
     input:
     tuple val(meta), path(wig)
     path gc_wig
     path map_wig
-    path panel_of_normals
+    path normal_wig
+    path normal_rds
+    path rep_time_wig
+    path exons
     path centromere
 
     output:
-    tuple val(meta), path("*.cna.seg")    , emit: cna_seg
-    tuple val(meta), path("*.params.txt") , emit: ichorcna_params
-    path "*genomeWide.pdf"                , emit: genome_plot
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("**.cna.seg")    , emit: cna_seg
+    tuple val(meta), path("**.params.txt") , emit: ichorcna_params
+    tuple val(meta), path("**.pdf")        , emit: genome_plot
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,25 +29,43 @@ process ICHORCNA_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pon = panel_of_normals ? "--normalPanel ${panel_of_normals}" : ''
-    def centro = centromere ? "--centromere ${centromere}" : ''
-    def VERSION = '0.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def norm   = normal_wig   ? "normal_wig='${normal_wig}',"       : 'normal_wig=NULL,'
+    def pon    = normal_rds   ? "normal_panel='${normal_rds}',"     : 'normal_panel=NULL,'
+    def gc     = gc_wig       ? "gcWig='${gc_wig}',"                : 'gcWig=NULL,'
+    def map    = map_wig      ? "mapWig='${map_wig}',"              : 'mapWig=NULL,'
+    def rep    = rep_time_wig ? "repTimeWig='${rep_time_wig}',"     : 'repTimeWig=NULL,'
+    def exons  = exons        ? "exons.bed='${exons}',"             : ''
+    def centro = centromere   ? "centromere='${centromere}',"       : ''
     """
-    runIchorCNA.R \\
-        $args \\
-        --WIG ${wig} \\
-        --id ${prefix} \\
-        --gcWig ${gc_wig} \\
-        --mapWig ${map_wig} \\
-        ${pon} \\
-        ${centro} \\
-        --outDir .
+    #!/usr/bin/env Rscript
+    library("ichorCNA")
+    library("yaml")
 
-    cp */*genomeWide.pdf .
+    run_ichorCNA(
+        tumor_wig='${wig}',
+        id='${prefix}',
+        cores=${task.cpus},
+        $norm
+        $pon
+        $gc
+        $map
+        $rep
+        $centro
+        $args
+        outDir="."
+    )
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ichorcna: $VERSION
-    END_VERSIONS
+
+    ### Make Versions YAML for NF-Core ###
+    versions = list()
+    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+
+    yaml_str <- as.yaml(
+        list(
+            "${task.process}" = versions
+        )
+    )
+    writeLines(yaml_str, file("versions.yml"))
     """
 }

@@ -11,30 +11,35 @@ include { HMMCOPY_GENERATEMAP } from '../../../../../modules/nf-core/hmmcopy/gen
 workflow test_ichorcna_run_no_panel {
 
     input = [ [ id:'test'], // meta map
-              file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+              file("https://raw.githubusercontent.com/GavinHaLab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
             ]
 
-    gcwig   = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
-    mapwig  = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
+    gcwig   = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
+    mapwig  = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
 
+    normal_wig       = []
     panel_of_normals = []
-    centromere = []
+    rep_time_wig     = []
+    exons            = []
+    centromere       = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
 
-    ICHORCNA_RUN ( input, gcwig, mapwig, panel_of_normals, centromere)
+    ICHORCNA_RUN ( input, gcwig, mapwig, normal_wig, panel_of_normals, rep_time_wig, exons, centromere )
 }
 
 workflow test_ichorcna_run_inc_panel {
 
     input = [ [ id:'test'], // meta map
-              file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+              file("https://raw.githubusercontent.com/GavinHaLab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
             ]
 
-    gcwig   = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
-    mapwig  = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
+    gcwig   = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
+    mapwig  = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
 
-    panel_of_normals = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/HD_ULP_PoN_1Mb_median_normAutosome_mapScoreFiltered_median.rds", checkIfExists: true)
+    normal_wig       = []
+    panel_of_normals = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/HD_ULP_PoN_1Mb_median_normAutosome_mapScoreFiltered_median.rds", checkIfExists: true)
+    rep_time_wig     = []
+    exons            = []
+    centromere = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
 
-    centromere = file("https://raw.githubusercontent.com/broadinstitute/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
-
-    ICHORCNA_RUN ( input, gcwig, mapwig, panel_of_normals, centromere)
+    ICHORCNA_RUN ( input, gcwig, mapwig, normal_wig, panel_of_normals, rep_time_wig, exons, centromere)
 }
