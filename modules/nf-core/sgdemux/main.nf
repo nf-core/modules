@@ -6,6 +6,7 @@ process SGDEMUX {
     if (workflow.profile.tokenize(',').intersect(['Singularity', 'Docker']).size() >= 1) {
         exit 1, "SGDEMUX module does not support Singularity or Docker. Please use Conda / Mamba instead."
     }
+    // TODO check sgdemux is not on singularity/docker (google says no) double check with Nils
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
         // 'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
         // 'quay.io/biocontainers/YOUR-TOOL-HERE' }"]
@@ -35,9 +36,9 @@ process SGDEMUX {
         --sample-metadata $run_manifest \\
         --fastqs $run_dir \\
         --output-dir output/ \\
-        --demux-threads 10 \\
-        --compressor-threads 10 \\
-        --writer-threads 10 \\
+        --demux-threads $task.cpus \\
+        --compressor-threads $task.cpus \\
+        --writer-threads $task.cpus \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
