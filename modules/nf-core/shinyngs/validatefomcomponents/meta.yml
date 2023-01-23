@@ -23,6 +23,16 @@ input:
       description: |
         Groovy Map containing information on experiment, at a minimum an id. To match meta.
         e.g. [ id:'test' ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information on experiment, at a minimum an id. To match meta.
+        e.g. [ id:'test' ]
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing information on experiment, at a minimum an id. To match meta.
+        e.g. [ id:'test' ]
   - sample:
       type: file
       description: |
@@ -50,15 +60,11 @@ output:
       type: file
       description: File containing validated sample metadata
       pattern: "/*.sample_metadata.tsv"
-  - sample_meta:
-      type: file
-      description: File containing validated feature metadata
-      pattern: "/*.feature_metadata.tsv"
-  - asays:
+  - assays:
       type: file
       description: Files containing validated matrices
       pattern: "/*.assay.tsv"
-  - contrast:
+  - contrasts:
       type: file
       description: Files containing validated matrices
       pattern: "/*.contrasts_file.tsv"
