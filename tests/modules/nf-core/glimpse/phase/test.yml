@@ -1,0 +1,8 @@
+- name: glimpse phase test_glimpse_phase
+  command: nextflow run ./tests/modules/nf-core/glimpse/phase -entry test_glimpse_phase -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse/phase/nextflow.config
+  tags:
+    - glimpse/phase
+    - glimpse
+  files:
+    - path: output/glimpse/input2.bcf
+    - path: output/glimpse/versions.yml
