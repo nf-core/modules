@@ -11,10 +11,10 @@ process UNIVERSC {
         containerOptions = "--privileged"
     }
     if ( workflow.containerEngine == 'podman'){
-        containerOptions = "--runtime /usr/bin/crun --userns=keep-id --systemd=always"
+        containerOptions = "--runtime crun --userns=keep-id --systemd=always"
     }
     if (workflow.containerEngine == 'singularity'){
-        containerOptions = "--writable"
+        containerOptions = "-B /var/tmp --writable-tmpfs"
         params.singularity_autoMounts = true
     }
 
