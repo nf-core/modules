@@ -9,14 +9,12 @@ workflow test_sgdemux {
     
     input = Channel.value([
         [ id: 'sim-data' ], // meta map
-        file("/Users/swhite/projects/SINGULAR/singular-demux/simulated/out.sample_meta.csv", checkIfExists: true)
-        //file("/Users/swhite/projects/SINGULAR/singular-demux/simulated/", checkIfExists: true)
+        file("https://github.com/fulcrumgenomics/nf-core-test-datasets/raw/sgdemux/samplesheet/out.sample_meta.csv", checkIfExists: true)
     ])
     ch_input = input.join(
         UNTAR ( [
             [ id:'sim-data' ],
-            // tar ball created with tar -czf fastq.tar.gz *.fastq.gz
-            file("/Users/swhite/projects/SINGULAR/singular-demux/simulated/fastq.tar.gz", checkIfExists: true)
+            file("https://github.com/fulcrumgenomics/nf-core-test-datasets/blob/sgdemux/testdata/sim-data/fastq.tar.gz?raw=true", checkIfExists: true)
         ]).untar
     )
     SGDEMUX ( ch_input )
