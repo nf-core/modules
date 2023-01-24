@@ -1,17 +1,115 @@
-- name: "sgdemux"
+- name: sgdemux test_sgdemux
   command: nextflow run ./tests/modules/nf-core/sgdemux -entry test_sgdemux -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sgdemux/nextflow.config
   tags:
-    - "sgdemux"
+    - sgdemux
   files:
-    - path: "output/sgdemux/output/metrics.tsv"
+    - path: output/sgdemux/output/Undetermined_S25_L001_R1_001.fastq.gz
+      md5sum: 93f5adec095a7905afd39b1c3118f9fc
+    - path: output/sgdemux/output/Undetermined_S25_L001_R2_001.fastq.gz
+      md5sum: ba412204339fdfc60ac836ad232d2bf5
+    - path: output/sgdemux/output/metrics.tsv
       md5sum: 7627e4bd2a56ea551fd74b4a2b5cb4b2
-    - path: "output/sgdemux/versions.yml"
-      md5sum: 194506dc84962144ce123582b4f77a70
-    - path: "output/sgdemux/output/most_frequent_unmatched.tsv"
+    - path: output/sgdemux/output/most_frequent_unmatched.tsv
       md5sum: 205895d5a34f3aa57aa2a80eaa6d5d6d
-    - path: "output/sgdemux/output/per_project_metrics.tsv"
+    - path: output/sgdemux/output/per_project_metrics.tsv
       md5sum: 7393bc580c8ed8431107ad3dd00a7d2a
-    - path: "output/sgdemux/output/per_sample_metrics.tsv"
+    - path: output/sgdemux/output/per_sample_metrics.tsv
       md5sum: fb8ce024ad2508e7b22a4af65fe44358
-    - path: "output/sgdemux/output/sample_barcode_hop_metrics.tsv"
+    - path: output/sgdemux/output/s10_S10_L001_R1_001.fastq.gz
+      md5sum: 9ccd889b74a592af6eb5ddd952ca046e
+    - path: output/sgdemux/output/s10_S10_L001_R2_001.fastq.gz
+      md5sum: b0f0d4ec166595696bec30c38f2f2f68
+    - path: output/sgdemux/output/s11_S11_L001_R1_001.fastq.gz
+      md5sum: 0e52e7b4f148baa3d9ca48bfda8d3ed3
+    - path: output/sgdemux/output/s11_S11_L001_R2_001.fastq.gz
+      md5sum: a587298059d13e4a0a71b9ad84f2e34c
+    - path: output/sgdemux/output/s12_S12_L001_R1_001.fastq.gz
+      md5sum: 4352cc9854d6bc176167784a0362de46
+    - path: output/sgdemux/output/s12_S12_L001_R2_001.fastq.gz
+      md5sum: d474f90e23622eb0735bea327fca347f
+    - path: output/sgdemux/output/s13_S13_L001_R1_001.fastq.gz
+      md5sum: aaee84e9228c5f7a87f984d5ff1f43dc
+    - path: output/sgdemux/output/s13_S13_L001_R2_001.fastq.gz
+      md5sum: 63a4b26a2849e870daf8eb7c870b4051
+    - path: output/sgdemux/output/s14_S14_L001_R1_001.fastq.gz
+      md5sum: 5aad4f1648f90a12224c06abfef067a3
+    - path: output/sgdemux/output/s14_S14_L001_R2_001.fastq.gz
+      md5sum: fa0b5fe382986b7a4f413130458e2d89
+    - path: output/sgdemux/output/s15_S15_L001_R1_001.fastq.gz
+      md5sum: b6de31f46aa46d136f7ff870c13caefd
+    - path: output/sgdemux/output/s15_S15_L001_R2_001.fastq.gz
+      md5sum: d754441080dac21ca3e2de07ad74fd82
+    - path: output/sgdemux/output/s16_S16_L001_R1_001.fastq.gz
+      md5sum: 467fa4640d0fe192b9121408fbf452f7
+    - path: output/sgdemux/output/s16_S16_L001_R2_001.fastq.gz
+      md5sum: cf8cf4d06531a348fdb4b34d3a8a5802
+    - path: output/sgdemux/output/s17_S17_L001_R1_001.fastq.gz
+      md5sum: da03865a1f8a065528c639b61a619f1a
+    - path: output/sgdemux/output/s17_S17_L001_R2_001.fastq.gz
+      md5sum: aed0682d9dc9bb35bf1805d5d0e09612
+    - path: output/sgdemux/output/s18_S18_L001_R1_001.fastq.gz
+      md5sum: 2ca993509e31708588faf780e388551e
+    - path: output/sgdemux/output/s18_S18_L001_R2_001.fastq.gz
+      md5sum: b54d327a5a22b8cf1b2e2e906442bd68
+    - path: output/sgdemux/output/s19_S19_L001_R1_001.fastq.gz
+      md5sum: 4b54d34e65bfda8434f2098a26c4fbcb
+    - path: output/sgdemux/output/s19_S19_L001_R2_001.fastq.gz
+      md5sum: c32fce8edec655c19e00c4b37d28e167
+    - path: output/sgdemux/output/s1_S1_L001_R1_001.fastq.gz
+      md5sum: c2b22804faf37e20e7c86733843c2bea
+    - path: output/sgdemux/output/s1_S1_L001_R2_001.fastq.gz
+      md5sum: 3b13cb425e6309df001789f9db475503
+    - path: output/sgdemux/output/s20_S20_L001_R1_001.fastq.gz
+      md5sum: 0e8b0f8ac5fde2032decc41855ffca7b
+    - path: output/sgdemux/output/s20_S20_L001_R2_001.fastq.gz
+      md5sum: 599c5f9e6aa1eccfb97111744ec8bdb4
+    - path: output/sgdemux/output/s21_S21_L001_R1_001.fastq.gz
+      md5sum: cfb33dd97998bca244590b48b50ad31e
+    - path: output/sgdemux/output/s21_S21_L001_R2_001.fastq.gz
+      md5sum: 1715d5b0c65d44a77fcbcdc4646813ee
+    - path: output/sgdemux/output/s22_S22_L001_R1_001.fastq.gz
+      md5sum: f7bddab7a0cf684cfa2c037a8b1a58b9
+    - path: output/sgdemux/output/s22_S22_L001_R2_001.fastq.gz
+      md5sum: 0e7ac725e0d108235ca2902a13cf1cba
+    - path: output/sgdemux/output/s23_S23_L001_R1_001.fastq.gz
+      md5sum: 1023cba10bb17c388330a8dab2ceb79f
+    - path: output/sgdemux/output/s23_S23_L001_R2_001.fastq.gz
+      md5sum: 722c5ffdf8df5789cf66be5c3d140237
+    - path: output/sgdemux/output/s24_S24_L001_R1_001.fastq.gz
+      md5sum: be00944bbf7fefdc6427aa6a51419114
+    - path: output/sgdemux/output/s24_S24_L001_R2_001.fastq.gz
+      md5sum: b7d92a620077946baeaad4810cc5f467
+    - path: output/sgdemux/output/s2_S2_L001_R1_001.fastq.gz
+      md5sum: 1e8c82b1cd4c7e5c0575eef31d5cc301
+    - path: output/sgdemux/output/s2_S2_L001_R2_001.fastq.gz
+      md5sum: 2e48703e2e9c294cf36900341f5c3ca1
+    - path: output/sgdemux/output/s3_S3_L001_R1_001.fastq.gz
+      md5sum: 57a4ba8821a2c7439897b0f10ccf796a
+    - path: output/sgdemux/output/s3_S3_L001_R2_001.fastq.gz
+      md5sum: 9c6e872f8ae580d3940fddc50bdd0f86
+    - path: output/sgdemux/output/s4_S4_L001_R1_001.fastq.gz
+      md5sum: f0f66b8039e93eb35314323198059b9a
+    - path: output/sgdemux/output/s4_S4_L001_R2_001.fastq.gz
+      md5sum: 8dc7d6b6cdf0ce0ac048b375efc2dd47
+    - path: output/sgdemux/output/s5_S5_L001_R1_001.fastq.gz
+      md5sum: f0cdd875635704ccdb582c8669da436f
+    - path: output/sgdemux/output/s5_S5_L001_R2_001.fastq.gz
+      md5sum: e08f0513950867cb55fd57aad5197d90
+    - path: output/sgdemux/output/s6_S6_L001_R1_001.fastq.gz
+      md5sum: a15c13c068a77b2ec2f75ac2763c4f74
+    - path: output/sgdemux/output/s6_S6_L001_R2_001.fastq.gz
+      md5sum: a3affd96316990ffe58c67fe283d7aa7
+    - path: output/sgdemux/output/s7_S7_L001_R1_001.fastq.gz
+      md5sum: 813fc1debfb67fa2e4dd7e538192bb1c
+    - path: output/sgdemux/output/s7_S7_L001_R2_001.fastq.gz
+      md5sum: 10c72ab3ea7b39ecbd51cbec62bb53f0
+    - path: output/sgdemux/output/s8_S8_L001_R1_001.fastq.gz
+      md5sum: af4ea23ded909775d11b93d8b8acd597
+    - path: output/sgdemux/output/s8_S8_L001_R2_001.fastq.gz
+      md5sum: f26d277e150a31d369ca16be54dd10e3
+    - path: output/sgdemux/output/s9_S9_L001_R1_001.fastq.gz
+      md5sum: 5734bbb8eb5cd6d6050dce8160899d56
+    - path: output/sgdemux/output/s9_S9_L001_R2_001.fastq.gz
+      md5sum: 7edd2f4d87fa8816c7142d6ef80eef97
+    - path: output/sgdemux/output/sample_barcode_hop_metrics.tsv
       md5sum: d41d8cd98f00b204e9800998ecf8427e
