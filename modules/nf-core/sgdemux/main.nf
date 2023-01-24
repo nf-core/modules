@@ -26,16 +26,15 @@ process SGDEMUX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sampleSheet = sample_sheet ? "-r ${sample_sheet}" : ""
     """
     mkdir -p output/
     sgdemux \\
-        --sample-metadata $sampleSheet \\
-        --fastqs $fastqs_dir \\
+        --sample-metadata ${sample_sheet} \\
+        --fastqs ${fastqs_dir} \\
         --output-dir output/ \\
         --demux-threads $task.cpus \\
         --compressor-threads $task.cpus \\
-        --writer-threads $task.cpus
+        --writer-threads $task.cpus 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
