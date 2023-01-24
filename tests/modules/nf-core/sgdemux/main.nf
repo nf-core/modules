@@ -15,7 +15,7 @@ workflow test_sgdemux {
     ch_input = input.join(
         UNTAR ( [
             [ id:'sim-data' ],
-            // tar ball created with tat -czf fastq.tar.gz *.fastq.gz
+            // tar ball created with tar -czf fastq.tar.gz *.fastq.gz
             file("/Users/swhite/projects/SINGULAR/singular-demux/simulated/fastq.tar.gz", checkIfExists: true)
         ]).untar
     )
