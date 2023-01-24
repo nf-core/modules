@@ -44,6 +44,10 @@ output:
       type: file
       description: trimmomatic log file
       pattern: "*.log"
+  - summary:
+      type: file
+      description: trimmomatic summary file of surviving and dropped reads
+      pattern: "*.summary"
   - versions:
       type: file
       description: File containing software versions
