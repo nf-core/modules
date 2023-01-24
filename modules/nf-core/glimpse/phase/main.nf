@@ -11,7 +11,7 @@ process GLIMPSE_PHASE {
         tuple val(meta), path(input), path(inp_index)
         path(map)
         path(samples_file)
-        tuple val(ref), path(reference), path(ref_index)
+        tuple val(meta2), path(reference), path(ref_index)
         path(region_file)
         val(input_region)
         val(output_region)
