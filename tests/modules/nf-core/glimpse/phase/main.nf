@@ -8,6 +8,8 @@ input_vcf = [
         [ id:'input2', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
+        "chr21:16600000-16800000",
+        "chr21:16650000-16750000"
     ]
     
 ref_panel = [
@@ -25,9 +27,7 @@ workflow test_glimpse_phase_nosampleinfos {
         input_vcf,
         ref_panel,
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
-        [],
-        "chr21:16600000-16800000",
-        "chr21:16650000-16750000") // [meta, vcf, index], map, sample, [meta, ref, index], [meta, txt], regionin, regionout
+        []) // [meta, vcf, index], map, sample, [meta, ref, index], [meta, txt], regionin, regionout
 }
 
 workflow test_glimpse_phase_withsampleinfos {
@@ -35,7 +35,5 @@ workflow test_glimpse_phase_withsampleinfos {
         input_vcf,
         ref_panel,
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
-        sample_infos,
-        "chr21:16600000-16800000",
-        "chr21:16650000-16750000") // [meta, vcf, index], map, sample, [meta, ref, index], [meta, txt], regionin, regionout
+        sample_infos) // [meta, vcf, index], map, sample, [meta, ref, index], [meta, txt], regionin, regionout
 }

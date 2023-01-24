@@ -29,6 +29,16 @@ input:
       description: Index file of the input VCF/BCF file containing genotype likelihoods.
       pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
 
+  - input-region:
+      type: string
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - output-region:
+      type: string
+      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
   - reference:
       type: file
       description: Reference panel of haplotypes in VCF/BCF format.
@@ -52,16 +62,6 @@ input:
         Sample names that are not present are assumed to have ploidy 2 (diploids).
         GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
       pattern: "*.{txt,tsv}"
-
-  - input-region:
-      type: string
-      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-
-  - output-region:
-      type: string
-      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
 output:
   - meta:
