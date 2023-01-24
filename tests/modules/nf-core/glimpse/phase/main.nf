@@ -16,6 +16,10 @@ ref_panel = [
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
     ]
 
+sample_infos = Channel
+    .of('NA12878 2')
+    .collectFile(name: 'sampleinfos.txt')
+
 workflow test_glimpse_phase_nosampleinfos {
     GLIMPSE_PHASE (
         input_vcf,
@@ -31,7 +35,7 @@ workflow test_glimpse_phase_withsampleinfos {
         input_vcf,
         ref_panel,
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/sampleinfos.txt", checkIfExists: true),
+        sample_infos,
         "chr21:16600000-16800000",
         "chr21:16650000-16750000") // [meta, vcf, index], map, sample, [meta, ref, index], [meta, txt], regionin, regionout
 }
