@@ -3,13 +3,9 @@ process SGDEMUX {
     label 'process_high'
 
     conda "bioconda::sgdemux=1.1.0"
-    if (workflow.profile.tokenize(',').intersect(['Singularity', 'Docker']).size() >= 1) {
-        exit 1, "SGDEMUX module does not support Singularity or Docker. Please use Conda / Mamba instead."
-    }
-    // TODO check sgdemux is not on singularity/docker (google says no) double check with Nils
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
-        // 'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/sgdemux' }"]
+    // TODO update quay.io to mulles-* path after resolving sgdemux with Biocontainer Gitter
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
+    //    'quay.io/biocontainers/sgdemux:1.1.0' }"
 
     input:
     // Input fastq's much be bgzipped for compatibility with sgdemux
