@@ -41,10 +41,9 @@ process GLIMPSE_PHASE {
         --thread $task.cpus \\
         --output ${prefix}.bcf
 
-    version_glimpse=\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            glimpse: "\$version_glimpse"
+            glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }
