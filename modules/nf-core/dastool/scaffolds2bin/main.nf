@@ -5,8 +5,8 @@ process DASTOOL_SCAFFOLDS2BIN {
     // Do not bump! This is the 'old name' of contigs2bin which is only available up until 1.1.3!
     conda "bioconda::das_tool=1.1.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r42hdfd78af_0' :
-        'quay.io/biocontainers/das_tool:1.1.3--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
+        'quay.io/biocontainers/das_tool:1.1.3--r41hdfd78af_0 }"
 
     input:
     tuple val(meta), path(fasta)
