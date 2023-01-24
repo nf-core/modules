@@ -8,7 +8,7 @@ process SGDEMUX {
     //    'quay.io/biocontainers/sgdemux:1.1.0' }"
 
     input:
-    // Input fastq's much be bgzipped for compatibility with sgdemux
+    // Input fastq's must be bgzipped for compatibility with sgdemux
     tuple val(meta), path(sample_sheet), path(fastqs_dir)
 
     output:
