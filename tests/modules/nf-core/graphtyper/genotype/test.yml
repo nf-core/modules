@@ -5,11 +5,11 @@
     - graphtyper
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
-      md5sum: 132f4366e315292f8252010bd407d306
+      md5sum: 7523fea484b061c3190f20224d58321e
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
       md5sum: 6cf39cb5edec1dad83e9bd85b68ae9d9
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz
-      md5sum: 15d3f68dc52d28fc2854cdb63affb042
+      md5sum: 369434e2b7b6e2a413962a1e08963313
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz.tbi
       md5sum: 4cb176febbc8c26d717a6c6e67b9c905
     - path: output/graphtyper/versions.yml
@@ -21,11 +21,28 @@
     - graphtyper
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
-      md5sum: c758e4658796dafa6d22f17de604db58
+      md5sum: 2160f4dfb9fd90d63210e27be3b56d5a
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
       md5sum: b7fb6638f27d6221c9fbc8dae50ac70e
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz
-      md5sum: dec21f0d6df9cc8ce2ec508fd96ad0c7
+      md5sum: 42ad8067284af5be8bad846431b87f3f
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz.tbi
       md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+    - path: output/graphtyper/versions.yml
+    - path: output/samtools/test1.cram
+    - path: output/samtools/test1.cram.crai
+    - path: output/samtools/test2.cram
+    - path: output/samtools/test2.cram.crai
+    - path: output/samtools/versions.yml
+
+- name: graphtyper genotype test_graphtyper_genotype_region
+  command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_region -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
+  tags:
+    - graphtyper/genotype
+    - graphtyper
+  files:
+    - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
+      md5sum: 2160f4dfb9fd90d63210e27be3b56d5a
+    - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
+      md5sum: b7fb6638f27d6221c9fbc8dae50ac70e
     - path: output/graphtyper/versions.yml

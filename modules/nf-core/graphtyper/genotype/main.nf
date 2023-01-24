@@ -11,7 +11,7 @@ process GRAPHTYPER_GENOTYPE {
     tuple val(meta), path(bam), path(bai)
     path ref
     path ref_fai
-    path region
+    path region_file  // can be empty if --region is supplied to task.ext.args
 
     output:
     tuple val(meta), path("results/*/*.vcf.gz"), emit: vcf
@@ -25,15 +25,19 @@ process GRAPHTYPER_GENOTYPE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_path_text = bam.join('\\n')
+    def region_text = region_file.size() > 0 ? "--region_file ${region_file}" : ""
+    if (region_file.size() == 0 && ! args.contains("region")) {
+        error "GRAPHTYPER_GENOTYPE requires either a region file or a region specified using '--region' in ext.args"
+    }
     """
     printf "$bam_path_text" > bam_list.txt
     graphtyper \\
         genotype \\
-        $args \\
         $ref \\
-        --threads $task.cpus \\
+        $args \\
         --sams bam_list.txt \\
-        --region_file $region
+        --threads $task.cpus \\
+        $region_text
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
