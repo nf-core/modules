@@ -28,12 +28,12 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     // https://github.com/pinin4fjords/shinyngs/blob/develop/exec/validate_fom_components.R
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
-    def feature = feature_meta ? '--feature_metadata "${feature_meta}"' : ''
+    def feature = feature_meta ? "--feature_metadata '$feature_meta'" : ''
 
     """
     validate_fom_components.R \\
         --sample_metadata "$sample" \\
-        "$feature" \\
+        --feature_metadata "$feature_meta" \\
         --assay_files "${assay_files.join(',')}" \\
         --contrasts_file "$contrasts" \\
         --output_directory "$prefix" \\
