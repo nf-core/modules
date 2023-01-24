@@ -21,17 +21,3 @@ workflow test_sgdemux {
     )
     SGDEMUX ( ch_input )
 }
-
-process generate_test_data {
-    input:
-    //something determined from simulate.py
-
-    output:
-    //out.sample.meta.csv
-    //fastq.tar.gz
-
-    script:
-    """
-    //simulate.py
-    """
-}
