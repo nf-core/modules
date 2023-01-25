@@ -1,13 +1,17 @@
 name: "vgan_haplocart"
 description: Human mtDNA haplogroup classification
 keywords:
-  - sort
+  - mtDNA
+  - mitochondria
+  - pangenome
+  - haplogroup
+  - variation graph
 tools:
   - "vgan":
       description: "Suite of tools for pangenomics built using vg"
       homepage: "https://github.com/grenaud/vgan"
       documentation: "https://github.com/grenaud/vgan"
-      tool_dev_url: "None"
+      tool_dev_url: "https://github.com/grenaud/vgan"
       doi: ""
       licence: "['GPL v3']"
 
@@ -15,12 +19,12 @@ input:
   - INPUT1:
       type: file
       description: Input file
-      pattern: "*.{fq}, *.{fq.gz}"
+      pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
 
   - INPUT2:
       type: file
       description: Optional second FASTQ file for non-interleaved paired-end reads
-      pattern: "*.{fq}, *.{fq.gz}"
+      pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
 
 output:
   - versions:
@@ -39,6 +43,4 @@ output:
       pattern: "*.{posterior.txt}"
 
 authors:
-  - "@grenaud"
   - "@JoshuaDanielRubin"
-  - "@nicolaavogel"
