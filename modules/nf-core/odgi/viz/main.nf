@@ -2,7 +2,7 @@ process ODGI_VIZ {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::odgi=0.8.0" : null)
+    conda "bioconda::odgi=0.8.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/odgi:0.8.0--py39h2add14b_0':
         'quay.io/biocontainers/odgi:0.8.0--py310hc8f18ef_0' }"

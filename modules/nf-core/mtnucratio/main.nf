@@ -2,7 +2,7 @@ process MTNUCRATIO {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::mtnucratio=0.7" : null)
+    conda "bioconda::mtnucratio=0.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
         'quay.io/biocontainers/mtnucratio:0.7--hdfd78af_2' }"

@@ -2,7 +2,7 @@ process GATK_REALIGNERTARGETCREATOR {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk=3.5" : null)
+    conda "bioconda::gatk=3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
         'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
