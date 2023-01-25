@@ -8,10 +8,9 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
         'quay.io/biocontainers/r-shinyngs:1.5.1--r42hdfd78af_0' }"
 
     input:
-    tuple val(meta),  path(sample)
+    tuple val(meta),  path(sample), path(assay_files)
     tuple val(meta2), path(feature_meta)
-    tuple val(meta3), path(assay_files)
-    tuple val(meta4), path(contrasts)
+    tuple val(meta3), path(contrasts)
 
     output:
     tuple val(meta), path("*/*.sample_metadata.tsv")                                                            , emit: sample_meta
@@ -33,7 +32,7 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     """
     validate_fom_components.R \\
         --sample_metadata "$sample" \\
-        --feature_metadata "$feature_meta" \\
+        $feature \\
         --assay_files "${assay_files.join(',')}" \\
         --contrasts_file "$contrasts" \\
         --output_directory "$prefix" \\
