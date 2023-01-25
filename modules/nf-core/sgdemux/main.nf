@@ -3,9 +3,10 @@ process SGDEMUX {
     label 'process_high'
 
     conda "bioconda::sgdemux=1.1.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        //'https://depot.galaxyproject.org/singularity/sgdemux':
-        'quay.io/biocontainers/sgdemux' }"
+    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    // TODO fix galaxy link
+    //    'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
+    //    'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
 
     input:
     // Input fastq's must be bgzipped for compatibility with sgdemux
