@@ -5,6 +5,7 @@ keywords:
   - graph
   - pangenome
   - variation graph
+  - POA
 tools:
   - smoothxg:
       description: |
@@ -40,7 +41,7 @@ output:
       pattern: "versions.yml"
   - maf:
     type: file
-    description: write the multiple sequence alignments (MSAs) in MAF format in this file
+    description: write the multiple sequence alignments (MSAs) in MAF format in this file (optional)
     pattern: "*.{maf}"
 authors:
   - "@heuermh, @subwaystation"

@@ -2,11 +2,11 @@ process SMOOTHXG {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::smoothxg=0.6.7' : null)
+    conda (params.enable_conda ? 'bioconda::smoothxg=0.6.8' : null)
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoothxg:0.6.7--hfb1f815_1' :
-        'quay.io/biocontainers/smoothxg:0.6.7--hfb1f815_1' }"
+        'https://depot.galaxyproject.org/singularity/smoothxg:0.6.8--hfb1f815_0' :
+        'quay.io/biocontainers/smoothxg:0.6.8--hfb1f815_0' }"
 
     input:
     tuple val(meta), path(gfa)
