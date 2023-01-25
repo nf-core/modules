@@ -3,8 +3,8 @@ process SGDEMUX {
     label 'process_high'
 
     conda "bioconda::sgdemux=1.1.1"
-    //container "quay.io/biocontainers/sgdemux"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        //'https://depot.galaxyproject.org/singularity/sgdemux':
         'quay.io/biocontainers/sgdemux' }"
 
     input:
@@ -32,9 +32,9 @@ process SGDEMUX {
         --sample-metadata ${sample_sheet} \\
         --fastqs ${fastqs_dir} \\
         --output-dir output/ \\
-        --demux-threads $task.cpus \\
-        --compressor-threads $task.cpus \\
-        --writer-threads $task.cpus 
+        --demux-threads ${task.cpus} \\
+        --compressor-threads ${task.cpus} \\
+        --writer-threads ${task.cpus} 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
