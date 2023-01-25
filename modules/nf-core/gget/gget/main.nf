@@ -11,10 +11,9 @@ process GGET_GGET {
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*")     , emit: file, optional: true
-    tuple val(meta), path("*.json"), emit: json, optional: true
-    tuple val(meta), path("*.csv"), emit: csv,  optional: true
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path("*")                  , emit: file  , optional: true
+    tuple val(meta), path("${prefix}.${suffix}"), emit: output, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
