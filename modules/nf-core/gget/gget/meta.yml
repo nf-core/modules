@@ -28,26 +28,22 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - json:
       type: file
       description: JSON output of gget tool
       pattern: "*.json"
-
   - csv:
       type: file
       description: CSV output of gget tool. Requires --csv option
       pattern: "*.csv"
-
   - file:
       type: file
       description: Path to any file downloaded by gget
-      pattern: "*.csv"
+      pattern: "*"
 
 authors:
   - "@adamrtalbot"
