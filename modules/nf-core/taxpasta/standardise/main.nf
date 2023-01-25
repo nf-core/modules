@@ -27,7 +27,7 @@ process TAXPASTA_STANDARDISE {
     """
     taxpasta standardise \\
         $args \\
-        --output '${prefix}.${output_format}'
+        --output '${prefix}.${output_format}' \\
         '$profile'
 
     cat <<-END_VERSIONS > versions.yml
