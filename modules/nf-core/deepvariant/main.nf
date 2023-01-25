@@ -2,12 +2,12 @@ process DEEPVARIANT {
     tag "$meta.id"
     label 'process_medium'
 
+    container "google/deepvariant:1.4.0"
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used with DeepVariant at the moment. Please use Docker or Singularity containers."
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-
-    container "google/deepvariant:1.3.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)

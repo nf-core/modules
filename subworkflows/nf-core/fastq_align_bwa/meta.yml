@@ -1,0 +1,78 @@
+name: fastq_align_bwa
+description: Align reads to a reference genome using bwa then sort with samtools
+keywords:
+  - align
+  - fasta
+  - genome
+  - reference
+modules:
+  - bwa/align
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+# TODO Update when we decide on a standard for subworkflow docs
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ch_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - ch_index:
+      type: file
+      description: BWA genome index files
+      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - sort_bam:
+      type: boolean
+      description: If true bwa modules sort resulting bam files
+      pattern: "true or false"
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [val(meta2), path(fasta)]
+        Reference fasta file
+      pattern: "*.{fasta,fa}"
+
+# TODO Update when we decide on a standard for subworkflow docs
+output:
+  - bam_orig:
+      type: file
+      description: BAM file produced by bwa
+      pattern: "*.bam"
+  - bam:
+      type: file
+      description: BAM file ordered by samtools
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index (currently only for snapaligner)
+      pattern: "*.bai"
+  - stats:
+      type: file
+      description: File containing samtools stats output
+      pattern: "*.{stats}"
+  - flagstat:
+      type: file
+      description: File containing samtools flagstat output
+      pattern: "*.{flagstat}"
+  - idxstats:
+      type: file
+      description: File containing samtools idxstats output
+      pattern: "*.{idxstats}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@JoseEspinosa"

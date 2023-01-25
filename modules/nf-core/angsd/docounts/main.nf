@@ -2,7 +2,7 @@ process ANGSD_DOCOUNTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::angsd=0.939" : null)
+    conda "bioconda::angsd=0.939"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
         'quay.io/biocontainers/angsd:0.939--h468462d_0' }"
