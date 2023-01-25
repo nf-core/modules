@@ -3,10 +3,10 @@ process SGDEMUX {
     label 'process_high'
 
     conda "bioconda::sgdemux=1.1.1"
-    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    // TODO fix galaxy link
-    //    'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
-    //    'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
+    //TODO fix linting error 'Container versions do not match'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1' :
+        'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
 
     input:
     // Input fastq's must be bgzipped for compatibility with sgdemux
@@ -32,10 +32,11 @@ process SGDEMUX {
     sgdemux \\
         --sample-metadata ${sample_sheet} \\
         --fastqs ${fastqs_dir} \\
-        --output-dir output/ \\
+        --output-dir output \\
         --demux-threads ${task.cpus} \\
         --compressor-threads ${task.cpus} \\
-        --writer-threads ${task.cpus} 
+        --writer-threads ${task.cpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
