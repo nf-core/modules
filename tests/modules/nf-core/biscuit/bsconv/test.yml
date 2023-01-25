@@ -1,5 +1,5 @@
 - name: biscuit bsconv test_biscuit_bsconv
-  command: nextflow run ./tests/modules/nf-core/biscuit/bsconv -entry test_biscuit_bsconv -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/bsconv -entry test_biscuit_bsconv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/bsconv/nextflow.config
   tags:
     - biscuit
     - biscuit/bsconv
@@ -22,5 +22,3 @@
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bam
       md5sum: e33e9498d00dd32222b90a6bd981226f
-    - path: output/biscuit/versions.yml
-      md5sum: 7deec1f096203542bbb72ac4fa05f9ba

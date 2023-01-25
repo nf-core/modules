@@ -8,9 +8,9 @@ workflow test_gappa_examineassign {
     
     input = [
         [ id:'test' ], // meta map
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
     ]
-    taxonomy = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
 
-    GAPPA_EXAMINEASSIGN ( input, taxonomy )
+    GAPPA_EXAMINEASSIGN ( input )
 }

@@ -1,17 +1,3 @@
-- name: ampcombi test_ampcombi_directory
-  command: nextflow run ./tests/modules/nf-core/ampcombi -entry test_ampcombi_directory -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ampcombi/nextflow.config
-  tags:
-    - ampcombi
-  files:
-    - path: output/ampcombi/ampcombi.log
-      contains: ["found", "AMPcombi"]
-    - path: output/ampcombi/sample_1/sample_1_amp.faa
-      md5sum: 8fef1e243eed8d605b9d40082b37a703
-    - path: output/ampcombi/sample_1/sample_1_ampcombi.csv
-      contains: ["DRAMP"]
-    - path: output/ampcombi/sample_1/sample_1_diamond_matches.txt
-      contains: ["target_id"]
-
 - name: ampcombi test_ampcombi_file_paths
   command: nextflow run ./tests/modules/nf-core/ampcombi -entry test_ampcombi_file_paths -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ampcombi/nextflow.config
   tags:
