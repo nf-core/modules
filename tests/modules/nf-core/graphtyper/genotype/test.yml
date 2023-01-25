@@ -1,8 +1,8 @@
 - name: graphtyper genotype test_graphtyper_genotype_single
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper/genotype
     - graphtyper
+    - graphtyper/genotype
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test"]
@@ -17,8 +17,8 @@
 - name: graphtyper genotype test_graphtyper_genotype_multi
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_multi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper/genotype
     - graphtyper
+    - graphtyper/genotype
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test	test"]
@@ -38,8 +38,8 @@
 - name: graphtyper genotype test_graphtyper_genotype_region
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_region -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper/genotype
     - graphtyper
+    - graphtyper/genotype
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test"]

@@ -9,8 +9,8 @@ process GRAPHTYPER_GENOTYPE {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path ref
-    path ref_fai
+    tuple val(meta2), path(ref)
+    tuple val(meta3), path(ref_fai)
     path region_file  // can be empty if --region is supplied to task.ext.args
 
     output:

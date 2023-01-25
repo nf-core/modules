@@ -15,8 +15,8 @@ workflow test_graphtyper_genotype_single {
         [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
         [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
     ]
-    reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    reference = [ [ id: 'ref' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    ref_index = [ [ id: 'ref_index' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
 
     GRAPHTYPER_GENOTYPE ( input, reference, ref_index, region )
@@ -37,7 +37,8 @@ workflow test_graphtyper_genotype_multi {
         ]
     ] )
     reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    ref_with_meta = [ [ id: 'ref' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    ref_index = [ [ id: 'ref_index' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
 
     SAMTOOLS_VIEW ( input, reference, [])
@@ -45,7 +46,7 @@ workflow test_graphtyper_genotype_multi {
     cram_grouped = SAMTOOLS_VIEW.out.cram.map{ [[id: 'group'], it[1]] }.groupTuple()
     crai_grouped = SAMTOOLS_INDEX.out.crai.map{ [[id: 'group'], it[1]] }.groupTuple()
     combined_grouped = cram_grouped.join(crai_grouped)
-    GRAPHTYPER_GENOTYPE ( combined_grouped, reference, ref_index, region )
+    GRAPHTYPER_GENOTYPE ( combined_grouped, ref_with_meta, ref_index, region )
 }
 
 workflow test_graphtyper_genotype_region {
@@ -57,8 +58,8 @@ workflow test_graphtyper_genotype_region {
         [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true) ]
     ]
-    reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    reference = [ [ id: 'ref' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    ref_index = [ [ id: 'ref_index' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     region = []
 
     GRAPHTYPER_GENOTYPE_REGION ( input, reference, ref_index, region )
