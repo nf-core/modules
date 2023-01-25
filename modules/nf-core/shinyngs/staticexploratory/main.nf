@@ -2,10 +2,10 @@ process SHINYNGS_STATICEXPLORATORY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.5.0"
+    conda "bioconda::r-shinyngs=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.5.0--r42hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.5.0--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.5.1--r42hdfd78af_0':
+        'quay.io/biocontainers/r-shinyngs:1.5.1--r42hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
@@ -34,11 +34,11 @@ process SHINYNGS_STATICEXPLORATORY {
     def prefix = task.ext.prefix ?: meta.id
     """
     exploratory_plots.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrast_variable ${meta.id} \\
-        --outdir $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrast_variable "${meta.id}" \\
+        --outdir "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
