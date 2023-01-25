@@ -17,7 +17,7 @@ workflow test_graphtyper_genotype_single {
     ]
     reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    region = file('https://raw.githubusercontent.com/zachary-foster/test-datasets/modules/data/genomics/sarscov2/genome/graphtyper/regions.txt', checkIfExists: true)
+    region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
 
     GRAPHTYPER_GENOTYPE ( input, reference, ref_index, region )
 }
@@ -38,7 +38,7 @@ workflow test_graphtyper_genotype_multi {
     ] )
     reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ref_index = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    region = file('https://raw.githubusercontent.com/zachary-foster/test-datasets/modules/data/genomics/sarscov2/genome/graphtyper/regions.txt', checkIfExists: true)
+    region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
 
     SAMTOOLS_VIEW ( input, reference, [])
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.cram )
