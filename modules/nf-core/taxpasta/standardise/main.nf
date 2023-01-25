@@ -9,21 +9,25 @@ process TAXPASTA_STANDARDISE {
 
     input:
     tuple val(meta), path(profile)
+    val output_format
     path taxonomy
 
     output:
-    tuple val(meta), path("*."), emit: profiles
-    path "versions.yml"        , emit: versions
+    tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: profiles
+    path "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Taxpasta requires a --profiler option and will fail without it.
+    // That needs to be configured since we can't set a default here.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     taxpasta standardise \\
         $args \\
+        --output '${prefix}.${output_format}'
         '$profile'
 
     cat <<-END_VERSIONS > versions.yml
