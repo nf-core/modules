@@ -9,6 +9,7 @@ process TAXPASTA_STANDARDISE {
 
     input:
     tuple val(meta), path(profile)
+    path taxonomy
 
     output:
     tuple val(meta), path("*."), emit: profiles
