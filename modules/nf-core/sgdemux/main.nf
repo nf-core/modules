@@ -2,10 +2,10 @@ process SGDEMUX {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::sgdemux=1.1.0"
-    // TODO update quay.io to mulles-* path after resolving sgdemux with Biocontainer Gitter
-    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
-    //    'quay.io/biocontainers/sgdemux:1.1.0' }"
+    conda "bioconda::sgdemux=1.1.1"
+    //container "quay.io/biocontainers/sgdemux"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'quay.io/biocontainers/sgdemux' }"
 
     input:
     // Input fastq's must be bgzipped for compatibility with sgdemux
