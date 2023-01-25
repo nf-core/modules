@@ -14,7 +14,7 @@ process TAXPASTA_STANDARDISE {
 
     output:
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: profiles
-    path "versions.yml"                                             , emit: versions
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
