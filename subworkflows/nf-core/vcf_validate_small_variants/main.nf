@@ -6,6 +6,7 @@ workflow VCF_VALIDATE_SMALL_VARIANTS {
 
     take:
     ch_vcf                          // [mandatory] channel: [ meta, vcf, tbi, truth_vcf, truth_tbi, regions_bed, targets_bed ]
+    ch_beds                         // [mandatory] channel: [ meta, regions_bed, targets_bed ]
     ch_fasta                        // [happy only] channel: [ meta, fasta ]
     ch_fasta_fai                    // [happy only] channel: [ meta, fasta_fai ]
     ch_vcfeval_sdf                  // [vcfeval only] channel: [ meta, sdf ]
@@ -52,8 +53,10 @@ workflow VCF_VALIDATE_SMALL_VARIANTS {
 
     list_tools = tools.tokenize(",")
 
+    ch_input = ch_vcf.join(ch_beds)
+
     if("happy" in list_tools){
-        happy_input = ch_vcf
+        happy_input = ch_input
             .map { meta, vcf, tbi, truth_vcf, truth_tbi, regions_bed, targets_bed ->
                 [ meta, vcf, truth_vcf, regions_bed, targets_bed ]
             }
@@ -80,7 +83,7 @@ workflow VCF_VALIDATE_SMALL_VARIANTS {
 
     if("vcfeval" in list_tools){
         RTGTOOLS_VCFEVAL(
-            ch_vcf.map { it[0..-2] + [[]] },
+            ch_input.map { it[0..-2] + [[]] },
             ch_vcfeval_sdf
         )
         ch_versions = ch_versions.mix(RTGTOOLS_VCFEVAL.out.versions.first())

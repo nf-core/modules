@@ -14,8 +14,12 @@ input:
       type: files
       description: |
         A channel containing the query VCFs and their truth VCFs to validate on.
-        Optionally several BED files can also be given to restrict what regions should be validated.
-        Structure: [ meta, vcf, tbi, truth_vcf, truth_tbi, regions_bed, targets_bed ]
+        Structure: [ meta, vcf, tbi, truth_vcf, truth_tbi ]
+  - ch_beds:
+      type: files
+      description: |
+        Optional channel containing several BED files can also be given to restrict what regions should be validated.
+        Structure: [ meta, regions_bed, targets_bed ]
         The regions_bed is used to check for variants that fall completely or partly within the regions.
         The targets_bed is used to check for variants that fall exactly in this region.
   - ch_fasta:

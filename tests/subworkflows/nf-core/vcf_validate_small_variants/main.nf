@@ -13,6 +13,10 @@ workflow test_vcf_validate_small_variants_happy {
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
+    ])
+
+    beds = Channel.of([
+        [id:'test'],
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
         []
     ])
@@ -28,6 +32,7 @@ workflow test_vcf_validate_small_variants_happy {
 
     VCF_VALIDATE_SMALL_VARIANTS (
         input,
+        beds,
         fasta,
         fasta_fai,
         [[],[]],
@@ -46,6 +51,10 @@ workflow test_vcf_validate_small_variants_vcfeval {
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
+    ])
+
+    beds = Channel.of([
+        [id:'test'],
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
         []
     ])
@@ -59,6 +68,7 @@ workflow test_vcf_validate_small_variants_vcfeval {
 
     VCF_VALIDATE_SMALL_VARIANTS (
         input,
+        beds,
         [[],[]],
         [[],[]],
         sdf,
@@ -77,6 +87,10 @@ workflow test_vcf_validate_small_variants_all {
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
+    ])
+
+    beds = Channel.of([
+        [id:'test'],
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
         []
     ])
@@ -99,6 +113,7 @@ workflow test_vcf_validate_small_variants_all {
 
     VCF_VALIDATE_SMALL_VARIANTS (
         input,
+        beds,
         fasta,
         fasta_fai,
         sdf,
@@ -117,6 +132,10 @@ workflow test_vcf_validate_small_variants_happy_optional {
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
+    ])
+
+    beds = Channel.of([
+        [id:'test'],
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
         []
     ])
@@ -144,6 +163,7 @@ workflow test_vcf_validate_small_variants_happy_optional {
 
     VCF_VALIDATE_SMALL_VARIANTS (
         input,
+        beds,
         fasta,
         fasta_fai,
         [[],[]],
