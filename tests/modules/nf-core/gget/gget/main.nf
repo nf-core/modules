@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { GGET_GGET as GGET_REF } from '../../../../../modules/nf-core/gget/gget/main.nf'
+include { GGET_GGET as GGET_REF_DOWNLOAD } from '../../../../../modules/nf-core/gget/gget/main.nf'
 include { GGET_GGET as GGET_SEARCH } from '../../../../../modules/nf-core/gget/gget/main.nf'
 include { GGET_GGET as GGET_SEARCH_CSV } from '../../../../../modules/nf-core/gget/gget/main.nf'
 include { GGET_GGET as GGET_INFO } from '../../../../../modules/nf-core/gget/gget/main.nf'
@@ -14,6 +15,16 @@ include { GGET_GGET as GGET_ARCHS4 } from '../../../../../modules/nf-core/gget/g
 include { GGET_GGET as GGET_PDB } from '../../../../../modules/nf-core/gget/gget/main.nf'
 
 workflow test_gget_ref {
+    
+    input = [
+        [ id:'test' ], // meta map
+        []
+    ]
+
+    GGET_REF ( input )
+}
+
+workflow test_gget_ref_download {
     
     input = [
         [ id:'test' ], // meta map

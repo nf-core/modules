@@ -1,8 +1,18 @@
 - name: gget test_gget_ref
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
+  files:
+    - path: output/gget/test.json
+      md5sum: 414525937a82467a336465fb4d7b3d60
+    - path: output/gget/versions.yml
+
+- name: gget test_gget_ref_download
+  command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_ref_download -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
+  tags:
+    - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: 414525937a82467a336465fb4d7b3d60
@@ -11,8 +21,8 @@
 - name: gget test_gget_search
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_search -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: 6460be78f842552a0ab49a15fdbee25a
@@ -21,8 +31,8 @@
 - name: gget test_gget_search_csv
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_search_csv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.csv
       md5sum: 6e2e986b733f03b6bd059ae7d8fd2353
@@ -44,8 +54,8 @@
 - name: gget test_gget_seq
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_seq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: d09f2b5f399de04969f0f5e7bf86a7e4
@@ -54,8 +64,8 @@
 - name: gget test_gget_blat
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_blat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: 6c84b354bc4c0e9ffba6f24051fe759d
@@ -64,16 +74,16 @@
 - name: gget test_gget_muscle
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_muscle -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/versions.yml
 
 - name: gget test_gget_enrichr
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_enrichr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: 2353a5adf2941df90b76b75907034866
@@ -82,8 +92,8 @@
 - name: gget test_gget_archs4
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_archs4 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.json
       md5sum: c6cd6ef2b2fab173c2f0f614d36260ac
@@ -92,8 +102,8 @@
 - name: gget test_gget_pdb
   command: nextflow run ./tests/modules/nf-core/gget/gget -entry test_gget_pdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gget/gget/nextflow.config
   tags:
-    - gget/gget
     - gget
+    - gget/gget
   files:
     - path: output/gget/test.pdb
       md5sum: e77b10f16e39b7ed00beafc585666e40
