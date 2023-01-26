@@ -1,4 +1,4 @@
-process SMOOVE {
+process SMOOVE_CALL {
     tag "$meta.id"
     label 'process_high'
 
@@ -8,7 +8,7 @@ process SMOOVE {
         'quay.io/biocontainers/smoove:0.2.8--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input), path(index), path(exclude_beds)
     path(fasta)
     path(fai)
 
@@ -22,13 +22,16 @@ process SMOOVE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def exclude = exclude_beds ? "--exclude ${exclude_beds}" : ""
     """
     smoove call \\
         ${args} \\
         --outdir . \\
         --name ${prefix} \\
         --fasta ${fasta} \\
-        -p $task.cpus \\
+        ${exclude} \\
+        --processes ${task.cpus} \\
         ${input}
 
     cat <<-END_VERSIONS > versions.yml
