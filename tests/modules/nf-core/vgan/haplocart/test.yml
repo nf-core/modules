@@ -1,8 +1,8 @@
 - name: vgan haplocart test_vgan_haplocart_paired_end_interleaved
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_paired_end_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan
   - vgan/haplocart
+  - vgan
   files:
   - path: output/vgan/test.posterior.txt
     md5sum: 4926eefd2e32052eb88c157b3528e178
@@ -12,8 +12,8 @@
 - name: vgan haplocart test_vgan_haplocart_paired_end_separate
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_paired_end_separate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan
   - vgan/haplocart
+  - vgan
   files:
   - path: output/vgan/test.posterior.txt
     md5sum: 4926eefd2e32052eb88c157b3528e178
@@ -23,8 +23,8 @@
 - name: vgan haplocart test_vgan_haplocart_single_end
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan
   - vgan/haplocart
+  - vgan
   files:
   - path: output/vgan/test.posterior.txt
     md5sum: 4926eefd2e32052eb88c157b3528e178
