@@ -11,7 +11,7 @@ process GLIMPSE_LIGATE {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bcf"), emit: merged_bcf
+    tuple val(meta), path("*.{vcf,bcf}"), emit: merged_variant
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,12 +20,13 @@ process GLIMPSE_LIGATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "vcf"
     """
     GLIMPSE_ligate \\
         $args \\
         --input $input \\
         --thread $task.cpus \\
-        --output ${prefix}_merged.bcf
+        --output ${prefix}_merged.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
