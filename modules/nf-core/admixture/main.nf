@@ -10,6 +10,7 @@ process ADMIXTURE {
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
+    tuple val(meta), path(ped_or_geno), path(map)
     val K
 
 
@@ -29,13 +30,14 @@ process ADMIXTURE {
     """
     admixture \\
         $bed \\
+        $ped_or_geno \\
         $K \\
         -j$task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        admixture: \$(echo \$(admixture 2>&1) | head -n 1  )
+        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*"  )
     END_VERSIONS
 
     """
