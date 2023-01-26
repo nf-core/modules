@@ -21,7 +21,7 @@ process VGAN_HAPLOCART {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.2'
+    def VERSION = '1.0.1'
     def reads2_path = reads2 ?: reads
     def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${reads2_path}"
 
