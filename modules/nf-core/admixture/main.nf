@@ -1,11 +1,3 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-
-
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
 
 process ADMIXTURE {
     tag "$meta.id"
@@ -17,8 +9,10 @@ process ADMIXTURE {
         'quay.io/biocontainers/admixture:1.3.0--0' }"
 
     input:
-    tuple val(meta), path(input_file)
-    val(K)
+    tuple val(meta), path(bed), path(bim), path(fam)
+    tuple val(meta), path(ped_or_geno), path(map)
+    val K
+
 
     output:
     tuple val(meta), path("*.Q"), emit: Q-ancestry-fractions
@@ -32,10 +26,12 @@ process ADMIXTURE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+
+
     """
     admixture \\
+        $args \\
         $input_file \\
-        $bed \\
         $K \\
         -J $task.cpus \\
 

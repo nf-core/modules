@@ -1,51 +1,66 @@
 name: "admixture"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: ADMIXTURE is a program for estimating ancestry in a model-based manner from large autosomal SNP genotype datasets, where the individuals are unrelated (for example, the individuals in a case-control association study).
 keywords:
-  - sort
+  - ancestry
 tools:
   - "admixture":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "ADMIXTURE is a software tool for maximum likelihood estimation of individual ancestries from multilocus SNP genotype datasets."
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://dalexander.github.io/admixture/"
+      documentation: "https://dalexander.github.io/admixture/admixture-manual.pdf"
       tool_dev_url: "None"
-      doi: ""
+      doi: "10.1101/gr.094052.109"
       licence: "['Free for Academic Use']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - bed:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: PLINK ".bed" file. If this is the input, then you do not need to provide ".ped" or ".geno".
+      pattern: "*.{bed}"
+  - ped_or_geno:
+      type: file
+      description: PLINK ".ped" or EIGENSTRAT ".geno" file. If this is the input, then you do not need to provide ".bed".
+      pattern: "*.{.ped|.geno}"
+  - fam:
+      type: file
+      description: PLINK ".fam" file. Mandatory if you provide ".bed".
+      pattern: "*.{fam}"
+  - bim:
+      type: file
+      description: PLINK ".bim" file. Mandatory if you provide ".bed".
+      pattern: "*.{bim}"
+  - map:
+      type: file
+      description: PLINK ".map" file. Mandatory if you provide ".ped" or ".geno".
+      pattern: "*.{bim}"
+  - K:
+      type: value
+      description: Belief of the number of ancestral populations.
+      pattern: "{*}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - Q-ancestry-fractions:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Space-delimited files containing ancestry fractions. The output filenames have the number of populations (K) that was assumed for the analysis.
+      pattern: "*.{Q}"
+  - P-allele-frequencies:
+      type: file
+      description:  Space-delimited files containing the allele frequencies of the inferred ancestral populations. The output filenames have the number of populations (K) that was assumed for the analysis.
+      pattern: "*.{P}"
 
 authors:
   - "@atrigila"
