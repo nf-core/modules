@@ -2,7 +2,7 @@ process BBMAP_SENDSKETCH {
     tag "$file"
     label 'process_low'
 
-    conda ("bioconda::bbmap=39.01")
+    conda "bioconda::bbmap=39.01"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
         'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
@@ -19,9 +19,10 @@ process BBMAP_SENDSKETCH {
 
     script:
     def args = task.ext.args ?: ''
+    def file_used = file.size() > 1 ? file[0] : file
     """    
     sendsketch.sh \\
-        in=${file} \\
+        in=${file_used} \\
         out='results.txt' \\
         $args \\
         -Xmx${task.memory.toGiga()}g

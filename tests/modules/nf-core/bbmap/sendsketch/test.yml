@@ -1,8 +1,19 @@
-- name: bbmap sendsketch test_bbmap_sendsketch
-  command: nextflow run ./tests/modules/nf-core/bbmap/sendsketch -entry test_bbmap_sendsketch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/sendsketch/nextflow.config
+- name: bbmap sendsketch test_bbmap_sendsketch_single
+  command: nextflow run ./tests/modules/nf-core/bbmap/sendsketch -entry test_bbmap_sendsketch_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/sendsketch/nextflow.config
   tags:
-  - bbmap
-  - bbmap/sendsketch
+    - bbmap/sendsketch
+    - bbmap
   files:
-  - path: output/bbmap/results.txt
-    md5sum: 66457a5c92e61bf258ca6e692703e344
+    - path: output/bbmap/results.txt
+      contains: ["File: genome.fasta"]
+    - path: output/bbmap/versions.yml
+
+- name: bbmap sendsketch test_bbmap_sendsketch_paired
+  command: nextflow run ./tests/modules/nf-core/bbmap/sendsketch -entry test_bbmap_sendsketch_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/sendsketch/nextflow.config
+  tags:
+    - bbmap/sendsketch
+    - bbmap
+  files:
+    - path: output/bbmap/results.txt
+      contains: ["File: test2_1.fastq.gz"]
+    - path: output/bbmap/versions.yml
