@@ -21,7 +21,7 @@ process ODGI_SQUEEZE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ls *.og >> files
+    ls *.og > files
     ls *.gfa >> files
     odgi \\
         squeeze \\
