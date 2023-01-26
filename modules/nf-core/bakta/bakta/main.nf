@@ -36,13 +36,13 @@ process BAKTA_BAKTA {
     def prodigal_tf = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
     """
     bakta \\
-        $fasta
+        $fasta \\
         $args \\
         --threads $task.cpus \\
         --prefix $prefix \\
         $proteins_opt \\
         $prodigal_tf \\
-        --db $db \\
+        --db $db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
