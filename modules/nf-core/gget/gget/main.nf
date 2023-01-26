@@ -11,8 +11,8 @@ process GGET_GGET {
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*")                  , emit: file  , optional: true
-    tuple val(meta), path("${prefix}.${suffix}"), emit: output, optional: true
+    tuple val(meta), path("*[!versions.yml][!${prefix}.${suffix}]*"), emit: files, optional: true
+    tuple val(meta), path("${prefix}.${suffix}")                   , emit: output, optional: true
     path "versions.yml", emit: versions
 
     when:
@@ -21,8 +21,8 @@ process GGET_GGET {
     script:
     def args = task.ext.args ?: ''
     def inputs = files ?: ""
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "json"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "json"
     """
     gget \\
         $args \\
