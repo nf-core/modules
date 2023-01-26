@@ -14,9 +14,13 @@
 
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
 
-    as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
 }
 
 #' Flexibly read CSV or TSV files
@@ -47,6 +51,31 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
+#' Round numeric dataframe columns to fixed decimal places by applying
+#' formatting and converting back to numerics
+#'
+#' @param dataframe A data frame
+#' @param columns Which columns to round (assumes all of them by default)
+#' @param digits How many decimal places to round to?
+#'
+#' @return output Data frame
+
+round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (is.null(columns)){
+        columns <- colnames(df)
+    }
+
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+
+    # Convert columns back to numeric
+
+    for (c in columns) {
+        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]] <- as.numeric(df[[c]])
+    }
+    df
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -62,10 +91,12 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 opt <- list(
     count_file = '$counts',
     sample_file = '$samplesheet',
-    contrast_variable = '$meta.variable',
-    reference_level = '$meta.reference',
-    treatment_level = '$meta.target',
-    blocking_variables = '$meta.blocking',
+    contrast_variable = NULL,
+    reference_level = NULL,
+    treatment_level = NULL,
+    blocking_variables = NULL,
+    control_genes_file = '$control_genes_file',
+    sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -94,8 +125,22 @@ for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
     }else{
-        opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+
+        # Preserve classes from defaults where possible
+        if (! is.null(opt[[ao]])){
+            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        opt[[ao]] <- args_opt[[ao]]
     }
+}
+
+# Check if required parameters have been provided
+
+required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+
+if (length(missing) > 0){
+    stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
 
 # Check file inputs are valid
@@ -133,6 +178,9 @@ count.table <-
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
+# Deal with spaces that may be in sample column
+opt\$sample_id_col <- make.names(opt\$sample_id_col)
+
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
     stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
 }
@@ -169,32 +217,33 @@ if (length(missing_samples) > 0) {
 ################################################
 ################################################
 
+contrast_variable <- make.names(opt\$contrast_variable)
 blocking.vars <- c()
 
-if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
+if (!contrast_variable %in% colnames(sample.sheet)) {
     stop(
         paste0(
         'Chosen contrast variable \"',
-        opt\$contrast_variable,
+        contrast_variable,
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[opt\$contrast_variable]])) {
+} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
         'Please choose reference and treatment levels that are present in the',
-        opt\$contrast_variable,
+        contrast_variable,
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt\$blocking)) {
-    blocking.vars = unlist(strsplit(opt\$blocking, split = ';'))
+} else if (!is.null(opt\$blocking_variables)) {
+    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
+        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
         stop(
-            paste0(
-                'One or more of the blocking variables specified (',
-                opt\$blocking,
-                ') do not correspond to sample sheet columns.'
+            paste(
+                'Blocking variables', missing_block,
+                'do not correspond to sample sheet columns.'
             )
         )
     }
@@ -211,13 +260,13 @@ if (!is.null(opt\$blocking_variables)) {
 
 # Make sure all the appropriate variables are factors
 
-for (v in c(blocking.vars, opt\$contrast_variable)) {
+for (v in c(blocking.vars, contrast_variable)) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
 # Variable of interest goes last, see https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 
-model <- paste(model, opt\$contrast_variable, sep = ' + ')
+model <- paste(model, contrast_variable, sep = ' + ')
 
 ################################################
 ################################################
@@ -225,11 +274,23 @@ model <- paste(model, opt\$contrast_variable, sep = ' + ')
 ################################################
 ################################################
 
+if (opt\$control_genes_file != ''){
+    control_genes <- readLines(opt\$control_genes_file)
+    if (! opt\$sizefactors_from_controls){
+        count.table <- count.table[setdiff(rownames(count.table), control_genes),]
+    }
+}
+
 dds <- DESeqDataSetFromMatrix(
     countData = round(count.table),
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
+    print(paste('Estimating size factors using', length(control_genes), 'control genes'))
+    dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
+}
 
 dds <- DESeq(
     dds,
@@ -251,7 +312,7 @@ comp.results <-
         pAdjustMethod = opt\$p_adjust_method,
         minmu = opt\$minmu,
         contrast = c(
-            opt\$contrast_variable,
+            contrast_variable,
             c(opt\$treatment_level, opt\$reference_level)
         )
     )
@@ -260,7 +321,7 @@ if (opt\$shrink_lfc){
     comp.results <- lfcShrink(dds,
         type = 'ashr',
         contrast = c(
-            opt\$contrast_variable,
+            contrast_variable,
             c(opt\$treatment_level, opt\$reference_level)
         )
     )
@@ -284,7 +345,10 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 write.table(
-    format(data.frame(gene_id = rownames(comp.results), comp.results), nsmall = 8),
+    data.frame(
+        gene_id = rownames(comp.results),
+        round_dataframe_columns(data.frame(comp.results))
+    ),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -339,8 +403,13 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
         vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
     }
 
+    # Again apply the slight rounding and then restore numeric
+
     write.table(
-        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_mat)), nsmall = 8),
+        data.frame(
+            gene_id=rownames(counts(dds)),
+            round_dataframe_columns(data.frame(assay(vs_mat)))
+        ),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,

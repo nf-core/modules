@@ -1,0 +1,42 @@
+name: "bed_scatter_bedtools"
+description: |
+  Scatters inputted BED files by the amount specified.
+  The subworkflow is also able to create artificial BED files from the fasta index.
+  The configuration in nextflow.config should be added to your modules.config for the subworkflow to work.
+keywords:
+  - bed
+  - scatter
+  - bedtools
+  - gawk
+modules:
+  - bedtools/split
+  - gawk
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bed:
+      type: file
+      description: The BED file to scatter.
+      pattern: "*.bed"
+  - scatter_count:
+      type: integer
+      description: The amount of times the BED file should be split
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bed:
+      type: file
+      description: A scattered BED file (all BED files from the same source are transposed but contain the same meta)
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@nvnieuwk"

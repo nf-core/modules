@@ -3,7 +3,7 @@ process ADAPTERREMOVALFIXPREFIX {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::adapterremovalfixprefix=0.0.5" : null)
+    conda "bioconda::adapterremovalfixprefix=0.0.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
         'quay.io/biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"

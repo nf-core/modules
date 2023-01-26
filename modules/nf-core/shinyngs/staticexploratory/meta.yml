@@ -1,7 +1,12 @@
 name: "shinyngs_staticexploratory"
-description: write your description here
+description: Make exploratory plots for analysis of matrix data, including PCA, Boxplots and density plots
 keywords:
-  - sort
+  - exploratory
+  - plot
+  - boxplot
+  - density
+  - PCA
+
 tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
@@ -32,31 +37,31 @@ output:
   - boxplots:
       type: tuple
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        box plots covering input matrices.
+        Meta-keyed tuple containing a PNG and HTML output for box plots
+        covering input matrices.
   - densities:
       type: tuple
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        density plots covering input matrices.
+        Meta-keyed tuple containing a PNG and HTML output for density plots
+        covering input matrices.
   - pca2d:
       type: tuple
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        2D PCA plots covering specified input matrix (by default the last one
-        in the input list.
+        Meta-keyed tuple containing a PNG and HTML plot for 2D PCA plots
+        covering specified input matrix (by default the last one in the input
+        list.
   - pca3d:
       type: tuple
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        3D PCA plots covering specified input matrix (by default the last one
-        in the input list.
+        Meta-keyed tuple containing a PNG and HTML plot for 3D PCA plots
+        covering specified input matrix (by default the last one in the input
+        list.
   - mad:
       type: tuple
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        MAD correlation plots covering specified input matrix (by default the
-        last one in the input list.
+        Meta-keyed tuple containing a PNG and  HTML plot for MAD correlation
+        plots covering specified input matrix (by default the last one in the
+        input list.
   - dendro:
       type: tuple
       description: |
