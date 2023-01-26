@@ -12,7 +12,7 @@ process ODGI_SQUEEZE {
 
     output:
     tuple val(meta), path("*.og"), emit: graph
-    path "versions.yml"           , emit: versions
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
