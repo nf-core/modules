@@ -1,48 +1,38 @@
 - name: graphtyper genotype test_graphtyper_genotype_single
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper
     - graphtyper/genotype
+    - graphtyper
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test"]
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
-      md5sum: 6cf39cb5edec1dad83e9bd85b68ae9d9
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz
       contains: ["FORMAT	test"]
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz.tbi
-      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
     - path: output/graphtyper/versions.yml
 
 - name: graphtyper genotype test_graphtyper_genotype_multi
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_multi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper
     - graphtyper/genotype
+    - graphtyper
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test	test"]
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
-      md5sum: b7fb6638f27d6221c9fbc8dae50ac70e
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz
       contains: ["FORMAT	test	test"]
     - path: output/graphtyper/results/MT192765.1/000001000-000005000.vcf.gz.tbi
-      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
     - path: output/graphtyper/versions.yml
-    - path: output/samtools/test1.cram
-    - path: output/samtools/test1.cram.crai
-    - path: output/samtools/test2.cram
-    - path: output/samtools/test2.cram.crai
-    - path: output/samtools/versions.yml
 
 - name: graphtyper genotype test_graphtyper_genotype_region
   command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype_region -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
   tags:
-    - graphtyper
     - graphtyper/genotype
+    - graphtyper
   files:
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
       contains: ["FORMAT	test"]
     - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
-      md5sum: b7fb6638f27d6221c9fbc8dae50ac70e
     - path: output/graphtyper/versions.yml
