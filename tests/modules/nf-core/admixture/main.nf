@@ -10,7 +10,7 @@ workflow test_admixture {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['vcf']['test_annotate_vcf_gz'], checkIfExists: true)
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/vcf/test_annotate.vcf.gz", checkIfExists: true)
     ]
     PLINK_VCF ( input )
 
@@ -20,5 +20,9 @@ workflow test_admixture {
 
     ch_bed_bim_fam = bed_ch.join(bim_ch).join(fam_ch)
 
-    ADMIXTURE ( ch_bed_bim_fam, [], "3" )
+    ch_value_K = Channel.of("3")
+
+    ch_ped_or_geno = [[id:'ped_or_geno'], [], []]
+
+    ADMIXTURE ( ch_bed_bim_fam,  ch_value_K )
 }

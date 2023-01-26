@@ -10,14 +10,13 @@ process ADMIXTURE {
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
-    tuple val(meta), path(ped_or_geno), path(map)
     val K
 
 
     output:
-    tuple val(meta), path("*.Q"), emit: Q-ancestry-fractions
-    tuple val(meta), path("*.P"), emit: P-allele-frequencies
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.Q")    , emit: ancestry_fractions
+    tuple val(meta), path("*.P")    , emit: allele_frequencies
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,17 +26,17 @@ process ADMIXTURE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
 
-
     """
     admixture \\
-        $args \\
-        $input_file \\
+        $bed \\
         $K \\
-        -J $task.cpus \\
+        -j$task.cpus \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        admixture: \$(echo \$(admixture 2>&1) | head -n 1 |  sed -n 's/.*Version \([0-9.]*\).*/\1/p' )
+        admixture: \$(echo \$(admixture 2>&1) | head -n 1  )
     END_VERSIONS
+
     """
 }
