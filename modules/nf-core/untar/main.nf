@@ -50,7 +50,7 @@ process UNTAR {
     """
 
     stub:
-    prefix     = "${archive.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
     touch ${prefix}/file.txt
