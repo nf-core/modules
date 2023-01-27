@@ -11,8 +11,8 @@ process GLIMPSE_LIGATE {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.{vcf,bcf}"), emit: merged_variant
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variant
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
