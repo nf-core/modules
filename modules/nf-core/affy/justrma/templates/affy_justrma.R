@@ -51,6 +51,14 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
+install_cdf <- function(celfile){
+    library(affyio)
+    headdetails <- read.celfile.header(celfile)
+    ref.cdfName <- headdetails[[1]]
+    cleaned.cdfName <- cleancdfname(ref.cdfName, addcdf = FALSE)
+    cdfFromBioC(paste0(cleaned.cdfName, 'cdf'))
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -136,6 +144,16 @@ if (! opt\$file_name_col %in% colnames(sample.sheet)){
 ## Run justRMA process                        ##
 ################################################
 ################################################
+
+# Install the CDF in a path we can definitely write to (for some reason affy
+# ignores .libPaths() left to its own devices)
+
+dir.create('libs')
+.libPaths('libs')
+first_cel <- file.path(opt$celfiles_dir, sample.sheet[[opt$file_name_col]][1])
+install_cdf(first_cel)
+
+# Run the main function
 
 rownames(sample.sheet) <- sample.sheet[[opt\$file_name_col]]
 eset <- justRMA(
