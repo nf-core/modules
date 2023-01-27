@@ -19,9 +19,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fastq:
+  - fastq1:
       type: file
-      description: Either a single-end FASTQ file or paired-end files.
+      description: FASTQ file to compress.
+      pattern: "*.{fq.gz,fastq.gz}"
+  - fastq2:
+      type: file
+      description: Parired FASTQ file fon non single-end experiments.
       pattern: "*.{fq.gz,fastq.gz}"
 
 output:
