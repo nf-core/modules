@@ -139,19 +139,19 @@ if (! opt\$file_name_col %in% colnames(sample.sheet)){
 
 rownames(sample.sheet) <- sample.sheet[[opt\$file_name_col]]
 eset <- justRMA(
-  filenames = sample.sheet[[opt\$file_name_col]],
-  celfile.path = opt\$celfiles_dir,
-  phenoData = sample.sheet,
-  description = opt\$description, 
-  rm.mask = opt\$rm.mask,
-  rm.outliers = opt\$rm.outliers,
-  rm.extra = opt\$rm.extra,
-  sampleNames = sample.sheet[[opt\$sample_name_col]],
-  normalize = opt\$normalize,
-  background = opt\$background,
-  bgversion = opt\$bgversion,
-  destructive = opt\$destructive,
-  cdfname = opt\$cdfname
+    filenames = sample.sheet[[opt\$file_name_col]],
+    celfile.path = opt\$celfiles_dir,
+    phenoData = sample.sheet,
+    description = opt\$description,
+    rm.mask = opt\$rm.mask,
+    rm.outliers = opt\$rm.outliers,
+    rm.extra = opt\$rm.extra,
+    sampleNames = sample.sheet[[opt\$sample_name_col]],
+    normalize = opt\$normalize,
+    background = opt\$background,
+    bgversion = opt\$bgversion,
+    destructive = opt\$destructive,
+    cdfname = opt\$cdfname
 )
 
 ################################################
