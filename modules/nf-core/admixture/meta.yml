@@ -27,15 +27,15 @@ input:
       pattern: "*.{.ped|.geno}"
   - fam:
       type: file
-      description: PLINK ".fam" file. Mandatory if you provide ".bed".
+      description: PLINK ".fam" file. Mandatory if you provide ".bed" as input_file. Replace with an empty channel if input_file is ".ped" or ".geno".
       pattern: "*.{fam}"
   - bim:
       type: file
-      description: PLINK ".bim" file. Mandatory if you provide ".bed".
+      description: PLINK ".bim" file. Mandatory if you provide ".bed" as input_file. Replace with an empty channel if input_file is ".ped" or ".geno".
       pattern: "*.{bim}"
   - map:
       type: file
-      description: PLINK ".map" file. Mandatory if you provide ".ped" or ".geno".
+      description: PLINK ".map" file. Mandatory if you provide ".ped" or ".geno" as input_file. Replace with an empty channel if input_file is ".bed".
       pattern: "*.{bim}"
   - K:
       type: value
