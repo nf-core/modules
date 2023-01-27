@@ -29,8 +29,7 @@ process ADMIXTURE {
 
     """
     admixture \\
-        $bed \\
-        $ped_or_geno \\
+        $input_file \\
         $K \\
         -j$task.cpus \\
         $args
