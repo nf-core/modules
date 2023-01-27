@@ -37,7 +37,7 @@ process ADMIXTURE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*"  )
+        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*" | sed 's/ADMIXTURE Version //' )
     END_VERSIONS
 
     """
