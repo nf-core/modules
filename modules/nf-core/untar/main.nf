@@ -54,7 +54,8 @@ process UNTAR {
     stub:
     untar     = "${archive.simpleName}"
     """
-    touch $untar
+    mkdir $untar
+    touch ${untar}/file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
