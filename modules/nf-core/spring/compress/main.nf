@@ -21,23 +21,21 @@ process SPRING_COMPRESS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    if (meta.single_end) {
-        """
-        spring -c -g -t ${task.cpus} $args -i '${fastq}' -o '${prefix}.spring'
+    def input = meta.single_end ? "-i ${fastq1}" : "-i ${fastq1} ${fastq2}"
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            spring: ${VERSION}
-        END_VERSIONS
-        """
-    } else {
-        """
-        spring -c -g -t ${task.cpus} $args -i '${fastq[0]}' '${fastq[1]}' -o '${prefix}.spring'
+    """
+    spring \\
+        -c \\
+        -g \\
+        -t ${task.cpus} \\
+        $args \\
+        ${input} \\
+        -o ${prefix}.spring
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            spring: ${VERSION}
-        END_VERSIONS
-        """
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        spring: ${VERSION}
+    END_VERSIONS
+    """
     }
 }
