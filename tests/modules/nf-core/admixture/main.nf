@@ -22,7 +22,7 @@ workflow test_admixture {
 
     ch_value_K = Channel.of("3")
 
-    empty_tuple = Channel.of([[], [], []])
-    ADMIXTURE ( ch_bed_bim_fam, empty_tuple, ch_value_K )
+    empty_ch = Channel.of([[], [], []])
+    ADMIXTURE ( ch_bed_bim_fam, empty_ch, ch_value_K )
 
 }
