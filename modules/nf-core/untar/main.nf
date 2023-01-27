@@ -20,7 +20,7 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    prefix = task.ext.prefix ?: "${archive.simpleName}" 
+    prefix = task.ext.prefix ?: "${archive.baseName}"
 
     """
     mkdir $prefix
@@ -50,7 +50,7 @@ process UNTAR {
     """
 
     stub:
-    prefix     = "${archive.simpleName}"
+    prefix     = "${archive.baseName}"
     """
     mkdir $prefix
     touch ${prefix}/file.txt
