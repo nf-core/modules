@@ -8,7 +8,7 @@ process AFFY_JUSTRMA {
         'quay.io/biocontainers/bioconductor-affy:1.76.0--r42hc0cfd56_0' }"
 
     input:
-    tuple val(meta), path(samplesheet), path(celfiles)
+    tuple val(meta), path(samplesheet), path(celfiles_dir)
     tuple val(meta2), path(description)
 
     output:
