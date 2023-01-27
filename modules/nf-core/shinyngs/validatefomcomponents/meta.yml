@@ -60,6 +60,11 @@ output:
       type: file
       description: File containing validated sample metadata
       pattern: "/*.sample_metadata.tsv"
+  - feature_meta:
+      type: file
+      description: File containing validated feature metadata
+      pattern: "/*.feature_metadata.tsv"
+      optional: true
   - assays:
       type: file
       description: Files containing validated matrices
