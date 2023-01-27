@@ -20,24 +20,25 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    untar     = archive.toString() - '.tar.gz'
+    def gzip_flag   = archive.getName().toLowerCase().endsWith(".gz")   ? 'z' : ''
+    untar     = archive.toString() - '.gz' - '.tar'
 
     """
     mkdir output
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
     ## If just files or multiple directories, place all in output
-    if [[ \$(tar -tzf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+    if [[ \$(tar -t${gzip_flag}f ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         tar \\
             -C output --strip-components 1 \\
-            -xzvf \\
+            -xv${gzip_flag}f \\
             $args \\
             $archive \\
             $args2
     else
         tar \\
             -C output \\
-            -xzvf \\
+            -xv${gzip_flag}f \\
             $args \\
             $archive \\
             $args2
