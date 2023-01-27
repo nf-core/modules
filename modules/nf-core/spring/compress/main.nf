@@ -8,7 +8,7 @@ process SPRING_COMPRESS {
         'quay.io/biocontainers/spring:1.1.0--h9f5acd7_0' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq1), path(fastq2)
 
     output:
     tuple val(meta), path("*.spring"), emit: spring
