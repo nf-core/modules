@@ -8,7 +8,8 @@ workflow test_spring_compress_single_end {
 
     input = [
         [ id:'test', single_end:true ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+        []
     ]
 
     SPRING_COMPRESS ( input )
