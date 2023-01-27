@@ -20,7 +20,7 @@ process GLIMPSE_LIGATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf"
+    def suffix = task.ext.suffix ?: "vcf.gz"
     """
     GLIMPSE_ligate \\
         $args \\
