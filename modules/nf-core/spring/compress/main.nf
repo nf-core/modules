@@ -37,5 +37,4 @@ process SPRING_COMPRESS {
         spring: ${VERSION}
     END_VERSIONS
     """
-    }
 }
