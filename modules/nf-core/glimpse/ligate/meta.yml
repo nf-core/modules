@@ -36,10 +36,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - merged_bcf:
+  - merged_variant:
       type: file
       description: Output VCF/BCF file for the merged regions. Phased information (HS field) is updated accordingly for the full region.
-      pattern: "*.bcf"
+      pattern: "*.{vcf,bcf}"
 
 authors:
   - "@louislenezet"
