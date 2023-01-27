@@ -73,13 +73,13 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bcf:
+  - phased_variants:
       type: file
       description: |
-        Output BCF file containing genotype probabilities (GP field),
+        Output VCF/BCF file containing genotype probabilities (GP field),
         imputed dosages (DS field), best guess genotypes (GT field),
         sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-      pattern: "*.bcf"
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:
   - "@louislenezet"
