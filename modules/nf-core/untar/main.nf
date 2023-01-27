@@ -20,7 +20,7 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    prefix = task.ext.prefix ?: "${archive.simpleName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir $prefix
