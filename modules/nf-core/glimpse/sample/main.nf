@@ -1,6 +1,6 @@
-process GLIMPSE_LIGATE {
+process GLIMPSE_SAMPLE {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda "bioconda::glimpse-bio=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,7 +11,7 @@ process GLIMPSE_LIGATE {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
+    tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: haplo_sampled
     path "versions.yml"                               , emit: versions
 
     when:
@@ -21,16 +21,17 @@ process GLIMPSE_LIGATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
     """
-    GLIMPSE_ligate \\
+    GLIMPSE_sample \\
         $args \\
         --input $input \\
         --thread $task.cpus \\
-        --output ${prefix}_merged.${suffix}
+        --output ${prefix}_sampled.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+            glimpse: "\$(GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }
