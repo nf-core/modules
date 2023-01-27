@@ -11,8 +11,8 @@ process UNTAR {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("$untar"), emit: untar
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("$prefix"), emit: untar
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,30 +20,28 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    untar     = "${archive.simpleName}"
+    prefix = task.ext.prefix ?: "${archive.simpleName}" 
 
     """
-    mkdir output
+    mkdir $prefix
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
-    ## If just files or multiple directories, place all in output
+    ## If just files or multiple directories, place all in prefix
     if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         tar \\
-            -C output --strip-components 1 \\
+            -C $prefix --strip-components 1 \\
             -xavf \\
             $args \\
             $archive \\
             $args2
     else
         tar \\
-            -C output \\
+            -C $prefix \\
             -xavf \\
             $args \\
             $archive \\
             $args2
     fi
-
-    mv output ${untar}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,10 +50,10 @@ process UNTAR {
     """
 
     stub:
-    untar     = "${archive.simpleName}"
+    prefix     = "${archive.simpleName}"
     """
-    mkdir $untar
-    touch ${untar}/file.txt
+    mkdir $prefix
+    touch ${prefix}/file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
