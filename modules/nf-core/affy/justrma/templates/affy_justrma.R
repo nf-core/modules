@@ -150,7 +150,7 @@ if (! opt\$file_name_col %in% colnames(sample.sheet)){
 
 dir.create('libs')
 .libPaths('libs')
-first_cel <- file.path(opt$celfiles_dir, sample.sheet[[opt$file_name_col]][1])
+first_cel <- file.path(opt$celfiles_dir, sample.sheet[[opt\$file_name_col]][1])
 install_cdf(first_cel)
 
 # Run the main function
