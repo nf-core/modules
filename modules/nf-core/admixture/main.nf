@@ -25,6 +25,7 @@ process ADMIXTURE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_file = bed ?: ped_or_geno
 
 
     """
