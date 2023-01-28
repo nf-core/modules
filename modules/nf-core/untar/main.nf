@@ -50,7 +50,7 @@ process UNTAR {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.toString().replaceFirst(/\.[^\.]+(.gz)?$/, ""))
     """
     mkdir $prefix
     touch ${prefix}/file.txt
