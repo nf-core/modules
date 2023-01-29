@@ -59,6 +59,32 @@ install_cdf <- function(celfile){
     cdfFromBioC(paste0(cleaned.cdfName, 'cdf'))
 }
 
+#' Round numeric dataframe columns to fixed decimal places by applying
+#' formatting and converting back to numerics
+#'
+#' @param dataframe A data frame
+#' @param columns Which columns to round (assumes all of them by default)
+#' @param digits How many decimal places to round to?
+#'
+#' @return output Data frame
+
+round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (is.null(columns)){
+        columns <- colnames(df)
+    }
+
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+
+    # Convert columns back to numeric
+
+    for (c in columns) {
+        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]] <- as.numeric(df[[c]])
+    }
+    df
+}
+
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -188,7 +214,10 @@ saveRDS(eset, file = 'eset.rds')
 # Write matrix
 
 write.table(
-    data.frame(probe_id=rownames(eset), exprs(eset)),
+    data.frame(
+        probe_id = rownames(eset),
+        round_dataframe_columns(as.data.frame(exprs(eset)))
+    ),
     file = 'matrix.tsv',
     col.names = TRUE,
     row.names = FALSE,
