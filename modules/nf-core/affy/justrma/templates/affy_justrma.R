@@ -150,7 +150,7 @@ if (! opt\$file_name_col %in% colnames(sample.sheet)){
 
 dir.create('libs')
 .libPaths('libs')
-first_cel <- file.path(opt$celfiles_dir, sample.sheet[[opt\$file_name_col]][1])
+first_cel <- file.path(opt\$celfiles_dir, sample.sheet[[opt\$file_name_col]][1])
 install_cdf(first_cel)
 
 # Run the main function
@@ -172,6 +172,9 @@ eset <- justRMA(
     cdfname = opt\$cdfname
 )
 
+# This should happen as part of the above, not sure why it doesn't
+sampleNames(eset) <- sample.sheet[[opt\$sample_name_col]]
+
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -185,7 +188,7 @@ saveRDS(eset, file = 'eset.rds')
 # Write matrix
 
 write.table(
-    exprs(eset),
+    data.frame(probe_id=rownames(eset), exprs(eset)),
     file = 'matrix.tsv',
     col.names = TRUE,
     row.names = FALSE,
