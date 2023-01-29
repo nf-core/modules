@@ -1,8 +1,10 @@
-name: "glimpse_chunk"
-description: Defines chunks where to run imputation
+name: "glimpse_sample"
+
+description: Generates haplotype calls by sampling haplotype estimates
 keywords:
-  - chunk
-  - imputation
+  - Sample
+  - Haplotypes
+  - Imputation
 tools:
   - "glimpse":
       description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
@@ -21,16 +23,17 @@ input:
 
   - input:
       type: file
-      description: |
-        Target dataset in VCF/BCF format defined at all variable positions.
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+      description: VCF/BCF file generated using GLIMPSE ligate
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
-  - region:
-      type: string
-      description: |
-        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
+  - sample:
+      type: parameter
+      description: Samples a likely haplotype pair for each sample, use it in combination with --seed. Option not recommended for general usage, use --solve instead
+
+  - solve:
+      type: parameter
+      description: Get the most likely haplotype pair for each sample (the random number generator is not used)
+
 output:
   - meta:
       type: map
@@ -43,10 +46,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - txt:
+  - haplo_sampled:
       type: file
-      description: Tab delimited output txt file containing buffer and imputation regions.
-      pattern: "*.{txt}"
+      description: Output VCF/BCF file containing phased genotypes.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:
   - "@louislenezet"
