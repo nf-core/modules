@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { GLIMPSE_PHASE } from '../../../../../modules/nf-core/glimpse/phase/main.nf'
 
 input_vcf = [
-        [ id:'input2', single_end:false ], // meta map
+        [ id:'input', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
         "chr21:16600000-16800000",
