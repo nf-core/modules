@@ -51,6 +51,12 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
+#' Install the right CDF for a given cel file
+#' 
+#' @param celfile A valid path to a CEL file
+#'
+#' @return output The CDF environment or a list detailing the failed locations.
+
 install_cdf <- function(celfile){
     library(affyio)
     headdetails <- read.celfile.header(celfile)
