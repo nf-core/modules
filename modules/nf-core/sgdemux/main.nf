@@ -36,7 +36,7 @@ process SGDEMUX {
         --compressor-threads ${task.cpus} \\
         --writer-threads ${task.cpus} \\
         ${args}
-
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sgdemux: \$(echo \$(sgdemux --version 2>&1) | cut -d " " -f2)
