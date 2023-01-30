@@ -20,13 +20,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - sample:
+  - samplesheet:
       type: file
       description: |
         CSV or TSV format sample sheet with sample metadata and CEL file names
-  - celfiles:
+  - celfiles_dir:
       type: list
-      description: List CEL files
+      description: Path to a directory containing CEL files
       pattern: "*.{CEL,CEL.gz}"
   - description:
       type: file
@@ -49,7 +49,7 @@ output:
       pattern: "*.tsv"
   - rdata:
       type: file
-      description: Serialised DESeq2 object
+      description: Serialised ExpressionSet object
       pattern: "*.rds"
   - versions:
       type: file
