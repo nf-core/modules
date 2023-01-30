@@ -3,9 +3,8 @@ process SGDEMUX {
     label 'process_high'
 
     conda "bioconda::sgdemux=1.1.1"
-    //TODO fix linting error 'Container versions do not match'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1' :
+        'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1--ha982bd6_0' :
         'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
 
     input:
