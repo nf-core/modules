@@ -7,12 +7,10 @@ include { UNTAR        } from '../../../../../modules/nf-core/untar/main.nf'
 
 workflow test_affy_justrma {
 
-    def data_dir = 'https://raw.githubusercontent.com/pinin4fjords/test-datasets/affy/data/genomics/homo_sapiens/array_expression'
-    def meta = [ id:'test' ]
+    samples = file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+    cel_archive = file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
     
-    samples = file("${data_dir}/GSE38751.csv")
-    cel_archive = file("${data_dir}/GSE38751_RAW.tar")
-
+    def meta = [ id:'test' ]
     ch_samplesheet = Channel.of([ meta, samples ])
     ch_celfiles_archive = Channel.of([ meta, cel_archive ])
 
