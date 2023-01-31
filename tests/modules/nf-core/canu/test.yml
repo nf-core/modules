@@ -1,9 +1,26 @@
-- name: "canu"
-  command: nextflow run ./tests/modules/nf-core/canu -entry test_canu -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/canu/nextflow.config
+- name: canu test_canu_pacbiohifi
+  command: nextflow run ./tests/modules/nf-core/canu -entry test_canu_pacbiohifi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/canu/nextflow.config
   tags:
-    - "canu"
+    - canu
   files:
-    - path: "output/canu/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/canu/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/canu/test.contigs.fasta
+      contains:
+       - 'empty'
+    - path: output/canu/test.contigs.layout.readToTig
+      contains:
+        - '#readID tigID   bgn     end
+           2       1       0       19972'
+    - path: output/canu/test.contigs.layout.tigInfo
+      contains:
+        - '#tigID  tigLen  coverage        tigClass        sugRept sugBubb sugCirc numChildren
+        1       19972   1.00    unassm  no      no      no      1'
+    - path: output/canu/test.report
+      contains:
+        - '[TRIMMING/READS]
+        --
+        -- In sequence store ./test.seqStore'
+    - path: output/canu/test.unassembled.fasta
+      contains:
+        - '>tig00000001 len=19972 reads=1 class=unassm suggestRepeat=no suggestBubble=no suggestCircular=no trim=0-19972
+        CCAGAAAATGCAATTAACTTACAAGGATACTGTATGATAATTTATTATCTCTCATCTTCTTTTACTGTTTTAACTTCCTTTACACACATATACATAAGTA='
+    - path: output/canu/versions.yml

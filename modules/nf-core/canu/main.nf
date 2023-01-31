@@ -14,7 +14,7 @@ process CANU {
 
     output:
     tuple val(meta), path("*.report")			, emit: report
-    tuple val(meta), path("*.contigs.fasta")		, emit: assembly
+    tuple val(meta), path("*.contigs.fasta")		, emit: assembly		, optional: true
     tuple val(meta), path("*.unassembled.fasta")	, emit: contigs
     tuple val(meta), path("*.correctedReads.fasta.gz")	, emit: corrected_reads		, optional: true
     tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimemd_reads	, optional: true
