@@ -1,7 +1,7 @@
-name: "glimpse_chunk"
-description: Defines chunks where to run imputation
+name: "glimpse_ligate"
+description: Concatenates imputation chunks in a single VCF/BCF file ligating phased information.
 keywords:
-  - chunk
+  - ligate
   - imputation
 tools:
   - "glimpse":
@@ -21,16 +21,9 @@ input:
 
   - input:
       type: file
-      description: |
-        Target dataset in VCF/BCF format defined at all variable positions.
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+      description: Text file containing the full list of files to ligate (one file per line)
+      pattern: "*.txt"
 
-  - region:
-      type: string
-      description: |
-        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
 output:
   - meta:
       type: map
@@ -43,10 +36,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - txt:
+  - merged_variants:
       type: file
-      description: Tab delimited output txt file containing buffer and imputation regions.
-      pattern: "*.{txt}"
+      description: Output VCF/BCF file for the merged regions. Phased information (HS field) is updated accordingly for the full region.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:
   - "@louislenezet"
