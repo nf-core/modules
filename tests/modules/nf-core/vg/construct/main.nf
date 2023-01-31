@@ -39,7 +39,7 @@ workflow test_vg_construct_msa {
         [],
         [],
         file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa'], checkIfExists: true),
-        []
+        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     ]
 
     fasta = [[],[]]
