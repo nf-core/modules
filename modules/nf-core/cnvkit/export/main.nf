@@ -11,7 +11,7 @@ process CNVKIT_EXPORT {
     tuple val(meta) , path(cns)
 
     output:
-    tuple val(meta), path("${prefix}.${suffix}"), emit: cns
+    tuple val(meta), path("${prefix}.${suffix}"), emit: output
     path "versions.yml"                         , emit: versions
 
     when:
