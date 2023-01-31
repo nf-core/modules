@@ -2,25 +2,40 @@
 
 nextflow.enable.dsl = 2
 
+include { UNTAR        } from '../../../../../modules/nf-core/untar/main.nf'
+include { AFFY_JUSTRMA } from '../../../../../modules/nf-core/affy/justrma/main.nf'
 include { LIMMA_DIFFERENTIAL } from '../../../../../modules/nf-core/limma/differential/main.nf'
 
 workflow test_limma_differential {
 
-    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
-    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
-    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+    samples = file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+    cel_archive = file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
+    
+    def meta = [ id:'test' ]
+    ch_samplesheet = Channel.of([ meta, samples ])
+    ch_celfiles_archive = Channel.of([ meta, cel_archive ])
 
-    Channel.fromPath(expression_contrasts)
-        .splitCsv ( header:true, sep:',' )
+    UNTAR ( ch_celfiles_archive )
+
+    ch_input = ch_samplesheet.join(UNTAR.out.untar)
+
+    AFFY_JUSTRMA ( 
+        ch_input,
+        [[],[]] 
+    )
+
+    //expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    //expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    //expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+    ch_differential_inputs = AFFY_JUSTRMA.out.tsv
+        .join(ch_samplesheet)
         .map{
-            tuple(it, expression_sample_sheet, expression_matrix_file)
-        }
-        .set{
-            input
+            tuple(['variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia', 'blocking': ''], it[2], it[1])
         }
 
     LIMMA_DIFFERENTIAL (
-        input
+        ch_differential_inputs
     )
 }
 

@@ -95,25 +95,22 @@ opt <- list(
     reference_level = NULL,
     treatment_level = NULL,
     blocking_variables = NULL,
-    sizefactors_from_controls = FALSE,
-    gene_id_col = "gene_id",
+    probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
-    test = "Wald",
-    fit_type = "parametric",
-    sf_type = 'ratio',
-    min_replicates_for_replace = 7,
-    use_t = FALSE,
-    lfc_threshold = 0,
-    alt_hypothesis = 'greaterAbs',
-    independent_filtering = TRUE,
-    p_adjust_method = 'BH',
-    alpha = 0.1,
-    minmu = 0.5,
-    vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
-    shrink_lfc = TRUE,
-    cores = 1,
-    vs_blind = TRUE,
-    vst_nsub = 1000
+    ndups = NULL,                # lmFit
+    spacing = NULL,              # lmFit
+    block = NULL,                # lmFit
+    correlation = NULL,          # lmFit
+    method = 'ls',               # lmFit
+    proportion = 0.01,           # eBayes
+    stdev.coef.lim = '0.1,4',    # eBayes
+    trend = FALSE,               # eBayes
+    robust = FALSE,              # eBayes
+    winsor.tail.p = '0.05,0.1',  # eBayes
+    adjust.method = "BH",        # topTable
+    p.value = 1,                 # topTable
+    lfc = 0,                     # topTable
+    confint = FALSE              # topTable
 )
 opt_types <- lapply(opt, class)
 
@@ -154,6 +151,10 @@ for (file_input in c('count_file', 'sample_file')){
     }
 }
 
+# Convert things to vectors where needed
+vector_opt <- c('stdev.coef.lim', 'winsor.tail.p')
+opt[vector_opt] = lapply(strsplit(unlist(opt[vector_opt]), ','), as.numeric)
+
 ################################################
 ################################################
 ## Finish loading libraries                   ##
@@ -172,7 +173,7 @@ intensities.table <-
     read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
-        row.names = opt\$gene_id_col
+        row.names = opt\$probe_id_col
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
@@ -268,6 +269,8 @@ for (v in c(blocking.vars, contrast_variable)) {
 ################################################
 ################################################
 
+# Generate the design
+
 design <- model.matrix( 
   as.formula(model), 
   data=sample.sheet
@@ -277,22 +280,53 @@ colnames(design) <- sub(
   paste0(contrast_variable, '.'), colnames(design)
 )
 
-fit <- lmFit(
-  as.matrix(intensities.table), 
-  design
+# Prepare for and run lmFit()
+
+lmfit_args = c(
+  list(
+    object = as.matrix(intensities.table), 
+    design = design
+  ),
+  opt[c('ndups', 'spacing', 'block', 'method')]
 )
+
+if (! is.null(opt\$block)){
+  lmfit_args[['block']] = sample.sheet[[opt\$block]]
+}
+if (! is.null(opt\$correlation)){
+  lmfit_args[['correlation']] = opt\$correlation
+}
+
+fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
 contrast <- paste(paste(contrast_variable, c(opt\$reference_level, opt\$treatment_level), sep='.'), collapse='-')
 contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
-fit2 <- eBayes(fit2)
 
-comp.results <- topTable(
-  fit2,
-  sort.by = 'none',
-  number = nrow(intensities.table)
+# Prepare for and run ebayes
+
+ebayes_args = c(
+  list(
+    fit = fit2
+  ),
+  opt[c('proportion', 'stdev.coef.lim', 'trend', 'robust', 'winsor.tail.p')]
 )
+
+fit2 <- do.call(eBayes, ebayes_args)
+
+# Run topTable() to generate a results data frame
+
+toptable_args = c(
+  list(
+    fit = fit2,
+    sort.by = 'none',
+    number = nrow(intensities.table)
+  ),
+  opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
+)
+
+comp.results <- do.call(topTable, toptable_args)
 
 ################################################
 ################################################
@@ -336,7 +370,6 @@ dev.off()
 # R object for other processes to use
 
 saveRDS(fit2, file = paste(output_prefix, 'fit2.limma.rds', sep = '.'))
-
 
 ################################################
 ################################################
