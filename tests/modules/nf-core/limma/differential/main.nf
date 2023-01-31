@@ -8,6 +8,8 @@ include { LIMMA_DIFFERENTIAL } from '../../../../../modules/nf-core/limma/differ
 
 workflow test_limma_differential {
 
+    // Make a microarray intensities matrix using affy/justrma
+
     samples = file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
     cel_archive = file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
     
@@ -24,9 +26,7 @@ workflow test_limma_differential {
         [[],[]] 
     )
 
-    //expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
-    //expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
-    //expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+    // Now test this modules
 
     ch_differential_inputs = AFFY_JUSTRMA.out.tsv
         .join(ch_samplesheet)
