@@ -323,7 +323,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        apply(comp.results, 2, function(x) formatC(x, format = "e", digits = 8))
+        comp.results
     ),
     file = paste(output_prefix, 'limma.results.tsv', sep = '.'),
     col.names = TRUE,
