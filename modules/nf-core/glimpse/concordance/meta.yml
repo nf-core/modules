@@ -2,8 +2,11 @@ name: "glimpse_concordance"
 description: Compute the r2 correlation between imputed dosages (in MAF bins) and highly-confident genotype calls from the high-coverage dataset.
 keywords:
   - concordance
+<<<<<<< HEAD
   - low-coverage
   - glimpse
+=======
+>>>>>>> Add all files for Glimpse Concordance
   - imputation
 tools:
   - "glimpse":
@@ -21,6 +24,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
+<<<<<<< HEAD
   - region:
       type: string
       description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
@@ -57,6 +61,16 @@ input:
         Allele frequency bins used for rsquared computations.
         By default they should as MAF bins [0-0.5], while
         they should take the full range [0-1] if --use-ref-alt is used.
+=======
+  - input:
+      type: file
+      description: File listing |
+        the region of interest
+        a file containing allele frequencies at each site
+        the validation dataset called at the same positions as the imputed file
+        the imputed data
+      pattern: "*.{txt,lst}"
+>>>>>>> Add all files for Glimpse Concordance
 
 output:
   - meta:
@@ -70,15 +84,30 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - r_squared:
+  - errors_cal:
       type: file
-      description: R-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.rsquare.*.txt.gz"
+      description: Calibration correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.cal.txt.gz"
 
-  - errors:
+  - errors_grp:
       type: file
-      description: Correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.errors.*.txt.gz"
+      description: Groups correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.grp.txt.gz"
+
+  - errors_spl:
+      type: file
+      description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.spl.txt.gz"
+
+  - rsquared_grp:
+      type: file
+      description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.rsquare.grp.txt.gz"
+
+  - rsquared_spl:
+      type: file
+      description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.rsquare.spl.txt.gz"
 
 authors:
   - "@louislenezet"
