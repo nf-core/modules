@@ -37,7 +37,7 @@ input:
   - insertions_fasta:
       type: file
       description: A FASTA file containing insertion sequences (referred to in the VCF file(s))
-      pattern: "*.vcf.gz"
+      pattern: "*.{fa,fasta,fna}"
   - fasta:
       type: file
       description: The reference FASTA file (cannot be used in combination with `msa`, but is dependent on `vcfs`)
