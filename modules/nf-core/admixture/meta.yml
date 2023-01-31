@@ -17,26 +17,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bed:
+  - bed_ped_geno:
       type: file
-      description: PLINK ".bed" file. If this is the input, then you do not need to provide ".ped" or ".geno".
+      description: One of PLINK ".bed" file or PLINK ".ped" or EIGENSTRAT ".geno" file. If you provide ".bed" then you need to provide ".bim" and  "fam" files. If you provide ".ped" or ".geno" then you need to provide a ".map" file and an empty channel.
       pattern: "*.{bed}"
-  - ped_or_geno:
+  - bim_map:
       type: file
-      description: PLINK ".ped" or EIGENSTRAT ".geno" file. If this is the input, then you do not need to provide ".bed".
-      pattern: "*.{.ped,geno}"
+      description: Mandatory accompanying file. One of PLINK ".bim" file or PLINK ".map" file. Provide ".bim" if ".bed" is the input. Provide ".map" if ".ped" or ".geno" is the input.
+      pattern: "*.{bim}"
   - fam:
       type: file
-      description: PLINK ".fam" file. Mandatory if you provide ".bed" as input_file. Replace with an empty channel if input_file is ".ped" or ".geno".
+      description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace with an empty channel if input is ".ped" or ".geno".
       pattern: "*.{fam}"
-  - bim:
-      type: file
-      description: PLINK ".bim" file. Mandatory if you provide ".bed" as input_file. Replace with an empty channel if input_file is ".ped" or ".geno".
-      pattern: "*.{bim}"
-  - map:
-      type: file
-      description: PLINK ".map" file. Mandatory if you provide ".ped" or ".geno" as input_file. Replace with an empty channel if input_file is ".bed".
-      pattern: "*.{bim}"
   - K:
       type: value
       description: Belief of the number of ancestral populations.
