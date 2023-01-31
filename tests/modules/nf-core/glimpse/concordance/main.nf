@@ -21,7 +21,7 @@ workflow test_glimpse_concordance {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
     ]
-    print(ref_panel[1])
+
     GLIMPSE_PHASE (
         input_vcf,
         ref_panel,
@@ -43,9 +43,8 @@ workflow test_glimpse_concordance {
     
     list_inputs = Channel.of(["chr21", allele_freq[0], validation[0]])
                     .combine(GLIMPSE_LIGATE.out.merged_variants.map{it[1]}.collect().map{it[0]})
-                    .collectFile(){ item ->[ "inputs.lst", item.join(" ") ]}
-
+                    .collect()
     concordance_input=Channel.of([[ id:'input', single_end:false ]]).combine(list_inputs)
-    GLIMPSE_CONCORDANCE ( concordance_input, [], [], [] ) // meta, File (Region, Frequencies, Truth, Estimate), minPROB, minDP, bins
-    GLIMPSE_CONCORDANCE.output.errors.view()
+    concordance_input.view()
+    GLIMPSE_CONCORDANCE ( concordance_input, [], [], []) // meta, Region, Frequencies, Truth, Estimate, minPROB, minDP, bins
 }

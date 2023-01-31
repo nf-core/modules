@@ -8,7 +8,7 @@ process GLIMPSE_CONCORDANCE {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), val(region), path(freq), path(truth), path(estimate)
     val(min_prob)
     val(min_dp)
     val(bins)
@@ -28,9 +28,10 @@ process GLIMPSE_CONCORDANCE {
     def min_dp_cmd   = min_dp   ? "--minDP ${min_dp}"    : "--minDP 8"
     def bins_cmd     = bins     ? "--bins ${bins}"       : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
     """
+    echo $region $freq $truth $estimate > input.txt
     GLIMPSE_concordance \\
         $args \\
-        --input $input \\
+        --input input.txt \\
         --thread $task.cpus \\
         --output ${prefix}_output \\
         $min_prob_cmd \\
