@@ -20,7 +20,7 @@ process CNVKIT_EXPORT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "bed"
+    suffix = task.ext.args.tokenize(" ")[0]
     """
     cnvkit.py export \\
         $args \\
