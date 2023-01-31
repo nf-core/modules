@@ -106,11 +106,11 @@
     - path: output/sgdemux/output/s9_S9_L001_R2_001.fastq.gz
       should_exist: true
 
-  # .tsv which depends on fastq order
+    # .tsv which depends on fastq order
     - path: output/sgdemux/output/most_frequent_unmatched.tsv
       should_exist: true
 
-  # .tsv files with md5sums
+    # .tsv files with md5sums
     - path: output/sgdemux/output/metrics.tsv
       md5sum: 7627e4bd2a56ea551fd74b4a2b5cb4b2
     - path: output/sgdemux/output/per_project_metrics.tsv
@@ -118,6 +118,6 @@
     - path: output/sgdemux/output/per_sample_metrics.tsv
       md5sum: fb8ce024ad2508e7b22a4af65fe44358
 
-  # Empty file that should exist   
+    # Empty file that should exist
     - path: output/sgdemux/output/sample_barcode_hop_metrics.tsv
       should_exist: true
