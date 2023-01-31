@@ -34,7 +34,7 @@ process CANU {
     """
     canu \\
         -p ${prefix} \\
-	$mode \\
+        $mode \\
         genomeSize=${genomesize} \\
         $args \\
         maxThreads=$task.cpus \\
