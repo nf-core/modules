@@ -272,29 +272,29 @@ for (v in c(blocking.vars, contrast_variable)) {
 # Generate the design
 
 design <- model.matrix( 
-  as.formula(model), 
-  data=sample.sheet
+    as.formula(model), 
+    data=sample.sheet
 )
 colnames(design) <- sub(
-  contrast_variable, 
-  paste0(contrast_variable, '.'), colnames(design)
+    contrast_variable, 
+    paste0(contrast_variable, '.'), colnames(design)
 )
 
 # Prepare for and run lmFit()
 
 lmfit_args = c(
-  list(
-    object = as.matrix(intensities.table), 
-    design = design
-  ),
-  opt[c('ndups', 'spacing', 'block', 'method')]
+    list(
+        object = as.matrix(intensities.table), 
+        design = design
+    ),
+    opt[c('ndups', 'spacing', 'block', 'method')]
 )
 
 if (! is.null(opt\$block)){
-  lmfit_args[['block']] = sample.sheet[[opt\$block]]
+    lmfit_args[['block']] = sample.sheet[[opt\$block]]
 }
 if (! is.null(opt\$correlation)){
-  lmfit_args[['correlation']] = opt\$correlation
+    lmfit_args[['correlation']] = opt\$correlation
 }
 
 fit <- do.call(lmFit, lmfit_args)
@@ -307,10 +307,10 @@ fit2 <- contrasts.fit(fit, contrast.matrix)
 # Prepare for and run ebayes
 
 ebayes_args = c(
-  list(
-    fit = fit2
-  ),
-  opt[c('proportion', 'stdev.coef.lim', 'trend', 'robust', 'winsor.tail.p')]
+    list(
+        fit = fit2
+    ),
+    opt[c('proportion', 'stdev.coef.lim', 'trend', 'robust', 'winsor.tail.p')]
 )
 
 fit2 <- do.call(eBayes, ebayes_args)
@@ -318,12 +318,12 @@ fit2 <- do.call(eBayes, ebayes_args)
 # Run topTable() to generate a results data frame
 
 toptable_args = c(
-  list(
-    fit = fit2,
-    sort.by = 'none',
-    number = nrow(intensities.table)
-  ),
-  opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
+    list(
+        fit = fit2,
+        sort.by = 'none',
+        number = nrow(intensities.table)
+    ),
+    opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
 )
 
 comp.results <- do.call(topTable, toptable_args)
