@@ -271,12 +271,12 @@ for (v in c(blocking.vars, contrast_variable)) {
 
 # Generate the design
 
-design <- model.matrix( 
-    as.formula(model), 
+design <- model.matrix(
+    as.formula(model),
     data=sample.sheet
 )
 colnames(design) <- sub(
-    contrast_variable, 
+    contrast_variable,
     paste0(contrast_variable, '.'), colnames(design)
 )
 
@@ -284,7 +284,7 @@ colnames(design) <- sub(
 
 lmfit_args = c(
     list(
-        object = as.matrix(intensities.table), 
+        object = as.matrix(intensities.table),
         design = design
     ),
     opt[c('ndups', 'spacing', 'block', 'method')]
