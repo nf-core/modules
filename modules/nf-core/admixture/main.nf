@@ -9,8 +9,7 @@ process ADMIXTURE {
         'quay.io/biocontainers/admixture:1.3.0--0' }"
 
     input:
-    tuple val(meta), path(bed), path(bim), path(fam)
-    tuple val(meta), path(ped_or_geno), path(map)
+    tuple val(meta), path (bed_ped_geno), path(bim_map), path(fam)
     val K
 
 
@@ -25,12 +24,11 @@ process ADMIXTURE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = bed ?: ped_or_geno
 
 
     """
     admixture \\
-        $input_file \\
+        $bed_ped_geno \\
         $K \\
         -j$task.cpus \\
         $args
