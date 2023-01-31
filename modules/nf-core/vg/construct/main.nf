@@ -23,7 +23,7 @@ process VG_CONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if(vcfs && (msa && fasta)) {
+    if((vcfs || fasta) && msa) {
         error("Please use either VCF files and reference FASTAs or an MSA file as input.")
     }
 
