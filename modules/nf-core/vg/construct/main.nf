@@ -8,7 +8,7 @@ process VG_CONSTRUCT {
         'quay.io/biocontainers/vg:1.45.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcfs), path(tbis), path(msa), path(insertions_fasta)
+    tuple val(meta), path(input), path(tbis), path(insertions_fasta)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
 
@@ -23,14 +23,10 @@ process VG_CONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if((vcfs || fasta) && msa) {
-        error("Please use either VCF files and reference FASTAs or an MSA file as input.")
-    }
+    def mode =  input instanceof ArrayList || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
 
-    vcf_input = vcfs ? vcfs.collect { "--vcf ${it}" }.join(" ") : ""
-    reference = fasta ? "--reference ${fasta}" : ""
-
-    msa_input = msa ? "--msa ${msa}" : ""
+    input_files = mode == 'vcf' ? input.collect { "--vcf ${it}" }.join(" ") : "--msa ${input}"
+    reference = mode == 'vcf' ? "--reference ${fasta}" : ""
 
     insertions = insertions_fasta ? "--insertions ${insertions_fasta}" : ""
 
@@ -39,8 +35,7 @@ process VG_CONSTRUCT {
         ${args} \\
         --threads ${task.cpus} \\
         ${reference} \\
-        ${vcf_input} \\
-        ${msa_input} \\
+        ${input_files} \\
         ${insertions} \\
         > ${prefix}.vg
 

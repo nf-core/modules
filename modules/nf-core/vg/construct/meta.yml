@@ -22,18 +22,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - vcfs:
+  - input:
       type: file(s)
-      description: One or more VCF files containing different contigs (cannot be used in combination with `msa`, but is dependent on `fasta`)
-      pattern: "*.vcf.gz"
+      description: |
+        Either one or more VCF files containing different contigs or a multiple sequence alignment file
+      pattern: "*.{vcf.gz,fa,fasta,fna,clustal}"
   - tbis:
       type: file(s)
       description: The index files for the VCF files
       pattern: "*.tbi"
-  - msa:
-      type: file
-      description: A multiple sequence alignment file (cannot be used in combination with `vcfs` and `fasta`)
-      pattern: "*.{fa,fasta,fna,clustal}"
   - insertions_fasta:
       type: file
       description: A FASTA file containing insertion sequences (referred to in the VCF file(s))
