@@ -89,7 +89,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 # Set defaults and classes
 
 opt <- list(
-    count_file = '$counts',
+    count_file = '$intensities',
     sample_file = '$samplesheet',
     contrast_variable = NULL,
     reference_level = NULL,
@@ -190,9 +190,9 @@ if (! opt\$sample_id_col %in% colnames(sample.sheet)){
 sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt\$sample_id_col]]), ]
 rownames(sample.sheet) <- sample.sheet[[opt\$sample_id_col]]
 
-# Check that all samples specified in the input sheet are present in the counts
-# table. Assuming they are, subset and sort the count table to match the sample
-# sheet
+# Check that all samples specified in the input sheet are present in the
+# intensities table. Assuming they are, subset and sort the count table to
+# match the sample sheet
 
 missing_samples <-
     sample.sheet[!rownames(sample.sheet) %in% colnames(intensities.table), opt\$sample_id_col]
