@@ -65,7 +65,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+    df[,columns] <- format(data.frame(df[, columns]), digits = digits)
 
     # Convert columns back to numeric
 
@@ -348,7 +348,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results), digits=6)
+        round_dataframe_columns(data.frame(comp.results), digits=5)
     ),
     file = paste(output_prefix, 'limma.results.tsv', sep = '.'),
     col.names = TRUE,
