@@ -1,0 +1,59 @@
+- name: cnvkit export test_cnvkit_export_bed
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.bed
+      md5sum: b78a4fe587d483a819d7d591e6e501f7
+    - path: output/cnvkit/versions.yml
+
+- name: cnvkit export test_cnvkit_export_vcf
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.vcf
+      md5sum: f4104089473fb388be5c890cf8d44ec1
+    - path: output/cnvkit/versions.yml
+
+- name: cnvkit export test_cnvkit_export_cdt
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_cdt -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.cdt
+      md5sum: 0375c094d539e6cf8ac4e7342d640e3e
+    - path: output/cnvkit/versions.yml
+
+- name: cnvkit export test_cnvkit_export_jtv
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_jtv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.jtv
+      md5sum: a5cf0dc429cbf1d85f09d843862d08ab
+    - path: output/cnvkit/versions.yml
+
+- name: cnvkit export test_cnvkit_export_seg
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_seg -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.seg
+      md5sum: 30c0bafb9951737d48f20fdfa2cf5b18
+    - path: output/cnvkit/versions.yml
+
+- name: cnvkit export test_cnvkit_export_theta
+  command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_theta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/export
+  files:
+    - path: output/cnvkit/test.theta
+      md5sum: 7a388385ae1fd2f334a4e26ddf4901de
+    - path: output/cnvkit/versions.yml
