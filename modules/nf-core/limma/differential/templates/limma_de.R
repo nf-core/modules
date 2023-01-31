@@ -369,7 +369,7 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(fit2, file = paste(output_prefix, 'fit2.limma.rds', sep = '.'))
+saveRDS(fit2, file = paste(output_prefix, 'MArrayLM.limma.rds', sep = '.'))
 
 ################################################
 ################################################
