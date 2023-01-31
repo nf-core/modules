@@ -1,13 +1,13 @@
 - name: limma differential test_limma_differential
   command: nextflow run ./tests/modules/nf-core/limma/differential -entry test_limma_differential -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/limma/differential/nextflow.config
   tags:
-    - limma
     - limma/differential
+    - limma
   files:
     - path: output/limma/diagnosis-normal-uremia.MArrayLM.limma.rds
     - path: output/limma/diagnosis-normal-uremia.R_sessionInfo.log
       contains: ["limma_3.54.0"]
     - path: output/limma/diagnosis-normal-uremia.limma.mean_difference.png
     - path: output/limma/diagnosis-normal-uremia.limma.results.tsv
-      md5sum: a41ea39ba96d594ba6da56909c4ac50f
+      md5sum: 8cb5185189adbeb68ee4c8cbe180362a
     - path: output/limma/versions.yml

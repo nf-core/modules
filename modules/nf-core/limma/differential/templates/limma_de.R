@@ -51,31 +51,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
-#' Round numeric dataframe columns to fixed decimal places by applying
-#' formatting and converting back to numerics
-#'
-#' @param dataframe A data frame
-#' @param columns Which columns to round (assumes all of them by default)
-#' @param digits How many decimal places to round to?
-#'
-#' @return output Data frame
-
-round_dataframe_columns <- function(df, columns = NULL, digits = 6){
-    if (is.null(columns)){
-        columns <- colnames(df)
-    }
-
-    df[,columns] <- format(data.frame(df[, columns]), digits = digits)
-
-    # Convert columns back to numeric
-
-    for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
-        df[[c]] <- as.numeric(df[[c]])
-    }
-    df
-}
-
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -348,7 +323,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results))
+        apply(comp.results, 2, function(x) formatC(x, format = "e", digits = 8))
     ),
     file = paste(output_prefix, 'limma.results.tsv', sep = '.'),
     col.names = TRUE,
