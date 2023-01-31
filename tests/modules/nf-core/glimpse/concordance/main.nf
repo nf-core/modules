@@ -37,7 +37,7 @@ workflow test_glimpse_concordance {
 
     ligate_input = GLIMPSE_PHASE.output.phased_variant
                                 .groupTuple()
-
+ 
     BCFTOOLS_INDEX ( ligate_input )
     GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
     
