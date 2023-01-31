@@ -275,7 +275,7 @@ if (! is.null(opt\$correlation)){
 fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
-contrast <- paste(paste(contrast_variable, c(opt\$reference_level, opt\$treatment_level), sep='.'), collapse='-')
+contrast <- paste(paste(contrast_variable, c(opt\$treatment_level, opt\$reference_level), sep='.'), collapse='-')
 contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
@@ -301,7 +301,7 @@ toptable_args = c(
     opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
 )
 
-comp.results <- do.call(topTable, toptable_args)
+comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 
 ################################################
 ################################################
