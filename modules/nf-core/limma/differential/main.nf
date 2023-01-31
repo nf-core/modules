@@ -11,11 +11,11 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.limma.results.tsv")              , emit: results
-    tuple val(meta), path("*.limma.mean_difference.png")           , emit: dispersion_plot
-    tuple val(meta), path("*.fit2.limma.rds")                     , emit: rdata
-    tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("*.limma.results.tsv")          , emit: results
+    tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
+    tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
+    tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
