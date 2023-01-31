@@ -1,0 +1,49 @@
+name: "glimpse_concordance"
+description: Compute the r2 correlation between imputed dosages (in MAF bins) and highly-confident genotype calls from the high-coverage dataset.
+keywords:
+  - concordance
+  - imputation
+tools:
+  - "glimpse":
+      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      homepage: "https://odelaneau.github.io/GLIMPSE"
+      documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
+      tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
+      doi: "10.1038/s41588-020-00756-0"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - input:
+      type: file
+      description: File listing |
+        the region of interest
+        a file containing allele frequencies at each site
+        the validation dataset called at the same positions as the imputed file
+        the imputed data
+      pattern: "*.{txt,lst}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - r_squared:
+      type: file
+      description: R-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.rsquare.grp.txt.gz"
+
+authors:
+  - "@louislenezet"
