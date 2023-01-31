@@ -48,9 +48,6 @@ process VG_CONSTRUCT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if(vcfs && msa) {
-        error("Please use either VCF files or an MSA file as input, not both.")
-    }
 
     """
     touch ${prefix}.vg
