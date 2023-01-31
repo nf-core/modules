@@ -1,6 +1,6 @@
-process CNVKIT_GENEMETRICS {
+process CNVKIT_CALL {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda "bioconda::cnvkit=0.9.9 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,11 +8,10 @@ process CNVKIT_GENEMETRICS {
         'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(cnr), path(cns)
+    tuple val(meta) , path(cns), path(vcf)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    //tuple val(meta), path("*.cnn"), emit: cnn
+    tuple val(meta), path("*.cns"), emit: cns
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,19 +20,17 @@ process CNVKIT_GENEMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def segments = cns ? "--segment ${cns}" : ""
-
+    def vcf_cmd = vcf ? "-v $vcf" : ""
     """
-    cnvkit.py \\
-        genemetrics \\
-        $cnr \\
-        $segments \\
-        --output ${prefix}.tsv \\
-        $args
+    cnvkit.py call \\
+        $cns \\
+        $vcf_cmd \\
+        $args \\
+        -o ${prefix}.cns
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
+        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')
     END_VERSIONS
     """
 }
