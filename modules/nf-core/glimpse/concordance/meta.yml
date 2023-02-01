@@ -2,11 +2,8 @@ name: "glimpse_concordance"
 description: Compute the r2 correlation between imputed dosages (in MAF bins) and highly-confident genotype calls from the high-coverage dataset.
 keywords:
   - concordance
-<<<<<<< HEAD
   - low-coverage
   - glimpse
-=======
->>>>>>> Add all files for Glimpse Concordance
   - imputation
 tools:
   - "glimpse":
@@ -24,7 +21,6 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-<<<<<<< HEAD
   - region:
       type: string
       description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
@@ -56,38 +52,12 @@ input:
         If FORMAT/DP is missing and --minDP > 0, the program exits with an error.
 
   - bins:
-      type: string
-      description: |
-        Allele frequency bins used for rsquared computations.
-        By default they should as MAF bins [0-0.5], while
-        they should take the full range [0-1] if --use-ref-alt is used.
-=======
-  - input:
-      type: file
-      description: File listing |
-        the region of interest
-        a file containing allele frequencies at each site
-        the validation dataset called at the same positions as the imputed file
-        the imputed data
-      pattern: "*.{txt,lst}"
->>>>>>> Add all files for Glimpse Concordance
-
-  - min_prob:
-      type: float
-      description: Minimum posterior probability P(G|R) in validation data
-
-  - min_dp:
-      type: integer
-      description: |
-        Minimum coverage in validation data.
-        If FORMAT/DP is missing and --minDP > 0, the program exits with an error.
-
-  - bins:
       type: range
       description: |
         Allele frequency bins used for rsquared computations.
         By default they should as MAF bins [0-0.5], while
         they should take the full range [0-1] if --use-ref-alt is used.
+
 output:
   - meta:
       type: map
