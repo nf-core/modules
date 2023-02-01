@@ -12,7 +12,8 @@ process VGAN_HAPLOCART {
     tuple val(meta), path(hc_files), path(reads), path(reads2)
 
     output:
-    tuple val(meta), path("*.txt"), path("*.posterior.txt"), emit: txt
+    tuple val(meta), path("*[!posterior].txt") , emit: txt   
+    tuple val(meta), path("*.posterior.txt)    , emit: posterior
     path "versions.yml"           , emit: versions
 
     when:
