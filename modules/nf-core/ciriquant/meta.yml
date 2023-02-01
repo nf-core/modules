@@ -1,0 +1,59 @@
+name: "ciriquant"
+description: circRNA quantification using CIRIquant
+keywords:
+  - circRNA
+  - quantification
+tools:
+  - "ciriquant":
+      description: "circular RNA quantification tool"
+      homepage: "https://github.com/bioinfo-biols/CIRIquant"
+      documentation: "https://ciri-cookbook.readthedocs.io/en/latest/CIRIquant_0_home.html#"
+      doi: "https://doi.org/10.1038/s41467-019-13840-9"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: paired-end FASTQ files (single-end not supported!)
+      pattern: "*.{fastq.gz,fq.gz}"
+  - gtf:
+      type: file
+      description: Reference GTF file used for circRNA annotation.
+      pattern: "*.gtf"
+  - fasta:
+      type: file
+      description: Reference FASTA file used for RNA-Seq alignment.
+      pattern: "*.{fasta,fa}"
+  - bwa:
+      type: path
+      description: Path to directory containing BWA indices (do not use collect() operator)
+  - hisat2:
+      type: path
+      description: Path to directory containing HISAT2 indices (do not use collect() operator)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gtf:
+      type: file
+      description: Quantified circRNAs in GTF format with genomic annotations
+  - intermediates_directory:
+      type: directory
+      description: |
+        Directory containing reads mapped to reference using bwa,
+        reconstructed circular reference (bwa) index files, bam files
+        and CIRI2 output.
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@BarryDigby"
