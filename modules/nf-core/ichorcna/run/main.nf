@@ -13,9 +13,9 @@ process ICHORCNA_RUN {
     path map_wig
     path normal_wig
     path normal_rds
+    path centromere
     path rep_time_wig
     path exons
-    path centromere
 
     output:
     tuple val(meta), path("**.cna.seg")    , emit: cna_seg
@@ -32,9 +32,9 @@ process ICHORCNA_RUN {
     def norm   = normal_wig   ? "normal_wig='${normal_wig}',"       : 'normal_wig=NULL,'
     def pon    = normal_rds   ? "normal_panel='${normal_rds}',"     : 'normal_panel=NULL,'
     def map    = map_wig      ? "mapWig='${map_wig}',"              : 'mapWig=NULL,'
+    def centro = centromere   ? "centromere='${centromere}',"       : ''
     def rep    = rep_time_wig ? "repTimeWig='${rep_time_wig}',"     : 'repTimeWig=NULL,'
     def exons  = exons        ? "exons.bed='${exons}',"             : ''
-    def centro = centromere   ? "centromere='${centromere}',"       : ''
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
@@ -48,8 +48,9 @@ process ICHORCNA_RUN {
         $norm
         $pon
         $map
-        $rep
         $centro
+        $rep
+        $exons
         $args
         outDir="."
     )
