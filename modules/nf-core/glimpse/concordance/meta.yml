@@ -19,14 +19,25 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - input:
+  - region:
+      type: string
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - freq:
       type: file
-      description: File listing |
-        the region of interest
-        a file containing allele frequencies at each site
-        the validation dataset called at the same positions as the imputed file
-        the imputed data
-      pattern: "*.{txt,lst}"
+      description: File containing allele frequencies at each site.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - truth:
+      type: file
+      description: Validation dataset called at the same positions as the imputed file.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - estimate:
+      type: file
+      description: Imputed data.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
   - min_prob:
       type: float
@@ -44,6 +55,7 @@ input:
         Allele frequency bins used for rsquared computations.
         By default they should as MAF bins [0-0.5], while
         they should take the full range [0-1] if --use-ref-alt is used.
+
 output:
   - meta:
       type: map
@@ -57,9 +69,14 @@ output:
       pattern: "versions.yml"
 
   - r_squared:
-      type: file
+      type: files
       description: R-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.rsquare.grp.txt.gz"
+      pattern: "*.rsquare.*.txt.gz"
+
+  - errors:
+      type: files
+      description: Correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.*.txt.gz"
 
 authors:
   - "@louislenezet"
