@@ -1,4 +1,4 @@
-process CNVKIT_GENEMETRICS {
+process CNVKIT_ACCESS {
     tag "$meta.id"
     label 'process_low'
 
@@ -8,11 +8,11 @@ process CNVKIT_GENEMETRICS {
         'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(cnr), path(cns)
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(exclude_bed)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    //tuple val(meta), path("*.cnn"), emit: cnn
+    tuple val(meta), path("*.bed"), emit: bed
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,15 +21,14 @@ process CNVKIT_GENEMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def segments = cns ? "--segment ${cns}" : ""
-
+    def exclude_cmd = exclude_bed.collect{"-x $it"}.join(" ")
     """
     cnvkit.py \\
-        genemetrics \\
-        $cnr \\
-        $segments \\
-        --output ${prefix}.tsv \\
-        $args
+        access \\
+        $fasta \\
+        $exclude_cmd \\
+        $args \\
+        --output ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
