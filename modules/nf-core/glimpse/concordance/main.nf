@@ -14,8 +14,8 @@ process GLIMPSE_CONCORDANCE {
     val(bins)
 
     output:
-    tuple val(meta), path("*_output.errors.*.txt.gz") , emit: errors
-    tuple val(meta), path("*_output.rsquare.*.txt.gz"), emit: rsquare
+    tuple val(meta), path("*.error.*.txt.gz") , emit: errors
+    tuple val(meta), path("*.rsquare.*.txt.gz"), emit: rsquare
     path "versions.yml"                               , emit: versions
 
     when:

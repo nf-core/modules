@@ -38,13 +38,13 @@ workflow test_glimpse_concordance {
     allele_freq = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)]
     
-    validation = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
+    truth = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
                   file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)]
     
-    list_inputs = Channel.of(["chr21", allele_freq[0], validation[0]])
+    list_inputs = Channel.of(["chr21", allele_freq[0], truth[0]])
                     .combine(GLIMPSE_LIGATE.out.merged_variants.map{it[1]}.collect().map{it[0]})
                     .collect()
     concordance_input=Channel.of([[ id:'input', single_end:false ]]).combine(list_inputs)
-    concordance_input.view()
+
     GLIMPSE_CONCORDANCE ( concordance_input, [], [], []) // meta, Region, Frequencies, Truth, Estimate, minPROB, minDP, bins
 }
