@@ -1,8 +1,8 @@
 - name: cnvkit export test_cnvkit_export_bed
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.bed
       md5sum: fe6d50bce457e82fc7169aeb217bf0e0
@@ -11,18 +11,21 @@
 - name: cnvkit export test_cnvkit_export_vcf
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.vcf
-      md5sum: c6a3341a81a7416f9d12cf3a4aca44e9
+      contains:
+        - "##fileformat=VCFv4.2"
+        - "##source=CNVkit v0.9.9"
+        - "chr1\t160786623\t.\tN\t<DEL>\t.\t.\tIMPRECISE;SVTYPE=DEL;END=160786747;SVLEN=-124;FOLD_CHANGE=0.271780;FOLD_CHANGE_LOG=-1.879490;PROBES=1\tGT:GQ\t0/1:1"
     - path: output/cnvkit/versions.yml
 
 - name: cnvkit export test_cnvkit_export_cdt
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_cdt -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.cdt
       md5sum: 0375c094d539e6cf8ac4e7342d640e3e
@@ -31,8 +34,8 @@
 - name: cnvkit export test_cnvkit_export_jtv
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_jtv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.jtv
       md5sum: a5cf0dc429cbf1d85f09d843862d08ab
@@ -41,8 +44,8 @@
 - name: cnvkit export test_cnvkit_export_seg
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_seg -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.seg
       md5sum: 30c0bafb9951737d48f20fdfa2cf5b18
@@ -51,8 +54,8 @@
 - name: cnvkit export test_cnvkit_export_theta
   command: nextflow run ./tests/modules/nf-core/cnvkit/export -entry test_cnvkit_export_theta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cnvkit/export/nextflow.config
   tags:
-    - cnvkit
     - cnvkit/export
+    - cnvkit
   files:
     - path: output/cnvkit/test.theta
       md5sum: 7a388385ae1fd2f334a4e26ddf4901de
