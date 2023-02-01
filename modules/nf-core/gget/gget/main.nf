@@ -11,8 +11,8 @@ process GGET_GGET {
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*[!versions.yml][!${prefix}.${suffix}]*"), emit: files, optional: true
-    tuple val(meta), path("${prefix}.${suffix}")                   , emit: output, optional: true
+    tuple val(meta), path("*[!versions.yml][!${prefix}.${extension}]*"), emit: files, optional: true
+    tuple val(meta), path("${prefix}.${extension}")                   , emit: output, optional: true
     path "versions.yml", emit: versions
 
     when:
@@ -22,11 +22,13 @@ process GGET_GGET {
     def args = task.ext.args ?: ''
     def inputs = files ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "json"
+    extension = args.contains("pdb")  ? "pdb" :
+                args.startsWith("-csv") ? "csv" :
+                "json"
     """
     gget \\
         $args \\
-        -o ${prefix}.${suffix} \\
+        -o ${prefix}.${extension} \\
         $inputs
 
     cat <<-END_VERSIONS > versions.yml
