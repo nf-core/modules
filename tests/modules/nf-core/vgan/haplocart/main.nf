@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VGAN_HAPLOCART } from '../../../../../modules/nf-core/vgan/haplocart/main.nf' addParams( options: [args: ''] )
+include { VGAN_HAPLOCART } from '../../../../../modules/nf-core/vgan/haplocart/main.nf'
 
     file("ftp://ftp.healthtech.dtu.dk/public/haplocart/hcfiles/graph.gg", checkIfExists: true)
     file("ftp://ftp.healthtech.dtu.dk/public/haplocart/hcfiles/graph.og", checkIfExists: true)
