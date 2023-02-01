@@ -23,8 +23,7 @@ process VGAN_HAPLOCART {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1'
-    def reads2_path = reads2 ?: reads
-    def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${reads2_path}"
+    def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${reads2}"
 
     """
     vgan haplocart $args -t $task.cpus $reads_args -o ${prefix}.txt --hc-files ${hc_files} -pf ${prefix}.posterior.txt;
