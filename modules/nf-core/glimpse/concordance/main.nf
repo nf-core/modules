@@ -40,7 +40,7 @@ process GLIMPSE_CONCORDANCE {
         $min_prob_cmd \\
         $min_dp_cmd \\
         $bins_cmd
-
+ 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
