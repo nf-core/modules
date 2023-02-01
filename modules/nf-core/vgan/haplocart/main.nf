@@ -8,7 +8,7 @@ process VGAN_HAPLOCART {
         'quay.io/biocontainers/vgan:1.0.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(hc_files), path(reads), path(reads2)
+    tuple val(meta), path(hc_files), path(reads)
 
     output:
     tuple val(meta), path("*[!posterior].txt") , emit: txt   
