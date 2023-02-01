@@ -38,8 +38,8 @@ workflow test_hifiasm_with_hic {
         [ id:'test' ], // meta map
         [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
     ]
-    hic_reads1 = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-    hic_reads2 = file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+    hic_reads1 = file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+    hic_reads2 = file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
 
     HIFIASM ( input, [], [], false, hic_reads1, hic_reads2, true )
 }
