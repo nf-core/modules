@@ -11,13 +11,11 @@
         - "#readID tigID   bgn     end // 2       1       0       19972"
     - path: output/canu/test.contigs.layout.tigInfo
       contains:
-        - "#tigID  tigLen  coverage        tigClass        sugRept sugBubb sugCirc numChildren // 1       19972   1.00    unassm  no      no      no  
-    1"
+        - "#tigID  tigLen  coverage        tigClass        sugRept sugBubb sugCirc numChildren // 1       19972   1.00    unassm  no      no      no      1"
     - path: output/canu/test.report
       contains:
         - "[TRIMMING/READS] // -- In sequence store ./test.seqStore: // --   Found 11 reads."
     - path: output/canu/test.unassembled.fasta
       contains:
-        - ">tig00000001 len=19972 reads=1 class=unassm suggestRepeat=no suggestBubble=no suggestCircular=no trim=0-19972 // CCAGAAAATGCAATTAACTTACAAGG
-ATACTGTATGATAATTTATTATCTCTCATCTTCTTTTACTGTTTTAACTTCCTTTACACACATATACATAAGTA"
+        - ">tig00000001 len=19972 reads=1 class=unassm suggestRepeat=no suggestBubble=no suggestCircular=no trim=0-19972 // CCAGAAAATGCAATTAACTTACAAGGATACTGTATGATAATTTATTATCTCTCATCTTCTTTTACTGTTTTAACTTCCTTTACACACATATACATAAGTA"
     - path: output/canu/versions.yml
