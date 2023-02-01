@@ -11,7 +11,7 @@ include { HMMCOPY_GENERATEMAP } from '../../../../../modules/nf-core/hmmcopy/gen
 workflow test_ichorcna_run_no_panel {
 
     input = [ [ id:'test'], // meta map
-              file("https://raw.githubusercontent.com/GavinHaLab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+              file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
             ]
 
     gcwig   = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
@@ -29,7 +29,7 @@ workflow test_ichorcna_run_no_panel {
 workflow test_ichorcna_run_inc_panel {
 
     input = [ [ id:'test'], // meta map
-              file("https://raw.githubusercontent.com/GavinHaLab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+              file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
             ]
 
     gcwig   = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
