@@ -31,7 +31,6 @@ process ICHORCNA_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def norm   = normal_wig   ? "normal_wig='${normal_wig}',"       : 'normal_wig=NULL,'
     def pon    = normal_rds   ? "normal_panel='${normal_rds}',"     : 'normal_panel=NULL,'
-    def gc     = gc_wig       ? "gcWig='${gc_wig}',"                : 'gcWig=NULL,'
     def map    = map_wig      ? "mapWig='${map_wig}',"              : 'mapWig=NULL,'
     def rep    = rep_time_wig ? "repTimeWig='${rep_time_wig}',"     : 'repTimeWig=NULL,'
     def exons  = exons        ? "exons.bed='${exons}',"             : ''
@@ -45,9 +44,9 @@ process ICHORCNA_RUN {
         tumor_wig='${wig}',
         id='${prefix}',
         cores=${task.cpus},
+        gcWig='${gc_wig}',
         $norm
         $pon
-        $gc
         $map
         $rep
         $centro
