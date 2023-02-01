@@ -50,7 +50,7 @@ process HIFIASM {
         END_VERSIONS
         """
     } else if (use_hic) {
-	"""
+        ""
         hifiasm \\
             $args \\
             -o ${prefix}.asm \\
