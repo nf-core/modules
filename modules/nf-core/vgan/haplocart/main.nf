@@ -26,7 +26,13 @@ process VGAN_HAPLOCART {
     def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${reads2}"
 
     """
-    vgan haplocart $args -t $task.cpus $reads_args -o ${prefix}.txt --hc-files ${hc_files} -pf ${prefix}.posterior.txt;
+    vgan haplocart \\
+        $args \\
+        -t $task.cpus \\
+        $reads_args \\
+        -o ${prefix}.txt \\
+        --hc-files ${hc_files} \\
+        -pf ${prefix}.posterior.txt
 
     echo $VERSION >> versions.yml
     """
