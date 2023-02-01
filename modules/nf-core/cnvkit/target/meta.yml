@@ -1,4 +1,4 @@
-name: cnvkit_antitarget
+name: cnvkit_target
 description:
 keywords:
   - cnvkit
@@ -20,6 +20,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+
   - baits:
       type: file
       description: BED or interval file listing the targeted regions.
