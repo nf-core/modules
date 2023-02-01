@@ -22,8 +22,8 @@ process GGET_GGET {
     def args = task.ext.args ?: ''
     def inputs = files ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("pdb")  ? "pdb" :
-                args.startsWith("-csv") ? "csv" :
+    extension = args.startsWith("pdb")  ? "pdb" :
+                args.contains("-csv")   ? "csv" :
                 "json"
     """
     gget \\
