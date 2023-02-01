@@ -72,9 +72,9 @@ install_cdf_db <- function(celfile, annotation = FALSE){
 
     for (package in paste0(cleaned.cdfName, exts)){
         install.packages(
-            package, 
+            package,
             lib = 'libs',
-            repos = BiocManager::repositories(), 
+            repos = BiocManager::repositories(),
             dependencies = c("Depends", "Imports")
         )
     }
@@ -232,25 +232,25 @@ sampleNames(eset) <- sample.sheet[[opt\$sample_name_col]]
 
 if (opt\$build_annotation){
 
-    # Make some annotation 
+    # Make some annotation
 
     dbname <- paste0(cdf_name, '.db')
     library(dbname, character.only = TRUE)
     anno <- select(
-        get(dbname), 
-        keys=keys(get(dbname), keytype="PROBEID"), 
-        columns=c('ENSEMBL', 'ENTREZID', 'SYMBOL', 'GENENAME', 'GENETYPE'), 
+        get(dbname),
+        keys=keys(get(dbname), keytype="PROBEID"),
+        columns=c('ENSEMBL', 'ENTREZID', 'SYMBOL', 'GENENAME', 'GENETYPE'),
         keytype="PROBEID"
     )
 
     # Remove duplicates by probe
     anno <- do.call(
-        rbind, 
+        rbind,
         lapply(
             split(
-                anno, 
+                anno,
                 anno\$PROBEID
-            ), 
+            ),
             function(x) apply(x, 2, function(y) paste(unique(y), collapse=','))
         )
     )
