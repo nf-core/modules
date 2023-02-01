@@ -14,7 +14,6 @@
     - path: output/hifiasm/test.asm.ec.bin
     - path: output/hifiasm/test.asm.ovlp.reverse.bin
     - path: output/hifiasm/test.asm.ovlp.source.bin
-    - path: output/hifiasm/versions.yml
 
 - name: hifiasm test_hifiasm_with_parental_reads
   command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
@@ -32,7 +31,6 @@
     - path: output/hifiasm/test.asm.ec.bin
     - path: output/hifiasm/test.asm.ovlp.reverse.bin
     - path: output/hifiasm/test.asm.ovlp.source.bin
-    - path: output/hifiasm/versions.yml
 
 - name: hifiasm test_hifiasm_with_hic
   command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_hic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
@@ -50,4 +48,3 @@
       md5sum: ba90af06b466342b893a99d9d25dd792
     - path: output/hifiasm/test.asm.ovlp.reverse.bin
     - path: output/hifiasm/test.asm.ovlp.source.bin
-    - path: output/hifiasm/versions.yml
