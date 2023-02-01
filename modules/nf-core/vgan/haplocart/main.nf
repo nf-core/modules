@@ -1,4 +1,3 @@
-
 process VGAN_HAPLOCART {
     tag "$meta.id"
     label 'process_low'
