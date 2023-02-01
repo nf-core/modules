@@ -39,10 +39,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - tsv:
+  - expression:
       type: file
       description: TSV-format intensity matrix
-      pattern: "*.tsv"
+      pattern: "matrix.tsv"
+  - annotation:
+      type: file
+      description: TSV-format annotation table
+      pattern: "*.annotation.tsv"
   - rdata:
       type: file
       description: Serialised ExpressionSet object
