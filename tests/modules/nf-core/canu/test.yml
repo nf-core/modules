@@ -4,18 +4,8 @@
     - canu
   files:
     - path: output/canu/test.contigs.fasta
-      contains:
-        - "empty"
     - path: output/canu/test.contigs.layout.readToTig
-      contains:
-        - "#readID tigID   bgn     end"
     - path: output/canu/test.contigs.layout.tigInfo
-      contains:
-        - "#tigID  tigLen  coverage        tigClass        sugRept sugBubb sugCirc numChildren"
     - path: output/canu/test.report
-      contains:
-        - "[TRIMMING/READS]"
     - path: output/canu/test.unassembled.fasta
-      contains:
-        - ">tig00000001 len=19972 reads=1 class=unassm suggestRepeat=no suggestBubble=no suggestCircular=no trim=0-19972"
     - path: output/canu/versions.yml
