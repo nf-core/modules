@@ -33,7 +33,7 @@ process GLIMPSE_CONCORDANCE {
         $args \\
         --input input.txt \\
         --thread $task.cpus \\
-        --output ${prefix}_output \\
+        --output ${prefix} \\
         $min_prob_cmd \\
         $min_dp_cmd \\
         $bins_cmd
