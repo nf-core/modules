@@ -7,7 +7,7 @@ include { CANU } from '../../../../modules/nf-core/canu/main.nf'
 workflow test_hicanu {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test', single_end:true ], // meta map
 	file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
     ]
 
