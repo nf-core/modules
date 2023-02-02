@@ -51,7 +51,7 @@ process CIRIQUANT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ciriquant : \$(echo \$(CIRIquant --version 2>&1) | sed 's/CIRIquant //g' )
+        ciriquant: \$(echo \$(CIRIquant --version 2>&1) | sed 's/CIRIquant //g' )
     END_VERSIONS
     """
 }

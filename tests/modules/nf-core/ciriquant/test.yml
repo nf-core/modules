@@ -3,4 +3,42 @@
   tags:
     - ciriquant
   files:
-    - path: output/ciriquant/test/CIRIerror.log
+    - path: output/ciriquant/fust1/CIRIerror.log
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ciriquant/fust1/align/fust1.sorted.bam
+    - path: output/ciriquant/fust1/align/fust1.sorted.bam.bai
+    - path: output/ciriquant/fust1/circ/fust1.ciri
+      contains:
+        - 'chrI:1006030|1008465    chrI    1006030 1008465 1       1_1_0   5       0.286   intron  Y49E10.31,      +       SRR12846157.16120150,'
+    - path: output/ciriquant/fust1/circ/fust1_denovo.sorted.bam
+    - path: output/ciriquant/fust1/circ/fust1_denovo.sorted.bam.bai
+    - path: output/ciriquant/fust1/circ/fust1_index.1.ht2
+      md5sum: 615b3eb3e7f1bf2d0db1d76ad074ad47
+    - path: output/ciriquant/fust1/circ/fust1_index.2.ht2
+      md5sum: de058f777657c8980399a2ba75e87f4f
+    - path: output/ciriquant/fust1/circ/fust1_index.3.ht2
+      md5sum: 3608c8d83f4f71db4ea5f82c9126eb82
+    - path: output/ciriquant/fust1/circ/fust1_index.4.ht2
+      md5sum: 8274a66a4bcce6431b2cc9f76218d503
+    - path: output/ciriquant/fust1/circ/fust1_index.5.ht2
+      md5sum: ff3d3ecce372af6227ba34c5864814df
+    - path: output/ciriquant/fust1/circ/fust1_index.6.ht2
+      md5sum: 7d1fd2da909974b2e5fc8365caac7cd2
+    - path: output/ciriquant/fust1/circ/fust1_index.7.ht2
+      md5sum: 9013eccd91ad614d7893c739275a394f
+    - path: output/ciriquant/fust1/circ/fust1_index.8.ht2
+      md5sum: 33cdeccccebe80329f1fdbee7f5874cb
+    - path: output/ciriquant/fust1/circ/fust1_index.fa
+      md5sum: 4ed76e85d398354e21200ff373822771
+    - path: output/ciriquant/fust1/fust1.bed
+      md5sum: 36cb4ebdb1de162f6c6a7e6dd7b1de97
+    - path: output/ciriquant/fust1/fust1.gtf
+      md5sum: bae6b703dd914cb29c9a6a5537590b13
+    - path: output/ciriquant/fust1/fust1.log
+    - path: output/ciriquant/fust1/gene/fust1_cov.gtf
+      contains:
+        - 'chrI    CIRIquant       circRNA 1006030 1008465 2.4237  +       .       circ_id "chrI:1006030|1008465"; circ_type "intron"; bsj 1.000; fsj 5.000; junc_ratio 0.286; gene_id "C54G6.2"; gene_name "C54G6.2";'
+    - path: output/ciriquant/fust1/gene/fust1_genes.list
+      md5sum: d85e111ecb02c7355f70dfe0c26ef868
+    - path: output/ciriquant/fust1/gene/fust1_out.gtf
+    - path: output/ciriquant/versions.yml
