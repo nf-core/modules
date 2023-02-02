@@ -2,14 +2,13 @@ process TAXPASTA_STANDARDISE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::taxpasta=0.1.0"
+    conda "bioconda::taxpasta=0.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/taxpasta:0.1.1--pyhdfd78af_0':
+        'https://quay.io/repository/biocontainers/taxpasta:0.1.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(profile)
-    val output_format
     path taxonomy
 
     output:
@@ -27,7 +26,6 @@ process TAXPASTA_STANDARDISE {
     """
     taxpasta standardise \\
         $args \\
-        --output '${prefix}.${output_format}' \\
         '$profile'
 
     cat <<-END_VERSIONS > versions.yml
