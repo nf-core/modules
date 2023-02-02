@@ -10,18 +10,18 @@ process CANU {
     input:
     tuple val(meta), path(reads)
     val mode
-    val (genomesize)
+    val genomesize
 
     output:
-    tuple val(meta), path("*.report")			, emit: report
-    tuple val(meta), path("*.contigs.fasta")		, emit: assembly		, optional: true
-    tuple val(meta), path("*.unassembled.fasta")	, emit: contigs
-    tuple val(meta), path("*.correctedReads.fasta.gz")	, emit: corrected_reads		, optional: true
-    tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimemd_reads	, optional: true
-    tuple val(meta), path("*.contigs.layout")    	, emit: metadata 		, optional: true
-    tuple val(meta), path("*.contigs.layout.readToTig")	, emit: contig_position 	, optional: true
-    tuple val(meta), path("*.contigs.layout.tigInfo")	, emit: contig_info		, optional: true
-    path "versions.yml"           			, emit: versions
+    tuple val(meta), path("*.report")                   , emit: report
+    tuple val(meta), path("*.contigs.fasta")            , emit: assembly                , optional: true
+    tuple val(meta), path("*.unassembled.fasta")        , emit: contigs
+    tuple val(meta), path("*.correctedReads.fasta.gz")	, emit: corrected_reads         , optional: true
+    tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimemd_reads , optional: true
+    tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
+    tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
+    tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
