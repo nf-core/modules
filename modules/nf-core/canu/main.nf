@@ -40,7 +40,7 @@ process CANU {
         maxThreads=$task.cpus \\
         $reads
 
-    gzip -c *.fasta
+    gzip *.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
