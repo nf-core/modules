@@ -40,6 +40,8 @@ process CANU {
         maxThreads=$task.cpus \\
         $reads
 
+    gzip -c *.fasta
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
