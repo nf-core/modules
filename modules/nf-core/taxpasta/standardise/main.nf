@@ -30,7 +30,7 @@ process TAXPASTA_STANDARDISE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        taxpasta: \$(echo \$(taxpasta --version))
+        taxpasta: \$(taxpasta --version)
     END_VERSIONS
     """
 }
