@@ -48,6 +48,10 @@ output:
       type: file
       description: Serialised MArrayLM object
       pattern: "*.MArrayLM.limma.rds"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
   - versions:
       type: file
       description: File containing software versions
