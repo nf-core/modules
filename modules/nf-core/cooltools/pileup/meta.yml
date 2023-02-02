@@ -1,0 +1,59 @@
+name: "cooltools_pileup"
+description: write your description here
+keywords:
+  - sort
+tools:
+  - "cooltools pileup":
+      description: "Perform retrieval of the snippets from .cool file by cooltools."
+      homepage: "https://cooltools.readthedocs.io"
+      documentation: "https://cooltools.readthedocs.io"
+      tool_dev_url: "https://github.com/open2c/cooltools"
+      doi: "10.5281/zenodo.7563392"
+      licence: "['MIT']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:5000 ]
+  # cool files
+  - cool:
+      type: file
+      description: |
+        cooler file. The paths to a .cool file with a balanced Hi-C map.
+        Use the '::' syntax to specify a group path in a multicooler file.
+      pattern: "*.{cool}"
+
+  - resolution:
+      type: value
+      description: Resolution
+
+  - anchor:
+      type: file
+      description: |
+        1D/2D viewer points. the path to a BED or BEDPE-like file that contains
+        features for snipping windows.
+        If BED, then the features are on-diagonal.
+        If BEDPE, then the features can be off-diagonal
+        (but not in trans or between different regions in the view)
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:5000 ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - npz:
+      type: file
+      description: pileup output file
+      pattern: "*.{npz,hdf5}"
+
+authors:
+  - "@jianhong"

@@ -1,0 +1,9 @@
+- name: cooltools pileup test_cooltools_pileup
+  command: nextflow run ./tests/modules/nf-core/cooltools/pileup -entry test_cooltools_pileup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooltools/pileup/nextflow.config
+  tags:
+    - cooltools
+    - cooltools/pileup
+  files:
+    - path: output/cooltools/test.npz
+      md5sum: cf26ea29e20661b3b452fb5cfc911c45
+    - path: output/cooltools/versions.yml
