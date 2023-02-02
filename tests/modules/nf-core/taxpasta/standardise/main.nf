@@ -11,5 +11,5 @@ workflow test_taxpasta_standardise {
         file(params.test_data['sarscov2']['metagenome']['kraken_report'], checkIfExists: true)
     ]
 
-    TAXPASTA_STANDARDISE ( input, 'tsv', [] )
+    TAXPASTA_STANDARDISE(input, [])
 }
