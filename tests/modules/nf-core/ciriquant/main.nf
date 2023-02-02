@@ -2,24 +2,27 @@
 
 nextflow.enable.dsl = 2
 
+include { BWA_INDEX } from '../../../../modules/nf-core/bwa/index/main.nf'
 include { CIRIQUANT } from '../../../../modules/nf-core/ciriquant/main.nf'
+include { HISAT2_BUILD } from '../../../modules/nf-core/hisat2/build/main.nf'
+include { HISAT2_EXTRACTSPLICESITES } from '../../../../modules/nf-core/hisat2/extractsplicesites/main.nf'
 
 workflow test_ciriquant {
 
     reads = [
-        [ id:'fust1_1', single_end:false ],
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/fastq/fust1_rep1_1.fastq.gz"),
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/fastq/fust1_rep1_2.fastq.gz")
+        [ id:'test', single_end:false ],
+        [
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+        ]
     ]
 
-    gtf = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.gtf") ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
-    fasta = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.fa") ]
+    BWA_INDEX( [[id:'test'], fasta] )
+    HISAT2_EXTRACTSPLICESITES ( gtf )
+    HISAT2_BUILD( fasta, gtf, HISAT2_EXTRACTSPLICESITES.out.txt )
+    CIRIQUANT( reads, gtf, fasta, BWA_INDEX.out.index.map{ meta, index -> [ index ] }, HISAT2_BUILD.out.index )
 
-    bwa = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/bwa") ]
-
-    hisat2 = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/hisat2") ]
-
-
-    CIRIQUANT ( reads, gtf, fasta, bwa, hisat2 )
 }
