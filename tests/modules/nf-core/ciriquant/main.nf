@@ -10,15 +10,15 @@ include { HISAT2_EXTRACTSPLICESITES } from '../../../../modules/nf-core/hisat2/e
 workflow test_ciriquant {
 
     reads = [
-        [ id:'test', single_end:false ],
+        [ id:'fust1', single_end:false ],
         [
-            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+            file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/fastq/fust1_rep1_1.fastq.gz"),
+            file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/fastq/fust1_rep1_2.fastq.gz")
         ]
     ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.fa")
+    gtf   = file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.gtf")
 
     BWA_INDEX( [[id:'test'], fasta] )
     HISAT2_EXTRACTSPLICESITES ( gtf )

@@ -1,5 +1,6 @@
-- name: "ciriquant"
+- name: ciriquant test_ciriquant
   command: nextflow run ./tests/modules/nf-core/ciriquant -entry test_ciriquant -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ciriquant/nextflow.config
   tags:
-    - "ciriquant"
-
+    - ciriquant
+  files:
+    - path: output/ciriquant/test/CIRIerror.log
