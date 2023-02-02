@@ -22,9 +22,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - db_tar_gz:
-      type: file
-      description: Compressed TAR archive of BAKTA database
-      pattern: "db.tar.gz"
+      type: directory
+      description: BAKTA database directory
+      pattern: "db/"
 
 authors:
   - "@jfy133"
+  - "@jasmezz"
