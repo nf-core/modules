@@ -21,7 +21,11 @@ input:
       description: Input file
       pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
 
-  - INPUT2:
+  - hcfiles:
+      type: directory
+      description: Requisite graph files for HaploCart
+
+  - reads2:
       type: file
       description: Optional second FASTQ file for non-interleaved paired-end reads
       pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
