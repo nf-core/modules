@@ -1,0 +1,53 @@
+name: "mindagap"
+## TODO nf-core: Add a description of the module and list keywords
+description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted values.
+keywords:
+  - imaging
+  - fill_grid_lines
+tools:
+  - "mindagap":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: ""
+      homepage: "https://github.com/ViriatoII/MindaGap"
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence: "BSD-3-Clause license"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  # 
+  ## TODO nf-core: Delete / customise this example input
+  - tiff:
+      type: file
+      description: tiff file
+      pattern: "*.{tiff}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  # 
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - tiff:
+      type: file
+      description: tiff file
+      pattern: "*.{tiff}"
+
+authors:
+  - "@ViriatoII"
+  - "@flowuenne"
