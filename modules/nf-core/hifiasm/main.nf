@@ -14,7 +14,6 @@ process HIFIASM {
     val   use_parental_kmers
     path  hic_read1
     path  hic_read2
-    val   use_hic
 
     output:
     tuple val(meta), path("*.r_utg.gfa")       , emit: raw_unitigs
@@ -49,7 +48,7 @@ process HIFIASM {
             hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
-    } else if (use_hic) {
+    } else if (hic_read1 & hic_read2) {
         """
         hifiasm \\
             $args \\
