@@ -48,7 +48,7 @@ process HIFIASM {
             hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
-    } else if (hic_read1 & hic_read2) {
+    } else if ((hic_read1) && (hic_read2)) {
         """
         hifiasm \\
             $args \\
