@@ -11,7 +11,7 @@ process BBMAP_SENDSKETCH {
     tuple val(meta), path(file)
 
     output:
-    tuple val(meta), path("*.txt")  , emit: hits    
+    tuple val(meta), path("*.txt")  , emit: hits
     path "versions.yml"             , emit: versions
 
     when:
