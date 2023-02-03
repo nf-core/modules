@@ -1,75 +1,113 @@
 - name: rtgtools vcfeval test_rtgtools_vcfeval
-  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rtgtools/vcfeval/nextflow.config
   tags:
-    - rtgtools
     - rtgtools/vcfeval
+    - rtgtools
   files:
-    - path: output/rtgtools/test_results/done
-    - path: output/rtgtools/test_results/fn.vcf.gz
-      md5sum: be9c9106055bfad4c5985bc0d33efd56
-    - path: output/rtgtools/test_results/fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: 86736a1867360cf78df7e0fd8718a5c6
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/fp.vcf.gz
-      md5sum: e0f0ff841dc63e9fb61fd3a5db137ced
-    - path: output/rtgtools/test_results/fp.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: a7115d4a95fc5ea313521047406cc7b8
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/non_snp_roc.tsv.gz
-      md5sum: ad5bad32c48f05aef232e2c0e708877a
-    - path: output/rtgtools/test_results/phasing.txt
-      md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test_results/progress
-    - path: output/rtgtools/test_results/snp_roc.tsv.gz
-      md5sum: 6785b83d66486e7e6c75c5a5b1574c09
-    - path: output/rtgtools/test_results/summary.txt
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: f7aac148ac571df491046e6a04a3087e
+    - path: output/rtgtools/test.phasing.txt
+      md5sum: 31988234bee208cacb3de90dabe1797f
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: 9e7e89751ef091981e68a4b9d603f2fd
+    - path: output/rtgtools/test.summary.txt
       md5sum: f4c8df93c8bdab603036bbc27b4a28c3
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz
-      md5sum: be9c9106055bfad4c5985bc0d33efd56
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 86736a1867360cf78df7e0fd8718a5c6
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/tp.vcf.gz
-      md5sum: e0f0ff841dc63e9fb61fd3a5db137ced
-    - path: output/rtgtools/test_results/tp.vcf.gz.tbi
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: a7115d4a95fc5ea313521047406cc7b8
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/vcfeval.log
-    - path: output/rtgtools/test_results/weighted_roc.tsv.gz
-      md5sum: fa7c046ea0084172f1ef91f19de07b2b
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: b3a45434e145ac914396f91579365b4b
     - path: output/rtgtools/versions.yml
-      md5sum: 270ed7a5a8e347b251eb4aa2198f98e8
+    - path: output/untar/genome_sdf/done
+      md5sum: 8b5623b26ee9b8722816afbec270bff0
+    - path: output/untar/genome_sdf/format.log
+      md5sum: af32e927232911267e07eeea79ef4a23
+    - path: output/untar/genome_sdf/mainIndex
+      md5sum: c327fb388c337349ebb84f630641de4e
+    - path: output/untar/genome_sdf/nameIndex0
+      md5sum: 4d998ed1e33bc94fb84f2a83008991cd
+    - path: output/untar/genome_sdf/namedata0
+      md5sum: 007ddfc6239aa830f508b9f689bac780
+    - path: output/untar/genome_sdf/namepointer0
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/untar/genome_sdf/progress
+      md5sum: 1e064b6741287a86851eb239833d0cbb
+    - path: output/untar/genome_sdf/seqdata0
+      md5sum: a0a40de4a24dbdd07f71d438a2b815be
+    - path: output/untar/genome_sdf/seqpointer0
+      md5sum: 2ba36f6f74922ff382d13a62857689a7
+    - path: output/untar/genome_sdf/sequenceIndex0
+      md5sum: 083ed0c4dfff1a9a34f3d5aa6f13f771
+    - path: output/untar/genome_sdf/summary.txt
+      md5sum: 26558005e517f4ff245c32d79395f205
+    - path: output/untar/versions.yml
 
 - name: rtgtools vcfeval test_rtgtools_vcfeval_no_optional_inputs
-  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rtgtools/vcfeval/nextflow.config
   tags:
-    - rtgtools
     - rtgtools/vcfeval
+    - rtgtools
   files:
-    - path: output/rtgtools/test_results/done
-    - path: output/rtgtools/test_results/fn.vcf.gz
-      md5sum: c11c889a4f42c8ea325748bd768ea34d
-    - path: output/rtgtools/test_results/fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: 92fa0d8f6bd6aeb508c9a79b6d2d62fb
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/fp.vcf.gz
-      md5sum: 138e85c1cd79f8fea9a33e81ce0c734c
-    - path: output/rtgtools/test_results/fp.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: e09a21157c12276849083544a6d14c44
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/non_snp_roc.tsv.gz
-      md5sum: 34fb78a008dfc0bef02807b8a7012b07
-    - path: output/rtgtools/test_results/phasing.txt
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: 197fe780a9426717cfdae582a4cdfbb7
+    - path: output/rtgtools/test.phasing.txt
       md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test_results/progress
-    - path: output/rtgtools/test_results/snp_roc.tsv.gz
-      md5sum: a4c5761c2653e2d04fc84c1cea13b1f0
-    - path: output/rtgtools/test_results/summary.txt
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: ae96e96a7d98d7c9715f0f5079ee49a7
+    - path: output/rtgtools/test.summary.txt
       md5sum: f33feb32f84958fb931063044fba369b
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz
-      md5sum: d1c2d990899edf127ea5fcca8866fcb0
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz.tbi
-      md5sum: 3307008fea47adb75c46d395c5567bc0
-    - path: output/rtgtools/test_results/tp.vcf.gz
-      md5sum: e35b4dab82894eee9b77c81f9bc89cca
-    - path: output/rtgtools/test_results/tp.vcf.gz.tbi
-      md5sum: 45d8f8793140944f129e728299918c88
-    - path: output/rtgtools/test_results/vcfeval.log
-    - path: output/rtgtools/test_results/weighted_roc.tsv.gz
-      md5sum: 5b8efc9e9381f604880412800f58e4e9
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 8f5d1e5cdee991076d75b247137f6ccf
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
+      md5sum: 11204a46f3602834a5a08155980c9a86
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: ef58d171396e5a91de17e99d08f4634a
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
+      md5sum: 1b6acc1532b30bc010698ce922d1e888
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: 7adbd88367635a820f9fa867c7162337
     - path: output/rtgtools/versions.yml
-      md5sum: 55568e4bbe5ab7e634a1f392abb89cc4
+    - path: output/untar/genome_sdf/done
+      md5sum: 8b5623b26ee9b8722816afbec270bff0
+    - path: output/untar/genome_sdf/format.log
+      md5sum: af32e927232911267e07eeea79ef4a23
+    - path: output/untar/genome_sdf/mainIndex
+      md5sum: c327fb388c337349ebb84f630641de4e
+    - path: output/untar/genome_sdf/nameIndex0
+      md5sum: 4d998ed1e33bc94fb84f2a83008991cd
+    - path: output/untar/genome_sdf/namedata0
+      md5sum: 007ddfc6239aa830f508b9f689bac780
+    - path: output/untar/genome_sdf/namepointer0
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/untar/genome_sdf/progress
+      md5sum: 1e064b6741287a86851eb239833d0cbb
+    - path: output/untar/genome_sdf/seqdata0
+      md5sum: a0a40de4a24dbdd07f71d438a2b815be
+    - path: output/untar/genome_sdf/seqpointer0
+      md5sum: 2ba36f6f74922ff382d13a62857689a7
+    - path: output/untar/genome_sdf/sequenceIndex0
+      md5sum: 083ed0c4dfff1a9a34f3d5aa6f13f771
+    - path: output/untar/genome_sdf/summary.txt
+      md5sum: 26558005e517f4ff245c32d79395f205
+    - path: output/untar/versions.yml
