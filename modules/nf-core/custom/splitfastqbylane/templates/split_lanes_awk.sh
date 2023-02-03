@@ -1,16 +1,16 @@
 #!/bin/bash
 
-if [[ "!{read1}" == *gz ]] ; then  
-   cat_="zcat"
-else 
-   cat_="cat"
+if [[ "!{read1}" == *gz ]] ; then
+    cat_="zcat"
+else
+    cat_="cat"
 fi
 
 function a() {
     awk \
-	-v prefix=!{prefix} \
-	-v readnumber=$1 \
-	'
+        -v prefix=!{prefix} \
+        -v readnumber=$1 \
+        '
         BEGIN {FS = ":"}
         {
             lane=$(NF-3)
@@ -25,8 +25,8 @@ function a() {
         ' <( eval "$cat_ $2")
 }
 
-a 1 !{read1} 
-if [ ! -z !{read2} ] ; then 
+a 1 !{read1}
+if [ ! -z !{read2} ] ; then
     a 2 !{read2}
 fi
 
