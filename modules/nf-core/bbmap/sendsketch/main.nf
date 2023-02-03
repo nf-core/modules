@@ -1,5 +1,5 @@
 process BBMAP_SENDSKETCH {
-    tag "$file"
+    tag "$meta.id"
     label 'process_low'
 
     conda "bioconda::bbmap=39.01"
@@ -11,7 +11,7 @@ process BBMAP_SENDSKETCH {
     tuple val(meta), path(file)
 
     output:
-    tuple val(meta), path('results.txt')  , emit: hits
+    tuple val(meta), path("*.txt")  , emit: hits    
     path "versions.yml"                   , emit: versions
 
     when:
@@ -19,13 +19,20 @@ process BBMAP_SENDSKETCH {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def file_used = file.size() > 1 ? file[0] : file
+
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[BBMAP_SENDSKETCH] memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """    
-    sendsketch.sh \\
+    sendsketch.sh -Xmx${avail_mem}g \\
         in=${file_used} \\
-        out='results.txt' \\
+        out=${prefix}.txt \\
         $args \\
-        -Xmx${task.memory.toGiga()}g
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -4,8 +4,8 @@
     - bbmap/sendsketch
     - bbmap
   files:
-    - path: output/bbmap/results.txt
-      contains: ["File: genome.fasta"]
+    - path: output/bbmap/test.txt
+      md5sum: ba6a78659eb15d0d130d5daee8c87ead
     - path: output/bbmap/versions.yml
 
 - name: bbmap sendsketch test_bbmap_sendsketch_paired
@@ -14,6 +14,6 @@
     - bbmap/sendsketch
     - bbmap
   files:
-    - path: output/bbmap/results.txt
-      contains: ["File: test2_1.fastq.gz"]
+    - path: output/bbmap/test.txt
+      md5sum: 651f7321cd0340844d23a1457a9651f9
     - path: output/bbmap/versions.yml
