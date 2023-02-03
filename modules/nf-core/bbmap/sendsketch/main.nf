@@ -12,7 +12,7 @@ process BBMAP_SENDSKETCH {
 
     output:
     tuple val(meta), path("*.txt")  , emit: hits    
-    path "versions.yml"                   , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +24,11 @@ process BBMAP_SENDSKETCH {
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[BBMAP_SENDSKETCH] memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[BBMAP SENDSKETCH] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
-    """    
+    """
     sendsketch.sh -Xmx${avail_mem}g \\
         in=${file_used} \\
         out=${prefix}.txt \\
