@@ -14,8 +14,8 @@ process GLIMPSE_PHASE {
         path(samples_file)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf}"), emit: phased_variant
-        path "versions.yml"                 , emit: versions
+        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
+        path "versions.yml"                               , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
@@ -23,6 +23,7 @@ process GLIMPSE_PHASE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "vcf.gz"
 
     def map_command = map ? "--map $map" : ""
     def samples_file_command = samples_file ? "--samples-file $samples_file":""
@@ -39,7 +40,7 @@ process GLIMPSE_PHASE {
         $input_region_command \\
         $output_region_command \\
         --thread $task.cpus \\
-        --output ${prefix}.bcf
+        --output ${prefix}_phased.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
