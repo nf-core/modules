@@ -17,7 +17,7 @@ process CANU {
     tuple val(meta), path("*.contigs.fasta.gz")         , emit: assembly                , optional: true
     tuple val(meta), path("*.unassembled.fasta.gz")     , emit: contigs
     tuple val(meta), path("*.correctedReads.fasta.gz")	, emit: corrected_reads         , optional: true
-    tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimemd_reads , optional: true
+    tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimmed_reads , optional: true
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
