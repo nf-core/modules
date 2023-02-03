@@ -27,6 +27,7 @@ process TILEDBVCF_STORE {
         store \\
         --uri $tiledb_array_uri \\
         $vcf \\
+        --threads $task.cpus \\
         $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
