@@ -11,8 +11,7 @@ process TILEDBVCF_CREATE {
     val(uri)
 
     output:
-    path("${uri}")                , emit: uri
-
+    val("${uri}")                 , emit: uri
     path "versions.yml"           , emit: versions
 
     when:

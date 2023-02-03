@@ -1,21 +1,7 @@
 - name: tiledbvcf create test_tiledbvcf_create
   command: nextflow run ./tests/modules/nf-core/tiledbvcf/create -entry test_tiledbvcf_create -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiledbvcf/create/nextflow.config
   tags:
-    - tiledbvcf
     - tiledbvcf/create
+    - tiledbvcf
   files:
-    - path: output/tiledbvcf/my_vcf_dataset/__group/__1675438308303_1675438308303_d7103ce714014481b62897e461cfdee1
-      md5sum: 243d534b639969546209cb3c5d1b2dc5
-    - path: output/tiledbvcf/my_vcf_dataset/__group/__1675438308307_1675438308307_aff0866bf7974f17842270ac0243957a
-      md5sum: 0ba0d35ccc5918a4f43cbfef62e61073
-    - path: output/tiledbvcf/my_vcf_dataset/__tiledb_group.tdb
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/tiledbvcf/my_vcf_dataset/data/__meta/__1675438308308_1675438308308_3265553938154bd0a276241296751d3a
-      md5sum: cd6425bb5c0df3ea1ed5d24759882bd9
-    - path: output/tiledbvcf/my_vcf_dataset/data/__schema/__1675438308304_1675438308304_0b919c0b66e24f029fcec41cb7106dee
-      md5sum: 130eebb9547e8e06114a33db01080abe
-    - path: output/tiledbvcf/my_vcf_dataset/metadata/__tiledb_group.tdb
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/tiledbvcf/my_vcf_dataset/metadata/vcf_headers/__schema/__1675438308301_1675438308301_0c7ffea0b5924143807d83cdf141d970
-      md5sum: 50b400557be93c615cf3d5a8bc115880
     - path: output/tiledbvcf/versions.yml
