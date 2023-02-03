@@ -13,7 +13,7 @@ workflow test_hifiasm_hifi_only {
         [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
     ]
 
-    HIFIASM ( input, [], [], false, [], [], false )
+    HIFIASM ( input, [], [], false, [], [] )
 }
 
 /*
@@ -27,7 +27,7 @@ workflow test_hifiasm_with_parental_reads {
     paternal_kmer_dump = file(params.test_data['homo_sapiens']['illumina']['test_yak'], checkIfExists: true)
     maternal_kmer_dump = file(params.test_data['homo_sapiens']['illumina']['test2_yak'], checkIfExists: true)
 
-    HIFIASM ( input, paternal_kmer_dump, maternal_kmer_dump, true, [], [], false )
+    HIFIASM ( input, paternal_kmer_dump, maternal_kmer_dump, true, [], [] )
 }
 
 /*
@@ -41,6 +41,6 @@ workflow test_hifiasm_with_hic {
     hic_reads1 = file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     hic_reads2 = file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
 
-    HIFIASM ( input, [], [], false, hic_reads1, hic_reads2, true )
+    HIFIASM ( input, [], [], false, hic_reads1, hic_reads2 )
 }
 
