@@ -21,7 +21,6 @@ process BBMAP_SENDSKETCH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_used = file.size() > 1 ? file[0] : file
-
     def avail_mem = 3
     if (!task.memory) {
         log.info '[BBMAP SENDSKETCH] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
