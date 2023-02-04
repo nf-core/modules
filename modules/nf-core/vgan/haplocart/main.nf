@@ -13,7 +13,7 @@ process VGAN_HAPLOCART {
 
     output:
     tuple val(meta), path("*[!posterior].txt") , emit: txt   
-    tuple val(meta), path("*.posterior.txt")    , emit: posterior
+    tuple val(meta), path("*.posterior.txt")   , emit: posterior
     path "versions.yml"           , emit: versions
 
     when:
