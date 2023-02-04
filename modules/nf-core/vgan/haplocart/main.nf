@@ -23,7 +23,7 @@ process VGAN_HAPLOCART {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1'
-    def reads_args = meta.single_input_file ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${meta.reads2}"
+    def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${meta.reads2}"
 
     """
     vgan haplocart \\
