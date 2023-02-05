@@ -9,7 +9,7 @@ process VGAN_HAPLOCART {
 
     input:
     tuple val(meta), path(reads)
-    path("hc_files")
+    tuple val(meta), path(hc_files)
 
     output:
     tuple val(meta), path("*[!posterior].txt") , emit: txt   
