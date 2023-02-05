@@ -34,7 +34,10 @@ process VGAN_HAPLOCART {
         --hc-files ${hc_files} \\
         -pf ${prefix}.posterior.txt
 
-    echo $VERSION >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vgan: $VERSION
+    END_VERSIONS
     """
 
     stub:
@@ -42,7 +45,10 @@ process VGAN_HAPLOCART {
     """
     touch ${prefix}.txt
     touch ${prefix}.posterior.txt
-    echo $VERSION >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vgan: $VERSION
+    END_VERSIONS
     """
 
 }
