@@ -26,9 +26,6 @@ process VGAN_HAPLOCART {
     def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${meta.reads2}"
 
     """
-    touch ${prefix}.txt
-    touch ${prefix}.posterior.txt
-    touch versions.yml
     vgan haplocart \\
         $args \\
         -t $task.cpus \\
@@ -37,10 +34,11 @@ process VGAN_HAPLOCART {
         --hc-files ${hc_files} \\
         -pf ${prefix}.posterior.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vgan: echo "1.0.1"
-    END_VERSIONS
+    touch versions.yml
+    //cat <<-END_VERSIONS > versions.yml
+    //"${task.process}":
+    //    vgan: echo "1.0.1"
+    //END_VERSIONS
     """
 
     stub:
@@ -49,10 +47,10 @@ process VGAN_HAPLOCART {
     touch ${prefix}.txt
     touch ${prefix}.posterior.txt
     touch versions.yml
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vgan: echo "1.0.1"
-    END_VERSIONS
+    //cat <<-END_VERSIONS > versions.yml
+    //"${task.process}":
+    //    vgan: echo "1.0.1"
+    //END_VERSIONS
     """
 
 }
