@@ -45,6 +45,7 @@ process VGAN_HAPLOCART {
     """
     touch ${prefix}.txt
     touch ${prefix}.posterior.txt
+    touch versions.yml
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         vgan: echo "1.0.1"
