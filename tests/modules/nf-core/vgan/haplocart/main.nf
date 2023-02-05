@@ -9,7 +9,7 @@ process STUB_HCFILES {
  output:
      path "hcfiles", emit: hcfiles
 
- script:
+ stub:
     """
     mkdir hcfiles
     touch hcfiles/graph.gg
