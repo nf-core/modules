@@ -32,12 +32,15 @@ process STUB_HCFILES {
 workflow test_vgan_haplocart_interleaved {
 
     STUB_HCFILES()
-    input = [
-        [ id:'test', single_input_file:true, format:'fastq'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true)
-            ]
 
-    VGAN_HAPLOCART(input, STUB_HCFILES.out.hcfiles)
+    input1 = [
+        [ id:'test', single_end:true, format:'fastq'], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true)
+             ]
+
+    input2 = [ id:'test', single_end:true, format:'fastq'] // meta map
+
+    VGAN_HAPLOCART(input1, input2, STUB_HCFILES.out.hcfiles)
 }
 
 workflow test_vgan_haplocart_paired_end_separate {
@@ -45,21 +48,25 @@ workflow test_vgan_haplocart_paired_end_separate {
     STUB_HCFILES()
     rCRS_reads = file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true)
     rCRS_reads.copyTo(workDir + 'reads2.fq.gz')
-    input = [
-        [ id:'test', single_input_file:false, format:'fastq', reads2:file(workDir + "reads2.fq.gz", checkIfExists: true)], // meta map
+    input1 = [
+        [ id:'test', single_end:false, format:'fastq', reads2:file(workDir + "reads2.fq.gz", checkIfExists: true)], // meta map
           rCRS_reads
             ]
 
-    VGAN_HAPLOCART(input, STUB_HCFILES.out.hcfiles)
+    input2 = [ id:'test', single_end:false, format:'fastq', reads2:file(workDir + "reads2.fq.gz", checkIfExists: true)] // meta map
+
+    VGAN_HAPLOCART(input1, input2, STUB_HCFILES.out.hcfiles)
 }
 
 workflow test_vgan_haplocart_single_end {
 
     STUB_HCFILES()
-    input = [
-        [ id:'test', single_input_file:true, format:'fastq'], // meta map
+    input1 = [
+        [ id:'test', single_end:true, format:'fastq'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true)
-        ]
+             ]
 
-    VGAN_HAPLOCART(input, STUB_HCFILES.out.hcfiles)
+    input2 = [id:'test', single_end:true, format:'fastq'] // meta map
+
+    VGAN_HAPLOCART(input1, input2, STUB_HCFILES.out.hcfiles)
 }
