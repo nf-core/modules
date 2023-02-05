@@ -26,6 +26,8 @@ process STUB_HCFILES {
     touch hcfiles/mappability.tsv
     touch hcfiles/k17_w18.min
     touch hcfiles/k31_w11.min
+    touch test.txt
+    touch test.posterior.txt
     touch versions.yml
     """
 }
