@@ -21,7 +21,6 @@ process VGAN_HAPLOCART {
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = "1.0.1"
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads} -fq2 ${meta.reads2}"
@@ -37,7 +36,7 @@ process VGAN_HAPLOCART {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vgan: echo $VERSION
+        vgan: echo "1.0.1"
     END_VERSIONS
     """
 
@@ -48,7 +47,7 @@ process VGAN_HAPLOCART {
     touch ${prefix}.posterior.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vgan: echo $VERSION
+        vgan: echo "1.0.1"
     END_VERSIONS
     """
 
