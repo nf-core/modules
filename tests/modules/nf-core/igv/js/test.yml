@@ -1,0 +1,13 @@
+- name: igv js test_igv_js
+  command: nextflow run ./tests/modules/nf-core/igv/js -entry test_igv_js -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/igv/js/nextflow.config
+  tags:
+    - igv/js
+    - igv
+  files:
+    - path: output/igv/test.paired_end.sorted.bam
+      md5sum: 76396678f283516b159a1e9b538fc64c
+    - path: output/igv/test.paired_end.sorted.bam.bai
+      md5sum: 9ac6ecb9435822c44b37765f111e9013
+    - path: output/igv/test_genome-browser.html
+      md5sum: 11ddcf82fad4052021bd511da4a8ed6f
+    - path: output/igv/versions.yml
