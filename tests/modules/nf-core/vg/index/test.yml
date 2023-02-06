@@ -1,12 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml vg/index
-- name: "vg index"
+- name: vg index test_vg_index
   command: nextflow run ./tests/modules/nf-core/vg/index -entry test_vg_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vg/index/nextflow.config
   tags:
-    - "vg"
-    - "vg/index"
+    - vg/index
+    - vg
   files:
-    - path: "output/vg/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/vg/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/vg/test.xg
+      md5sum: 4f619672ffe6edb02b406bba610921a0
+    - path: output/vg/versions.yml
