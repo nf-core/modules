@@ -1,8 +1,9 @@
-name: cnvkit_call
-description: Given segmented log2 ratio estimates (.cns), derive each segment’s absolute integer copy number
+name: cnvkit_export
+description: Convert copy number ratio tables (.cnr files) or segments (.cns) to another format.
 keywords:
   - cnvkit
   - copy number
+  - export
 tools:
   - cnvkit:
       description: |
@@ -23,11 +24,6 @@ input:
       description: CNVKit CNS file.
       pattern: "*.cns"
 
-  - vcf:
-      type: file
-      description: Germline VCF file for BAF.
-      pattern: "*.vcf{,.gz}"
-
 output:
   - meta:
       type: map
@@ -40,10 +36,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - output:
+  - cns:
       type: file
-      description: File containing copy number information in new format.
-      pattern: "*.{bed,vcf,cdt,jtv,seg,interval_count}"
+      description: File containing copy number segment information
+      pattern: "*.{cns}"
 
 authors:
   - "@adamrtalbot"
