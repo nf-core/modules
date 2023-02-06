@@ -31,7 +31,7 @@ process VG_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vg: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vg: \$(echo \$(vg 2>&1 | head -n 1 | sed 's/vg: variation graph tool, version v//;s/ ".*"//' ))
     END_VERSIONS
     """
 
@@ -47,7 +47,7 @@ process VG_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vg: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vg: \$(echo \$(vg 2>&1 | head -n 1 | sed 's/vg: variation graph tool, version v//;s/ ".*"//' ))
     END_VERSIONS
     """
 }
