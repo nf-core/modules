@@ -11,6 +11,7 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path(input), path(index)
     path fasta
     path qname
+    path bed
 
     output:
     tuple val(meta), path("*.bam"),  emit: bam,     optional: true
@@ -30,6 +31,7 @@ process SAMTOOLS_VIEW {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     def readnames = qname ? "--qname-file ${qname}": ""
+    def bedfile = bed ? "--target-file ${bed}": ""
     def file_type = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
@@ -41,6 +43,7 @@ process SAMTOOLS_VIEW {
         --threads ${task.cpus-1} \\
         ${reference} \\
         ${readnames} \\
+        ${bedfile} \\
         $args \\
         -o ${prefix}.${file_type} \\
         $input \\
