@@ -34,7 +34,7 @@ process KALLISTO_QUANT {
             ${single} \\
             ${args} \\
             -o . \\
-            ${reads} 2> >(tee -a ${prefix}.log.txt >&2) 
+            ${reads} 2> >(tee -a ${prefix}.log.txt >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
