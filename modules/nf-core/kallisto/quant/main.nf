@@ -14,7 +14,7 @@ process KALLISTO_QUANT {
 
     output:
     tuple val(meta), path("abundance.tsv"), emit: abundance
-    tuple val(meta), path("abundance.h5") , emit: abundance_hdf
+    tuple val(meta), path("abundance.h5") , emit: abundance_hdf5
     tuple val(meta), path("run_info.json"), emit: run_info
     tuple val(meta), path("*.log.txt")    , emit: log
     path "versions.yml"                   , emit: versions
