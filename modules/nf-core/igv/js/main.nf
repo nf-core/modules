@@ -12,9 +12,10 @@ process IGV_JS {
     tuple val(meta), path(alignment), path(index)
 
     output:
-    tuple val(meta), path("*_genome-browser.html") , emit: brorwser
-    tuple val(meta), path(alignment), path(index), emit: align_files
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*_genome-browser.html") , emit: browser
+    tuple val(meta), path(alignment)               , emit: align_files
+    tuple val(meta), path(index)                   , emit: index_files
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +28,7 @@ process IGV_JS {
     cat  <<IGV > ${prefix}_genome-browser.html
     <html>
         <head>
-            <script src="https://cdn.jsdelivr.net/npm/igv@2.10.5/dist/igv.min.js"></script> <!-- https://github.com/igvteam/igv.js/ -->
+            <script src="https://cdn.jsdelivr.net/npm/igv@2.13.9/dist/igv.min.js"></script> <!-- https://github.com/igvteam/igv.js/ -->
         </head>
         <body>
 
