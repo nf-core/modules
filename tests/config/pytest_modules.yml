@@ -931,9 +931,13 @@ endorspy:
   - modules/nf-core/endorspy/**
   - tests/modules/nf-core/endorspy/**
 
-ensemblvep:
-  - modules/nf-core/ensemblvep/**
-  - tests/modules/nf-core/ensemblvep/**
+ensemblvep/download:
+  - modules/nf-core/ensemblvep/download/**
+  - tests/modules/nf-core/ensemblvep/download/**
+
+ensemblvep/vep:
+  - modules/nf-core/ensemblvep/vep/**
+  - tests/modules/nf-core/ensemblvep/vep/**
 
 entrezdirect/esearch:
   - modules/nf-core/entrezdirect/esearch/**
@@ -3059,9 +3063,9 @@ subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
 
-subworkflows/vcf_annotate_ensembl_vep:
-  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
-  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+subworkflows/vcf_annotate_ensemblvep:
+  - subworkflows/nf-core/vcf_annotate_ensemblvep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
 
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
