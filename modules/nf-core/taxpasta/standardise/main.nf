@@ -26,9 +26,11 @@ process TAXPASTA_STANDARDISE {
     // the output pattern specified above.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
     taxpasta standardise \\
         $args \\
+        $taxonomy_option \\
         $profile
 
     cat <<-END_VERSIONS > versions.yml
