@@ -54,7 +54,7 @@ jobs:
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
-            tags: ensemblvep
+            tags: ensemblvep/vep
           - profile: "conda"
             tags: fastk/fastk
           - profile: "conda"
@@ -81,6 +81,8 @@ jobs:
             tags: merquryfk/merquryfk
           - profile: "conda"
             tags: merquryfk/ploidyplot
+          - profile: "conda"
+            tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
     steps:
@@ -129,13 +131,12 @@ jobs:
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
 
-      - name: Conda clean
+      - name: Conda setup
         if: matrix.profile == 'conda'
-        run: conda clean -a
-
-      - name: Install mamba
-        if: matrix.profile == 'conda'
-        run: conda install mamba -n base -c conda-forge
+        run: |
+          conda clean -a
+          conda install -n base conda-libmamba-solver
+          conda config --set solver libmamba
 
       # Test the module
       - name: Run pytest-workflow
