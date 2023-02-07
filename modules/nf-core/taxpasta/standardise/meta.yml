@@ -18,19 +18,15 @@ tools:
       licence: "['Apache-2.0']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - profile:
       type: file
       description: profiler output file (mandatory)
-      pattern: "*.{txt,tsv,out}{.gz}"
-  #
-  #
+      pattern: "*"
   - taxonomy:
       type: directory
       description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
@@ -42,12 +38,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  - profile:
+  - standardised_profile:
       type: file
       description: Standardised taxonomic profile
       pattern: "*.{tsv,csv,arrow,parquet,biom}"
-  #
   - versions:
       type: file
       description: File containing software versions
