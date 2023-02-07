@@ -20,10 +20,11 @@ process TAXPASTA_STANDARDISE {
 
     script:
     // N.B.: Taxpasta requires a --profiler option and will fail without it.
-    // This must be specified via a `nextflow.config` or `modules.config`.
-    // Additionally, it requires a --output option with the output file name.
-    // The desired format will be parsed from the name and should correspond to
-    // the output pattern specified above.
+    // This must be specified via a `nextflow.config` or `modules.config`, for
+    // example, as "--profiler kraken2". Additionally, it requires a --output
+    // option with the output file name. The desired format will be parsed from
+    // the name and should correspond to the output pattern specified above,
+    // e.g., "--output ${task.ext.prefix}.tsv".
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
