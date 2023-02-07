@@ -19,8 +19,11 @@ process TAXPASTA_STANDARDISE {
     task.ext.when == null || task.ext.when
 
     script:
-    // Taxpasta requires a --profiler option and will fail without it.
+    // N.B.: Taxpasta requires a --profiler option and will fail without it.
     // This must be specified via a `nextflow.config` or `modules.config`.
+    // Additionally, it requires a --output option with the output file name.
+    // The desired format will be parsed from the name and should correspond to
+    // the output pattern specified above.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
