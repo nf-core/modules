@@ -1,0 +1,19 @@
+- name: vcflib vcffilter test_vcflib_vcffilter_vcf
+  command: nextflow run ./tests/modules/nf-core/vcflib/vcffilter -entry test_vcflib_vcffilter_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcflib/vcffilter/nextflow.config
+  tags:
+    - vcflib
+    - vcflib/vcffilter
+  files:
+    - path: output/vcflib/test.filtered.vcf.gz
+      md5sum: 68ac261e385d5ff91d87ec70ccb8c429
+    - path: output/vcflib/versions.yml
+
+- name: vcflib vcffilter test_vcflib_vcffilter_gz
+  command: nextflow run ./tests/modules/nf-core/vcflib/vcffilter -entry test_vcflib_vcffilter_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcflib/vcffilter/nextflow.config
+  tags:
+    - vcflib
+    - vcflib/vcffilter
+  files:
+    - path: output/vcflib/test.filtered.vcf.gz
+      md5sum: 68ac261e385d5ff91d87ec70ccb8c429
+    - path: output/vcflib/versions.yml
