@@ -1,0 +1,15 @@
+- name: nanomonsv get test_nanomonsv_get
+  command: nextflow run ./tests/modules/nf-core/nanomonsv/get -entry test_nanomonsv_get -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/nanomonsv/get/nextflow.config
+  tags:
+    - nanomonsv
+    - nanomonsv/get
+  files:
+    - path: output/nanomonsv/test_tumor.nanomonsv.result.txt
+      md5sum: 4093bd514c334059b91d77b084de961d
+    - path: output/nanomonsv/test_tumor.nanomonsv.result.vcf
+      contains:
+        - "chr18\t68712223\td_2\tC\t<DEL>\t.\tPASS\tEND=68715588;SVTYPE=DEL;SVLEN=-3365\tTR:VR\t25:4\t24:0\n"
+    - path: output/nanomonsv/test_tumor.nanomonsv.supporting_read.txt
+      contains:
+        - "chr10\t87940538\t+\tchr10\t87952584\t-\tATAGAGATTATACTTTGTGTA\tr_0\t37b0700e-96e1-4d0c-9299-18eabf25515d\t13944\t+"
+    - path: output/nanomonsv/versions.yml
