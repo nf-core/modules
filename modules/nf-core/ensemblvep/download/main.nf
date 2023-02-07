@@ -35,6 +35,8 @@ process ENSEMBLVEP_DOWNLOAD {
 
     stub:
     """
+    mkdir vep_cache
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
