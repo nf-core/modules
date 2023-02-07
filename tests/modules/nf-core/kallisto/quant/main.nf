@@ -18,26 +18,24 @@ workflow test_kallisto_quant {
         ]
     ]
 
-    println input
-
     KALLISTO_INDEX ( fasta )
     KALLISTO_QUANT (
         input,
         KALLISTO_INDEX.out.idx,
-        gtf
+        []
     )
 }
 
 workflow test_kallisto_quant_single_end {
     input = [
         [ id:'test', single_end:true ],
-	file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
 
     KALLISTO_INDEX ( fasta )
     KALLISTO_QUANT (
         input,
-	KALLISTO_INDEX.out.idx,
-	gtf
+        KALLISTO_INDEX.out.idx,
+        []
     )
 }

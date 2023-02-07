@@ -26,11 +26,12 @@ process KALLISTO_QUANT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def single = meta.single_end ? "--single --fragment-length ${task.ext.fragment_len} --sd ${task.ext.sd}" : ""
+    def gtf_input = gtf ? "--gtf ${gtf}" : ''
     """
     kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
-            --gtf ${gtf} \\
+            ${gtf_input} \\
             ${single} \\
             ${args} \\
             -o . \\
