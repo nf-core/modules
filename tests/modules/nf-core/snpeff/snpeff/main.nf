@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPEFF } from '../../../../modules/nf-core/snpeff/main.nf'
+include { SNPEFF_SNPEFF } from '../../../../../modules/nf-core/snpeff/snpeff/main.nf'
 
-workflow test_snpeff {
+workflow test_snpeff_snpeff {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    SNPEFF ( input, "WBcel235.105", [] )
+    SNPEFF_SNPEFF ( input, "WBcel235.105", [] )
 }
