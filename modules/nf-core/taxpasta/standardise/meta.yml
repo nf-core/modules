@@ -1,8 +1,13 @@
 name: "taxpasta_standardise"
 description: "Standardise the output of a wide range of taxonomic profilers"
 keywords:
-  - "taxonomic profile"
-  - "standardise"
+  - taxonomic profile
+  - standardise
+  - standardisation
+  - metagenomics
+  - taxonomic profiling
+  - otu tables
+  - taxon tables
 tools:
   - "taxpasta":
       description: "TAXonomic Profile Aggregation and STAndardisation"
@@ -22,21 +27,16 @@ input:
   #
   - profile:
       type: file
-      description: profiler output file
+      description: profiler output file (mandatory)
       pattern: "*.{txt,tsv,out}{.gz}"
   #
-  - output_format:
-      type: val
-      description: The file extension for the output format
-      pattern: "{tsv,csv,arrow,parquet,biom}"
   #
   - taxonomy:
       type: directory
-      description: Directory containing at a minimum nodes.dmp and names.dmp files
+      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
       pattern: "*/"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |

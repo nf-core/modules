@@ -12,7 +12,7 @@ process TAXPASTA_STANDARDISE {
     path taxonomy
 
     output:
-    tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: profiles
+    tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: standardised_profile
     path "versions.yml"                                    , emit: versions
 
     when:
@@ -20,13 +20,13 @@ process TAXPASTA_STANDARDISE {
 
     script:
     // Taxpasta requires a --profiler option and will fail without it.
-    // That needs to be configured since we can't set a default here.
+    // This must be specified via a `nextflow.config` or `modules.config`.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     taxpasta standardise \\
         $args \\
-        '$profile'
+        $profile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
