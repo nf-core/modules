@@ -38,4 +38,14 @@ process SNPEFF_DOWNLOAD {
         snpeff: \$(echo \$(snpEff -version 2>&1) | cut -f 2 -d ' ')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir ${genome}.${cache_version}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpeff: \$(echo \$(snpEff -version 2>&1) | cut -f 2 -d ' ')
+    END_VERSIONS
+    """
 }
