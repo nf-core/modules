@@ -24,6 +24,14 @@ input:
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
       pattern: "*.{fastq,fastq.gz}"
+  - index:
+      type: index
+      description: Kallisto genome index.
+      pattern: "*.idx"
+  - gtf:
+      type: file
+      description: Optional gtf file for translation of transcripts into genomic coordinates.
+      pattern: "*.gtf"
 
 output:
   - meta:
