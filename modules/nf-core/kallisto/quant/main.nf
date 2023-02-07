@@ -11,6 +11,7 @@ process KALLISTO_QUANT {
     tuple val(meta), path(reads)
     path index
     path gtf
+    path chromosomes
 
     output:
     tuple val(meta), path("abundance.tsv"), emit: abundance
@@ -27,11 +28,13 @@ process KALLISTO_QUANT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def single = meta.single_end ? "--single --fragment-length ${task.ext.fragment_len} --sd ${task.ext.sd}" : ""
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
+    def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
     """
     kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
             ${gtf_input} \\
+            ${chromosomes_input} \\
             ${single} \\
             ${args} \\
             -o . \\

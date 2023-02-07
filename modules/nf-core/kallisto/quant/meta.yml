@@ -32,6 +32,10 @@ input:
       type: file
       description: Optional gtf file for translation of transcripts into genomic coordinates.
       pattern: "*.gtf"
+  - chromosomes:
+      type: file
+      description: Optional tab separated file with chromosome names and lengths.
+      pattern: "*.tsv"
 
 output:
   - meta:

@@ -22,6 +22,7 @@ workflow test_kallisto_quant {
     KALLISTO_QUANT (
         input,
         KALLISTO_INDEX.out.idx,
+        [],
         []
     )
 }
@@ -36,6 +37,7 @@ workflow test_kallisto_quant_single_end {
     KALLISTO_QUANT (
         input,
         KALLISTO_INDEX.out.idx,
+        [],
         []
     )
 }
