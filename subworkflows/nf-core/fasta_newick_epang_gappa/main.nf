@@ -1,22 +1,22 @@
-include { HMMER_HMMBUILD as HMMER_HMMBUILD          } from '../../modules/nf-core/hmmer/hmmbuild/main'
-include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../modules/nf-core/hmmer/hmmalign/main'
-include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../modules/nf-core/hmmer/hmmalign/main'
-include { HMMER_ESLALIMASK as HMMER_MASKREF         } from '../../modules/nf-core/hmmer/eslalimask/main'
-include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../modules/nf-core/hmmer/eslalimask/main'
-include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../modules/nf-core/hmmer/eslreformat/main'
-include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../modules/nf-core/hmmer/eslreformat/main'
-include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../modules/nf-core/hmmer/eslreformat/main'
-include { MAFFT                                     } from '../../modules/nf-core/mafft/main'
-include { EPANG_PLACE                               } from '../../modules/nf-core/epang/place/main'
-include { EPANG_SPLIT                               } from '../../modules/nf-core/epang/split/main'
-include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../modules/nf-core/gappa/examinegraft/main'
-include { GAPPA_EXAMINEASSIGN as GAPPA_ASSIGN       } from '../../modules/nf-core/gappa/examineassign/main'
-include { GAPPA_EXAMINEHEATTREE as GAPPA_HEATTREE   } from '../../modules/nf-core/gappa/examineheattree/main'
+include { HMMER_HMMBUILD as HMMER_HMMBUILD          } from '../../../modules/nf-core/hmmer/hmmbuild/main'
+include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../../modules/nf-core/hmmer/hmmalign/main'
+include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../../modules/nf-core/hmmer/hmmalign/main'
+include { HMMER_ESLALIMASK as HMMER_MASKREF         } from '../../../modules/nf-core/hmmer/eslalimask/main'
+include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../../modules/nf-core/hmmer/eslalimask/main'
+include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../../modules/nf-core/hmmer/eslreformat/main'
+include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-core/hmmer/eslreformat/main'
+include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
+include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
+include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
+include { EPANG_SPLIT                               } from '../../../modules/nf-core/epang/split/main'
+include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../../modules/nf-core/gappa/examinegraft/main'
+include { GAPPA_EXAMINEASSIGN as GAPPA_ASSIGN       } from '../../../modules/nf-core/gappa/examineassign/main'
+include { GAPPA_EXAMINEHEATTREE as GAPPA_HEATTREE   } from '../../../modules/nf-core/gappa/examineheattree/main'
 
-workflow SEQUENCES_NEWICK_PHYLOPLACE_EPANG_GAPPA {
+workflow FASTA_NEWICK_EPANG_GAPPA {
 
     take:
-    ch_pp_data // channel: [ val(meta), [ file(queryseqfile), file(refseqfile), file(refphylogeny), file(hmmfile), val(model), val(alignmethod) ] ]
+    ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
 
     main:
 
