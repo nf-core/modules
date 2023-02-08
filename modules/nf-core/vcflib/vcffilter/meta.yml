@@ -1,7 +1,10 @@
 name: "vcflib_vcffilter"
 description: write your description here
 keywords:
-  - sort
+  - filter
+  - variant
+  - vcf
+  - quality
 tools:
   - "vcflib":
       description: "Command line tools for parsing and manipulating VCF files."
@@ -21,6 +24,10 @@ input:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
+  - tbi:
+      type: file
+      description: Index file
+      pattern: "*.{tbi}"
 
 output:
   - meta:

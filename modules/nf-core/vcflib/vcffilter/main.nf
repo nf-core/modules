@@ -8,7 +8,7 @@ process VCFLIB_VCFFILTER {
         'quay.io/biocontainers/vcflib:1.0.3--ha025227_0' }"
 
     input:
-    tuple val(meta),  path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
