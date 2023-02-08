@@ -16,15 +16,17 @@ process MINDAGAP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     python /mindagap/mindagap.py \\
+        $args \\
         $tiff \\
-        $args
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mindagap: \$(python ./mindagap.py test -v))
+        mindagap: \$(python /mindagap/mindagap.py test -v)
     END_VERSIONS
     """
 }

@@ -2,7 +2,8 @@ name: "mindagap"
 description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted values.
 keywords:
   - imaging
-  - fill_grid_lines
+  - resolve_bioscience
+  - spatial_transcriptomics
 tools:
   - "mindagap":
       description: ""
@@ -20,7 +21,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - tiff:
       type: file
-      description: tiff file
+      description: A tiffile containing gridlines as produced by Molecular Cartography imaging.
       pattern: "*.{tiff}"
 
 output:
