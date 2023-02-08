@@ -1,0 +1,11 @@
+- name: cooltools eigscis test_cooltools_eigscis
+  command: nextflow run ./tests/modules/nf-core/cooltools/eigscis -entry test_cooltools_eigscis -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooltools/eigscis/nextflow.config
+  tags:
+    - cooltools
+    - cooltools/eigscis
+  files:
+    - path: output/cooltools/test.cis.lam.txt
+      md5sum: 14081020fcd05d0d5810320d4a9ebd94
+    - path: output/cooltools/test.cis.vecs.tsv
+      md5sum: 4df7446be847c754f0834f412a08eb0c
+    - path: output/cooltools/versions.yml

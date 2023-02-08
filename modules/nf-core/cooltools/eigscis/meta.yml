@@ -1,0 +1,65 @@
+name: "cooltools_eigscis"
+description: Perform eigen value decomposition on a cooler matrix
+keywords:
+  - sort
+tools:
+  - "cooltools":
+      description: "Analysis tools for genomic interaction data stored in .cool format"
+      homepage: "https://cooltools.readthedocs.io"
+      documentation: "https://cooltools.readthedocs.io"
+      tool_dev_url: "https://github.com/open2c/cooltools"
+      doi: "10.5281/zenodo.7563392"
+      licence: "['MIT']"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:5000  ]
+  # cool files
+  - cool:
+      type: file
+      description: |
+        cooler file. The paths to a .cool file with a balanced Hi-C map.
+        Use the '::' syntax to specify a group path in a multicooler file.
+      pattern: "*.{cool}"
+
+  - resolution:
+      type: value
+      description: Resolution
+
+  - fasta:
+      type: file
+      description: fasta file of the genome
+
+  - chromsizes:
+      type: file
+      description: chromosomes sies file of the genome
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - results:
+      type: file
+      description: output files of cooltools `eigs-cis`
+
+  - bigwig:
+      type: file
+      description: bigwig file output by the tool
+      pattern: "*.bw"
+
+authors:
+  - "@jianhong"
