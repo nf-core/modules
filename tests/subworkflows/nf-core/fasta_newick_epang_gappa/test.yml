@@ -1,7 +1,6 @@
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_hmmer
   command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_hmmer -c ./tests/config/nextflow.config
   tags:
-    - fasta_newick_epang_gappa
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
     - hmmer/hmmbuild
@@ -18,18 +17,22 @@
     - path: output/hmmer/hmmer.query.hmmalign.masked.afa.gz
     - path: output/hmmer/hmmer.ref.hmmalign.masked.afa.gz
     - path: output/hmmer/hmmer.ref.hmmbuild.txt
-      contains: [ 'hmmer.ref              138    88    80     1.71  0.707' ]
+      contains: ["hmmer.ref              138    88    80     1.71  0.707"]
     - path: output/hmmer/hmmer.ref.hmm.gz
     - path: output/hmmer/versions.yml
     - path: output/epang/epa_result.jplace.gz
-      contains: ['"invocation": "epa-ng --model LG --threads 2 --query hmmer.query.hmmalign.masked.afa.gz --ref-msa hmmer.ref.hmmalign.masked.afa.gz --tree PF14720_seed.ft.LGCAT.newick "']
+      contains:
+        [
+          '"invocation": "epa-ng --model LG --threads 2 --query hmmer.query.hmmalign.masked.afa.gz --ref-msa hmmer.ref.hmmalign.masked.afa.gz --tree PF14720_seed.ft.LGCAT.newick "',
+        ]
     - path: output/epang/hmmer.epa_info.log
-      contains: [
-        'Query file: hmmer.query.hmmalign.masked.afa.gz',
-        'Tree file: PF14720_seed.ft.LGCAT.newick',
-        'Reference MSA: hmmer.ref.hmmalign.masked.afa.gz',
-        'Specified model: LG'
-      ]
+      contains:
+        [
+          "Query file: hmmer.query.hmmalign.masked.afa.gz",
+          "Tree file: PF14720_seed.ft.LGCAT.newick",
+          "Reference MSA: hmmer.ref.hmmalign.masked.afa.gz",
+          "Specified model: LG",
+        ]
     - path: output/epang/versions.yml
     - path: output/gappa/gappa_taxonomy.tsv
       md5sum: 9fb30dd6893e5a968f4403ad3c035bd2
@@ -44,12 +47,11 @@
     - path: output/gappa/hmmer.taxonomy.sativa.tsv
       md5sum: 658c127b0f3a08e6f684fb2d000c25ce
     - path: output/gappa/versions.yml
-      contains: [ 'gappa: 0.8.0' ]
+      contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_mafft
   command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_mafft -c ./tests/config/nextflow.config
   tags:
-    - fasta_newick_epang_gappa
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
     - hmmer/hmmbuild
@@ -66,16 +68,16 @@
     - path: output/mafft/mafft.fas
       md5sum: 5a41d3443ea56b4b9105d8190043e37e
     - path: output/mafft/versions.yml
-      contains: [ 'mafft: 7.508' ]
+      contains: ["mafft: 7.508"]
     - path: output/epang/mafft.epa_info.log
-      contains: [ 
-        'Query file: mafft.query.fasta.gz',
-        'INFO 3 Sequences done!'
-      ]
+      contains: ["Query file: mafft.query.fasta.gz", "INFO 3 Sequences done!"]
     - path: output/epang/versions.yml
-      contains: [ 'epang: 0.3.8' ]
+      contains: ["epang: 0.3.8"]
     - path: output/epang/mafft.epa_result.jplace.gz
-      contains: [ 'epa-ng --model LG --threads 2 --query mafft.query.fasta.gz --ref-msa mafft.reference.fasta.gz --tree PF14720_seed.ft.LGCAT.newick' ]
+      contains:
+        [
+          "epa-ng --model LG --threads 2 --query mafft.query.fasta.gz --ref-msa mafft.reference.fasta.gz --tree PF14720_seed.ft.LGCAT.newick",
+        ]
     - path: output/gappa/mafft.taxonomy.krona.profile
       md5sum: 03799f39941faf4710cc60904c44b41e
     - path: output/gappa/mafft.taxonomy.labelled_tree.newick
@@ -87,12 +89,11 @@
     - path: output/gappa/mafft.taxonomy.sativa.tsv
       md5sum: 64827e85b7f57ef14bad7d2286b8c6ea
     - path: output/gappa/versions.yml
-      contains: [ 'gappa: 0.8.0' ]
+      contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_nucl_hmmer
   command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_nucl_hmmer -c ./tests/config/nextflow.config
   tags:
-    - fasta_newick_epang_gappa
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
     - hmmer/hmmbuild
@@ -108,7 +109,10 @@
   files:
     - path: output/epang/nucl_hmmer.epa_info.log
     - path: output/epang/nucl_hmmer.epa_result.jplace.gz
-      contains: [ 'epa-ng --model GTR+F+I+I+R3 --threads 2 --query nucl_hmmer.query.hmmalign.masked.afa.gz --ref-msa nucl_hmmer.ref.hmmalign.masked.afa.gz --tree cyanos_16s.newick' ]
+      contains:
+        [
+          "epa-ng --model GTR+F+I+I+R3 --threads 2 --query nucl_hmmer.query.hmmalign.masked.afa.gz --ref-msa nucl_hmmer.ref.hmmalign.masked.afa.gz --tree cyanos_16s.newick",
+        ]
     - path: output/epang/nucl_hmmer.query.hmmalign.masked.afa.gz
       md5sum: 3f1b27f66aae7a74090a00fef6a488c8
     - path: output/epang/nucl_hmmer.ref.hmmalign.masked.afa.gz
@@ -123,7 +127,7 @@
     - path: output/gappa/nucl_hmmer.heattree.tree.phyloxml
     - path: output/gappa/nucl_hmmer.heattree.tree.svg
     - path: output/gappa/versions.yml
-      contains: [ 'gappa: 0.8.0' ]
+      contains: ["gappa: 0.8.0"]
     - path: output/hmmer/nucl_hmmer.query.hmmalign.masked.afa.gz
       md5sum: 3f1b27f66aae7a74090a00fef6a488c8
     - path: output/hmmer/nucl_hmmer.query.hmmalign.masked.sthlm.gz
@@ -138,7 +142,7 @@
       md5sum: 7d0e1541e604629ae509869a8732098f
     - path: output/hmmer/nucl_hmmer.ref.hmmbuild.txt
     - path: output/hmmer/nucl_hmmer.ref.hmm.gz
-      contains: [ 'LENG  1373' ]
+      contains: ["LENG  1373"]
     - path: output/hmmer/nucl_hmmer.ref.unaligned.afa.gz
       md5sum: 0ad57c045d2b33d9d907b34e4b44fe4c
     - path: output/hmmer/versions.yml
