@@ -24,8 +24,8 @@ input:
       description: TBI index file
       pattern: "*.{.vcf.gz.tbi}"
   - tiledb_array_uri:
-      type: path
-      description: Path to TileDB-VCF URI
+      type: string
+      description: String with the path to TileDB-VCF URI
       pattern: "/path/to/uri"
 
 output:
