@@ -9,7 +9,7 @@ process TILEDBVCF_STORE {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path(tiledb_array_uri)
+    tuple val(meta), val(tiledb_array_uri)
 
     output:
     tuple val(meta), path("${updated_db}")    , optional:true, emit: updateddb
