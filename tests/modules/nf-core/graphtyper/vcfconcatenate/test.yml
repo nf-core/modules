@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml graphtyper/vcfconcatenate
-- name: "graphtyper vcfconcatenate"
+- name: graphtyper vcfconcatenate test_graphtyper_vcfconcatenate
   command: nextflow run ./tests/modules/nf-core/graphtyper/vcfconcatenate -entry test_graphtyper_vcfconcatenate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/vcfconcatenate/nextflow.config
   tags:
-    - "graphtyper"
-    - "graphtyper/vcfconcatenate"
+    - graphtyper
+    - graphtyper/vcfconcatenate
   files:
-    - path: "output/graphtyper/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/graphtyper/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/graphtyper/test.concatenated.vcf.gz
+      contains: ["FORMAT	data/genomics/sarscov2/bam/test_paired_end.sorted.bam"]
+    - path: output/graphtyper/test.concatenated.vcf.gz.tbi
+    - path: output/graphtyper/versions.yml

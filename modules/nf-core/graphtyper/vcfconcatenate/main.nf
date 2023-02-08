@@ -12,7 +12,8 @@ process GRAPHTYPER_VCFCONCATENATE {
 
     output:
     tuple val(meta), path("*.concatenated.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.tbi")                , emit: tbi
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

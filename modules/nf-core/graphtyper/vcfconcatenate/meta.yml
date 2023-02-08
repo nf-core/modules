@@ -22,7 +22,7 @@ input:
         e.g. [ id:'test' ]
   - vcf:
       type: file
-      description: VCF file
+      description: VCF files
       pattern: "*.{vcf,vcf.gz}"
 
 output:
@@ -37,8 +37,12 @@ output:
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: Concatenate VCF files
+      description: Concatenated VCF file
       pattern: "*.{vcf.gz}"
+  - tbi:
+      type: file
+      description: Concatenate VCF file index
+      pattern: "*.{tbi}"
 
 authors:
   - "@zachary-foster"
