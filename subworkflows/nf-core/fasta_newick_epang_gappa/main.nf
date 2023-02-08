@@ -27,11 +27,11 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_mafft_data = ch_pp_data.filter { it.data.alignmethod == 'mafft' }
 
     // 1.a.1 HMMER alignment: For entries that do not specify an hmm file, build one to use for alignment
-    HMMER_HMMBUILD ( 
+    HMMER_HMMBUILD (
         ch_hmmer_data
             .filter { ! it.data.hmmfile }
-            .map { [ it.meta, it.data.refseqfile ] }, 
-        [] 
+            .map { [ it.meta, it.data.refseqfile ] },
+        []
     )
     // 1.a.2 This handles mixed input where some samples have hmmfile set, while others don't (sample sheet input)
     ch_hmm = Channel.empty()
@@ -45,10 +45,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(HMMER_HMMBUILD.out.versions.first())
 
     // 1.b For entries that do not specify an hmm file, "unalign" the reference sequences before they can be aligned to the hmm.
-    HMMER_UNALIGNREF ( 
+    HMMER_UNALIGNREF (
         ch_hmmer_data
             .filter { ! it.data.hmmfile }
-            .map { [ it.meta, it.data.refseqfile ] } 
+            .map { [ it.meta, it.data.refseqfile ] }
     )
     ch_hmmer_unaligned = Channel.empty()
         .mix(HMMER_UNALIGNREF.out.seqreformated.map { [ it[0], it[1] ] })
@@ -65,7 +65,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         .mix(ch_hmmer_unaligned)
         .groupTuple(size: 2, sort: { a, b -> a =~ /\.hmm/ ? 1 : -1 })
 
-    HMMER_HMMALIGNREF ( 
+    HMMER_HMMALIGNREF (
         ch_hmmer_alignref.map { [ it[0], it[1][0] ] },
         ch_hmmer_alignref.map { it[1][1] }
     )
@@ -132,7 +132,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(GAPPA_GRAFT.out.versions)
 
     // 8. Classify
-    GAPPA_ASSIGN ( 
+    GAPPA_ASSIGN (
         EPANG_PLACE.out.jplace
             .map { [ [ id:it[0].id ], it[1] ] }
             .join( ch_pp_data.map { [ it.meta, it.data.taxonomy ] } )
