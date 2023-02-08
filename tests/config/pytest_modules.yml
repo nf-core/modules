@@ -18,10 +18,6 @@ adapterremovalfixprefix:
   - modules/nf-core/adapterremovalfixprefix/**
   - tests/modules/nf-core/adapterremovalfixprefix/**
 
-admixture:
-  - modules/nf-core/admixture/**
-  - tests/modules/nf-core/admixture/**
-
 affy/justrma:
   - modules/nf-core/affy/justrma/**
   - tests/modules/nf-core/affy/justrma/**
@@ -533,10 +529,6 @@ calder2:
   - modules/nf-core/calder2/**
   - tests/modules/nf-core/calder2/**
 
-canu:
-  - modules/nf-core/canu/**
-  - tests/modules/nf-core/canu/**
-
 cat/cat:
   - modules/nf-core/cat/cat/**
   - tests/modules/nf-core/cat/cat/**
@@ -650,10 +642,6 @@ cnvkit/genemetrics:
 cnvkit/reference:
   - modules/nf-core/cnvkit/reference/**
   - tests/modules/nf-core/cnvkit/reference/**
-
-cnvkit/target:
-  - modules/nf-core/cnvkit/target/**
-  - tests/modules/nf-core/cnvkit/target/**
 
 concoct/concoct:
   - modules/nf-core/concoct/concoct/**
@@ -931,13 +919,9 @@ endorspy:
   - modules/nf-core/endorspy/**
   - tests/modules/nf-core/endorspy/**
 
-ensemblvep/download:
-  - modules/nf-core/ensemblvep/download/**
-  - tests/modules/nf-core/ensemblvep/download/**
-
-ensemblvep/vep:
-  - modules/nf-core/ensemblvep/vep/**
-  - tests/modules/nf-core/ensemblvep/vep/**
+ensemblvep:
+  - modules/nf-core/ensemblvep/**
+  - tests/modules/nf-core/ensemblvep/**
 
 entrezdirect/esearch:
   - modules/nf-core/entrezdirect/esearch/**
@@ -1629,10 +1613,6 @@ idr:
   - modules/nf-core/idr/**
   - tests/modules/nf-core/idr/**
 
-igv/js:
-  - modules/nf-core/igv/js/**
-  - tests/modules/nf-core/igv/js/**
-
 imputeme/vcftoprs:
   - modules/nf-core/imputeme/vcftoprs/**
   - tests/modules/nf-core/imputeme/vcftoprs/**
@@ -1805,10 +1785,6 @@ legsta:
 lima:
   - modules/nf-core/lima/**
   - tests/modules/nf-core/lima/**
-
-limma/differential:
-  - modules/nf-core/limma/differential/**
-  - tests/modules/nf-core/limma/differential/**
 
 lissero:
   - modules/nf-core/lissero/**
@@ -2839,13 +2815,9 @@ snpdists:
   - modules/nf-core/snpdists/**
   - tests/modules/nf-core/snpdists/**
 
-snpeff/download:
-  - modules/nf-core/snpeff/download/**
-  - tests/modules/nf-core/snpeff/download/**
-
-snpeff/snpeff:
-  - modules/nf-core/snpeff/snpeff/**
-  - tests/modules/nf-core/snpeff/snpeff/**
+snpeff:
+  - modules/nf-core/snpeff/**
+  - tests/modules/nf-core/snpeff/**
 
 snpsift/split:
   - modules/nf-core/snpsift/split/**
@@ -3067,9 +3039,9 @@ subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
 
-subworkflows/vcf_annotate_ensemblvep:
-  - subworkflows/nf-core/vcf_annotate_ensemblvep/**
-  - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
+subworkflows/vcf_annotate_ensembl_vep:
+  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
 
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
@@ -3082,6 +3054,10 @@ subworkflows/vcf_extract_relate_somalier:
 subworkflows/vcf_gather_bcftools:
   - subworkflows/nf-core/vcf_gather_bcftools/**
   - tests/subworkflows/nf-core/vcf_gather_bcftools/**
+
+subworkflows/vcf_impute_glimpse:
+  - subworkflows/nf-core/vcf_impute_glimpse/**
+  - tests/subworkflows/nf-core/vcf_impute_glimpse/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
@@ -3126,10 +3102,6 @@ tabix/tabix:
 tailfindr:
   - modules/nf-core/tailfindr/**
   - tests/modules/nf-core/tailfindr/**
-
-taxpasta/standardise:
-  - modules/nf-core/taxpasta/standardise/**
-  - tests/modules/nf-core/taxpasta/standardise/**
 
 tbprofiler/profile:
   - modules/nf-core/tbprofiler/profile/**
@@ -3271,10 +3243,6 @@ vg/construct:
 vg/deconstruct:
   - modules/nf-core/vg/deconstruct/**
   - tests/modules/nf-core/vg/deconstruct/**
-
-vg/index:
-  - modules/nf-core/vg/index/**
-  - tests/modules/nf-core/vg/index/**
 
 vsearch/cluster:
   - modules/nf-core/vsearch/cluster/**

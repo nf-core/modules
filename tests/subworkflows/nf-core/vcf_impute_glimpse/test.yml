@@ -1,0 +1,18 @@
+- name: vcf_impute_glimpse test_vcf_impute_glimpse
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_impute_glimpse -entry test_vcf_impute_glimpse -c ./tests/config/nextflow.config
+  tags:
+    - glimpse
+    - glimpse/chunk
+    - glimpse/ligate
+    - glimpse/phase
+    - subworkflows
+    - subworkflows/vcf_impute_glimpse
+  files:
+    - path: output/glimpse/input.txt
+      md5sum: bd8641d4c685b87c25d3e0e54963f44b
+    - path: output/glimpse/input_merged.vcf.gz
+      contains:
+        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/glimpse/input_phased.bcf
+      contains:
+        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
