@@ -5,8 +5,8 @@ include { GLIMPSE_LIGATE     } from '../../../modules/nf-core/glimpse/ligate/mai
 workflow VCF_IMPUTE_GLIMPSE {
 
     take:
-    ch_vcf // channel (mandatory): [ meta, vcf, csi, region ]
-    path_ref // path (mandatory): [ meta, vcf, csi ]
+    ch_vcf      // channel (mandatory): [ meta, vcf, csi, region ]
+    path_ref    // path    (mandatory): [ meta, vcf, csi ]
     path_map    // path     (optional): path to map
     path_infos  // path     (optional): sample infos
 
@@ -21,12 +21,12 @@ workflow VCF_IMPUTE_GLIMPSE {
                                 .collect()
                                 .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "	", skip: 0)
                                 .map { [it["RegionIn"][1], it["RegionOut"][1]]}
-    
+
     phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output)
 
     GLIMPSE_PHASE ( phase_input, path_ref, path_map, path_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
-    
+
     all_files = GLIMPSE_PHASE.out.phased_variant
                     .map { it[1] }
                     .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
@@ -42,4 +42,3 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     versions         = ch_versions                           // channel: [ versions.yml ]
 }
-
