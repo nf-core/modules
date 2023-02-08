@@ -4,7 +4,7 @@ process TILEDBVCF_STORE {
     label 'process_medium'
 
     conda "tiledb::tiledbvcf-py=0.21.0"
-    container "${ 'tiledb/tiledbvcf-cli:0.21.0' }"
+    container "tiledb/tiledbvcf-cli:0.21.0"
     containerOptions '--entrypoint ""'
 
     input:
