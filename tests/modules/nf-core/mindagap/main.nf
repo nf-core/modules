@@ -8,7 +8,7 @@ workflow test_mindagap {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('/Users/florian_wuennemann/1_Projects/nf_core/test-datasets/data/spatialomics/tiff/mindagap.mouse_heart.wga.tiff', checkIfExists: true)
+        file(params.test_data['spatialomics']['tiff']['mouse_heart_wga_tiff'], checkIfExists: true)
     ]
 
     MINDAGAP ( input )
