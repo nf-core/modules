@@ -8,7 +8,7 @@ process TILEDBVCF_CREATE {
     containerOptions '--entrypoint ""'
 
     input:
-    val(uri)
+    tuple val(meta), val(uri)
 
     output:
     val("${uri}")                 , emit: uri
