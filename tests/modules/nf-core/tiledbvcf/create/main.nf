@@ -6,7 +6,10 @@ include { TILEDBVCF_CREATE } from '../../../../../modules/nf-core/tiledbvcf/crea
 
 workflow test_tiledbvcf_create {
 
-    input = Channel.value('my_vcf_dataset')
+    input = [
+        [id: 'test'],
+        'my_vcf_dataset'
+    ]
 
     TILEDBVCF_CREATE ( input )
 }

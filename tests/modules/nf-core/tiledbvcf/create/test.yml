@@ -1,7 +1,7 @@
 - name: tiledbvcf create test_tiledbvcf_create
   command: nextflow run ./tests/modules/nf-core/tiledbvcf/create -entry test_tiledbvcf_create -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiledbvcf/create/nextflow.config
   tags:
-    - tiledbvcf/create
     - tiledbvcf
+    - tiledbvcf/create
   files:
     - path: output/tiledbvcf/versions.yml

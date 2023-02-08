@@ -13,7 +13,11 @@ workflow test_tiledbvcf_store {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    ch_input = Channel.value('my_vcf_dataset')
+
+    ch_input = [
+        [id: 'test_datastore'],
+        'my_vcf_dataset'
+    ]
 
     TILEDBVCF_CREATE ( ch_input )
 
