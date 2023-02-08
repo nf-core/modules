@@ -4,7 +4,7 @@ process TILEDBVCF_CREATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "tiledb::tiledbvcf-py=0.21.0" : null)
-    container "${ 'tiledb/tiledbvcf-cli:0.21.0' }"
+    container "tiledb/tiledbvcf-cli:0.21.0"
     containerOptions '--entrypoint ""'
 
     input:
