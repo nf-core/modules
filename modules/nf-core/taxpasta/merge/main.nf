@@ -5,7 +5,7 @@ process TAXPASTA_MERGE {
     conda "bioconda::taxpasta=0.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/taxpasta:0.1.1--pyhdfd78af_0':
-        'https://quay.io/repository/biocontainers/taxpasta:0.1.1--pyhdfd78af_0' }"
+        'quay.io/biocontainers/taxpasta:0.1.1--pyhdfd78af_0' }"
 
 
     input:
@@ -28,7 +28,7 @@ process TAXPASTA_MERGE {
     taxpasta merge \\
         $args \\
         $profile
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         taxpasta: \$(taxpasta --version)
