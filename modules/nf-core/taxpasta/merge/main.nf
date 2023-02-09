@@ -13,15 +13,19 @@ process TAXPASTA_MERGE {
     path samplesheet
 
     output:
-    tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: profiles
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: merged_profiles
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Taxpasta requires a --profiler option and will fail without it.
-    // That needs to be configured since we can't set a default here.
+    // N.B.: Taxpasta requires a --profiler option and will fail without it.
+    // This must be specified via a `nextflow.config` or `modules.config`, for
+    // example, as "--profiler kraken2". Additionally, it requires a --output
+    // option with the output file name. The desired format will be parsed from
+    // the name and should correspond to the output pattern specified above,
+    // e.g., "--output ${task.ext.prefix}.tsv".
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''

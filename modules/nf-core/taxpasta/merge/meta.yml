@@ -1,8 +1,13 @@
 name: "taxpasta_merge"
 description: Standardise and merge two or more taxonomic profiles into a single table
 keywords:
+  - taxonomic profile
   - standardise
-  - merge
+  - standardisation
+  - metagenomics
+  - taxonomic profiling
+  - otu tables
+  - taxon tables
 tools:
   - "taxpasta":
       description: "TAXonomic Profile Aggregation and STAndardisation"
@@ -20,11 +25,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - profile:
       type: file
-      description: profiler output file
-      pattern: "*.{txt,tsv,out}{.gz}"
+      description: A list of taxonomic profiler output files (typically in text format, mandatory)
+      pattern: "*.{tsv,csv,arrow,parquet,biom}"
   - samplesheet:
       type: file
-      description: Directory containing at a minimum nodes.dmp and names.dmp files
+      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
       pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet}"
 
 output:
@@ -37,9 +42,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - profiles:
+  - merged_profiles:
       type: file
-      description: The desired output file
+      description: Output file with standardised multiple profiles in one go and have all profiles combined into a single table.
       pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet,biom}"
 
 authors:
