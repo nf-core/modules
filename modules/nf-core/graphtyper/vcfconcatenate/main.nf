@@ -11,7 +11,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.concatenated.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")                , emit: tbi
     path "versions.yml"                           , emit: versions
 
@@ -21,12 +21,15 @@ process GRAPHTYPER_VCFCONCATENATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$vcf".contains("${prefix}.vcf.gz")) {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
     """
     graphtyper vcf_concatenate \\
         $vcf \\
         $args \\
         --write_tbi \\
-        --output=${prefix}.concatenated.vcf.gz
+        --output=${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
