@@ -1,4 +1,4 @@
-include { HMMER_HMMBUILD as HMMER_HMMBUILD          } from '../../../modules/nf-core/hmmer/hmmbuild/main'
+include { HMMER_HMMBUILD                            } from '../../../modules/nf-core/hmmer/hmmbuild/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../../modules/nf-core/hmmer/hmmalign/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../../modules/nf-core/hmmer/hmmalign/main'
 include { HMMER_ESLALIMASK as HMMER_MASKREF         } from '../../../modules/nf-core/hmmer/eslalimask/main'
@@ -19,7 +19,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
 
     main:
-
     ch_versions = Channel.empty()
 
     // Divide the input channel into two: One for hmmer and one for mafft alignment
@@ -150,7 +149,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     taxonomy_profile    = GAPPA_ASSIGN.out.profile
     taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
     heattree            = GAPPA_HEATTREE.out.svg
-
     versions            = ch_versions                     // channel: [ versions.yml ]
 }
 

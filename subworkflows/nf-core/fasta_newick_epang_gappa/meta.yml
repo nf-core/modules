@@ -36,11 +36,11 @@ input:
       pattern: "*.{newick,tree}"
   - hmmfile:
       type: file
-      description: HMM file to use for alignment; implies that refseqfile is not aligned.
+      description: HMM file to use for alignment; implies that refseqfile is not aligned. Optional.
       pattern: "*.{hmm,HMM,hmm.gz,HMM.gz}"
   - model:
       type: string
-      description: Phylogenetic model to use in placement
+      description: Phylogenetic model to use in placement, e.g. 'LG+F' or 'GTR+I+F'
   - alignmethod:
       type: string
       description: Method used for alignment, 'hmmer' or 'mafft'
