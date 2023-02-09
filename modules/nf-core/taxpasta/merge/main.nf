@@ -28,7 +28,7 @@ process TAXPASTA_MERGE {
     taxpasta merge \\
         $args \\
         $profile
-
+        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         taxpasta: \$(taxpasta --version)
