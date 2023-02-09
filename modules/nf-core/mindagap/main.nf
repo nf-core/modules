@@ -9,7 +9,7 @@ process MINDAGAP {
 
     output:
     tuple val(meta), path("*.tiff"), emit: tiff
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
