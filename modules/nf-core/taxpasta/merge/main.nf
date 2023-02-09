@@ -11,6 +11,7 @@ process TAXPASTA_MERGE {
     input:
     tuple val(meta), path(profile)
     path samplesheet
+    path taxonomy
 
     output:
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: merged_profiles
