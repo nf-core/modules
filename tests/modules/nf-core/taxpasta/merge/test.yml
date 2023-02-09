@@ -1,9 +1,10 @@
 - name: taxpasta merge test_taxpasta_merge
   command: nextflow run ./tests/modules/nf-core/taxpasta/merge -entry test_taxpasta_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/taxpasta/merge/nextflow.config
   tags:
-    - taxpasta/merge
     - taxpasta
+    - taxpasta/merge
   files:
     - path: output/taxpasta/kraken2.tsv
-      contains: ["taxonomy_id	test2_kraken	test1_kraken"]
+      contains:
+        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/taxpasta/versions.yml

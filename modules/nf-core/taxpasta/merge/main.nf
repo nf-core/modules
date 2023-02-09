@@ -10,8 +10,8 @@ process TAXPASTA_MERGE {
 
     input:
     tuple val(meta), path(profile)
-    path samplesheet
     path taxonomy
+    //path samplesheet
 
     output:
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: merged_profiles
@@ -30,9 +30,11 @@ process TAXPASTA_MERGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
+    //def samplesheet_input = samplesheet ? '-s ${samplesheet}' : '$profile'
     """
     taxpasta merge \\
         $args \\
+        $taxonomy_option \\
         $profile
 
     cat <<-END_VERSIONS > versions.yml
