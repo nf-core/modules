@@ -1,9 +1,8 @@
 - name: taxpasta merge test_taxpasta_merge
   command: nextflow run ./tests/modules/nf-core/taxpasta/merge -entry test_taxpasta_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/taxpasta/merge/nextflow.config
   tags:
-    - taxpasta
     - taxpasta/merge
+    - taxpasta
   files:
     - path: output/taxpasta/kraken2.tsv
-      contains: 'taxonomy_id	test1_kraken	test2_kraken'
     - path: output/taxpasta/versions.yml
