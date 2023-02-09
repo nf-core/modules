@@ -26,10 +26,8 @@ workflow test_glimpse_ligate {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
         []) // [meta, vcf, index, region_in, region_out], map, sample, [meta, ref, index], [meta, txt]
 
-    all_files = GLIMPSE_PHASE.output.phased_variant
-                .map { it[1] }
-                .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
+    ligate_input = GLIMPSE_PHASE.output.phased_variant
+                                .groupTuple()
 
-    ligate_input=Channel.of([[ id:'input', single_end:false ]]).combine(all_files)
     GLIMPSE_LIGATE ( ligate_input )
 }

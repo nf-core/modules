@@ -6,9 +6,9 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     take:
     ch_vcf      // channel (mandatory): [ meta, vcf, csi, region ]
-    path_ref    // path    (mandatory): [ meta, vcf, csi ]
-    path_map    // path     (optional): path to map
-    path_infos  // path     (optional): sample infos
+    val_ref     // channel (mandatory): [ meta, vcf, csi ]
+    val_map     // channel  (optional): path to map
+    val_infos   // channel  (optional): sample infos
 
     main:
 
@@ -24,15 +24,13 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output)
 
-    GLIMPSE_PHASE ( phase_input, path_ref, path_map, path_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
+    GLIMPSE_PHASE ( phase_input, val_ref, val_map, val_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
-    all_files = GLIMPSE_PHASE.out.phased_variant
-                    .map { it[1] }
-                    .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
-
-    ligate_input = Channel.of([[ id:'input', single_end:false ]]).combine(all_files)
-    GLIMPSE_LIGATE ( ligate_input )
+    ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
+                    
+    ligate_input.view()
+    GLIMPSE_LIGATE ( ligate_input.collect() )
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
 
     emit:
