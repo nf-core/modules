@@ -24,6 +24,7 @@ process TAXPASTA_MERGE {
     // That needs to be configured since we can't set a default here.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
     taxpasta merge \\
         $args \\
