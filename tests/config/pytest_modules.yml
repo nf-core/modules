@@ -935,9 +935,13 @@ endorspy:
   - modules/nf-core/endorspy/**
   - tests/modules/nf-core/endorspy/**
 
-ensemblvep:
-  - modules/nf-core/ensemblvep/**
-  - tests/modules/nf-core/ensemblvep/**
+ensemblvep/download:
+  - modules/nf-core/ensemblvep/download/**
+  - tests/modules/nf-core/ensemblvep/download/**
+
+ensemblvep/vep:
+  - modules/nf-core/ensemblvep/vep/**
+  - tests/modules/nf-core/ensemblvep/vep/**
 
 entrezdirect/esearch:
   - modules/nf-core/entrezdirect/esearch/**
@@ -1628,6 +1632,10 @@ ichorcna/run:
 idr:
   - modules/nf-core/idr/**
   - tests/modules/nf-core/idr/**
+
+igv/js:
+  - modules/nf-core/igv/js/**
+  - tests/modules/nf-core/igv/js/**
 
 imputeme/vcftoprs:
   - modules/nf-core/imputeme/vcftoprs/**
@@ -2543,6 +2551,10 @@ rseqc/tin:
   - modules/nf-core/rseqc/tin/**
   - tests/modules/nf-core/rseqc/tin/**
 
+rtgtools/format:
+  - modules/nf-core/rtgtools/format/**
+  - tests/modules/nf-core/rtgtools/format/**
+
 rtgtools/pedfilter:
   - modules/nf-core/rtgtools/pedfilter/**
   - tests/modules/nf-core/rtgtools/pedfilter/**
@@ -2835,9 +2847,13 @@ snpdists:
   - modules/nf-core/snpdists/**
   - tests/modules/nf-core/snpdists/**
 
-snpeff:
-  - modules/nf-core/snpeff/**
-  - tests/modules/nf-core/snpeff/**
+snpeff/download:
+  - modules/nf-core/snpeff/download/**
+  - tests/modules/nf-core/snpeff/download/**
+
+snpeff/snpeff:
+  - modules/nf-core/snpeff/snpeff/**
+  - tests/modules/nf-core/snpeff/snpeff/**
 
 snpsift/split:
   - modules/nf-core/snpsift/split/**
@@ -3059,9 +3075,9 @@ subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
 
-subworkflows/vcf_annotate_ensembl_vep:
-  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
-  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+subworkflows/vcf_annotate_ensemblvep:
+  - subworkflows/nf-core/vcf_annotate_ensemblvep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
 
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
@@ -3118,6 +3134,10 @@ tabix/tabix:
 tailfindr:
   - modules/nf-core/tailfindr/**
   - tests/modules/nf-core/tailfindr/**
+
+taxpasta/standardise:
+  - modules/nf-core/taxpasta/standardise/**
+  - tests/modules/nf-core/taxpasta/standardise/**
 
 tbprofiler/profile:
   - modules/nf-core/tbprofiler/profile/**
@@ -3259,6 +3279,10 @@ vg/construct:
 vg/deconstruct:
   - modules/nf-core/vg/deconstruct/**
   - tests/modules/nf-core/vg/deconstruct/**
+
+vg/index:
+  - modules/nf-core/vg/index/**
+  - tests/modules/nf-core/vg/index/**
 
 vsearch/cluster:
   - modules/nf-core/vsearch/cluster/**
