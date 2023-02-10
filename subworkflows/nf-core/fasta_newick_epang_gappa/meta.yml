@@ -25,11 +25,11 @@ input:
         meta: val(meta),
         data: [
           alignmethod:  'hmmer',
-          queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
-          refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
-          refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
+          queryseqfile: path("*.faa"),
+          refseqfile:   path("*.alnfaa"),
+          refphylogeny: path("*.newick"),
           model:        "LG",
-          taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
+          taxonomy:     path("*.tsv")
         ]
       ]
   - meta:
