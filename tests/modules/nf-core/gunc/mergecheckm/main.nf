@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { CHECKM_LINEAGEWF              } from '../../../../../modules/nf-core/checkm/lineagewf/main.nf'
-include { CHECKM_QA                     } from '../../../../../modules/nf-core/checkm/qa/main.nf'
-include { GUNC_RUN        } from '../../../../../modules/nf-core/gunc/run/main.nf'
-include { GUNC_DOWNLOADDB } from '../../../../../modules/nf-core/gunc/downloaddb/main.nf'
+include { CHECKM_LINEAGEWF } from '../../../../../modules/nf-core/checkm/lineagewf/main.nf'
+include { CHECKM_QA        } from '../../../../../modules/nf-core/checkm/qa/main.nf'
+include { GUNC_DOWNLOADDB  } from '../../../../../modules/nf-core/gunc/downloaddb/main.nf'
 include { GUNC_MERGECHECKM } from '../../../../../modules/nf-core/gunc/mergecheckm/main.nf'
+include { GUNC_RUN         } from '../../../../../modules/nf-core/gunc/run/main.nf'
 
 
 
