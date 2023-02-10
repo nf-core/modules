@@ -8,10 +8,9 @@ process GLIMPSE_PHASE {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-        tuple val(meta), path(input), path(input_index), val(input_region), val(output_region)
+        tuple val(meta) , path(input), path(input_index), val(input_region), val(output_region), val(index_region), path(samples_file)
         tuple val(meta2), path(reference), path(reference_index)
         path(map)
-        path(samples_file)
 
     output:
         tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
@@ -24,6 +23,7 @@ process GLIMPSE_PHASE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+    def file_index = index_region ?: "0"
 
     def map_command = map ? "--map $map" : ""
     def samples_file_command = samples_file ? "--samples-file $samples_file":""
@@ -40,7 +40,7 @@ process GLIMPSE_PHASE {
         $input_region_command \\
         $output_region_command \\
         --thread $task.cpus \\
-        --output ${prefix}_phased.${suffix}
+        --output ${prefix}${file_index}.phased.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
