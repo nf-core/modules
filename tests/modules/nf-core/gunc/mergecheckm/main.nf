@@ -7,10 +7,6 @@ include { CHECKM_QA        } from '../../../../../modules/nf-core/checkm/qa/main
 include { GUNC_DOWNLOADDB  } from '../../../../../modules/nf-core/gunc/downloaddb/main.nf'
 include { GUNC_MERGECHECKM } from '../../../../../modules/nf-core/gunc/mergecheckm/main.nf'
 include { GUNC_RUN         } from '../../../../../modules/nf-core/gunc/run/main.nf'
-
-
-
-
 workflow test_gunc_mergecheckm {
 
     input = [ [ id:'test', single_end:false ], // meta map
