@@ -54,7 +54,7 @@ jobs:
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
-            tags: ensemblvep
+            tags: ensemblvep/vep
           - profile: "conda"
             tags: fastk/fastk
           - profile: "conda"
@@ -85,6 +85,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
     steps:
