@@ -12,65 +12,41 @@ modules:
   - glimpse/ligate
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-
-  - input:
+  - ch_vcf:
       type: file
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-
-  - input_index:
-      type: file
-      description: Index file of the input VCF/BCF file containing genotype likelihoods.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-
-  - region:
-      type: string
-      description: |
+        Index file of the input VCF/BCF file containing genotype likelihoods.
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ meta, vcf, csi, region ]
 
-  - reference:
+  - ch_ref:
       type: file
-      description: Reference panel of haplotypes in VCF/BCF format.
-      pattern: "*.{vcf.gz,bcf.gz}"
+      description: |
+        Reference panel of haplotypes in VCF/BCF format.
+        Index file of the Reference panel file.
+        Structure: [ meta, vcf, csi ]
 
-  - reference_index:
-      type: file
-      description: Index file of the Reference panel file.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-
-  - map:
+  - ch_map:
       type: file
       description: File containing the genetic map.
-      pattern: "*.gmap"
+      Structure: [gmap]
 
-  - samples-file:
+  - ch_infos:
       type: file
       description: |
         File with sample names and ploidy information.
         One sample per line with a mandatory second column indicating ploidy (1 or 2).
         Sample names that are not present are assumed to have ploidy 2 (diploids).
         GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-      pattern: "*.{txt,tsv}"
+        Structure: [ txt ]
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-
   - chunk_chr:
       type: file
       description: Tab delimited output txt file containing buffer and imputation regions.
-      pattern: "*.{txt}"
+      Structure: [meta, txt]
 
   - phased_variants:
       type: file
@@ -78,12 +54,14 @@ output:
         Output VCF/BCF file containing genotype probabilities (GP field),
         imputed dosages (DS field), best guess genotypes (GT field),
         sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        Structure: [ val(meta), bcf ]
 
   - merged_variants:
       type: file
-      description: Output VCF/BCF file for the merged regions. Phased information (HS field) is updated accordingly for the full region.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+      description: |
+        Output VCF/BCF file for the merged regions.
+        Phased information (HS field) is updated accordingly for the full region.
+        Structure: [ val(meta), bcf ]
 
   - versions:
       type: file

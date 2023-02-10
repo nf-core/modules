@@ -21,7 +21,7 @@ process GLIMPSE_LIGATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
-    
+
     """
     printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
 

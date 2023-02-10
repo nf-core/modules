@@ -6,9 +6,9 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     take:
     ch_vcf      // channel (mandatory): [ meta, vcf, csi, region ]
-    val_ref     // channel (mandatory): [ meta, vcf, csi ]
-    val_map     // channel  (optional): path to map
-    val_infos   // channel  (optional): sample infos
+    ch_ref      // channel (mandatory): [ meta, vcf, csi ]
+    ch_map      // channel  (optional): path to map
+    ch_infos    // channel  (optional): sample infos
 
     main:
 
@@ -24,19 +24,19 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output)
 
-    GLIMPSE_PHASE ( phase_input, val_ref, val_map, val_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
+    GLIMPSE_PHASE ( phase_input, ch_ref, ch_map, ch_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
     ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
-                    
+
     ligate_input.view()
     GLIMPSE_LIGATE ( ligate_input.collect() )
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
 
     emit:
-    chunk_chr        = GLIMPSE_CHUNK.out.chunk_chr           // channel: [ val(meta), [ txt ] ]
-    merged_variants  = GLIMPSE_LIGATE.out.merged_variants    // channel: [ val(meta), [ bcf ] ]
-    phased_variants  = GLIMPSE_PHASE.out.phased_variant      // channel: [ val(meta), [ bcf ] ]
+    chunk_chr        = GLIMPSE_CHUNK.out.chunk_chr           // channel: [ val(meta), txt ]
+    merged_variants  = GLIMPSE_LIGATE.out.merged_variants    // channel: [ val(meta), bcf ]
+    phased_variants  = GLIMPSE_PHASE.out.phased_variant      // channel: [ val(meta), bcf ]
 
     versions         = ch_versions                           // channel: [ versions.yml ]
 }
