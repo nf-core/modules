@@ -28,7 +28,7 @@ process GLIMPSE_LIGATE {
         $args \\
         --input all_files.txt \\
         --thread $task.cpus \\
-        --output ${prefix}.merged.${suffix}
+        --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
