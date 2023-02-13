@@ -7,10 +7,11 @@ process HLALA_PREPAREGRAPH {
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
 
     input:
-    path(graph)
+        tuple val(meta), path(zipped_graph)
+
 
     output:
-    path(graph)        , emit: folder
+    path("${zipped_graph}")        , emit: graph
     path "versions.yml", emit: versions
 
     when:
@@ -18,12 +19,18 @@ process HLALA_PREPAREGRAPH {
 
     script:
     def args = task.ext.args ?: ''
+    def zipped = zipped_graph.toString().endsWith(".zip")
+    def unzipped_graph = zipped_graph ? zipped_graph.toString() - ~/\.zip$/: ""
+
+
     // OBS: the "../bin/HLA-LA" described in the documentation is found in the docker container in "/usr/local/opt/hla-la/bin/HLA-LA"
     """
+    unzip $zipped_graph
+
     /usr/local/opt/hla-la/bin/HLA-LA \\
         --action prepareGraph \\
-        --PRG_graph_dir $graph
-
+        --PRG_graph_dir $unzipped_graph
+        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hlala: 1.0.3

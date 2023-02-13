@@ -5,5 +5,9 @@ nextflow.enable.dsl = 2
 include { HLALA_PREPAREGRAPH } from '../../../../../modules/nf-core/hlala/preparegraph/main.nf'
 
 workflow test_hlala_preparegraph {
-    HLALA_PREPAREGRAPH ( Channel.fromPath("/home-link/iivow01/git/modules/hla_graph/PRG_MHC_GRCh38_withIMGT") )
+    input = [
+        [ id:'test'], // meta map
+        file(params.test_data['homo_sapiens']['genome']['prg_input'], checkIfExists: true)
+    ]
+    HLALA_PREPAREGRAPH ( input )
 }
