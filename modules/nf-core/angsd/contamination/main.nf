@@ -29,7 +29,6 @@ process ANGSD_CONTAMINATION {
         -p ${task.cpus} \
         2> ${prefix}.txt
 
-    
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
