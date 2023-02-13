@@ -19,10 +19,10 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - input:
+  - input_list:
       type: file
-      description: Text file containing the full list of files to ligate (one file per line)
-      pattern: "*.txt"
+      description: VCF/BCF file containing genotype probabilities (GP field).
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 output:
   - meta:
@@ -38,7 +38,9 @@ output:
 
   - merged_variants:
       type: file
-      description: Output VCF/BCF file for the merged regions. Phased information (HS field) is updated accordingly for the full region.
+      description: |
+        Output VCF/BCF file for the merged regions.
+        Phased information (HS field) is updated accordingly for the full region.
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:
