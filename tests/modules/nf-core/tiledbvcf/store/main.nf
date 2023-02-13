@@ -16,17 +16,12 @@ workflow test_tiledbvcf_store {
 
     ch_input = [
         [id: 'test_datastore'],
-        "my_vcf_dataset"
+        'my_vcf_dataset'
     ]
 
     TILEDBVCF_CREATE ( ch_input )
 
-    ch_uri = [
-        [id: 'test_datastore'],
-        "${params.outdir}/my_vcf_dataset"
-    ]
-
-    //ch_uri = TILEDBVCF_CREATE.out.uri
+    ch_uri = TILEDBVCF_CREATE.out.uri
 
     TILEDBVCF_STORE ( vcf_tbi, ch_uri )
 }
