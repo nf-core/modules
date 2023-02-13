@@ -5,7 +5,7 @@ include { GLIMPSE_LIGATE     } from '../../../modules/nf-core/glimpse/ligate/mai
 workflow VCF_IMPUTE_GLIMPSE {
 
     take:
-    ch_vcf      // channel (mandatory): [ meta, vcf, csi, region ]
+    ch_vcf      // channel (mandatory): [ meta, vcf, csi, region, sample ]
     ch_ref      // channel (mandatory): [ meta, vcf, csi ]
     ch_map      // channel  (optional): path to map
     ch_infos    // channel  (optional): sample infos
@@ -20,11 +20,11 @@ workflow VCF_IMPUTE_GLIMPSE {
     chunk_output = GLIMPSE_CHUNK.out.chunk_chr
                                 .collect()
                                 .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "	", skip: 0)
-                                .map { [it["RegionIn"][1], it["RegionOut"][1]]}
+                                .map { [it["RegionIn"][1], it["RegionOut"][1], it["ID"][1]]}
 
-    phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output)
-
-    GLIMPSE_PHASE ( phase_input, ch_ref, ch_map, ch_infos) // [meta, vcf, index, regionin, regionout], [meta, ref, index], map, sample
+    phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output).combine(ch_infos)
+    
+    GLIMPSE_PHASE ( phase_input, ch_ref, ch_map) // [meta, vcf, index, regionin, regionout, sample], [meta, ref, index], map
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
     ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
