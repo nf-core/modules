@@ -23,7 +23,7 @@ workflow VCF_IMPUTE_GLIMPSE {
                                 .map { [it["RegionIn"][1], it["RegionOut"][1], it["ID"][1]]}
 
     phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output).combine(ch_infos)
-    
+
     GLIMPSE_PHASE ( phase_input, ch_ref, ch_map) // [meta, vcf, index, regionin, regionout, sample], [meta, ref, index], map
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
