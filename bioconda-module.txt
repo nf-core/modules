@@ -1,0 +1,1000 @@
+ 1004  bash testmodule.sh 
+ 1005  cd ../mk-rejoin-chromosomes/
+ 1006  bash testmodule.sh 
+ 1007  ls test
+ 1008  cd test/
+ 1009  ls -lash 
+ 1010  rm data 
+ 1011  ln -s ../../mk-run-vep/test/results data
+ 1012  cd ..
+ 1013  bash testmodule.sh 
+ 1014  cd ..
+ 1015  ls
+ 1016  cd mk-get-GeneHancer-variants/
+ 1017  ls
+ 1018  mkdir test
+ 1019  cd test/
+ 1020  ln -s ../../mk-rejoin-chromosomes/test/results data
+ 1021  cd ..
+ 1022  bash testmodule.sh 
+ 1023  ls test/data
+ 1024  less -S test/results/test_data.anno_vep.GeneHancer.vcf 
+ 1025  bash testmodule.sh 
+ 1026  cd ../mk-vcf2tsv/
+ 1027  ls
+ 1028  mkdir
+ 1029  mkdir test
+ 1030  cd test/
+ 1031  mkdir data
+ 1032  cd data/
+ 1033  ln -s ../../../mk-get-GeneHancer-variants/test/results/test_data.anno_vep.GeneHancer.vcf .
+ 1034  cd ../..
+ 1035  bash testmodule.sh 
+ 1036  less -S test/results/test_data.anno_vep.GeneHancer.tsv.gz 
+ 1037  cd ../../mkmodules/mk-get-GeneHancer-variants/
+ 1038  bash testmodule.sh 
+ 1039  cd ../mk-get-FANTOM_CAT-variants/
+ 1040  bash testmodule.sh 
+ 1041  ls
+ 1042  mkdir test
+ 1043  cd test/
+ 1044  ln -s ../../mk-rejoin-chromosomes/test/results data
+ 1045  cd ..
+ 1046  bash testmodule.sh 
+ 1047  htop
+ 1048  cd
+ 1049  cd Documents/Ongoing_projects/master/selection_signals/mine_xp_ehh
+ 1050  ls
+ 1051  byobu
+ 1052  pwd
+ 1053  htop
+ 1054  cd Documents/Ongoing_projects/colab/isra_julio/
+ 1055  ls
+ 1056  byobu
+ 1057  ls
+ 1058  cd ..
+ 1059  ls
+ 1060  cd nf-bcl2counts_10X/
+ 1061  ls
+ 1062  less -S runtest.sh 
+ 1063  bash runtest.sh 
+ 1064  cd mkmodules/01-mkfastq/
+ 1065  less -S mkfile 
+ 1066  ls
+ 1067  byobu
+ 1068  cd ../mk-vcf2tsv/
+ 1069  bash testmodule.sh 
+ 1070  pwd
+ 1071  cd
+ 1072  less -S .bash_aliases 
+ 1073  cd ..
+ 1074  ls
+ 1075  cd test/
+ 1076  ls
+ 1077  ls data/
+ 1078  cd data/
+ 1079  less -S test_data.vcf.gz
+ 1080  nano names 
+ 1081  bcftools annotate  --rename-chrs names test_data.vcf.gz |bgzip > tmp.gz
+ 1082  less -S tmp.gz 
+ 1083  mv tmp.gz test_data.vcf.gz
+ 1084  tabix -p vcf test_data.vcf.gz
+ 1085  atom . &
+ 1086  cd mkmodules/mk-get-FANTOM_CAT-variants/
+ 1087  bash testmodule.sh 
+ 1088  cd ../mk-get-promoters-lncRNAs-variants/
+ 1089  ls
+ 1090  mkdir test
+ 1091  cd test/
+ 1092  ln -s ../../mk-rejoin-chromosomes/test/results data
+ 1093  ls
+ 1094  cd ..
+ 1095  bash testmodule.sh 
+ 1096  cd ../mk-get-GWAScatalog-variants/
+ 1097  bash testmodule.sh 
+ 1098  ls
+ 1099  cd test/
+ 1100  ls
+ 1101  mkdir data
+ 1102  cd data/
+ 1103  ln -s ../../../mk-get-GeneHancer-variants/test/results/* .
+ 1104  ln -s ../../../mk-get-FANTOM_CAT-variants/test/results/* .
+ 1105  ln -s ../../../mk-get-promoters-lncRNAs-variants/test/results/* .
+ 1106  ls
+ 1107  cd ..
+ 1108  bash testmodule.sh 
+ 1109  cd ../mk-get-GWASmxb-variants/
+ 1110  mkdir test
+ 1111  ls
+ 1112  cd test/
+ 1113  mkdir data
+ 1114  cd data/
+ 1115  ln -s ../../../mk-get-GeneHancer-variants/test/results/* .
+ 1116  ln -s ../../../mk-get-FANTOM_CAT-variants/test/results/* .
+ 1117  ln -s ../../../mk-get-promoters-lncRNAs-variants/test/results/* .
+ 1118  cd ../..
+ 1119  bash testmodule.sh 
+ 1120  cd ../mk-vcf2tsv/
+ 1121  ls
+ 1122  ls test
+ 1123  ls test/data/
+ 1124  cd test/data/
+ 1125  ln -s ../../../mk-get-FANTOM_CAT-variants/test/results/* .
+ 1126  ls
+ 1127  ln -s ../../../mk-get-promoters-lncRNAs-variants/test/results/* .
+ 1128  ln -s ../../../mk-get-GWASmxb-variants/test/results/* .
+ 1129  ln -s ../../../mk-get-GWAScatalog-variants/test/results/* .
+ 1130  cd ../..
+ 1131  bash testmodule.sh 
+ 1132  cd ../mk-get-lncRNAs-introns-exons/
+ 1133  ls
+ 1134  ls test
+ 1135  ls test/data
+ 1136  bash testmodule.sh 
+ 1137  ls test/data
+ 1138  bash runmk.sh 
+ 1139  ls test/data
+ 1140  rstudio extract_columns.R &
+ 1141  bash testmodule.sh 
+ 1142  ls test/results/
+ 1143  less -S test/results/test_data.anno_vep.fantomcat.GWAScatalog.introns_exons.summary.tsv
+ 1144  less -S test/results/test_data.anno_vep.fantomcat.introns_exons.summary.tsv 
+ 1145  less -S test/results/test_data.anno_vep.fantomcat.introns_exons.tsv 
+ 1146  less -S test/data/test_data.anno_vep.fantomcat.tsv.gz 
+ 1147  ls test/
+ 1148  ls test/reference
+ 1149  less -S FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1150  less -S test/reference/FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1151  less -S test/data/test_data.anno_vep.fantomcat.tsv.gz 
+ 1152  pwd
+ 1153  less -S test/data/test_data.anno_vep.fantomcat.tsv.gz 
+ 1154  cut -f 1,2 test/data/test_data.anno_vep.fantomcat.tsv.gz | tail -n+2 | less -S
+ 1155  zcat test/data/test_data.anno_vep.fantomcat.tsv.gz | tail -n+2 | awk 'BEGIN{FS=OFS="\t"}{print $1,$2-1,$2,$3}' less -S
+ 1156  zcat test/data/test_data.anno_vep.fantomcat.tsv.gz | tail -n+2 | awk 'BEGIN{FS=OFS="\t"}{print $1,$2-1,$2,$3}' | less -S
+ 1157  zcat test/data/test_data.anno_vep.fantomcat.tsv.gz | tail -n+2 | awk 'BEGIN{FS=OFS="\t"}{print $1,$2-1,$2,$3}' | sed "#^#^chr#" | less -S
+ 1158  zcat test/data/test_data.anno_vep.fantomcat.tsv.gz | tail -n+2 | awk 'BEGIN{FS=OFS="\t"}{print $1,$2-1,$2,$3}' | sed "#^#^chr#" > tmp
+ 1159  mv tmp tmp.bed
+ 1160  cd test/reference
+ 1161  ls
+ 1162  cp /home/judith/Documents/Ongoing_projects/master/regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz* .
+ 1163  ls ../..
+ 1164  cd ../..
+ 1165  ls
+ 1166  bash testmodule.sh 
+ 1167  ls test/results/test_data.anno_vep.fantomcat.introns_exons.
+ 1168  ls test/results/test_data.anno_vep.fantomcat.introns_exons.tsv 
+ 1169  less -S test/results/test_data.anno_vep.fantomcat.introns_exons.tsv 
+ 1170  bash testmodule.sh 
+ 1171  ls
+ 1172  less -S tmp.bed 
+ 1173  cd ../mk-vcf2tsv/
+ 1174  less -S test/data/test_data.anno_vep.fantomcat.vcf 
+ 1175  cd test/reference
+ 1176  cd /home/judith/Documents/Ongoing_projects/master/regulatory_db/fantom_cat
+ 1177  ls
+ 1178  bedtools -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/test/data/test_data.anno_vep.fantomcat.tsv.gz -wa | less -S
+ 1179  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/test/data/test_data.anno_vep.fantomcat.tsv.gz -wa | less -S
+ 1180  less -S FANTOM_CAT.lv4.only_lncRNA.bed.gz
+ 1181  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1182  less -S FANTOM_CAT.lv4.only_lncRNA.bed.gz
+ 1183  bgzip -d FANTOM_CAT.lv4.only_lncRNA.bed.gz
+ 1184  nano FANTOM_CAT.lv4.only_lncRNA.bed
+ 1185  bgzip FANTOM_CAT.lv4.only_lncRNA.bed
+ 1186  tabix -p bed FANTOM_CAT.lv4.only_lncRNA.bed.gz
+ 1187  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1188  less -S FANTOM_CAT.lv4.only_lncRNA.bed.gz
+ 1189  ls
+ 1190  zcat FANTOM_CAT.lv4.only_lncRNA.bed.gz | wc -l
+ 1191  less -S fantom_filtered.bed
+ 1192  wc -l fantom_filtered.bed
+ 1193  less -S fantom_filtered.bed
+ 1194  jballe@kexol.langebio.cinvestav.mx:/data/users/jballe/master/regulatory_db/fantom/FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz .
+ 1195  scp jballe@kexol.langebio.cinvestav.mx:/data/users/jballe/master/regulatory_db/fantom/FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz .
+ 1196  tabix -p FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1197  tabix -p bed FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1198  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1199  ls
+ 1200  less -S FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1201  bgzip -d FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1202  nano FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1203  bgzip FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1204  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1205  less -S FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1206  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1207  bgzip -d FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1208  nano FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1209  ls
+ 1210  bgzip FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1211  tabix -p bed FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1212  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1213  less -S FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1214  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa | less -S
+ 1215  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa 
+ 1216  ls
+ 1217  less -S FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1218  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp -wa 
+ 1219  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1220  bgzip -d FANTOM_CAT.lv4.only_lncRNA_consensus.bed.gz
+ 1221  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1222  cat -A FANTOM_CAT.lv4.only_lncRNA_consensus.bed | less -S
+ 1223  grep "chr21|chr22" FANTOM_CAT.lv4.only_lncRNA_consensus.bed | less -S
+ 1224  grep -e "chr21|chr22" FANTOM_CAT.lv4.only_lncRNA_consensus.bed | less -S
+ 1225  grep -e "chr21" FANTOM_CAT.lv4.only_lncRNA_consensus.bed | less -S
+ 1226  grep -e "chr21" FANTOM_CAT.lv4.only_lncRNA_consensus.bed >> sample
+ 1227  grep -e "chr22" FANTOM_CAT.lv4.only_lncRNA_consensus.bed >> sample
+ 1228  bgzip sample 
+ 1229  mv sample.gz FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1230  tabix -p bed FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1231  pwd
+ 1232  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1233  apt-get install bedtools
+ 1234  sudo apt-get install bedtools
+ 1235  bedtools --v
+ 1236  bedtools -v
+ 1237  bedtools --version
+ 1238  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1239  apt-get install bedtools
+ 1240  nano FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1241  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1242  nano FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1243  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1244  nano FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1245  bedtools intersect -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1246  bedtools intersect -nonamecheck -a FANTOM_CAT.lv4.only_lncRNA.bed.gz -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1247  bedtools intersect -nonamecheck -a FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b /home/judith/Documents/Ongoing_projects/master/code/mkmodules/mk-get-lncRNAs-introns-exons/tmp.bed -wa 
+ 1248  less -S FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1249  cd Documents/Ongoing_projects/master/code/
+ 1250  byobu
+ 1251  kexol
+ 1252  cd Documents/Ongoing_projects/master/code/mkmodules/mk-vcf2tsv/
+ 1253  ls
+ 1254  byobu
+ 1255  kexol
+ 1256  cd /home/judith/R/x86_64-pc-linux-gnu-library/4.2
+ 1257  ls
+ 1258  ls mx
+ 1259  ls mx*
+ 1260  ls ch*
+ 1261  ls choroplethrMaps
+ 1262  rm choroplethrMaps
+ 1263  rm -r choroplethrMaps
+ 1264  ls choroplethrMaps
+ 1265  cd choroplethr
+ 1266  ls
+ 1267  cd ..
+ 1268  sudo apt-get update
+ 1269  sudo apt-get -y install r-cran-maps
+ 1270  sudo apt-get -y install r-api-3.5
+ 1271  sudo add-apt-repository ppa:marutter/c2d4u3.5
+ 1272  sudo apt-get install r-cran-choroplethr
+ 1273  sudo add-apt-repository ppa:marutter/c2d4u4.2
+ 1274  cd
+ 1275  cd Documents/Ongoing_projects/master/results/
+ 1276  byobu
+ 1277  ls
+ 1278  rm -r sample345
+ 1279  ls
+ 1280  bash testmodule.sh 
+ 1281  ls
+ 1282  bash testmodule.sh 
+ 1283  bash runmk.sh 
+ 1284  ls
+ 1285  ls test/sample345/
+ 1286  ls
+ 1287  ls test
+ 1288  ls test/fastq_outs_tinybcl
+ 1289  cd test/
+ 1290  rm -r sample345/
+ 1291  ls results/
+ 1292  cd ..
+ 1293  bash runmk.sh 
+ 1294  bash testmodule.sh 
+ 1295  ls
+ 1296  chmod -x 777 runmk.sh 
+ 1297  ls
+ 1298  chmod -X 777 runmk.sh 
+ 1299  chmod -X runmk.sh 
+ 1300  ls
+ 1301  bash runmk.sh 
+ 1302  chmod u+x runmk.sh 
+ 1303  ls
+ 1304  bash testmodule.sh 
+ 1305  ls ./test/fastq_outs_tinybcl/outs/fastq_path
+ 1306  less -S ./test/fastq_outs_tinybcl/outs/fastq_path
+ 1307  less -S ./test/fastq_outs_tinybcl/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz 
+ 1308  less -S ./test/fastq_outs_tinybcl/outs/fastq_path/H35KCBCXY/
+ 1309  bash testmodule.sh 
+ 1310  ls test
+ 1311  bash runmk.sh 
+ 1312  bash testmodule.sh 
+ 1313  cellranger count --id=sample345 --transcriptome=/media/judith/E0F292FCF292D5DE/colab/refdata-gex-GRCh38-2020-A --fastqs=/home/judith/Documents/Ongoing_projects/colab/nf-bcl2counts_10X/mkmodules/02-count/test/fastq_outs_tinybcl/outs/fastq_path --sample=test_sample --localcores=8 --localmem=10 --chemistry=SC3Pv2
+ 1314  cellranger count --id=sample345 --transcriptome=/media/judith/E0F292FCF292D5DE/colab/refdata-gex-GRCh38-2020-A/ --fastqs=/home/judith/Documents/Ongoing_projects/colab/nf-bcl2counts_10X/mkmodules/02-count/test/fastq_outs_tinybcl/outs/fastq_path --sample=test_sample --localcores=8 --localmem=10 --chemistry=SC3Pv2
+ 1315  rm -r sample345/
+ 1316  ls
+ 1317  rm __sample345.mro 
+ 1318  ls
+ 1319  bash testmodule.sh 
+ 1320  ls
+ 1321  rm __sample345.mro 
+ 1322  rm -r sample345/
+ 1323  bash testmodule.sh 
+ 1324  rm -r sample345/
+ 1325  rm __sample345.mro 
+ 1326  bash testmodule.sh 
+ 1327  ls
+ 1328  rm -r test_sample/
+ 1329  rm __test_sample.mro 
+ 1330  ls
+ 1331  less -S test/fastq_outs_tinybcl/outs/input_samplesheet.csv 
+ 1332  tail -n+2 test/fastq_outs_tinybcl/outs/input_samplesheet.csv | cut -f 2 -d "," | less -S
+ 1333  bash runmk.sh 
+ 1334  bash testmodule.sh 
+ 1335  bash runmk.sh 
+ 1336  bash testmodule.sh 
+ 1337  ls
+ 1338  ls test_sample/
+ 1339  cd ../..
+ 1340  git flow init
+ 1341  ls
+ 1342  ls mkmodules/02-count/test_sample/outs/
+ 1343  cd ../..
+ 1344  atom . &
+ 1345  ls mkmodules/01-mkfastq/
+ 1346  ls
+ 1347  cd mkmodules/01-mkfastq/
+ 1348  ls
+ 1349  cd test/
+ 1350  ls
+ 1351  less -S tinytest
+ 1352  ls tinytest
+ 1353  ls results/
+ 1354  ls results/fastq_outs_tinybcl/
+ 1355  cd ../..
+ 1356  cd ..
+ 1357  cd ../isra_julio/
+ 1358  ls
+ 1359  git clone https://github.com/Iaguilaror/nf-bcl2counts_10X.git
+ 1360  ls
+ 1361  cd nf-bcl2counts_10X/
+ 1362  ls
+ 1363  nano runtest.sh 
+ 1364  bash runtest.sh 
+ 1365  cd mkmodules/01-mkfastq/
+ 1366  ls
+ 1367  nano testmodule.sh 
+ 1368  bash testmodule.sh 
+ 1369  cd ../02-count/
+ 1370  ls
+ 1371  rm -r test_sample
+ 1372  ls
+ 1373  nano testmodule.sh 
+ 1374  cd test/
+ 1375  ls
+ 1376  ls results
+ 1377  cd ..
+ 1378  bash testmodule.sh 
+ 1379  ls
+ 1380  nano testmodule.sh 
+ 1381  ls
+ 1382  bash testmodule.sh 
+ 1383  ls
+ 1384  rm test_sample
+ 1385  rm -r test_sample
+ 1386  bash testmodule.sh 
+ 1387  ls
+ 1388  rm __
+ 1389  rm __*
+ 1390  ls
+ 1391  rm -r test_sample_output/
+ 1392  bash testmodule.sh 
+ 1393  ls
+ 1394  mv test_sample_output test_sample
+ 1395  bash testmodule.sh 
+ 1396  ls
+ 1397  rm -r test_sample
+ 1398  bash testmodule.sh 
+ 1399  rm -r test_sample
+ 1400  ls
+ 1401  bash testmodule.sh 
+ 1402  rm -r test_sample
+ 1403  rm __test_sample_output.mro 
+ 1404  ls
+ 1405  rm -r test_sample_output
+ 1406  bash testmodule.sh 
+ 1407  ls
+ 1408  ls test
+ 1409  ls test/results/
+ 1410  cd Documents/Ongoing_projects/colab/isra_julio/
+ 1411  ls
+ 1412  cd ../nf-bcl2counts_10X/
+ 1413  ls
+ 1414  cd mkmodules/01
+ 1415  cd mkmodules/02-count/
+ 1416  byobu
+ 1417  cd mkmodules/mk-get-lncRNAs-introns-exons/
+ 1418  bash tetsm
+ 1419  bash testmodule.sh 
+ 1420  cd nf-reg-variants-finder/
+ 1421  cd test/reference/
+ 1422  ls
+ 1423  less -S samplechr22_CADD.tsv.gz
+ 1424  zcat samplechr22_CADD.tsv.gz | wc -l
+ 1425  zcat samplechr22_CADD.tsv.gz | head -n 20000 > tmp
+ 1426  bgzip tmp 
+ 1427  mv tmp.gz samplechr22_CADD.tsv.gz
+ 1428  tabix -p bed samplechr22_CADD.tsv.gz
+ 1429  tabix samplechr22_CADD.tsv.gz
+ 1430  tabix -f samplechr22_CADD.tsv.gz
+ 1431  tabix -h
+ 1432  tabix -s 2 -b 3 -e 3 -f samplechr22_CADD.tsv.gz
+ 1433  cd ..
+ 1434  ls
+ 1435  ls reference/
+ 1436  zcat samplechr22_CADD.tsv.gz | wc -l
+ 1437  zcat reference/samplechr22_CADD.tsv.gz | wc -l
+ 1438  tar -zcvf reference.tar.gz reference
+ 1439  ls
+ 1440  du -h
+ 1441  du -h reference.tar.gz 
+ 1442  cd reference/
+ 1443  ls
+ 1444  zcat samplechr22_CADD.tsv.gz | head -n20000 | bgzip > tmp
+ 1445  mv tmp samplechr22_CADD.tsv.gz
+ 1446  cd ../..
+ 1447  bash runtest.sh 
+ 1448  cd test/reference/
+ 1449  ls
+ 1450  less -S hg19.100way.samplechr22.phastCons.bw
+ 1451  git lfs install
+ 1452  cd
+ 1453  cd ../programs/
+ 1454  wget https://github.com/git-lfs/git-lfs/releases/download/v3.2.0/git-lfs-linux-amd64-v3.2.0.tar.gz
+ 1455  ls
+ 1456  tar -zxvf git-lfs-linux-amd64-v3.2.0.tar.gz 
+ 1457  cd git-lfs-3.2.0/
+ 1458  ls
+ 1459  bash install.sh 
+ 1460  sudo bash install.sh 
+ 1461  git lfs install
+ 1462  kexol
+ 1463  cd Documents/Ongoing_projects/master/code/
+ 1464  byobu
+ 1465  ls
+ 1466  atom . &
+ 1467  bash runtest.sh 
+ 1468  ls /home/judith/Documents/Ongoing_projects/master/code/work/62/4b89d653cc59d8025f920447c0b3ee
+ 1469  ls test/data/
+ 1470  bash runtest.sh 
+ 1471  ls /home/judith/Documents/Ongoing_projects/master/code/work/52/7c439fa99402f77e3690a5a331c22f
+ 1472  less -S test_data.subsampledchr22.chunk005.untangled_multiallelics.vcf
+ 1473  less -S /home/judith/Documents/Ongoing_projects/master/code/work/52/7c439fa99402f77e3690a5a331c22f/test_data.subsampledchr22.chunk005.untangled_multiallelics.vcf
+ 1474  bash runtest.sh 
+ 1475  ls /home/judith/Documents/Ongoing_projects/master/code/work/03/f6015c75056a1aab5014aa2ba7449a
+ 1476  bash runtest.sh 
+ 1477  ls /home/judith/Documents/Ongoing_projects/master/code/work/47/2d580c746518b14b4f1a9135fd5be9
+ 1478  bash runtest.sh 
+ 1479  ls /home/judith/Documents/Ongoing_projects/master/code/work/0f/28e628bad0d3ac7de1331f2deba47f
+ 1480  less -S FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1481  less -S /home/judith/Documents/Ongoing_projects/master/code/work/0f/28e628bad0d3ac7de1331f2deba47fFANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1482  less -S /home/judith/Documents/Ongoing_projects/master/code/work/0f/28e628bad0d3ac7de1331f2deba47f/FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1483  less -S /home/judith/Documents/Ongoing_projects/master/code/work/0f/28e628bad0d3ac7de1331f2deba47f/test_data.anno_vep.fantomcat.tsv.gz
+ 1484  cd test/reference/
+ 1485  ls
+ 1486  tabix -p bed FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1487  tabix -p bed -f FANTOM_CAT.lv4.only_lncRNA_samplechr22.bed.gz
+ 1488  ls
+ 1489  cd ../..
+ 1490  bash runtest.sh 
+ 1491  ls /home/judith/Documents/Ongoing_projects/master/code/work/78/3a7dc749fc90f8217ad1f576eee3d4
+ 1492  bash runtest.sh 
+ 1493  ls /home/judith/Documents/Ongoing_projects/master/code/work/bd/5bb9ad265d1dc383e81dc1f1148999
+ 1494  bash runtest.sh 
+ 1495  bedtools
+ 1496  bedtools --version
+ 1497  bcftools --version
+ 1498  cd mkmodules/mk-run-vep/
+ 1499  ls
+ 1500  cd ../mk-rejoin-chromosomes/
+ 1501  less -S test/results/test_data.anno_vep.vcf 
+ 1502  bcftools view -H test/results/test_data.anno_vep.vcf | head -n1 > tmp
+ 1503  gedit tmp 
+ 1504  bcftools view -H test/results/test_data.anno_vep.vcf | less -S
+ 1505  cd ../..
+ 1506  cd ../selection_signals/mine_xp_ehh/
+ 1507  ls
+ 1508  atom . &
+ 1509  git pull
+ 1510  cd nf-pbs-per-element/
+ 1511  ls
+ 1512  cd test/
+ 1513  ls
+ 1514  cd ../..
+ 1515  cd nf-Reg-variants-finder/
+ 1516  ls
+ 1517  ls -a
+ 1518  rm .nextflow*
+ 1519  rm .nextflow.*
+ 1520  rm -r .nextflow
+ 1521  rm .nextflow.*
+ 1522  rm .nextflow*
+ 1523  ls
+ 1524  ls -a
+ 1525  rm -r work/
+ 1526  ls
+ 1527  cd test/
+ 1528  ls
+ 1529  rm -r results/
+ 1530  cd ..
+ 1531  ls
+ 1532  cd ..
+ 1533  ls
+ 1534  git status
+ 1535  git add nf-Reg-variants-finder
+ 1536  git status
+ 1537  git push
+ 1538  git status
+ 1539  git pull
+ 1540  git push
+ 1541  ls
+ 1542  git lfs install
+ 1543  git lfs track nf-reg-variants-finder/test/reference/hg19.100way.samplechr22.phastCons.bw
+ 1544  git lfs track nf-reg-variants-finder/test/reference/samplechr22_CADD.tsv.gz
+ 1545  git lfs track nf-reg-variants-finder/test/reference/fathmm_mkl_samplechr22.tab.gz
+ 1546  git lfs track nf-reg-variants-finder/test/reference/hg19.100way.samplechr22.phyloP100way.bw
+ 1547  git add .gitattributes
+ 1548  git commit -m "adding heavy references"
+ 1549  git push
+ 1550  git lfs track nf-reg-variants-finder/test/reference.tar.gz
+ 1551  git add .gitattributes
+ 1552  git commit -m "adding heavy references"
+ 1553  git push
+ 1554  git lfs track nf-reg-variants-finder/test/reference.tar.gz
+ 1555  git add .gitattributes
+ 1556  git commit -m "adding heavy references"
+ 1557  git push
+ 1558  git reset --hard HEAD~6
+ 1559  git lfs install
+ 1560  git lfs track nf-reg-variants-finder/test/reference.tar.gz
+ 1561  git add .gitattributes
+ 1562  ssh ssh -p 4331 iaguilar@biofserver.ddns.net
+ 1563  ssh -p 4331 iaguilar@biofserver.ddns.net
+ 1564  cd Documents/Ongoing_projects/colab/nf-bcl2counts_10X/
+ 1565  ls
+ 1566  byobu
+ 1567  cd ../programs/Zotero_linux-x86_64/
+ 1568  ./zotero &
+ 1569  kexol
+ 1570  cd ../programs/Zotero_linux-x86_64/
+ 1571  ./zotero &
+ 1572  byobu
+ 1573  kexol
+ 1574  cd Documents/colab/mk-efetch/
+ 1575  bash testmodule.sh 
+ 1576  ls 
+ 1577  ls test/results/
+ 1578  bash testmodule.sh 
+ 1579  ls test/results/
+ 1580  kexol
+ 1581  cd Documents/Ongoing_projects/master/
+ 1582  ls
+ 1583  byobu
+ 1584  kexol
+ 1585  cd
+ 1586  less .bash_aliases 
+ 1587  cd
+ 1588  cd ../programs/Zotero_linux-x86_64/
+ 1589  ./zotero &
+ 1590  seqstat
+ 1591  cd
+ 1592  cd Documents/agar_workshop/
+ 1593  ls
+ 1594  git clone https://github.com/alanrogers/agar22.git agar22
+ 1595  ls
+ 1596  ls agar22/
+ 1597  cd ..
+ 1598  cd ../programs/
+ 1599  git clone https://github.com/alanrogers/legofit.git legofit
+ 1600  ls legofit/
+ 1601  ls
+ 1602  ls legofit/
+ 1603  cd legofit/
+ 1604  ls src/
+ 1605  ls
+ 1606  ls exmpl/
+ 1607  ls docs/
+ 1608  make
+ 1609  cd src/
+ 1610  ls
+ 1611  make
+ 1612  make install
+ 1613  cd
+ 1614  legofit 
+ 1615  python3 msprime
+ 1616  python3 msp.py
+ 1617  python3 -m pip install msprime
+ 1618  which msp.py
+ 1619  scp /data/users/jballe/master/mxb/inputs/tmp .
+ 1620  scp jballe@kexol.langebio.cinvestav.mx:/data/users/jballe/master/mxb/inputs/tmp .
+ 1621  less -s tmp 
+ 1622  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10 | sed "s#[0-9]*_##g" > new_tmp
+ 1623  less new_tmp 
+ 1624  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10 | sed "s#[0-9]*_##g" | less
+ 1625  less tmp
+ 1626  tail -n2 tmp | sed "s#0/0#0#g" | sed "s#0/1#1#g" | sed "s#1/1#2#g" | sed "s#./.#0#g" | cut -f10- | sed "s#[0-9]*_##g" | less -S
+ 1627  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10 | sed "s#[0-9]*_##g" | less -S
+ 1628  tail -n2 tmp | sed "s#0/0#0#g" | sed "s#0/1#1#g" | sed "s#1/1#2#g" | sed "s#./.#0#g" | cut -f10- | sed "s#[0-9]*_##g" | less -S
+ 1629  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | less -S
+ 1630  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10 | less -S
+ 1631  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | less -S
+ 1632  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | tail -n+11 | less -S
+ 1633  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | tail -n11 | less -S
+ 1634  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | sed "s#[0-9]*_##g" | less -S
+ 1635  tail -n2 tmp | sed "s#0/0#0#g" | sed "s#0/1#1#g" | sed "s#1/1#2#g" | sed "s#./.#0#g" | cut -f10- | sed "s#[0-9]*_##g" | less -S
+ 1636  tail -n2 tmp | sed "s#0/0#0#g" | sed "s#0/1#1#g" | sed "s#1/1#2#g" | sed "s#./.#0#g" | cut -f10- |  | cat -A | less -S
+ 1637  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10- | sed "s#[0-9]*_##g" | less -S
+ 1638  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10- | sed "s#[0-9]*_##g" > new_tmp 
+ 1639  rstudio metadata_variant.R &
+ 1640  ls rs10212419*
+ 1641  ls
+ 1642  mv tmp rs3773506
+ 1643  scp jballe@kexol.langebio.cinvestav.mx:/data/users/jballe/master/mxb/inputs/tmp .
+ 1644  tail -n2 tmp | sed "s#0|0#0#g" | sed "s#0|1#1#g" | sed "s#1|0#1#g" | sed "s#1|1#2#g" | sed "s#.|.#0#g" | cut -f10- | sed "s#[0-9]*_##g" > new_tmp 
+ 1645  mv tmp rs10212419
+ 1646  ls rs62005807(
+ 1647  ls rs62005807*
+ 1648  cd
+ 1649  cd Documents/agar_workshop/
+ 1650  ls
+ 1651  mkdir agar2022_Module1
+ 1652  cd agar2022_Module1/
+ 1653  wget
+ 1654  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/009/ERR4589279/ERR45892
+ 1655  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/009/ERR4589279/ERR4589279.fastq.gz
+ 1656  wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/009/ERR4589279/ERR4589279.fastq.gz
+ 1657  cd ..
+ 1658  $ git clone https://github.com/thw17/AGAR2022_Reproducible_Genome_Assembly
+ 1659  git clone https://github.com/thw17/AGAR2022_Reproducible_Genome_Assembly
+ 1660  cd AGAR2022_Reproducible_Genome_Assembly/
+ 1661  conda
+ 1662  ls
+ 1663  conda config --add channels defaults
+ 1664  conda config --add channels bioconda
+ 1665  conda config --add channels conda-forge
+ 1666  conda info
+ 1667  $ conda create -n agar2022 snakemake samtools bwa bioawk fastqc multiqc bbmap gatk4 vcftools picard
+ 1668  conda create -n agar2022 snakemake samtools bwa bioawk fastqc multiqc bbmap gatk4 vcftools picard
+ 1669  conda activate agar2022
+ 1670  head reference/human_v37_MT.fasta 
+ 1671  bioawk -c fastx '{print ($name), length($seq)}' reference/human_v37_MT.fasta
+ 1672  samtools faidx reference/human_v37_MT.fasta
+ 1673  samtools dict -o reference/human_v37_MT.dict reference/human_v37_MT.fasta
+ 1674  bwa index reference/human_v37_MT.fasta
+ 1675  snakemake -np  
+ 1676  snakemake -np
+ 1677  ls
+ 1678  ls example_files/
+ 1679  cd example_files/
+ 1680  snakemake -np
+ 1681  snakemake -np example_snakefile 
+ 1682  cd ..
+ 1683  nano snakefile
+ 1684  snakemake -np
+ 1685  snakemake -np --forceall
+ 1686  ls
+ 1687  less -S snakefile 
+ 1688  rm snakefile 
+ 1689  nano snakefile
+ 1690  snakemake -np --forceall
+ 1691  ls bams/
+ 1692  ls
+ 1693  ls bams/
+ 1694  cd bams/
+ 1695  ls
+ 1696  cd ..
+ 1697  ls
+ 1698  less snakefile 
+ 1699  ls fastq
+ 1700  ls combined_gvcfs/
+ 1701  snakemake -np --forceall
+ 1702  ls
+ 1703  ls bams/
+ 1704  ls trimmed_fastqs/
+ 1705  ls 
+ 1706  snakemake -np 
+ 1707  ls reference/
+ 1708  rm snakefile 
+ 1709  nano snakefile
+ 1710  snakemake -np 
+ 1711  ls
+ 1712  ls multiqc_results/
+ 1713  nano snakefile
+ 1714  ls fastq_fi
+ 1715  ls fastq
+ 1716  snakemake -np --forceall
+ 1717  ls fastq
+ 1718  ls fastqc_results/
+ 1719  snakemake
+ 1720  snakemake --cores 7
+ 1721  ls multiqc_results/
+ 1722  ls
+ 1723  rm snakefile 
+ 1724  nano snakefile
+ 1725  snakemake --cores 7
+ 1726  htop
+ 1727  cd Documents/Ongoing_projects/master/results/
+ 1728  byobu
+ 1729  conda install -c anaconda ipython
+ 1730  cd Documents/agar_workshop/
+ 1731  conda install -c anaconda jupyter
+ 1732  byobu
+ 1733  cd ../programs/
+ 1734  git clone https://github.com/alanrogers/legofit.git legofit
+ 1735  legofit
+ 1736  cd
+ 1737  cd ../programs/Zotero_linux-x86_64/
+ 1738  ./zotero &
+ 1739  kexol
+ 1740  pwd
+ 1741  touch gwas.R
+ 1742  ls
+ 1743  cd Documents/Ongoing_projects/master/
+ 1744  ls
+ 1745  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | less -S
+ 1746  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | wc -l 
+ 1747  wc -l regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed
+ 1748  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | less -S
+ 1749  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | less -S
+ 1750  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | cut -f 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18,19 | less -S
+ 1751  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | less -S
+ 1752  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | cut -f 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18,19,20 | less -S
+ 1753  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | cut -f 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18,20 | less -S
+ 1754  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | cut -f 1,2,3,4,5,6,7,8,9,10,11,12,13,14,19,20 | less -S
+ 1755  intersectBed -wo -f 0.9 -a regulatory_db/fantom_cat/FANTOM_CAT.lv4.only_lncRNA_consensus.bed -b regulatory_db/genehancer/geneHancer_GRCh37.bed.gz | tr ";" "\t" | cut -f 1,2,3,4,5,6,7,8,9,10,11,12,13,14,18,19,20 | less -S
+ 1756  byobu
+ 1757  cd ../programs/Zotero_linux-x86_64/
+ 1758  ./zotero &
+ 1759  cd ../programs/Zotero_linux-x86_64/
+ 1760  ./zotero &
+ 1761  cd
+ 1762  mazorka 
+ 1763  wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr*.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz*
+ 1764  wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz*
+ 1765  wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz*
+ 1766  wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
+ 1767  wget --recursive --no-parent http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/
+ 1768  ls
+ 1769  rm ALL.chr1.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz 
+ 1770  cd Documents/
+ 1771  ls
+ 1772  wget --recursive --no-parent http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/
+ 1773  ls
+ 1774  wget --recursive --no-parent http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+ 1775  wget --recursive --no-parent http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/*
+ 1776  wget -r -A "*.vcf" http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ 
+ 1777  wget -r -A "*.vcf" http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ .
+ 1778  wget -r -A "*.vcf" http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+ 1779  wget -A vcf -m -p -E -k -K -np ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/
+ 1780  wget -A vcf -m -p -E -k -K -np ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+ 1781  wget -A vcf.gz -m -p -E -k -K -np ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+ 1782  wget -A .vcf.gz -m -p -E -k -K -np ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV
+ 1783  wget -A .vcf.gz -m -p -E -k -K -np ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/
+ 1784  wget -r -np -l 1 -A vcf.gz ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/
+ 1785  for i in {1..22};         wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz
+ 1786  for i in {1..22};         wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1787  for i in {1..22} wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1788  for i in {1..22}; wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1789  for i in {1..22} do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1790  for i in {1..22}; do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1791  for i in {1..22} do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1792  for i in {1..22}; do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1793  for i in {1..22};do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1794  for i in {1..22}do wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz done
+ 1795  for i in {1..22}; do  wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/ALL.chr$i.shapeit2_integrated_v1a.GRCh38.20181129.phased.vcf.gz; done
+ 1796  kexol
+ 1797  kexol
+ 1798  mazorka 
+ 1799  cd Documents/Ongoing_projects/master/
+ 1800  ls
+ 1801  ls selection_signals/
+ 1802  ls selection_signals/human_ancestor_GRCh37_e59
+ 1803  ls selection_signals/human_ancestor_GRCh37_e59/README
+ 1804  less selection_signals/human_ancestor_GRCh37_e59/README
+ 1805  less selection_signals/human_ancestor_GRCh37_e59/README.txt 
+ 1806  less selection_signals/human_ancestor_GRCh37_e59/human_ancestor_10.fa 
+ 1807  cd ..
+ 1808  ls
+ 1809  cd ..
+ 1810  ls
+ 1811  cd colab/
+ 1812  ls
+ 1813  mkdir europe
+ 1814  cd europe/
+ 1815  byobu
+ 1816  mazorka
+ 1817  nextflow
+ 1818  nextflow -v
+ 1819  bgzip -v
+ 1820  mazorka
+ 1821  kexol
+ 1822  cd /media/judith/E0F292FCF292D5DE/colab/europe/
+ 1823  ls
+ 1824  byobu
+ 1825  nano .bash_aliases
+ 1826  byobu
+ 1827  nano .bash_aliases
+ 1828  popgen
+ 1829  nano .bash_aliases
+ 1830  popgen
+ 1831  nano .bash_aliases
+ 1832  popgen
+ 1833  kexol
+ 1834  touch make_simple_map.R &
+ 1835  rstudio make_simple_map.R &
+ 1836  popgen 
+ 1837  POP2=NAM
+ 1838  for POP in AFR EUR; do         echo $POP;         $NGS/angsd/misc/realSFS Results/$POP.saf.idx Results/$POP2.saf.idx > Results/$POP.$POP2.sfs 2> /dev/null; done
+ 1839  # we also need the comparison between AFR and EUR 
+ 1840  $NGS/angsd/misc/realSFS Results/AFR.saf.idx Results/EUR.saf.idx > Results/AFR.EUR.sfs 2> /dev/null
+ 1841  ls
+ 1842  popgen
+ 1843  ./zotero &
+ 1844  cd ../programs/Zotero_linux-x86_64/
+ 1845  ./zotero &
+ 1846  kexol
+ 1847  cd ../programs/Zotero_linux-x86_64/
+ 1848  ./zotero &
+ 1849  cd Documents/Ongoing_projects/master/
+ 1850  ls
+ 1851  cd code/
+ 1852  ls
+ 1853  cd ..
+ 1854  ls
+ 1855  ls results/
+ 1856  cd results/
+ 1857  ls
+ 1858  sudo apt-get update
+ 1859  sudo apt-get -y install muscle
+ 1860  r
+ 1861  R
+ 1862  which R
+ 1863  ls /usr/bin/R
+ 1864  less .bash_aliases 
+ 1865  kexol
+ 1866  cd /media/judith/E0F292FCF292D5DE/colab/
+ 1867  ls
+ 1868  cd europe/
+ 1869  ls
+ 1870  byobu
+ 1871  cd /media/judith/E0F292FCF292D5DE/colab/
+ 1872  ls
+ 1873  cd europe/
+ 1874  byobu
+ 1875  kexol
+ 1876  rstudio get_pbs.R &
+ 1877  ls
+ 1878  less -S coloc_h4_eqtl_egene_pbs.tsv.gz
+ 1879  less -S european_asian_african_snp_pbs.tsv.gz
+ 1880  ls
+ 1881  less -S coloc_h4_eqtl_egene.tsv
+ 1882  bcftools norm --fasta-ref /home/judith/Documents/colab/europe/homo_sapiens_ancestor_GRCh38/homo_sapiens_ancestor.fa European_Asian_African_1KG_aa.vcf.gz --check-ref s | bcftools view --include ALT!="AA" --threads 5 | awk '{FS=OFS="\t"} $8 != "." {print $0}' | bcftools filter -e 'AA="N"' --threads 5 | bcftools +fill-tags -- -t AC,AN,AF | bcftools view --min-ac 1 -m2 -M2 --type snps --threads 5 | bgzip --threads 5 > European_Asian_African_1KG_aa_derived.vcf.gz
+ 1883  rm European_Asian_African_1KG_aa_derived.vcf.gz
+ 1884  ls -lash *
+ 1885  cd /media/judith/E0F292FCF292D5DE/colab/europe/
+ 1886  byobu
+ 1887  kexol
+ 1888  ls
+ 1889  rm archive.tar.gz 
+ 1890  bgzip -d European_Asian_African_1KG_aa_derived.vcf.gz
+ 1891  ls
+ 1892  rm European_Asian_African_1KG_aa_derived.vcf
+ 1893  cd
+ 1894  less .bash_aliases 
+ 1895  kexol
+ 1896  kexol
+ 1897  sudo apt-get install openvpn
+ 1898  mkdir ~/mpieva_vpn
+ 1899  cp OpenVPNconfLin_*.tar ~/mpieva_vpn
+ 1900  cd Downloads/
+ 1901  cp OpenVPNconfLin_*.tar ~/mpieva_vpn
+ 1902  cd ~/mpieva_vpn
+ 1903  tar xvf OpenVPNconfLin_*.tar
+ 1904  openvpn mpieva_default_G02.conf
+ 1905  sudo apt-get install openvpn network-manager-openvpn network-manager-openvpn-gnome
+ 1906  openvpn mpieva_default_G02.conf
+ 1907  cd  ~/mpieva_vpn
+ 1908  openvpn mpieva_default_G02.conf
+ 1909  sudo apt-get install openvpn
+ 1910  openvpn mpieva_default_G02.conf
+ 1911  nano .bash_aliases 
+ 1912  ssh judith_ballesteros@daghead2.eva.mpg.de
+ 1913  ssh judith_ballesteros@daghead1.eva.mpg.de
+ 1914  scp /home/judith/Downloads/Fernandes_Indv_for_IBD.txt judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/Americas_capture/raw-data/Fernandes_Nature_2020/fastq
+ 1915  ssh judith_ballesteros@daghead1.eva.mpg.de
+ 1916  scp judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/Americas_capture/raw-data/Fernandes_Nature_2020/fastq/input.txt .
+ 1917  la
+ 1918  chmod +X input.txt 
+ 1919  cd ~/Downloads/
+ 1920  less -S input.tsv 
+ 1921  scp input.tsv judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/Americas_capture/raw-data/Fernandes_Nature_2020/fastq/
+ 1922  ssh judith_ballesteros@daghead1.eva.mpg.de
+ 1923  ssh judith_ballesteros@daghead2.eva.mpg.de
+ 1924  ssh judith_ballesteros@daghead1.eva.mpg.de
+ 1925  less -S .bash_aliases 
+ 1926  scp judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/users/ballesteros/run_admixture/sgdp/results/run_admixture/Plotting/*.png .
+ 1927  ls
+ 1928  eog CVErrorBoxPlot.png &
+ 1929  scp judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/users/ballesteros/run_admixture/sgdp/results/run_admixture/Plotting/*.png .
+ 1930  scp judith_ballesteros@daghead1.eva.mpg.de:/mnt/archgen/users/ballesteros/run_admixture/sgdp/results/run_admixture/Plotting/*.pdf .
+ 1931  ls
+ 1932  ssh -X judith_ballesteros@daghead1.eva.mpg.de
+ 1933  git status
+ 1934  cd Documents/Ongoing_projects/
+ 1935  git clone https://github.com/nf-core/eager.git
+ 1936  mdir fork
+ 1937  mkdir fork
+ 1938  cd fork/
+ 1939  gh repo fork https://github.com/nf-core/eager.git --clone
+ 1940  gh auth login
+ 1941  ls
+ 1942  gh repo fork https://github.com/nf-core/eager.git --clone
+ 1943  git stat
+ 1944  git status
+ 1945  ls
+ 1946  cd ..
+ 1947  ls
+ 1948  ls eager/
+ 1949  gh repo fork https://github.com/nf-core/eager.git --clonlse
+ 1950  ls
+ 1951  ls fork/
+ 1952  cd fork/
+ 1953  ls
+ 1954  gh repo fork https://github.com/nf-core/eager.git --clone
+ 1955  ls
+ 1956  gh auth login
+ 1957  gh repo fork https://github.com/nf-core/eager.git --clone
+ 1958  ls
+ 1959  cd ..
+ 1960  ls
+ 1961  cd eager/
+ 1962  ls
+ 1963  git status
+ 1964  cd ..
+ 1965  rm -rf eager
+ 1966  rm -rf master/
+ 1967  cd fork/
+ 1968  ls
+ 1969  gh repo clone jbv2/eager
+ 1970  git clone https://github.com/jbv2/eager.git
+ 1971  ls
+ 1972  cd eager/
+ 1973  git status
+ 1974  git branch 
+ 1975  git branch -a
+ 1976  git branch -a remotes/origin/dev
+ 1977  git branch remotes/origin/dev
+ 1978  git status
+ 1979  git branch -h
+ 1980  git status
+ 1981  git switch dev
+ 1982  git status
+ 1983  git branch
+ 1984  ssh -X judith_ballesteros@daghead1.eva.mpg.de
+ 1985  ssh -X judith_ballesteros@daghead2.eva.mpg.de
+ 1986  ssh judith_ballesteros@daghead2.eva.mpg.de
+ 1987  ssh judith_ballesteros@daghead1.eva.mpg.de
+ 1988  git status
+ 1989  cd ..
+ 1990  ls
+ 1991  git clone https://github.com/jbv2/modules.git
+ 1992  ls
+ 1993  cd modules/
+ 1994  git switch -c ansgd_contamination
+ 1995  conda
+ 1996  conda env list
+ 1997  conda env create -n nf-core bioconda::nf-core bioconda::nextflow
+ 1998  conda create -n nf-core bioconda::nf-core bioconda::nextflow
+ 1999  conda activate nf-core
+ 2000  nf-core modules create angsd/contamination
+ 2001  git status
+ 2002  docker
+ 2003  history > bioconda-module.txt
