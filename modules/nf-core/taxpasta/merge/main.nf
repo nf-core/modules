@@ -36,7 +36,7 @@ process TAXPASTA_MERGE {
         $args \\
         $taxonomy_option \\
         $samplesheet_input \\
-        $profile 
+        $profile
 
 
     cat <<-END_VERSIONS > versions.yml
