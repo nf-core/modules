@@ -14,7 +14,7 @@ workflow test_angsd_contamination {
         []
     ]
 
-    hapmap_file = file("https://github.com/nf-core/eager/raw/master/assets/angsd_resources/HapMapChrX.gz")
+    hapmap_file = [ [id:'test2'], file("https://github.com/ANGSD/angsd/raw/0.940/RES/HapMapChrX.gz")]
 
     ANGSD_DOCOUNTS ( input )
     ANGSD_CONTAMINATION ( ANGSD_DOCOUNTS.out.icounts, hapmap_file )
