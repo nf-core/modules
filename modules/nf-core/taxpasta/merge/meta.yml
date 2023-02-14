@@ -29,7 +29,9 @@ input:
       pattern: "*.{tsv,csv,arrow,parquet,biom}"
   - samplesheet:
       type: file
-      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
+      description:
+        A samplesheet describing the sample name and a filepath to a taxonomic abundance profile that needs to be locally
+        from the work environment. The profiles must be provided even if you give a samplesheet as argument (optional)
       pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet}"
   - taxonomy:
       type: directory
