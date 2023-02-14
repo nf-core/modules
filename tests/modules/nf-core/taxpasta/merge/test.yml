@@ -1,8 +1,9 @@
 - name: taxpasta merge test_taxpasta_merge
   command: nextflow run ./tests/modules/nf-core/taxpasta/merge -entry test_taxpasta_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/taxpasta/merge/nextflow.config
   tags:
-    - taxpasta/merge
     - taxpasta
+    - taxpasta/merge
   files:
     - path: output/taxpasta/kraken2.tsv
+      md5sum: b5c64641bc040ca3b7f6d8e19b94a1f4
     - path: output/taxpasta/versions.yml
