@@ -40,7 +40,7 @@ process GLIMPSE_PHASE {
         $input_region_command \\
         $output_region_command \\
         --thread $task.cpus \\
-        --output ${prefix}${file_index}.phased.${suffix}
+        --output ${prefix}${file_index}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

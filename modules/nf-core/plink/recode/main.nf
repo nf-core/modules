@@ -2,7 +2,7 @@ process PLINK_RECODE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
+    conda "bioconda::plink=1.90b6.21"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1':
         'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
