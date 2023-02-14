@@ -9,7 +9,7 @@ process ANGSD_CONTAMINATION {
 
     input:
     tuple val(meta), path(icounts)
-    tuple val(meta2), path hapmap_file
+    tuple val(meta2), path(hapmap_file)
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
