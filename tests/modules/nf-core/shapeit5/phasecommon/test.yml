@@ -1,0 +1,8 @@
+- name: shapeit5 phasecommon test_shapeit5_phasecommon
+  command: nextflow run ./tests/modules/nf-core/shapeit5/phasecommon -entry test_shapeit5_phasecommon -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shapeit5/phasecommon/nextflow.config
+  tags:
+    - shapeit5
+    - shapeit5/phasecommon
+  files:
+    - path: output/shapeit5/input.vcf.gz
+    - path: output/shapeit5/versions.yml
