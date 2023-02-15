@@ -9,7 +9,7 @@ process TAXPASTA_MERGE {
 
 
     input:
-    tuple val(meta), path(profile)
+    tuple val(meta), path(profiles)
     path taxonomy
     path samplesheet
 
