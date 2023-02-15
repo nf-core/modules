@@ -10,7 +10,7 @@ include { ILASTIK_PIXELCLASSIFICATION as ILASTIK_PIXELCLASSIFICATION_FEATURES } 
 workflow test_ilastik_pixelclassification {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'probabilities' ], // meta map
         file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
     ]
     ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
@@ -21,7 +21,7 @@ workflow test_ilastik_pixelclassification {
 workflow test_ilastik_pixelclassification_simplesegmentation {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'segmentation' ], // meta map
         file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
     ]
     ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
@@ -32,7 +32,7 @@ workflow test_ilastik_pixelclassification_simplesegmentation {
 workflow test_ilastik_pixelclassification_uncertainty {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'uncertainty' ], // meta map
         file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
     ]
     ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
@@ -43,7 +43,7 @@ workflow test_ilastik_pixelclassification_uncertainty {
 workflow test_ilastik_pixelclassification_features {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'features' ], // meta map
         file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
     ]
     ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]

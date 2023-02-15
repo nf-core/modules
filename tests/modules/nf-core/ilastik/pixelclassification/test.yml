@@ -1,8 +1,8 @@
 - name: ilastik pixelclassification test_ilastik_pixelclassification
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik
     - ilastik/pixelclassification
+    - ilastik
   files:
     - path: output/ilastik/probabilities.h5
       md5sum: 90ab0cebc909f7b5fa89606cb6929e51
@@ -11,8 +11,8 @@
 - name: ilastik pixelclassification test_ilastik_pixelclassification_simplesegmentation
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_simplesegmentation -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik
     - ilastik/pixelclassification
+    - ilastik
   files:
     - path: output/ilastik/simple_segmentation.h5
       md5sum: 8f0ff7a01a55b066195513a0deee5217
@@ -21,8 +21,8 @@
 - name: ilastik pixelclassification test_ilastik_pixelclassification_uncertainty
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_uncertainty -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik
     - ilastik/pixelclassification
+    - ilastik
   files:
     - path: output/ilastik/uncertainty.h5
       md5sum: d9ad885f7c58d576165c6ec9220f7df0
@@ -31,8 +31,8 @@
 - name: ilastik pixelclassification test_ilastik_pixelclassification_features
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_features -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik
     - ilastik/pixelclassification
+    - ilastik
   files:
     - path: output/ilastik/features.h5
       md5sum: 367b507f31e03af758b733ee2e6d95fe
