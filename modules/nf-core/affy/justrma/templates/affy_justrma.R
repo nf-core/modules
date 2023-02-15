@@ -54,15 +54,31 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 #' Install the right CDF for a given cel file
 #'
 #' @param celfile A valid path to a CEL file
+#' @param annotation Boolean indication wheter to install the annotation
+#'        package
 #'
 #' @return output The CDF environment or a list detailing the failed locations.
 
-install_cdf <- function(celfile){
+install_cdf_db <- function(celfile, annotation = FALSE){
     library(affyio)
     headdetails <- read.celfile.header(celfile)
     ref.cdfName <- headdetails[[1]]
     cleaned.cdfName <- cleancdfname(ref.cdfName, addcdf = FALSE)
-    cdfFromBioC(paste0(cleaned.cdfName, 'cdf'))
+
+    exts = 'cdf'
+    if (annotation){
+        exts <- c(exts, '.db')
+    }
+
+    for (package in paste0(cleaned.cdfName, exts)){
+        install.packages(
+            package,
+            lib = 'libs',
+            repos = BiocManager::repositories(),
+            dependencies = c("Depends", "Imports")
+        )
+    }
+    cleaned.cdfName
 }
 
 #' Round numeric dataframe columns to fixed decimal places by applying
@@ -116,7 +132,8 @@ opt <- list(
     cdfname = NULL,
     rm.mask = FALSE,
     rm.outliers = FALSE,
-    rm.extra = FALSE
+    rm.extra = FALSE,
+    build_annotation = FALSE
 )
 if (opt\$description == ''){
     opt\$description = NULL
@@ -183,7 +200,7 @@ if (! opt\$file_name_col %in% colnames(sample.sheet)){
 dir.create('libs')
 .libPaths('libs')
 first_cel <- file.path(opt\$celfiles_dir, sample.sheet[[opt\$file_name_col]][1])
-install_cdf(first_cel)
+cdf_name <- install_cdf_db(first_cel, annotation = opt\$build_annotation)
 
 # Run the main function
 
@@ -212,6 +229,41 @@ sampleNames(eset) <- sample.sheet[[opt\$sample_name_col]]
 ## Generate outputs                           ##
 ################################################
 ################################################
+
+if (opt\$build_annotation){
+
+    # Make some annotation
+
+    dbname <- paste0(cdf_name, '.db')
+    library(dbname, character.only = TRUE)
+    anno <- select(
+        get(dbname),
+        keys=keys(get(dbname), keytype="PROBEID"),
+        columns=c('ENSEMBL', 'ENTREZID', 'SYMBOL', 'GENENAME', 'GENETYPE'),
+        keytype="PROBEID"
+    )
+
+    # Remove duplicates by probe
+    anno <- do.call(
+        rbind,
+        lapply(
+            split(
+                anno,
+                anno\$PROBEID
+            ),
+            function(x) apply(x, 2, function(y) paste(unique(y), collapse=','))
+        )
+    )
+
+    write.table(
+        anno,
+        file = paste0(cdf_name, '.annotation.tsv'),
+        col.names = TRUE,
+        row.names = FALSE,
+        sep = '\t',
+        quote = FALSE
+    )
+}
 
 # R object for other processes to use
 
