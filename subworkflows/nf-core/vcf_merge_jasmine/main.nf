@@ -32,7 +32,7 @@ workflow VCF_MERGE_JASMINE {
         }
         .groupTuple(size:callers_amount)
         .join(ch_bams ?: Channel.value([[],[]]), remainder:true)
-        .join(ch_sample_dists ?: Channel.value([[],[]]), remainder:true).view()
+        .join(ch_sample_dists ?: Channel.value([[],[]]), remainder:true)
         .map { meta, vcfs, bam=null, sample_dists=null ->
             [ meta, vcfs, bam ?: [], sample_dists ?: [] ]
         }
