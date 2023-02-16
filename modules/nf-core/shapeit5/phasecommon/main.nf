@@ -11,7 +11,7 @@ process SHAPEIT5_PHASECOMMON {
         tuple val(meta) , path(input), path(input_index), val(region), path(pedigree)
         tuple val(meta2), path(reference), path(reference_index)
         tuple val(meta3), path(scaffold), path(scaffold_index)
-        path(map)
+        tuple val(meta4), path(map)
 
     output:
         tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
