@@ -27,7 +27,7 @@ process PEDDY {
     """
     peddy \\
         $args \\
-	--prefix $prefix \\
+	    --prefix $prefix \\
         --plot \\
         -p $task.cpus \\
         $vcf \\
