@@ -1,0 +1,41 @@
+- name: vcf_merge_jasmine test_vcf_merge_jasmine_default
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_merge_jasmine -entry test_vcf_merge_jasmine_default -c ./tests/config/nextflow.config
+  tags:
+    - jasminesv
+    - subworkflows
+    - subworkflows/vcf_merge_jasmine
+    - tabix
+    - tabix/bgzip
+    - tabix/tabix
+  files:
+    - path: output/bgzip/sample.vcf.gz
+      md5sum: 51153daabbb281ead8690171f3478726
+    - path: output/jasminesv/sample.vcf
+      md5sum: 941061071a160c6b8931ab71afbb9c57
+    - path: output/tabix/sample.vcf.gz.tbi
+      md5sum: d87cfa68b616799f5465a8e18710fad8
+    - path: output/unzip/test.vcf
+      md5sum: 9d491cfa84067450342ba8e66c75e5b8
+    - path: output/unzip/test2.vcf
+      md5sum: 9d491cfa84067450342ba8e66c75e5b8
+
+- name: vcf_merge_jasmine test_vcf_merge_jasmine_all_inputs
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_merge_jasmine -entry test_vcf_merge_jasmine_all_inputs -c ./tests/config/nextflow.config
+  tags:
+    - jasminesv
+    - subworkflows
+    - subworkflows/vcf_merge_jasmine
+    - tabix
+    - tabix/bgzip
+    - tabix/tabix
+  files:
+    - path: output/bgzip/sample.vcf.gz
+      md5sum: 51153daabbb281ead8690171f3478726
+    - path: output/jasminesv/sample.vcf
+      md5sum: 941061071a160c6b8931ab71afbb9c57
+    - path: output/tabix/sample.vcf.gz.tbi
+      md5sum: d87cfa68b616799f5465a8e18710fad8
+    - path: output/unzip/test.vcf
+      md5sum: 9d491cfa84067450342ba8e66c75e5b8
+    - path: output/unzip/test2.vcf
+      md5sum: 9d491cfa84067450342ba8e66c75e5b8
