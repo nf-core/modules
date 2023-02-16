@@ -64,7 +64,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = FALSE
     )
 }
 
