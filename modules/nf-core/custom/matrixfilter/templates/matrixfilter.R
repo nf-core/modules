@@ -106,7 +106,7 @@ if (opt\$sample_file != ''){
     # Read the sample sheet and check against matrix
 
     samplesheet <- read_delim_flexible(
-        opt\$sample_file, 
+        opt\$sample_file,
         row.names = ifelse(is.null(opt\$sample_id_col), 1, opt\$sample_id_col)
     )
     missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
