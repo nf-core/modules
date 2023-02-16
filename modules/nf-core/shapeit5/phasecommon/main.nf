@@ -29,7 +29,6 @@ process SHAPEIT5_PHASECOMMON {
     def reference_command = reference ? "--reference $reference" : ""
     def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
-    def region_command    = region    ? "--region $region"       : ""
 
     """
     SHAPEIT5_phase_common \\
@@ -39,7 +38,7 @@ process SHAPEIT5_PHASECOMMON {
         $reference_command \\
         $scaffold_command \\
         $pedigree_command \\
-        $region_command \\
+        --region $region \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
 
