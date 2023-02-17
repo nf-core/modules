@@ -37,4 +37,16 @@ process SMNCOPYNUMBERCALLER {
         SMNCopyNumberCaller: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir out
+    touch out/${prefix}.tsv
+    touch out/${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        SMNCopyNumberCaller: $VERSION
+    END_VERSIONS
+    """
 }
