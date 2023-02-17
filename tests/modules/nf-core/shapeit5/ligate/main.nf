@@ -29,7 +29,7 @@ workflow test_shapeit5_ligate {
     region = Channel.of("chr21:16600000-16750000", "chr21:16650000-16800000")
     sample = Channel.of([[]])
 
-    phase_input = Channel.of([[ id:'1', single_end:false ]])
+    phase_input = Channel.of([[ id:'NA12878_1X', single_end:false ]])
                         .combine(BCFTOOLS_VIEW.out.vcf.collect().map{it[1]})
                         .combine(BCFTOOLS_INDEX.out.csi.collect().map{it[1]})
                         .combine(region)
