@@ -27,7 +27,7 @@ process GRIDSS_GRIDSS {
     def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     def assembly_bam = assembly ? "--assembly ${assembly}" : ""
-    def bwa = bwa_index ? "cp -l ${bwa_index}/* ." : ""
+    def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
 
     """
     ${bwa}
