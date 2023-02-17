@@ -40,7 +40,7 @@ process SHAPEIT5_PHASECOMMON {
         $pedigree_command \\
         --region $region \\
         --thread $task.cpus \\
-        --output ${prefix}.${suffix}
+        --output ${prefix}_${region}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
