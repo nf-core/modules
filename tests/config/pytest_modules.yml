@@ -191,6 +191,7 @@ bandage/image:
   - tests/modules/nf-core/bandage/image/**
 
 bases2fastq:
+  - modules/nf-core/untar/**
   - modules/nf-core/bases2fastq/**
   - tests/modules/nf-core/bases2fastq/**
 
@@ -288,10 +289,12 @@ bcftools/view:
 
 bcl2fastq:
   - modules/nf-core/bcl2fastq/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/bcl2fastq/**
 
 bclconvert:
   - modules/nf-core/bclconvert/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/bclconvert/**
 
 beagle5/beagle:
@@ -2793,6 +2796,7 @@ sexdeterrmine:
 
 sgdemux:
   - modules/nf-core/sgdemux/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/sgdemux/**
 
 shapeit5/phasecommon:
