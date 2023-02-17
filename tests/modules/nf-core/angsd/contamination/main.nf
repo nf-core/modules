@@ -14,7 +14,7 @@ workflow test_angsd_contamination {
         []
     ]
 
-    hapmap_file = [ [id:'test2'], file("https://github.com/ANGSD/angsd/raw/0.940/RES/HapMapChrX.gz")]
+    hapmap_file = [ [id:'test2'], file("https://github.com/jbv2/nf-core-test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz")]
 
     ANGSD_DOCOUNTS ( input )
     ANGSD_CONTAMINATION ( ANGSD_DOCOUNTS.out.icounts, hapmap_file )
