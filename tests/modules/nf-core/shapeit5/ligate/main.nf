@@ -29,7 +29,7 @@ workflow test_shapeit5_ligate {
     region = Channel.of("chr21:16600000-16750000", "chr21:16650000-16800000")
     sample = Channel.of([[]])
 
-    phase_input = Channel.of([[ id:'NA12878_1X', single_end:false ]])
+    phase_input = Channel.of([[ id:'1', single_end:false ]])
                         .combine(BCFTOOLS_VIEW.out.vcf.collect().map{it[1]})
                         .combine(BCFTOOLS_INDEX.out.csi.collect().map{it[1]})
                         .combine(region)
@@ -38,8 +38,10 @@ workflow test_shapeit5_ligate {
     SHAPEIT5_PHASECOMMON ( phase_input, ref_panel, scaffold, map )
     
     BCFTOOLS_INDEX2 ( SHAPEIT5_PHASECOMMON.output.phased_variant )
+
     ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant.groupTuple()
                                         .join(BCFTOOLS_INDEX2.out.csi.groupTuple())
+
     ligate_input.view()
     SHAPEIT5_LIGATE ( ligate_input )
 }
