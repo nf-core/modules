@@ -46,4 +46,24 @@ process GRIDSS_GRIDSS {
         gridss: ${VERSION}
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    def steps = args.contains("-s ") ? args.split('-s ')[-1].split(" ")[0] :
+                args.contains("--steps ") ? args.split('--steps ')[-1].split(" ")[0] :
+                "all"
+    def vcf = steps.contains("call") || steps.contains("all") ? "touch ${prefix}.vcf.gz" : ""
+    def assembly_bam = steps.contains("assembly") || steps.contains("all") ? "touch ${prefix}.assembly.bam" : ""
+    """
+    ${vcf}
+    ${assembly_bam}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gridss: ${VERSION}
+    END_VERSIONS
+    """
 }
