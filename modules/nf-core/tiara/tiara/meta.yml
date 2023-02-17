@@ -13,7 +13,6 @@ tools:
       doi: "https://doi.org/10.1093/bioinformatics/btab672"
       licence: "MIT"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -22,8 +21,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: FASTA file of assembled contigs
-      pattern: "*.{fa, fasta, fna}"
+      description: FASTA file of assembled contigs.
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
 
 output:
   - meta:
@@ -33,16 +32,17 @@ output:
         e.g. [ id:'test', single_end:false ]
   - classifications:
       type: file
-      description: tab-separated value file containing per-contig classification probabilities and overall classifications
-      pattern: "classification_*.out.{txt, txt.gz}"
+      description: TSV file containing per-contig classification probabilities and overall classifications. Gzipped if flag --gz is set.
+      pattern: "classification_*.out.{txt,txt.gz}"
   - log:
       type: file
-      description: log file containing tiara model parameters
-      pattern: "log_*.out.{txt, txt.gz}"
+      description: Log file containing tiara model parameters. Gzipped if flag --gz is set.
+      pattern: "log_*.out.{txt,txt.gz}"
   - fasta:
       type: file
-      description: (optional) - fasta files for each domain category specified in command flag `-tf`, containing classified contigs
-      pattern: "*.out.{fasta,fasta.gz}"
+      description: |
+        (optional) - fasta files for each domain category specified in command flag `-tf`, containing classified contigs
+      pattern: "*.{fasta,fasta.gz}"
   - versions:
       type: file
       description: File containing software versions
