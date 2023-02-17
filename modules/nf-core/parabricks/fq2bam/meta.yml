@@ -48,14 +48,6 @@ input:
       type: file
       description: (optional) known sites file(s) for calculating BQSR. markdups must be true to perform BQSR.
       pattern: "*.vcf.gz"
-  - markdups:
-      type: bool
-      description: should duplicates be marked? If false, the tool will return the bam immediately after sorting.
-      pattern: "{true,false}"
-  - qc_metrics:
-      type: bool
-      description: should qc metrics be calculated? If true, a folder qc_metrics will be returned.
-      pattern: "{true,false}"
 
 output:
   - meta:
