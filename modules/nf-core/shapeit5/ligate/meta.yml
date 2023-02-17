@@ -1,5 +1,7 @@
 name: "shapeit5_ligate"
-description: write your description here
+description: |
+  Ligate multiple phased BCF/VCF files into a single whole chromosome file. 
+  Typically run to ligate multiple chunks of phased common variants.
 keywords:
   - ligate
   - haplotype
@@ -22,8 +24,13 @@ input:
 
   - input_list:
       type: file
-      description: VCF/BCF file containing genotype probabilities (GP field).
+      description: VCF/BCF files containing genotype probabilities (GP field).
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - input_list:
+      type: file
+      description: VCF/BCF files containing genotype probabilities (GP field).
+      pattern: "*.csi"
 
 output:
   - meta:
