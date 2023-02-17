@@ -127,7 +127,7 @@ opt <- list(
     sample_name_col = 'file',
     background = TRUE,
     normalize = TRUE,
-    bg_version = 2,
+    bgversion = 2,
     destructive=FALSE,
     cdfname = NULL,
     rm.mask = FALSE,
@@ -251,7 +251,7 @@ if (opt\$build_annotation){
                 anno,
                 anno\$PROBEID
             ),
-            function(x) apply(x, 2, function(y) paste(unique(y), collapse=','))
+            function(x) apply(x, 2, function(y) paste(unique(y), collapse=', '))
         )
     )
 
