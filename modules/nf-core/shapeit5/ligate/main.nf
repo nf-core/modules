@@ -8,7 +8,7 @@ process SHAPEIT5_LIGATE {
         'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
-    tuple val(meta), path(input_list, stageAs: 'dir*/*'), path (input_list_index, stageAs: 'dir*/*')
+    tuple val(meta), path(input_list), path (input_list_index)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants

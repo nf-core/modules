@@ -9,13 +9,13 @@ include { BCFTOOLS_INDEX as  BCFTOOLS_INDEX2    } from '../../../../../modules/n
 
 workflow test_shapeit5_ligate {
     input_vcf = [
-        [ id:'input', single_end:false ], // meta map
+        [ id:'NA12878.chr21.s.1x.vcf.gz', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
     ]
     
     ref_panel = Channel.of([
-        [ id:'reference', single_end:false ], // meta map
+        [ id:'1000GP.chr21.noNA12878.s.bcf'], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
     ]).collect()
@@ -40,5 +40,6 @@ workflow test_shapeit5_ligate {
     BCFTOOLS_INDEX2 ( SHAPEIT5_PHASECOMMON.output.phased_variant )
     ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant.groupTuple()
                                         .join(BCFTOOLS_INDEX2.out.csi.groupTuple())
+    SHAPEIT5_PHASECOMMON.output.phased_variant.view()
     SHAPEIT5_LIGATE ( ligate_input )
 }
