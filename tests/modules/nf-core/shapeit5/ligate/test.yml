@@ -1,0 +1,14 @@
+- name: shapeit5 ligate test_shapeit5_ligate
+  command: nextflow run ./tests/modules/nf-core/shapeit5/ligate -entry test_shapeit5_ligate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shapeit5/ligate/nextflow.config
+  tags:
+    - shapeit5
+    - shapeit5/ligate
+  files:
+    - path: output/bcftools/input.bcf.csi
+    - path: output/bcftools/input.vcf.gz
+    - path: output/bcftools/input.vcf.gz.csi
+      md5sum: 6918e7365dfdc9d523c9c77ca678f774
+    - path: output/bcftools/versions.yml
+    - path: output/shapeit5/input.bcf
+    - path: output/shapeit5/input.vcf.gz
+    - path: output/shapeit5/versions.yml
