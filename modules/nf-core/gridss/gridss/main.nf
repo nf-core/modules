@@ -37,7 +37,7 @@ process GRIDSS_GRIDSS {
         --reference ${fasta} \\
         --threads ${task.cpus} \\
         ${assembly} \\
-        --jvmheap ${task.memory.toGiga()}g \\
+        --jvmheap ${task.memory.toGiga() - 1}g \\
         --otherjvmheap ${task.memory.toGiga() - 1}g \\
         ${inputs}
 
