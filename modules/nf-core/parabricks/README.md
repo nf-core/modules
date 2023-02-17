@@ -30,7 +30,7 @@ Users who would like to have Enterprise Support for Clara Parabricks can purchas
 
 ### fq2bam
 
-`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the numebr of threads used with this tool - all avilable threads on the system are used by default.
+`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the number of threads used with this tool - all avilable threads on the system are used by default.
 
 Alignment and coordinate sorting are always performed. Duplicate marking can be performed by passing the option `markdups=true`. Duplicate marking and BQSR can be performed by passing the options `markdups=true` and `known_sites=$KNOWN_SITES_FILE`.
 
