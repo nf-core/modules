@@ -267,7 +267,8 @@ if (opt\$build_annotation){
 
 # R object for other processes to use
 
-saveRDS(eset, file = 'eset.rds')
+output_prefix <- '$task.ext.prefix'
+saveRDS(eset, file = paste0(output_prefix, 'eset.rds'))
 
 # Write matrix
 
@@ -276,7 +277,7 @@ write.table(
         probe_id = rownames(eset),
         round_dataframe_columns(as.data.frame(exprs(eset)))
     ),
-    file = 'matrix.tsv',
+    file = paste0(output_prefix, 'matrix.tsv'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
