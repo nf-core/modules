@@ -1,0 +1,8 @@
+- name: shapeit5 ligate test_shapeit5_ligate
+  command: nextflow run ./tests/modules/nf-core/shapeit5/phasecommon -entry test_shapeit5_phasecommon_without_map -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shapeit5/phasecommon/nextflow.config
+  tags:
+    - shapeit5/phasecommon
+    - shapeit5
+  files:
+    - path: output/shapeit5/NA12878_1X.vcf.gz
+    - path: output/shapeit5/versions.yml

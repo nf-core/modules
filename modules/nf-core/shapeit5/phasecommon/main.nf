@@ -22,7 +22,8 @@ process SHAPEIT5_PHASECOMMON {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_${region}"
+
+    def prefix = task.ext.prefix ?: "${meta.id}_${region.replaceAll("[:-]", "_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
     def map_command       = map       ? "--map $map"             : ""
