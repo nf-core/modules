@@ -275,7 +275,8 @@ saveRDS(eset, file = paste0(output_prefix, 'eset.rds'))
 write.table(
     data.frame(
         probe_id = rownames(eset),
-        round_dataframe_columns(as.data.frame(exprs(eset)))
+        round_dataframe_columns(as.data.frame(exprs(eset))),
+        check.names = FALSE
     ),
     file = paste0(output_prefix, 'matrix.tsv'),
     col.names = TRUE,
