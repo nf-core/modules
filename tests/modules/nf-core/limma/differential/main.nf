@@ -28,7 +28,7 @@ workflow test_limma_differential {
 
     // Now test this modules
 
-    ch_differential_inputs = AFFY_JUSTRMA.out.tsv
+    ch_differential_inputs = AFFY_JUSTRMA.out.expression
         .join(ch_samplesheet)
         .map{
             tuple(['variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia', 'blocking': ''], it[2], it[1])
