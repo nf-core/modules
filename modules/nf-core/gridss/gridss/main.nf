@@ -14,8 +14,8 @@ process GRIDSS_GRIDSS {
     tuple val(meta4), path(bwa_index)
 
     output:
-    tuple val(meta), path("*.vcf.gz")       , emit: vcf
-    tuple val(meta), path("*.assembly.bam") , emit: assembly
+    tuple val(meta), path("*.vcf.gz")       , emit: vcf, optional:true
+    tuple val(meta), path("*.assembly.bam") , emit: assembly, optional:true
     path "versions.yml"                     , emit: versions
 
     when:
@@ -40,7 +40,6 @@ process GRIDSS_GRIDSS {
         --jvmheap ${task.memory.toGiga()}g \\
         --otherjvmheap ${task.memory.toGiga() - 1}g \\
         ${inputs}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

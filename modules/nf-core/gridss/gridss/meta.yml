@@ -53,11 +53,11 @@ output:
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: The called VCF file
+      description: The called VCF file created by Gridss' call step
       pattern: "*.vcf.gz"
   - assembly:
       type: file
-      description: The assembly BAM file created by Gridss
+      description: The assembly BAM file created by Gridss' assembly step
       pattern: "*.assembly.bam"
 
 authors:
