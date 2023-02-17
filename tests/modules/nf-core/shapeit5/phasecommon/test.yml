@@ -1,8 +1,8 @@
 - name: shapeit5 phasecommon test_shapeit5_phasecommon_without_map
   command: nextflow run ./tests/modules/nf-core/shapeit5/phasecommon -entry test_shapeit5_phasecommon_without_map -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shapeit5/phasecommon/nextflow.config
   tags:
-    - shapeit5
     - shapeit5/phasecommon
+    - shapeit5
   files:
     - path: output/shapeit5/input_chr21.vcf.gz
     - path: output/shapeit5/versions.yml
@@ -10,8 +10,8 @@
 - name: shapeit5 phasecommon test_shapeit5_phasecommon_with_map
   command: nextflow run ./tests/modules/nf-core/shapeit5/phasecommon -entry test_shapeit5_phasecommon_with_map -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shapeit5/phasecommon/nextflow.config
   tags:
-    - shapeit5
     - shapeit5/phasecommon
+    - shapeit5
   files:
     - path: output/shapeit5/input_chr21.vcf.gz
     - path: output/shapeit5/versions.yml

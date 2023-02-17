@@ -40,6 +40,6 @@ workflow test_shapeit5_ligate {
     BCFTOOLS_INDEX2 ( SHAPEIT5_PHASECOMMON.output.phased_variant )
     ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant.groupTuple()
                                         .join(BCFTOOLS_INDEX2.out.csi.groupTuple())
-    SHAPEIT5_PHASECOMMON.output.phased_variant.view()
+
     SHAPEIT5_LIGATE ( ligate_input )
 }
