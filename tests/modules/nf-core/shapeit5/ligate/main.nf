@@ -9,13 +9,13 @@ include { BCFTOOLS_INDEX as  BCFTOOLS_INDEX2    } from '../../../../../modules/n
 
 workflow test_shapeit5_ligate {
     input_vcf = [
-        [ id:'NA12878.chr21.s.1x.vcf.gz', single_end:false ], // meta map
+        [ id:'NA12878_1X', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
     ]
     
     ref_panel = Channel.of([
-        [ id:'1000GP.chr21.noNA12878.s.bcf'], // meta map
+        [ id:'REF_1000GP', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
     ]).collect()
@@ -29,7 +29,7 @@ workflow test_shapeit5_ligate {
     region = Channel.of("chr21:16600000-16750000", "chr21:16650000-16800000")
     sample = Channel.of([[]])
 
-    phase_input = Channel.of([[ id:'input', single_end:false ]])
+    phase_input = Channel.of([[ id:'NA12878_1X', single_end:false ]])
                         .combine(BCFTOOLS_VIEW.out.vcf.collect().map{it[1]})
                         .combine(BCFTOOLS_INDEX.out.csi.collect().map{it[1]})
                         .combine(region)
