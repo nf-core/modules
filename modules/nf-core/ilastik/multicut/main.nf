@@ -10,7 +10,7 @@ process ILASTIK_MULTICUT {
     path probs
 
     output:
-    tuple val(meta), path("*.h5") , emit: h5
+    tuple val(meta), path("*.tiff") , emit: out_tiff
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,6 +29,7 @@ process ILASTIK_MULTICUT {
         --probabilities=$probs \\
         --export_source="Multicut Segmentation" \\
         $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ilastik: \$(/ilastik-release/run_ilastik.sh --headless --version)
