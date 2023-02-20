@@ -1,4 +1,4 @@
-name: bwa_index
+name: sentieon_bwaindex
 description: Create BWA index for reference genome
 keywords:
   - index
@@ -6,14 +6,12 @@ keywords:
   - genome
   - reference
 tools:
-  - bwa:
+  - sentieon:
       description: |
-        BWA is a software package for mapping DNA sequences against
-        a large reference genome, such as the human genome.
-      homepage: http://bio-bwa.sourceforge.net/
-      documentation: http://www.htslib.org/doc/samtools.html
-      arxiv: arXiv:1303.3997
-      licence: ["GPL-3.0-or-later"]
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
 input:
   - meta:
       type: map
