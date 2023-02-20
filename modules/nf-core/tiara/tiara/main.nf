@@ -42,9 +42,9 @@ process TIARA_TIARA {
     if echo "${args}" | grep -q "tf\|to-fasta"; then
         ## check if we've asked for gzip output, then rename files consistently
         if echo "${args}" | grep -q "gz"; then
-            find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%.*}.fasta.gz"' \\;
+            find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%_*}_${prefix}.fasta.gz"' \\;
         else
-            find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%.*}.fasta"' \\;
+            find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%_*}_${prefix}.fasta"' \\;
         fi
     fi
 

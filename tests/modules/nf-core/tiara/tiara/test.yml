@@ -1,10 +1,10 @@
 - name: tiara tiara test_tiara_tiara
   command: nextflow run ./tests/modules/nf-core/tiara/tiara -entry test_tiara_tiara -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiara/tiara/nextflow.config
   tags:
-    - tiara
     - tiara/tiara
+    - tiara
   files:
-    - path: output/tiara/bacteria_test1.fasta
+    - path: output/tiara/bacteria_test.fasta
       md5sum: d46834f0b781bc0277269f79226f5001
     - path: output/tiara/classification_test.out.txt
       md5sum: 1e4a4d8081c20b2540316fb9fafb5ad3
