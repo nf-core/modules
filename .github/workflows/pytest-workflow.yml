@@ -91,8 +91,6 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
     steps:
       - uses: actions/checkout@v3
 
@@ -148,6 +146,9 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
+        env:
+          SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+          SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 

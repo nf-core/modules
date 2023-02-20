@@ -1,5 +1,5 @@
 - name: sentieon bwaindex test_sentieon_bwaindex
-  command: nextflow run ./tests/modules/nf-core/sentieon/bwaindex -entry test_sentieon_bwaindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/bwaindex/nextflow.config
+  command: nextflow secrets set SENTIEON_LICENSE_BASE64 $SENTIEON_LICENSE_BASE64 & nextflow run ./tests/modules/nf-core/sentieon/bwaindex -entry test_sentieon_bwaindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/bwaindex/nextflow.config
   tags:
     - sentieon
     - sentieon/bwaindex
@@ -17,7 +17,7 @@
     - path: output/bwa/versions.yml
 
 - name: sentieon bwaindex test_sentieon_bwaindex_stub
-  command: nextflow run ./tests/modules/nf-core/sentieon/bwaindex -entry test_sentieon_bwaindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/bwaindex/nextflow.config -stub
+  command: nextflow secrets set SENTIEON_LICENSE_BASE64 $SENTIEON_LICENSE_BASE64 & nextflow run ./tests/modules/nf-core/sentieon/bwaindex -entry test_sentieon_bwaindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/bwaindex/nextflow.config -stub
   tags:
     - sentieon
     - sentieon/bwaindex
