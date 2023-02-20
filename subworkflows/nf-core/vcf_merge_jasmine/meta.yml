@@ -1,0 +1,75 @@
+name: "vcf_merge_jasmine"
+description: Merge SV VCFs from different callers using Jasmine
+keywords:
+  - vcf
+  - structural variants
+  - merge
+modules:
+  - jasminesv
+  - tabix/bgzip
+  - tabix/tabix
+input:
+  - ch_vcfs:
+      type: queue channel
+      description: |
+        MANDATORY - A channel containing the input VCFs in bgzipped format.
+        The `meta.id` field should be different for all entries (even for the same samples).
+        Structure: [ meta, vcf ]
+  - ch_bams:
+      type: queue channel
+      description: |
+        OPTIONAL - A channel containing the BAM files used to create the VCFs. Only one BAM file per sample should be given (not one per caller)
+        The `meta.id` field should be the same value as the `common_meta` field in the meta.
+        Structure: [ meta, bam ]
+  - ch_sample_dists:
+      type: queue channel
+      description: |
+        OPTIONAL - A channel containing the TXT files with the distance thresholds for each sample. Only one file per sample should be given (not one per caller)
+        The `meta.id` field should be the same value as the `common_meta` field in the meta.
+        Structure: [ meta, txt ]
+  - ch_fasta:
+      type: value channel
+      description: |
+        OPTIONAL - The reference FASTA file used to call the VCF files.
+        Structure: [ fasta ]
+  - ch_fasta:
+      type: value channel
+      description: |
+        OPTIONAL - The reference FASTA file used to call the VCF files.
+        Structure: [ fasta ]
+  - ch_fasta_fai:
+      type: value channel
+      description: |
+        OPTIONAL - The index of the reference FASTA file used to call the VCF files.
+        Structure: [ fasta_fai ]
+  - ch_chrom_norm:
+      type: value channel
+      description: |
+        OPTIONAL - A TXT file containing the chromosomes and their aliases used for normalization.
+        Structure: [ txt ]
+  - callers_amount:
+      type: integer
+      description: |
+        MANDATORY - The amount of callers (and so the amount of VCFs that need to be merged per sample)
+  - common_meta:
+      type: string
+      description: |
+        MANDATORY - A string value indicating which meta field can be used as a common identifier for all VCFs of one sample.
+        The value inside of this field will be used to replace `meta.id`.
+output:
+  - vcf:
+      type: queue channel
+      description: |
+        A channel containing the merged VCFs in bgzipped format.
+        Structure: [ meta, vcf ]
+  - tbi:
+      type: queue channel
+      description: |
+        A channel containing the indices of the merged VCFs.
+        Structure: [ meta, tbi ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@nvnieuwk"
