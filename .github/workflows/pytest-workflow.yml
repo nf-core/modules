@@ -92,6 +92,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
+      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
     steps:
       - uses: actions/checkout@v3
 
@@ -148,7 +149,7 @@ jobs:
       # Set up secrets
       - name: Use secrets
         if: ${{ matrix.tags }} == sentieon/bwaindex
-        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+        run: nextflow secrets set SENTIEON_LICENSE_BASE64 $SENTIEON_LICENSE_BASE64
 
       # Test the module
       - name: Run pytest-workflow
