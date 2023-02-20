@@ -35,7 +35,9 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
-        profile: ["docker", "singularity"]
+        profile: ["docker", "singularity", "conda"]
+        exclude:
+          - profile: "conda"
         include:
           - tags: sentieon/bwaindex
     env:
