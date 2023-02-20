@@ -92,6 +92,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
     steps:
       - uses: actions/checkout@v3
 
