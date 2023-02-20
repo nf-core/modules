@@ -12,7 +12,7 @@ process TIARA_TIARA {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("classification_*.out.{txt,txt.gz}")      , emit: classifications
+    tuple val(meta), path("${prefix}.out.{txt,txt.gz}")      , emit: classifications
     tuple val(meta), path("log_*.out.{txt,txt.gz}")                 , emit: log
     tuple val(meta), path("*.{fasta,fasta.gz}")                     , emit: fasta, optional: true
     path "versions.yml"                                             , emit: versions
@@ -22,20 +22,13 @@ process TIARA_TIARA {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    prefix = task.ext.prefix ?: "${meta.id}"
+    VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tiara -i ${fasta} \
         -o ${prefix}.out.txt \
         --threads ${task.cpus} \
         ${args}
-
-    ## Rename classification files
-    if [ -f ${prefix}.out.txt ]; then
-        mv ${prefix}.out.txt classification_${prefix}.out.txt
-    else
-        mv ${prefix}.out.txt.gz classification_${prefix}.out.txt.gz
-    fi
 
     ## fix gzip flag weirdness and ensure consistent .fasta filename output
     ## check if fasta files are being output
@@ -47,6 +40,18 @@ process TIARA_TIARA {
             find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%_*}_${prefix}.fasta"' \\;
         fi
     fi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tiara: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.out.txt
+    touch log_${prefix}.out.txt
+    touch bacteria_${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
