@@ -82,7 +82,7 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
-            tags: sentieon
+            tags: sentieon/bwaindex
           - profile: "conda"
             tags: universc
           - profile: "singularity"
@@ -91,6 +91,7 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
+      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
     steps:
       - uses: actions/checkout@v3
 
