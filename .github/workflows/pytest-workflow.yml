@@ -153,7 +153,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        env :
+        env:
           SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
