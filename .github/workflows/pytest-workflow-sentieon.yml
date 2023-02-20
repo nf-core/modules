@@ -1,4 +1,4 @@
-name: Pytest-workflow
+name: Pytest-workflow-sentieon
 on:
   push:
     branches: [master]
@@ -37,7 +37,7 @@ jobs:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
         profile: ["docker", "singularity"]
         include:
-          - tags: sentieon*
+          - tags: sentieon/bwaindex
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
