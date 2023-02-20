@@ -146,7 +146,7 @@ jobs:
 
       # Set up secrets
       - name: Use secrets
-        if: ${{ matrix.tags }} == sentieon/bwaindex
+        if: startsWith( ${{ matrix.tags }}, 'sentieon')
         run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
       # Test the module
