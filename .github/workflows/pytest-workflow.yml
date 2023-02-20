@@ -146,10 +146,8 @@ jobs:
 
       # Set up secrets
       - name: Use secrets
-        env:
-          SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
         if: ${{ matrix.tags }} == sentieon/bwaindex
-        run: nextflow secrets set SENTIEON_LICENSE_BASE64 "$SENTIEON_LICENSE_BASE64"
+        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
       # Test the module
       - name: Run pytest-workflow
