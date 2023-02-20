@@ -12,10 +12,10 @@ process TIARA_TIARA {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.out.{txt,txt.gz}")      , emit: classifications
-    tuple val(meta), path("log_*.out.{txt,txt.gz}")                 , emit: log
-    tuple val(meta), path("*.{fasta,fasta.gz}")                     , emit: fasta, optional: true
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("${prefix}.out.{txt,txt.gz}")  , emit: classifications
+    tuple val(meta), path("log_*.out.{txt,txt.gz}")      , emit: log
+    tuple val(meta), path("*.{fasta,fasta.gz}")          , emit: fasta, optional: true
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process TIARA_TIARA {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tiara -i ${fasta} \
         -o ${prefix}.out.txt \
@@ -48,6 +48,8 @@ process TIARA_TIARA {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.out.txt
     touch log_${prefix}.out.txt
