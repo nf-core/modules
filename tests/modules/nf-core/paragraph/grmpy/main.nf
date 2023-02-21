@@ -9,8 +9,8 @@ workflow test_paragraph_grmpy {
 
     input = Channel.of([
         [ id:'test' ],
-        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz_tbi'], checkIfExists: true)
+        file("/home/nvnieuwk/Documents/nextflow/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/vcf/chr21_sv.vcf.gz", checkIfExists: true),
+        file("/home/nvnieuwk/Documents/nextflow/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/vcf/chr21_sv.vcf.gz.tbi", checkIfExists: true)
     ])
 
     manifest = Channel.of(

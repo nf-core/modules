@@ -14,8 +14,9 @@ process PARAGRAPH_GRMPY {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz")   , emit: vcf
+    tuple val(meta), path("*.json.gz")  , emit: json
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +26,8 @@ process PARAGRAPH_GRMPY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
+    if ("$variants" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
     multigrmpy.py \\
         --input ${variants} \\
@@ -33,6 +36,25 @@ process PARAGRAPH_GRMPY {
         --reference ${fasta} \\
         --threads ${task.cpus} \\
         ${args}
+
+    mv ${prefix}/genotypes.vcf.gz ${prefix}.vcf.gz
+    mv ${prefix}/genotypes.json.gz ${prefix}.json.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        paragraph: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    if ("$variants" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
