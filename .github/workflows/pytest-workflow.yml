@@ -146,13 +146,22 @@ jobs:
 
       # Set up secrets
       - name: Use secrets
-        if: ${{ matrix.tags }} == sentieon/bwaindex
-        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+        id: secrets
+        run: |
+          if [[ ${{ matrix.tags }} =~ ^sention ]]; then
+              nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+          fi
 
-      # Test the module
-      - name: Run pytest-workflow
+      # Test the module with secrets
+      - name: Run pytest-workflow with secrets
         env:
           SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
+        if: secrets.check-tag.outputs.match == 'true'
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+
+      # Test the module without secrets
+      - name: Run pytest-workflow
+        if: secrets.check-tag.outputs.match == 'false'
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
