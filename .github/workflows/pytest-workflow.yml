@@ -147,10 +147,7 @@ jobs:
       # Set up secrets
       - name: Use secrets
         id: set-secrets
-        run: |
-          if [[ ${{ matrix.tags }} =~ ^sention.* ]]; then
-              nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-          fi
+        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
       # Test the module with secrets
       - name: Run pytest-workflow with secrets
