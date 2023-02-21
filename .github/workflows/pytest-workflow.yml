@@ -151,9 +151,9 @@ jobs:
 
       # Test the module with secrets
       - name: Run pytest-workflow with secrets
+        if: step.set-secrets.outputs.match == 'true'
         env:
           SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
-        if: step.set-secrets.outputs.match == 'true'
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       # Test the module without secrets
