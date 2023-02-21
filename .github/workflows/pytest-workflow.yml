@@ -146,8 +146,10 @@ jobs:
 
       # Set up secrets
       - name: Use secrets
-        if: ${{ startsWith( ${{ matrix.tags }}, 'sentieon') }}
-        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+        if: startsWith( ${{ matrix.tags }}, 'sentieon')
+        run: |
+          ${{ startsWith( ${{ matrix.tags }}, 'sentieon') }}
+          nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
       # Test the module
       - name: Run pytest-workflow
