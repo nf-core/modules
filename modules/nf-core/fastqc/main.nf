@@ -31,6 +31,8 @@ process FASTQC {
     done
     fastqc $args --threads $task.cpus $renamed_files
 
+    echo "test"
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
