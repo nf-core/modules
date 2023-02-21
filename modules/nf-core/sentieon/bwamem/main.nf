@@ -43,7 +43,12 @@ process SENTIEON_BWAMEM {
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
-    sentieon driver --version
+    sentieon bwa mem \\
+        $args \\
+        -t $task.cpus \\
+        \$INDEX \\
+        $reads \\
+        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
 
     touch foo.bam
     touch foo.bam.bai
