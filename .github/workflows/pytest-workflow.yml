@@ -165,14 +165,14 @@ jobs:
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
-        if: ${{ step.pytest.conclusions == 'failure' }}
+        if: ${{ failure() }}
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
       - name: Upload logs on failure
-        if: ${{ step.pytest.conclusions == 'failure' }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: logs-${{ matrix.profile }}
