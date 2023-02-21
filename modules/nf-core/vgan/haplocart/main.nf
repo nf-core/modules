@@ -35,10 +35,10 @@ process VGAN_HAPLOCART {
         -pf ${prefix}.posterior.txt
 
     touch versions.yml
-    //cat <<-END_VERSIONS > versions.yml
-    //"${task.process}":
-    //    vgan: echo "1.0.1"
-    //END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vgan: echo "1.0.1"
+    END_VERSIONS
     """
 
     stub:
