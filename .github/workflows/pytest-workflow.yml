@@ -148,7 +148,7 @@ jobs:
       - name: Use secrets
         id: secrets
         run: |
-          if [[ ${{ matrix.tags }} =~ ^sention ]]; then
+          if [[ ${{ matrix.tags }} =~ ^sention.* ]]; then
               nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
           fi
 
