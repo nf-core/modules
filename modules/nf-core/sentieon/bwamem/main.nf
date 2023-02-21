@@ -45,6 +45,9 @@ process SENTIEON_BWAMEM {
 
     sentieon driver --version
 
+    mkdir bwamem
+    touch bwamem/foo.bam
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
