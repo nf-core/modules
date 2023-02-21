@@ -19,8 +19,10 @@ input:
   - ch_vcfs:
       type: file(s)
       description: |
-        The input VCFs to perform the stats on, optionally with their indices
-        Structure: [ meta, vcf, (tbi|[]) ]
+        The input VCFs to perform the stats on, optionally with their indices.
+        This channel can also contain the number of samples in the same family/group
+        to check relatedness. This is advised to add as it can improve the efficiency of your pipeline
+        Structure: [ meta, vcf, (tbi|[]), count ]
   - ch_fasta:
       type: file
       description: |
@@ -39,8 +41,10 @@ input:
   - ch_peds:
       type: file
       description: |
-        Optional - A channel containing the PED files for the corresponding families
-        Structure: [ meta, ped ]
+        A channel containing an optional PED file for the corresponding families. This channel has to be given, but can be like `[meta, []]`.
+        When you don't want to use a PED file, you must supply a channel
+        containing the meta and an empty value (`[]`) instead of a PED
+        Structure: [ meta, (ped|[]) ]
   - ch_sample_groups:
       type: file
       description: |
