@@ -151,26 +151,28 @@ jobs:
 
       # Test the module with secrets
       - name: Run pytest-workflow with secrets
+        id: pytest-secrets
         env:
           SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
-        if: ${{ sucess() }}
+        if: ${{ step.set-secrets.conclusions == 'success' }}
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       # Test the module without secrets
       - name: Run pytest-workflow
+        id: pytest
         if: ${{ step.set-secrets.conclusions == 'failure' }}
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
-        if: ${{ failure() }}
+        if: ${{ step.pytest-secrets.conclusions == 'failure' || step.pytest.conclusions == 'failure' }}
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
       - name: Upload logs on failure
-        if: failure()
+        if: ${{ step.pytest-secrets.conclusions == 'failure' || step.pytest.conclusions == 'failure' }}
         uses: actions/upload-artifact@v2
         with:
           name: logs-${{ matrix.profile }}
