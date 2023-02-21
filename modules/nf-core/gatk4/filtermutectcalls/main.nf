@@ -30,7 +30,7 @@ process GATK4_FILTERMUTECTCALLS {
     def segmentation_command    = segmentation    ? segmentation.collect{"--tumor-segmentation $it"}.join(' ')                  : ''
     def estimate_command        = estimate        ? " --contamination-estimate ${estimate} "                                    : ''
     def table_command           = table           ? " --contamination-table ${table} "                                          : ''
-    def stats_command           = stats           ? " --stats ${stats} "                                          : ''
+    def stats_command           = stats           ? " --stats ${stats} "                                                        : ''
 
     def avail_mem = 3
     if (!task.memory) {
