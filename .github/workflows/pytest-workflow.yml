@@ -151,19 +151,19 @@ jobs:
 
       # Test the module with secrets
       - name: Run pytest-workflow with secrets
-        if: step.set-secrets.outputs.match == 'true'
         env:
           SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
+        if: ${{ sucess() }}
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       # Test the module without secrets
       - name: Run pytest-workflow
-        if: step.set-secrets.outputs.match == 'false'
+        if: ${{ step.set-secrets.conclusions == 'failure' }}
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
-        if: failure()
+        if: ${{ failure() }}
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
