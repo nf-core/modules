@@ -46,6 +46,7 @@ process SENTIEON_BWAMEM {
     sentieon driver --version
 
     touch foo.bam
+    touch foo.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
