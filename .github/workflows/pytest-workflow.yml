@@ -144,24 +144,14 @@ jobs:
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
 
-      # # Set up secrets
-      # - name: Use secrets
-      #   id: set-secrets
-      #   run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      # Set up secrets
+      - name: Use secrets
+        if: ${{ github.repository_owner == 'nf-core' }}
+        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
-      # # Test the module with secrets
-      # - name: Run pytest-workflow with secrets
-      #   id: pytest-secrets
-      #   env:
-      #     SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
-      #   if: ${{ step.set-secrets.conclusions == 'success' }}
-      #   run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
-
-      # Test the module without secrets
+      # Test the module
       - name: Run pytest-workflow
         id: pytest
-        # if: ${{ step.set-secrets.conclusions == 'failure' }}
-        # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
