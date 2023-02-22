@@ -13,9 +13,9 @@ process DELLY_CALL {
     path fai
 
     output:
-    tuple val(meta), path("*.bcf"), emit: bcf
-    tuple val(meta), path("*.csi"), emit: csi
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.{b,v}cf")  , emit: bcf
+    tuple val(meta), path("*.csi")      , emit: csi, optional:true
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,15 +23,19 @@ process DELLY_CALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "bcf"
+    def bcf_output = suffix == "bcf" ? "--outfile ${prefix}.bcf" : ""
+    def vcf_output = suffix == "vcf" ? "> ${prefix}.vcf" : ""
     def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
     """
     delly \\
         call \\
         ${args} \\
-        --outfile ${prefix}.bcf \\
+        ${bcf_output} \\
         --genome ${fasta} \\
         ${exclude} \\
-        ${input}
+        ${input} \\
+        ${vcf_output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

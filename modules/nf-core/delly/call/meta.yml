@@ -54,11 +54,11 @@ output:
       pattern: "versions.yml"
   - bcf:
       type: file
-      description: Called variants in BCF format
-      pattern: "*.{bcf}"
+      description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf" in ext.suffix to define the output type
+      pattern: "*.{bcf,vcf}"
   - csi:
     type: file
-    description: A generated csi index that matches the bcf output
+    description: A generated csi index that matches the bcf output (not generated for vcf files)
     pattern: "*.{bcf.csi}"
 
 authors:
