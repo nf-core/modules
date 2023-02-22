@@ -8,10 +8,10 @@ workflow test_ilastik_multicut {
 
     input = [
         [ id:'probabilities' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
+        file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/multicut_140rc8_plant.ilp")]
-    probs = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga-data_Probabilities.h5")]
+    ilp = [file(params.test_data['spatialomics']['ilp']['plant_wga_multicut'], checkIfExists: true)]
+    probs = [file(params.test_data['spatialomics']['h5']['plant_wga_prob'], checkIfExists: true)]
 
     ILASTIK_MULTICUT ( input, ilp, probs )
 }
