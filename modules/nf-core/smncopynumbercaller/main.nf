@@ -22,7 +22,7 @@ process SMNCOPYNUMBERCALLER {
     manifest_text = bam.join("\n")
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     echo "$manifest_text" >manifest.txt
     smn_caller.py \\
@@ -34,19 +34,19 @@ process SMNCOPYNUMBERCALLER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        SMNCopyNumberCaller: $VERSION
+        SMNCopyNumberCaller: "1.1.2"
     END_VERSIONS
     """
 
     stub:
     """
     mkdir out
-    touch out/${prefix}.tsv
-    touch out/${prefix}.json
+    touch out/smnstub.tsv
+    touch out/smnstub.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        SMNCopyNumberCaller: $VERSION
+        SMNCopyNumberCaller: "1.1.2"
     END_VERSIONS
     """
 }
