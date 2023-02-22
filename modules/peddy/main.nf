@@ -47,7 +47,7 @@ process PEDDY {
     touch $prefix.sex_check.csv
     touch $prefix.peddy.ped
     touch $prefix.html
-
+    
     touch versions.yml
     """
 }
