@@ -8,7 +8,7 @@ process PARAGRAPH_IDXDEPTH {
         'quay.io/biocontainers/paragraph:2.3--h8908b6f_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta) , path(input), path(input_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
 
