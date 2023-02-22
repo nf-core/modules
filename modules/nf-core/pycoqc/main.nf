@@ -20,7 +20,7 @@ process PYCOQC {
 
     script:
     def args = task.ext.args ?: ''
-    def suffix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pycoQC \\
         $args \\
