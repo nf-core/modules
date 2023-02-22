@@ -8,7 +8,7 @@ process PYCOQC {
         'quay.io/biocontainers/pycoqc:2.5.2--py_0' }"
 
     input:
-    path summary
+    tuple val(meta), path(summary)
 
     output:
     path "*.html"        , emit: html
