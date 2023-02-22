@@ -22,11 +22,12 @@ process PEDDY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     peddy \\
         $args \\
+        --prefix $prefix \\
         --plot \\
         -p $task.cpus \\
         $vcf \\
@@ -40,14 +41,13 @@ process PEDDY {
 
     stub:
     """
-    filename=\$(basename $vcf)
-    touch \$filename.ped_check.csv
-    touch \$filename.vs.html
-    touch \$filename.het_check.csv
-    touch \$filename.sex_check.csv
-    touch \$filename.peddy.ped
-    touch \$filename.html
-
+    touch $prefix.ped_check.csv
+    touch $prefix.vs.html
+    touch $prefix.het_check.csv
+    touch $prefix.sex_check.csv
+    touch $prefix.peddy.ped
+    touch $prefix.html
+    
     touch versions.yml
     """
 }
