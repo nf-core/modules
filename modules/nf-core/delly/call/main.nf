@@ -8,31 +8,38 @@ process DELLY_CALL {
         'quay.io/biocontainers/delly:1.1.6--ha41ced6_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(exclude_bed)
+    tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
     path fasta
     path fai
 
     output:
-    tuple val(meta), path("*.{bcf,vcf}")  , emit: bcf
-    tuple val(meta), path("*.csi")      , emit: csi, optional:true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
+    tuple val(meta), path("*.csi")           , emit: csi, optional:true
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "bcf"
-    def bcf_output = suffix == "bcf" ? "--outfile ${prefix}.bcf" : ""
-    def vcf_output = suffix == "vcf" ? "> ${prefix}.vcf" : ""
+
     def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
+
+    def bcf_output = suffix == "bcf" ? "--outfile ${prefix}.bcf" : ""
+    def vcf_output = suffix == "vcf" ? "| bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz" : ""
+
+    def genotype = vcf ? "--vcffile ${vcf}" : ""
+
     """
     delly \\
         call \\
         ${args} \\
         ${bcf_output} \\
         --genome ${fasta} \\
+        ${genotype} \\
         ${exclude} \\
         ${input} \\
         ${vcf_output}
