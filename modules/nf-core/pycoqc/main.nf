@@ -25,8 +25,8 @@ process PYCOQC {
     pycoQC \\
         $args \\
         -f $summary \\
-        -o pycoqc_${suffix}.html \\
-        -j pycoqc_${suffix}.json
+        -o ${prefix}.html \\
+        -j ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
