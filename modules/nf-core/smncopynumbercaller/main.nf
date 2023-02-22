@@ -44,7 +44,6 @@ process SMNCOPYNUMBERCALLER {
     mkdir out
     touch out/${prefix}.tsv
     touch out/${prefix}.json
-    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         SMNCopyNumberCaller: $VERSION
