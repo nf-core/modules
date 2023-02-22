@@ -1,5 +1,5 @@
 process PEDDY {
-    tag "$meta.id"
+    tag   "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::peddy=0.4.8" : null)
