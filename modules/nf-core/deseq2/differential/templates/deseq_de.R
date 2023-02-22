@@ -67,7 +67,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
     }
 
     df[,columns] <- format(
-        data.frame(df[, columns], check.names = FALSE), 
+        data.frame(df[, columns], check.names = FALSE),
         nsmall = digits
     )
 
@@ -378,7 +378,7 @@ saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
 # Size factors
 
 sf_df = data.frame(
-    sample = names(sizeFactors(dds)), 
+    sample = names(sizeFactors(dds)),
     data.frame(sizeFactors(dds), check.names = FALSE),
     check.names = FALSE
 )
@@ -396,7 +396,7 @@ write.table(
 
 write.table(
     data.frame(
-        gene_id=rownames(counts(dds)), 
+        gene_id=rownames(counts(dds)),
         counts(dds, normalized = TRUE),
         check.names = FALSE
     ),
