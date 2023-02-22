@@ -20,12 +20,13 @@ process PYCOQC {
 
     script:
     def args = task.ext.args ?: ''
+    def suffix = task.ext.prefix ?: "${meta.id}"
     """
     pycoQC \\
         $args \\
         -f $summary \\
-        -o pycoqc.html \\
-        -j pycoqc.json
+        -o pycoqc_${suffix}.html \\
+        -j pycoqc_${suffix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
