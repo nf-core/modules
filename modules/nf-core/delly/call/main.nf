@@ -13,7 +13,7 @@ process DELLY_CALL {
     path fai
 
     output:
-    tuple val(meta), path("*.{b,v}cf")  , emit: bcf
+    tuple val(meta), path("*.{bcf,vcf}")  , emit: bcf
     tuple val(meta), path("*.csi")      , emit: csi, optional:true
     path "versions.yml"                 , emit: versions
 
