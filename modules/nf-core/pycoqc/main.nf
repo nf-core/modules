@@ -11,9 +11,9 @@ process PYCOQC {
     tuple val(meta), path(summary)
 
     output:
-    tuple val(meta), path "*.html", emit: html
-    tuple val(meta), path "*.json", emit: json
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.json"), emit: json
+    path  "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
