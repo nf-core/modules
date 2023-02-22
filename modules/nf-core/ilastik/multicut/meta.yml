@@ -24,11 +24,21 @@ input:
       description: h5 file containing image stack to classify file
       pattern: "*.{h5,hdf5}"
 
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - ilp:
       type: file
       description: Trained ilastik .ilp project file
       pattern: "*.{ilp}"
 
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - probs:
       type: file
       description: Probability map for boundary based segmentation

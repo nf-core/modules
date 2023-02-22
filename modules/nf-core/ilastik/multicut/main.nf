@@ -6,12 +6,12 @@ process ILASTIK_MULTICUT {
 
     input:
     tuple val(meta), path(h5)
-    path ilp
-    path probs
+    tuple val(meta2), path (ilp)
+    tuple val(meta3), path (probs)
 
     output:
     tuple val(meta), path("*.tiff") , emit: out_tiff
-    path "versions.yml"           , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,23 @@ process ILASTIK_MULTICUT {
         --raw_data=$h5 \\
         --probabilities=$probs \\
         --export_source="Multicut Segmentation" \\
+        --output_filename_format=${prefix}.tiff \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ilastik: \$(/ilastik-release/run_ilastik.sh --headless --version)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "1.4.0rc8" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.tiff
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ilastik:: $VERSION
     END_VERSIONS
     """
 }

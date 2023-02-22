@@ -7,11 +7,17 @@ include { ILASTIK_MULTICUT } from '../../../../../modules/nf-core/ilastik/multic
 workflow test_ilastik_multicut {
 
     input = [
-        [ id:'probabilities' ], // meta map
+        [ id:'image' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file(params.test_data['spatialomics']['ilp']['plant_wga_multicut'], checkIfExists: true)]
-    probs = [file(params.test_data['spatialomics']['h5']['plant_wga_prob'], checkIfExists: true)]
+    ilp =   [
+        [id:'ilastik_model'],
+        file(params.test_data['spatialomics']['ilp']['plant_wga_multicut'], checkIfExists: true)
+    ]
+    probs = [
+        [id:'probability_maps'],
+        file(params.test_data['spatialomics']['h5']['plant_wga_prob'], checkIfExists: true)
+    ]
 
     ILASTIK_MULTICUT ( input, ilp, probs )
 }
