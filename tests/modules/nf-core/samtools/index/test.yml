@@ -1,0 +1,26 @@
+- name: samtools index test_samtools_index_bai
+  command: nextflow run ./tests/modules/nf-core/samtools/index -entry test_samtools_index_bai -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/index/nextflow.config
+  tags:
+    - samtools
+    - samtools/index
+  files:
+    - path: output/samtools/test.paired_end.sorted.bam.bai
+      md5sum: 704c10dd1326482448ca3073fdebc2f4
+
+- name: samtools index test_samtools_index_crai
+  command: nextflow run ./tests/modules/nf-core/samtools/index -entry test_samtools_index_crai -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/index/nextflow.config
+  tags:
+    - samtools
+    - samtools/index
+  files:
+    - path: output/samtools/test.paired_end.recalibrated.sorted.cram.crai
+      md5sum: 14bc3bd5c89cacc8f4541f9062429029
+
+- name: samtools index test_samtools_index_csi
+  command: nextflow run ./tests/modules/nf-core/samtools/index -entry test_samtools_index_csi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/index/nextflow.config
+  tags:
+    - samtools
+    - samtools/index
+  files:
+    - path: output/samtools/test.paired_end.sorted.bam.csi
+      md5sum: 8d63373007553e74d823fc2b9cbcf84d

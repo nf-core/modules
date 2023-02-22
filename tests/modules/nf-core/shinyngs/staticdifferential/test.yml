@@ -1,0 +1,17 @@
+- name: shinyngs staticdifferential test_shinyngs_staticdifferential
+  command: nextflow run ./tests/modules/nf-core/shinyngs/staticdifferential -entry test_shinyngs_staticdifferential -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticdifferential/nextflow.config
+  tags:
+    - shinyngs/staticdifferential
+    - shinyngs
+  files:
+    - path: output/shinyngs/hND6_vs_mCherry_test/png/volcano.png
+
+- name: shinyngs staticdifferential test_shinyngs_staticdifferential_html
+  command: nextflow run ./tests/modules/nf-core/shinyngs/staticdifferential -entry test_shinyngs_staticdifferential_html -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticdifferential/nextflow.config
+  tags:
+    - shinyngs/staticdifferential
+    - shinyngs
+  files:
+    - path: output/shinyngs/hND6_vs_mCherry_test/html/volcano.html
+      contains: ["-4.03005359258353,-3.03040865173003,null", "higher in mCherry"]
+    - path: output/shinyngs/hND6_vs_mCherry_test/png/volcano.png

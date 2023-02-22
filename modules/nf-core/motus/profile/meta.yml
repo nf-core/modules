@@ -1,0 +1,65 @@
+name: "motus_profile"
+description: Taxonomic meta-omics profiling using universal marker genes
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - taxonomic profiling
+tools:
+  - "motus":
+      description: "Marker gene-based OTU (mOTU) profiling"
+      homepage: "https://motu-tool.org/"
+      documentation: "https://github.com/motu-tool/mOTUs/wiki"
+      tool_dev_url: "https://github.com/motu-tool/mOTUs"
+      doi: "10.1186/s40168-022-01410-z"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Or the intermediate bam file mapped by bwa to the mOTUs database or
+        the output bam file from motus profile.
+        Or the intermediate mgc read counts table.
+      pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz,.bam,.mgc}"
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - out:
+      type: file
+      description: Results with taxonomic classification of each read
+      pattern: "*.out"
+  - bam:
+      type: file
+      description: Optional intermediate sorted BAM file from BWA
+      pattern: "*.{bam}"
+  - mgc:
+      type: file
+      description: Optional intermediate mgc read count table file saved with `-M`.
+      pattern: "*.{mgc}"
+  - log:
+      type: file
+      description: Standard error logging file containing summary statistics
+      pattern: "*.log"
+
+authors:
+  - "@jianhong"

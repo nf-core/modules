@@ -1,0 +1,32 @@
+name: "segemehl_index"
+description: Generate genome indices for segemehl align
+  - index
+  - circrna
+  - splicing
+  - fusions
+tools:
+  - "segemehl":
+      description: "A multi-split mapping algorithm for circular RNA, splicing, trans-splicing and fusion detection"
+      homepage: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
+      documentation: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
+      doi: "10.1186/gb-2014-15-2-r34"
+      licence: "GPL v3"
+
+input:
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+
+output:
+  - index:
+      type: file
+      description: Segemehl index file
+      pattern: "*.{idx}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@BarryDigby"
