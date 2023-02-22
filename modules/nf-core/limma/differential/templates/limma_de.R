@@ -20,7 +20,7 @@ parse_args <- function(x){
     args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
 
     parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
-    parsed_args[! is.na(parsed_args)]
+    parsed_args[ ( ! parsed_args %in%  c('', 'null')) & ! is.na(parsed_args)]
 }
 
 #' Flexibly read CSV or TSV files
@@ -47,7 +47,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = FALSE
     )
 }
 
@@ -322,7 +323,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 write.table(
     data.frame(
-        gene_id = rownames(comp.results),
+        probe_id = rownames(comp.results),
         comp.results
     ),
     file = paste(output_prefix, 'limma.results.tsv', sep = '.'),
