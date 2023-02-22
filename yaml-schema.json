@@ -1,0 +1,137 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Meta yaml",
+    "description": "Validate the meta yaml file for an nf-core module",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of the module"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the module"
+        },
+        "keywords": {
+            "type": "array",
+            "description": "Keywords for the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "authors": {
+            "type": "array",
+            "description": "Authors of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "input": {
+            "type": "array",
+            "description": "Input channels for the module",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the input channel"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the input channel"
+                            },
+                            "pattern": {
+                                "type": "string",
+                                "description": "Pattern of the input channel"
+                            },
+                            "default": {
+                                "type": "string",
+                                "description": "Default value for the input channel"
+                            }
+                        },
+                        "required": ["type", "description"]
+                    }
+                }
+            }
+        },
+        "output": {
+            "type": "array",
+            "description": "Output channels for the module",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the input channel"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the input channel"
+                            },
+                            "pattern": {
+                                "type": "string",
+                                "description": "Pattern of the input channel"
+                            }
+                        },
+                        "required": ["type", "description"]
+                    }
+                }
+            }
+        },
+        "tools": {
+            "type": "array",
+            "description": "Tools used by the module",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the output channel"
+                            },
+                            "homepage": {
+                                "type": "string",
+                                "description": "Homepage of the tool"
+                            },
+                            "documentation": {
+                                "type": "string",
+                                "description": "Documentation of the tool"
+                            },
+                            "tool_dev_url": {
+                                "type": "string",
+                                "description": "URL of the development version of the tool's documentation"
+                            },
+                            "doi": {
+                                "type": "string",
+                                "description": "DOI of the tool"
+                            },
+                            "licence": {
+                                "type": ["array", "string"],
+                                "description": "Licence of the tool",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["description"],
+                        "anyOf": [
+                            { "required": ["homepage"] },
+                            { "required": ["documentation"] },
+                            { "required": ["tool_dev_url"] },
+                            { "required": ["doi"] }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["name", "description", "keywords", "authors", "output", "tools"]
+}
