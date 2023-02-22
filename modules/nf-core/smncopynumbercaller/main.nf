@@ -39,11 +39,12 @@ process SMNCOPYNUMBERCALLER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    def VERSION = "1.1.2"
     """
     mkdir out
     touch out/${prefix}.tsv
     touch out/${prefix}.json
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         SMNCopyNumberCaller: $VERSION
