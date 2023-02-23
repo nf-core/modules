@@ -48,7 +48,7 @@
                                 "description": "Pattern of the input channel"
                             },
                             "default": {
-                                "type": "string",
+                                "type": ["string", "number", "boolean", "array", "object"],
                                 "description": "Default value for the input channel"
                             }
                         },
@@ -68,15 +68,15 @@
                         "properties": {
                             "type": {
                                 "type": "string",
-                                "description": "Type of the input channel"
+                                "description": "Type of the output channel"
                             },
                             "description": {
                                 "type": "string",
-                                "description": "Description of the input channel"
+                                "description": "Description of the output channel"
                             },
                             "pattern": {
                                 "type": "string",
-                                "description": "Pattern of the input channel"
+                                "description": "Pattern of the output channel"
                             }
                         },
                         "required": ["type", "description"]
@@ -118,7 +118,8 @@
                                 "description": "Licence of the tool",
                                 "items": {
                                     "type": "string"
-                                }
+                                },
+                                "uniqueItems": true
                             }
                         },
                         "required": ["description"],
