@@ -30,6 +30,7 @@ process HLALA_TYPING {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     mkdir graphs
     mv $graph graphs
@@ -143,7 +144,6 @@ process HLALA_TYPING {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hla-la: 1.0.3
-    END_VERSIONS
-    
+    END_VERSIONS    
     """
 }
