@@ -13,13 +13,14 @@ workflow test_cooler_cload_pairix {
 
     input = [ [ id:'test_pairix', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_pairix_pair_gz'], checkIfExists: true),
-             file(params.test_data['generic']['cooler']['test_pairix_pair_gz_px2'], checkIfExists: true)]
+             file(params.test_data['generic']['cooler']['test_pairix_pair_gz_px2'], checkIfExists: true),
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
-    bin_size = 2000000
 
-    COOLER_CLOAD ( input, bin_size, sizes )
-    COOLER_DUMP(COOLER_CLOAD.out.cool.map{[it[0], it[2]]}, [])
+    COOLER_CLOAD ( input, sizes )
+    COOLER_DUMP(COOLER_CLOAD.out.cool.map { [it[0], it[1], []] })
 
 }
 
@@ -27,13 +28,14 @@ workflow test_cooler_cload_pairs {
 
     input = [ [ id:'test_pairs', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_pairs_pair'], checkIfExists: true),
-             []]
+             [],
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
-    bin_size = 2000000
 
-    COOLER_CLOAD_PAIRS ( input, bin_size, sizes )
-    COOLER_DUMP_PAIRS(COOLER_CLOAD_PAIRS.out.cool.map{[it[0], it[2]]}, [])
+    COOLER_CLOAD_PAIRS ( input, sizes )
+    COOLER_DUMP_PAIRS(COOLER_CLOAD_PAIRS.out.cool.map { [it[0], it[1], []] })
 
 }
 
@@ -41,12 +43,13 @@ workflow test_cooler_cload_tabix {
 
     input = [ [ id:'test_tabix', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_tabix_pair_gz'], checkIfExists: true),
-             file(params.test_data['generic']['cooler']['test_tabix_pair_gz_tbi'], checkIfExists: true)]
+             file(params.test_data['generic']['cooler']['test_tabix_pair_gz_tbi'], checkIfExists: true),
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
-    bin_size = 2000000
 
-    COOLER_CLOAD_TABIX ( input, bin_size, sizes )
-    COOLER_DUMP_TABIX(COOLER_CLOAD_TABIX.out.cool.map{[it[0], it[2]]}, [])
+    COOLER_CLOAD_TABIX ( input, sizes )
+    COOLER_DUMP_TABIX(COOLER_CLOAD_TABIX.out.cool.map { [it[0], it[1], []] })
 
 }
