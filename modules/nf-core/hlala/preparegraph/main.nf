@@ -11,7 +11,7 @@ process HLALA_PREPAREGRAPH {
 
 
     output:
-    path("${zipped_graph}")        , emit: graph
+    tuple val(meta), path("${zipped_graph}")        , emit: graph
     path "versions.yml", emit: versions
 
     when:
@@ -30,7 +30,7 @@ process HLALA_PREPAREGRAPH {
     /usr/local/opt/hla-la/bin/HLA-LA \\
         --action prepareGraph \\
         --PRG_graph_dir $unzipped_graph
-         
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hlala: 1.0.3
