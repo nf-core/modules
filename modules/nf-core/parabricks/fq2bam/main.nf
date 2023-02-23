@@ -63,4 +63,27 @@ process PARABRICKS_FQ2BAM {
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
+    def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
+    def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
+    def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def metrics_output_command = args = "--out-duplicate-metrics duplicate-metrics.txt" ? "touch duplicate-metrics.txt" : ""
+    def known_sites_output_command = known_sites ? "touch ${prefix}.table" : ""
+    def qc_metrics_output_command = args = "--out-qc-metrics-dir qc_metrics " ? "mkdir qc_metrics && touch qc_metrics/alignment.txt" : ""
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
+    $metrics_output_command
+    $known_sites_output_command
+    $qc_metrics_output_command
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
+    END_VERSIONS
+    """
 }
