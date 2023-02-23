@@ -7,5 +7,5 @@ repos:
     rev: 0.21.0
     hooks:
       - id: check-jsonschema
-        files: ^modules/nf-core/*/meta.yml$
+        files: ^modules/nf-core/[^/]+/[^/]+/meta.yml$
         args: ["--schemafile", "yaml-schema.json"]
