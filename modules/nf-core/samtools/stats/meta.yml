@@ -23,13 +23,13 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - input:
-    type: file
-    description: BAM/CRAM file from alignment
-    pattern: "*.{bam,cram}"
+      type: file
+      description: BAM/CRAM file from alignment
+      pattern: "*.{bam,cram}"
   - input_index:
-    type: file
-    description: BAI/CRAI file from alignment
-    pattern: "*.{bai,crai}"
+      type: file
+      description: BAI/CRAI file from alignment
+      pattern: "*.{bai,crai}"
   - fasta:
       type: optional file
       description: Reference file the CRAM was created with

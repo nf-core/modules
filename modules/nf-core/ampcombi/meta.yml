@@ -1,4 +1,4 @@
-name: "ampcombi"
+name: ampcombi
 description: A tool to parse and summarise results from antimicrobial peptides tools and present functional classification.
 keywords:
   - antimicrobial peptides
@@ -13,7 +13,7 @@ keywords:
   - ampir
   - DRAMP
 tools:
-  - "ampcombi":
+  - ampcombi:
       description: "This tool parses the results of amp prediction tools into a single table and aligns the hits against a reference database of antimicrobial peptides for functional classifications."
       homepage: "https://github.com/Darcy220606/AMPcombi"
       documentation: "https://github.com/Darcy220606/AMPcombi"
@@ -86,13 +86,13 @@ output:
       description: AMP reference database in tsv-format with two columns containing header and sequence.
       pattern: "/amp_ref_database/*.tsv"
   - summary_csv:
-    type: file
-    description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
-    pattern: "AMPcombi_summary.html"
+      type: file
+      description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
+      pattern: "AMPcombi_summary.html"
   - summary_html:
-    type: file
-    description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
-    pattern: "AMPcombi_summary.html"
+      type: file
+      description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
+      pattern: "AMPcombi_summary.html"
 
 authors:
   - "@darcy220606"
