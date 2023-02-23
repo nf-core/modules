@@ -53,7 +53,7 @@ process HLALA_TYPING {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"    
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     mkdir ${prefix}/hla
@@ -140,10 +140,10 @@ process HLALA_TYPING {
     echo stub > ${prefix}/hla/histogram_matchesPerRead.txt
     echo stub > ${prefix}/hla/R1_pileup_DQA1.txt
     echo stub > ${prefix}/hla/R1_readIDs_DPB1.txt
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hla-la: 1.0.3
-    END_VERSIONS    
+    END_VERSIONS
     """
 }
