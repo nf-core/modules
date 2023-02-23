@@ -49,4 +49,21 @@ process DELLY_CALL {
         delly: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "bcf"
+
+    def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf" : ""
+    def vcf_output = suffix == "vcf" ? "touch ${prefix}.vcf.gz" : ""
+
+    """
+    ${bcf_output}
+    ${vcf_output}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        delly: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
+    END_VERSIONS
+    """
 }
