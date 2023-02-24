@@ -13,8 +13,9 @@ workflow test_ilastik_pixelclassification {
         [ id:'image_stack' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
+
     ilp   = [
-        [id:'project']
+        [id:'project'],
         file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
     ]
 
@@ -28,7 +29,7 @@ workflow test_ilastik_pixelclassification_simplesegmentation {
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [
-        [id:'project']
+        [id:'project'],
         file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
     ]
 
@@ -42,7 +43,7 @@ workflow test_ilastik_pixelclassification_uncertainty {
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [
-        [id:'project']
+        [id:'project'],
         file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
     ]
 
@@ -56,7 +57,7 @@ workflow test_ilastik_pixelclassification_features {
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [
-        [id:'project']
+        [id:'project'],
         file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
     ]
 
