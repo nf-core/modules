@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include { SHAPEIT5_LIGATE      } from '../../../../../modules/nf-core/shapeit5/ligate/main.nf'
-include { SHAPEIT5_PHASECOMMON } from '../../../../../modules/nf-core/shapeit5/phasecommon/main.nf'
-include { BCFTOOLS_VIEW        } from '../../../../../modules/nf-core/bcftools/view/main.nf'
-include { BCFTOOLS_INDEX       } from '../../../../../modules/nf-core/bcftools/index/main.nf'
-include { BCFTOOLS_INDEX as  BCFTOOLS_INDEX2    } from '../../../../../modules/nf-core/bcftools/index/main.nf'
+include { SHAPEIT5_LIGATE                   } from '../../../../../modules/nf-core/shapeit5/ligate/main.nf'
+include { SHAPEIT5_PHASECOMMON              } from '../../../../../modules/nf-core/shapeit5/phasecommon/main.nf'
+include { BCFTOOLS_VIEW                     } from '../../../../../modules/nf-core/bcftools/view/main.nf'
+include { BCFTOOLS_INDEX                    } from '../../../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX2 } from '../../../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow test_shapeit5_ligate {
     input_vcf = [
