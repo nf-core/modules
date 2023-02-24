@@ -22,12 +22,14 @@ process ILASTIK_PIXELCLASSIFICATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "h5"
 
     """
     /ilastik-release/run_ilastik.sh \\
         --headless \\
         --readonly 1 \\
         --project=$ilp \\
+        --output_filename_format=${prefix}.${suffix}
         $args \\
         $h5
 
@@ -39,12 +41,14 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.4.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    suffix = task.ext.suffix ?: "h5"
+
     """
-    touch ${prefix}.tiff
+    touch ${prefix}.${suffix}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ilastik:: $VERSION
+        ilastik:: \$(/ilastik-release/run_ilastik.sh --headless --version)
     END_VERSIONS
     """
 }
