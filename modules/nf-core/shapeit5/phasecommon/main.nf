@@ -22,13 +22,19 @@ process SHAPEIT5_PHASECOMMON {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def prefix = task.ext.prefix ?: "${meta.id}_${region.replace(":","_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
     def map_command       = map       ? "--map $map"             : ""
     def reference_command = reference ? "--reference $reference" : ""
     def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
+
+    meta.put("SHAPEIT5_PHASECOMMON", ["reference":"", "map":"", "scaffold":""])
+    meta.SHAPEIT5_PHASECOMMON.reference = reference ? meta2 :"None"
+    meta.SHAPEIT5_PHASECOMMON.map       = map       ? meta3 :"None"
+    meta.SHAPEIT5_PHASECOMMON.scaffold  = scaffold  ? meta4 :"None"
 
     """
     SHAPEIT5_phase_common \\
