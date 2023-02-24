@@ -8,6 +8,7 @@ include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT2 } from '../../../../modules/nf
 include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT3 } from '../../../../modules/nf-core/samtools/flagstat/main.nf'
 include { SAMTOOLS_VIEW } from '../../../../modules/nf-core/samtools/view/main.nf'
 include { SAMTOOLS_INDEX } from '../../../../modules/nf-core/samtools/index/main.nf'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX2 } from '../../../../modules/nf-core/samtools/index/main.nf'
 
 workflow test_endorspy_raw {
 
@@ -34,7 +35,7 @@ workflow test_endorspy_raw_qualityfilter {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -61,7 +62,7 @@ workflow test_endorspy_raw_qualityfilter_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -90,7 +91,7 @@ workflow test_endorspy_raw_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -116,7 +117,7 @@ workflow test_endorspy_qualityfilter_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
