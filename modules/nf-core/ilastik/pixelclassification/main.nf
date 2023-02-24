@@ -6,7 +6,7 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     input:
     tuple val(meta), path(h5)
-    path ilp
+    tuple val(meta2), path(ilp)
 
     output:
     tuple val(meta), path("*.h5") , emit: h5
