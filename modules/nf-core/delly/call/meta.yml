@@ -25,10 +25,18 @@ input:
       type: file
       description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate marked
       pattern: "*.{bam,cram}"
-  - bai:
+  - input_index:
       type: file
       description: Index of the BAM/CRAM file
       pattern: "*.{bai,crai}"
+  - vcf:
+      type: file
+      description: A BCF/VCF file to genotype with Delly. If this is supplied, the variant calling will be skipped
+      pattern: "*.{vcf.gz,bcf}"
+  - vcf_index:
+      type: file
+      description: The index of the BCF/VCF file
+      pattern: "*.{tbi,csi}"
   - exclude_bed:
       type: file
       description: An optional bed file containing regions to exclude from the called VCF
@@ -54,11 +62,11 @@ output:
       pattern: "versions.yml"
   - bcf:
       type: file
-      description: Called variants in BCF format
-      pattern: "*.{bcf}"
+      description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf" in ext.suffix to define the output type
+      pattern: "*.{bcf,vcf.gz}"
   - csi:
     type: file
-    description: A generated csi index that matches the bcf output
+    description: A generated csi index that matches the bcf output (not generated for vcf files)
     pattern: "*.{bcf.csi}"
 
 authors:
