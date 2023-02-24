@@ -9,67 +9,81 @@ process DEFINE_DATASET_FROM_ANNO {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        path(sampleAnnotation)
-        path(bams)
+        each group
+        val bams
+        path (sampleAnnotation)
 
     output:
-        path("fraser.tsv")            , emit: fraser
+        tuple val(group), path("fraser.tsv")           , emit: result
 
     shell:
-    '''
-    #!/usr/bin/env Rscript --vanilla
+        bamsStr = bams.join(",")
+        group = group
+        '''
+            #!/usr/bin/env Rscript --vanilla
 
-    suppressPackageStartupMessages({
-        library(rmarkdown)
-        library(knitr)
-        library(devtools)
-        library(yaml)
-        library(BBmisc)
-        library(GenomicAlignments)
-        library(tidyr)
-        library(data.table)
-        library(dplyr)
-        library(plotly)
-        library(DelayedMatrixStats)
-        library(FRASER)
-        library(rhdf5)
-        library(purrr)
-    })
+            suppressPackageStartupMessages({
+                library(rmarkdown)
+                library(knitr)
+                library(devtools)
+                library(yaml)
+                library(BBmisc)
+                library(GenomicAlignments)
+                library(tidyr)
+                library(data.table)
+                library(dplyr)
+                library(plotly)
+                library(DelayedMatrixStats)
+                library(FRASER)
+                library(rhdf5)
+                library(purrr)
+                library(base)
+            })
 
-    #+ input
-    outFile       <- "fraser.tsv"
-    annoFile      <- "!{sampleAnnotation}"
-    fileMapFile   <- "!{bams}"
+            ## helper functions
+            write_tsv <- function(x, file, row.names = FALSE, ...){
+                write.table(x=x, file=file, quote=FALSE, sep='\t', row.names= row.names, ...)
+            }
 
-    #+ dataset name
+            splits <- strsplit("!{bamsStr}", ",")[[1]]
+            IDs <- splits[seq(1, length(splits), 2)]
+            bamFile <- splits[seq(2, length(splits), 2)]
 
-    anno    <- fread(annoFile)
-    mapping <- strsplit(fileMapFile, " ") %>%
-        map(function(x) c(str_split(x, ".")[[1]], x))
-    print(mapping)
+            mapping <- data.frame(IDs, bamFile)
+            names(mapping) <- c("sampleID", "bamFile")
 
-    setnames(annoSub, "RNA_ID", "sampleID")
-    annoSub <- anno[RNA_ID]
-    colData <- merge(annoSub,
-        mapping[FILE_TYPE == "RNA_BAM_FILE", .(sampleID=ID, bamFile=FILE_PATH)])
-    setcolorder(colData, unique(c("sampleID", "STRAND", "PAIRED_END", "bamFile"), colnames(annoSub)))
+            #+ input
+            name          <- "!{group}"
+            annoFile      <- "!{sampleAnnotation}"
 
-    #'
-    #' ## Dataset: `r name`
-    #'
-    #+ echo=FALSE
-    finalTable <- colData
+            #+ dataset name
 
-    #'
-    #' ## Final sample table `r name`
-    #'
-    #+ savetable
-    DT::datatable(finalTable, options=list(scrollX=TRUE))
+            anno    <- fread(annoFile)
 
-    dim(finalTable)
-    write_tsv(finalTable, file=outFile)
+            subset_ids <- IDs
+            annoSub <- anno[RNA_ID %in% subset_ids]
+            annoSub <- subset(annoSub, grepl(name, DROP_GROUP))
+            setnames(annoSub, "RNA_ID", "sampleID")
+            colData <- merge(annoSub,
+                mapping)
+            setcolorder(colData, unique(c("sampleID", "STRAND", "PAIRED_END", "bamFile"), colnames(annoSub)))
 
-    # run the version part
-    cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
-    '''
+            #'
+            #' ## Dataset: `r name`
+            #'
+            #+ echo=FALSE
+            finalTable <- colData
+
+            #'
+            #' ## Final sample table `r name`
+            #'
+            #+ savetable
+            DT::datatable(finalTable, options=list(scrollX=TRUE))
+
+            dim(finalTable)
+            write_tsv(finalTable, file="fraser.tsv")
+
+            # run the version part
+            cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
+        '''
 }

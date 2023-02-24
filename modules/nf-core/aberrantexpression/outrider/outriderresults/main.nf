@@ -9,10 +9,9 @@ process RESULTS {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        path(add_HPO_cols)  // TODO-csandu: what is this?
-        path(ods)
+        each path(ods)
+        val add_HPO_cols
         path(geneAnnotation)
-
         val(padjCutoff)
         val(zScoreCutoff)
 

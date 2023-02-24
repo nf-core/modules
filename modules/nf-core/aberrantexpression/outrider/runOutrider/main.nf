@@ -2,14 +2,13 @@ process RUNOUTRIDER {
 //    tag "$meta.id"
     label 'process_low'
 
-
     conda (params.enable_conda ? "bioconductor-outrider:1.16.0--r42hc247a5b_0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0':
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        path(ods_unfitted)
+        each path(ods_unfitted)
         val(implementation)
         val(maxTestedDimensionProportion)
 

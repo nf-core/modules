@@ -9,62 +9,63 @@ process FILTERCOUNT {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        path(total_count)
-        path(txtDB)
+        each mergecount_data
 
     output:
         path("ods.Rds")               , emit: ods_unfitted
         path "versions.yml"           , emit: versions
 
     shell:
-    '''
-    #!/usr/bin/env Rscript --vanilla
+        txtDB = mergecount_data.preprocess.txtDb
+        total_count = mergecount_data.totalCounts
+        '''
+            #!/usr/bin/env Rscript --vanilla
 
-    suppressPackageStartupMessages({
-        library(data.table)
-        library(GenomicFeatures)
-        library(SummarizedExperiment)
-        library(OUTRIDER)
-    })
+            suppressPackageStartupMessages({
+                library(data.table)
+                library(GenomicFeatures)
+                library(SummarizedExperiment)
+                library(OUTRIDER)
+            })
 
-    counts <- readRDS("!{total_count}")
-    ods <- OutriderDataSet(counts)
-    txdb <- loadDb("!{txtDB}")
+            counts <- readRDS("!{total_count}")
+            ods <- OutriderDataSet(counts)
+            txdb <- loadDb("!{txtDB}")
 
-    # TODO: Determine what is this.
-    fpkmCutoff <- 1
+            # TODO: Determine what is this.
+            fpkmCutoff <- 1
 
-    # filter not expressed genes
-    fpkmCutoff <- fpkmCutoff
-    ods <- filterExpression(ods, gtfFile=txdb, filter=FALSE,
-                            fpkmCutoff, addExpressedGenes=TRUE)
+            # filter not expressed genes
+            fpkmCutoff <- fpkmCutoff
+            ods <- filterExpression(ods, gtfFile=txdb, filter=FALSE,
+                                    fpkmCutoff, addExpressedGenes=TRUE)
 
-    # add column for genes with at least 1 gene
-    rowData(ods)$counted1sample = rowSums(assay(ods)) > 0
+            # add column for genes with at least 1 gene
+            rowData(ods)$counted1sample = rowSums(assay(ods)) > 0
 
-    # External data check
-    if (is.null(ods@colData$GENE_COUNTS_FILE)){ #column does not exist in sample annotation table
-        has_external <- FALSE
-    # TODO-csandu: Discuss this change
-    }else if(any(is.na(ods@colData$GENE_COUNTS_FILE))){ #column exists but it has no values
-        has_external <- FALSE
-    }else if(all(ods@colData$GENE_COUNTS_FILE == "")){ #column exists with non-NA values but this group has all empty strings
-        has_external <- FALSE
-    }else{ #column exists with non-NA values and this group has at least 1 non-empty string
-        has_external <- TRUE
-    }
+            # External data check
+            if (is.null(ods@colData$GENE_COUNTS_FILE)){ #column does not exist in sample annotation table
+                has_external <- FALSE
+            # TODO-csandu: Discuss this change
+            }else if(any(is.na(ods@colData$GENE_COUNTS_FILE))){ #column exists but it has no values
+                has_external <- FALSE
+            }else if(all(ods@colData$GENE_COUNTS_FILE == "")){ #column exists with non-NA values but this group has all empty strings
+                has_external <- FALSE
+            }else{ #column exists with non-NA values and this group has at least 1 non-empty string
+                has_external <- TRUE
+            }
 
-    if(has_external){
-        ods@colData$isExternal <- as.factor(ods@colData$GENE_COUNTS_FILE != "")
-    }else{
-        ods@colData$isExternal <- as.factor(FALSE)
-    }
+            if(has_external){
+                ods@colData$isExternal <- as.factor(ods@colData$GENE_COUNTS_FILE != "")
+            }else{
+                ods@colData$isExternal <- as.factor(FALSE)
+            }
 
 
-    # Save the ods before filtering to preserve the original number of genes
-    saveRDS(ods, "ods.Rds")
+            # Save the ods before filtering to preserve the original number of genes
+            saveRDS(ods, "ods.Rds")
 
-    # run the version part
-    cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
-    '''
+            # run the version part
+            cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
+        '''
 }

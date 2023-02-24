@@ -1,7 +1,7 @@
 include { PREPROCESSGENEANNOTATION  } from '../../../modules/nf-core/aberrantexpression/counting/preprocessgeneannotation'
+include { COUNTREADS                } from '../../../modules/nf-core/aberrantexpression/counting/countreads'
 include { MERGECOUNTS               } from '../../../modules/nf-core/aberrantexpression/counting/mergecounts'
 include { FILTERCOUNT               } from '../../../modules/nf-core/aberrantexpression/counting/filtercount'
-include { COUNTREADS                } from '../../../modules/nf-core/aberrantexpression/counting/countreads'
 
 include { RUNOUTRIDER               } from '../../../modules/nf-core/aberrantexpression/outrider/runOutrider'
 include { RESULTS                   } from '../../../modules/nf-core/aberrantexpression/outrider/outriderresults'
@@ -13,43 +13,37 @@ workflow ABERRANT_EXPRESSION {
     main:
         ch_versions = Channel.empty()
 
+        PREPROCESSGENEANNOTATION(params.gtfData).result
+            .map {it -> ["annotation": it[0], "txtDb": it[1], "geneMap": it[2], "countRanges": it[3]]}
+            .set {preprocess_data}
 
-        Channel.from(params.gtf.split(", "))
-            .map{iM -> iM.split(":")}
-            .set{addProc}
-        groups = params.aberrantexpression.groups.split(", ")
-        sampleAnn = params.sample_annotation_relative
+        bams = params.procAnnotation
+            .filter (it -> it.RNA_BAM_FILE != "")
+        COUNTREADS(preprocess_data, bams.collect()).result
+            .map {it -> ["preprocess": it[0], "groups": it[1], "rds": it[2]]}
+            .set {countreads_data}
 
-        // Counting part
-        gtfs = addProc.map{iM -> iM[1]}
-        anno = addProc.map{iM -> iM[0]}
-        PREPROCESSGENEANNOTATION(gtfs)
-            .count_reads.map {
-                a -> [pathDB: a[0], pathTSV: a[1], count_ranges: a[2]]
-            }
-            .set {count_reads}
+        groups = countreads_data.combine(Channel.from(params.aberrantexpression.groups))
+            .filter (it -> it[0].groups.contains(it[1]))
+            .map {it -> [it[0].preprocess, it[1], it[0].rds]}
+            .groupTuple(by: [0, 1])
+            .map {it -> ["preprocess": it[0], "group": it[1], "rds": it[2]]}
 
-        Channel.fromPath(params.bams).set{ch_bam}
-        count_ranges = count_reads.map {it.count_ranges}
-        // TODO-csandu: update to reduce
-        COUNTREADS(count_ranges, ch_bam)
+        MERGECOUNTS(groups, params.annotation).result
+            .map {it -> ["preprocess": it[0], "totalCounts": it[1]]}
+            .set {mergecounts_data}
 
-        // TODO-csandu: Fix dataset
-        print(groups)
-        MERGECOUNTS(groups, COUNTREADS.out.counts.collect(), count_ranges, sampleAnn)
-
-        txtDB = count_reads.map {it.pathDB}
-        FILTERCOUNT(MERGECOUNTS.out.total_counts, txtDB)
+        FILTERCOUNT(mergecounts_data)
 
         // Outrider part
         RUNOUTRIDER(FILTERCOUNT.out.ods_unfitted,
             params.aberrantexpression.implementation,
             params.aberrantexpression.maxTestedDimensionProportion)
 
-        tsvs = count_reads.map {it.pathTSV}
-        RESULTS(params.aberrantexpression.HPO_helper,
+        RESULTS(
             RUNOUTRIDER.out.odsOut,
-            tsvs,
+            params.hpoFile,
+            PREPROCESSGENEANNOTATION.out.tsv,
             params.aberrantexpression.padjCutoff,
             params.aberrantexpression.zScoreCutoff)
 }

@@ -8,70 +8,72 @@ process MERGECOUNTS {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        each dataset
-        path(counts)
-        path(count_ranges)
-        path(sampleAnn)
+        each (group)
+        path (sampleAnn)
 
     output:
-        path("total_counts.Rds")            , emit: total_counts
-        path "versions.yml"                 , emit: versions
+        tuple val(preprocess), path ("total_counts.Rds")    , emit: result
+        path "versions.yml"                                 , emit: versions
 
     shell:
-    '''
-    #!/usr/bin/env Rscript --vanilla
+        counts = group.rds.join(",")
+        count_ranges = group.preprocess.countRanges
 
-    suppressPackageStartupMessages({
-        library(data.table)
-        library(dplyr)
-        library(BiocParallel)
-        library(SummarizedExperiment)
-    })
-    count_files <- strsplit("!{counts}", " ")[[1]]
-    count_ranges <- readRDS("!{count_ranges}")
+        preprocess = group.preprocess
+        '''
+            #!/usr/bin/env Rscript --vanilla
 
-    # Read counts
-    counts_list <- bplapply(count_files, function(f){
-        if(grepl('Rds$', f))
-            assay(readRDS(f))
-        else {
-            ex_counts <- as.matrix(fread(f), rownames = "geneID")
+            suppressPackageStartupMessages({
+                library(data.table)
+                library(dplyr)
+                library(BiocParallel)
+                library(SummarizedExperiment)
+            })
+            count_files <- strsplit("!{counts}", ",")[[1]]
+            count_ranges <- readRDS("!{count_ranges}")
 
-            # TODO: What is exCountID?
-            # Merge to BAM.
-            stopifnot(! snakemake@params$exCountIDs %in% names(ex_counts))
-            subset(ex_counts, select = snakemake@params$exCountIDs)
-        }
-    })
+            # Read counts
+            counts_list <- bplapply(count_files, function(f){
+                if(grepl('Rds$', f))
+                    assay(readRDS(f))
+                else {
+                    ex_counts <- as.matrix(fread(f), rownames = "geneID")
 
-    # check rownames and proceed only if they are the same
-    row_names_objects <- lapply(counts_list, rownames)
-    if( length(unique(row_names_objects)) > 1 ){
-    stop('The rows (genes) of the count matrices to be merged are not the same.')
-    }
+                    # TODO: What is exCountID?
+                    # Merge to BAM.
+                    stopifnot(! snakemake@params$exCountIDs %in% names(ex_counts))
+                    subset(ex_counts, select = snakemake@params$exCountIDs)
+                }
+            })
 
-    # merge counts
-    merged_assays <- do.call(cbind, counts_list)
-    total_counts <- SummarizedExperiment(assays=list(counts=merged_assays))
-    colnames(total_counts) <- gsub('.bam', '', colnames(total_counts))
+            # check rownames and proceed only if they are the same
+            row_names_objects <- lapply(counts_list, rownames)
+            if( length(unique(row_names_objects)) > 1 ){
+            stop('The rows (genes) of the count matrices to be merged are not the same.')
+            }
 
-    # assign ranges
-    rowRanges(total_counts) <- count_ranges
+            # merge counts
+            merged_assays <- do.call(cbind, counts_list)
+            total_counts <- SummarizedExperiment(assays=list(counts=merged_assays))
+            colnames(total_counts) <- gsub('.bam', '', colnames(total_counts))
 
-    # Add sample annotation data (colData)
-    sample_anno <- fread("!{sampleAnn}",
-                        colClasses = c(RNA_ID = 'character', DNA_ID = 'character'))
-    sample_anno <- sample_anno[, .SD[1], by = RNA_ID]
-    col_data <- data.table(RNA_ID = as.character(colnames(total_counts)))
-    col_data <- left_join(col_data, sample_anno, by = "RNA_ID")
-    rownames(col_data) <- col_data$RNA_ID
-    colData(total_counts) <- as(col_data, "DataFrame")
-    rownames(colData(total_counts)) <- colData(total_counts)$RNA_ID
+            # assign ranges
+            rowRanges(total_counts) <- count_ranges
 
-    # save in RDS format
-    saveRDS(total_counts, "total_counts.Rds")
+            # Add sample annotation data (colData)
+            sample_anno <- fread("!{sampleAnn}",
+                                colClasses = c(RNA_ID = 'character', DNA_ID = 'character'))
+            sample_anno <- sample_anno[, .SD[1], by = RNA_ID]
+            col_data <- data.table(RNA_ID = as.character(colnames(total_counts)))
+            col_data <- left_join(col_data, sample_anno, by = "RNA_ID")
+            rownames(col_data) <- col_data$RNA_ID
+            colData(total_counts) <- as(col_data, "DataFrame")
+            rownames(colData(total_counts)) <- colData(total_counts)$RNA_ID
 
-    # run the version part
-    cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
-    '''
+            # save in RDS format
+            saveRDS(total_counts, "total_counts.Rds")
+
+            # run the version part
+            cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
+        '''
 }
