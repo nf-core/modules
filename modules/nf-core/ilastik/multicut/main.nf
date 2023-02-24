@@ -7,7 +7,7 @@ process ILASTIK_MULTICUT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "labsyspharm/mcmicro-ilastik:1.6.0"
+    container "labsyspharm/mcmicro-ilastik:1.6.1"
 
     input:
     tuple val(meta), path(h5)
