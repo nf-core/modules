@@ -31,7 +31,6 @@ process SMNCOPYNUMBERCALLER {
         --prefix $prefix \\
         --outDir "out" \\
         --threads $task.cpus
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         SMNCopyNumberCaller: $VERSION
@@ -39,11 +38,12 @@ process SMNCOPYNUMBERCALLER {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "1.1.2"
     """
     mkdir out
     touch out/${prefix}.tsv
     touch out/${prefix}.json
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         SMNCopyNumberCaller: $VERSION
