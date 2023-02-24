@@ -4,7 +4,7 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit 1, "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     container "labsyspharm/mcmicro-ilastik:1.6.1"
 
