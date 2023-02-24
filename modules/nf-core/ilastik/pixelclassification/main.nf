@@ -2,6 +2,10 @@ process ILASTIK_PIXELCLASSIFICATION {
     tag "$meta.id"
     label 'process_single'
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     container "labsyspharm/mcmicro-ilastik:1.6.1"
 
     input:
@@ -30,6 +34,17 @@ process ILASTIK_PIXELCLASSIFICATION {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ilastik: \$(/ilastik-release/run_ilastik.sh --headless --version)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "1.4.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.tiff
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ilastik:: $VERSION
     END_VERSIONS
     """
 }

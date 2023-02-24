@@ -10,10 +10,13 @@ include { ILASTIK_PIXELCLASSIFICATION as ILASTIK_PIXELCLASSIFICATION_FEATURES } 
 workflow test_ilastik_pixelclassification {
 
     input = [
-        [ id:'probabilities' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
+        [ id:'image_stack' ], // meta map
+        file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
+    ilp   = [
+        [id:'project']
+        file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
+    ]
 
     ILASTIK_PIXELCLASSIFICATION_PROBABILITIES ( input, ilp )
 }
@@ -21,10 +24,13 @@ workflow test_ilastik_pixelclassification {
 workflow test_ilastik_pixelclassification_simplesegmentation {
 
     input = [
-        [ id:'segmentation' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
+        [ id:'image_stack' ], // meta map
+        file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
+    ilp   = [
+        [id:'project']
+        file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
+    ]
 
     ILASTIK_PIXELCLASSIFICATION_SIMPLESEGMENTATION ( input, ilp )
 }
@@ -32,10 +38,13 @@ workflow test_ilastik_pixelclassification_simplesegmentation {
 workflow test_ilastik_pixelclassification_uncertainty {
 
     input = [
-        [ id:'uncertainty' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
+        [ id:'image_stack' ], // meta map
+        file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
+    ilp   = [
+        [id:'project']
+        file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
+    ]
 
     ILASTIK_PIXELCLASSIFICATION_UNCERTAINTY ( input, ilp )
 }
@@ -43,10 +52,13 @@ workflow test_ilastik_pixelclassification_uncertainty {
 workflow test_ilastik_pixelclassification_features {
 
     input = [
-        [ id:'features' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/wga.h5")
+        [ id:'image_stack' ], // meta map
+        file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
-    ilp = [file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/plant_wga.ilp")]
+    ilp   = [
+        [id:'project']
+        file(params.test_data['spatialomics']['ilp']['plant_wga_pixel_class'], checkIfExists: true)
+    ]
 
     ILASTIK_PIXELCLASSIFICATION_FEATURES ( input, ilp )
 }
