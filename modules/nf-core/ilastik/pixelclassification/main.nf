@@ -13,7 +13,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     tuple val(meta2), path(ilp)
 
     output:
-    tuple val(meta), path("*.h5") , emit: h5
+    tuple val(meta), path("*.${suffix}") , emit: output
     path "versions.yml"           , emit: versions
 
     when:
