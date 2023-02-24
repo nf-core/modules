@@ -6,7 +6,10 @@ process HLALA_TYPING {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
-    containerOptions = "--user root"
+    //containerOptions = "--user root"
+    if (workflow.profile.tokenize(',').intersect(["docker"]).size >= 1) {
+        containerOptions = "--user root"
+    }
 
 
     input:
