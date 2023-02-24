@@ -9,12 +9,12 @@ process ILASTIK_PIXELCLASSIFICATION {
     container "labsyspharm/mcmicro-ilastik:1.6.1"
 
     input:
-    tuple val(meta), path(h5)
+    tuple val(meta), path(input_img)
     tuple val(meta2), path(ilp)
 
     output:
     tuple val(meta), path("*.${suffix}") , emit: output
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,9 +29,9 @@ process ILASTIK_PIXELCLASSIFICATION {
         --headless \\
         --readonly 1 \\
         --project=$ilp \\
-        --output_filename_format=${prefix}.${suffix}
+        --output_filename_format=${prefix}.${suffix} \\
         $args \\
-        $h5
+        $input_img
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

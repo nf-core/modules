@@ -1,39 +1,39 @@
 - name: ilastik pixelclassification test_ilastik_pixelclassification
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik/pixelclassification
     - ilastik
+    - ilastik/pixelclassification
   files:
     - path: output/ilastik/probabilities.h5
-      md5sum: 90ab0cebc909f7b5fa89606cb6929e51
+      md5sum: c05450c5edfe43d0bea1190e8762476e
     - path: output/ilastik/versions.yml
 
 - name: ilastik pixelclassification test_ilastik_pixelclassification_simplesegmentation
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_simplesegmentation -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik/pixelclassification
     - ilastik
+    - ilastik/pixelclassification
   files:
-    - path: output/ilastik/simple_segmentation.h5
-      md5sum: 8f0ff7a01a55b066195513a0deee5217
+    - path: output/ilastik/segmentations.h5
+      md5sum: ee11d03076ee91f812cb5627d0e65260
     - path: output/ilastik/versions.yml
 
 - name: ilastik pixelclassification test_ilastik_pixelclassification_uncertainty
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_uncertainty -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik/pixelclassification
     - ilastik
+    - ilastik/pixelclassification
   files:
     - path: output/ilastik/uncertainty.h5
-      md5sum: d9ad885f7c58d576165c6ec9220f7df0
+      md5sum: 28f0409a9ddd58127e7266307e1cd0ba
     - path: output/ilastik/versions.yml
 
 - name: ilastik pixelclassification test_ilastik_pixelclassification_features
   command: nextflow run ./tests/modules/nf-core/ilastik/pixelclassification -entry test_ilastik_pixelclassification_features -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ilastik/pixelclassification/nextflow.config
   tags:
-    - ilastik/pixelclassification
     - ilastik
+    - ilastik/pixelclassification
   files:
     - path: output/ilastik/features.h5
-      md5sum: 367b507f31e03af758b733ee2e6d95fe
+      md5sum: 37e4ce1bad9eb048cac4ceb970e42808
     - path: output/ilastik/versions.yml

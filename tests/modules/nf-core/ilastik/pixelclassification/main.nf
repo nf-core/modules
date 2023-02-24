@@ -10,7 +10,7 @@ include { ILASTIK_PIXELCLASSIFICATION as ILASTIK_PIXELCLASSIFICATION_FEATURES } 
 workflow test_ilastik_pixelclassification {
 
     input = [
-        [ id:'image_stack' ], // meta map
+        [ id:'probabilities' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
 
@@ -25,7 +25,7 @@ workflow test_ilastik_pixelclassification {
 workflow test_ilastik_pixelclassification_simplesegmentation {
 
     input = [
-        [ id:'image_stack' ], // meta map
+        [ id:'segmentations' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [
@@ -39,7 +39,7 @@ workflow test_ilastik_pixelclassification_simplesegmentation {
 workflow test_ilastik_pixelclassification_uncertainty {
 
     input = [
-        [ id:'image_stack' ], // meta map
+        [ id:'uncertainty' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [
@@ -53,7 +53,7 @@ workflow test_ilastik_pixelclassification_uncertainty {
 workflow test_ilastik_pixelclassification_features {
 
     input = [
-        [ id:'image_stack' ], // meta map
+        [ id:'features' ], // meta map
         file(params.test_data['spatialomics']['h5']['plant_wga'], checkIfExists: true)
     ]
     ilp   = [

@@ -21,10 +21,9 @@ input:
         Groovy Map containing sample information for h5 file
         e.g. [ id:'test', single_end:false ]
 
-  - h5:
+  - input_img:
       type: file
-      description: h5 file containing image stack to classify
-      pattern: "*.{h5,hdf5}"
+      description: Input img file containing image stack to classify
 
   - meta2:
       type: map
@@ -34,7 +33,7 @@ input:
 
   - ilp:
       type: file
-      description: Trained ilastik .ilp project file
+      description: Trained ilastik pixel classification .ilp project file
       pattern: "*.{ilp}"
 
 output:
@@ -49,11 +48,9 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - h5:
+  - output:
       type: file
-      description: Classification results from pixel classification
-      pattern: "*.{h5,hdf5}"
+      description: Output file from ilastik pixel classification.
 
 authors:
-  - "@stuarteberg"
-  - "@k-dominik"
+  - "@FloWuenne"
