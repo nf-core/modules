@@ -2,7 +2,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     tag "$meta.id"
     label 'process_single'
 
-    container "labsyspharm/mcmicro-ilastik:1.5.1"
+    container "labsyspharm/mcmicro-ilastik:1.6.1"
 
     input:
     tuple val(meta), path(h5)
