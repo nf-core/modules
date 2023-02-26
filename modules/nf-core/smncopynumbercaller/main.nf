@@ -24,7 +24,7 @@ process SMNCOPYNUMBERCALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    echo "$manifest_text" >manifest.txt
+    printf '%s' "$manifest_text" >manifest.txt
     smn_caller.py \\
         $args \\
         --manifest manifest.txt \\
