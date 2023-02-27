@@ -35,7 +35,7 @@ process BCFTOOLS_REHEADER {
                     "vcf.gz"
 
     def compression = extension.equals("vcf.gz") && !args2.contains("--output-type z") ?
-                      "--output-type z" : ""
+                    "--output-type z" : ""
     """
     bcftools \\
         reheader \\
