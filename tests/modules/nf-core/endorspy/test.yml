@@ -1,85 +1,85 @@
 - name: endorspy test_endorspy_raw
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_raw -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: 4f161c6bbcaac68a24b83628e2072777
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: 4f161c6bbcaac68a24b83628e2072777
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
 
 - name: endorspy test_endorspy_raw_qualityfilter
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_raw_qualityfilter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: 1940461b14e6150138ca71ef7d395440
-  - path: output/samtools/test.bam
-    md5sum: 1bfa483a2991037107732ccedef8ae07
-  - path: output/samtools/test.bam.bai
-    md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
-  - path: output/samtools/test.filtered.flagstat
-    md5sum: eed2b068e1eb7a3d748f094738e26ad0
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: 1940461b14e6150138ca71ef7d395440
+    - path: output/samtools/test.bam
+      md5sum: 1bfa483a2991037107732ccedef8ae07
+    - path: output/samtools/test.bam.bai
+      md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
+    - path: output/samtools/test.filtered.flagstat
+      md5sum: eed2b068e1eb7a3d748f094738e26ad0
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
 
 - name: endorspy test_endorspy_raw_qualityfilter_dedup
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_raw_qualityfilter_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: 43030cd47b25d432ca3faf9dc8f79e94
-  - path: output/samtools/test.bam
-    md5sum: 1bfa483a2991037107732ccedef8ae07
-  - path: output/samtools/test.bam.bai
-    md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
-  - path: output/samtools/test.dedup.flagstat
-    md5sum: eed2b068e1eb7a3d748f094738e26ad0
-  - path: output/samtools/test.filtered.flagstat
-    md5sum: eed2b068e1eb7a3d748f094738e26ad0
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: 43030cd47b25d432ca3faf9dc8f79e94
+    - path: output/samtools/test.bam
+      md5sum: 1bfa483a2991037107732ccedef8ae07
+    - path: output/samtools/test.bam.bai
+      md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
+    - path: output/samtools/test.dedup.flagstat
+      md5sum: eed2b068e1eb7a3d748f094738e26ad0
+    - path: output/samtools/test.filtered.flagstat
+      md5sum: eed2b068e1eb7a3d748f094738e26ad0
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
 
 - name: endorspy test_endorspy_raw_dedup
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_raw_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: acb4a5aa5643ae0131edc6fa97e85a7d
-  - path: output/samtools/test.bam
-    md5sum: 1bfa483a2991037107732ccedef8ae07
-  - path: output/samtools/test.bam.bai
-    md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
-  - path: output/samtools/test.filtered.flagstat
-    md5sum: eed2b068e1eb7a3d748f094738e26ad0
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: acb4a5aa5643ae0131edc6fa97e85a7d
+    - path: output/samtools/test.bam
+      md5sum: 1bfa483a2991037107732ccedef8ae07
+    - path: output/samtools/test.bam.bai
+      md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
+    - path: output/samtools/test.filtered.flagstat
+      md5sum: eed2b068e1eb7a3d748f094738e26ad0
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
 
 - name: endorspy test_endorspy_qualityfilter_dedup
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_qualityfilter_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: 0f18fdf9aeb595ad6cb73088c396a530
-  - path: output/samtools/test.bam
-    md5sum: 1bfa483a2991037107732ccedef8ae07
-  - path: output/samtools/test.bam.bai
-    md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
-  - path: output/samtools/test.filtered.flagstat
-    md5sum: eed2b068e1eb7a3d748f094738e26ad0
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: 0f18fdf9aeb595ad6cb73088c396a530
+    - path: output/samtools/test.bam
+      md5sum: 1bfa483a2991037107732ccedef8ae07
+    - path: output/samtools/test.bam.bai
+      md5sum: 077fa5c7206bf5cd43a08788c79ab9f2
+    - path: output/samtools/test.filtered.flagstat
+      md5sum: eed2b068e1eb7a3d748f094738e26ad0
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
 
 - name: endorspy test_endorspy_dedup
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
   tags:
-  - endorspy
+    - endorspy
   files:
-  - path: output/endorspy/test_percent_on_target_mqc.json
-    md5sum: a4925f9dce726d9f0a331102f4472d5a
-  - path: output/samtools/test.flagstat
-    md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: output/endorspy/test_percent_on_target_mqc.json
+      md5sum: a4925f9dce726d9f0a331102f4472d5a
+    - path: output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
