@@ -1,5 +1,5 @@
 process WFMASH {
-    tag "$fasta_gz"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "bioconda::wfmash=0.10.2"
