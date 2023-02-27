@@ -12,11 +12,8 @@ process BCFTOOLS_REHEADER {
     path fai
 
     output:
-    tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
-    tuple val(meta), path("*.vcf")   , optional:true , emit: vcf
-    tuple val(meta), path("*.bcf.gz"), optional:true , emit: bcf_gz
-    tuple val(meta), path("*.bcf")   , optional:true , emit: bcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,15 +24,12 @@ process BCFTOOLS_REHEADER {
     def update_sequences = fai ? "-f $fai" : ""
     def new_header       = header ? "-h $header" : ""
 
-    def args2 = task.ext.args2 ?: ''
+    def args2 = task.ext.args2 ?: '--output-type z'
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
                     args2.contains("--output-type u") || args2.contains("-Ou") ? "bcf" :
                     args2.contains("--output-type z") || args2.contains("-Oz") ? "vcf.gz" :
                     args2.contains("--output-type v") || args2.contains("-Ov") ? "vcf" :
                     "vcf.gz"
-
-    def compression = extension.equals("vcf.gz") && !args2.contains("--output-type z") ?
-                    "--output-type z" : ""
     """
     bcftools \\
         reheader \\
@@ -46,8 +40,6 @@ process BCFTOOLS_REHEADER {
         $vcf \\
         | bcftools view \\
         $args2 \\
-        $compression \\
-        --threads $task.cpus \\
         --output ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
@@ -57,13 +49,13 @@ process BCFTOOLS_REHEADER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+    def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
+                    args2.contains("--output-type u") || args2.contains("-Ou") ? "bcf" :
+                    args2.contains("--output-type z") || args2.contains("-Oz") ? "vcf.gz" :
+                    args2.contains("--output-type v") || args2.contains("-Ov") ? "vcf" :
                     "vcf.gz"
     """
     touch ${prefix}.${extension}

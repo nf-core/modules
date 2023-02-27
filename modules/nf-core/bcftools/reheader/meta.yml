@@ -42,22 +42,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - vcf_gz:
-      type: file
-      description: VCF with updated header (bgzipped), default
-      pattern: "*.{vcf.gz}"
   - vcf:
       type: file
-      description: VCF with updated header => when `--output-type v` is used
-      pattern: "*.{vcf}"
-  - bcf_gz:
-      type: file
-      description: BCF with updated header (bgzipped) => when `--output-type b` is used
-      pattern: "*.{bcf.gz}"
-  - bcf:
-      type: file
-      description: BCF with updated header => when `--output-type u` is used
-      pattern: "*.{bcf}"
+      description: VCF with updated header, bgzipped per default
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
 
 authors:
   - "@bjohnnyd"
