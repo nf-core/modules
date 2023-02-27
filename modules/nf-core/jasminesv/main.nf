@@ -32,7 +32,7 @@ process JASMINESV {
     sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
     chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
-    unzip_inputs = vcfs.collect { it.extension == "gz" ? "bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
+    unzip_inputs = vcfs.collect { it.extension == "gz" ? "    bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
     """
     ${unzip_inputs}
 
@@ -55,6 +55,7 @@ process JASMINESV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         jasminesv: \$(echo \$(jasmine 2>&1 | grep "version" | sed 's/Jasmine version //'))
+        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -67,6 +68,7 @@ process JASMINESV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         jasminesv: \$(echo \$(jasmine 2>&1 | grep "version" | sed 's/Jasmine version //'))
+        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
