@@ -1,12 +1,19 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml glimpse2/chunk
-- name: "glimpse2 chunk"
+- name: glimpse2 chunk test_glimpse2_chunk
   command: nextflow run ./tests/modules/nf-core/glimpse2/chunk -entry test_glimpse2_chunk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse2/chunk/nextflow.config
   tags:
-    - "glimpse2"
-    - "glimpse2/chunk"
+    - glimpse2
+    - glimpse2/chunk
   files:
-    - path: "output/glimpse2/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/glimpse2/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/glimpse2/test.txt
+      md5sum: aae05c3099aff601005282744baf8db8
+    - path: output/glimpse2/versions.yml
+
+- name: glimpse2 chunk test_glimpse2_chunk_withmap
+  command: nextflow run ./tests/modules/nf-core/glimpse2/chunk -entry test_glimpse2_chunk_withmap -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse2/chunk/nextflow.config
+  tags:
+    - glimpse2
+    - glimpse2/chunk
+  files:
+    - path: output/glimpse2/test.txt
+      md5sum: 1f7a58d7891e82fa5e9669abdbba5690
+    - path: output/glimpse2/versions.yml

@@ -18,9 +18,10 @@ process GLIMPSE2_CHUNK {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def args    = task.ext.args   ?: ""
-    def map_cmd = map ? "--map ${map}":""
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    // Should test for the algorithm presence ?
+    def args      = task.ext.args   ?: ""
+    def map_cmd   = map ? "--map ${map}":""
 
     """
     GLIMPSE2_chunk \\
@@ -33,7 +34,7 @@ process GLIMPSE2_CHUNK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }

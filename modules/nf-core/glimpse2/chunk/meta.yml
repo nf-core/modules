@@ -1,51 +1,63 @@
 name: "glimpse2_chunk"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Defines chunks where to run imputation
 keywords:
-  - sort
+  - chunk
+  - imputation
 tools:
   - "glimpse2":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      homepage: "https://odelaneau.github.io/GLIMPSE"
+      documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
+      tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
+      doi: "10.1038/s41588-020-00756-0"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - input:
+      type: file
+      description: |
+        Target dataset in VCF/BCF format defined at all variable positions.
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - input_index:
+      type: file
+      description: Index file of the input VCF/BCF file containing genotype likelihoods.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+
+  - region:
+      type: string
+      description: |
+        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
+
+  - map:
+      type: file
+      description: File containing the genetic map.
+      pattern: "*.gmap"
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - txt:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Tab delimited output txt file containing buffer and imputation regions.
+      pattern: "*.{txt}"
 
 authors:
-  - "@LouisLeNezet"
+  - "@louislenezet"
