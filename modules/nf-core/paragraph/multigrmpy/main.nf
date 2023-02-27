@@ -26,7 +26,7 @@ process PARAGRAPH_MULTIGRMPY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def check_vcf = variants.extension == "gz" ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
+    def check_vcf = variants.name.endsWith(".vcf.gz") ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
                     variants.extension == "vcf" ? "variant=\$(cat ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
                     "variant=1"
 
