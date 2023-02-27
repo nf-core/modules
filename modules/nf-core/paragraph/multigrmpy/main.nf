@@ -15,7 +15,7 @@ process PARAGRAPH_MULTIGRMPY {
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val(meta), path("*.json.gz")  , emit: json
+    tuple val(meta), path("*.json.gz")  , emit: json, optional:true
     path "versions.yml"                 , emit: versions
 
     when:
@@ -26,20 +26,32 @@ process PARAGRAPH_MULTIGRMPY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    if ("$variants" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$variants" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def check_vcf = variants.name.endsWith(".vcf.gz") ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
+                    variants.extension == "vcf" ? "variant=\$(cat ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
+                    "variant=1"
+
+    if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
-    multigrmpy.py \\
-        --input ${variants} \\
-        --manifest ${manifest} \\
-        --output ${prefix} \\
-        --reference ${fasta} \\
-        --threads ${task.cpus} \\
-        ${args}
+    ${check_vcf}
 
-    mv ${prefix}/genotypes.vcf.gz ${prefix}.vcf.gz
-    mv ${prefix}/genotypes.json.gz ${prefix}.json.gz
+    if [ \$variant -eq 1 ]
+    then
+        multigrmpy.py \\
+            --input ${variants} \\
+            --manifest ${manifest} \\
+            --output ${prefix} \\
+            --reference ${fasta} \\
+            --threads ${task.cpus} \\
+            ${args}
+
+        mv ${prefix}/genotypes.vcf.gz ${prefix}.vcf.gz
+        mv ${prefix}/genotypes.json.gz ${prefix}.json.gz
+    else
+        echo "${variants} was empty, so the multigrmpy.py process was skipped."
+        cp ${variants} ${prefix}.vcf.gz
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -51,8 +63,8 @@ process PARAGRAPH_MULTIGRMPY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    if ("$variants" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$variants" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     touch ${prefix}.vcf.gz
