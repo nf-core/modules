@@ -17,7 +17,8 @@
             "description": "Keywords for the module",
             "items": {
                 "type": "string"
-            }
+            },
+            "minItems": 3
         },
         "authors": {
             "type": "array",
@@ -29,6 +30,7 @@
         "input": {
             "type": "array",
             "description": "Input channels for the module",
+
             "items": {
                 "type": "object",
                 "patternProperties": {
@@ -37,7 +39,8 @@
                         "properties": {
                             "type": {
                                 "type": "string",
-                                "description": "Type of the input channel"
+                                "description": "Type of the input channel",
+                                "enum": ["map", "file", "directory", "string", "integer", "float"]
                             },
                             "description": {
                                 "type": "string",
@@ -45,7 +48,7 @@
                             },
                             "pattern": {
                                 "type": "string",
-                                "description": "Pattern of the input channel"
+                                "description": "Pattern of the input channel, given in Java glob syntax"
                             },
                             "default": {
                                 "type": ["string", "number", "boolean", "array", "object"],
@@ -68,7 +71,8 @@
                         "properties": {
                             "type": {
                                 "type": "string",
-                                "description": "Type of the output channel"
+                                "description": "Type of the output channel",
+                                "enum": ["map", "file", "directory", "string", "integer", "float"]
                             },
                             "description": {
                                 "type": "string",
@@ -76,7 +80,7 @@
                             },
                             "pattern": {
                                 "type": "string",
-                                "description": "Pattern of the output channel"
+                                "description": "Pattern of the input channel, given in Java glob syntax"
                             }
                         },
                         "required": ["type", "description"]
@@ -99,19 +103,23 @@
                             },
                             "homepage": {
                                 "type": "string",
-                                "description": "Homepage of the tool"
+                                "description": "Homepage of the tool",
+                                "pattern": "^(http|https)://.*$"
                             },
                             "documentation": {
                                 "type": "string",
-                                "description": "Documentation of the tool"
+                                "description": "Documentation of the tool",
+                                "pattern": "^(http|https)://.*$"
                             },
                             "tool_dev_url": {
                                 "type": "string",
-                                "description": "URL of the development version of the tool's documentation"
+                                "description": "URL of the development version of the tool's documentation",
+                                "pattern": "^(http|https)://.*$"
                             },
                             "doi": {
                                 "type": "string",
-                                "description": "DOI of the tool"
+                                "description": "DOI of the tool",
+                                "pattern": "^10.\\d{4,9}\\/[^,]+$"
                             },
                             "licence": {
                                 "type": ["array", "string"],
