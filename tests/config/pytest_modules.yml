@@ -191,6 +191,7 @@ bandage/image:
   - tests/modules/nf-core/bandage/image/**
 
 bases2fastq:
+  - modules/nf-core/untar/**
   - modules/nf-core/bases2fastq/**
   - tests/modules/nf-core/bases2fastq/**
 
@@ -288,10 +289,12 @@ bcftools/view:
 
 bcl2fastq:
   - modules/nf-core/bcl2fastq/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/bcl2fastq/**
 
 bclconvert:
   - modules/nf-core/bclconvert/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/bclconvert/**
 
 beagle5/beagle:
@@ -2252,6 +2255,14 @@ paraclu:
   - modules/nf-core/paraclu/**
   - tests/modules/nf-core/paraclu/**
 
+paragraph/multigrmpy:
+  - modules/nf-core/paragraph/multigrmpy/**
+  - tests/modules/nf-core/paragraph/multigrmpy/**
+
+paragraph/idxdepth:
+  - modules/nf-core/paragraph/idxdepth/**
+  - tests/modules/nf-core/paragraph/idxdepth/**
+
 pasty:
   - modules/nf-core/pasty/**
   - tests/modules/nf-core/pasty/**
@@ -2716,6 +2727,14 @@ semibin/singleeasybin:
   - modules/nf-core/semibin/singleeasybin/**
   - tests/modules/nf-core/semibin/singleeasybin/**
 
+sentieon/bwaindex:
+  - modules/nf-core/sentieon/bwaindex/**
+  - tests/modules/nf-core/sentieon/bwaindex/**
+
+sentieon/bwamem:
+  - modules/nf-core/sentieon/bwamem/**
+  - tests/modules/nf-core/sentieon/bwameminde/**
+
 seqkit/pair:
   - modules/nf-core/seqkit/pair/**
   - tests/modules/nf-core/seqkit/pair/**
@@ -2782,7 +2801,12 @@ sexdeterrmine:
 
 sgdemux:
   - modules/nf-core/sgdemux/**
+  - modules/nf-core/untar/**
   - tests/modules/nf-core/sgdemux/**
+
+shapeit5/ligate:
+  - modules/nf-core/shapeit5/ligate/**
+  - tests/modules/nf-core/shapeit5/ligate/**
 
 shapeit5/phasecommon:
   - modules/nf-core/shapeit5/phasecommon/**
@@ -3116,6 +3140,10 @@ subworkflows/vcf_gather_bcftools:
   - subworkflows/nf-core/vcf_gather_bcftools/**
   - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
+survivor/merge:
+  - modules/nf-core/survivor/merge/**
+  - tests/modules/nf-core/survivor/merge/**
+
 subworkflows/vcf_impute_glimpse:
   - subworkflows/nf-core/vcf_impute_glimpse/**
   - tests/subworkflows/nf-core/vcf_impute_glimpse/**
@@ -3175,6 +3203,10 @@ taxpasta/standardise:
 tbprofiler/profile:
   - modules/nf-core/tbprofiler/profile/**
   - tests/modules/nf-core/tbprofiler/profile/**
+
+tiara/tiara:
+  - modules/nf-core/tiara/tiara/**
+  - tests/modules/nf-core/tiara/tiara/**
 
 tiddit/cov:
   - modules/nf-core/tiddit/cov/**
