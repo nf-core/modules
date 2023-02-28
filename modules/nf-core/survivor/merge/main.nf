@@ -8,16 +8,13 @@ process SURVIVOR_MERGE {
         'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
 
     input:
-    tuple(
-        val(meta),
-        path(vcfs),
-        val(max_distance_breakpoints),
-        val(min_supporting_callers),
-        val(account_for_type),
-        val(account_for_sv_strands),
-        val(estimate_distanced_by_sv_size),
-        val(min_sv_size)
-    )
+    tuple val(meta), path(vcfs)
+    val(max_distance_breakpoints)
+    val(min_supporting_callers)
+    val(account_for_type)
+    val(account_for_sv_strands)
+    val(estimate_distanced_by_sv_size)
+    val(min_sv_size)
 
     output:
     tuple val(meta), path("*.vcf")   , emit: vcf
