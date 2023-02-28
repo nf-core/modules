@@ -80,7 +80,6 @@ process PARABRICKS_FQ2BAM {
     $metrics_output_command
     $known_sites_output_command
     $qc_metrics_output_command
-    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
