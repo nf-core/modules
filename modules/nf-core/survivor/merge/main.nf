@@ -34,10 +34,8 @@ process SURVIVOR_MERGE {
     }
 
     """
-    ls *.vcf > names.txt
-
     SURVIVOR merge \\
-        names.txt \\
+        <(ls *.vcf) \\
         ${max_distance_breakpoints} \\
         ${min_supporting_callers} \\
         ${account_for_type} \\
