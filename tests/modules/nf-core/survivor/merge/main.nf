@@ -15,7 +15,7 @@ workflow test_survivor_merge {
     ]
 
     SURVIVOR_MERGE (
-        input
+        input,
         0.2,
         1,
         0,
