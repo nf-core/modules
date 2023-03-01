@@ -35,11 +35,19 @@ process PURECN_RUN {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(vcf)
+
+    path coverage
+    path normal_db
+    path mapping_bias
+    path intervals
+    path blacklist
+
+    val genome
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.txt"), emit: output_purecn
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -59,13 +67,21 @@ process PURECN_RUN {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    Rscript PureCN.R \
+        --out purecn/output/${meta.id}/ \
+        --tumor ${coverage} \
+        --sampleid ${meta.id} \
+        --vcf ${vcf} \
+        --normaldb ${normal_db} \
+        --mapping-bias-file ${mapping_bias} \
+        --intervals ${intervals} \
+        --snp-blacklist ${blacklist} \
+        --genome ${genome} \
+        --force \
+        --post-optimize \
+        --seed 123 \
+        --bootstrapn 500 \
+        --cores ${tasks.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
