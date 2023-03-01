@@ -6,6 +6,9 @@ process BAKTA_BAKTADBDOWNLOAD {
         'https://depot.galaxyproject.org/singularity/bakta:1.7.0--pyhdfd78af_0' :
         'quay.io/biocontainers/bakta:1.7.0--pyhdfd78af_0' }"
 
+    input:
+    val db_version
+
     output:
     path "db/"              , emit: db
     path "versions.yml"     , emit: versions
@@ -15,10 +18,11 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-
+    db_type = db_version ? "--type ${db_version[0]}" : ''
     """
     bakta_db \\
         download \\
+        $db_type \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -29,10 +33,11 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
-
+    db_type = db_version ? "--type ${db_version[0]}" : ''
     """
     echo "bakta_db \\
         download \\
+        $db_type \\
         $args"
 
     mkdir db
