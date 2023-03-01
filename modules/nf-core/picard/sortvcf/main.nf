@@ -4,8 +4,8 @@ process PICARD_SORTVCF {
 
     conda "bioconda::picard=2.27.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)
