@@ -30,7 +30,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     vcf2paragraph.py \\
         ${args} \\
         --reference-sequence ${fasta} \\
-        ${variants} \\
+        ${vcf} \\
         ${prefix}.json
 
     bgzip --threads ${task.cpus} ${args2} ${prefix}.json
