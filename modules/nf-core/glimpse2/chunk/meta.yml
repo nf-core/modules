@@ -48,10 +48,10 @@ input:
       type: string
       description: |
         Algorithm model to use :
-        "req": Recursive algorithm
-        "seq": Recommended sequential algorithm
-        "unv": Experimental. Uniform the number of variants in the sequential algorithm
-      pattern: "{req, seq, unv}"
+        "recursive": Recursive algorithm
+        "sequential": Recommended sequential algorithm
+        "uniform-number-variants": Experimental. Uniform the number of variants in the sequential algorithm
+      pattern: "{recursive, sequential, uniform-number-variants}"
 
 output:
   - meta:

@@ -12,7 +12,7 @@ workflow test_glimpse2_chunk {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
         "chr21",
         []]
-    GLIMPSE2_CHUNK (input, "rec")
+    GLIMPSE2_CHUNK (input, "recursive")
 
 }
 
@@ -24,7 +24,7 @@ workflow test_glimpse2_chunk_withmap {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
         "chr21",
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
-    GLIMPSE2_CHUNK (input, "rec")
+    GLIMPSE2_CHUNK (input, "recursive")
 
 }
 

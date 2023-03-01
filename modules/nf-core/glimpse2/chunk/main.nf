@@ -29,7 +29,6 @@ process GLIMPSE2_CHUNK {
 
     script:
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def model_cmd = model=="rec" ? "--recursive" : model=="seq" ? "--sequential" : model=="unv" ? "--uniform-number-variants" : ""
     def args      = task.ext.args   ?: ""
     def map_cmd   = map ? "--map ${map}":""
 
@@ -37,7 +36,7 @@ process GLIMPSE2_CHUNK {
     GLIMPSE2_chunk \\
         $args \\
         $map_cmd \\
-        $model_cmd \\
+        --${model} \\
         --input $input \\
         --region $region \\
         --threads $task.cpus \\
