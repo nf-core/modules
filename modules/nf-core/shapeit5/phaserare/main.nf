@@ -38,10 +38,6 @@ process SHAPEIT5_PHASERARE {
     def map_command       = map       ? "--map $map"             : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
 
-    meta.put("SHAPEIT5_PHASERARE", ["map":"", "scaffold":""])
-    meta.SHAPEIT5_PHASERARE.map       = map       ? meta2 :"None"
-    meta.SHAPEIT5_PHASERARE.scaffold  = scaffold  ? meta3 :"None"
-
     """
     SHAPEIT5_phase_rare \\
         $args \\
