@@ -1,7 +1,8 @@
 name: "cooltools_eigscis"
 description: Perform eigen value decomposition on a cooler matrix
 keywords:
-  - sort
+  - compartments
+  - eigenvector
 tools:
   - "cooltools":
       description: "Analysis tools for genomic interaction data stored in .cool format"
@@ -11,9 +12,7 @@ tools:
       doi: "10.5281/zenodo.7563392"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -31,22 +30,13 @@ input:
       type: value
       description: Resolution
 
-  - fasta:
-      type: file
-      description: fasta file of the genome
-
-  - chromsizes:
-      type: file
-      description: chromosomes sies file of the genome
-
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+
   - versions:
       type: file
       description: File containing software versions
@@ -58,7 +48,7 @@ output:
 
   - bigwig:
       type: file
-      description: bigwig file output by the tool
+      description: bigwig file output by the tool if '--bigwig' parameter is defined.
       pattern: "*.bw"
 
 authors:

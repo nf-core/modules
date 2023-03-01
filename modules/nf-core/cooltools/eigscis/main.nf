@@ -1,6 +1,7 @@
 process COOLTOOLS_EIGSCIS {
     tag "$meta.id"
     label 'process_medium'
+    label 'process_single'
 
     conda "bioconda::cooltools=0.5.4 bioconda::ucsc-bedgraphtobigwig=377"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,7 +9,7 @@ process COOLTOOLS_EIGSCIS {
     'quay.io/biocontainers/mulled-v2-c81d8d6b6acf4714ffaae1a274527a41958443f6:cc7ea58b8cefc76bed985dcfe261cb276ed9e0cf-0' }"
 
     input:
-    tuple val(meta), path(cool), path(fasta), path(chromsizes)
+    tuple val(meta), path(cool)
     val resolution
 
     output:
@@ -24,8 +25,6 @@ process COOLTOOLS_EIGSCIS {
     prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = resolution ? "::/resolutions/$resolution" : ''
     """
-    cooltools genome binnify --all-names ${chromsizes} ${resolution} > genome_bins.txt
-    cooltools genome gc genome_bins.txt ${fasta} > genome_gc.txt
     fn=\$(cooler ls ${cool} | grep resolutions | wc -l)
     if [ \$fn -gt 0 ]; then
         fn=${cool}${suffix}
@@ -34,7 +33,6 @@ process COOLTOOLS_EIGSCIS {
     fi
     cooltools eigs-cis \\
         $args \\
-        --phasing-track genome_gc.txt \\
         -o ${prefix} \\
         \$fn
 
