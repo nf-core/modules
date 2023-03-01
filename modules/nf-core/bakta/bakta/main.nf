@@ -2,10 +2,10 @@ process BAKTA_BAKTA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bakta=1.6.1"
+    conda "bioconda::bakta=1.7.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.6.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/bakta:1.6.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.7.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/bakta:1.7.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
