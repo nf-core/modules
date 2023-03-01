@@ -7,7 +7,7 @@ process GLIMPSE2_CHUNK {
         then
             echo "Feature AVX2 present"
         else
-            echo "Feature AVX2 not present on node"
+            echo "Feature AVX2 not present on host"
             exit 1
         fi
     """
