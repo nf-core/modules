@@ -8,9 +8,9 @@ process SHAPEIT5_SWITCH {
         'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
-       tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree)
-       tuple val(meta2), path(truth), path(truth_index)
-       tuple val(meta3), path(freq), path(freq_index)
+        tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree)
+        tuple val(meta2), path(truth), path(truth_index)
+        tuple val(meta3), path(freq), path(freq_index)
 
     output:
     tuple val(meta), path("*.txt.gz")    , emit: errors
