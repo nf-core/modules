@@ -38,7 +38,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         paragraph: ${VERSION}
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -53,7 +53,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         paragraph: ${VERSION}
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
