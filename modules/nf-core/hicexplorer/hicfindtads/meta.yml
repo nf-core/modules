@@ -1,0 +1,49 @@
+name: "hicexplorer_hicfindtads"
+description: define TADs
+keywords:
+  - sort
+tools:
+  - "hicexplorer":
+      description: "Set of programs to process, analyze and visualize Hi-C and capture Hi-C data"
+      homepage: "https://hicexplorer.readthedocs.io"
+      documentation: "https://hicexplorer.readthedocs.io"
+      tool_dev_url: "https://github.com/deeptools/HiCExplorer"
+      doi: "10.1038/s41467-017-02525-w"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:50000 ]
+  - matrix:
+      type: file
+      description: HiCExplorer matrix in h5 format
+  - resolution:
+      type: value
+      description: Step size
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:50000 ]
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  # all outputs files
+  - results:
+      type: file
+      description: Outputs of hicFindTADs
+  - tads:
+      type: file
+      description: bed format file contains the TAD locations
+      pattern: "*domains.bed"
+
+authors:
+  - "@jianhong"
