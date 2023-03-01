@@ -1550,6 +1550,10 @@ hicap:
   - modules/nf-core/hicap/**
   - tests/modules/nf-core/hicap/**
 
+hicexplorer/hiccorrectmatrix:
+  - modules/nf-core/hicexplorer/hiccorrectmatrix/**
+  - tests/modules/nf-core/hicexplorer/hiccorrectmatrix/**
+
 hifiasm:
   - modules/nf-core/hifiasm/**
   - tests/modules/nf-core/hifiasm/**
@@ -2246,7 +2250,6 @@ pangolin:
   - modules/nf-core/pangolin/**
   - tests/modules/nf-core/pangolin/**
 
-# GitHub Actions doesn't support GPUs, so stub
 parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
@@ -3144,13 +3147,13 @@ subworkflows/vcf_gather_bcftools:
   - subworkflows/nf-core/vcf_gather_bcftools/**
   - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
-survivor/merge:
-  - modules/nf-core/survivor/merge/**
-  - tests/modules/nf-core/survivor/merge/**
-
 subworkflows/vcf_impute_glimpse:
   - subworkflows/nf-core/vcf_impute_glimpse/**
   - tests/subworkflows/nf-core/vcf_impute_glimpse/**
+
+survivor/merge:
+  - modules/nf-core/survivor/merge/**
+  - tests/modules/nf-core/survivor/merge/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**

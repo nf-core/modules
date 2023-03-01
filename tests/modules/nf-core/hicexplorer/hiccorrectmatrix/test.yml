@@ -1,0 +1,11 @@
+- name: hicexplorer hiccorrectmatrix test_hicexplorer_hiccorrectmatrix
+  command: nextflow run ./tests/modules/nf-core/hicexplorer/hiccorrectmatrix -entry test_hicexplorer_hiccorrectmatrix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hicexplorer/hiccorrectmatrix/nextflow.config
+  tags:
+    - hicexplorer
+    - hicexplorer/hiccorrectmatrix
+  files:
+    - path: output/cooler/test.bedpe
+      md5sum: 054746d77c7451384e5056298802073f
+    - path: output/cooler/versions.yml
+    - path: output/hicexplorer/test_corrected.h5
+    - path: output/hicexplorer/versions.yml
