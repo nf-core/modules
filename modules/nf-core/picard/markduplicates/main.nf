@@ -10,7 +10,6 @@ process PICARD_MARKDUPLICATES {
     input:
     tuple val(meta), path(bam)
     path fasta
-    path fai
 
     output:
     tuple val(meta), path("*.bam")        , emit: bam
@@ -24,6 +23,7 @@ process PICARD_MARKDUPLICATES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--REFERENCE_SEQUENCE $fasta": ""
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard MarkDuplicates] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -37,7 +37,7 @@ process PICARD_MARKDUPLICATES {
         $args \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.bam \\
-        --REFERENCE_SEQUENCE $fasta \\
+        ${reference} \\
         --METRICS_FILE ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
