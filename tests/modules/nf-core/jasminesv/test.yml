@@ -3,8 +3,15 @@
   tags:
     - jasminesv
   files:
-    - path: output/jasminesv/test.vcf
-      md5sum: a5f2ea4423010007d26bd61adb169eb7
+    - path: output/jasminesv/test.vcf.gz
+    - path: output/jasminesv/versions.yml
+
+- name: jasminesv test_jasminesv_bgzipped_input
+  command: nextflow run ./tests/modules/nf-core/jasminesv -entry test_jasminesv_bgzipped_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jasminesv/nextflow.config
+  tags:
+    - jasminesv
+  files:
+    - path: output/jasminesv/test.vcf.gz
     - path: output/jasminesv/versions.yml
 
 - name: jasminesv test_jasminesv_iris
@@ -12,8 +19,7 @@
   tags:
     - jasminesv
   files:
-    - path: output/jasminesv/test.vcf
-      md5sum: 4140a44d52426b17c4882a2b4d7508fb
+    - path: output/jasminesv/test.vcf.gz
     - path: output/jasminesv/versions.yml
 
 - name: jasminesv test_jasminesv_all_inputs
@@ -21,6 +27,5 @@
   tags:
     - jasminesv
   files:
-    - path: output/jasminesv/test.vcf
-      md5sum: ee57b923cb0a6e2af25790942281fa09
+    - path: output/jasminesv/test.vcf.gz
     - path: output/jasminesv/versions.yml

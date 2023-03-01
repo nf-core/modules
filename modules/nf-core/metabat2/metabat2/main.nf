@@ -40,7 +40,7 @@ process METABAT2_METABAT2 {
     mv metabat2/${prefix} ${prefix}.tsv
     mv metabat2 bins
 
-    gzip ${prefix}.tsv
+    gzip -n ${prefix}.tsv
     find ./bins/ -name "*.fa" -type f | xargs -t -n 1 bgzip -@ ${task.cpus}
     find ./bins/ -name "*[lowDepth,tooShort,unbinned].fa.gz" -type f -exec mv {} . \\;
 

@@ -181,3 +181,9 @@
       md5sum: 4e67451dbcb6601fc3fa5dd7e570f1d4
     - path: output/cnvkit/test2.paired_end.recalibrated.sorted.targetcoverage.cnn
       md5sum: b4a49faf170e436ec32dcc21ccc3ce8f
+
+- name: cnvkit batch test_cnvkit_pon
+  command: nextflow run ./tests/modules/nf-core/cnvkit/batch -entry test_cnvkit_pon -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cnvkit/batch/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/batch
