@@ -27,7 +27,11 @@ input:
       pattern: "*.ktab*"
   - assembly:
       type: file
-      description: Genome assembly files (fasta format)
+      description: Genome (primary) assembly files (fasta format)
+      pattern: ".fasta"
+  - haplotigs:
+      type: file
+      description: Assembly haplotigs (fasta format)
       pattern: ".fasta"
 
 output:
