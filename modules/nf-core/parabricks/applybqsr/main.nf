@@ -28,7 +28,7 @@ process PARABRICKS_APPLYBQSR {
     def copy_index_command = bam_index ? "cp -L $bam_index `readlink -f $bam`.bai" : ""
     """
     # parabricks complains when index is not a regular file in the same directory as the bam
-    # copy the index to this path. 
+    # copy the index to this path.
     $copy_index_command
 
     pbrun \\
