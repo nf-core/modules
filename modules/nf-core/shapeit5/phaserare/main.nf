@@ -9,7 +9,7 @@ process SHAPEIT5_PHASERARE {
     else
         echo "Feature AVX2 not present on node"
         exit 1
-    fi 
+    fi
     """
 
     conda "bioconda::shapeit5=1.0.0"
