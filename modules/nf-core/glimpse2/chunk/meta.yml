@@ -44,6 +44,15 @@ input:
       description: File containing the genetic map.
       pattern: "*.gmap"
 
+  - model:
+      type: string
+      description: |
+        Algorithm model to use :
+        "req": Recursive algorithm
+        "seq": Recommended sequential algorithm
+        "unv": Experimental. Uniform the number of variants in the sequential algorithm
+      pattern: "{req, seq, unv}"
+
 output:
   - meta:
       type: map

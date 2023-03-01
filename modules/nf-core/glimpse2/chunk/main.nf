@@ -18,6 +18,7 @@ process GLIMPSE2_CHUNK {
 
     input:
     tuple val(meta), path(input), path(input_index), val(region), path(map)
+    val(model)
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
@@ -28,7 +29,7 @@ process GLIMPSE2_CHUNK {
 
     script:
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    // Should test for the algorithm presence ?
+    def model_cmd = model=="rec" ? "--recursive" : model=="seq" ? "--sequential" : model=="unv" ? "--uniform-number-variants" : ""
     def args      = task.ext.args   ?: ""
     def map_cmd   = map ? "--map ${map}":""
 
@@ -36,6 +37,7 @@ process GLIMPSE2_CHUNK {
     GLIMPSE2_chunk \\
         $args \\
         $map_cmd \\
+        $model_cmd \\
         --input $input \\
         --region $region \\
         --threads $task.cpus \\
