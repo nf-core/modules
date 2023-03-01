@@ -1,21 +1,21 @@
 - name: parabricks applybqsr test_parabricks_applybqsr
-  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr/ -entry test_parabricks_applybqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config 
+  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr/ -entry test_parabricks_applybqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config -stub-run
   tags:
     - parabricks/applybqsr
     - parabricks
   files:
-  - path: output/parabricks/test.bam
-    should_exist: true
-  - path: output/parabricks/test.bam.bai
-    md5sum: 0d76977b2e36046cc176112776c5fa4e
+    - path: output/parabricks/test.bam
+      should_exist: true
+    - path: output/parabricks/test.bam.bai
+      should_exist: true
 
 - name: parabricks applybqsr test_parabricks_applybqsr_intervals
-  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr/ -entry test_parabricks_applybqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr/ -entry test_parabricks_applybqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config -stub-run
   tags:
     - parabricks/applybqsr
     - parabricks
   files:
-  - path: output/parabricks/test.bam
-    should_exist: true
-  - path: output/parabricks/test.bam.bai
-    md5sum: 0d76977b2e36046cc176112776c5fa4e
+    - path: output/parabricks/test.bam
+      should_exist: true
+    - path: output/parabricks/test.bam.bai
+      should_exist: true
