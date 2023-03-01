@@ -2,6 +2,15 @@ process GLIMPSE2_CHUNK {
     tag "$meta.id"
     label 'process_low'
 
+    beforeScript  """
+        if cat /proc/cpuinfo | grep avx2 -q
+        then
+            echo "Feature AVX2 present"
+        else
+            echo "Feature AVX2 not present on node"
+            exit 1
+        fi
+    """
     conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
