@@ -9,7 +9,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
         'quay.io/biocontainers/paragraph:2.3--h21f15d8_1' }"
 
     input:
-    tuple val(meta), path(variants)
+    tuple val(meta), path(vcf)
     tuple val(meta2), path(fasta)
 
     output:
