@@ -2,6 +2,16 @@ process SHAPEIT5_PHASERARE {
     tag "$meta.id"
     label 'process_low'
 
+    beforeScript  """
+    if cat /proc/cpuinfo | grep avx2 -q
+    then
+        echo "Feature AVX2 present"
+    else
+        echo "Feature AVX2 not present on node"
+        exit 1
+    fi 
+    """
+
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
