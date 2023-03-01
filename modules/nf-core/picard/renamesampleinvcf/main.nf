@@ -3,7 +3,7 @@ process PICARD_RENAMESAMPLEINVCF {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=2.27.4"
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
         'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
