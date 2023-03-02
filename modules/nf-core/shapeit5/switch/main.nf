@@ -20,25 +20,25 @@ process SHAPEIT5_SWITCH {
         task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?                         : ''
-    def prefix       = task.ext.prefix ?                         : "${meta.id}"
-    def freq_cmd     = freq            ? "--frequency ${freq}"   : ""
-    def pedigree_cmd = pedigree        ? "--pedigree ${pedigree}": ""
+        def args         = task.ext.args   ?: ''
+        def prefix       = task.ext.prefix ?: "${meta.id}"
+        def freq_cmd     = freq            ? "--frequency ${freq}"   : ""
+        def pedigree_cmd = pedigree        ? "--pedigree ${pedigree}": ""
 
-    """
-    SHAPEIT5_switch \\
-        $args \\
-        --estimation $estimate \\
-        --region $region \\
-        --validation $truth \\
-        $freq_cmd \\
-        $pedigree_cmd \\
-        --thread $task.cpus \\
-        --output ${prefix}
+        """
+        SHAPEIT5_switch \\
+            $args \\
+            --estimation $estimate \\
+            --region $region \\
+            --validation $truth \\
+            $freq_cmd \\
+            $pedigree_cmd \\
+            --thread $task.cpus \\
+            --output ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+            "${task.process}":
+                shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+        END_VERSIONS
+        """
 }
