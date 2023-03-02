@@ -22,7 +22,7 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bakta: \$(echo \$(bakta_db --help) 2>&1 | sed 's/.*Version: //g;s/ DOI.*//g')
+        bakta: \$(echo \$(bakta_db --version) 2>&1 | cut -f '2' -d ' ')
     END_VERSIONS
     """
 
@@ -37,7 +37,7 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bakta: \$(echo \$(bakta_db --help) 2>&1 | sed 's/.*Version: //g;s/ DOI.*//g')
+        bakta: \$(echo \$(bakta_db --version) 2>&1 | cut -f '2' -d ' ')
     END_VERSIONS
     """
 }
