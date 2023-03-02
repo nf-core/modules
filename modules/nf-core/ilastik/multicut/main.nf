@@ -7,7 +7,7 @@ process ILASTIK_MULTICUT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "labsyspharm/mcmicro-ilastik:1.6.1"
+    container "biocontainers/ilastik:1.4.0_cv1"
 
     input:
     tuple val(meta), path(h5)
@@ -26,7 +26,7 @@ process ILASTIK_MULTICUT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    /ilastik-release/run_ilastik.sh \\
+    /opt/ilastik-1.4.0-Linux/run_ilastik.sh \\
         --headless \\
         --readonly 1 \\
         --project=$ilp \\
@@ -38,13 +38,13 @@ process ILASTIK_MULTICUT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ilastik: \$(/ilastik-release/run_ilastik.sh --headless --version)
+        ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.4.0rc8" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = "1.4.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.tiff
     cat <<-END_VERSIONS > versions.yml
