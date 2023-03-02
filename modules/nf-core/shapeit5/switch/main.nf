@@ -13,8 +13,8 @@ process SHAPEIT5_SWITCH {
         tuple val(meta3), path(freq)    , path(freq_index)
 
     output:
-    tuple val(meta), path("*.txt.gz")    , emit: errors
-    path "versions.yml"                  , emit: versions
+        tuple val(meta), path("*.txt.gz"), emit: errors
+        path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
