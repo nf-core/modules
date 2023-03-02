@@ -6,7 +6,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "labsyspharm/mcmicro-ilastik:1.6.1"
+    container "biocontainers/ilastik:1.4.0_cv1"
 
     input:
     tuple val(meta), path(input_img)
@@ -25,7 +25,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     suffix = task.ext.suffix ?: "h5"
 
     """
-    /ilastik-release/run_ilastik.sh \\
+    /opt/ilastik-1.4.0-Linux/run_ilastik.sh \\
         --headless \\
         --readonly 1 \\
         --project=$ilp \\
@@ -35,7 +35,7 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ilastik: \$(/ilastik-release/run_ilastik.sh --headless --version)
+        ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
     END_VERSIONS
     """
 
@@ -48,7 +48,7 @@ process ILASTIK_PIXELCLASSIFICATION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ilastik:: \$(/ilastik-release/run_ilastik.sh --headless --version)
+        ilastik:: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
     END_VERSIONS
     """
 }
