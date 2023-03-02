@@ -1,51 +1,65 @@
 name: "glimpse2_splitreference"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Tool to create a binary reference panel for quick reading time.
 keywords:
-  - sort
+  - split
+  - reference
+  - phasing
 tools:
   - "glimpse2":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      homepage: "https://odelaneau.github.io/GLIMPSE"
+      documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
+      tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
+      doi: "10.1038/s41588-020-00756-0"
       licence: "['MIT']"
-
-## TODO nf-core: Add a description of all of the variables used as input
+requirements:
+  - AVX2
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - reference:
+      type: file
+      description: Reference panel of haplotypes in VCF/BCF format.
+      pattern: "*.{vcf.gz,bcf.gz}"
+
+  - reference_index:
+      type: file
+      description: Index file of the Reference panel file.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+
+  - input_region:
+      type: string
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - output_region:
+      type: string
+      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - map:
+      type: file
+      description: File containing the genetic map.
+      pattern: "*.gmap"
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - bin_ref:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: binary reference panel
+      pattern: "*.bin"
 
 authors:
   - "@LouisLeNezet"

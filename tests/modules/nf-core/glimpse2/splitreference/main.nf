@@ -5,11 +5,11 @@ nextflow.enable.dsl = 2
 include { GLIMPSE2_SPLITREFERENCE } from '../../../../../modules/nf-core/glimpse2/splitreference/main.nf'
 
 workflow test_glimpse2_splitreference {
-    
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
-
-    GLIMPSE2_SPLITREFERENCE ( input )
+        [ id:'ref1000GP', single_end:false ], // meta map
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+        "chr21:16600000-16800000",
+        "chr21:16600000-16800000"]
+    GLIMPSE2_SPLITREFERENCE (input, [])
 }
