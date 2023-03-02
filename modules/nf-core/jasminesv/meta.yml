@@ -25,8 +25,7 @@ input:
       type: files
       description: |
         The VCF files that need to be merged
-        Only supports unzipped VCFs: https://github.com/mkirsche/Jasmine/issues/31
-      pattern: "*.vcf"
+      pattern: "*.{vcf,vcf.gz}"
   - bams:
       type: files
       description: Optional - The BAM files from which the VCFs were created
@@ -61,7 +60,7 @@ output:
   - vcf:
       type: file
       description: The merged VCF file
-      pattern: "*.vcf"
+      pattern: "*.vcf.gz"
 
 authors:
   - "@nvnieuwk"

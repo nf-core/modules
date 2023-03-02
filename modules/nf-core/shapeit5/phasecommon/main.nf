@@ -50,7 +50,7 @@ process SHAPEIT5_PHASECOMMON {
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
