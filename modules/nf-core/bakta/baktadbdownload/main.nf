@@ -7,7 +7,7 @@ process BAKTA_BAKTADBDOWNLOAD {
         'quay.io/biocontainers/bakta:1.7.0--pyhdfd78af_1' }"
 
     output:
-    path "db-light/"        , emit: db
+    path "db*/"        , emit: db
     path "versions.yml"     , emit: versions
 
     when:
