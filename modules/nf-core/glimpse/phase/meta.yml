@@ -70,6 +70,11 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
   - phased_variants:
       type: file
       description: |
@@ -77,11 +82,6 @@ output:
         imputed dosages (DS field), best guess genotypes (GT field),
         sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
 
 authors:
   - "@louislenezet"
