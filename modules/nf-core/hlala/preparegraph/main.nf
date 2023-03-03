@@ -19,7 +19,7 @@ process HLALA_PREPAREGRAPH {
 
     script:
     def args = task.ext.args ?: ''
-    
+
     """
     /usr/local/opt/hla-la/bin/HLA-LA \\
         --action prepareGraph \\
