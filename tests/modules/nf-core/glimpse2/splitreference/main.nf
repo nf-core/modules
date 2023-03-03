@@ -11,5 +11,5 @@ workflow test_glimpse2_splitreference {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
         "chr21:16600000-16800000",
         "chr21:16600000-16800000"]
-    GLIMPSE2_SPLITREFERENCE (input, [])
+    GLIMPSE2_SPLITREFERENCE (input, [[],[]])
 }
