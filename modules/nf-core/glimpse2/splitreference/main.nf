@@ -24,7 +24,7 @@ process GLIMPSE2_SPLITREFERENCE {
 
     output:
         tuple val(meta), path("*.bin"), emit: bin_ref
-        path "versions.yml"       , emit: versions
+        path "versions.yml"           , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
