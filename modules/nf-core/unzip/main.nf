@@ -22,7 +22,7 @@ process UNZIP {
     if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
     """
     7za \\
-        e \\
+        x \\
         -o"${archive.baseName}"/ \\
         $args \\
         $archive
