@@ -1442,6 +1442,10 @@ glimpse/phase:
 glimpse2/chunk:
   - modules/nf-core/glimpse2/chunk/**
   - tests/modules/nf-core/glimpse2/chunk/**
+  
+glimpse2/splitreference:
+  - modules/nf-core/glimpse2/splitreference/**
+  - tests/modules/nf-core/glimpse2/splitreference/**
 
 glnexus:
   - modules/nf-core/glnexus/**
@@ -2255,7 +2259,6 @@ pangolin:
   - modules/nf-core/pangolin/**
   - tests/modules/nf-core/pangolin/**
 
-# GitHub Actions doesn't support GPUs, so stub
 parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
@@ -2268,13 +2271,13 @@ paragraph/idxdepth:
   - modules/nf-core/paragraph/idxdepth/**
   - tests/modules/nf-core/paragraph/idxdepth/**
 
-paragraph/vcf2paragraph:
-  - modules/nf-core/paragraph/vcf2paragraph/**
-  - tests/modules/nf-core/paragraph/vcf2paragraph/**
-
 paragraph/multigrmpy:
   - modules/nf-core/paragraph/multigrmpy/**
   - tests/modules/nf-core/paragraph/multigrmpy/**
+
+paragraph/vcf2paragraph:
+  - modules/nf-core/paragraph/vcf2paragraph/**
+  - tests/modules/nf-core/paragraph/vcf2paragraph/**
 
 pasty:
   - modules/nf-core/pasty/**
@@ -3161,13 +3164,13 @@ subworkflows/vcf_gather_bcftools:
   - subworkflows/nf-core/vcf_gather_bcftools/**
   - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
-survivor/merge:
-  - modules/nf-core/survivor/merge/**
-  - tests/modules/nf-core/survivor/merge/**
-
 subworkflows/vcf_impute_glimpse:
   - subworkflows/nf-core/vcf_impute_glimpse/**
   - tests/subworkflows/nf-core/vcf_impute_glimpse/**
+
+survivor/merge:
+  - modules/nf-core/survivor/merge/**
+  - tests/modules/nf-core/survivor/merge/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
