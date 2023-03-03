@@ -24,6 +24,8 @@ process ENDORSPY {
     def optionalqualityfiltered = stats_qualityfiltered ? "-q ${stats_qualityfiltered}" : ''
     def optionaldeduplicated = stats_deduplicated ? "-d ${stats_deduplicated}" : ''
 
+    if ( stats_qualityfiltered && !stats_raw && !stats_deduplicated ) error "ERROR: only input channel stats_qualityfiltered provided. No stats can be calculated. Add at least one additional input channel: stats_raw or stats_deduplicated"
+
 
     """
     endorspy \\
