@@ -19,7 +19,7 @@ process GLIMPSE2_SPLITREFERENCE {
 
     input:
         tuple val(meta) , path(reference), path(reference_index), val(input_region), val(output_region)
-        path(map)
+        tuple val(meta2), path(map)
 
 
     output:
