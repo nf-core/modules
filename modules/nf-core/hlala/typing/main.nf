@@ -7,11 +7,6 @@ process HLALA_TYPING {
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
 
-    if (workflow.profile.tokenize(',').intersect(["docker"]).size >= 1) {
-        containerOptions = "--user root"
-    }
-
-
     input:
     tuple val(meta), path(bam), path(bai), path(graph)
 

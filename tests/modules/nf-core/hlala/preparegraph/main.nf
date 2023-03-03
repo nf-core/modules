@@ -13,7 +13,10 @@ workflow test_hlala_preparegraph {
     
     UNZIP( input )
 
-    UNZIP.out.unzipped_archive.dump(tag: "unzipped archive")
+    UNZIP.out.unzipped_archive.map { id, path ->
+                                        [ id, "$path/${path.toString().split("/").last()}" ] 
+                                     }
+                                     .set { hla_preparegraph_test_in }
 
-    HLALA_PREPAREGRAPH ( UNZIP.out.unzipped_archive )
+    HLALA_PREPAREGRAPH ( hla_preparegraph_test_in )
 }
