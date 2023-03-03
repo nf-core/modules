@@ -33,11 +33,8 @@ workflow test_glimpse_sample {
                 .combine(Channel.of([[]]))
     ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
 
-    all_files = GLIMPSE_PHASE.output.phased_variant
-                            .map { it[1] }
-                            .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
-
-    ligate_input=Channel.of([[ id:'input', single_end:false ]]).combine(all_files)
+    ligate_input = GLIMPSE_PHASE.output.phased_variant
+                                .groupTuple()
     GLIMPSE_LIGATE ( ligate_input )
     GLIMPSE_SAMPLE ( GLIMPSE_LIGATE.out.merged_variants )
 }
