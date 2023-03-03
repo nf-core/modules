@@ -34,11 +34,9 @@ workflow test_glimpse_concordance {
                 .combine(samples_file)
     ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
 
-    all_files = GLIMPSE_PHASE.output.phased_variant
-                            .map { it[1] }
-                            .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
+    ligate_input = GLIMPSE_PHASE.output.phased_variant
+                                .groupTuple()
 
-    ligate_input = Channel.of([[ id:'input', single_end:false ]]).combine(all_files)
     GLIMPSE_LIGATE ( ligate_input )
     
     allele_freq = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
