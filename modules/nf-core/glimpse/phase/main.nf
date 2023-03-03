@@ -1,6 +1,6 @@
 process GLIMPSE_PHASE {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     conda "bioconda::glimpse-bio=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -18,13 +18,13 @@ process GLIMPSE_PHASE {
         task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":","_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    def map_command = map ? "--map $map" : ""
-    def samples_file_command = samples_file ? "--samples-file $samples_file":""
-    def input_region_command = input_region ? "--input-region $input_region":""
+    def map_command           = map           ? "--map $map"                    :""
+    def samples_file_command  = samples_file  ? "--samples-file $samples_file"  :""
+    def input_region_command  = input_region  ? "--input-region $input_region"  :""
     def output_region_command = output_region ? "--output-region $output_region":""
 
     """
