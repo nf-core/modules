@@ -30,13 +30,14 @@ process AUTHENTICT_DEAM2CONT {
     def VERSION = '1.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def config_file = config ? "-c ${config}" : ""
     def positions_file = positions ? "-p ${positions}" : ""
-  
+
     """
     samtools view $args $bam | AuthentiCT \\
         deam2cont \\
         $args2 \\
         $config_file \\
         $positions_file \\
+        - \\
         > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
