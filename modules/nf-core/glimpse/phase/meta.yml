@@ -39,19 +39,6 @@ input:
       description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
-  - index_region:
-      type: int
-      description: Unique file index. Can be obtained with first column of GLIMPSE_chunk output file.
-
-  - samples_file:
-      type: file
-      description: |
-        File with sample names and ploidy information.
-        One sample per line with a mandatory second column indicating ploidy (1 or 2).
-        Sample names that are not present are assumed to have ploidy 2 (diploids).
-        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-      pattern: "*.{txt,tsv}"
-
   - reference:
       type: file
       description: Reference panel of haplotypes in VCF/BCF format.
@@ -66,6 +53,15 @@ input:
       type: file
       description: File containing the genetic map.
       pattern: "*.gmap"
+
+  - samples_file:
+      type: file
+      description: |
+        File with sample names and ploidy information.
+        One sample per line with a mandatory second column indicating ploidy (1 or 2).
+        Sample names that are not present are assumed to have ploidy 2 (diploids).
+        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
+      pattern: "*.{txt,tsv}"
 
 output:
   - meta:
