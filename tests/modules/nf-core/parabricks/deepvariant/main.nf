@@ -10,7 +10,7 @@ workflow test_parabricks_deepvariant {
     input = [
         [ id:'test'],
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-        [],
+        [], // bam not needed unless using intervals
         []
     ]
 

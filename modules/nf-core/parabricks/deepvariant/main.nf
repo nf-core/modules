@@ -14,8 +14,8 @@ process PARABRICKS_DEEPVARIANT {
     path fasta
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml",               emit: versions
+    tuple val(meta), path("*.vcf"), emit: vcf
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,6 +38,19 @@ process PARABRICKS_DEEPVARIANT {
         $interval_file_command \\
         --num-gpus $task.accelerator.request \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_file = args =~ "gvcf" ? "${prefix}.g.vcf" : "${prefix}.vcf"
+    """
+    touch $output_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
