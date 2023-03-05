@@ -11,7 +11,7 @@ process PARABRICKS_DEEPVARIANT {
 
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
-    path  fasta
+    path fasta
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -29,7 +29,7 @@ process PARABRICKS_DEEPVARIANT {
     """
     # parabricks needs the index file to exist as a regular file in the same dir as fasta
     $copy_index_command
-    
+
     pbrun \\
         deepvariant \\
         --ref $fasta \\
@@ -38,7 +38,7 @@ process PARABRICKS_DEEPVARIANT {
         $interval_file_command \\
         --num-gpus $task.accelerator.request \\
         $args
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
