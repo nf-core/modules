@@ -1,4 +1,4 @@
-name: "parabricks_mutectcaller"
+name: "parabricks_haplotypecaller"
 description: NVIDIA Clara Parabricks GPU-accelerated germline variant calling, replicating GATK haplotypecaller.
 keywords:
   - variant
@@ -18,38 +18,38 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing tumor sample information - id must match read groups for this sample
+        Groovy Map containing sample information.
         [ id:'test']
   - input:
       type: file
-      description: bam file for sample to be variant called
+      description: bam file for sample to be variant called.
       pattern: "*.bam"
   - input_index:
       type: file
-      description: bai index corresponding to input bam file. Only necessary when using intervals
+      description: (Optional) bai index corresponding to input bam file. Only necessary when using intervals.
       pattern: "*.bai"
   - interval_file:
       type: file
-      description: file or files containing genomic intervals for use in base quality score recalibration
+      description: file or files containing genomic intervals.
       pattern: "*.{bed,interval_list,picard,list,intervals}"
   - fasta:
       type: file
-      description: reference fasta - must be unzipped
+      description: reference fasta - must be unzipped.
       pattern: "*.fasta"
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information.
         e.g. [ id:'test' ]
   - versions:
       type: file
-      description: File containing software versions
+      description: File containing software versions.
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: variant file
+      description: variant file.
       pattern: "*.vcf"
 
 authors:

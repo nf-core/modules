@@ -11,7 +11,7 @@ process PARABRICKS_HAPLOTYPECALLER {
 
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
-    path  fasta
+    path fasta
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf

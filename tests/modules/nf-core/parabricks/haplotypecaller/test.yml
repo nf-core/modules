@@ -1,5 +1,5 @@
 - name: parabricks haplotypecaller test_parabricks_haplotypecaller
-  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
   tags:
   - parabricks
   - parabricks/haplotypecaller
@@ -8,7 +8,7 @@
     should_exist: true
 
 - name: parabricks haplotypecaller test_parabricks_haplotypecaller_intervals
-  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
   tags:
   - parabricks
   - parabricks/haplotypecaller
@@ -17,7 +17,7 @@
     should_exist: true
 
 - name: parabricks haplotypecaller test_parabricks_haplotypecaller_gvcf
-  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
   tags:
   - parabricks
   - parabricks/haplotypecaller

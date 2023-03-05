@@ -2251,6 +2251,11 @@ parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
 
+# GitHub Actions doesn't support GPUs, so stub
+parabricks/haplotypecaller:
+  - modules/nf-core/parabricks/haplotypecaller/**
+  - tests/modules/nf-core/parabricks/haplotypecaller/**
+
 paraclu:
   - modules/nf-core/paraclu/**
   - tests/modules/nf-core/paraclu/**

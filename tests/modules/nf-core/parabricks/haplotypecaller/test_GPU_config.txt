@@ -5,7 +5,7 @@ process {
     cpus  = 4
     accelerator = 1
 
-    withName: PARABRICKS_DEEPVARIANT_GVCF {
+    withName: PARABRICKS_HAPLOTYPECALLER_GVCF {
         ext.args = "--gvcf"
     }
 }
