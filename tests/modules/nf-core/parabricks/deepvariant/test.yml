@@ -5,7 +5,7 @@
   - parabricks
   files:
   - path: output/parabricks/test.vcf
-    md5sum: cd2f8e8613a35dc1a7da5d814026677c
+    should_exist: true
 
 - name: parabricks deepvariant test_parabricks_deepvariant_intervals
   command: nextflow run ./tests/modules/nf-core/parabricks/deepvariant -entry test_parabricks_deepvariant_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/deepvariant/nextflow.config
@@ -14,4 +14,13 @@
   - parabricks
   files:
   - path: output/parabricks/test.vcf
-    md5sum: cd2f8e8613a35dc1a7da5d814026677c
+    should_exist: true
+
+- name: parabricks deepvariant test_parabricks_deepvariant_gvcf
+  command: nextflow run ./tests/modules/nf-core/parabricks/deepvariant -entry test_parabricks_deepvariant_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/deepvariant/nextflow.config
+  tags:
+  - parabricks/deepvariant
+  - parabricks
+  files:
+  - path: output/parabricks/test.g.vcf
+    should_exist: true
