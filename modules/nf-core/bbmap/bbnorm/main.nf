@@ -23,23 +23,20 @@ process BBMAP_BBNORM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     input  = meta.interleaved ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
-    output = meta.interleaved ? "out=${prefix}.fastq" : "out1=${prefix[0]}.fastq in2=${prefix[1]}.fastq"
+    output = meta.interleaved ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
 
     """
     bbnorm.sh \\
         $input \\
-        out=${prefix}.fastq \\
+        $output \\
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g \\
         &> ${prefix}.bbnorm.log
 
-    pigz ${prefix}.fastq
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
 }

@@ -1,45 +1,42 @@
 - name: bbmap bbnorm test_bbmap_bbnorm_se
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_se -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
-    - bbmap
     - bbmap/bbnorm
+    - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - c89cea6dd44f28aa3323926f4bd9aa0c
+        - f64935b85650bd1f3b2f8d8e77736cf4
     - path: output/bbmap/test.fastq.gz
       contains:
-        - 85301e499214daf1c6ed04d4c959528b
+        - 6b945a91d0e77c5ded35ff6fddf94b10
     - path: output/bbmap/versions.yml
-      contains:
         - e9ac278bca50f89b21b97e3b97415648
 - name: bbmap bbnorm test_bbmap_bbnorm_pe
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_pe -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
-    - bbmap
     - bbmap/bbnorm
+    - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - 58d1d95ddc8e8bf45148e9f4aef33fa2
+        - b0b0ab408515eb6142a4cfbc5a238d47
     - path: output/bbmap/test.fastq.gz
       contains:
-        - d2ffe278535eafd8815b139d692a9992
+        - a3a03cfae9f7afcba34a7b5a5875d4ea
     - path: output/bbmap/versions.yml
-      contains:
-        - 3dc3f13cdd53ba57e1c3745f37e845f7
+        - bd8ba4736b8e2d7c2a7386375d9435e8
 - name: bbmap bbnorm test_bbmap_bbnorm_interleaved
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
-    - bbmap
     - bbmap/bbnorm
+    - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - d92a03931b0c7aae61ab2158e0be3f09
+        - 60dd412235cd526adcc7f9316b792c03
     - path: output/bbmap/test.fastq.gz
       contains:
-        - 4a8197e46067db0bb9d3ece63994aa42
+        - 429b768fbb6c8e6961e9baa04ae7f868
     - path: output/bbmap/versions.yml
-      contains:
-        - 023d5bf1cffb12f6aba84a0c21f23266
+       - 1acb994483d2a87aca5be76a1e1587a3
