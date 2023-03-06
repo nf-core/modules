@@ -26,7 +26,8 @@ workflow test_bbmap_bbnorm_pe {
 
 workflow test_bbmap_bbnorm_interleaved {
 
-    input  = [[id:'test', interleaved:true ],
+    input  = [
+        [id:'test', interleaved:true ],
         [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true)]
     ]
 
