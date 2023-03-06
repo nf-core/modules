@@ -1,51 +1,43 @@
 name: "bbmap_bbnorm"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: BBNorm is designed to normalize coverage by down-sampling reads over high-depth areas of a genome, to result in a flat coverage distribution. 
 keywords:
-  - sort
+  - normalization
+  - assembly
+
 tools:
   - "bbmap":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "BBMap is a short read aligner, as well as various other bioinformatic tools."
       homepage: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
       documentation: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
-      tool_dev_url: "None"
+      tool_dev_url: "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbnorm-guide/"
       doi: ""
-      licence: "['UC-LBL license (see package)']"
+      licence: "BBMap - Bushnell B. - sourceforge.net/projects/bbmap/"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fastq:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fastq file
+      pattern: "*.{fastq,fq}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - fastq:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fastq file
+      pattern: "*.{fastq, fq}"
 
 authors:
   - "@danilodileo"
