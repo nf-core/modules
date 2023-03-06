@@ -12,8 +12,8 @@ process BBMAP_BBNORM {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: bam
-    tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,8 @@ process BBMAP_BBNORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
+    input  = meta.interleaved ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
+    output = meta.interleaved ? "out=${prefix}.fastq" : "out1=${prefix[0]}.fastq in2=${prefix[1]}.fastq"
 
     """
     bbnorm.sh \\
@@ -37,7 +38,7 @@ process BBMAP_BBNORM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bbmap: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """

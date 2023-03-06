@@ -1,8 +1,8 @@
 - name: bbmap bbnorm test_bbmap_bbnorm_se
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_se -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
-    - bbmap/bbnorm
     - bbmap
+    - bbmap/bbnorm
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
@@ -15,8 +15,22 @@
 - name: bbmap bbnorm test_bbmap_bbnorm_pe
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_pe -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
-    - bbmap/bbnorm
     - bbmap
+    - bbmap/bbnorm
+  files:
+    - path: output/bbmap/test.bbnorm.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/bbmap/test.fastq.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/bbmap/versions.yml
+
+- name: bbmap bbnorm test_bbmap_bbnorm_interleaved
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/bbnorm
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
