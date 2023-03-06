@@ -99,5 +99,5 @@ workflow ABERRANT_SPLICING {
 
         // psiCalcGroup = groups.
         //     map {it -> tuple(it.group, it.fdsObj)}
-        // PSI_VALUE_CALC(psiCalcGroup, COUNTRNA_COLLECT.out.counting_done.collect())
+        //  v(psiCalcGroup, COUNTRNA_COLLECT.out.counting_done.collect())
 }

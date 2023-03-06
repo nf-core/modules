@@ -12,12 +12,14 @@ process FILTERCOUNT {
         each mergecount_data
 
     output:
-        path("ods.Rds")               , emit: ods_unfitted
-        path "versions.yml"           , emit: versions
+        tuple val(preprocess), path("ods.Rds")      , emit: result
+        path "versions.yml"                         , emit: versions
 
     shell:
         txtDB = mergecount_data.preprocess.txtDb
         total_count = mergecount_data.totalCounts
+
+        preprocess = mergecount_data.preprocess
         '''
             #!/usr/bin/env Rscript --vanilla
 

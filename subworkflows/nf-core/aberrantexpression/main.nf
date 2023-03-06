@@ -10,6 +10,9 @@ workflow ABERRANT_EXPRESSION {
     take:
         params
 
+    emit:
+        resultsAll
+
     main:
         ch_versions = Channel.empty()
 
@@ -33,17 +36,22 @@ workflow ABERRANT_EXPRESSION {
             .map {it -> ["preprocess": it[0], "totalCounts": it[1]]}
             .set {mergecounts_data}
 
-        FILTERCOUNT(mergecounts_data)
+        FILTERCOUNT(mergecounts_data).result
+            .map {it -> ["preprocess": it[0], "odsUnfit": it[1]]}
+            .set {filter_data}
 
         // Outrider part
-        RUNOUTRIDER(FILTERCOUNT.out.ods_unfitted,
+        RUNOUTRIDER(filter_data,
             params.aberrantexpression.implementation,
-            params.aberrantexpression.maxTestedDimensionProportion)
+            params.aberrantexpression.maxTestedDimensionProportion).result
+            .map {it -> ["preprocess": it[0], "ods": it[1]]}
+            .set {runtoutrider_data}
 
         RESULTS(
-            RUNOUTRIDER.out.odsOut,
+            runtoutrider_data,
             params.hpoFile,
-            PREPROCESSGENEANNOTATION.out.tsv,
             params.aberrantexpression.padjCutoff,
             params.aberrantexpression.zScoreCutoff)
+
+        resultsAll = RESULTS.out.results_all
 }
