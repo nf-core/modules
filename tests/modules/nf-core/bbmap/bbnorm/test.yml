@@ -6,12 +6,13 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - c89cea6dd44f28aa3323926f4bd9aa0c 
     - path: output/bbmap/test.fastq.gz
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - 85301e499214daf1c6ed04d4c959528b
     - path: output/bbmap/versions.yml
-
+      conrins:
+        - e9ac278bca50f89b21b97e3b97415648
 - name: bbmap bbnorm test_bbmap_bbnorm_pe
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_pe -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
@@ -20,12 +21,13 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - 58d1d95ddc8e8bf45148e9f4aef33fa2
     - path: output/bbmap/test.fastq.gz
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - d2ffe278535eafd8815b139d692a9992
     - path: output/bbmap/versions.yml
-
+      contains:
+        - 3dc3f13cdd53ba57e1c3745f37e845f7
 - name: bbmap bbnorm test_bbmap_bbnorm_interleaved
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
@@ -34,8 +36,10 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - d92a03931b0c7aae61ab2158e0be3f09
     - path: output/bbmap/test.fastq.gz
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - 4a8197e46067db0bb9d3ece63994aa42
     - path: output/bbmap/versions.yml
+      contains:
+        - 023d5bf1cffb12f6aba84a0c21f23266
