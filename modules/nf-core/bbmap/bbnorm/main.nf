@@ -29,8 +29,6 @@ process BBMAP_BBNORM {
         $input \\
         out=${prefix}.fastq \\
         $args \\
-        target=100 \\
-        min=5 \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g \\
         &> ${prefix}.bbnorm.log
