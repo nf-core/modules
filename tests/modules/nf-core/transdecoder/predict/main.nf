@@ -15,3 +15,4 @@ workflow test_transdecoder_predict {
     TRANSDECODER_PREDICT ( input, TRANSDECODER_LONGORF.out.folder )
 
 }
+
