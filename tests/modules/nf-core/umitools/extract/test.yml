@@ -5,11 +5,12 @@
     - umitools
   files:
     - path: output/umitools/test.umi_extract.fastq.gz
-      contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      should_exist: true
+
     - path: output/umitools/test.umi_extract.log
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - ["job finished in"]
+
     - path: output/umitools/versions.yml
 
 - name: umitools extract test_umitools_extract_paired_end
@@ -20,11 +21,11 @@
   files:
     - path: output/umitools/test.umi_extract.log
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - ["job finished in"]
     - path: output/umitools/test.umi_extract_1.fastq.gz
-      contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      should_exist: true
+
     - path: output/umitools/test.umi_extract_2.fastq.gz
-      contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      should_exist: true
+
     - path: output/umitools/versions.yml
