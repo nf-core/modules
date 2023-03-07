@@ -21,6 +21,10 @@ process FASTQC {
     script:
     def args = task.ext.args ?: ''
     def svg_format = (args.contains('--svg')) ? "--svg" : ''
+    def cpu = task.cpus
+	def memory = task.memory.toMega() > 10000 ? 10000 : task.memory.toMega()
+    if (memory/250 < cpu)
+        cpu = Math.floor(memory/250).toInteger()	
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Make list of old name and new name pairs to use for renaming in the bash while loop
     def old_new_pairs = reads instanceof Path || reads.size() == 1 ? [[ reads, "${prefix}.${reads.extension}" ]] : reads.withIndex().collect { entry, index -> [ entry, "${prefix}_${index + 1}.${entry.extension}" ] }
@@ -30,7 +34,7 @@ process FASTQC {
     printf "%s %s\\n" $rename_to | while read old_name new_name; do
         [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
     done
-    fastqc $args --memory $task.memory --threads $task.cpus $svg_format $renamed_files
+    fastqc $args --memory $memory --threads $cpu $svg_format $renamed_files
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
