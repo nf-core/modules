@@ -2,7 +2,7 @@ process LIMA {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::lima=2.6.0" : null)
+    conda "bioconda::lima=2.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lima:2.6.0--h9ee0642_0' :
         'quay.io/biocontainers/lima:2.6.0--h9ee0642_0' }"

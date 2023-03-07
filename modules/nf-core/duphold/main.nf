@@ -2,7 +2,7 @@ process DUPHOLD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::duphold=0.2.1" : null)
+    conda "bioconda::duphold=0.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1':
         'quay.io/biocontainers/duphold:0.2.1--h516909a_1' }"
