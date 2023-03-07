@@ -31,7 +31,7 @@ parse_args <- function(x){
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -48,7 +48,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
         sep = separator,
         header = header,
         row.names = row.names,
-        check.names = FALSE
+        check.names = check.names
     )
 }
 
@@ -178,7 +178,8 @@ count.table <-
     read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
-        row.names = opt\$gene_id_col
+        row.names = opt\$gene_id_col,
+        check.names = FALSE
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
