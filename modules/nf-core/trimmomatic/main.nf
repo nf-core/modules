@@ -2,7 +2,7 @@ process TRIMMOMATIC {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::trimmomatic=0.39" : null)
+    conda "bioconda::trimmomatic=0.39"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
         'quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2' }"
@@ -14,6 +14,7 @@ process TRIMMOMATIC {
     tuple val(meta), path("*.paired.trim*.fastq.gz")   , emit: trimmed_reads
     tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), optional:true, emit: unpaired_reads
     tuple val(meta), path("*.log")                     , emit: log
+    tuple val(meta), path("*.summary")                 , emit: summary
     path "versions.yml"                                , emit: versions
 
     when:
@@ -33,6 +34,7 @@ process TRIMMOMATIC {
         $trimmed \\
         -threads $task.cpus \\
         -trimlog ${prefix}.log \\
+        -summary ${prefix}.summary \\
         $reads \\
         $output \\
         $qual_trim \\

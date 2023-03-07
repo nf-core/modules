@@ -1,5 +1,5 @@
 - name: bclconvert test_bclconvert
-  command: nextflow run ./tests/modules/nf-core/bclconvert -entry test_bclconvert -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bclconvert/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bclconvert -entry test_bclconvert -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bclconvert/nextflow.config
   tags:
     - bclconvert
   files:
@@ -35,16 +35,17 @@
       md5sum: 0a0341e2990b4fa1d9ad4b4c603144c1
     - path: output/bclconvert/Undetermined_S0_L001_R1_001.fastq.gz
       md5sum: febef808ae5397ea4ee7ee40e5fd39e0
-    - path: output/bclconvert/flowcell/InterOp/ControlMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/ControlMetricsOut.bin
       md5sum: 6d77b38d0793a6e1ce1e85706e488953
-    - path: output/bclconvert/flowcell/InterOp/CorrectedIntMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/CorrectedIntMetricsOut.bin
       md5sum: 2bbf84d3be72734addaa2fe794711434
-    - path: output/bclconvert/flowcell/InterOp/ErrorMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/ErrorMetricsOut.bin
       md5sum: 38c88def138e9bb832539911affdb286
-    - path: output/bclconvert/flowcell/InterOp/ExtractionMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/ExtractionMetricsOut.bin
       md5sum: 7497c3178837eea8f09350b5cd252e99
-    - path: output/bclconvert/flowcell/InterOp/IndexMetricsOut.bin
-    - path: output/bclconvert/flowcell/InterOp/QMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/IndexMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/QMetricsOut.bin
       md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
-    - path: output/bclconvert/flowcell/InterOp/TileMetricsOut.bin
+    - path: output/bclconvert/test/InterOp/TileMetricsOut.bin
       md5sum: 83891751ec1c91a425a524b476b6ca3c
+    - path: output/bclconvert/versions.yml

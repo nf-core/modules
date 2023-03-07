@@ -15,15 +15,15 @@ tools:
 input:
   - fasta:
       type: file
-      description: fasta genome file
+      description: Reference genome FASTA file
       pattern: "*.{fasta,fa}"
   - gtf:
       type: file
-      description: gtf transcriptome file
+      description: Reference transcriptome GTF file
       pattern: "*.gtf"
   - reference_name:
       type: val
-      description: name to give the reference folder
+      description: The name to give the new reference folder
       pattern: str
 output:
   - reference:

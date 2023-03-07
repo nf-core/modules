@@ -2,23 +2,25 @@ process BCLCONVERT {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using bcl-convert. Please use docker or singularity containers."
-    }
     container "nfcore/bclconvert:4.0.3"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("**[!Undetermined]_S*_L00?_R?_00?.fastq.gz")  ,emit: fastq
-    tuple val(meta), path("**_S*_L00?_I?_00?.fastq.gz")                 ,optional:true ,emit: fastq_idx
-    tuple val(meta), path("Undetermined_S0_L00?_R?_00?.fastq.gz")       ,optional:true ,emit: undetermined
-    tuple val(meta), path("Undetermined_S0_L00?_I?_00?.fastq.gz")       ,optional:true, emit: undetermined_idx
-    tuple val(meta), path("Reports")                                    ,emit: reports
-    tuple val(meta), path("Logs")                                       ,emit: logs
-    tuple val(meta), path("**/InterOp/*.bin")                           ,emit: interop
-    path("versions.yml")                                                ,emit: versions
+    tuple val(meta), path("**[!Undetermined]_S*_R?_00?.fastq.gz")   ,emit: fastq
+    tuple val(meta), path("**[!Undetermined]_S*_I?_00?.fastq.gz")   ,optional:true, emit: fastq_idx
+    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")     ,optional:true, emit: undetermined
+    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")     ,optional:true, emit: undetermined_idx
+    tuple val(meta), path("Reports")                                ,emit: reports
+    tuple val(meta), path("Logs")                                   ,emit: logs
+    tuple val(meta), path("**/InterOp/*.bin")                       ,optional:true, emit: interop
+    path("versions.yml")                                            ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
