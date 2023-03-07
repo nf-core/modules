@@ -5,6 +5,7 @@
     - gatk4
   files:
     - path: output/gatk4/test.hdf5
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_tsv
   command: nextflow run ./tests/modules/nf-core/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_tsv -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectreadcounts/nextflow.config
@@ -14,6 +15,7 @@
   files:
     - path: output/gatk4/test.tsv
       md5sum: 8e45a6164916c303387f39f02ce45841
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_cram
   command: nextflow run ./tests/modules/nf-core/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectreadcounts/nextflow.config
@@ -22,4 +24,31 @@
     - gatk4
   files:
     - path: output/gatk4/test.tsv
-      md5sum: d9a32039b7a84f5bb74e8382e5427670
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 collectreadcounts test_gatk4_collectreadcounts_hdf5_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_hdf5 -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectreadcounts/nextflow.config -stub
+  tags:
+    - gatk4/collectreadcounts
+    - gatk4
+  files:
+    - path: output/gatk4/test.hdf5
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 collectreadcounts test_gatk4_collectreadcounts_tsv_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_tsv -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectreadcounts/nextflow.config -stub
+  tags:
+    - gatk4/collectreadcounts
+    - gatk4
+  files:
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 collectreadcounts test_gatk4_collectreadcounts_cram_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectreadcounts/nextflow.config -stub
+  tags:
+    - gatk4/collectreadcounts
+    - gatk4
+  files:
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/versions.yml

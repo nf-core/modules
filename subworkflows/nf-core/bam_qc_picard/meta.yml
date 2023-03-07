@@ -22,14 +22,28 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM/CRAM/SAM file index
+      pattern: "*.{bai,crai,sai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: optional file
       description: Reference fasta file
-      pattern: "*.{fasta,fa}"
+      pattern: "*.{fasta,fa,fna}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta_fai:
       type: optional file
       description: Reference fasta file index
-      pattern: "*.{fasta,fa}.fai"
+      pattern: "*.{fasta,fa,fna}.fai"
   - bait_intervals:
       type: optional file
       description: An interval list file that contains the locations of the baits used.
