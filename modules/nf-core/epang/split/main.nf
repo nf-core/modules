@@ -26,8 +26,8 @@ process EPANG_SPLIT {
         $args \\
         --split $refaln $fullaln
 
-    gzip -c query.fasta > ${prefix}query.fasta.gz; rm query.fasta
-    gzip -c reference.fasta > ${prefix}reference.fasta.gz; rm reference.fasta
+    gzip -c query.fasta > ${prefix}.query.fasta.gz; rm query.fasta
+    gzip -c reference.fasta > ${prefix}.reference.fasta.gz; rm reference.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
