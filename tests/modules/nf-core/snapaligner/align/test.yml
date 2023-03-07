@@ -1,21 +1,23 @@
 - name: snapaligner align test_snapaligner_single
-  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_single -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
   tags:
-    - snapaligner/align
     - snapaligner
+    - snapaligner/align
   files:
     - path: output/snapaligner/test.bam
-      md5sum: 9958e511fe759012cd11b7ef1f097639
+      md5sum: 72f5ba2dbc015f914fddc963d9185ed6
     - path: output/snapaligner/test.bam.bai
-      md5sum: f180c68a77445b317a22e3f1d6e6e114
+      md5sum: c97d4d0e2a00864916eaea95b039cbf9
+    - path: output/snapaligner/versions.yml
 
 - name: snapaligner align test_snapaligner_paired
-  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_paired -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
   tags:
-    - snapaligner/align
     - snapaligner
+    - snapaligner/align
   files:
     - path: output/snapaligner/test.bam
-      md5sum: cf656d5f18afa6a97825a685e1b2b141
+      md5sum: f9a98af4f70745654202de81b12faeef
     - path: output/snapaligner/test.bam.bai
-      md5sum: fa2226d7f5b0b4b15d014332f94a8b84
+      md5sum: cd256b73dd8bc0f351a128c0a0b2f7c5
+    - path: output/snapaligner/versions.yml

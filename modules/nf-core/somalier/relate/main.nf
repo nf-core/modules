@@ -3,15 +3,14 @@ process SOMALIER_RELATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::somalier=0.2.15" : null)
+    conda "bioconda::somalier=0.2.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
-    tuple val(meta), path(extract)
+    tuple val(meta), path(extract), path(ped)
     path(sample_groups)
-    path(ped)
 
     output:
     tuple val(meta), path("*.html"),          emit: html
@@ -43,4 +42,17 @@ process SOMALIER_RELATE {
     END_VERSIONS
     """
 
+    stub:
+    def prefix = task.ext.prefix ?: "$meta.id"
+
+    """
+    touch ${prefix}.html
+    touch ${prefix}.pairs.tsv
+    touch ${prefix}.samples.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
+    END_VERSIONS
+    """
 }

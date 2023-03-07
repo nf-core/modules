@@ -2,19 +2,20 @@ process PINTS_CALLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda    (params.enable_conda ? "bioconda::pypints=1.1.6" : null)
+    conda "bioconda::pypints=1.1.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pypints:1.1.6--pyh5e36f6f_1' :
-        'quay.io/biocontainers/pypints:1.1.6--pyh5e36f6f_1' }"
+        'https://depot.galaxyproject.org/singularity/pypints:1.1.8--pyh7cba7a3_0' :
+        'quay.io/biocontainers/pypints:1.1.8--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bams)
 
     output:
-    tuple val(meta), path("*_divergent_peaks.bed")     , emit: divergent_TREs
-    tuple val(meta), path("*_bidirectional_peaks.bed") , emit: bidirectional_TREs
-    tuple val(meta), path("*_unidirectional_peaks.bed"), emit: unidirectional_TREs
-    path  "versions.yml"     , emit: versions
+    tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
+    tuple val(meta), path("*_bidirectional_peaks.bed") , optional:true, emit: bidirectional_TREs
+    tuple val(meta), path("*_unidirectional_peaks.bed"), optional:true, emit: unidirectional_TREs
+    tuple val(meta), path("peakcalling_*.log")                        , emit: peakcalling_log
+    path  "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

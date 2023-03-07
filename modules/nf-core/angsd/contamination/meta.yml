@@ -1,0 +1,46 @@
+name: "angsd_contamination"
+description: A tool to estimate nuclear contamination in males based on heterozygosity in the female chromosome.
+keywords:
+  - angsd
+  - population genetics
+  - nuclear contamination estimate
+tools:
+  - "angsd":
+      description: "ANGSD: Analysis of next generation Sequencing Data"
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence: "['GPL v3, MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - icounts:
+      type: file
+      description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
+      pattern: "*.icnts.gz"
+  - hapmap_file:
+      type: file
+      description: A list of variable sites to look for heterozygosity.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Contamination estimation output.
+      pattern: "*.txt"
+
+authors:
+  - "@jbv2"

@@ -6,6 +6,7 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 haplotypecaller test_gatk4_haplotypecaller_cram
   command: nextflow run ./tests/modules/nf-core/gatk4/haplotypecaller -entry test_gatk4_haplotypecaller_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/haplotypecaller/nextflow.config
@@ -15,6 +16,7 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 haplotypecaller test_gatk4_haplotypecaller_intervals_dbsnp
   command: nextflow run ./tests/modules/nf-core/gatk4/haplotypecaller -entry test_gatk4_haplotypecaller_intervals_dbsnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/haplotypecaller/nextflow.config
@@ -24,6 +26,7 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 haplotypecaller test_gatk4_haplotypecaller_dragstr_model
   command: nextflow run ./tests/modules/nf-core/gatk4/haplotypecaller -entry test_gatk4_haplotypecaller_dragstr_model -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/haplotypecaller/nextflow.config
@@ -33,3 +36,4 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gatk4/versions.yml

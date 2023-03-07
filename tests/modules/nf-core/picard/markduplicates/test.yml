@@ -18,3 +18,13 @@
       contains:
         - "1.0	97	97"
     - path: ./output/picard/test.bam
+- name: picard markduplicates sorted cram
+  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config
+  tags:
+    - picard
+    - picard/markduplicates
+  files:
+    - path: ./output/picard/test.MarkDuplicates.metrics.txt
+      contains:
+        - "1.0	0.999986	1178"
+    - path: ./output/picard/test.bam

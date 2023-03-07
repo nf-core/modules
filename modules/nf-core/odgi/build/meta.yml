@@ -1,0 +1,44 @@
+name: "odgi_build"
+description: Construct a dynamic succinct variation graph in ODGI format from a GFAv1.
+keywords:
+  - variation graph
+  - pangenome graph
+  - gfa
+  - graph construction
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Pangenome graph in GFA v1.0 format
+      pattern: "*.{gfa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - og:
+      type: file
+      description: File containing a pangenome graph in ODGI binary format. Usually ends with '.og'
+      pattern: "*.{og}"
+
+authors:
+  - "@subwaystation"

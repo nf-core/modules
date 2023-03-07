@@ -1,0 +1,54 @@
+name: "concoct_cutupfasta"
+description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
+keywords:
+  - contigs
+  - fragment
+  - mags
+  - binning
+  - fasta
+  - cut
+  - cut up
+tools:
+  - "concoct":
+      description: "Clustering cONtigs with COverage and ComposiTion"
+      homepage: "https://concoct.readthedocs.io/en/latest/index.html"
+      documentation: "https://concoct.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/BinPro/CONCOCT"
+      doi: "10.1038/nmeth.3103"
+      licence: "['FreeBSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: (Uncompressed) FASTA file containing contigs
+      pattern: "*.{fasta,fna,fa,fas}"
+  - bed:
+      type: boolean
+      description: Specify whether to generate a BED file describing where each contig was cut up
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
+      pattern: "*.fasta"
+  - bed:
+      type: file
+      description: Optional BED File containing locations on original contigs where they were cut up.
+      pattern: "*.bed"
+
+authors:
+  - "@jfy133"

@@ -3,7 +3,7 @@ process ARIA2 {
     tag "$source_url"
     label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::aria2=1.36.0" : null)
+    conda "conda-forge::aria2=1.36.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
         'quay.io/biocontainers/aria2:1.36.0' }"
@@ -12,14 +12,15 @@ process ARIA2 {
     val source_url
 
     output:
-    path ("*.*")       , emit: downloaded_files
-    path "versions.yml", emit: versions
+    path ("$downloaded_file"), emit: downloaded_file
+    path "versions.yml"      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args        = task.ext.args ?: ''
+    downloaded_file = source_url.split("/")[-1]
 
     """
     set -e

@@ -2,10 +2,10 @@ process PICARD_LIFTOVERVCF {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(input_vcf)
@@ -14,9 +14,9 @@ process PICARD_LIFTOVERVCF {
     path fasta
 
     output:
-    tuple val(meta), path("*lifted.vcf.gz")  , emit: vcf_lifted
-    tuple val(meta), path("*unlifted.vcf.gz"), emit: vcf_unlifted
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.lifted.vcf.gz")  , emit: vcf_lifted
+    tuple val(meta), path("*.unlifted.vcf.gz"), emit: vcf_unlifted
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

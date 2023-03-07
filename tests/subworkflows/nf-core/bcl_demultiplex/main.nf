@@ -12,15 +12,7 @@ workflow test_bcl_demultiplex_bclconvert {
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)])
 
-    ch_flowcell
-    .multiMap { meta, ss, run ->
-        samplesheet: [meta, ss]
-        tar: [meta, run]
-    }.set{ ch_fc_split }
-
-    ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
-
-    BCL_DEMULTIPLEX ( ch_flowcell_untar, "bclconvert" )
+    BCL_DEMULTIPLEX ( ch_flowcell, "bclconvert" )
 }
 
 workflow test_bcl_demultiplex_bcl2fastq {
@@ -30,13 +22,5 @@ workflow test_bcl_demultiplex_bcl2fastq {
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)])
 
-    ch_flowcell
-    .multiMap { meta, ss, run ->
-        samplesheet: [meta, ss]
-        tar: [meta, run]
-    }.set{ ch_fc_split }
-
-    ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
-
-    BCL_DEMULTIPLEX ( ch_flowcell_untar, "bcl2fastq" )
+    BCL_DEMULTIPLEX ( ch_flowcell, "bcl2fastq" )
 }
