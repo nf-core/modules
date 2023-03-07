@@ -12,7 +12,7 @@ tools:
       homepage: "https://github.com/zeeev/wham"
       documentation: "https://github.com/zeeev/wham"
       tool_dev_url: "https://github.com/zeeev/wham"
-      doi: "https://doi.org/10.1371/journal.pcbi.1004572"
+      doi: "10.1371/journal.pcbi.1004572"
       licence: "['MIT']"
 
 input:
@@ -29,6 +29,14 @@ input:
       type: file
       description: BAM index file
       pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Reference Fasta file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Index of the reference Fasta
+      pattern: "*.fai"
 
 output:
   - meta:
@@ -44,6 +52,10 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of the VCF file
+      pattern: "*.vcf.gz.tbi"
 
 authors:
   - "@nvnieuwk"

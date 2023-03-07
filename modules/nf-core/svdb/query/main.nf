@@ -2,18 +2,18 @@ process SVDB_QUERY {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::svdb=2.7.1" : null)
+    conda "bioconda::svdb=2.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdb:2.7.1--py27h4329609_0':
-        'quay.io/biocontainers/svdb:2.7.1--py27h4329609_0' }"
+        'https://depot.galaxyproject.org/singularity/svdb:2.8.1--py39h5371cbf_0':
+        'quay.io/biocontainers/svdb:2.8.1--py39h5371cbf_0' }"
 
     input:
     tuple val(meta), path(vcf)
     path (vcf_dbs)
 
     output:
-    tuple val(meta), path("*_query.vcf"), emit: vcf
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*_query.vcf")    , emit: vcf
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

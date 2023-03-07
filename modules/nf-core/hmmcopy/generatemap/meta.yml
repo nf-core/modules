@@ -10,15 +10,25 @@ tools:
       homepage: https://github.com/shahcompbio/hmmcopy_utils
       documentation: https://github.com/shahcompbio/hmmcopy_utils
       tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
-      doi: ""
+
       licence: ["GPL v3"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input genome fasta file
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -26,7 +36,8 @@ output:
   - bigwig:
       type: file
       description: bigwig file containing the mappability of the genome
-      pattern: "*.{map.bw}"
+      pattern: "*.bw"
 
 authors:
   - "@sppearce"
+  - "@adamrtalbot"
