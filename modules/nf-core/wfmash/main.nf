@@ -1,5 +1,5 @@
 process WFMASH {
-    tag '$bam'
+    tag "$meta.id"
     label 'process_medium'
 
     conda "bioconda::wfmash=0.10.2"
@@ -41,7 +41,7 @@ process WFMASH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v'))
+        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
 }

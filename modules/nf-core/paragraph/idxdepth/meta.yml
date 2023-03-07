@@ -1,0 +1,70 @@
+name: "paragraph_idxdepth"
+description: Determines the depth in a BAM/CRAM file
+keywords:
+  - bam
+  - cram
+  - depth
+  - paragraph
+tools:
+  - "paragraph":
+      description: "Graph realignment tools for structural variants"
+      homepage: "https://github.com/Illumina/paragraph"
+      documentation: "https://github.com/Illumina/paragraph"
+      tool_dev_url: "https://github.com/Illumina/paragraph"
+      doi: "10.1101/635011"
+      licence: "['Apache License 2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information for the fasta
+        e.g. [ id:'test', single_end:false ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information for the fasta_fai
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: Index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: Reference genome FASTA
+      pattern: "*.{fasta,fna,fa}"
+  - fasta_fai:
+      type: file
+      description: Index of the reference genome FASTA
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - depth:
+      type: file
+      description: A JSON file containing depth, depth variance, read length and other parameters
+      pattern: "*.json"
+  - binned_depth:
+      type: file
+      description: A TSV file containing the binned normalized depth. Can only be calculated for CRAM files
+      pattern: "*.tsv"
+
+authors:
+  - "@nvnieuwk"
