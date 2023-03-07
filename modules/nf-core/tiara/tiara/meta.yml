@@ -33,11 +33,11 @@ output:
   - classifications:
       type: file
       description: TSV file containing per-contig classification probabilities and overall classifications. Gzipped if flag --gz is set.
-      pattern: "classification_*.out.{txt,txt.gz}"
+      pattern: "*.{txt,txt.gz}"
   - log:
       type: file
       description: Log file containing tiara model parameters. Gzipped if flag --gz is set.
-      pattern: "log_*.out.{txt,txt.gz}"
+      pattern: "log_*.{txt,txt.gz}"
   - fasta:
       type: file
       description: |
