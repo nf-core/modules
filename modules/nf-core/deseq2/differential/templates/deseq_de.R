@@ -31,7 +31,7 @@ parse_args <- function(x){
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -47,7 +47,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = check.names
     )
 }
 
@@ -65,7 +66,10 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+    df[,columns] <- format(
+        data.frame(df[, columns], check.names = FALSE),
+        nsmall = digits
+    )
 
     # Convert columns back to numeric
 
@@ -174,7 +178,8 @@ count.table <-
     read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
-        row.names = opt\$gene_id_col
+        row.names = opt\$gene_id_col,
+        check.names = FALSE
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
@@ -347,7 +352,8 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results))
+        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
+        check.names = FALSE
     ),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
@@ -372,7 +378,11 @@ saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
-sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)))
+sf_df = data.frame(
+    sample = names(sizeFactors(dds)),
+    data.frame(sizeFactors(dds), check.names = FALSE),
+    check.names = FALSE
+)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
@@ -386,7 +396,11 @@ write.table(
 # Write specified matrices
 
 write.table(
-    data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
+    data.frame(
+        gene_id=rownames(counts(dds)),
+        counts(dds, normalized = TRUE),
+        check.names = FALSE
+    ),
     file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -408,7 +422,10 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     write.table(
         data.frame(
             gene_id=rownames(counts(dds)),
-            round_dataframe_columns(data.frame(assay(vs_mat)))
+            round_dataframe_columns(
+                data.frame(assay(vs_mat), check.names = FALSE)
+            ),
+            check.names = FALSE
         ),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
