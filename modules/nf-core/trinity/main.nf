@@ -2,7 +2,7 @@ process TRINITY {
     tag "$meta.id"
     label 'process_high_memory'
 
-    conda (params.enable_conda ? "bioconda::trinity=2.13.2" : null)
+    conda "bioconda::trinity=2.13.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.13.2--h00214ad_1':
         'quay.io/biocontainers/trinity:2.13.2--h00214ad_1' }"
