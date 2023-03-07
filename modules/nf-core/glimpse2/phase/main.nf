@@ -38,7 +38,7 @@ process GLIMPSE2_PHASE {
     def input_region_command  = input_region        ? "--input-region $input_region"  : ""
     def output_region_command = output_region       ? "--output-region $output_region": ""
     def fasta_command         = fasta_reference     ? "--fasta $fasta_reference"      : ""
-    def input_bam             = input.any { it.toString().endsWith(".bam")}
+    def input_bam             = input.any { it.toString().endsWith(".{bam,cram}")}
 
     """
     if $input_bam
