@@ -24,8 +24,6 @@ process GLIMPSE_PHASE {
 
     def map_command           = map           ? "--map $map"                    :""
     def samples_file_command  = samples_file  ? "--samples-file $samples_file"  :""
-    def input_region_command  = input_region  ? "--input-region $input_region"  :""
-    def output_region_command = output_region ? "--output-region $output_region":""
 
     """
     GLIMPSE_phase \\
@@ -34,8 +32,8 @@ process GLIMPSE_PHASE {
         --reference $reference \\
         $map_command \\
         $samples_file_command \\
-        $input_region_command \\
-        $output_region_command \\
+        --input-region $input_region \\
+        --output-region $output_region \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
 
