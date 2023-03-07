@@ -10,21 +10,19 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      doi: ""
       licence: 10x Genomics EULA
 input:
   - fasta:
       type: file
-      description: fasta genome file
+      description: Reference genome FASTA file
       pattern: "*.{fasta,fa}"
   - gtf:
       type: file
-      description: gtf transcriptome file
+      description: Reference transcriptome GTF file
       pattern: "*.gtf"
   - reference_name:
-      type: val
-      description: name to give the reference folder
-      pattern: str
+      type: directory
+      description: The name to give the new reference folder
 output:
   - reference:
       type: directory
