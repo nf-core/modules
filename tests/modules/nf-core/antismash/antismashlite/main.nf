@@ -21,19 +21,20 @@ workflow test_antismashlite {
         file(params.test_data['bacteroides_fragilis']['genome']['genome_gff_gz'], checkIfExists: true)
     ]
 
+    // hash 91bb8781c576967e23d2c5315dd4d43213575033 is for antismash version 6.1.1
     antismash_css = [
         [],
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/91bb8781c576967e23d2c5315dd4d43213575033/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
     ]
 
     antismash_detection = [
         [],
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/91bb8781c576967e23d2c5315dd4d43213575033/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
     ]
 
     antismash_modules = [
         [],
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/91bb8781c576967e23d2c5315dd4d43213575033/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
     ]
 
     GUNZIP1 ( genome_fna )

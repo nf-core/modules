@@ -1,0 +1,47 @@
+name: "calder2"
+description: Hierarchical Hi-C compartment computation
+keywords:
+  - calder2
+  - genome
+  - topology
+  - compartments
+  - domains
+  - hi-c
+tools:
+  - "calder2":
+      description: "Hierarchical Hi-C compartment computation"
+      homepage: "https://github.com/CSOgroup/CALDER2"
+      documentation: "https://github.com/CSOgroup/CALDER2"
+      tool_dev_url: "https://github.com/CSOgroup/CALDER2"
+      doi: "10.1038/s41467-021-22666-3"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: Path to COOL file
+      pattern: "*.{cool.mcool}"
+  - resolution:
+      type: value
+      description: In case a .mcool file is provided, which resolution level to use for the analysis
+
+output:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - output:
+      type: directory
+      description: Output folder containing sub-compartment (.tsv/.bed) and domain boundaries calls (.bed)
+  - intermediate_data:
+      type: directory
+      description: Output folder containing intermediate data produced during the computation
+
+authors:
+  - "@lucananni93"

@@ -2,14 +2,16 @@ process MERQURYFK_MERQURYFK {
     tag "$meta.id"
     label 'process_medium'
 
-    if (params.enable_conda) {
-        error "Conda environments cannot be used when using the FastK tool. Please use docker or singularity containers."
-    }
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "MERQURYFK_MERQURYFK module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
-    tuple val(meta), path(fastk_hist), path(fastk_ktab), path(assembly)
+    tuple val(meta), path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
 
     output:
     tuple val(meta), path("${prefix}.completeness.stats") , emit: stats
@@ -44,6 +46,7 @@ process MERQURYFK_MERQURYFK {
         -T$task.cpus \\
         ${fastk_ktab.find{ it.toString().endsWith(".ktab") }} \\
         $assembly \\
+        $haplotigs \\
         $prefix
 
     cat <<-END_VERSIONS > versions.yml

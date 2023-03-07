@@ -2,7 +2,7 @@ process SCRAMBLE_CLUSTERANALYSIS {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::scramble=1.0.1" : null)
+    conda "bioconda::scramble=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
         'quay.io/biocontainers/scramble:1.0.1--h779adbc_1' }"

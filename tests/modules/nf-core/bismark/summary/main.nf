@@ -20,10 +20,10 @@ workflow test_bismark_summary {
     BISMARK_DEDUPLICATE ( BISMARK_ALIGN.out.bam )
     BISMARK_METHYLATIONEXTRACTOR ( BISMARK_DEDUPLICATE.out.bam, BISMARK_GENOMEPREPARATION.out.index )
     BISMARK_SUMMARY (
-        BISMARK_ALIGN.out.bam.collect{ meta, bam -> bam },
-        BISMARK_ALIGN.out.report.collect{ meta, report -> report },
-        BISMARK_DEDUPLICATE.out.report.collect{ meta, bam -> bam },
-        BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ meta, report -> report },
-        BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ meta, mbias -> mbias }
+        BISMARK_ALIGN.out.bam.collect{ it[1].name }.ifEmpty([]),
+        BISMARK_ALIGN.out.report.collect{ it[1] }.ifEmpty([]),
+        BISMARK_DEDUPLICATE.out.report.collect{ it[1] }.ifEmpty([]),
+        BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ it[1] }.ifEmpty([]),
+        BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ it[1] }.ifEmpty([]),
     )
 }

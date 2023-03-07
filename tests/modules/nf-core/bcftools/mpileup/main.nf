@@ -8,7 +8,8 @@ workflow test_bcftools_mpileup {
 
     input = [
         [ id:'test' ], // meta map
-        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
+        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
+        []
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     save_mpileup = false
@@ -20,10 +21,24 @@ workflow test_bcftools_save_mpileup {
 
     input = [
         [ id:'test' ], // meta map
-        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
+        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
+        []
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     save_mpileup = true
+
+    BCFTOOLS_MPILEUP ( input, fasta, save_mpileup )
+}
+
+workflow test_bcftools_mpileup_intervals {
+
+    input = [
+        [ id:'test' ], // meta map
+        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
+        [file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+    ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    save_mpileup = false
 
     BCFTOOLS_MPILEUP ( input, fasta, save_mpileup )
 }
