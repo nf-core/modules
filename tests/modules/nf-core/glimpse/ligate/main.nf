@@ -11,7 +11,9 @@ workflow test_glimpse_ligate {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
         "chr21:16600000-16800000",
-        "chr21:16650000-16750000"
+        "chr21:16650000-16750000",
+        "1",
+        []
     ]
     
     ref_panel = [
@@ -24,12 +26,10 @@ workflow test_glimpse_ligate {
         input_vcf,
         ref_panel,
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
-        []) // [meta, vcf, index, region_in, region_out], map, sample, [meta, ref, index], [meta, txt]
+        ) // [meta, vcf, index, region_in, region_out, region_index, sample], map, sample, [meta, ref, index]
 
-    all_files = GLIMPSE_PHASE.output.phased_variant
-                .map { it[1] }
-                .collectFile(){ item ->[ "all_files.txt", "$item" + '\n' ]}
+    ligate_input = GLIMPSE_PHASE.output.phased_variant
+                                .groupTuple()
 
-    ligate_input=Channel.of([[ id:'input', single_end:false ]]).combine(all_files)
     GLIMPSE_LIGATE ( ligate_input )
 }
