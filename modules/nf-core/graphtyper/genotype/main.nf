@@ -2,7 +2,7 @@ process GRAPHTYPER_GENOTYPE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::graphtyper=2.7.2" : null)
+    conda "bioconda::graphtyper=2.7.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.2--h7d7f7ad_0':
         'quay.io/biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"
