@@ -1439,6 +1439,10 @@ glimpse/phase:
   - modules/nf-core/glimpse/phase/**
   - tests/modules/nf-core/glimpse/phase/**
 
+glimpse2/splitreference:
+  - modules/nf-core/glimpse2/splitreference/**
+  - tests/modules/nf-core/glimpse2/splitreference/**
+
 glnexus:
   - modules/nf-core/glnexus/**
   - tests/modules/nf-core/glnexus/**
@@ -1458,6 +1462,10 @@ graphmap2/index:
 graphtyper/genotype:
   - modules/nf-core/graphtyper/genotype/**
   - tests/modules/nf-core/graphtyper/genotype/**
+
+graphtyper/vcfconcatenate:
+  - modules/nf-core/graphtyper/vcfconcatenate/**
+  - tests/modules/nf-core/graphtyper/vcfconcatenate/**
 
 gridss/gridss:
   - modules/nf-core/gridss/gridss/**
@@ -2030,6 +2038,10 @@ methyldackel/mbias:
   - modules/nf-core/methyldackel/mbias/**
   - tests/modules/nf-core/methyldackel/mbias/**
 
+midas/run:
+  - modules/nf-core/midas/run/**
+  - tests/modules/nf-core/midas/run/**
+
 minia:
   - modules/nf-core/minia/**
   - tests/modules/nf-core/minia/**
@@ -2259,7 +2271,6 @@ pangolin:
   - modules/nf-core/pangolin/**
   - tests/modules/nf-core/pangolin/**
 
-# GitHub Actions doesn't support GPUs, so stub
 parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
@@ -2272,13 +2283,13 @@ paragraph/idxdepth:
   - modules/nf-core/paragraph/idxdepth/**
   - tests/modules/nf-core/paragraph/idxdepth/**
 
-paragraph/vcf2paragraph:
-  - modules/nf-core/paragraph/vcf2paragraph/**
-  - tests/modules/nf-core/paragraph/vcf2paragraph/**
-
 paragraph/multigrmpy:
   - modules/nf-core/paragraph/multigrmpy/**
   - tests/modules/nf-core/paragraph/multigrmpy/**
+
+paragraph/vcf2paragraph:
+  - modules/nf-core/paragraph/vcf2paragraph/**
+  - tests/modules/nf-core/paragraph/vcf2paragraph/**
 
 pasty:
   - modules/nf-core/pasty/**
@@ -2619,6 +2630,10 @@ salmon/index:
 salmon/quant:
   - modules/nf-core/salmon/quant/**
   - tests/modules/nf-core/salmon/quant/**
+
+sam2lca/analyze:
+  - modules/nf-core/sam2lca/analyze/**
+  - tests/modules/nf-core/sam2lca/analyze/**
 
 salsa2:
   - modules/nf-core/salsa2/**
@@ -3065,6 +3080,10 @@ subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
 
+subworkflows/bam_variant_calling_freebayes:
+  - subworkflows/nf-core/bam_variant_calling_freebayes/**
+  - tests/subworkflows/nf-core/bam_variant_calling_freebayes/**
+
 subworkflows/bcl_demultiplex:
   - subworkflows/nf-core/bcl_demultiplex/**
   - tests/subworkflows/nf-core/bcl_demultiplex/**
@@ -3165,13 +3184,13 @@ subworkflows/vcf_gather_bcftools:
   - subworkflows/nf-core/vcf_gather_bcftools/**
   - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
-survivor/merge:
-  - modules/nf-core/survivor/merge/**
-  - tests/modules/nf-core/survivor/merge/**
-
 subworkflows/vcf_impute_glimpse:
   - subworkflows/nf-core/vcf_impute_glimpse/**
   - tests/subworkflows/nf-core/vcf_impute_glimpse/**
+
+survivor/merge:
+  - modules/nf-core/survivor/merge/**
+  - tests/modules/nf-core/survivor/merge/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
