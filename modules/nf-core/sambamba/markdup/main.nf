@@ -8,7 +8,7 @@ process SAMBAMBA_MARKDUP {
         'quay.io/biocontainers/sambamba:1.0--h98b6b92_0' }"
 
     input:
-        tuple val(meta), path(bam)
+    tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
