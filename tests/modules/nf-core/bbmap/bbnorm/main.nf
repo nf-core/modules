@@ -20,8 +20,8 @@ workflow test_bbmap_bbnorm_pe {
         [ id:'test', interleaved:false ], // meta map
         [  
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
-       ]
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+        ]
     ]
 
     BBMAP_BBNORM ( input )
