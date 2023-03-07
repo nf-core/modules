@@ -12,7 +12,7 @@ process ICHORCNA_RUN {
     path gc_wig
     path map_wig
     path normal_wig
-    path normal_rds
+    path normal_background
     path centromere
     path rep_time_wig
     path exons
@@ -27,14 +27,14 @@ process ICHORCNA_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def norm   = normal_wig   ? "normal_wig='${normal_wig}',"       : 'normal_wig=NULL,'
-    def pon    = normal_rds   ? "normal_panel='${normal_rds}',"     : 'normal_panel=NULL,'
-    def map    = map_wig      ? "mapWig='${map_wig}',"              : 'mapWig=NULL,'
-    def centro = centromere   ? "centromere='${centromere}',"       : ''
-    def rep    = rep_time_wig ? "repTimeWig='${rep_time_wig}',"     : 'repTimeWig=NULL,'
-    def exons  = exons        ? "exons.bed='${exons}',"             : ''
+    def args = task.ext.args       ?: ''
+    def prefix = task.ext.prefix   ?: "${meta.id}"
+    def norm   = normal_wig        ? "normal_wig='${normal_wig}',"          : 'normal_wig=NULL,'
+    def pon    = normal_background ? "normal_panel='${normal_background}'," : 'normal_panel=NULL,'
+    def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
+    def centro = centromere        ? "centromere='${centromere}',"          : ''
+    def rep    = rep_time_wig      ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
+    def exons  = exons             ? "exons.bed='${exons}',"                : ''
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
