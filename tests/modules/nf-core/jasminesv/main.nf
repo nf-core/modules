@@ -23,6 +23,25 @@ workflow test_jasminesv_minimum {
     JASMINESV ( input, fasta, fasta_fai, chr_norm )
 }
 
+workflow test_jasminesv_bgzipped_input {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        [
+            file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true)
+        ],
+        [],
+        []
+    ]
+
+    fasta = []
+    fasta_fai = []
+    chr_norm = []
+
+    JASMINESV ( input, fasta, fasta_fai, chr_norm )
+}
+
 workflow test_jasminesv_iris {
 
     input = [
