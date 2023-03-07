@@ -35,7 +35,7 @@ input:
       description: The path to the folder or file corresponding to the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
       pattern: "*/"
   - amp_database:
-      type: directory
+      type: folder
       description: The path to the folder containing the fasta and tsv database files.
       pattern: "*/"
 
@@ -66,11 +66,11 @@ output:
       description: A log file that captures the standard output ina log file. Can be activated by `--log`.
       pattern: "*.log"
   - sample_dir:
-      type: directory
+      type: folder
       description: The output directory that contains the summary output and related alignment files for one sample.
       pattern: "/*"
   - results_db:
-      type: directory
+      type: folder
       description: If the AMP reference database is not provided by the user using the flag `--amp_database', by default the DRAMP database will be downloaded, filtered and stored in this folder.
       pattern: "/amp_ref_database"
   - results_db_fasta:
