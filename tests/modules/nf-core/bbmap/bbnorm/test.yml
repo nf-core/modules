@@ -6,12 +6,11 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - f64935b85650bd1f3b2f8d8e77736cf4
+        - 'java'
     - path: output/bbmap/test.fastq.gz
-      contains:
-        - 6b945a91d0e77c5ded35ff6fddf94b10
+      md5sum: 709872fc2910431b1e8b7074bfe38c67
     - path: output/bbmap/versions.yml
-        - e9ac278bca50f89b21b97e3b97415648
+
 - name: bbmap bbnorm test_bbmap_bbnorm_pe
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_pe -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
@@ -20,12 +19,13 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - b0b0ab408515eb6142a4cfbc5a238d47
-    - path: output/bbmap/test.fastq.gz
-      contains:
-        - a3a03cfae9f7afcba34a7b5a5875d4ea
+        - 'java'
+    - path: output/bbmap/test_1.nm.fastq.gz
+      md5sum: a3a03cfae9f7afcba34a7b5a5875d4ea
+    - path: output/bbmap/test_2.nm.fastq.gz
+      md5sum: 8775e4088fa9ed85cf9e837cb27ec207
     - path: output/bbmap/versions.yml
-        - bd8ba4736b8e2d7c2a7386375d9435e8
+
 - name: bbmap bbnorm test_bbmap_bbnorm_interleaved
   command: nextflow run ./tests/modules/nf-core/bbmap/bbnorm -entry test_bbmap_bbnorm_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbnorm/nextflow.config
   tags:
@@ -34,9 +34,7 @@
   files:
     - path: output/bbmap/test.bbnorm.log
       contains:
-        - 60dd412235cd526adcc7f9316b792c03
+        - 'java'
     - path: output/bbmap/test.fastq.gz
-      contains:
-        - 429b768fbb6c8e6961e9baa04ae7f868
+      md5sum: 429b768fbb6c8e6961e9baa04ae7f868
     - path: output/bbmap/versions.yml
-       - 1acb994483d2a87aca5be76a1e1587a3
