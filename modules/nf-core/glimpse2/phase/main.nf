@@ -35,8 +35,6 @@ process GLIMPSE2_PHASE {
 
     def map_command           = map                 ? "--map $map"                    : ""
     def samples_file_command  = samples_file        ? "--samples-file $samples_file"  : ""
-    def input_region_command  = input_region        ? "--input-region $input_region"  : ""
-    def output_region_command = output_region       ? "--output-region $output_region": ""
     def fasta_command         = fasta_reference     ? "--fasta $fasta_reference"      : ""
     def input_bam             = input.any { it.toString().endsWith(".{bam,cram}")}
 
@@ -56,8 +54,8 @@ process GLIMPSE2_PHASE {
         $map_command \\
         $fasta_command \\
         $samples_file_command \\
-        $input_region_command \\
-        $output_region_command \\
+        --input-region $input_region \\
+        --output-region $output_region \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
 
