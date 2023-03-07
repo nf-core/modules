@@ -32,7 +32,7 @@ process SAM2LCA_ANALYZE {
         -d $database \\
         analyze \\
         $args \\
-        -o ${prefix}.sam2lca \\
+        -o ${prefix} \\
         $bam
 
     cat <<-END_VERSIONS > versions.yml
