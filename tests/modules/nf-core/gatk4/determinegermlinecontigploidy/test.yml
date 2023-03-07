@@ -54,3 +54,52 @@
     - path: output/gatk4/test2.tsv
       md5sum: 7ea0c58116686e7bc8ac96e933e60333
     - path: output/gatk4/versions.yml
+
+- name: gatk4 determinegermlinecontigploidy test_gatk4_determinegermlinecontigploidy_case_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy -entry test_gatk4_determinegermlinecontigploidy_case -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy/nextflow.config -stub
+  tags:
+    - gatk4/determinegermlinecontigploidy
+    - gatk4
+  files:
+    - path: output/gatk4/test-calls.tar.gz
+    - path: output/gatk4/test-model.tar.gz
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/test2.tsv
+    - path: output/gatk4/test_case-calls.tar.gz
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 determinegermlinecontigploidy test_gatk4_determinegermlinecontigploidy_cohort_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy -entry test_gatk4_determinegermlinecontigploidy_cohort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy/nextflow.config -stub
+  tags:
+    - gatk4/determinegermlinecontigploidy
+    - gatk4
+  files:
+    - path: output/gatk4/test-calls.tar.gz
+    - path: output/gatk4/test-model.tar.gz
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/test2.tsv
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 determinegermlinecontigploidy test_gatk4_determinegermlinecontigploidy_cohort_include_intervals_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy -entry test_gatk4_determinegermlinecontigploidy_cohort_include_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy/nextflow.config -stub
+  tags:
+    - gatk4/determinegermlinecontigploidy
+    - gatk4
+  files:
+    - path: output/gatk4/test-calls.tar.gz
+    - path: output/gatk4/test-model.tar.gz
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/test2.tsv
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 determinegermlinecontigploidy test_gatk4_determinegermlinecontigploidy_cohort_exclude_intervals_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy -entry test_gatk4_determinegermlinecontigploidy_cohort_exclude_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy/nextflow.config -stub
+  tags:
+    - gatk4/determinegermlinecontigploidy
+    - gatk4
+  files:
+    - path: output/gatk4/test-calls.tar.gz
+    - path: output/gatk4/test-model.tar.gz
+    - path: output/gatk4/test.tsv
+    - path: output/gatk4/test2.tsv
+    - path: output/gatk4/versions.yml

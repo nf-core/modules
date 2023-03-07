@@ -2,7 +2,7 @@ process PRODIGAL {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "prodigal=2.6.3 pigz=2.6" : null)
+    conda "bioconda::prodigal=2.6.3 conda-forge::pigz=2.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-2e442ba7b07bfa102b9cf8fac6221263cd746ab8:57f05cfa73f769d6ed6d54144cb3aa2a6a6b17e0-0' :
         'quay.io/biocontainers/mulled-v2-2e442ba7b07bfa102b9cf8fac6221263cd746ab8:57f05cfa73f769d6ed6d54144cb3aa2a6a6b17e0-0' }"
