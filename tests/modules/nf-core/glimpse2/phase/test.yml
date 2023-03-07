@@ -1,12 +1,19 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml glimpse2/phase
-- name: "glimpse2 phase"
-  command: nextflow run ./tests/modules/nf-core/glimpse2/phase -entry test_glimpse2_phase -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse2/phase/nextflow.config
+- name: glimpse2 phase test_glimpse2_phase_vcf
+  command: nextflow run ./tests/modules/nf-core/glimpse2/phase -entry test_glimpse2_phase_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse2/phase/nextflow.config
   tags:
-    - "glimpse2"
-    - "glimpse2/phase"
+    - glimpse2
+    - glimpse2/phase
   files:
-    - path: "output/glimpse2/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/glimpse2/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/glimpse2/input_chr21_16600000-16800000.bcf
+    - path: output/glimpse2/versions.yml
+
+- name: glimpse2 phase test_glimpse2_phase_bam
+  command: nextflow run ./tests/modules/nf-core/glimpse2/phase -entry test_glimpse2_phase_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse2/phase/nextflow.config
+  tags:
+    - glimpse2
+    - glimpse2/phase
+  files:
+    - path: output/glimpse2/input_chr21_16600000-16800000.bcf
+    - path: output/glimpse2/input_chr21_16600000-16800000_stats_coverage.txt.gz
+      md5sum: 632f4bf08bed0870192933a0a32b95c8
+    - path: output/glimpse2/versions.yml
