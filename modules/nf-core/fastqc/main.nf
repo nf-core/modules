@@ -20,7 +20,6 @@ process FASTQC {
 
     script:
     def args = task.ext.args ?: ''
-    def svg_format = (args.contains('--svg')) ? "--svg" : ''
     def cpu = task.cpus
     def memory = task.memory.toMega() > 10000 ? 10000 : task.memory.toMega()
     if (memory/250 < cpu)
