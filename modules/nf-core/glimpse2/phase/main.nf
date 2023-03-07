@@ -50,16 +50,16 @@ process GLIMPSE2_PHASE {
     fi
 
     GLIMPSE2_phase \\
-    $args \\
-    \$input_command \\
-    --reference $reference \\
-    $map_command \\
-    $fasta_command \\
-    $samples_file_command \\
-    $input_region_command \\
-    $output_region_command \\
-    --thread $task.cpus \\
-    --output ${prefix}.${suffix}
+        $args \\
+        \$input_command \\
+        --reference $reference \\
+        $map_command \\
+        $fasta_command \\
+        $samples_file_command \\
+        $input_region_command \\
+        $output_region_command \\
+        --thread $task.cpus \\
+        --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
