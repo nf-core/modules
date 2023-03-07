@@ -13,9 +13,9 @@ process SAM2LCA_ANALYZE {
     path(database)
 
     output:
-    tuple val(meta), path("*.sam2lca.csv") ,                 emit: csv
-    tuple val(meta), path("*.sam2lca.json"),                 emit: json
-    tuple val(meta), path("*.sam2lca.bam") , optional: true, emit: bam
+    tuple val(meta), path("*.csv") ,                 emit: csv
+    tuple val(meta), path("*.json"),                 emit: json
+    tuple val(meta), path("*.bam") , optional: true, emit: bam
     path "versions.yml"           , emit: versions
 
     when:
