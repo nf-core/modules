@@ -27,7 +27,7 @@ process SAMBAMBA_MARKDUP {
         $args \\
         -t $task.cpus \\
         $bam \\
-        ${prefix}.mrkDup.bam
+        ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
