@@ -22,9 +22,9 @@ process FASTQC {
     def args = task.ext.args ?: ''
     def svg_format = (args.contains('--svg')) ? "--svg" : ''
     def cpu = task.cpus
-	def memory = task.memory.toMega() > 10000 ? 10000 : task.memory.toMega()
+    def memory = task.memory.toMega() > 10000 ? 10000 : task.memory.toMega()
     if (memory/250 < cpu)
-        cpu = Math.floor(memory/250).toInteger()	
+        cpu = Math.floor(memory/250).toInteger()
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Make list of old name and new name pairs to use for renaming in the bash while loop
     def old_new_pairs = reads instanceof Path || reads.size() == 1 ? [[ reads, "${prefix}.${reads.extension}" ]] : reads.withIndex().collect { entry, index -> [ entry, "${prefix}_${index + 1}.${entry.extension}" ] }
