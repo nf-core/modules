@@ -41,7 +41,8 @@ samples_file = Channel.of([
 
 reference_genome = Channel.of([
                     [id:'refHG38_chr21'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz", checkIfExists: true)
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz.fai", checkIfExists: true)
                     ])
 
 workflow test_glimpse2_phase_vcf {
@@ -49,7 +50,7 @@ workflow test_glimpse2_phase_vcf {
         input_vcf.combine(ref_panel)
                 .combine(map_file)
                 .combine(samples_file),
-        Channel.of([[],[]])
+        Channel.of([[],[],[]])
         ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
 }
 
@@ -58,7 +59,7 @@ workflow test_glimpse2_phase_bam {
         input_bam.combine(ref_panel)
                 .combine(map_file)
                 .combine(samples_file),
-        Channel.of([[],[]])
+        Channel.of([[],[],[]])
         ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
 }
 
@@ -67,6 +68,6 @@ workflow test_glimpse2_phase_cram {
         input_cram.combine(ref_panel)
                 .combine(map_file)
                 .combine(samples_file),
-        Channel.of([[],[]])
+        reference_genome
         ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
 }

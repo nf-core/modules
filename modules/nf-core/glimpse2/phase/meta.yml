@@ -2,7 +2,9 @@ name: "glimpse2_phase"
 description: Tool for imputation and phasing from vcf file or directly from bam files.
 keywords:
   - phasing
+  - low-coverage
   - imputation
+  - glimpse
 tools:
   - "glimpse2":
       description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
@@ -72,6 +74,12 @@ input:
         Faidx-indexed reference sequence file in the appropriate genome build.
         Necessary for CRAM files
       pattern: "*.fasta"
+
+  - fasta_reference_index:
+      type: file
+      description: |
+        Faidx index of the reference sequence file in the appropriate genome build.
+      pattern: "*.fai"
 
 output:
   - meta:

@@ -19,7 +19,7 @@ process GLIMPSE2_PHASE {
 
     input:
         tuple val(meta), path(input), path(input_index), val(input_region), val(output_region), path(reference), path(reference_index), path(map), path(samples_file)
-        tuple val(meta2), path(fasta_reference)
+        tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
     output:
         tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variant
         tuple val(meta), path("*.txt.gz")        , emit: stats_coverage, optional: true
