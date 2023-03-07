@@ -33,7 +33,7 @@ process FASTQC {
     printf "%s %s\\n" $rename_to | while read old_name new_name; do
         [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
     done
-    fastqc $args --memory $memory --threads $cpu $svg_format $renamed_files
+    fastqc $args --memory $memory --threads $cpu $renamed_files
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
