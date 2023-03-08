@@ -17,7 +17,7 @@ workflow BAM_SPLIT_BY_REGION {
     //
     // Create channel containing the region names from the bed file.
     //
-    
+
     ch_regions = ch_bam
         .map{
             meta, bam, bai, regions_file ->
