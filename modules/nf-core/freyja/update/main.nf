@@ -19,6 +19,8 @@ process FREYJA_UPDATE {
     prefix = task.ext.prefix ?: "freyja_db"
 
     """
+    mkdir $prefix
+
     freyja \\
         update \\
         --outdir $prefix

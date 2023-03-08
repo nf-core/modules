@@ -1,5 +1,4 @@
 name: "freyja_boot"
-## TODO nf-core: Add a description of the module and list keywords
 description: Bootstrap sample demixing by resampling each site based on a multinomial distribution of read depth across all sites, where the event probabilities were determined by the fraction of the total sample reads found at each site, followed by a secondary resampling at each site according to a multinomial distribution (that is, binomial when there was only one SNV at a site), where event probabilities were determined by the frequencies of each base at the site, and the number of trials is given by the sequencing depth.
 keywords:
   - variants

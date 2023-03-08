@@ -1,13 +1,12 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /demix
-- name: "freyja demix"
+- name: freyja demix test_freyja_demix
   command: nextflow run ./tests/modules/nf-core/freyja/demix -entry test_freyja_demix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freyja/demix/nextflow.config
   tags:
-    - "freyja"
-    - "freyja/demix"
+    - freyja/demix
+    - freyja
   files:
-    - path: "output/freyja/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/freyja/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/freyja/freyja_db/curated_lineages.json
+    - path: output/freyja/freyja_db/usher_barcodes.csv
+    - path: output/freyja/test.demix.tsv
+    - path: output/freyja/test.depth.tsv
+    - path: output/freyja/test.variants.tsv
+    - path: output/freyja/versions.yml

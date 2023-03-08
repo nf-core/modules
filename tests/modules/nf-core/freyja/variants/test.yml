@@ -1,13 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /variants
-- name: "freyja variants"
+- name: freyja variants test_freyja_variants
   command: nextflow run ./tests/modules/nf-core/freyja/variants -entry test_freyja_variants -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freyja/variants/nextflow.config
   tags:
-    - "freyja"
-    - "freyja/variants"
+    - freyja
+    - freyja/variants
   files:
-    - path: "output/freyja/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/freyja/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/freyja/test.depth.tsv
+      md5sum: 27f79b28a365a8af915895b484d1153e
+    - path: output/freyja/test.variants.tsv
+      md5sum: 5eb60b96b235520cc5f1f771ce06ef16
+    - path: output/freyja/versions.yml
