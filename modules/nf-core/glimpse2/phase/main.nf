@@ -36,12 +36,12 @@ process GLIMPSE2_PHASE {
     def map_command           = map                 ? "--map $map"                    : ""
     def samples_file_command  = samples_file        ? "--samples-file $samples_file"  : ""
     def fasta_command         = fasta_reference     ? "--fasta $fasta_reference"      : ""
-    def input_bam             = input.any { it.toString().endsWith(".{bam,cram}")}
+    def input_bam             = input.any { it.extension in ["cram","bam"]}
 
     """
     if $input_bam
     then
-        printf "%s\\n" *.bam > all_bam.txt
+        ls -1 | grep '\\.cram\$\\|\\.bam\$' > all_bam.txt
         input_command="--bam-list all_bam.txt"
     else
         input_command="--input-gl $input"
