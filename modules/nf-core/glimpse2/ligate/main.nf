@@ -32,7 +32,7 @@ process GLIMPSE2_LIGATE {
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            glimpse: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+            glimpse2: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
