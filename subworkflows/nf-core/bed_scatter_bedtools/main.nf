@@ -5,7 +5,7 @@ workflow BED_SCATTER_BEDTOOLS {
     // IMPORTANT: Add the configuration in nextflow.config file to your modules.config
 
     take:
-    ch_bed // channel: [ meta, bed, scatter_count ]
+    ch_bed // channel: [ val(meta), path(bed), val(scatter_count) ]
 
     main:
 
@@ -36,7 +36,7 @@ workflow BED_SCATTER_BEDTOOLS {
         .transpose()
 
     emit:
-    scattered_beds  = ch_scattered_beds // channel: [ meta, bed, scatter_count ]
+    scattered_beds  = ch_scattered_beds // channel: [ val(meta), path(bed), val(scatter_count) ]
 
     versions        = ch_versions       // channel: [ versions.yml ]
 }

@@ -8,7 +8,7 @@ include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
 workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     take:
-    ch_bam_bai          // channel: [ meta, bam, bai/csi ]
+    ch_bam_bai          // channel: [ val(meta), path(bam), path(bai/csi) ]
     val_get_dedup_stats // boolean: true/false
 
     main:
@@ -43,13 +43,13 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
 
     emit:
-    bam      = UMITOOLS_DEDUP.out.bam          // channel: [ meta, bam ]
+    bam      = UMITOOLS_DEDUP.out.bam          // channel: [ val(meta), path(bam) ]
 
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ meta, bai ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ meta, csi ]
-    stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ meta, stats ]
-    flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ meta, flagstat ]
-    idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ meta, idxstats ]
+    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), path(bai) ]
+    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), path(csi) ]
+    stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
+    flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
 
     versions = ch_versions                     // channel: [ versions.yml ]
 }

@@ -20,12 +20,12 @@ input:
             input bam. This should be a BED or TSV file containing either a single
             column of chromosome names, two columns (chromosome name and position),
             or three columns (chromosome name, start position, and end position).
-        Structure: [ meta, bam, bai, regions_file ]
+        Structure: [ val(meta), path(bam), path(bai), path(regions_file) ]
 output:
   - bam_bai:
       description: |
         BAM/CRAM/SAM file, the meta contains a new 'genomic_region' field with the included regions
-        Structure: [ meta, bam, bai ]
+        Structure: [ val(meta), path(bam), path(bai) ]
   - versions:
       description: Files containing software versions
       pattern: "versions.yml"

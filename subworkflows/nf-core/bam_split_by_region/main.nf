@@ -8,7 +8,7 @@ include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index/main'
 workflow BAM_SPLIT_BY_REGION {
 
     take:
-    ch_bam // channel: [ meta, bam , bai, regions_file ]
+    ch_bam // channel: [ val(meta), path(bam), path(bai), path(regions_file) ]
 
     main:
 
@@ -62,7 +62,7 @@ workflow BAM_SPLIT_BY_REGION {
     ch_output = SAMTOOLS_VIEW.out.bam.join(SAMTOOLS_INDEX.out.bai)
 
     emit:
-    bam_bai     = ch_output                         // channel: [ meta, bam, bai ]
+    bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
     versions    = ch_versions                       // channel: [ versions.yml ]
 }
 
