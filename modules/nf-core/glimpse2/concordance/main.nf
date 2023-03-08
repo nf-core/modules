@@ -8,13 +8,11 @@ process GLIMPSE2_CONCORDANCE {
         'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
-    tuple val(meta), val(region), path(freq), path(truth), path(estimate)
-    val(min_prob)
-    val(min_dp)
-    val(bins)
+    tuple val(meta), val(region), path(freq), path(truth), path(estimate), path(samples)
+    tuple val(meta2), path(groups)
 
     output:
-    tuple val(meta), path("*.error.*.txt.gz")  , emit: errors
+    tuple val(meta), path("*.")  , emit: errors
     tuple val(meta), path("*.rsquare.*.txt.gz"), emit: rsquare
     path "versions.yml"                        , emit: versions
 
@@ -24,19 +22,17 @@ process GLIMPSE2_CONCORDANCE {
     script:
     def args         = task.ext.args   ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def min_prob_cmd = min_prob ? "--minPROB ${min_prob}": "--minPROB 0.9999"
-    def min_dp_cmd   = min_dp   ? "--minDP ${min_dp}"    : "--minDP 8"
-    def bins_cmd     = bins     ? "--bins ${bins}"       : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
+    def samples_cmd  = samples         ? "--samples ${samples}" : ""
+    def groups_cmd   = groups          ? "--groups ${groups}"   : ""
     """
     echo $region $freq $truth $estimate > input.txt
     GLIMPSE2_concordance \\
         $args \\
+        $samples_cmd \\
+        $groups_cmd \\
         --input input.txt \\
         --thread $task.cpus \\
-        --output ${prefix} \\
-        $min_prob_cmd \\
-        $min_dp_cmd \\
-        $bins_cmd
+        --output ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

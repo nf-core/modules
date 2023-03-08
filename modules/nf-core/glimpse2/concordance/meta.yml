@@ -41,22 +41,15 @@ input:
       description: Imputed data.
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
-  - min_prob:
-      type: float
-      description: Minimum posterior probability P(G|R) in validation data
+  - samples:
+      type: file
+      description: List of samples to process, one sample ID per line.
+      pattern: "*.{txt,tsv}"
 
-  - min_dp:
-      type: integer
-      description: |
-        Minimum coverage in validation data.
-        If FORMAT/DP is missing and --minDP > 0, the program exits with an error.
-
-  - bins:
-      type: string
-      description: |
-        Allele frequency bins used for rsquared computations.
-        By default they should as MAF bins [0-0.5], while
-        they should take the full range [0-1] if --use-ref-alt is used.
+  - groups:
+      type: file
+      description: Alternative to frequency bins, group bins are user defined, provided in a file.
+      pattern: "*.{txt,tsv}"
 
 output:
   - meta:
