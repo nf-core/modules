@@ -26,7 +26,7 @@ process BCFTOOLS_SPLIT {
     cut -f 1 | \\
     while read C; do \\
         bcftools view -O z -o ${prefix}.\${C}.vcf.gz ${vcf} --regions "\${C}" ;\\
-     done
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
