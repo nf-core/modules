@@ -17,5 +17,5 @@ workflow test_goleft_indexsplit {
 
     ]
 
-    GOLEFT_INDEXSPLIT ( input, fai )
+    GOLEFT_INDEXSPLIT ( input, fai, 10 )
 }

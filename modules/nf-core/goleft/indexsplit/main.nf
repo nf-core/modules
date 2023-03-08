@@ -10,6 +10,7 @@ process GOLEFT_INDEXSPLIT {
     input:
     tuple val(meta) , path(bai)
     tuple val(meta2), path(fai)
+    val split
 
     output:
     tuple val(meta), path("*.bed") , emit: bed
@@ -25,6 +26,7 @@ process GOLEFT_INDEXSPLIT {
     goleft \\
         indexsplit \\
         $args \\
+        -n ${split} \\
         --fai ${fai} \\
         ${bai} \\
         > ${prefix}.bed
