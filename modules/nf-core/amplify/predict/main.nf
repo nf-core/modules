@@ -23,7 +23,7 @@ process AMPLIFY_PREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
-        """
+    """
     AMPlify \\
         $args \\
         ${custom_model_dir} \\
