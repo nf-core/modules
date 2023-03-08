@@ -38,6 +38,6 @@ workflow BED_SCATTER_BEDTOOLS {
     emit:
     scattered_beds  = ch_scattered_beds // channel: [ val(meta), path(bed), val(scatter_count) ]
 
-    versions        = ch_versions       // channel: [ versions.yml ]
+    versions        = ch_versions       // channel: [ path(versions.yml) ]
 }
 

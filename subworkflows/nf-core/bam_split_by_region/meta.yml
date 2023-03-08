@@ -27,8 +27,9 @@ output:
         BAM/CRAM/SAM file, the meta contains a new 'genomic_region' field with the included regions
         Structure: [ val(meta), path(bam), path(bai) ]
   - versions:
-      description: Files containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 
 authors:
   - "@TCLamnidis"
