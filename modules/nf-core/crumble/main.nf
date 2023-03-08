@@ -26,9 +26,9 @@ process CRUMBLE {
     def args       = task.ext.args ?: ''
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def extension  = args.contains("-O sam") ? "sam" :
-                     args.contains("-O bam") ? "bam" :
-                     args.contains("-O cram") ? "cram" :
-                     "sam"
+                    args.contains("-O bam") ? "bam" :
+                    args.contains("-O cram") ? "cram" :
+                    "sam"
     def bedin      = keepbed ? "-R ${keepbed}" : ""
     def bedout     = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
