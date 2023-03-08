@@ -4,13 +4,13 @@ include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 workflow FASTQ_ALIGN_STAR {
 
     take:
-    ch_reads               // channel: [ val(meta), [ path(reads) ] ]
-    ch_index               // channel: [ path(index) ]
-    ch_gtf                 // channel: [ path(gtf) ]
-    star_ignore_sjdbgtf    // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
-    seq_platform           // string : sequencing platform
-    seq_center             // string : sequencing center
-    ch_fasta               // channel: [ path(fasta) ]
+    ch_reads                    // channel: [ val(meta), [ path(reads) ] ]
+    ch_index                    // channel: [ path(index) ]
+    ch_gtf                      // channel: [ path(gtf) ]
+    val_star_ignore_sjdbgtf     // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
+    val_seq_platform            // string : sequencing platform
+    val_seq_center              // string : sequencing center
+    ch_fasta                    // channel: [ path(fasta) ]
 
     main:
 
@@ -19,7 +19,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Map reads with STAR
     //
-    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, val_star_ignore_sjdbgtf, val_seq_platform, val_seq_center )
     ch_versions = ch_versions.mix(STAR_ALIGN.out.versions.first())
 
     //
