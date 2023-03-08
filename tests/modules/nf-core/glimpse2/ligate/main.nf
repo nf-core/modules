@@ -33,6 +33,5 @@ workflow test_glimpse2_ligate {
     ligate_input = GLIMPSE2_PHASE.output.phased_variant
                                 .groupTuple()
     BCFTOOLS_INDEX ( ligate_input )
-    GLIMPSE2_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple())
-                                .view() )
+    GLIMPSE2_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
 }

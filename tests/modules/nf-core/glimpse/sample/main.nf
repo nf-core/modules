@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { GLIMPSE_PHASE  } from '../../../../../modules/nf-core/glimpse/phase/main.nf'
 include { GLIMPSE_LIGATE } from '../../../../../modules/nf-core/glimpse/ligate/main.nf'
 include { GLIMPSE_SAMPLE } from '../../../../../modules/nf-core/glimpse/sample/main.nf'
+include { BCFTOOLS_INDEX  } from '../../../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow test_glimpse_sample {
     
@@ -35,6 +36,7 @@ workflow test_glimpse_sample {
 
     ligate_input = GLIMPSE_PHASE.output.phased_variant
                                 .groupTuple()
-    GLIMPSE_LIGATE ( ligate_input )
+    BCFTOOLS_INDEX ( ligate_input )
+    GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
     GLIMPSE_SAMPLE ( GLIMPSE_LIGATE.out.merged_variants )
 }
