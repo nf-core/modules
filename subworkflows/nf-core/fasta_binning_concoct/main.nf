@@ -7,16 +7,16 @@ include { CONCOCT_EXTRACTFASTABINS     } from '../../../modules/nf-core/concoct/
 workflow FASTA_BINNING_CONCOCT {
 
     take:
-    ch_fasta // channel (mandatory): [ val(meta), [ fasta ] ] (raw contigs from assembly)
-    ch_bam   // channel (mandatory): [ val(meta), [ bam ], [bai]] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
+    ch_fasta // channel (mandatory): [ val(meta), path(fasta) ] (raw contigs from assembly)
+    ch_bam   // channel (mandatory): [ val(meta), path(bam), path(bai) ] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
 
     main:
     ch_versions = Channel.empty()
 
     // required to create bedfile due to coverage table
-    produce_bedfile = true
+    val_produce_bedfile = true
 
-    CONCOCT_CUTUPFASTA ( ch_fasta, produce_bedfile )
+    CONCOCT_CUTUPFASTA ( ch_fasta, val_produce_bedfile )
     ch_versions = ch_versions.mix(CONCOCT_CUTUPFASTA.out.versions.first())
 
     ch_cutupfasta_for_concoctcoveragetable = CONCOCT_CUTUPFASTA.out.bed
@@ -41,15 +41,15 @@ workflow FASTA_BINNING_CONCOCT {
     ch_versions = ch_versions.mix(CONCOCT_EXTRACTFASTABINS.out.versions.first())
 
     emit:
-    coverage_table      = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv     // channel: [ val(meta), [ tsv ] ]
+    coverage_table      = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv     // channel: [ val(meta), path(tsv) ]
 
-    original_csv        = CONCOCT_CONCOCT.out.original_data_csv    // channel: [ val(meta), [ csv ] ]
-    raw_clustering_csv  = CONCOCT_CONCOCT.out.clustering_csv       // channel: [ val(meta), [ csv ] ]
-    pca_original        = CONCOCT_CONCOCT.out.pca_components_csv   // channel: [ val(meta), [ csv ] ]
-    pca_transformed     = CONCOCT_CONCOCT.out.pca_transformed_csv  // channel: [ val(meta), [ csv ] ]
+    original_csv        = CONCOCT_CONCOCT.out.original_data_csv    // channel: [ val(meta), path(csv) ]
+    raw_clustering_csv  = CONCOCT_CONCOCT.out.clustering_csv       // channel: [ val(meta), path(csv) ]
+    pca_original        = CONCOCT_CONCOCT.out.pca_components_csv   // channel: [ val(meta), path(csv) ]
+    pca_transformed     = CONCOCT_CONCOCT.out.pca_transformed_csv  // channel: [ val(meta), path(csv) ]
 
-    cluster_table       = CONCOCT_MERGECUTUPCLUSTERING.out.csv     // channel: [ val(meta), [ csv ] ]
-    bins                = CONCOCT_EXTRACTFASTABINS.out.fasta       // channel: [ val(meta), [ fasta ] ]
+    cluster_table       = CONCOCT_MERGECUTUPCLUSTERING.out.csv     // channel: [ val(meta), path(csv) ]
+    bins                = CONCOCT_EXTRACTFASTABINS.out.fasta       // channel: [ val(meta), path(fasta) ]
 
     versions = ch_versions                                         // channel: [ versions.yml ]
 }
