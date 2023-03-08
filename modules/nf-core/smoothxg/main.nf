@@ -11,7 +11,7 @@ process SMOOTHXG {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("*.gfa"), emit: gfa
+    tuple val(meta), path("*smoothxg.gfa"), emit: gfa
     path("*.maf") , optional: true, emit: maf
     path "versions.yml"           , emit: versions
 
