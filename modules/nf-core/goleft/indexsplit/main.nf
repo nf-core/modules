@@ -33,7 +33,7 @@ process GOLEFT_INDEXSPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        goleft: \$(echo \$(goleft --version 2>&1) | head -n 1 |sed 's/^.*goleft Version: //')
+        goleft: \$(echo \$(goleft --version) | head -n 1 |sed 's/^.*goleft Version: //')
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process GOLEFT_INDEXSPLIT {
     touch ${prefix}.bed
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        goleft: \$(echo \$(goleft --version 2>&1) | head -n 1 |sed 's/^.*goleft Version: //')
+        goleft: \$(echo \$(goleft --version) | head -n 1 |sed 's/^.*goleft Version: //')
     END_VERSIONS
     """
 }
