@@ -279,6 +279,10 @@ bcftools/sort:
   - modules/nf-core/bcftools/sort/**
   - tests/modules/nf-core/bcftools/sort/**
 
+bcftools/split:
+  - modules/nf-core/bcftools/split/**
+  - tests/modules/nf-core/bcftools/split/**
+
 bcftools/stats:
   - modules/nf-core/bcftools/stats/**
   - tests/modules/nf-core/bcftools/stats/**
@@ -1094,6 +1098,11 @@ fq/subsample:
   - modules/nf-core/fq/subsample/**
   - tests/modules/nf-core/fq/subsample/**
 
+fqtk:
+  - modules/nf-core/fqtk/**
+  - modules/nf-core/untar/**
+  - tests/modules/nf-core/fqtk/**
+
 freebayes:
   - modules/nf-core/freebayes/**
   - tests/modules/nf-core/freebayes/**
@@ -1418,6 +1427,10 @@ gffread:
   - modules/nf-core/gffread/**
   - tests/modules/nf-core/gffread/**
 
+gget/gget:
+  - modules/nf-core/gget/gget/**
+  - tests/modules/nf-core/gget/gget/**
+
 glimpse/chunk:
   - modules/nf-core/glimpse/chunk/**
   - tests/modules/nf-core/glimpse/chunk/**
@@ -1434,6 +1447,18 @@ glimpse/phase:
   - modules/nf-core/glimpse/phase/**
   - tests/modules/nf-core/glimpse/phase/**
 
+glimpse2/chunk:
+  - modules/nf-core/glimpse2/chunk/**
+  - tests/modules/nf-core/glimpse2/chunk/**
+
+glimpse2/phase:
+  - modules/nf-core/glimpse2/phase/**
+  - tests/modules/nf-core/glimpse2/phase/**
+
+glimpse2/splitreference:
+  - modules/nf-core/glimpse2/splitreference/**
+  - tests/modules/nf-core/glimpse2/splitreference/**
+
 glnexus:
   - modules/nf-core/glnexus/**
   - tests/modules/nf-core/glnexus/**
@@ -1441,6 +1466,10 @@ glnexus:
 goat/taxonsearch:
   - modules/nf-core/goat/taxonsearch/**
   - tests/modules/nf-core/goat/taxonsearch/**
+
+goleft/indexsplit:
+  - modules/nf-core/goleft/indexsplit/**
+  - tests/modules/nf-core/goleft/indexsplit/**
 
 graphmap2/align:
   - modules/nf-core/graphmap2/align/**
@@ -1453,6 +1482,10 @@ graphmap2/index:
 graphtyper/genotype:
   - modules/nf-core/graphtyper/genotype/**
   - tests/modules/nf-core/graphtyper/genotype/**
+
+graphtyper/vcfconcatenate:
+  - modules/nf-core/graphtyper/vcfconcatenate/**
+  - tests/modules/nf-core/graphtyper/vcfconcatenate/**
 
 gridss/gridss:
   - modules/nf-core/gridss/gridss/**
@@ -1711,6 +1744,10 @@ kaiju/kaiju2table:
 kallisto/index:
   - modules/nf-core/kallisto/index/**
   - tests/modules/nf-core/kallisto/index/**
+
+kallisto/quant:
+  - modules/nf-core/kallisto/quant/**
+  - tests/modules/nf-core/kallisto/quant/**
 
 kallistobustools/count:
   - modules/nf-core/kallistobustools/count/**
@@ -2017,6 +2054,10 @@ methyldackel/mbias:
   - modules/nf-core/methyldackel/mbias/**
   - tests/modules/nf-core/methyldackel/mbias/**
 
+midas/run:
+  - modules/nf-core/midas/run/**
+  - tests/modules/nf-core/midas/run/**
+
 minia:
   - modules/nf-core/minia/**
   - tests/modules/nf-core/minia/**
@@ -2246,17 +2287,25 @@ pangolin:
   - modules/nf-core/pangolin/**
   - tests/modules/nf-core/pangolin/**
 
+parabricks/fq2bam:
+  - modules/nf-core/parabricks/fq2bam/**
+  - tests/modules/nf-core/parabricks/fq2bam/**
+
 paraclu:
   - modules/nf-core/paraclu/**
   - tests/modules/nf-core/paraclu/**
+
+paragraph/idxdepth:
+  - modules/nf-core/paragraph/idxdepth/**
+  - tests/modules/nf-core/paragraph/idxdepth/**
 
 paragraph/multigrmpy:
   - modules/nf-core/paragraph/multigrmpy/**
   - tests/modules/nf-core/paragraph/multigrmpy/**
 
-paragraph/idxdepth:
-  - modules/nf-core/paragraph/idxdepth/**
-  - tests/modules/nf-core/paragraph/idxdepth/**
+paragraph/vcf2paragraph:
+  - modules/nf-core/paragraph/vcf2paragraph/**
+  - tests/modules/nf-core/paragraph/vcf2paragraph/**
 
 pasty:
   - modules/nf-core/pasty/**
@@ -2386,9 +2435,17 @@ platypus:
   - modules/nf-core/platypus/**
   - tests/modules/nf-core/platypus/**
 
+plink/bcf:
+  - modules/nf-core/plink/bcf/**
+  - tests/modules/nf-core/plink/bcf/**
+
 plink/extract:
   - modules/nf-core/plink/extract/**
   - tests/modules/nf-core/plink/extract/**
+
+plink/indep:
+  - modules/nf-core/plink/indep/**
+  - tests/modules/nf-core/plink/indep/**
 
 plink/recode:
   - modules/nf-core/plink/recode/**
@@ -2602,6 +2659,14 @@ salsa2:
   - modules/nf-core/salsa2/**
   - tests/modules/nf-core/salsa2/**
 
+sam2lca/analyze:
+  - modules/nf-core/sam2lca/analyze/**
+  - tests/modules/nf-core/sam2lca/analyze/**
+
+sambamba/markdup:
+  - modules/nf-core/sambamba/markdup/**
+  - tests/modules/nf-core/sambamba/markdup/**
+
 samblaster:
   - modules/nf-core/samblaster/**
   - tests/modules/nf-core/samblaster/**
@@ -2806,6 +2871,14 @@ shapeit5/ligate:
 shapeit5/phasecommon:
   - modules/nf-core/shapeit5/phasecommon/**
   - tests/modules/nf-core/shapeit5/phasecommon/**
+
+shapeit5/phaserare:
+  - modules/nf-core/shapeit5/phaserare/**
+  - tests/modules/nf-core/shapeit5/phaserare/**
+
+shapeit5/switch:
+  - modules/nf-core/shapeit5/switch/**
+  - tests/modules/nf-core/shapeit5/switch/**
 
 shasta:
   - modules/nf-core/shasta/**
@@ -3035,6 +3108,10 @@ subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
 
+subworkflows/bam_variant_calling_freebayes:
+  - subworkflows/nf-core/bam_variant_calling_freebayes/**
+  - tests/subworkflows/nf-core/bam_variant_calling_freebayes/**
+
 subworkflows/bcl_demultiplex:
   - subworkflows/nf-core/bcl_demultiplex/**
   - tests/subworkflows/nf-core/bcl_demultiplex/**
@@ -3138,6 +3215,10 @@ subworkflows/vcf_gather_bcftools:
 subworkflows/vcf_impute_glimpse:
   - subworkflows/nf-core/vcf_impute_glimpse/**
   - tests/subworkflows/nf-core/vcf_impute_glimpse/**
+
+survivor/merge:
+  - modules/nf-core/survivor/merge/**
+  - tests/modules/nf-core/survivor/merge/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
