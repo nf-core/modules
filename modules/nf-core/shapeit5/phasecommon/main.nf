@@ -22,13 +22,19 @@ process SHAPEIT5_PHASECOMMON {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def prefix = task.ext.prefix ?: "${meta.id}_${region.replace(":","_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
     def map_command       = map       ? "--map $map"             : ""
     def reference_command = reference ? "--reference $reference" : ""
     def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
+
+    meta.put("SHAPEIT5_PHASECOMMON", ["reference":"", "map":"", "scaffold":""])
+    meta.SHAPEIT5_PHASECOMMON.reference = reference ? meta2 :"None"
+    meta.SHAPEIT5_PHASECOMMON.map       = map       ? meta3 :"None"
+    meta.SHAPEIT5_PHASECOMMON.scaffold  = scaffold  ? meta4 :"None"
 
     """
     SHAPEIT5_phase_common \\
@@ -44,7 +50,7 @@ process SHAPEIT5_PHASECOMMON {
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }

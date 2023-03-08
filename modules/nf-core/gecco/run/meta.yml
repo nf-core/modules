@@ -25,11 +25,11 @@ input:
       description: A genomic file containing one or more sequences as input. Input type is any supported by Biopython (fasta, gbk, etc.)
       pattern: "*"
   - hmm:
-      file: file
+      type: file
       description: Alternative HMM file(s) to use in HMMER format
       pattern: "*.hmm"
   - model_dir:
-      file: directory
+      type: directory
       description: Path to an alternative CRF (Conditional Random Fields) module to use
 
 output:
@@ -56,7 +56,7 @@ output:
       pattern: "*.clusters.tsv"
   - gbk:
       type: file
-      Description: Per cluster GenBank file (if found) containing sequence with annotations. Will not be generated if no hits are found.
+      description: Per cluster GenBank file (if found) containing sequence with annotations. Will not be generated if no hits are found.
       pattern: "*.gbk"
   - json:
       type: file
