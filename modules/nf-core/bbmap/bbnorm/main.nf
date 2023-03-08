@@ -22,8 +22,8 @@ process BBMAP_BBNORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    input  = meta.interleaved ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
-    output = meta.interleaved ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
+    input  = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
+    output = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
 
     """
     bbnorm.sh \\
