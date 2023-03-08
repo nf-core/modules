@@ -9,9 +9,9 @@ include { SEQTK_SAMPLE               } from '../../../modules/nf-core/seqtk/samp
 workflow FASTQ_CONTAM_SEQTK_KRAKEN {
 
     take:
-        ch_reads    //channel: [mandatory] meta,reads
-        sample_size //string:  [mandatory] number of reads to subsample
-        kraken2_db  //string:  [mandatory] path to Kraken2 DB to use for screening
+        ch_reads        // channel: [mandatory] [ val(meta), path(reads) ]
+        val_sample_size // string:  [mandatory] number of reads to subsample
+        ch_kraken2_db   // channel: [mandatory] [ path(db) ] path to Kraken2 DB to use for screening
 
     main:
         ch_reports  = Channel.empty()
@@ -20,20 +20,18 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         // Combine all combinations of reads with sample_size(s).
         // Note using more than 1 sample_size can cause file collisions
         // We add n_reads to meta to avoid collisions
-        ch_reads
-            .combine(sample_size)
+        ch_reads_with_n = ch_reads
+            .combine(val_sample_size)
             .map{ it ->
                 def meta2 = it[0] + [n_reads: it[2]]
                 [ meta2, it[1], it[2] ]
             }
-            .set { ch_reads_with_n }
 
         SEQTK_SAMPLE(ch_reads_with_n)
-
-        ch_versions.mix(SEQTK_SAMPLE.out.versions)
+        ch_versions.mix(SEQTK_SAMPLE.out.versions.first())
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
-                kraken2_db,
+                ch_kraken2_db,
                 false,
                 false
         )
@@ -41,6 +39,6 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         ch_reports  = ch_reports.mix(KRAKEN2.out.report)
 
     emit:
-        reports  = ch_reports     // channel: [ [meta], log  ]
-        versions = ch_versions    // channel: [ versions.yml ]
+        reports  = ch_reports     // channel: [ val(meta), path(log)  ]
+        versions = ch_versions    // channel: [ path(versions.yml) ]
 }
