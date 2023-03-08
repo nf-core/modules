@@ -41,7 +41,7 @@ process FREYJA_BOOT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version\s+//' )
+        freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version //' )
     END_VERSIONS
     """
 }
