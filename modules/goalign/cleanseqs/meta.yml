@@ -1,0 +1,32 @@
+name: "goalign_cleanseqs"
+description: Filter out poor sequences from a multisequence alignment
+keywords:
+  - multiple sequence alignment
+  - quality control
+tools:
+  - "goalign":
+      description: "goalign is a set of command line tools to manipulate multiple alignments"
+      homepage: "https://github.com/evolbioinfo/goalign"
+      documentation: "https://github.com/evolbioinfo/goalign/blob/master/docs/index.md"
+      tool_dev_url: "https://github.com/evolbioinfo/goalign"
+      doi: "10.1093/nargab/lqab075"
+      licence: "['GPL v2']"
+
+input:
+  - aln:
+      type: file
+      description: MultiFASTA/Phylip alignment file
+      pattern: "*.{fasta,phy}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - aln:
+      type: file
+      description: MultiFASTA/Phylip alignment file
+      pattern: "*.{fasta,phy}"
+
+authors:
+  - "@andersgs"
