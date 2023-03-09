@@ -5,7 +5,7 @@ process CENTRIFUGE_BUILD {
     conda "bioconda::centrifuge=1.0.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4--hd03093a_0':
-        'quay.io/biocontainers1.0.4--hd03093a_0' }"
+        'quay.io/biocontainers/centrifuge:1.0.4--hd03093a_0' }"
 
     input:
     tuple val(meta), path(fasta)
