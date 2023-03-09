@@ -1,4 +1,4 @@
-# Dockerfile to create container with Cell Ranger v7.0.0
+# Dockerfile to create container with Cell Ranger v7.1.0
 # Push to nfcore/cellranger:<VER>
 
 FROM continuumio/miniconda3:4.8.2
@@ -16,7 +16,7 @@ RUN apt-get update --allow-releaseinfo-change \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Copy pre-downloaded cellranger file
-ENV CELLRANGER_VER=6.1.2
+ENV CELLRANGER_VER=7.1.0
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
 
 # Install cellranger
