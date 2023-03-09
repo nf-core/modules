@@ -7,10 +7,9 @@ include { SRATOOLS_FASTERQDUMP        } from '../../../modules/nf-core/sratools/
 //
 workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     take:
-    ch_sra_ids  // channel: [ val(meta), val(id) ]
+    ch_sra_ids  // channel:  [mandatory] [ val(meta), val(id) ]
 
     main:
-
     ch_versions = Channel.empty()
 
     //
@@ -33,6 +32,6 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     ch_versions = ch_versions.mix(SRATOOLS_FASTERQDUMP.out.versions.first())
 
     emit:
-    reads    = SRATOOLS_FASTERQDUMP.out.reads  // channel: [ val(meta), [ reads ] ]
-    versions = ch_versions                     // channel: [ versions.yml ]
+    reads    = SRATOOLS_FASTERQDUMP.out.reads  // channel: [ val(meta), [ path(reads) ] ]
+    versions = ch_versions                     // channel: [ path(versions.yml) ]
 }
