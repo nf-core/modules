@@ -30,7 +30,10 @@ workflow test_umitools_dedup_single_end_no_stats {
         [ id:'test', single_end:true ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'sarscov2'], 
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     get_output_stats = false
 
     UMITOOLS_EXTRACT ( input )
@@ -51,7 +54,10 @@ workflow test_umitools_dedup_paired_end_no_stats {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'sarscov2'], 
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     get_output_stats = false
 
     UMITOOLS_EXTRACT ( input )
@@ -72,7 +78,10 @@ workflow test_umitools_dedup_paired_end_stats {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'sarscov2'], 
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     get_output_stats = true
 
     UMITOOLS_EXTRACT ( input )
