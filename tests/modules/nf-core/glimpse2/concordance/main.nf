@@ -51,7 +51,7 @@ workflow test_glimpse2_concordance {
                         .combine(Channel.of(["chr21"]))
 
     GLIMPSE2_CONCORDANCE ( list_inputs,
-                        Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5","1 5 10 20 50 100 200 500 1000 2000 5000 10000  20000 50000 100000",[]]),
+                        Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5",[],[]]),
                         0.9999,
                         8) // [meta, Region, Frequencies, Truth, Estimate], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
 }

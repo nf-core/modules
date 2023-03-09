@@ -28,7 +28,9 @@ process GLIMPSE2_CONCORDANCE {
     def groups_cmd   = groups          ? "--groups ${groups}"               : ""
     def bins_cmd     = bins            ? "--bins ${bins}"                   : ""
     def ac_bins_cmd  = ac_bins         ? "--ac-bins ${ac_bins}"             : ""
-    def ale_ct_cmd   = allele_counts   ? "--allele-counts ${allele_counts}" :""
+    def ale_ct_cmd   = allele_counts   ? "--allele-counts ${allele_counts}" : ""
+
+    if (((groups ? 1:0) + (bins ? 1:0) + (ac_bins ? 1:0) + (allele_counts ? 1:0)) != 1) error "One and only one argument should be selected between groups, bins, ac_bins, allele_counts"
 
     """
     echo $region $freq $truth $estimate > input.txt
