@@ -12,30 +12,33 @@ modules:
   - freyja/boot
 
 input:
-  - meta:
-      type: map
+  - ch_bam:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
+        Structure: [ val(meta), path(bam) ]
+        Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and sorted BAM file
+  - ch_fasta:
       type: file
-      description: Sorted BAM file
-      pattern: "*.bam"
-  - fasta:
-      type: file
-      description: The reference sequence used for mapping and generating the BAM file
-      pattern: "*.fa"
-  - repeats:
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+        Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and the fasta reference used for the sorted BAM file
+  - val_repeats:
       type: value (int)
       description: Number of bootstrap repeats to perform
-  - lineage_meta:
+  - val_db_name:
+      type: value (string)
+      description: Name of the dir where UShER's files will be stored
+  - ch_barcodes:
       type: file
-      description: File containing lineage metadata that correspond to barcodes
-      pattern: "*lineages.json"
-  - versions:
+      description: |
+        Structure: path(barcodes)
+        File containing lineage defining barcodes
+  - ch_lineages_meta:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Structure: path(lineages_meta)
+        File containing lineage metadata that correspond to barcodes
+
 
 output:
   - meta:
@@ -43,31 +46,31 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - variants:
       type: file
-      description: File containing identified variants in a gff-like format
-      pattern: "*.variants.tsv"
+      description: |
+        Structure: [ val(meta), path(variants) ]
+        File containing identified variants in a gff-like format
   - depths:
       type: file
-      description: File containing depth of the variants
-      pattern: "*.depth.tsv"
+      description: |
+        Structure: [ val(meta), path(variants) ]
+        File containing depth of the variants
   - demix:
       type: file
-      description: a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
-      pattern: "*.demix.tsv"
+      description: |
+        Structure: [ val(meta), path(demix) ]
+        a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
   - lineages:
       type: file
-      description: a csv file that includes the lineages present and their corresponding abundances
-      pattern: "*.lineages.csv"
+      description: |
+        Structure: [ val(meta), path(lineages) ]
+        a csv file that includes the lineages present and their corresponding abundances
   - summarized:
       type: file
-      description: a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
-      pattern: "*.summarized.csv"
+      description: |
+        Structure: [ val(meta), path(lineages) ]
+        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - versions:
       type: file
       description: File containing software versions
