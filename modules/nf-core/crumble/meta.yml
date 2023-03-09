@@ -24,6 +24,12 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - keepbed:
+      type: file
+      description: BED file defining regions to keep quality
+  - bedout:
+      type: boolean
+      description: set to true to ouput suspicious regions to a BED file
 
 output:
   - meta:
@@ -49,7 +55,7 @@ output:
       pattern: "*.{sam}"
   - bed:
       type: file
-      description: use 'ext.args = "-b ${meta.id}.bed"' to generate optional suspicious regions BED file
+      description: optional suspicious regions BED file
       pattern: "*{bed}"
 
 authors:
