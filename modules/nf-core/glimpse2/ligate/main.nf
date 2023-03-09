@@ -1,11 +1,11 @@
-process GLIMPSE_LIGATE {
+process GLIMPSE2_LIGATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::glimpse-bio=1.1.1"
+    conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
+        'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
     tuple val(meta), path(input_list), path(input_index)
@@ -24,7 +24,7 @@ process GLIMPSE_LIGATE {
     """
     printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
 
-    GLIMPSE_ligate \\
+    GLIMPSE2_ligate \\
         $args \\
         --input all_files.txt \\
         --thread $task.cpus \\
@@ -32,7 +32,7 @@ process GLIMPSE_LIGATE {
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+            glimpse2: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
