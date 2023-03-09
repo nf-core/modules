@@ -20,7 +20,7 @@ process BEDTOOLS_MAKEWINDOWS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def arg_input = regions.extension == "bed" ? "-b ${regions}" : "-g ${regions}"
+    def arg_input = regions.extension in ["bed", "tab"] ? "-b ${regions}" : "-g ${regions}"
     if ("${regions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     bedtools \\
