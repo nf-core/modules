@@ -23,7 +23,6 @@ process CENTRIFUGE_BUILD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     centrifuge-build \\
     -p $task.cpus \\
