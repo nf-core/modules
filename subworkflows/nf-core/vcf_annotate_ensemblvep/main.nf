@@ -20,14 +20,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     main:
     ch_versions = Channel.empty()
 
-    BCFTOOLS_SPLIT(vcf)
+    BCFTOOLS_SPLIT(ch_vcf)
     ch_split_vcf = BCFTOOLS_SPLIT.out.split_vcf
-        .map{meta, vcf ->
-            meta.chunks = vcf instanceof List ? vcf.size() : 1
-            vcf_list = vcf instanceof List ? vcf : [vcf]
-            return [meta, vcf_list]
-        }
-        .transpose()
+        .map{ meta, vcf -> [ meta + [ size:vcf instanceof List ? vcf.size() : 1 ], vcf instanceof List ? vcf : [ vcf ] ] }.transpose()
 
     ENSEMBLVEP_VEP(
         ch_split_vcf,
