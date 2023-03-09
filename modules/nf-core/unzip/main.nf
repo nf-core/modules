@@ -2,7 +2,7 @@ process UNZIP {
     tag "$archive"
     label 'process_single'
 
-    conda "bioconda::p7zip=15.09"
+    conda "conda-forge::p7zip=16.02"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/p7zip:15.09--h2d50403_4' :
         'quay.io/biocontainers/p7zip:15.09--h2d50403_4' }"
