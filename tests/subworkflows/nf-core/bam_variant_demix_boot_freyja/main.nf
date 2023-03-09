@@ -19,9 +19,9 @@ workflow test_bam_variant_demix_boot_freyja_nodb {
 
     repeats= 100
     barcodes= []
-    lineage_meta= []
+    lineages_meta= []
     db_name="freyja_db"
-    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats, db_name, barcodes, lineage_meta )
+    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats, db_name, barcodes, lineages_meta )
 }
 
 workflow test_bam_variant_demix_boot_freyja_withdb {
@@ -39,8 +39,15 @@ workflow test_bam_variant_demix_boot_freyja_withdb {
     FREYJA_UPDATE(db_name)
 
     repeats=100
-    barcodes= FREYJA_UPDATE.out.barcodes
-    lineage_meta= FREYJA_UPDATE.out.lineages_meta
+    ch_barcodes=FREYJA_UPDATE.out.barcodes
+            .map{ barcodes  ->
+                [[], barcodes]
+            }
 
-    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats,db_name, barcodes, lineage_meta )
+    ch_lineages_meta=FREYJA_UPDATE.out.lineages_meta
+            .map{ lineages  ->
+                [[], lineages ]
+            }
+
+    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats,db_name, ch_barcodes, ch_lineages_meta )
 }

@@ -24,8 +24,14 @@ workflow test_freyja_demix {
 
     variants= FREYJA_VARIANTS.out.variants
     depths  = FREYJA_VARIANTS.out.depths
-    barcodes = FREYJA_UPDATE.out.barcodes
-    lineages = FREYJA_UPDATE.out.lineages_meta
+    barcodes=FREYJA_UPDATE.out.barcodes
+            .map{ barcodes  ->
+                [[], barcodes]
+            }
+    lineages_meta=FREYJA_UPDATE.out.lineages_meta
+            .map{ lineages  ->
+                [[], lineages ]
+            }
 
-    FREYJA_DEMIX (variants, depths, barcodes, lineages)
+    FREYJA_DEMIX (variants, depths, barcodes, lineages_meta)
 }

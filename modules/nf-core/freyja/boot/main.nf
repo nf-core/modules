@@ -8,11 +8,11 @@ process FREYJA_BOOT {
         'quay.io/biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(variants)
+    tuple val(meta),  path(variants)
     tuple val(meta2), path(depths)
     val repeats
-    path barcodes
-    path lineages_meta
+    tuple val(meta3), path (barcodes)
+    tuple val(meta4), path (lineages_meta)
 
     output:
     tuple val(meta), path("*lineages.csv")     , emit: lineages

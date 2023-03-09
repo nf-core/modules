@@ -35,14 +35,21 @@ input:
       description: File containing depth of the variants
       pattern: "*.depth.tsv"
 
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - barcodes:
       type: file
       description: File containing lineage defining barcodes
       pattern: "*barcodes.csv"
-  - lineages:
-      type: file
-      description: File containing lineage defining barcodes
-      pattern: "*barcodes.csv"
+
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - lineages_meta:
       type: file
       description: File containing lineage metadata that correspond to barcodes
