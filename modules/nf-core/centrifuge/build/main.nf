@@ -28,9 +28,10 @@ process CENTRIFUGE_BUILD {
     centrifuge-build \\
     -p $task.cpus \\
     $fasta \\
+    ${prefix} \\
     --conversion-table $conversion_table \\
     --taxonomy-tree $taxonomy \\
-    --name-table $name_table
+    --name-table $name_table \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

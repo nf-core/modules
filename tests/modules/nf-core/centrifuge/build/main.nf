@@ -19,5 +19,7 @@ workflow test_centrifuge_build {
 
     name_table = file(params.test_data['sarscov2']['metagenome']['names_dmp'], checkIfExists: true)
 
+    
+
     CENTRIFUGE_BUILD ( input, conversion_table, taxonomy_tree, name_table )
 }

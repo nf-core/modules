@@ -20,22 +20,22 @@ input:
   
   - fasta:
       type: file
-      description: fasta file
+      description: fasta file containing sequences to be used in database
       pattern: "*.{fasta}"
 
   - conversion_table:
       type: file
-      description: map file
+      description: a tab-separated sequence ID to taxonomy ID mapping
       pattern: "*.{map}"
 
   - taxonomy_tree:
       type: file
-      description: dmp file
+      description: \t|\t-separated file mapping taxonomy. Typically nodes.dmp from the NCBI taxonomy dump. Links taxonomy IDs to their parents
       pattern: "*.{dmp}"
 
   - name_table:
       type: file
-      description: dmp file
+      description: '|'-separated file mapping taxonomy IDs to a name. Typically names.dmp from the NCBI taxonomy dump. Links taxonomy IDs to their scientific name
       pattern: "*.{dmp}"
 
 
@@ -53,7 +53,7 @@ output:
 
   - cf:
       type: file
-      description: Database
+      description: Index files of the database
       pattern: "*.{cf}"
 
 authors:

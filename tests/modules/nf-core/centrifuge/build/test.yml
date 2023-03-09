@@ -1,12 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml centrifuge/build
-- name: "centrifuge build"
+- name: centrifuge build test_centrifuge_build
   command: nextflow run ./tests/modules/nf-core/centrifuge/build -entry test_centrifuge_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/centrifuge/build/nextflow.config
   tags:
-    - "centrifuge"
-    - "centrifuge/build"
+    - centrifuge/build
+    - centrifuge
   files:
-    - path: "output/centrifuge/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/centrifuge/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/centrifuge/test.1.cf
+      md5sum: 07d811cd4e350d56267183d2ac7023a5
+    - path: output/centrifuge/test.2.cf
+      md5sum: 23551529b34af3585d35f0e36461d9df
+    - path: output/centrifuge/test.3.cf
+      md5sum: 445a974b5d64518944cb539df4149850
+    - path: output/centrifuge/test.4.cf
+      md5sum: c609dc3c247d5f3ac5426079de7fbe36
+    - path: output/centrifuge/versions.yml
