@@ -1,6 +1,7 @@
 include { GLIMPSE_CHUNK      } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE      } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE     } from '../../../modules/nf-core/glimpse/ligate/main'
+include { BCFTOOLS_INDEX     } from '../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow VCF_IMPUTE_GLIMPSE {
 
@@ -31,7 +32,9 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
 
-    GLIMPSE_LIGATE ( ligate_input.collect() )
+    BCFTOOLS_INDEX ( ligate_input )
+    GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
+
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
 
     emit:
