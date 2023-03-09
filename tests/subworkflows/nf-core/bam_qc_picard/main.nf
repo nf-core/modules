@@ -18,7 +18,7 @@ workflow test_bam_qc_picard_wgs {
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
 
-    BAM_QC_PICARD ( input, fasta, fasta_fai, [], [] )
+    BAM_QC_PICARD ( input, fasta, fasta_fai, [], [], [] )
 }
 
 workflow test_bam_qc_picard_targetted {
@@ -37,5 +37,5 @@ workflow test_bam_qc_picard_targetted {
     bait        = file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true)
     target      = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
-    BAM_QC_PICARD ( input, fasta, fasta_fai, bait, target )
+    BAM_QC_PICARD ( input, fasta, fasta_fai, bait, target, [] )
 }
