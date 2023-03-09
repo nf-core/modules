@@ -7,13 +7,13 @@ include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 
 workflow FASTQ_ALIGN_CHROMAP {
     take:
-    ch_reads           // channel (mandatory): [ val(meta), [ reads ] ]
-    ch_index           // channel (mandatory): [ val(meta2, [ index ] ]
-    ch_fasta           // channel (mandatory): [ val(meta2, [ fasta ] ]
-    ch_barcodes        // channel (optional):  [ barcodes ]
-    ch_whitelist       // channel (optional):  [ whitelist ]
-    ch_chr_order       // channel (optional):  [ chr_order ]
-    ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
+    ch_reads           // channel: [mandatory] [ val(meta), [ path(reads) ] ]
+    ch_index           // channel: [mandatory] [ val(meta2), [ path(index) ] ]
+    ch_fasta           // channel: [mandatory] [ val(meta2), [ path(fasta) ] ]
+    ch_barcodes        // channel: [optional]  [ path(barcodes) ]
+    ch_whitelist       // channel: [optional]  [ path(whitelist) ]
+    ch_chr_order       // channel: [optional]  [ path(chr_order) ]
+    ch_pairs_chr_order // channel: [optional]  [ path(pairs_chr_order) ]
 
     main:
     ch_versions = Channel.empty()
@@ -31,11 +31,11 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
-    bam               = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
-    bai               = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
-    stats             = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
-    flagstat          = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
-    idxstats          = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
+    bam               = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ path(bam) ] ]
+    bai               = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), [ path(bai) ] ]
+    stats             = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ path(stats) ] ]
+    flagstat          = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ path(flagstat) ] ]
+    idxstats          = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ path(idxstats) ] ]
 
-    versions          = ch_versions                          //    path: versions.yml
+    versions          = ch_versions                          // channel: [ path(versions.yml) ]
 }
