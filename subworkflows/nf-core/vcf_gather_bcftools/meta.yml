@@ -30,14 +30,14 @@ input:
         The output created from a scatter subworkflow (contains a BED file and scatter_count).
         The BED file isn't actually used in the pipeline so can remain empty if you manually set this input channel
         Structure: [ meta, bed, scatter_count ]
-  - common_meta:
+  - val_common_meta:
       type: string
       description: |
         OPTIONAL:
         The string of the common meta to use as the new 'id'.
         Please make sure all VCFs that need to be concatenated have the same value in the
         the meta field specified. (and that only the ID is different between these files)
-  - sort:
+  - val_sort:
       type: boolean
       description: |
         Whether or not to sort the output VCF,
@@ -66,3 +66,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
+  - "@ramprasadn"

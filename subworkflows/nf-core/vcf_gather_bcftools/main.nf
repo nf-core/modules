@@ -5,13 +5,12 @@ include { TABIX_TABIX        } from '../../../modules/nf-core/tabix/tabix/main'
 workflow VCF_GATHER_BCFTOOLS {
 
     take:
-    ch_vcfs             // channel: [ meta, vcf, tbi ]
-    ch_scatter_output   // channel: [ meta, bed, gather_count ] => output from the scatter subworkflow, if you didn't use this subworkflow you can just use `[]` as bed since it isn't used
-    val_common_meta     // string:  The name of the meta field that should become the new id
-    val_sort            // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
+    ch_vcfs             // channel: [mandatory] [ val(meta), path(vcf), path(tbi) ]
+    ch_scatter_output   // channel: [mandatory] [ val(meta), path(bed), val(gather_count) ] => output from the bed_scatter_bedtools subworkflow, if you didn't use this subworkflow you can just use `[]` as bed since it isn't used
+    val_common_meta     // string:  [optional] The name of the meta field that should become the new id
+    val_sort            // boolean: [optional] Whether or not the output file should be sorted !! Add the config when using sort !!
 
     main:
-
     ch_versions = Channel.empty()
 
     ch_concat_input = ch_vcfs.join(ch_scatter_output)
@@ -37,9 +36,9 @@ workflow VCF_GATHER_BCFTOOLS {
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
-    vcf      = ch_tabix_input        // channel: [ val(meta), [ vcf ] ]
-    tbi      = TABIX_TABIX.out.tbi   // channel: [ val(meta), [ tbi ] ]
+    vcf      = ch_tabix_input        // channel: [ val(meta), [ path(vcf) ] ]
+    tbi      = TABIX_TABIX.out.tbi   // channel: [ val(meta), [ path(tbi) ] ]
 
-    versions = ch_versions           // channel: [ versions.yml ]
+    versions = ch_versions           // channel: [ path(versions.yml) ]
 }
 
