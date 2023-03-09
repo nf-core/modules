@@ -11,7 +11,6 @@ workflow test_centrifuge_build {
         file( 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
     ]
 
-   //// params.test_data['sarscov2']['genome']['genome_fasta']
 
     conversion_table = file(params.test_data['sarscov2']['metagenome']['seqid2taxid_map'], checkIfExists: true)
 
