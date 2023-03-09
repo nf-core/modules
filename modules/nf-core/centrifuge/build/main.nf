@@ -29,7 +29,7 @@ process CENTRIFUGE_BUILD {
     $fasta \\
     ${prefix} \\
     --conversion-table $conversion_table \\
-    --taxonomy-tree $taxonomy \\
+    --taxonomy-tree $taxonomy_tree \\
     --name-table $name_table \\
 
     cat <<-END_VERSIONS > versions.yml
