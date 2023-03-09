@@ -10,7 +10,7 @@ process CENTRIFUGE_BUILD {
     input:
     tuple val(meta), path(fasta)
     path conversion_table
-    path taxonomy
+    path taxonomy_tree
     path name_table
 
     output:
