@@ -28,7 +28,8 @@ process CELLRANGER_MKREF {
         mkref \\
         --genome=$reference_name \\
         --fasta=$fasta \\
-        --genes=$gtf
+        --genes=$gtf \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
