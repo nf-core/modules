@@ -1,7 +1,11 @@
 - name: vcf_annotate_ensemblvep vcf_annotation_ensemblvep
   command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep -entry vcf_annotation_ensemblvep -c ./tests/config/nextflow.config
   tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/split
     - ensemblvep
+    - ensemblvep/vep
     - subworkflows
     - subworkflows/vcf_annotate_ensemblvep
     - tabix

@@ -3,7 +3,7 @@
 //
 
 include { BCFTOOLS_SPLIT } from '../../../modules/nf-core/bcftools/split/main'
-include { BCFTOOLS_MERGE } from '../../../modules/nf-core/bcftools/merge/main'
+include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
 include { ENSEMBLVEP_VEP } from '../../../modules/nf-core/ensemblvep/vep/main'
 include { TABIX_TABIX    } from '../../../modules/nf-core/tabix/tabix/main'
 
@@ -21,12 +21,13 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     ch_versions = Channel.empty()
 
     BCFTOOLS_SPLIT(vcf)
-    ch_split_vcf = BCFTOOLS_SPLIT.out.vcf
+    ch_split_vcf = BCFTOOLS_SPLIT.out.split_vcf
         .map{meta, vcf ->
             meta.chunks = vcf instanceof List ? vcf.size() : 1
-            return [meta, vcf]
+            vcf_list = vcf instanceof List ? vcf : [vcf]
+            return [meta, vcf_list]
         }
-        .transpose(by: [0])
+        .transpose()
 
     ENSEMBLVEP_VEP(
         ch_split_vcf,
@@ -39,22 +40,24 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     )
     ch_split_annotated_vcf = ENSEMBLVEP_VEP.out.vcf
         .map{meta, vcf ->
-            return [
-                groupKey(
-                    meta - meta.subMap('chunks'),
-                    meta.chunks
-                ),
-                vcf
-            ]
+            return [groupKey(meta - meta.subMap('chunks'), meta.chunks), vcf]
         }
         .groupTuple(by: [0])
-        .map{meta, vcf ->
-            return [meta, vcf.flatten(), []}
+        .branch{ meta, vcf ->
+            single: vcf !instanceof List || vcf instanceof List && vcf.size() == 1
+                return [meta, [vcf].flatten()]
+            multi:  vcf instanceof List && vcf.size() > 1
+                return [meta, vcf.flatten(), []]
+        }
 
-    BCFTOOLS_MERGE(ch_split_annotated_vcf)
+    BCFTOOLS_CONCAT(ch_split_annotated_vcf.multi)
 
-    TABIX_TABIX(BCFTOOLS_MERGE.out.merged_variants)
-    ch_vcf_tbi = BCFTOOLS_MERGE.out.merged_variants
+    ch_merged_split_vcf = ch_split_annotated_vcf.single
+        .mix(BCFTOOLS_CONCAT.out.vcf)
+
+    TABIX_TABIX(ch_merged_split_vcf)
+
+    ch_vcf_tbi = ch_merged_split_vcf
         .join(
             TABIX_TABIX.out.tbi,
             failOnDuplicate: true,
@@ -64,7 +67,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     // Gather versions of all tools used
     ch_versions = ch_versions.mix(BCFTOOLS_SPLIT.out.versions)
     ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions)
-    ch_versions = ch_versions.mix(BCFTOOLS_MERGE.out.versions)
+    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions)
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
