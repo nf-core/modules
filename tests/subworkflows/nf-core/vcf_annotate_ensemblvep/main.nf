@@ -11,5 +11,5 @@ workflow vcf_annotation_ensemblvep {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true)
     ])
 
-    VCF_ANNOTATE_ENSEMBLVEP ( input, [], "WBcel235", "caenorhabditis_elegans", "108", [], [] )
+    VCF_ANNOTATE_ENSEMBLVEP ( input, [], "WBcel235", "caenorhabditis_elegans", "108", [], [], false )
 }
