@@ -12,7 +12,6 @@ modules:
   - somalier/relate
 input:
   - ch_vcfs:
-      type: file(s)
       description: |
         The input VCFs to perform the stats on, optionally with their indices.
         This channel can also contain the number of samples in the same family/group
@@ -40,6 +39,11 @@ input:
       description: |
         Optional - A text file describing how the samples should be grouped
         Structure: [ path(txt) ]
+  - val_common_id:
+      description: |
+        Optional - A common identifier in the meta map.
+        This will be used to determine which VCFs should be used in somalier_relate.
+        This value should be given when using single sample VCFs
 output:
   - extract:
       description: |

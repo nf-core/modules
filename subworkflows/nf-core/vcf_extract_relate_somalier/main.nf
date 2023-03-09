@@ -10,6 +10,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites       // channel: [mandatory] [ path(somalier_sites_vcf) ]
         ch_peds                 // channel: [mandatory] [ val(meta), path(ped) ]
         ch_sample_groups        // channel: [optional]  [ path(txt) ]
+        val_common_id           // string:  [optional]  A common identifier for the samples that need to be related. Has to be given when using single sample VCFs
     main:
 
     ch_versions         = Channel.empty()
@@ -44,7 +45,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
         .join(ch_vcfs, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, vcf, tbi, count ->
-            [ count ? groupKey(meta, count): meta, extract ]
+            new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
+            [ count ? groupKey(new_meta, count): new_meta, extract ]
         }
         .groupTuple()
         .join(ch_peds, failOnDuplicate: true, failOnMismatch: true)
