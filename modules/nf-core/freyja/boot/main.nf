@@ -12,7 +12,7 @@ process FREYJA_BOOT {
     tuple val(meta2), path(depths)
     val repeats
     path barcodes
-    path lineages
+    path lineages_meta
 
     output:
     tuple val(meta), path("*lineages.csv")     , emit: lineages
@@ -34,7 +34,7 @@ process FREYJA_BOOT {
         --nb $repeats \\
         --output_base $prefix \\
         --barcodes $barcodes \\
-        --meta $lineages \\
+        --meta $lineages_meta \\
         $variants \\
         $depths
 

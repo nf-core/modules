@@ -19,7 +19,8 @@ workflow test_freyja_demix {
     ]
 
     FREYJA_VARIANTS ( input,fasta )
-    FREYJA_UPDATE()
+    db_name="freyja_db"
+    FREYJA_UPDATE(db_name)
 
     variants= FREYJA_VARIANTS.out.variants
     depths  = FREYJA_VARIANTS.out.depths

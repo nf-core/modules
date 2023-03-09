@@ -7,8 +7,9 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
 
     take:
     ch_bam          // channel: [ val(meta), [ /path/to/bam ] ]
-    fasta           // /path/to/reference.fasta
+    fasta           // channel: [ val(meta), [path/to/reference.fasta] ]
     repeats         // value repeats
+    db_name         // string db_name
     barcodes        // /path/to/barcodes.csv
     lineage_meta    // /path/to/lineage_metadata
 
@@ -33,9 +34,9 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     // Update the database if none are given.
     //
     if(barcodes==[] || lineage_meta == []){
-        FREYJA_UPDATE()
+        FREYJA_UPDATE(db_name)
         barcodes=FREYJA_UPDATE.out.barcodes
-        lineage_meta=FREYJA_UPDATE.out.lineages
+        lineage_meta=FREYJA_UPDATE.out.lineages_meta
         ch_versions=ch_versions.mix(FREYJA_UPDATE.out.versions)
     }
 

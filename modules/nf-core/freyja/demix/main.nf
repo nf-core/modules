@@ -11,10 +11,10 @@ process FREYJA_DEMIX {
     tuple val(meta), path(variants)
     tuple val(meta2), path(depths)
     path barcodes
-    path lineages
+    path lineages_meta
 
     output:
-    tuple val(meta), path("${prefix}.tsv"), emit: demix
+    tuple val(meta), path("*.tsv"), emit: demix
     path "versions.yml"                   , emit: versions
 
     when:
@@ -29,7 +29,7 @@ process FREYJA_DEMIX {
         $args \\
         --output ${prefix}.tsv \\
         --barcodes $barcodes \\
-        --meta $lineages \\
+        --meta $lineages_meta \\
         $variants \\
         $depths
 

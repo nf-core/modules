@@ -12,13 +12,16 @@ workflow test_bam_variant_demix_boot_freyja_nodb {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test', single_end:false ],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     repeats= 100
     barcodes= []
     lineage_meta= []
-
-    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats,  barcodes, lineage_meta )
+    db_name="freyja_db"
+    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats, db_name, barcodes, lineage_meta )
 }
 
 workflow test_bam_variant_demix_boot_freyja_withdb {
@@ -28,13 +31,16 @@ workflow test_bam_variant_demix_boot_freyja_withdb {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-
-    FREYJA_UPDATE()
+    fasta = [
+        [ id:'test', single_end:false ],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    db_name="freyja_db"
+    FREYJA_UPDATE(db_name)
 
     repeats=100
     barcodes= FREYJA_UPDATE.out.barcodes
-    lineage_meta= FREYJA_UPDATE.out.lineages
+    lineage_meta= FREYJA_UPDATE.out.lineages_meta
 
-    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats, barcodes, lineage_meta )
+    BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats,db_name, barcodes, lineage_meta )
 }

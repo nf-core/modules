@@ -18,7 +18,7 @@ workflow test_freyja_boot {
     ]
 
 
-    FREYJA_VARIANTS ( input,fasta )
+    FREYJA_VARIANTS (input,fasta )
     db_name= "freyja_db"
     FREYJA_UPDATE(db_name)
 
