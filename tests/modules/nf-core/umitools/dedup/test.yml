@@ -33,7 +33,7 @@
     - path: output/umitools/test.dedup.bam
       md5sum: 9541c6ac00eea9064786244be9d8738f
     - path: output/umitools/test.umi_extract.log
-      contains: "Starting barcode extraction"
+      contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
 
 - name: umitools dedup test_umitools_dedup_paired_end_no_stats
@@ -61,7 +61,7 @@
     - path: output/umitools/test.dedup.bam
       md5sum: 1bf0f4849aa8b488f1f1a86135e25a16
     - path: output/umitools/test.umi_extract.log
-      contains: "Starting barcode extraction"
+      contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
 
 - name: umitools dedup test_umitools_dedup_paired_end_stats
@@ -95,5 +95,5 @@
     - path: output/umitools/test.dedup_per_umi_per_position.tsv
       md5sum: 2e1a12e6f720510880068deddeefe063
     - path: output/umitools/test.umi_extract.log
-      contains: "Starting barcode extraction"
+      contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
