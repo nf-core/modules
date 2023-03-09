@@ -26,12 +26,12 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     ENSEMBLVEP_VEP(
         ch_split_vcf,
-        vep_genome,
-        vep_species,
-        vep_cache_version,
-        vep_cache,
-        fasta,
-        vep_extra_files
+        val_vep_genome,
+        val_vep_species,
+        val_vep_cache_version,
+        ch_vep_cache,
+        ch_fasta,
+        ch_vep_extra_files
     )
     ch_split_annotated_vcf = ENSEMBLVEP_VEP.out.vcf
         .map{meta, vcf ->
