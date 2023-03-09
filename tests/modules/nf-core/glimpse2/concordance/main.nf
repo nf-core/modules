@@ -36,18 +36,22 @@ workflow test_glimpse2_concordance {
         Channel.of([[],[],[]])
     ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
    
-    allele_freq = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
-                   file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)]
+    allele_freq = Channel.of([file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
+                   file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)])
     
-    truth = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
-                  file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)]
+    truth = Channel.of([file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
+                  file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)])
     
-    list_inputs = Channel.of(["chr21", allele_freq[0], truth[0]])
-                    .combine(GLIMPSE2_PHASE.output.phased_variant.map{it[1]})
-                    .combine(Channel.of([[]]))
-                    .collect()
-                    .view()
-    concordance_input = Channel.of([[ id:'input', single_end:false ]]).combine(list_inputs)
+    BCFTOOLS_INDEX(GLIMPSE2_PHASE.output.phased_variant)
+    list_inputs = GLIMPSE2_PHASE.output.phased_variant
+                        .join(BCFTOOLS_INDEX.out.csi)
+                        .combine(truth)
+                        .combine(allele_freq)
+                        .combine(Channel.of([[]]))
+                        .combine(Channel.of(["chr21"]))
 
-    GLIMPSE2_CONCORDANCE ( concordance_input, Channel.of([[],[]])) // meta, Region, Frequencies, Truth, Estimate, minPROB, minDP, bins
+    GLIMPSE2_CONCORDANCE ( list_inputs,
+                        Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5","1 5 10 20 50 100 200 500 1000 2000 5000 10000  20000 50000 100000",[]]),
+                        0.9999,
+                        8) // [meta, Region, Frequencies, Truth, Estimate], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
 }

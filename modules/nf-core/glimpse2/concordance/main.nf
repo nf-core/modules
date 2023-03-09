@@ -8,11 +8,13 @@ process GLIMPSE2_CONCORDANCE {
         'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
-    tuple val(meta), val(region), path(freq), path(truth), path(estimate), path(samples)
-    tuple val(meta2), path(groups)
+    tuple val(meta), path(estimate), path(estimate_index), path(truth), path(truth_index), path(freq), path(freq_index), path(samples), val(region)
+    tuple val(meta2), path(groups), val(bins), val(ac_bins), val(allele_counts)
+    val(min_val_gl)
+    val(min_val_dp)
 
     output:
-    tuple val(meta), path("*.")  , emit: errors
+    tuple val(meta), path("*.error.*.txt.gz") , emit: errors
     tuple val(meta), path("*.rsquare.*.txt.gz"), emit: rsquare
     path "versions.yml"                        , emit: versions
 
@@ -22,14 +24,23 @@ process GLIMPSE2_CONCORDANCE {
     script:
     def args         = task.ext.args   ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def samples_cmd  = samples         ? "--samples ${samples}" : ""
-    def groups_cmd   = groups          ? "--groups ${groups}"   : ""
+    def samples_cmd  = samples         ? "--samples ${samples}"             : ""
+    def groups_cmd   = groups          ? "--groups ${groups}"               : ""
+    def bins_cmd     = bins            ? "--bins ${bins}"                   : ""
+    def ac_bins_cmd  = ac_bins         ? "--ac-bins ${ac_bins}"             : ""
+    def ale_ct_cmd   = allele_counts   ? "--allele-counts ${allele_counts}" :""
+
     """
     echo $region $freq $truth $estimate > input.txt
     GLIMPSE2_concordance \\
         $args \\
         $samples_cmd \\
         $groups_cmd \\
+        $bins_cmd \\
+        $ac_bins_cmd \\
+        $ale_ct_cmd \\
+        --min-val-gl $min_val_gl \\
+        --min-val-dp $min_val_dp \\
         --input input.txt \\
         --thread $task.cpus \\
         --output ${prefix}
