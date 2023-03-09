@@ -13,7 +13,10 @@ workflow test_freyja_demix {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test', single_end:false ],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     FREYJA_VARIANTS ( input,fasta )
     FREYJA_UPDATE()
@@ -21,7 +24,7 @@ workflow test_freyja_demix {
     variants= FREYJA_VARIANTS.out.variants
     depths  = FREYJA_VARIANTS.out.depths
     barcodes = FREYJA_UPDATE.out.barcodes
-    lineages = FREYJA_UPDATE.out.lineages
+    lineages = FREYJA_UPDATE.out.lineages_meta
 
     FREYJA_DEMIX (variants, depths, barcodes, lineages)
 }

@@ -10,7 +10,10 @@ workflow test_freyja_variants {
         [ id:'test'],
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        ]
 
     FREYJA_VARIANTS ( input, fasta)
 }

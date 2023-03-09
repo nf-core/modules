@@ -21,19 +21,21 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - variants:
       type: file
       description: File containing identified variants in a gff-like format
       pattern: "*.variants.tsv"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - depths:
       type: file
       description: File containing depth of the variants
       pattern: "*.depth.tsv"
+
   - repeats:
       type: value (int)
       description: Number of bootstrap repeats to perform
@@ -53,13 +55,13 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - lineages:
-    type: file
-    description: a csv file that includes the lineages present and their corresponding abundances
-    pattern: "*.lineages.csv"
+      type: file
+      description: a csv file that includes the lineages present and their corresponding abundances
+      pattern: "*lineages.csv"
   - summarized:
-    type: file
-    description: a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
-    pattern: "*.summarized.csv"
+      type: file
+      description: a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+      pattern: "*summarized.csv"
   - versions:
       type: file
       description: File containing software versions

@@ -15,7 +15,6 @@ tools:
       licence: "['BSD-2-Clause']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -25,15 +24,26 @@ input:
       type: file
       description: File containing identified variants in a gff-like format
       pattern: "*.variants.tsv"
+
+  - meta2:
+    type: map
+    description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - depths:
       type: file
       description: File containing depth of the variants
       pattern: "*.depth.tsv"
+
   - barcodes:
       type: file
       description: File containing lineage defining barcodes
       pattern: "*barcodes.csv"
   - lineages:
+      type: file
+      description: File containing lineage defining barcodes
+      pattern: "*barcodes.csv"
+  - lineages_meta:
       type: file
       description: File containing lineage metadata that correspond to barcodes
       pattern: "*lineages.json"
@@ -45,9 +55,9 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - demix:
-    type: file
-    description: a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
-    pattern: "*.demix.tsv"
+      type: file
+      description: a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
+      pattern: "*.demix.tsv"
   - versions:
       type: file
       description: File containing software versions

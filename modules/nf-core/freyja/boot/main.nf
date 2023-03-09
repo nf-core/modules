@@ -26,7 +26,6 @@ process FREYJA_BOOT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-
     """
     freyja \\
         boot \\
@@ -38,6 +37,18 @@ process FREYJA_BOOT {
         --meta $lineages \\
         $variants \\
         $depths
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_lineage.csv
+    touch ${prefix}_summarized.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -14,8 +14,8 @@ process FREYJA_DEMIX {
     path lineages
 
     output:
-    tuple val(meta), path("*.demix.tsv"), emit: demix
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}.tsv"), emit: demix
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process FREYJA_DEMIX {
     freyja \\
         demix \\
         $args \\
-        --output ${prefix}.demix.tsv \\
+        --output ${prefix}.tsv \\
         --barcodes $barcodes \\
         --meta $lineages \\
         $variants \\
@@ -38,4 +38,16 @@ process FREYJA_DEMIX {
         freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version //' )
+    END_VERSIONS
+    """
+
 }

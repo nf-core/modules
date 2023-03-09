@@ -9,7 +9,7 @@ process FREYJA_VARIANTS {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
+    tuple val(meta2),path fasta
 
     output:
     tuple val(meta), path("*.variants.tsv") ,emit: variants
@@ -31,6 +31,18 @@ process FREYJA_VARIANTS {
         --variants ${prefix}.variants.tsv \\
         --depths ${prefix}.depth.tsv \\
         $bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        freyja: \$(echo \$(freyja --version 2>&1) | sed 's/^.*version //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.variants.tsv
+    touch ${prefix}.depth.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
