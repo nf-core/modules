@@ -8,7 +8,7 @@ process PAIRTOOLS_STATS {
         'quay.io/biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(pairs)
 
     output:
     tuple val(meta), path("*.stats.tsv")   , emit: stat
@@ -27,7 +27,7 @@ process PAIRTOOLS_STATS {
         --nproc-in $task.cpus \\
         --nproc-out $task.cpus \\
         -o ${prefix}.stats.tsv \\
-        $input
+        $pairs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
