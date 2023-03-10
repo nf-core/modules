@@ -25,7 +25,7 @@ process BCFTOOLS_NORM {
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    "vcf.gz"
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
@@ -47,7 +47,7 @@ process BCFTOOLS_NORM {
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    "vcf.gz"
     """
     touch ${prefix}.${extension}
 
