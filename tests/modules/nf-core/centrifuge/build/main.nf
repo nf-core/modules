@@ -12,7 +12,6 @@ workflow test_centrifuge_build {
     ]
 
     conversion_table = file(params.test_data['sarscov2']['metagenome']['seqid2taxid_map'], checkIfExists: true)
-
     taxonomy_tree = file(params.test_data['sarscov2']['metagenome']['nodes_dmp'], checkIfExists: true)
     name_table = file(params.test_data['sarscov2']['metagenome']['names_dmp'], checkIfExists: true)
 
