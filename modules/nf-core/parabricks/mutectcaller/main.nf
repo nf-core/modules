@@ -33,7 +33,7 @@ process PARABRICKS_MUTECTCALLER {
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
     """
     # parabricks complains when index is not a regular file in the same directory as the bam
-    # copy the index to this path. 
+    # copy the index to this path.
     $copy_tumor_index_command
     $copy_normal_index_command
 
@@ -74,9 +74,3 @@ process PARABRICKS_MUTECTCALLER {
     END_VERSIONS
     """
 }
-
-// TODO
-// * panel of normals features
-// * additional mutect arguments
-// * some detection or additional help for the fact that the names specified on --tumor-name 
-//     and --normal-name MUST be the same as the sample name specified in the readgroups.

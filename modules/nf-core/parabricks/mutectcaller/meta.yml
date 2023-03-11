@@ -23,7 +23,7 @@ input:
         [ id:'test', tumor_id:'tumor', normal_id:'normal' ]
   - tumor_bam:
       type: file
-      description: bam file for tumor sample
+      description: bam file for tumor sample.
       pattern: "*.bam"
   - tumor_bam_index:
       type: file
@@ -44,7 +44,7 @@ input:
   - meta2:
       type: map
       description: |
-        (Optional) Groovy Map containing reference information
+        Groovy Map containing reference information
         [ id:'homo_sapiens' ]
   - fasta:
       type: file
@@ -67,15 +67,15 @@ output:
         e.g. [ id:'test' ]
   - vcf:
       type: file
-      description: compressed variants file. Will include an annoted vcf file if pannel of normals is used.
+      description: Compressed variants file. Will include an annoted vcf file if pannel of normals is used.
       pattern: "*.vcf.gz"
   - stats:
       type: dir
-      description: variant statistics
+      description: Variant statistics.
       pattern: "*.vcf.gz.stats"
   - versions:
       type: file
-      description: File containing software versions
+      description: File containing software versions.
       pattern: "versions.yml"
 
 authors:
