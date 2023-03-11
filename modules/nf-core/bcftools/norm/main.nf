@@ -12,8 +12,11 @@ process BCFTOOLS_NORM {
     path(fasta)
 
     output:
-    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}")  , emit: vcf
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("*.vcf")      , emit: vcf     , optional: true
+    tuple val(meta), path("*.vcf.gz")   , emit: vcfgz   , optional: true
+    tuple val(meta), path("*.bcf")      , emit: bcf     , optional: true
+    tuple val(meta), path("*.bcf.gz")   , emit: bcfgz   , optional: true
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +29,7 @@ process BCFTOOLS_NORM {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
+
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
