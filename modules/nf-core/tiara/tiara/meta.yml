@@ -10,7 +10,7 @@ tools:
       homepage: "https://ibe-uw.github.io/tiara/"
       documentation: https://ibe-uw.github.io/tiara/"
       tool_dev_url: "https://github.com/ibe-uw/tiara"
-      doi: "https://doi.org/10.1093/bioinformatics/btab672"
+      doi: "10.1093/bioinformatics/btab672"
       licence: "MIT"
 
 input:
@@ -33,11 +33,11 @@ output:
   - classifications:
       type: file
       description: TSV file containing per-contig classification probabilities and overall classifications. Gzipped if flag --gz is set.
-      pattern: "classification_*.out.{txt,txt.gz}"
+      pattern: "*.{txt,txt.gz}"
   - log:
       type: file
       description: Log file containing tiara model parameters. Gzipped if flag --gz is set.
-      pattern: "log_*.out.{txt,txt.gz}"
+      pattern: "log_*.{txt,txt.gz}"
   - fasta:
       type: file
       description: |
