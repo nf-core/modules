@@ -8,7 +8,7 @@ process GLIMPSE_LIGATE {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(input_list)
+    tuple val(meta), path(input_list), path(input_index)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
