@@ -3,7 +3,8 @@
 nextflow.enable.dsl = 2
 
 include { PARABRICKS_MUTECTCALLER } from '../../../../../modules/nf-core/parabricks/mutectcaller/main.nf'
-include { PARABRICKS_MUTECTCALLER as PARABRICKS_MUTECTCALLER_PAIR } from '../../../../../modules/nf-core/parabricks/mutectcaller/main.nf'
+include { PARABRICKS_MUTECTCALLER as PARABRICKS_MUTECTCALLER_TN } from '../../../../../modules/nf-core/parabricks/mutectcaller/main.nf'
+include { PARABRICKS_MUTECTCALLER as PARABRICKS_MUTECTCALLER_TN_INTERVALS } from '../../../../../modules/nf-core/parabricks/mutectcaller/main.nf'
 include { PARABRICKS_MUTECTCALLER as PARABRICKS_MUTECTCALLER_PON } from '../../../../../modules/nf-core/parabricks/mutectcaller/main.nf'
 
 workflow test_parabricks_mutectcaller {
@@ -44,7 +45,7 @@ workflow test_parabricks_mutectcaller_tn {
     panel_of_normals = []
     panel_of_normals_index = []
 
-    PARABRICKS_MUTECTCALLER ( input, fasta, panel_of_normals, panel_of_normals_index )
+    PARABRICKS_MUTECTCALLER_TN ( input, fasta, panel_of_normals, panel_of_normals_index )
 }
 
 workflow test_parabricks_mutectcaller_intervals {
@@ -85,7 +86,7 @@ workflow test_parabricks_mutectcaller_tn_intervals {
     panel_of_normals = []
     panel_of_normals_index = []
 
-    PARABRICKS_MUTECTCALLER ( input, fasta, panel_of_normals, panel_of_normals_index )
+    PARABRICKS_MUTECTCALLER_TN_INTERVALS ( input, fasta, panel_of_normals, panel_of_normals_index )
 }
 
 // PON test not passing because the tool expects all chromosomes in the PON file to 
