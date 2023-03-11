@@ -8,7 +8,7 @@ tools:
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
-      doi: ""
+
       licence: ["BSD-3-Clause-Clear"]
 
 input:
@@ -26,11 +26,11 @@ input:
       description: Pacbio BAM Index
       pattern: "*.pbi"
   - chunk_num:
-      -type: integer
-      -description: BAM part to process
+      type: integer
+      description: BAM part to process
   - chunk_on:
-      -type: integer
-      -description: Total number of bam parts to process
+      type: integer
+      description: Total number of bam parts to process
 
 output:
   - meta:
