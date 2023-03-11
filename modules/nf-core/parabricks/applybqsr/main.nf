@@ -62,5 +62,3 @@ process PARABRICKS_APPLYBQSR {
     END_VERSIONS
     """
 }
-
-// TODO: limit to 2 gpus (applybqsr won't use more than 2, according to the documentation)
