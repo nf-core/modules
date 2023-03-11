@@ -12,7 +12,7 @@ process PARABRICKS_MUTECTCALLER {
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index),  path(normal_bam), path(normal_bam_index), path(interval_file)
     tuple val(meta2), path(fasta)
-    path panel_of_normals 
+    path panel_of_normals
     path panel_of_normals_index
 
     output:
@@ -49,7 +49,7 @@ process PARABRICKS_MUTECTCALLER {
         $interval_file_command \\
         --num-gpus $task.accelerator.request \\
         $args
-    
+
     # if panel of normals specified, run postpon
     $postpon_command
 
@@ -59,7 +59,7 @@ process PARABRICKS_MUTECTCALLER {
     END_VERSIONS
     """
 
-    stub: 
+    stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def postpon_command = panel_of_normals ? "touch ${prefix}_annotated.vcf.gz" : ""
