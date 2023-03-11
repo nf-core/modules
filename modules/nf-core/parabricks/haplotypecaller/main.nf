@@ -57,4 +57,3 @@ process PARABRICKS_HAPLOTYPECALLER {
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
     END_VERSIONS
     """
-}
