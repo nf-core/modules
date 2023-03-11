@@ -2,6 +2,8 @@ name: "glimpse_concordance"
 description: Compute the r2 correlation between imputed dosages (in MAF bins) and highly-confident genotype calls from the high-coverage dataset.
 keywords:
   - concordance
+  - low-coverage
+  - glimpse
   - imputation
 tools:
   - "glimpse":
@@ -50,7 +52,7 @@ input:
         If FORMAT/DP is missing and --minDP > 0, the program exits with an error.
 
   - bins:
-      type: range
+      type: string
       description: |
         Allele frequency bins used for rsquared computations.
         By default they should as MAF bins [0-0.5], while
@@ -69,12 +71,12 @@ output:
       pattern: "versions.yml"
 
   - r_squared:
-      type: files
+      type: file
       description: R-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
       pattern: "*.rsquare.*.txt.gz"
 
   - errors:
-      type: files
+      type: file
       description: Correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
       pattern: "*.errors.*.txt.gz"
 
