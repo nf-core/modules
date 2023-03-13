@@ -26,7 +26,7 @@ process GATK4_BEDTOINTERVALLIST {
     if (!task.memory) {
         log.info '[GATK BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga * 0.8
+        avail_mem = ceil(task.memory.giga * 0.8)
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" BedToIntervalList \\

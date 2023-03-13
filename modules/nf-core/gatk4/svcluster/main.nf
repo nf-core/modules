@@ -32,7 +32,7 @@ process GATK4_SVCLUSTER {
     if (!task.memory) {
         log.info '[GATK SVCluster] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga * 0.8
+        avail_mem = ceil(task.memory.giga * 0.8)
     }
 
     """
