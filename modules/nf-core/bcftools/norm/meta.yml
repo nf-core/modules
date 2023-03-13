@@ -40,22 +40,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - vcfgz:
-      type: file
-      description: Compressed VCF normalized output file
-      pattern: "*.vcf.gz"
   - vcf:
       type: file
-      description: Uncompressed VCF normalized output file
-      pattern: "*.vcf"
-  - bcfgz:
-      type: file
-      description: Compressed BCF normalized output file
-      pattern: "*.bcf.gz"
-  - bcf:
-      type: file
-      description: Uncompressed BCF normalized output file
-      pattern: "*.bcf"
+      description: One of uncompressed VCF (.vcf), compressed VCF (.vcf.gz), compressed BCF (.bcf.gz) or uncompressed BCF (.bcf) normalized output file
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - versions:
       type: file
       description: File containing software versions
