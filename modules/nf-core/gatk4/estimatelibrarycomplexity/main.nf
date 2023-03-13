@@ -29,7 +29,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     if (!task.memory) {
         log.info '[GATK EstimateLibraryComplexity] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga - 1
+        avail_mem = task.memory.giga * 0.8
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" EstimateLibraryComplexity \\

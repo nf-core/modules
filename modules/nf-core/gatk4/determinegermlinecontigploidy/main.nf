@@ -45,7 +45,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     if (!task.memory) {
         log.info '[GATK DetermineGermlineContigPloidy] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga - 1
+        avail_mem = task.memory.giga * 0.8
     }
     """
     ${untar_model}

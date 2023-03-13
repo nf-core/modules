@@ -45,7 +45,7 @@ process GATK4_PRINTSVEVIDENCE {
     if (!task.memory) {
         log.info '[GATK PRINTSVEVIDENCE] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga - 1
+        avail_mem = task.memory.giga * 0.8
     }
 
     """
