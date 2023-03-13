@@ -29,7 +29,7 @@ process GATK4_PRINTREADS {
     if (!task.memory) {
         log.info '[GATK PrintReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = task.memory.giga - 1
     }
     if ("${input}" == "${prefix}.${input.extension}") {
         error("Output filename is the same as input filename. Please specify a different prefix.")
