@@ -29,14 +29,14 @@ process GATK4_PRINTREADS {
     if (!task.memory) {
         log.info '[GATK PrintReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     if ("${input}" == "${prefix}.${input.extension}") {
         error("Output filename is the same as input filename. Please specify a different prefix.")
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" PrintReads \\
+    gatk --java-options "-Xmx${avail_mem}M" PrintReads \\
         $args \\
         --reference $fasta \\
         --input $input \\

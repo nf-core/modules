@@ -36,10 +36,10 @@ process GATK4_COLLECTSVEVIDENCE {
     if (!task.memory) {
         log.info '[GATK COLLECTSVEVIDENCE] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" CollectSVEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M" CollectSVEvidence \\
         ${args} \\
         --input ${input} \\
         --sr-file ${prefix}.sr.txt.gz \\
