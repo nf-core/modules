@@ -34,5 +34,4 @@ process BEDTOOLS_SHIFT {
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
     END_VERSIONS
     """
-
 }
