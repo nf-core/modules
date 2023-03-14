@@ -19,7 +19,7 @@ process GLIMPSE2_CONCORDANCE {
     tuple val(meta), path("*.error.spl.txt.gz")  , emit: errors_spl
     tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
-    path "versions.yml"                        , emit: versions
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
