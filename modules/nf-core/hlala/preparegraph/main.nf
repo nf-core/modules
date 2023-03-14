@@ -7,7 +7,7 @@ process HLALA_PREPAREGRAPH {
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
 
     input:
-        tuple val(meta), path(graph)
+    tuple val(meta), path(graph)
 
 
     output:
