@@ -1,0 +1,64 @@
+- name: cellranger vdj test_cellranger_vdj
+  command: nextflow run ./tests/modules/nf-core/cellranger/vdj -entry test_cellranger_vdj -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellranger/vdj/nextflow.config
+  tags:
+    - cellranger/vdj
+    - cellranger
+  files:
+    - path: output/cellranger/sample-123/outs/consensus.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/all_contig_annotations.bed
+      md5sum: e5ba8169b2b0e3258ddbdef0f80e93db  
+    - path: output/cellranger/sample-123/outs/all_contig.fasta
+      md5sum: 92f7911a33867368a974b843e368b955  
+    - path: output/cellranger/sample-123/outs/all_contig_annotations.json
+      md5sum: c708dfe68a0a6b649ab0302541802a8d  
+    - path: output/cellranger/sample-123/outs/concat_ref.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/consensus.bam
+      md5sum: 3883f70b37043d2e555ecdd0f98f2bdb  
+    - path: output/cellranger/sample-123/outs/concat_ref.bam.bai
+      md5sum: 125978e04496fe193a5c162603a7e6f6  
+    - path: output/cellranger/sample-123/outs/consensus.bam.bai
+      md5sum: 125978e04496fe193a5c162603a7e6f6  
+    - path: output/cellranger/sample-123/outs/clonotypes.csv
+      md5sum: 439ca9f013e8e1e747df68b04e541ebf  
+    - path: output/cellranger/sample-123/outs/all_contig.fastq
+      md5sum: abec3a830f1096f19eb4f94e4c7e69bf  
+    - path: output/cellranger/sample-123/outs/all_contig_annotations.csv
+      md5sum: 802c77af9cd774b5129ae2566c8a2d9d  
+    - path: output/cellranger/sample-123/outs/vdj_contig_info.pb
+      md5sum: 5a62a30a895eab5a5479f8d186330cd1  
+    - path: output/cellranger/sample-123/outs/consensus_annotations.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/all_contig.bam
+      md5sum: db8439747312b699cc44b2e5023eee54  
+    - path: output/cellranger/sample-123/outs/concat_ref.fasta.fai
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/concat_ref.bam
+      md5sum: bb079ce37c7f129b0b5f5b83e0585ea2  
+    - path: output/cellranger/sample-123/outs/vdj_reference/reference.json
+      md5sum: 384f6efabad59f6da5c89b862aee71a8  
+    - path: output/cellranger/sample-123/outs/vdj_reference/fasta/donor_regions.fa
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/vdj_reference/fasta/regions.fa
+      md5sum: 1953406d913fb0fd753c6b56e847da83  
+    - path: output/cellranger/sample-123/outs/airr_rearrangement.tsv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/filtered_contig_annotations.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/cell_barcodes.json
+      md5sum: d751713988987e9331980363e24189ce  
+    - path: output/cellranger/sample-123/outs/consensus.fasta.fai
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/all_contig.fasta.fai
+      md5sum: e99f14c57260e068ac7c12c16daf4bed  
+    - path: output/cellranger/sample-123/outs/filtered_contig.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/metrics_summary.csv
+      md5sum: 938c671b90893201d73dc5dc68fecd42  
+    - path: output/cellranger/sample-123/outs/all_contig.bam.bai
+      md5sum: 7ec546986ded332ff8ced5e659984b16  
+    - path: output/cellranger/sample-123/outs/filtered_contig.fastq
+      md5sum: d41d8cd98f00b204e9800998ecf8427e  
+    - path: output/cellranger/sample-123/outs/web_summary.html
+      contains: ["sample-123"]
