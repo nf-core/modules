@@ -1,0 +1,44 @@
+- name: ashlar test_ashlar_one_file
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_one_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: b47c1f36149067a100782fe43da8aebf
+    - path: output/ashlar/versions.yml
+
+- name: ashlar test_ashlar_two_files
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_two_files -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: ccdf8734a3df0c62699a84d96ad93bfb
+    - path: output/ashlar/versions.yml
+
+- name: ashlar test_ashlar_all_files
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_all_files -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: 544cb8ab6b5482920a6caa6b47b57305
+    - path: output/ashlar/versions.yml
+
+- name: ashlar test_ashlar_align_channel
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_align_channel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: 091d3230e3d01282ad6659aff195deba
+    - path: output/ashlar/versions.yml
+
+- name: ashlar test_ashlar_dfp_ffp
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_dfp_ffp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: 41fd86599d6fc10aa4393303c497505e
+    - path: output/ashlar/versions.yml
