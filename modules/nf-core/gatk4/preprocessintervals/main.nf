@@ -29,10 +29,10 @@ process GATK4_PREPROCESSINTERVALS {
     if (!task.memory) {
         log.info '[GATK PreprocessIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" PreprocessIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M" PreprocessIntervals \\
         $exclude_command \\
         --reference $fasta \\
         --output ${prefix}.interval_list \\

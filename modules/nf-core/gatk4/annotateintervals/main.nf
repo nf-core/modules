@@ -36,11 +36,11 @@ process GATK4_ANNOTATEINTERVALS {
     if (!task.memory) {
         log.info '[GATK AnnotateIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" AnnotateIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M" AnnotateIntervals \\
         ${inputs} \\
         --reference ${fasta} \\
         --output ${prefix}.tsv \\
