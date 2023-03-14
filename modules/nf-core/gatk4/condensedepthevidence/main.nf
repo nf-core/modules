@@ -33,11 +33,11 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
     if (!task.memory) {
         log.info '[GATK CondenseDepthEvidence] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" CondenseDepthEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M" CondenseDepthEvidence \\
         --depth-evidence ${depth_evidence} \\
         --output ${prefix}.rd.txt.gz \\
         --reference ${fasta} \\
