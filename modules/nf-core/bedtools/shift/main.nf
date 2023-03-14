@@ -9,7 +9,7 @@ process BEDTOOLS_SHIFT {
 
     input:
     tuple val(meta), path(bed)
-    path  sizes
+    tuple val(meta2), path(sizes)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
