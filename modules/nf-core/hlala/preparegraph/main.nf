@@ -1,13 +1,20 @@
 process HLALA_PREPAREGRAPH {
+    tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::hla-la=1.0.3" : null)
+    
+
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "HLALA_PREPAREGRAPH module does not support Conda. Please use Docker or Singularity."
+    }
+
     input:
-        tuple val(meta), path(graph)
+    tuple val(meta), path(graph)
 
 
     output:
