@@ -32,11 +32,11 @@ process GATK4_SVANNOTATE {
     if (!task.memory) {
         log.info '[GATK SVAnnotate] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SVAnnotate \\
+    gatk --java-options "-Xmx${avail_mem}M" SVAnnotate \\
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         ${intervals} \\

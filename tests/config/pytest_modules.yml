@@ -1958,6 +1958,10 @@ manta/tumoronly:
   - modules/nf-core/manta/tumoronly/**
   - tests/modules/nf-core/manta/tumoronly/**
 
+mapad/index:
+  - modules/nf-core/mapad/index/**
+  - tests/modules/nf-core/mapad/index/**
+
 mapdamage2:
   - modules/nf-core/mapdamage2/**
   - tests/modules/nf-core/mapdamage2/**
@@ -3128,6 +3132,10 @@ subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
 
+subworkflows/bam_tumor_normal_somatic_variant_calling_gatk:
+  - subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
+  - tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
+
 subworkflows/bam_variant_calling_freebayes:
   - subworkflows/nf-core/bam_variant_calling_freebayes/**
   - tests/subworkflows/nf-core/bam_variant_calling_freebayes/**
@@ -3200,13 +3208,9 @@ subworkflows/fastq_subsample_fq_salmon:
   - subworkflows/nf-core/fastq_subsample_fq_salmon/**
   - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
 
-subworkflows/gatk_create_som_pon:
-  - subworkflows/nf-core/gatk_create_som_pon/**
-  - tests/subworkflows/nf-core/gatk_create_som_pon/**
-
-subworkflows/bam_tumor_normal_somatic_variant_calling_gatk:
-  - subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
-  - tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
+subworkflows/bam_create_som_pon_gatk:
+  - subworkflows/nf-core/bam_create_som_pon_gatk/**
+  - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
 
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
