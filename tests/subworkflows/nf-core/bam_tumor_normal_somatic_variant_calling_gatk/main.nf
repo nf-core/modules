@@ -2,16 +2,17 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main'
+include { BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK } from '../../../../subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/main'
 
-workflow test_gatk_tumor_normal_somatic_variant_calling {
-    input =         [
-                    [ [ id:'test'], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-                    [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
-                    ["testN"]
-                    ]
-                    ]
+workflow test_bam_tumor_normal_somatic_variant_calling_gatk {
+    input = Channel.of(
+        [
+            [ id:'test'], // meta map
+            file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+            ["testN"]
+        ]
+    )
     fasta                 = file(params.test_data['homo_sapiens']['genome']['genome_fasta'],                            checkIfExists: true)
     fai                   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'],                        checkIfExists: true)
     dict                  = file(params.test_data['homo_sapiens']['genome']['genome_dict'],                             checkIfExists: true)

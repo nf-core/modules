@@ -32,11 +32,11 @@ process GATK4_SVCLUSTER {
     if (!task.memory) {
         log.info '[GATK SVCluster] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SVCluster \\
+    gatk --java-options "-Xmx${avail_mem}M" SVCluster \\
         --output ${prefix}.vcf.gz \\
         --ploidy-table ${ploidy_table} \\
         ${input} \\

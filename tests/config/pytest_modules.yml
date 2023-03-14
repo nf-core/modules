@@ -203,6 +203,10 @@ bbmap/bbduk:
   - modules/nf-core/bbmap/bbduk/**
   - tests/modules/nf-core/bbmap/bbduk/**
 
+bbmap/bbnorm:
+  - modules/nf-core/bbmap/bbnorm/**
+  - tests/modules/nf-core/bbmap/bbnorm/**
+
 bbmap/bbsplit:
   - modules/nf-core/bbmap/bbsplit/**
   - tests/modules/nf-core/bbmap/bbsplit/**
@@ -278,6 +282,10 @@ bcftools/roh:
 bcftools/sort:
   - modules/nf-core/bcftools/sort/**
   - tests/modules/nf-core/bcftools/sort/**
+
+bcftools/split:
+  - modules/nf-core/bcftools/split/**
+  - tests/modules/nf-core/bcftools/split/**
 
 bcftools/stats:
   - modules/nf-core/bcftools/stats/**
@@ -1447,6 +1455,18 @@ glimpse2/chunk:
   - modules/nf-core/glimpse2/chunk/**
   - tests/modules/nf-core/glimpse2/chunk/**
 
+glimpse2/concordance:
+  - modules/nf-core/glimpse2/concordance/**
+  - tests/modules/nf-core/glimpse2/concordance/**
+
+glimpse2/ligate:
+  - modules/nf-core/glimpse2/ligate/**
+  - tests/modules/nf-core/glimpse2/ligate/**
+
+glimpse2/phase:
+  - modules/nf-core/glimpse2/phase/**
+  - tests/modules/nf-core/glimpse2/phase/**
+
 glimpse2/splitreference:
   - modules/nf-core/glimpse2/splitreference/**
   - tests/modules/nf-core/glimpse2/splitreference/**
@@ -1458,6 +1478,10 @@ glnexus:
 goat/taxonsearch:
   - modules/nf-core/goat/taxonsearch/**
   - tests/modules/nf-core/goat/taxonsearch/**
+
+goleft/indexsplit:
+  - modules/nf-core/goleft/indexsplit/**
+  - tests/modules/nf-core/goleft/indexsplit/**
 
 graphmap2/align:
   - modules/nf-core/graphmap2/align/**
@@ -1925,6 +1949,10 @@ manta/somatic:
 manta/tumoronly:
   - modules/nf-core/manta/tumoronly/**
   - tests/modules/nf-core/manta/tumoronly/**
+
+mapad/index:
+  - modules/nf-core/mapad/index/**
+  - tests/modules/nf-core/mapad/index/**
 
 mapdamage2:
   - modules/nf-core/mapdamage2/**
@@ -2430,6 +2458,10 @@ plink/bcf:
 plink/extract:
   - modules/nf-core/plink/extract/**
   - tests/modules/nf-core/plink/extract/**
+
+plink/indep:
+  - modules/nf-core/plink/indep/**
+  - tests/modules/nf-core/plink/indep/**
 
 plink/recode:
   - modules/nf-core/plink/recode/**
@@ -3092,6 +3124,10 @@ subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
 
+subworkflows/bam_tumor_normal_somatic_variant_calling_gatk:
+  - subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
+  - tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
+
 subworkflows/bam_variant_calling_freebayes:
   - subworkflows/nf-core/bam_variant_calling_freebayes/**
   - tests/subworkflows/nf-core/bam_variant_calling_freebayes/**
@@ -3164,13 +3200,9 @@ subworkflows/fastq_subsample_fq_salmon:
   - subworkflows/nf-core/fastq_subsample_fq_salmon/**
   - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
 
-subworkflows/gatk_create_som_pon:
-  - subworkflows/nf-core/gatk_create_som_pon/**
-  - tests/subworkflows/nf-core/gatk_create_som_pon/**
-
-subworkflows/gatk_tumor_normal_somatic_variant_calling:
-  - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
-  - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+subworkflows/bam_create_som_pon_gatk:
+  - subworkflows/nf-core/bam_create_som_pon_gatk/**
+  - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
 
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**

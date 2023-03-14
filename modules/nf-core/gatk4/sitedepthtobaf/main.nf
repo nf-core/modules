@@ -33,11 +33,11 @@ process GATK4_SITEDEPTHTOBAF {
     if (!task.memory) {
         log.info '[GATK SiteDepthtoBAF] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SiteDepthtoBAF \\
+    gatk --java-options "-Xmx${avail_mem}M" SiteDepthtoBAF \\
         --baf-evidence-output ${prefix}.baf.txt.gz \\
         --baf-sites-vcf ${vcf} \\
         ${site_depth_input} \\
