@@ -70,15 +70,30 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - r_squared:
+  - errors_cal:
       type: file
-      description: R-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.rsquare.*.txt.gz"
+      description: Calibration correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.cal.txt.gz"
 
-  - errors:
+  - errors_grp:
       type: file
-      description: Correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.errors.*.txt.gz"
+      description: Groups correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.grp.txt.gz"
+
+  - errors_spl:
+      type: file
+      description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.errors.spl.txt.gz"
+
+  - rsquared_grp:
+      type: file
+      description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.rsquare.grp.txt.gz"
+
+  - rsquared_spl:
+      type: file
+      description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "*.rsquare.spl.txt.gz"
 
 authors:
   - "@louislenezet"

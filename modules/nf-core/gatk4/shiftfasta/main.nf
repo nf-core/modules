@@ -32,10 +32,10 @@ process GATK4_SHIFTFASTA {
     if (!task.memory) {
         log.info '[GATK ShiftFasta] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" ShiftFasta \\
+    gatk --java-options "-Xmx${avail_mem}M" ShiftFasta \\
         --reference $fasta \\
         --output ${prefix}_shift.fasta \\
         --shift-back-output ${prefix}_shift.back_chain \\

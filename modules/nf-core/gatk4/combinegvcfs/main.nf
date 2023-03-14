@@ -29,10 +29,10 @@ process GATK4_COMBINEGVCFS {
     if (!task.memory) {
         log.info '[GATK COMBINEGVCFS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" CombineGVCFs \\
+    gatk --java-options "-Xmx${avail_mem}M" CombineGVCFs \\
         $input_list \\
         --output ${prefix}.combined.g.vcf.gz \\
         --reference ${fasta} \\
