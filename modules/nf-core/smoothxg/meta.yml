@@ -34,14 +34,14 @@ output:
   - gfa:
       type: file
       description: Linearized and simplified graph in GFA 1.0 format
-      pattern: "*.{gfa}"
+      pattern: "*.smoothxg.{gfa}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
   - maf:
-    type: file
-    description: write the multiple sequence alignments (MSAs) in MAF format in this file (optional)
-    pattern: "*.{maf}"
+      type: file
+      description: write the multiple sequence alignments (MSAs) in MAF format in this file (optional)
+      pattern: "*.{maf}"
 authors:
   - "@heuermh, @subwaystation"

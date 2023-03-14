@@ -2,7 +2,7 @@ process HLALA_TYPING {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::hla-la=1.0.3" : null)
+    conda "bioconda::hla-la=1.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
         'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
