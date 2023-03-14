@@ -23,7 +23,6 @@ workflow test_hlala_typing {
                                             .map { meta, cram, graph, meta_1, bai ->
                                                     [meta, cram, bai, graph] }
                                             .set { hla_typing_input_ch }
-    hla_typing_input_ch
 
     HLALA_TYPING ( hla_typing_input_ch )
 }
