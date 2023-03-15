@@ -7,8 +7,8 @@ include { BEDTOOLS_UNIONBEDG } from '../../../../../modules/nf-core/bedtools/uni
 workflow test_bedtools_unionbedg {
     
     input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['bedgraph']['test_bedgraph'], checkIfExists: true),
-		        file(params.test_data['sarscov2']['illumina']['bedgraph']['test_bedgraph'], checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true),
+		        file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true) 
 		      ]
             ]
 
@@ -18,8 +18,8 @@ workflow test_bedtools_unionbedg {
 workflow test_bedtools_unionbedg_empty {
     
     input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['bedgraph']['test_bedgraph'], checkIfExists: true),
-		        file(params.test_data['sarscov2']['illumina']['bedgraph']['test_bedgraph'], checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true),
+		        file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true) 
 		      ]
             ]
 	sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
