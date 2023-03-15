@@ -32,7 +32,7 @@ workflow test_hlala_typing {
 // Download files
 // 
 // wget http://www.well.ox.ac.uk/downloads/PRG_MHC_GRCh38_withIMGT.tar.gz
-// wget https://www.dropbox.com/s/xr99u3vqaimk4vo/NA12878.mini.cra
+// wget https://www.dropbox.com/s/xr99u3vqaimk4vo/NA12878.mini.cram
 
 // workflow test_hlala_typing {
 
