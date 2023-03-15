@@ -9,7 +9,7 @@ process BEDTOOLS_UNIONBEDG {
 
     input:
     tuple val(meta), path(bedgraph, stageAs: "?/*")
-    tuple val(meta2), path(chrom_sizes)
+    path chrom_sizes
     val(empty)
 
     output:
