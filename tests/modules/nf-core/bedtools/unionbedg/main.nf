@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_UNIONBEDG } from '../../../../../modules/nf-core/bedtools/unionbedg/main.nf'
+include { BEDTOOLS_UNIONBEDG                             } from '../../../../../modules/nf-core/bedtools/unionbedg/main.nf'
+include { BEDTOOLS_UNIONBEDG as BEDTOOLS_UNIONBEDG_EMPTY } from '../../../../../modules/nf-core/bedtools/unionbedg/main.nf'
 
 workflow test_bedtools_unionbedg {
     
@@ -24,5 +25,5 @@ workflow test_bedtools_unionbedg_empty {
             ]
 	sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
-    BEDTOOLS_UNIONBEDG ( input, sizes )
+BEDTOOLS_UNIONBEDG_EMPTY ( input, sizes )
 }
