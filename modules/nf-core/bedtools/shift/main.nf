@@ -26,7 +26,7 @@ process BEDTOOLS_SHIFT {
     bedtools \\
         shift \\
         -i $bed \\
-        -g $sizes \\
+        -g $chrom_sizes \\
         $args \\
         > ${prefix}.bed
     cat <<-END_VERSIONS > versions.yml
