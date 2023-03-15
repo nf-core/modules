@@ -20,7 +20,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bedgraph:
       type: file
-      description: Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
+      description: |
+        Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
       pattern: "*.{bedGraph,bedgraph}"
   - chrom_sizes:
       type: optional file
