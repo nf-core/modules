@@ -11,7 +11,7 @@ process BEDTOOLS_UNIONBEDG {
     tuple val(meta), path(bedgraph, stageAs: "?/*")
     tuple val(meta2), path(chrom_sizes)
     val(empty)
-    
+
     output:
     tuple val(meta), path("*.bed"), emit: bed
     path  "versions.yml"          , emit: versions
