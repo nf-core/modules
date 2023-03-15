@@ -34,23 +34,24 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
    ```console
    $ nf-core modules list remote
 
-                                         ,--./,-.
-         ___     __   __   __   ___     /,-._.--~\
-   |\ | |__  __ /  ` /  \ |__) |__         }  {
-   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                         `._,._,'
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
 
-   nf-core/tools version 2.0
+    nf-core/tools version 2.7.2 - https://nf-co.re
 
-   INFO     Modules available from nf-core/modules (master):                       pipeline_modules.py:164
+
+INFO     Modules available from https://github.com/nf-core/modules.git (master):
 
    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
    ┃ Module Name                    ┃
    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-   │ bandage/image                  │
-   │ bcftools/consensus             │
-   │ bcftools/filter                │
-   │ bcftools/isec                  │
+   │ abacas                         │
+   │ abricate/run                   │
+   │ abricate/summary               │
+   │ adapterremoval                 │
    ..truncated..
    ```
 
@@ -65,10 +66,11 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                          `._,._,'
 
-   nf-core/tools version 2.0
+   nf-core/tools version 2.7.2 - https://nf-co.re
 
-   INFO     Installing fastqc                                                      pipeline_modules.py:213
-   INFO     Downloaded 3 files to ./modules/nf-core/modules/fastqc                 pipeline_modules.py:236
+   INFO     Installing fastqc
+   INFO     Use the following statement to include this module:
+                                                                                                                              include { FASTQC } from '../modules/nf-core/fastqc/main'
    ```
 
 4. Import the module in your Nextflow script:
@@ -92,10 +94,10 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                          `._,._,'
 
-   nf-core/tools version 2.0
+  nf-core/tools version 2.7.2 - https://nf-co.re
 
-   INFO     Removing fastqc                                                        pipeline_modules.py:271
-   INFO     Successfully removed fastqc                                            pipeline_modules.py:285
+   INFO     Removing fastqc
+   INFO     Removed files for 'fastqc' and it's dependencies 'fastqc'.
    ```
 
 6. Check that a locally installed nf-core module is up-to-date compared to the one hosted in this repo:
@@ -109,27 +111,54 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                          `._,._,'
 
-   nf-core/tools version 2.0
+    nf-core/tools version 2.7.2 - https://nf-co.re
 
-   INFO     Linting pipeline: .                                                    lint.py:104
-   INFO     Linting module: fastqc                                                 lint.py:106
+   INFO     Linting pipeline: '.'
+   INFO     Linting module: 'fastqc'
 
-   ╭─────────────────────────────────────────────────────────────────────────────────╮
-   │ [!] 1 Test Warning                                                              │
-   ╰─────────────────────────────────────────────────────────────────────────────────╯
-   ╭──────────────┬───────────────────────────────┬──────────────────────────────────╮
-   │ Module name  │ Test message                  │ File path                        │
-   ├──────────────┼───────────────────────────────┼──────────────────────────────────┤
-   │ fastqc       │ Local copy of module outdated │ modules/nf-core/modules/fastqc/  │
-   ╰──────────────┴────────────────────────────── ┴──────────────────────────────────╯
-   ╭──────────────────────╮
-   │ LINT RESULTS SUMMARY │
-   ├──────────────────────┤
-   │ [✔]  15 Tests Passed │
-   │ [!]   1 Test Warning │
-   │ [✗]   0 Test Failed  │
-   ╰──────────────────────╯
+╭─ [!] 1 Module Test Warning ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                           ╷                                ╷                                                                       │
+│ Module name                               │ File path                      │ Test message                                                          │
+│╶──────────────────────────────────────────┼────────────────────────────────┼──────────────────────────────────────────────────────────────────────╴│
+│ fastqc                                    │ modules/nf-core/fastqc/main.nf │ Conda update: bioconda::fastqc 0.11.9 -> 0.12.1                       │
+│                                           ╵                                ╵                                                                       │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────╮
+│ LINT RESULTS SUMMARY │
+├──────────────────────┤
+│ [✔]  22 Tests Passed │
+│ [!]   1 Test Warning │
+│ [✗]   0 Tests Failed │
+╰──────────────────────╯
    ```
+
+7. Update the installed module locally with the latest version:
+
+   ```console
+   $ nf-core modules update fastqc
+
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 2.7.2 - https://nf-co.re
+
+
+   ? Do you want to view diffs of the proposed changes? (Use arrow keys)
+ » No previews, just update everything
+   Preview diff in terminal, choose whether to update files
+   Just write diffs to a patch file
+   ```
+When prompted use the arrow keys to select the option to just update everything without preview or preveiw the changes before updating.
+
+    ```console
+    ? Do you want to view diffs of the proposed changes? No previews, just update everything
+    INFO     'modules/nf-core/fastqc' is already up to date
+    INFO     Updates complete ✨
+    ```
+
 
 ## Adding new modules
 
