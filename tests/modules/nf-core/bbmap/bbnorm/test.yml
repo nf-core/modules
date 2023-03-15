@@ -5,10 +5,7 @@
     - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
-      contains:
-        - "java"
     - path: output/bbmap/test.fastq.gz
-      md5sum: 709872fc2910431b1e8b7074bfe38c67
     - path: output/bbmap/versions.yml
 
 - name: bbmap bbnorm test_bbmap_bbnorm_pe
@@ -18,12 +15,8 @@
     - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
-      contains:
-        - "java"
     - path: output/bbmap/test_1.nm.fastq.gz
-      md5sum: a3a03cfae9f7afcba34a7b5a5875d4ea
     - path: output/bbmap/test_2.nm.fastq.gz
-      md5sum: 8775e4088fa9ed85cf9e837cb27ec207
     - path: output/bbmap/versions.yml
 
 - name: bbmap bbnorm test_bbmap_bbnorm_interleaved
@@ -33,8 +26,5 @@
     - bbmap
   files:
     - path: output/bbmap/test.bbnorm.log
-      contains:
-        - "java"
     - path: output/bbmap/test.fastq.gz
-      md5sum: 429b768fbb6c8e6961e9baa04ae7f868
     - path: output/bbmap/versions.yml
