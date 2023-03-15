@@ -1,6 +1,6 @@
 process BEDTOOLS_UNIONBEDG {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "bioconda::bedtools=2.30.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
