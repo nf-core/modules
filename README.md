@@ -154,11 +154,11 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
    ```
 When prompted use the arrow keys to select the option to just update everything without preview or preveiw the changes before updating.
 
-    ```console
+  ```console
     ? Do you want to view diffs of the proposed changes? No previews, just update everything
     INFO     'modules/nf-core/fastqc' is already up to date
     INFO     Updates complete ✨
-    ```
+  ```
 
 
 ## Adding new modules
