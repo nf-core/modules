@@ -10,14 +10,19 @@ process FILTERCOUNT {
 
     input:
         each mergecount_data
+        val params
 
     output:
-        tuple val(preprocess), path("ods.Rds")      , emit: result
-        path "versions.yml"                         , emit: versions
+        tuple val(preprocess), val(groupName), path("ods.Rds")      , emit: result
+        path "versions.yml"                                         , emit: versions
 
     shell:
         txtDB = mergecount_data.preprocess.txtDb
         total_count = mergecount_data.totalCounts
+
+        groupName = mergecount_data.groupName
+
+        fpkmCutoff = params.fpkmCutoff
 
         preprocess = mergecount_data.preprocess
         '''
@@ -34,11 +39,8 @@ process FILTERCOUNT {
             ods <- OutriderDataSet(counts)
             txdb <- loadDb("!{txtDB}")
 
-            # TODO: Determine what is this.
-            fpkmCutoff <- 1
-
             # filter not expressed genes
-            fpkmCutoff <- fpkmCutoff
+            fpkmCutoff <- !{fpkmCutoff}
             ods <- filterExpression(ods, gtfFile=txdb, filter=FALSE,
                                     fpkmCutoff, addExpressedGenes=TRUE)
 
@@ -48,8 +50,7 @@ process FILTERCOUNT {
             # External data check
             if (is.null(ods@colData$GENE_COUNTS_FILE)){ #column does not exist in sample annotation table
                 has_external <- FALSE
-            # TODO-csandu: Discuss this change
-            }else if(any(is.na(ods@colData$GENE_COUNTS_FILE))){ #column exists but it has no values
+            }else if(all(is.na(ods@colData$GENE_COUNTS_FILE))){ #column exists but it has no values
                 has_external <- FALSE
             }else if(all(ods@colData$GENE_COUNTS_FILE == "")){ #column exists with non-NA values but this group has all empty strings
                 has_external <- FALSE

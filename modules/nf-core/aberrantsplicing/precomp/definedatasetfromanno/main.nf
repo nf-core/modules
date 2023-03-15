@@ -14,7 +14,7 @@ process DEFINE_DATASET_FROM_ANNO {
         path (sampleAnnotation)
 
     output:
-        tuple val(group), path("fraser.tsv")           , emit: result
+        tuple val(group), path("*.tsv")           , emit: result
 
     shell:
         bamsStr = bams.join(",")
@@ -81,7 +81,7 @@ process DEFINE_DATASET_FROM_ANNO {
             DT::datatable(finalTable, options=list(scrollX=TRUE))
 
             dim(finalTable)
-            write_tsv(finalTable, file="fraser.tsv")
+            write_tsv(finalTable, file="!{group}.tsv")
 
             # run the version part
             cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")

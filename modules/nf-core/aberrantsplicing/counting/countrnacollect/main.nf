@@ -12,7 +12,7 @@ process COUNTRNA_COLLECT {
         each groupData
 
     output:
-        path("counting.done")            , emit: counting_done
+        tuple val(groups), path("FRASER_output"),   emit: result
 
     shell:
         groups      = groupData.group
@@ -21,6 +21,8 @@ process COUNTRNA_COLLECT {
         grNonSplit  = groupData.grNonSplit
         spliceSites = groupData.spliceSites
 
+        rawCountsJ  = groupData.rawCountsJ
+        rawCountsSS = groupData.rawCountsSS
         '''
             #!/usr/bin/env Rscript --vanilla
 
@@ -52,10 +54,7 @@ process COUNTRNA_COLLECT {
             spliceSiteCoords <- readRDS("!{spliceSites}")
 
             # Get splitReads and nonSplitRead counts in order to store them in FRASER object
-            file.copy(
-                file.path("!{FR_output}", "savedObjects/raw-local-fraser_external/nonSplitCounts/assays.h5"),
-                file.path(saveDir, "rawCountsJ.h5"), recursive = TRUE)
-            splitCounts_h5 <- HDF5Array::HDF5Array(file.path(saveDir, "rawCountsJ.h5"), "rawCountsJ")
+            splitCounts_h5 <- HDF5Array::HDF5Array("!{rawCountsJ}", "rawCountsJ")
             splitCounts_se <- SummarizedExperiment(
             colData = colData(fds),
             rowRanges = splitCounts_gRanges,
@@ -63,7 +62,7 @@ process COUNTRNA_COLLECT {
             )
 
 
-            nonSplitCounts_h5 <- HDF5Array::HDF5Array(file.path(saveDir, "rawCountsSS.h5"), "rawCountsSS")
+            nonSplitCounts_h5 <- HDF5Array::HDF5Array("!{rawCountsSS}", "rawCountsSS")
             nonSplitCounts_se <- SummarizedExperiment(
             colData = colData(fds),
             rowRanges = spliceSiteCoords,

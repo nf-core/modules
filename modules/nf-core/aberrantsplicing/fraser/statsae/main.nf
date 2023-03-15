@@ -1,4 +1,4 @@
-process PSI_VALUE_CALC {
+process STATSAE {
 //    tag "$meta.id"
     label 'process_low'
 
@@ -10,14 +10,17 @@ process PSI_VALUE_CALC {
 
     input:
         each groupData
+        val params
 
     output:
-        tuple val(groups), path("FRASER_output"), \
-            path("FRASER_output/savedObjects/raw-local-*/theta.h5")    , emit: result
+        tuple val(groups), path("FRASER_output"),   emit: result
 
     shell:
-        groups       = groupData.group
-        FR_output    = groupData.output
+        groups      = groupData.group
+        FR_output   = groupData.output
+
+        implementation = params.implementation
+        maxTestedDimensionProportion = params.maxTestedDimensionProportion
         '''
             #!/usr/bin/env Rscript --vanilla
 
@@ -44,19 +47,29 @@ process PSI_VALUE_CALC {
 
             h5disableFileLocking()
 
-            dataset    <- "!{groups}"
-
-            # Read FRASER object
+            # copy FRASER_output
             file.copy("!{FR_output}", ".", recursive = TRUE)
-            fds <- loadFraserDataSet(dir="FRASER_output", name=paste0("raw-local-", dataset))
 
-            # Calculating PSI values
-            fds <- calculatePSIValues(fds)
+            dataset    <- "!{groups}"
+            workingDir <- "FRASER_output"
 
-            # FRASER object after PSI value calculation
+            register(MulticoreParam(1))
+            # Limit number of threads for DelayedArray operations
+            setAutoBPPARAM(MulticoreParam(1))
+            
+            # Load Zscores data
+            fds <- loadFraserDataSet(dir=workingDir, name=dataset)
+
+            # Calculate stats
+            for (type in psiTypes) {
+                # Zscores
+                fds <- calculateZscore(fds, type=type)
+                # Pvalues
+                fds <- calculatePvalues(fds, type=type)
+                # Adjust Pvalues
+                fds <- calculatePadjValues(fds, type=type)
+            }
+
             fds <- saveFraserDataSet(fds)
-
-            # run the version part
-            cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
         '''
 }

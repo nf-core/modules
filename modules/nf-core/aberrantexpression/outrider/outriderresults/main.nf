@@ -9,19 +9,21 @@ process RESULTS {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        each runtoutrider_data
+        each runoutrider_data
         val add_HPO_cols
         val(padjCutoff)
         val(zScoreCutoff)
 
     output:
-        path("results_all.Rds")       , emit: results_all
-        path("results.tsv")           , emit: results_tsv
+        tuple val(preprocess), val(groupName), path("results_all.Rds"), path("results.tsv")     , emit: result
         path "versions.yml"           , emit: versions
 
     shell:
-        ods = runtoutrider_data.ods
-        geneAnnotation = runtoutrider_data.preprocess.geneMap
+        ods = runoutrider_data.ods
+        geneAnnotation = runoutrider_data.preprocess.geneMap
+        groupName = runoutrider_data.groupName
+
+        preprocess = runoutrider_data.preprocess
         '''
             #!/usr/bin/env Rscript --vanilla
 

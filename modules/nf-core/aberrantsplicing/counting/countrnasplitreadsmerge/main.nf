@@ -14,8 +14,10 @@ process COUNTRNA_SPLITREADS_MERGE {
         val minExpressionInOneSample
 
     output:
-        tuple val(grData), path("FRASER_output"), path("gRanges_splitCounts.rds"), \
-            path("gRanges_NonsplitCounts.rds"), path("spliceSites_splitCounts.rds")  , emit: result
+        tuple val(grData), path("FRASER_output"), path("FRASER_output/cache/raw-local-*/gRanges_splitCounts.rds"), \
+            path("FRASER_output/cache/raw-local-*/gRanges_NonSplitCounts.rds"), \
+            path("FRASER_output/cache/raw-local-*/spliceSites_splitCounts.rds"),
+            path("FRASER_output/savedObjects/raw-local-*/rawCountsJ.h5")  , emit: result
 
     shell:
         groups = sampleIDs.group
@@ -44,6 +46,11 @@ process COUNTRNA_SPLITREADS_MERGE {
                 library(base)
             })
 
+            options("FRASER.maxSamplesNoHDF5"=1)
+            options("FRASER.maxJunctionsNoHDF5"=-1)
+
+            h5disableFileLocking()
+
             # copy all folders together
             for (x in strsplit("!{output}", ",")[[1]]) {
                 file.copy(x, ".", recursive=TRUE, overwrite=TRUE)
@@ -71,8 +78,10 @@ process COUNTRNA_SPLITREADS_MERGE {
             splitCountRanges <- rowRanges(splitCounts)
 
             # Annotate granges from the split counts
+            dir.create("FRASER_output/cache/raw-local-!{groups}")
+
             splitCountRanges <- FRASER:::annotateSpliceSite(splitCountRanges)
-            saveRDS(splitCountRanges, "gRanges_splitCounts.rds")
+            saveRDS(splitCountRanges, "FRASER_output/cache/raw-local-!{groups}/gRanges_splitCounts.rds")
 
             # Create ranges for non split counts
             # Subset by minExpression
@@ -81,12 +90,12 @@ process COUNTRNA_SPLITREADS_MERGE {
             # extract granges after filtering
             splitCountRanges <- splitCountRanges[passed,]
 
-            saveRDS(splitCountRanges, "gRanges_NonsplitCounts.rds")
+            saveRDS(splitCountRanges, "FRASER_output/cache/raw-local-!{groups}/gRanges_NonSplitCounts.rds")
 
             # Extract splitSiteCoodinates: extract donor and acceptor sites
             # take either filtered or full fds
             spliceSiteCoords <- FRASER:::extractSpliceSiteCoordinates(splitCountRanges, fds)
-            saveRDS(spliceSiteCoords, "spliceSites_splitCounts.rds")
+            saveRDS(spliceSiteCoords, "FRASER_output/cache/raw-local-!{groups}/spliceSites_splitCounts.rds")
 
             message(date(), ": ", dataset, " total no. splice junctions = ",
                     length(splitCounts))

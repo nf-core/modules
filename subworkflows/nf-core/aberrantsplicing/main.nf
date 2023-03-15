@@ -10,14 +10,28 @@ include { COUNTRNA_NONSPLITREADS_MERGE          } from '../../../modules/nf-core
 
 include { COUNTRNA_COLLECT                      } from '../../../modules/nf-core/aberrantsplicing/counting/countrnacollect'
 include { PSI_VALUE_CALC                        } from '../../../modules/nf-core/aberrantsplicing/counting/psivaluecalc'
+include { FILTER                                } from '../../../modules/nf-core/aberrantsplicing/counting/filter'
+
+include { FITHYPER                              } from '../../../modules/nf-core/aberrantsplicing/fraser/fithyper'
+include { AUTOENCODER                           } from '../../../modules/nf-core/aberrantsplicing/fraser/autoencoder'
+include { STATSAE                               } from '../../../modules/nf-core/aberrantsplicing/fraser/statsae'
+
+include { RESULTS                               } from '../../../modules/nf-core/aberrantsplicing/fraser/results'
+
 
 workflow ABERRANT_SPLICING {
     take:
         params
 
+    emit:
+        resultsAll
+
     main:
         ch_versions = Channel.empty()
 
+        /* -------------
+         * Counting part
+         */
         PREPROCESSGENEANNOTATION(params.gtfData).result
             .map {it -> ["annotation": it[0], "txtDb": it[1], "geneMap": it[2], "countRanges": it[3]]}
             .set {preprocess_data}
@@ -42,6 +56,7 @@ workflow ABERRANT_SPLICING {
             .map {it -> ["group": it[0], "fdsObj": it[1], "output": it[2]]}
             .set {initData}
 
+        // Obtain the required sample information and concat it with initData
         sampleIDs = params.procAnnotation.combine(initData)
             .filter (it -> it[0].RNA_BAM_FILE != "")
             .filter (it -> it[0].DROP_GROUP.contains(it[1].group))
@@ -56,30 +71,31 @@ workflow ABERRANT_SPLICING {
             .map {it -> ["group": it[0], "output": it[1]]}
             .set {mergeIDs_data}
 
-        // mergeIDs_data.view()
+        // All output files will be copied together in merge operation
         COUNTRNA_SPLITREADS_MERGE(
                 mergeIDs_data,
                 params.aberrantsplicing.recount,
                 params.aberrantsplicing.minExpressionInOneSample
             )
-            .map {it -> ["groupData": it[0], "output": it[1], \
-                "grSplit": it[2], "grNonSplit": it[3], "spliceSites": it[4]]}
+            .map {it -> ["groupData": it[0],
+                    "output": it[1], "grSplit": it[2], "grNonSplit": it[3], "spliceSites": it[4], "rawCountsJ": it[5]
+                ]}
             .set {splitmerge_data}
 
         splitmerge_data = splitmerge_data.combine(sampleIDs)
             .filter (it -> it[0].groupData.group == it[1].group)
             .map {it -> ["group": it[0].groupData.group, "sampleID": it[1].sampleID, \
-                "output": it[0].output, "grSplit": it[0].grSplit, \
-                "grNonSplit": it[0].grNonSplit, "spliceSites": it[0].spliceSites]}
+                            "output": it[0].output, "grSplit": it[0].grSplit, "grNonSplit": it[0].grNonSplit, \
+                            "spliceSites": it[0].spliceSites, "rawCountsJ": it[0].rawCountsJ]}
         COUNTRNA_NONSPLITREADS_SAMPLEWISE(
             splitmerge_data,
             params.aberrantsplicing.recount,
             params.aberrantsplicing.longRead
         )
-            .map {it -> [it[0].group, it[0].grNonSplit, it[0].grSplit, it[0].spliceSites, it[1]]}
+            .map {it -> [it[0].group, it[0].grNonSplit, it[0].grSplit, it[0].spliceSites, it[0].rawCountsJ, it[1]]}
             .groupTuple()
             .map {it -> ["group": it[0], "grNonSplit": it[1][0], \
-                "grSplit": it[2][0], "spliceSites": it[3][0], "output": it[4]]}
+                "grSplit": it[2][0], "spliceSites": it[3][0], "rawCountsJ": it[4][0], "output": it[5]]}
             .set {nonSplit_data}
 
         COUNTRNA_NONSPLITREADS_MERGE(
@@ -89,15 +105,53 @@ workflow ABERRANT_SPLICING {
             )
             .map {it -> ["group": it[0].group, "output": it[1], \
                 "grSplit": it[0].grSplit, "grNonSplit": it[0].grNonSplit, \
-                "spliceSites": it[0].spliceSites]}
+                "spliceSites": it[0].spliceSites, "rawCountsJ": it[0].rawCountsJ, \
+                "rawCountsSS": it[2]]}
             .set {nonSplitMerge_data}
 
+        COUNTRNA_COLLECT(nonSplitMerge_data)
+            .map {it -> ["group": it[0], "output": it[1]]}
+            .set {countrna_data}
 
-        // nonSplitMerge_data.view()
-        // COUNTRNA_COLLECT(nonSplitMerge_data)
+        PSI_VALUE_CALC(countrna_data)
+            .map {it -> ["group": it[0], "output": it[1]]}
+            .set {psi_data}
 
+        // Prepare the external data for filtering
+        externalData = params.procAnnotation
+            .filter (it -> it.DROP_GROUP == "fraser_external") .combine (psi_data)
+            .map {it -> [it[1].group, it[1].output, it[0].RNA_ID, it[0].SPLICE_COUNTS_DIR]}
+            .groupTuple()
+            .map {it -> { if (it[0] == "fraser") {['group': it[0], 'output': it[1][0], 'exIDs': [], 'exFiles': []]} else \
+                {['group': it[0], 'output': it[1][0],  'exIDs': it[2], 'exFiles': it[3]]}
+            }}
+        FILTER(externalData, params.annotation, params.aberrantsplicing).result
+            .map {it -> ['group': it[0], "output": it[1]]}
+            .set {filter_data}
 
-        // psiCalcGroup = groups.
-        //     map {it -> tuple(it.group, it.fdsObj)}
-        //  v(psiCalcGroup, COUNTRNA_COLLECT.out.counting_done.collect())
+        /* -------------
+         * Fraser part
+         */
+        FITHYPER(filter_data, params.aberrantsplicing)
+            .map {it -> ['group': it[0], "output": it[1]]}
+            .set {fithyper_data}
+
+        AUTOENCODER(fithyper_data, params.aberrantsplicing)
+            .map {it -> ['group': it[0], "output": it[1]]}
+            .set {autoencoder_data}
+
+        STATSAE(autoencoder_data, params.aberrantsplicing)
+            .map {it -> ['group': it[0], "output": it[1]]}
+            .set {statsae_data}
+
+        RESULTS(statsae_data, preprocess_data, params.annotation, params.aberrantsplicing)
+            .map {it -> ["annotation": it[0], "group": it[1], "results_per_junction": it[3], "resultstsv": it[4]]}
+            .set {results_data}
+
+        // Prepare the output for moving it to rootDir
+        resultsAll = preprocess_data
+            .map {it -> [it.annotation, 'general', 'preprocess', [it.txtDb, it.geneMap, it.countRanges]]}
+            .concat (groupData.map     {it -> ['general', it.group, 'anno_from_dataset', [it.tsv]]})
+            .concat (results_data.map  {it -> [it.annotation, it.group, 'results', [it.results_per_junction, it.resultstsv]]})
+
 }

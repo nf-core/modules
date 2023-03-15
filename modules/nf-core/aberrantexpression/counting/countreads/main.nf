@@ -22,37 +22,52 @@ process COUNTREADS {
 
         bam = bam_data.RNA_BAM_FILE
         groups = bam_data.DROP_GROUP
+
+        countMode = bam_data.COUNT_MODE
+        pairedEnd = bam_data.PAIRED_END
+        strandSpec = bam_data.STRAND
+        countOverlaps = bam_data.COUNT_OVERLAPS
+        RNA_ID = bam_data.RNA_ID
         '''
             #!/usr/bin/env Rscript --vanilla
 
             suppressPackageStartupMessages({
-            library(data.table)
-            library(Rsamtools)
-            library(BiocParallel)
-            library(GenomicAlignments)
+                library(data.table)
+                library(Rsamtools)
+                library(BiocParallel)
+                library(GenomicAlignments)
             })
             inputBAM <- "!{bam}"
             inputRanges <- "!{count_ranges}"
 
             # Get strand specific information from sample annotation
-            sampleID <- gsub(".bam", "", basename(inputBAM))
+            sampleID <- "!{RNA_ID}"
 
-            # TODO parse the input/parameters
-            # check: https://github.com/gagneurlab/drop/blob/37a91d34ff0d8ef51906ae7edb004cdf53c846f0/drop/modules/aberrant-expression-pipeline/Counting/countReads.R#L31
+            strand <- tolower("!{strandSpec}")
+            count_mode <- "!{countMode}"
+            paired_end <- as.logical("!{pairedEnd}")
+            overlap <- as.logical("!{countOverlaps}")
+            inter_feature <- ! overlap # inter_feature = FALSE does not allow overlapsi
+
+            # infer preprocessing and strand info
+            preprocess_reads <- NULL
+            if (strand == "yes") {
+                strand_spec <- T
+            } else if (strand == "no"){
+                strand_spec <- F
+            } else if (strand == "reverse") {
+                # set preprocess function for later
+                preprocess_reads <- invertStrand
+                strand_spec <- T
+            } else {
+                stop(paste("invalid strand information", strand))
+            }
 
             # read files
-            bam_file <- BamFile(inputBAM, yieldSize = 1e5)
+            bam_file <- BamFile(inputBAM, yieldSize = 2e6)
             count_ranges <- readRDS(inputRanges)
-
             # set chromosome style
             seqlevelsStyle(count_ranges) <- seqlevelsStyle(bam_file)
-
-            count_mode <- "Union"
-            paired_end <- TRUE
-            strand_spec <- TRUE
-            overlap <- FALSE
-            inter_feature <- ! overlap # inter_feature = FALSE does not allow overlapsi
-            preprocess_reads <- NULL
 
             # start counting
             se <- summarizeOverlaps(
@@ -65,6 +80,7 @@ process COUNTREADS {
                 , count.mapped.reads = T
                 , inter.feature = inter_feature # TRUE: reads mapping to multiple features are dropped
                 , preprocess.reads = preprocess_reads
+                , BPPARAM = MulticoreParam(1)
             )
             colnames(se) <- sampleID
             saveRDS(se, paste0(sampleID, ".Rds"))

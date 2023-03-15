@@ -8,18 +8,22 @@ process MERGECOUNTS {
         'quay.io/biocontainers/drop:1.2.4--pyhdfd78af_0' }"
 
     input:
-        each (group)
+        each (groupData)
         path (sampleAnn)
 
     output:
-        tuple val(preprocess), path ("total_counts.Rds")    , emit: result
-        path "versions.yml"                                 , emit: versions
+        tuple val(preprocess), val(groupName), path ("total_counts.Rds")    , emit: result
+        path "versions.yml"                                                 , emit: versions
 
     shell:
-        counts = group.rds.join(",")
-        count_ranges = group.preprocess.countRanges
+        groupName = groupData.group
 
-        preprocess = group.preprocess
+        counts = groupData.rds.join(",")
+        count_ranges = groupData.preprocess.countRanges
+
+        rnaIDs = groupData.rnaID.join(",")
+
+        preprocess = groupData.preprocess
         '''
             #!/usr/bin/env Rscript --vanilla
 
@@ -30,19 +34,24 @@ process MERGECOUNTS {
                 library(SummarizedExperiment)
             })
             count_files <- strsplit("!{counts}", ",")[[1]]
+            register(MulticoreParam(1))
             count_ranges <- readRDS("!{count_ranges}")
 
             # Read counts
+            selectedIDs <- strsplit("!{rnaIDs}", ",")[[1]]
             counts_list <- bplapply(count_files, function(f){
                 if(grepl('Rds$', f))
                     assay(readRDS(f))
                 else {
                     ex_counts <- as.matrix(fread(f), rownames = "geneID")
 
-                    # TODO: What is exCountID?
-                    # Merge to BAM.
-                    stopifnot(! snakemake@params$exCountIDs %in% names(ex_counts))
-                    subset(ex_counts, select = snakemake@params$exCountIDs)
+                    index = which(count_files == f)[1]
+
+                    # remove the existing ID from a given index
+                    selectedID <- selectedIDs[index]
+                    selectedIDs <<- selectedIDs[-index]
+
+                    subset(ex_counts, select = selectedID)
                 }
             })
 

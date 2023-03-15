@@ -24,10 +24,10 @@ process PREPROCESSGENEANNOTATION {
             #!/usr/bin/env Rscript --vanilla
 
             suppressPackageStartupMessages({
-            library(GenomicFeatures)
-            library(data.table)
-            library(rtracklayer)
-            library(magrittr)
+                library(GenomicFeatures)
+                library(data.table)
+                library(rtracklayer)
+                library(magrittr)
             })
 
             ## Create txdb

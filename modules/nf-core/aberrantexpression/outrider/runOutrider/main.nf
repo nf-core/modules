@@ -13,12 +13,14 @@ process RUNOUTRIDER {
         val(maxTestedDimensionProportion)
 
     output:
-        tuple val(preprocess), path("ods.Rds")      , emit: result
-        path "versions.yml"                         , emit: versions
+        tuple val(preprocess), val(groupName), path("ods.Rds")      , emit: result
+        path "versions.yml"                                         , emit: versions
 
     shell:
         preprocess = filter_data.preprocess
         ods_unfitted = filter_data.odsUnfit
+
+        groupName = filter_data.groupName
         '''
             #!/usr/bin/env Rscript --vanilla
 
@@ -35,6 +37,7 @@ process RUNOUTRIDER {
             ods <- readRDS("!{ods_unfitted}")
             implementation <- "!{implementation}"
             mp <- !{maxTestedDimensionProportion}
+            register(MulticoreParam(1))
 
             ## subset filtered
             ods <- ods[mcols(ods)$passedFilter,]

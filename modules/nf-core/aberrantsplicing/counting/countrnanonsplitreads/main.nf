@@ -14,13 +14,13 @@ process COUNTRNA_NONSPLITREADS_SAMPLEWISE {
         val longRead
 
     output:
-        tuple val(grData), path("FRASER_output")     , emit: result
+        tuple val(grData), path("FRASER_output")    , emit: result
 
     shell:
         groups       = groupData.group
+        sampleID     = groupData.sampleID
         grSplit      = groupData.grSplit
         FR_output    = groupData.output
-        sampleID     = groupData.sampleID
 
         grData = groupData
 
@@ -44,6 +44,11 @@ process COUNTRNA_NONSPLITREADS_SAMPLEWISE {
             library(purrr)
             library(base)
         })
+
+        options("FRASER.maxSamplesNoHDF5"=1)
+        options("FRASER.maxJunctionsNoHDF5"=-1)
+
+        h5disableFileLocking()
 
         dataset    <- "!{groups}"
         # Read FRASER object

@@ -14,7 +14,8 @@ process COUNTRNA_NONSPLITREADS_MERGE {
         val longRead
 
     output:
-        tuple val(grData), path("FRASER_output")    , emit: result
+        tuple val(grData), path("FRASER_output"), \
+            path("FRASER_output/savedObjects/raw-local-*/rawCountsSS.h5")    , emit: result
 
     shell:
         groups       = groupData.group
@@ -43,6 +44,11 @@ process COUNTRNA_NONSPLITREADS_MERGE {
             library(purrr)
             library(base)
         })
+
+        options("FRASER.maxSamplesNoHDF5"=1)
+        options("FRASER.maxJunctionsNoHDF5"=-1)
+
+        h5disableFileLocking()
 
         dataset    <- "!{groups}"
         recount    <- "!{recount}" == "true"

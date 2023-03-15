@@ -41,9 +41,8 @@ process COUNTRNA_SPLITREADS_SAMPLEWISE {
                 library(rhdf5)
                 library(purrr)
                 library(base)
+                library(BSgenome)
             })
-
-            library(BSgenome)
 
             dataset    <- "!{groups}"
             genomeAssembly <- "!{genomeAssembly}"
@@ -58,7 +57,7 @@ process COUNTRNA_SPLITREADS_SAMPLEWISE {
             # If data is not strand specific, add genome info
             genome <- NULL
             if(strandSpecific(fds) == 0){
-            genome <- getBSgenome(genomeAssembly)
+                genome <- getBSgenome(genomeAssembly)
             }
 
             # Count splitReads for a given sample id
@@ -70,8 +69,6 @@ process COUNTRNA_SPLITREADS_SAMPLEWISE {
 
             message(date(), ": ", dataset, ", ", sample_id,
                     " no. splice junctions (split counts) = ", length(sample_result))
-
-            file.create("!{sampleID}.done")
 
             # run the version part
             cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")

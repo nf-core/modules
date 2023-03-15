@@ -66,8 +66,6 @@ process COUNTRNA_INIT {
 
             message(date(), ": FRASER object initialized for ", dataset)
 
-            file.create("fds.done")
-
             # run the version part
             cat(file="versions.yml", "!{task.process}:\naberrantexpression: 1.3.0")
         '''
