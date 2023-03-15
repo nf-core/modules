@@ -21,8 +21,7 @@ input:
   - file_in:
       type: path
       description: multidimentional image data in formats from most commercial microscopes
-      pattern: "*.{ome.tif, ome.tiff, tif, tiff}"
-
+      pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
 output:
   #
   - meta:
@@ -33,7 +32,7 @@ output:
   - file_out:
       type: file
       description: pyramidal OME-TIFF
-      pattern: "*.tif"
+      pattern: "*.ome.tif"
   - versions:
       type: file
       description: File containing software versions
