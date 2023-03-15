@@ -43,16 +43,16 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     nf-core/tools version 2.7.2 - https://nf-co.re
 
 
-INFO     Modules available from https://github.com/nf-core/modules.git (master):
+    INFO     Modules available from https://github.com/nf-core/modules.git (master):
 
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ Module Name                    ┃
-   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-   │ abacas                         │
-   │ abricate/run                   │
-   │ abricate/summary               │
-   │ adapterremoval                 │
-   ..truncated..
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Module Name                    ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ abacas                         │
+    │ abricate/run                   │
+    │ abricate/summary               │
+    │ adapterremoval                 │
+     ..truncated..
    ```
 
 3. Install the module in your pipeline directory:
