@@ -12,7 +12,7 @@ workflow test_bedtools_unionbedg {
 		      ]
             ]
 
-    BEDTOOLS_UNIONBEDG ( input, [], false )
+    BEDTOOLS_UNIONBEDG ( input, [] )
 }
 
 workflow test_bedtools_unionbedg_empty {
@@ -24,5 +24,5 @@ workflow test_bedtools_unionbedg_empty {
             ]
 	sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
-    BEDTOOLS_UNIONBEDG ( input, sizes, true )
+    BEDTOOLS_UNIONBEDG ( input, sizes )
 }
