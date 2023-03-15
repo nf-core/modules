@@ -25,11 +25,11 @@ process GATK4_SPLITCRAM {
     if (!task.memory) {
         log.info '[GATK SplitCRAM] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SplitCRAM \\
+    gatk --java-options "-Xmx${avail_mem}M" SplitCRAM \\
         ${args} \\
         --input ${cram} \\
         --output ${prefix}.%04d.cram \\
