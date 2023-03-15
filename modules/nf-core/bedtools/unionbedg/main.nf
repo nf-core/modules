@@ -8,7 +8,7 @@ process BEDTOOLS_UNIONBEDG {
         'quay.io/biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
 
     input:
-    tuple val(meta), path(bedgraph)
+    tuple val(meta), path(bedgraph, stageAs: "?/*")
     path chrom_sizes
     val(empty)
 
