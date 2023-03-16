@@ -84,6 +84,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/bwaindex
           - profile: "conda"
+            tags: sentieon/bwamem
+          - profile: "conda"
             tags: universc
           - profile: "singularity"
             tags: universc
@@ -91,7 +93,9 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
+      SENTIEON_ENCRYPTION_KEY_BASE64: ${{ secrets.ENCRYPTION_KEY_BASE64 }}
+      SENTIEON_AUTH_MECH_BASE64: ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
+      SENTIEON_LICENSE_MESSAGE_BASE64: ${{ secrets.LICENSE_MESSAGE_BASE64 }}
     steps:
       - uses: actions/checkout@v3
 
@@ -146,8 +150,7 @@ jobs:
           conda config --set solver libmamba
 
       # Set up secrets
-      - name: Use secrets
-        if: env.SENTIEON_LICENSE != null
+      - name: Set up nextflow secrets
         run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
       # Test the module

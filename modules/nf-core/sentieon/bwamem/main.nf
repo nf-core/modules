@@ -31,27 +31,13 @@ process SENTIEON_BWAMEM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    if [ \${SENTIEON_LICENSE_BASE64:-"unset"} != "unset" ]; then
-        echo "Initializing SENTIEON_LICENSE env variable"
-        if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then # Sentieon License server
-            export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        else  # Localhost license file
-            export SENTIEON_LICENSE=\$(mktemp)
-            echo -e "\$LICENSE_ENCODED" | base64 -d > \$SENTIEON_LICENSE
-        fi
+    # Still working out how to get the github-secrets, nextflow-secrets working with the test-license
+    if [ \${SENTIEON_LICENSE_BASE64} ]; then
+        echo "SENTIEON_LICENSE_BASE64 was set"
+        echo "
+        touch foo.bam
+        touch foo.bam.bai
     fi
-
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
-
-    sentieon bwa mem \\
-        $args \\
-        -t $task.cpus \\
-        \$INDEX \\
-        $reads \\
-        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
-
-    touch foo.bam
-    touch foo.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
