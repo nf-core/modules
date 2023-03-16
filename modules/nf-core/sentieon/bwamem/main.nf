@@ -34,7 +34,6 @@ process SENTIEON_BWAMEM {
     # Still working out how to get the github-secrets, nextflow-secrets working with the test-license
     if [ \${SENTIEON_LICENSE_BASE64} ]; then
         echo "SENTIEON_LICENSE_BASE64 was set"
-        echo "
         touch foo.bam
         touch foo.bam.bai
     fi
