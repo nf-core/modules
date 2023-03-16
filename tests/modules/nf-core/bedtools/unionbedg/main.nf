@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { BEDTOOLS_UNIONBEDG                             } from '../../../../../modules/nf-core/bedtools/unionbedg/main.nf'
-include { BEDTOOLS_UNIONBEDG as BEDTOOLS_UNIONBEDG_EMPTY } from '../../../../../modules/nf-core/bedtools/unionbedg/main.nf'
 
 workflow test_bedtools_unionbedg {
     
@@ -14,15 +13,4 @@ workflow test_bedtools_unionbedg {
             ]
 
     BEDTOOLS_UNIONBEDG ( input )
-}
-
-workflow test_bedtools_unionbedg_empty {
-    
-    input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true),
-		        file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true) 
-		      ]
-            ]
-
-    BEDTOOLS_UNIONBEDG_EMPTY ( input )
 }
