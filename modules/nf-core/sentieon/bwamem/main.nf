@@ -41,13 +41,14 @@ process SENTIEON_BWAMEM {
         export SENTIEON_ENCRYPTION_KEY=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
         export SENTIEON_AUTH_MECH=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
         export SENTIEON_LICENSE_MESSAGE=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA=\$(echo -e "${sentieon_auth_data_base64}" | base64 -d)
+        # export SENTIEON_AUTH_DATA=\$(echo -e "${sentieon_auth_data_base64}" | base64 -d)
         echo "Decoded and exported Sentieon env vars"
         # touch foo.bam
         # touch foo.bam.bai
     fi
 
     export SENTIEON_LICENSE=\$(mktemp)
+    echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE    # base64 ok
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
