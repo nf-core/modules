@@ -22,7 +22,7 @@ process BEDTOOLS_UNIONBEDG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
-    if ("$bedgraph" == "${prefix}.bed") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    bedgraph.collect { if ("$it" == "${prefix}.bed") error "$it has the same name as the output, use \"task.ext.prefix\" to disambiguate!" }
     """
     bedtools \\
         unionbedg \\
