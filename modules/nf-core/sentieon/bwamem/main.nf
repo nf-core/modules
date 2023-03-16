@@ -32,19 +32,23 @@ process SENTIEON_BWAMEM {
     def sentieon_encryption_key_base64 = task.ext.sentieon_encryption_key_base64 ?: ''
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_license_message_base64 = task.ext.sentieon_license_message_base64 ?: ''
-    def sentieon_auth_data = task.ext.sentieon_auth_data ?: ''
+    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
-    export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+
     if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ] && [ ${sentieon_auth_data} ]; then
         # Try to use the test-license
         export SENTIEON_ENCRYPTION_KEY=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
         export SENTIEON_AUTH_MECH=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
         export SENTIEON_LICENSE_MESSAGE=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA="${sentieon_auth_data}"
+        export SENTIEON_AUTH_DATA=\$(echo -e "${sentieon_auth_data_base64}" | base64 -d)
+        echo "Decoded and exported Sentieon env vars"
         # touch foo.bam
         # touch foo.bam.bai
     fi
+
+    export SENTIEON_LICENSE=$(mktemp)
+    echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
