@@ -40,7 +40,7 @@ process GFFCOMPARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare //')
+        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
     END_VERSIONS
     """
 
@@ -57,7 +57,7 @@ process GFFCOMPARE {
 
     cat <<-END_VERSIONS > versions.yml
        "${task.process}":
-       gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare //')
+       gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
     END_VERSIONS
     """
 }
