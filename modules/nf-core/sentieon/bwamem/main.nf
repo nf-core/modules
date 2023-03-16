@@ -35,8 +35,8 @@ process SENTIEON_BWAMEM {
     if [ \${SENTIEON_LICENSE_BASE64} ]; then
         echo "SENTIEON_LICENSE_BASE64 was set"
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        if [ \${SENTIEON_ENCRYPTION_KEY_BASE64} ]; then
-            echo "SENTIEON_ENCRYPTION_KEY_BASE64 was set"
+        if [ ${sentieon.ENCRYPTION_KEY_BASE64} ]; then
+            echo "sentieon.ENCRYPTION_KEY_BASE64 was set"
             touch foo.bam
             touch foo.bam.bai
         fi
