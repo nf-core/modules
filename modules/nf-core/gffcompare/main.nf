@@ -44,20 +44,20 @@ process GFFCOMPARE {
     END_VERSIONS
     """
 
-   stub:
-   def prefix = task.ext.prefix ?: "${meta.id}"
-   """
-   touch ${prefix}.annotated.gtf
-   touch ${prefix}.combined.gtf
-   touch ${prefix}.tmap
-   touch ${prefix}.refmap
-   touch ${prefix}.loci
-   touch ${prefix}.stats
-   touch ${prefix}.tracking
+    stub:
+     def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.annotated.gtf
+    touch ${prefix}.combined.gtf
+    touch ${prefix}.tmap
+    touch ${prefix}.refmap
+    touch ${prefix}.loci
+    touch ${prefix}.stats
+    touch ${prefix}.tracking
 
-   cat <<-END_VERSIONS > versions.yml
-   "${task.process}":
+    cat <<-END_VERSIONS > versions.yml
+       "${task.process}":
        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare //')
-   END_VERSIONS
-   """
+    END_VERSIONS
+    """
 }
