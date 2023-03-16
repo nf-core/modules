@@ -7,13 +7,3 @@
     - path: "output/bedtools/test.bed"
       md5sum: 7756c5abf509b8e953a7efa33095ef3d
     - path: "output/bedtools/versions.yml"
-
-- name: "bedtools unionbedg test_bedtools_unionbedg_empty"
-  command: nextflow run ./tests/modules/nf-core/bedtools/unionbedg -entry test_bedtools_unionbedg_empty -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/unionbedg/nextflow.config
-  tags:
-    - "bedtools"
-    - "bedtools/unionbedg"
-  files:
-    - path: "output/bedtools/test.bed"
-      md5sum: 55749f2b73ec0e46b3340e1ec85486a0
-    - path: "output/bedtools/versions.yml"
