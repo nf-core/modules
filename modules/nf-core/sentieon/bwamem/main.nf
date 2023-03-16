@@ -48,7 +48,6 @@ process SENTIEON_BWAMEM {
     fi
 
     export SENTIEON_LICENSE=\$(mktemp)
-    echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
