@@ -9,7 +9,6 @@ process BEDTOOLS_UNIONBEDG {
 
     input:
     tuple val(meta), path(bedgraph, stageAs: "?/*")
-    path chrom_sizes
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -21,13 +20,11 @@ process BEDTOOLS_UNIONBEDG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("$bedgraph" == "${prefix}.bed") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     bedtools \\
         unionbedg \\
         -i $bedgraph \\
-        $sizes \\
         $args \\
         > ${prefix}.bed
 
