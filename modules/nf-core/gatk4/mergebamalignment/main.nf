@@ -27,10 +27,10 @@ process GATK4_MERGEBAMALIGNMENT {
     if (!task.memory) {
         log.info '[GATK MergeBamAlignment] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" MergeBamAlignment \\
+    gatk --java-options "-Xmx${avail_mem}M" MergeBamAlignment \\
         --UNMAPPED_BAM $unmapped \\
         --ALIGNED_BAM $aligned \\
         --OUTPUT ${prefix}.bam \\

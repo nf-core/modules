@@ -29,11 +29,11 @@ process GATK4_SPLITINTERVALS {
     if (!task.memory) {
         log.info '[GATK SplitIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SplitIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M" SplitIntervals \\
         --output ${prefix} \\
         --intervals $intervals \\
         $reference \\
