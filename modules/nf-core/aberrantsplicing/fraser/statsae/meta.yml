@@ -1,0 +1,47 @@
+name: "aberrantexpression_preprocessgeneannotation"
+description: ""
+keywords:
+  - sort
+tools:
+  - "aberrantexpression":
+      description: ""
+      homepage: ""
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence: ""
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gtf:
+      type: file
+      description: gtf annotation file
+      pattern: "*.gtf"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - tsv:
+      type: file
+      pattern: "*.tsv"
+  - txdb:
+      type: file
+      pattern: "txdb.db"
+  - count_ranges:
+      type: file
+      pattern: "count_ranges.Rds"
+
+authors:
+  - "@TheMarshalMole"

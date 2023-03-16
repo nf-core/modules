@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml aberrantexpression/outrider
+- name: "aberrantexpression outrider"
+  command: nextflow run ./tests/modules/nf-core/aberrantexpression/outrider -entry test_aberrantexpression_outrider -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/aberrantexpression/outrider/nextflow.config
+  tags:
+    - "aberrantexpression"
+    - "aberrantexpression/outrider"
+  files:
+    - path: "output/aberrantexpression/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/aberrantexpression/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
