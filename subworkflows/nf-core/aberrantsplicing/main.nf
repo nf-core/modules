@@ -153,5 +153,5 @@ workflow ABERRANT_SPLICING {
             .map {it -> [it.annotation, 'general', 'preprocess', [it.txtDb, it.geneMap, it.countRanges]]}
             .concat (groupData.map     {it -> ['general', it.group, 'anno_from_dataset', [it.tsv]]})
             .concat (results_data.map  {it -> [it.annotation, it.group, 'results', [it.results_per_junction, it.resultstsv]]})
-
+            .concat (statsae_data.map  {it -> ['general', it.group, 'output', [it.output]]})
 }
