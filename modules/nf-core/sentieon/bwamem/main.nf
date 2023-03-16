@@ -41,7 +41,7 @@ process SENTIEON_BWAMEM {
         export SENTIEON_ENCRYPTION_KEY_BASE64=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
         export SENTIEON_AUTH_MECH_BASE64=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
         export SENTIEON_LICENSE_MESSAGE_BASE64=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
-        # export SENTIEON_AUTH_DATA=$(python3 license_message.py encrypt --key "$ENCRYPTION_KEY" --message "$LICENSE_MESSAGE")
+        python3 --version
         touch foo.bam
         touch foo.bam.bai
     fi
