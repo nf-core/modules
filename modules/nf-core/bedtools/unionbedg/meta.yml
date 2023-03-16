@@ -23,6 +23,10 @@ input:
       description: |
         Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
       pattern: "*.{bedGraph,bedgraph}"
+  - chrom_sizes:
+      type: optional file
+      description: Chromosome sizes file
+      pattern: "*{.sizes,.txt}"
 output:
   - meta:
       type: map
