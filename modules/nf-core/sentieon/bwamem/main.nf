@@ -42,9 +42,18 @@ process SENTIEON_BWAMEM {
         export SENTIEON_AUTH_MECH=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
         export SENTIEON_LICENSE_MESSAGE=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
         export SENTIEON_AUTH_DATA="${sentieon_auth_data}"
-        touch foo.bam
-        touch foo.bam.bai
+        # touch foo.bam
+        # touch foo.bam.bai
     fi
+
+    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+
+    sentieon bwa mem \\
+        $args \\
+        -t $task.cpus \\
+        \$INDEX \\
+        $reads \\
+        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
