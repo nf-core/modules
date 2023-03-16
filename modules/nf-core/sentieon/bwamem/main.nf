@@ -34,15 +34,16 @@ process SENTIEON_BWAMEM {
     def sentieon_license_message_base64 = task.ext.sentieon_license_message_base64 ?: ''
 
     """
-    # Still working out how to get the github-secrets, nextflow-secrets working with the test-license
-    if [ \${SENTIEON_LICENSE_BASE64} ]; then
-        echo "SENTIEON_LICENSE_BASE64 was set"
-        export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ]; then
-            echo "sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 were set"
-            touch foo.bam
-            touch foo.bam.bai
-        fi
+    export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+    # If sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 are set, then use those to generating corresponding env variables. (Needed for using nf-cores test-license for Sentieon.)
+    if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ]; then
+        echo "sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 were set"
+        export SENTIEON_ENCRYPTION_KEY_BASE64=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
+        export SENTIEON_AUTH_MECH_BASE64=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
+        export SENTIEON_LICENSE_MESSAGE_BASE64=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
+        # export SENTIEON_AUTH_DATA=$(python3 license_message.py encrypt --key "$ENCRYPTION_KEY" --message "$LICENSE_MESSAGE")
+        touch foo.bam
+        touch foo.bam.bai
     fi
 
     cat <<-END_VERSIONS > versions.yml
