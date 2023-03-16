@@ -30,7 +30,7 @@ process SENTIEON_BWAMEM {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def encryption_key_base64 = task.ext.encryption_key_base64 ?: ''
+    def encryption_key_base64 = task.sentieon.encryption_key_base64 ?: ''
 
     """
     # Still working out how to get the github-secrets, nextflow-secrets working with the test-license
