@@ -45,7 +45,7 @@ process GFFCOMPARE {
     """
 
     stub:
-     def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.annotated.gtf
     touch ${prefix}.combined.gtf
@@ -56,8 +56,8 @@ process GFFCOMPARE {
     touch ${prefix}.tracking
 
     cat <<-END_VERSIONS > versions.yml
-       "${task.process}":
-       gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
+    "${task.process}":
+        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
     END_VERSIONS
     """
 }
