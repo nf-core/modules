@@ -29,16 +29,15 @@ process SENTIEON_BWAMEM {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def encryption_key_base64 = task.sentieon.encryption_key_base64 ?: ''
+    def encryption_key_base64 = task.ext.sentieon_encryption_key_base64 ?: ''
 
     """
     # Still working out how to get the github-secrets, nextflow-secrets working with the test-license
     if [ \${SENTIEON_LICENSE_BASE64} ]; then
         echo "SENTIEON_LICENSE_BASE64 was set"
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        if [ ${encryption_key_base64} ]; then
-            echo "task.ext.encryption_key_base64 was set"
+        if [ ${sentieon_encryption_key_base64} ]; then
+            echo "task.ext.sentieon_encryption_key_base64 was set"
             touch foo.bam
             touch foo.bam.bai
         fi
