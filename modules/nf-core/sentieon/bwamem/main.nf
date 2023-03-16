@@ -32,16 +32,16 @@ process SENTIEON_BWAMEM {
     def sentieon_encryption_key_base64 = task.ext.sentieon_encryption_key_base64 ?: ''
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_license_message_base64 = task.ext.sentieon_license_message_base64 ?: ''
+    def sentieon_auth_data = task.ext.sentieon_auth_data ?: ''
 
     """
     export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-    # If sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 are set, then use those to generating corresponding env variables. (Needed for using nf-cores test-license for Sentieon.)
-    if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ]; then
-        echo "sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 were set"
+    if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ] && [ ${sentieon_auth_data} ]; then
+        # Try to use the test-license
         export SENTIEON_ENCRYPTION_KEY=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
         export SENTIEON_AUTH_MECH=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
         export SENTIEON_LICENSE_MESSAGE=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
-        python --version
+        export SENTIEON_AUTH_DATA="${sentieon_auth_data}"
         touch foo.bam
         touch foo.bam.bai
     fi
