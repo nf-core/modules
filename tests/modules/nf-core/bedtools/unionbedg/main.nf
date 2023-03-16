@@ -24,5 +24,5 @@ workflow test_bedtools_unionbedg_empty {
 		      ]
             ]
 
-BEDTOOLS_UNIONBEDG_EMPTY ( input )
+    BEDTOOLS_UNIONBEDG_EMPTY ( input )
 }
