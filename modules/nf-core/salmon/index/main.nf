@@ -18,12 +18,13 @@ process SALMON_INDEX {
     when:
     task.ext.when == null || task.ext.when
 
+
     script:
     def args = task.ext.args ?: ''
-    def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
+    def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 | cut -d \$'\\t' -f 1 > decoys.txt"
     def gentrome      = "gentrome.fa"
     if (genome_fasta.endsWith('.gz')) {
-        get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
+        get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 | cut -d \$'\\t' -f 1 > decoys.txt"
         gentrome      = "gentrome.fa.gz"
     }
     """
