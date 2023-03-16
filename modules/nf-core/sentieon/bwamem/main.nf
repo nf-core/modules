@@ -38,9 +38,9 @@ process SENTIEON_BWAMEM {
     # If sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 are set, then use those to generating corresponding env variables. (Needed for using nf-cores test-license for Sentieon.)
     if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ]; then
         echo "sentieon_encryption_key_base64, sentieon_auth_mech_base64 and sentieon_license_message_base64 were set"
-        export SENTIEON_ENCRYPTION_KEY_BASE64=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
-        export SENTIEON_AUTH_MECH_BASE64=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
-        export SENTIEON_LICENSE_MESSAGE_BASE64=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
+        export SENTIEON_ENCRYPTION_KEY=\$(echo -e "${sentieon_encryption_key_base64}" | base64 -d)
+        export SENTIEON_AUTH_MECH=\$(echo -e "${sentieon_auth_mech_base64}" | base64 -d)
+        export SENTIEON_LICENSE_MESSAGE=\$(echo -e "${sentieon_license_message_base64}" | base64 -d)
         python --version
         touch foo.bam
         touch foo.bam.bai
