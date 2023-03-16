@@ -151,10 +151,11 @@ jobs:
 
       # Set up secrets
       - name: Set up nextflow secrets
-        run: nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-        run: nextflow secrets set SENTIEON_ENCRYPTION_KEY_BASE64 ${{ secrets.ENCRYPTION_KEY_BASE64 }}
-        run: nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
-        run: nextflow secrets set SENTIEON_LICENSE_MESSAGE_BASE64 ${{ secrets.LICENSE_MESSAGE_BASE64 }}
+        run: |
+          nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+          nextflow secrets set SENTIEON_ENCRYPTION_KEY_BASE64 ${{ secrets.ENCRYPTION_KEY_BASE64 }}
+          nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
+          nextflow secrets set SENTIEON_LICENSE_MESSAGE_BASE64 ${{ secrets.LICENSE_MESSAGE_BASE64 }}
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
