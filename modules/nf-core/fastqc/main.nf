@@ -20,20 +20,18 @@ process FASTQC {
 
     script:
     def args = task.ext.args ?: ''
-    def cpu = task.cpus
-    def memory = task.memory.toMega() > 10000 ? 10000 : task.memory.toMega()
-    if (memory/250 < cpu)
-        cpu = Math.floor(memory/250).toInteger()
+    def memory = task.memory.toMega()
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Make list of old name and new name pairs to use for renaming in the bash while loop
     def old_new_pairs = reads instanceof Path || reads.size() == 1 ? [[ reads, "${prefix}.${reads.extension}" ]] : reads.withIndex().collect { entry, index -> [ entry, "${prefix}_${index + 1}.${entry.extension}" ] }
     def rename_to = old_new_pairs*.join(' ').join(' ')
     def renamed_files = old_new_pairs.collect{ old_name, new_name -> new_name }.join(' ')
+    //from FastQC man: Each thread will be allocated 250MB of memory so you shouldn't run more threads than your available memory will cope with
     """
     printf "%s %s\\n" $rename_to | while read old_name new_name; do
         [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
     done
-    fastqc $args --memory $memory --threads $cpu $renamed_files
+    fastqc $args --memory $memory --threads $task.cpu $renamed_files
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
