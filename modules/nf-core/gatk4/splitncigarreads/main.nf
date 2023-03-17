@@ -29,10 +29,10 @@ process GATK4_SPLITNCIGARREADS {
     if (!task.memory) {
         log.info '[GATK SplitNCigarReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" SplitNCigarReads \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " SplitNCigarReads \\
         --input $bam \\
         --output ${prefix}.bam \\
         --reference $fasta \\

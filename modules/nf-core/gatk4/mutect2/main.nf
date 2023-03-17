@@ -39,10 +39,10 @@ process GATK4_MUTECT2 {
     if (!task.memory) {
         log.info '[GATK Mutect2] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" Mutect2 \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " Mutect2 \\
         $inputs \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\

@@ -29,10 +29,10 @@ process GATK4_MERGEVCFS {
     if (!task.memory) {
         log.info '[GATK MergeVcfs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" MergeVcfs \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " MergeVcfs \\
         $input_list \\
         --OUTPUT ${prefix}.vcf.gz \\
         $reference_command \\

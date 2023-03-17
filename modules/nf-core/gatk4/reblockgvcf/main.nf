@@ -32,10 +32,10 @@ process GATK4_REBLOCKGVCF {
     if (!task.memory) {
         log.info '[GATK ReblockGVCF] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ReblockGVCF \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " ReblockGVCF \\
         --variant $gvcf \\
         --output ${prefix}.rb.g.vcf.gz \\
         --reference $fasta \\

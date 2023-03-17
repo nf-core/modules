@@ -26,10 +26,10 @@ process GATK4_GATHERBQSRREPORTS {
     if (!task.memory) {
         log.info '[GATK GatherBQSRReports] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" GatherBQSRReports \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " GatherBQSRReports \\
         $input_list \\
         --output ${prefix}.table \\
         --tmp-dir . \\

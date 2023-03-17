@@ -29,10 +29,10 @@ process GATK4_MARKDUPLICATES_SPARK {
     if (!task.memory) {
         log.info '[GATK MarkDuplicatesSpark] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" MarkDuplicatesSpark \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\
         --reference $fasta \\
