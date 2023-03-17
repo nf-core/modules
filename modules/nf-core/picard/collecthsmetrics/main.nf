@@ -34,7 +34,7 @@ process PICARD_COLLECTHSMETRICS {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         CollectHsMetrics \\
         $args \\
         $reference \\

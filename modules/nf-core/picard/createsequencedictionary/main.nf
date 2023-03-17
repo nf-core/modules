@@ -28,7 +28,7 @@ process PICARD_CREATESEQUENCEDICTIONARY {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         CreateSequenceDictionary  \\
         $args \\
         --REFERENCE $fasta \\

@@ -34,7 +34,7 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         CrosscheckFingerprints \\
         $args \\
         --NUM_THREADS ${task.cpus} \\
