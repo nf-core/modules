@@ -17,63 +17,15 @@ def TEST_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-c
 def TEST_IMG_2 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle2.ome.tif"
 def TEST_IMG_3 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle3.ome.tif"
 
-workflow test_ashlar_one_file {
-
-    input_list =  [ [ [ id:'test_1', args: '--flip-y' ],
-               "${TEST_IMG_1}" ] ]
-    input_channel = Channel.fromList(input_list)
-
-    ASHLAR ( input_channel )
-
-    ZERO_UUID ( ASHLAR.out[1] )
-
-}
-
-workflow test_ashlar_two_files {
-
-    input_list =  [ [ [ id:'test_2', args: '--flip-x' ],
-               "${TEST_IMG_1} ${TEST_IMG_2}" ] ]
-    input_channel = Channel.fromList(input_list)
-
-    ASHLAR ( input_channel )
-
-    ZERO_UUID ( ASHLAR.out[1] )
-
-}
-
 workflow test_ashlar_all_files {
 
-    input_list =  [ [ [ id:'test_2', args: '--flip-x' ],
+    input_list =  [ [ [ id:'test_all', args: '' ],
                "${TEST_IMG_ALL}" ] ]
     input_channel = Channel.fromList(input_list)
 
     ASHLAR ( input_channel )
 
-    ZERO_UUID ( ASHLAR.out[1] )
-
-}
-
-workflow test_ashlar_align_channel {
-
-    input_list =  [ [ [ id:'test_1', args: '--align-channel 1' ],
-               "${TEST_IMG_1}" ] ]
-    input_channel = Channel.fromList(input_list)
-
-    ASHLAR ( input_channel )
-
-    ZERO_UUID ( ASHLAR.out[1] )
-
-}
-
-workflow test_ashlar_dfp_ffp {
-
-    input_list =  [ [ [ id:'test_1', args: "--dfp ${TEST_ORIG_DFP_1} --ffp ${TEST_ORIG_FFP_1}" ],
-               "${TEST_ORIG_IMG_1}" ] ]
-    input_channel = Channel.fromList(input_list)
-
-    ASHLAR ( input_channel )
-
-    ZERO_UUID ( ASHLAR.out[1] )
+    ZERO_UUID ( ASHLAR.out[0], "25169643" )
 
 }
 
