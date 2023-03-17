@@ -34,7 +34,7 @@ process WINDOWMASKER {
         $args2 \\
         -in ${ref} \\
         -out ${prefix}.${outfmt}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         windowmasker: \$(windowmasker -version-full 2>&1)
