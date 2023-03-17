@@ -11,8 +11,8 @@ process WINDOWMASKER {
     tuple val(meta), path(ref)
 
     output:
-    tuple val(meta), path("test.interval")    , emit: wm_intervals
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*")    , emit: wm_intervals
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
