@@ -30,7 +30,7 @@ process PICARD_FIXMATEINFORMATION {
     """
     picard \\
         FixMateInformation \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
         --VALIDATION_STRINGENCY ${STRINGENCY}

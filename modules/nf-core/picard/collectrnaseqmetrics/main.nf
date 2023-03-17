@@ -34,7 +34,7 @@ process PICARD_COLLECTRNASEQMETRICS {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         CollectRnaSeqMetrics \\
         $args \\
         $reference \\

@@ -32,7 +32,7 @@ process PICARD_LIFTOVERVCF {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         LiftoverVcf \\
         $args \\
         --INPUT $input_vcf \\
