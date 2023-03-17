@@ -2,8 +2,8 @@ process GATK4_BASERECALIBRATOR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312"
-    container 'broadinstitute/gatk:4.3.0.0'
+    conda "bioconda::gatk4=4.4.0.0 conda-forge::openjdk=8.0.312"
+    container 'broadinstitute/gatk:4.4.0.0'
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
