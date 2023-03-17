@@ -29,3 +29,14 @@ workflow test_ashlar_all_files {
 
 }
 
+workflow test_ashlar_all_files_tile_size {
+
+    input_list =  [ [ [ id:'test_all_tile_size', args: '--tile-size 512' ],
+               "${TEST_IMG_ALL}" ] ]
+    input_channel = Channel.fromList(input_list)
+
+    ASHLAR ( input_channel )
+
+    ZERO_UUID ( ASHLAR.out[0], "6295276" )
+
+}
