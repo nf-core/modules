@@ -32,7 +32,7 @@ process GATK4_VARIANTFILTRATION {
         avail_mem = task.memory.toGiga()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}G" VariantFiltration \\
+    gatk --java-options "-Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" VariantFiltration \\
         --variant $vcf \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\

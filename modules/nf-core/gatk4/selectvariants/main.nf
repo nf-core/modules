@@ -29,7 +29,7 @@ process GATK4_SELECTVARIANTS {
         avail_mem = task.memory.toGiga()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}G" SelectVariants \\
+    gatk --java-options "-Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" SelectVariants \\
         --variant $vcf \\
         --output ${prefix}.selectvariants.vcf.gz \\
         $interval \\

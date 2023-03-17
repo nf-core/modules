@@ -32,7 +32,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
         avail_mem = task.memory.toGiga()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}G" LeftAlignAndTrimVariants \\
+    gatk --java-options "-Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" LeftAlignAndTrimVariants \\
         $interval_command \\
         --variant $vcf \\
         --output ${prefix}.vcf.gz \\
