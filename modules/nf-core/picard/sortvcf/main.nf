@@ -34,7 +34,7 @@ process PICARD_SORTVCF {
     """
     picard \\
         SortVcf \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         --INPUT $vcf \\
         $args \\
         $seq_dict \\

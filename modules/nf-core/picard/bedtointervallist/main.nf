@@ -32,7 +32,7 @@ process PICARD_BEDTOINTERVALLIST {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         BedToIntervalList \\
         --INPUT $bed \\
         --OUTPUT ${prefix}.interval_list \\
@@ -50,7 +50,7 @@ process PICARD_BEDTOINTERVALLIST {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         BedToIntervalList \\
         --INPUT $bed \\
         --OUTPUT ${prefix}.interval_list \\

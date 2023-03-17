@@ -30,7 +30,7 @@ process PICARD_MERGESAMFILES {
     if (bam_files.size() > 1) {
         """
         picard \\
-            -Xmx${avail_mem}g \\
+            -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
             MergeSamFiles \\
             $args \\
             ${'--INPUT '+bam_files.join(' --INPUT ')} \\

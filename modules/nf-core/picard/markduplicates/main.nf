@@ -32,7 +32,7 @@ process PICARD_MARKDUPLICATES {
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
         MarkDuplicates \\
         $args \\
         --INPUT $bam \\
