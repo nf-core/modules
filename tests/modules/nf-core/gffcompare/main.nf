@@ -15,7 +15,10 @@ workflow test_gffcompare {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
-    reference_gtf = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+    reference_gtf = [
+        [ id:'sarscov2' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+    ]
 
     GFFCOMPARE ( gtf, fasta, reference_gtf )
 }
@@ -33,5 +36,5 @@ workflow test_gffcompare_combine {
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
 
-    GFFCOMPARE ( gtfs, fasta, [] )
+    GFFCOMPARE ( gtfs, fasta, [[id:'sarscov2'], []] )
 }
