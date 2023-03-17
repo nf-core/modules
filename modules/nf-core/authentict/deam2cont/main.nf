@@ -27,7 +27,6 @@ process AUTHENTICT_DEAM2CONT {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def config_file = config ? "-c ${config}" : ""
     def positions_file = positions ? "-p ${positions}" : ""
 
@@ -42,7 +41,7 @@ process AUTHENTICT_DEAM2CONT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        authentict: $VERSION
+        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
     END_VERSIONS
     """
 }
