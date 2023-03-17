@@ -25,7 +25,7 @@ process GATK4_PREPROCESSINTERVALS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def exclude_command = exclude_intervals ? "--exclude-intervals $exclude_intervals" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK PreprocessIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

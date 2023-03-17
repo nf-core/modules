@@ -25,14 +25,14 @@ process GATK4_VARIANTFILTRATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.toGiga()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" VariantFiltration \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" VariantFiltration \\
         --variant $vcf \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\

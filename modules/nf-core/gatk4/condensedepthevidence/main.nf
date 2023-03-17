@@ -29,7 +29,7 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
         error("File name collision - Please specify a different prefix.")
     }
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK CondenseDepthEvidence] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

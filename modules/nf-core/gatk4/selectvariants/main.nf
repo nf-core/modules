@@ -22,14 +22,14 @@ process GATK4_SELECTVARIANTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval = intervals ? "--intervals ${intervals}" : ""
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK SelectVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.toGiga()
+        avail_mem = task.memory.mega
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" SelectVariants \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80" SelectVariants \\
         --variant $vcf \\
         --output ${prefix}.selectvariants.vcf.gz \\
         $interval \\

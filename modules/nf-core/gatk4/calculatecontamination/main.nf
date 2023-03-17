@@ -23,7 +23,7 @@ process GATK4_CALCULATECONTAMINATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def matched_command = matched ? "--matched-normal $matched" : ''
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK CalculateContamination] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

@@ -32,7 +32,7 @@ process GATK4_COLLECTSVEVIDENCE {
     def sd_vcf = site_depth_vcf ? "--sd-file ${prefix}.sd.txt.gz --site-depth-locs-vcf ${site_depth_vcf}" : ""
     def reference  = fasta ? "--reference ${fasta}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK COLLECTSVEVIDENCE] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

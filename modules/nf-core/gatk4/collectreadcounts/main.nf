@@ -30,7 +30,7 @@ process GATK4_COLLECTREADCOUNTS {
                     args.contains("--format TSV")  ? "tsv" :
                     "hdf5"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK COLLECTREADCOUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
