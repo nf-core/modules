@@ -8,7 +8,7 @@ process SAMTOOLS_COVERAGE {
         'quay.io/biocontainers/samtools:1.16.1--h6899075_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(input_index)
 
     output:
     tuple val(meta), path("*.txt"), emit: coverage
