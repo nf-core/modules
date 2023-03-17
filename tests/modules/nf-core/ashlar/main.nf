@@ -37,6 +37,6 @@ workflow test_ashlar_all_files_tile_size {
 
     ASHLAR ( input_channel )
 
-    ZERO_UUID ( ASHLAR.out[0], "6295276" )
+    ZERO_UUID ( ASHLAR.out[0], "6295275" )
 
 }
