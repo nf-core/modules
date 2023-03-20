@@ -22,14 +22,15 @@ process VSEARCH_SORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    vsearch \
-        $sort_arg $fasta \
-        --output ${prefix}_sorted.fasta
+    vsearch \\
+        $sort_arg $fasta \\
+        --threads $task.cpus \\
+        --output ${prefix}_sorted.fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vsearch: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
     END_VERSIONS
     """
 }
