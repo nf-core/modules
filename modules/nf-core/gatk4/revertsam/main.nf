@@ -25,10 +25,10 @@ process GATK4_REVERTSAM {
     if (!task.memory) {
         log.info '[GATK RevertSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.mega
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " RevertSam \\
+    gatk --java-options "-Xmx${avail_mem}M" RevertSam \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.reverted.bam \\
         --TMP_DIR . \\

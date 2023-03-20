@@ -26,10 +26,10 @@ process GATK4_MERGEMUTECTSTATS {
     if (!task.memory) {
         log.info '[GATK MergeMutectStats] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.mega
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " MergeMutectStats \\
+    gatk --java-options "-Xmx${avail_mem}M" MergeMutectStats \\
         $input_list \\
         --output ${prefix}.vcf.gz.stats \\
         --tmp-dir . \\

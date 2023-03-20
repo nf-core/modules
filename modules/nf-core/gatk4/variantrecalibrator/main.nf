@@ -36,10 +36,10 @@ process GATK4_VARIANTRECALIBRATOR {
     if (!task.memory) {
         log.info '[GATK VariantRecalibrator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.mega
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 " VariantRecalibrator \\
+    gatk --java-options "-Xmx${avail_mem}M" VariantRecalibrator \\
         --variant $vcf \\
         --output ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
