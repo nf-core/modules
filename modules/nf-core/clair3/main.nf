@@ -26,8 +26,6 @@ process CLAIR3 {
     --bam_fn=$bam \
     --ref_fn=$fasta \
     --threads=$task.cpus \
-    --platform=${params.platform} \
-    --model_path="/usr/local/bin/models/${params.clair3_model}" \
     --output="${meta.id}" \
     $args
     cat <<-END_VERSIONS > versions.yml

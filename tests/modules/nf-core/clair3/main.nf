@@ -15,5 +15,8 @@ workflow test_clair3 {
 
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
 
+    platform = "ont"
+    clair3_model = "r941_prom_sup_g5014"
+
     CLAIR3 ( bam_tuple_ch, fasta, fai)
 }
