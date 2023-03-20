@@ -13,7 +13,7 @@ workflow test_bedtools_intersect {
 
     extension = 'bed'
 
-    BEDTOOLS_INTERSECT ( input, extension )
+    BEDTOOLS_INTERSECT ( input, extension, [] )
 }
 
 workflow test_bedtools_intersect_bam {
@@ -25,5 +25,5 @@ workflow test_bedtools_intersect_bam {
 
     extension = 'bam'
 
-    BEDTOOLS_INTERSECT ( input, extension )
+    BEDTOOLS_INTERSECT ( input, extension, [] )
 }
