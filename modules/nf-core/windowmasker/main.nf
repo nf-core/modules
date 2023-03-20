@@ -11,8 +11,8 @@ process WINDOWMASKER {
     tuple val(meta), path(ref)
 
     output:
-    tuple val(meta), path("*")    , emit: wm_intervals
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${output}")  , emit: wm_intervals
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +22,7 @@ process WINDOWMASKER {
     def args2   = task.ext.args2    ?: ""
     def prefix  = task.ext.prefix   ?: "${meta.id}"
     def outfmt  = task.ext.outfmt   ?: "interval"
+    output  = "${prefix}.${outfmt}"
 
     """
     windowmasker -mk_counts \\
@@ -33,7 +34,7 @@ process WINDOWMASKER {
         ${prefix}.txt \\
         $args2 \\
         -in ${ref} \\
-        -out ${prefix}.${outfmt}
+        -out ${output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
