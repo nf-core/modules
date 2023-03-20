@@ -13,7 +13,7 @@ workflow test_bedtools_intersect {
     ]
 
 
-    BEDTOOLS_INTERSECT ( input, [] )
+    BEDTOOLS_INTERSECT ( input, [[:],[]] )
 }
 
 workflow test_bedtools_intersect_bam {
@@ -23,5 +23,5 @@ workflow test_bedtools_intersect_bam {
         file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
     ]
 
-    BEDTOOLS_INTERSECT_BAM ( input, [] )
+    BEDTOOLS_INTERSECT_BAM ( input, [[:],[]] )
 }
