@@ -26,6 +26,10 @@ input:
   - extension:
       type: value
       description: Extension of the output file. It is set by the user and corresponds to the file format which depends on arguments (e. g., ".bed", ".bam", ".txt", etc.).
+  - chrom_sizes:
+      type: optional file
+      description: Chromosome sizes file
+      pattern: "*{.sizes,.txt}"
 output:
   - meta:
       type: map
