@@ -1,0 +1,59 @@
+name: "mageck_mle"
+description: maximum-likelihood analysis of gene essentialities computation
+keywords:
+  - sort
+  - maximum-likelihood
+  - CRISPR
+tools:
+  - "mageck":
+      description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
+      homepage: "https://sourceforge.net/p/mageck/wiki/Home/#mle"
+      documentation: "https://sourceforge.net/p/mageck/wiki/Home/"
+      tool_dev_url: "https://bitbucket.org/liulab/mageck/src"
+      doi: "10.1186/s13059-015-0843-6"
+      licence: "['BSD License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - count_table:
+      type: file
+      description: |
+        Count table file.
+        Each line in the table should include
+        sgRNA name (1st column), target gene (2nd column)
+        and read counts in each sample.
+      pattern: "*.{txt,tsv}"
+  - design_matrix:
+      type: file
+      description: Design matrix describing the samples and conditions
+      pattern: "*.{txt,tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - gene_summary:
+      type: file
+      description: |
+        Gene summary file describing the fitness score
+        and associated p-values.
+      pattern: "*.{gene_summary}"
+  - sgrna_summary:
+      type: file
+      description: |
+        sgRNA summary file describing the sgRNA and
+        associated gene
+      pattern: "*.{gene_summary}"
+
+authors:
+  - "@LaurenceKuhl"

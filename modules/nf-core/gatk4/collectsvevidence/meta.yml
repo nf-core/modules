@@ -9,7 +9,7 @@ tools:
   - "gatk4":
       description: "Genome Analysis Toolkit (GATK4)"
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
-      documentation: "None"
+
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: "['BSD-3-clause']"
@@ -28,13 +28,13 @@ input:
       type: file
       description: Index of the BAM/CRAM/SAM file
       pattern: "*.{bai,crai,sai}"
-  - allele_count_vcf:
+  - site_depth_vcf:
       type: file
-      description: Optional - input VCF of SNPs marking loci for allele counts, needed for the allele counts output
+      description: Optional - input VCF of SNPs marking loci for site depths, needed for the site depths output
       pattern: "*.vcf.gz"
-  - allele_count_vcf_index:
+  - site_depth_vcf_index:
       type: file
-      description: Optional - index of the VCF file, needed for the allele counts output
+      description: Optional - index of the VCF file, needed for the site depths output
       pattern: "*.tbi"
   - fasta:
       type: file
@@ -75,14 +75,14 @@ output:
       type: file
       description: Index of the output file for paired end evidence
       pattern: "*.pe.txt.gz.tbi"
-  - allele_counts:
+  - site_depths:
       type: file
-      description: Output file for allele counts
-      pattern: "*.ld.txt.gz"
-  - allele_counts_index:
+      description: Output file for site depths
+      pattern: "*.sd.txt.gz"
+  - site_depths_index:
       type: file
-      description: Index of the output file for allele counts
-      pattern: "*.ld.txt.gz.tbi"
+      description: Index of the output file for site depths
+      pattern: "*.sd.txt.gz.tbi"
 
 authors:
   - "@nvnieuwk"

@@ -42,8 +42,8 @@ output:
         e.g. [ id:'test', single_end:false ]
   - vcf:
       type: file
-      description: VCF normalized output file
-      pattern: "*.vcf.gz"
+      description: One of uncompressed VCF (.vcf), compressed VCF (.vcf.gz), compressed BCF (.bcf.gz) or uncompressed BCF (.bcf) normalized output file
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - versions:
       type: file
       description: File containing software versions

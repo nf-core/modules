@@ -1,0 +1,69 @@
+name: "vcf_extract_relate_somalier"
+description: Perform somalier extraction and relate stats on input VCFs
+keywords:
+  - somalier
+  - stats
+  - vcf
+  - ped
+  - relatedness
+modules:
+  - tabix/tabix
+  - somalier/extract
+  - somalier/relate
+input:
+  - ch_vcfs:
+      description: |
+        The input VCFs to perform the stats on, optionally with their indices.
+        This channel can also contain the number of samples in the same family/group
+        to check relatedness. This is advised to add as it can improve the efficiency of your pipeline
+        Structure: [ val(meta), path(vcf), path(tbi), val(count) ]
+  - ch_fasta:
+      description: |
+        The reference FASTA used to create the VCF files
+        Structure: [ path(fasta) ]
+  - ch_fasta_fai:
+      description: |
+        The index of the reference FASTA
+        Structure: [ path(fasta_fai) ]
+  - ch_somalier_sites:
+      description: |
+        A VCF containing the common sites for Somalier
+        Structure: [ path(somalier_sites_vcf) ]
+  - ch_peds:
+      description: |
+        A channel containing an optional PED file for the corresponding families. This channel has to be given, but can be like `[meta, []]`.
+        When you don't want to use a PED file, you must supply a channel
+        containing the meta and an empty value (`[]`) instead of a PED
+        Structure: [ val(meta), path(ped) ]
+  - ch_sample_groups:
+      description: |
+        Optional - A text file describing how the samples should be grouped
+        Structure: [ path(txt) ]
+  - val_common_id:
+      description: |
+        Optional - A common identifier in the meta map.
+        This will be used to determine which VCFs should be used in somalier_relate.
+        This value should be given when using single sample VCFs
+output:
+  - extract:
+      description: |
+        The extract file created with Somalier extract
+        Structure: [ val(meta), path(extract) ]
+  - html:
+      description: |
+        An HTML file containing an interactive graph on the relatedness of the samples
+        Structure: [ val(meta), path(html) ]
+  - pairs_tsv:
+      description: |
+        A TSV file detailing the relatedness between pairs of samples
+        Structure: [ val(meta), path(tsv) ]
+  - samples_tsv:
+      description: |
+        A TSV file detailing the relatedness between all samples with the same meta
+        Structure: [ val(meta), path(tsv) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@nvnieuwk"

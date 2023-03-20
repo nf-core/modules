@@ -1,0 +1,86 @@
+name: "VERIFYBAMID_VERIFYBAMID2"
+description: Detecting and estimating inter-sample DNA contamination became a crucial quality assessment step to ensure high quality sequence reads and reliable downstream analysis.
+keywords:
+  - contamination
+  - bam
+tools:
+  - "verifybamid2":
+      description: "A robust tool for DNA contamination estimation from sequence reads using ancestry-agnostic method."
+      homepage: "http://griffan.github.io/VerifyBamID"
+      documentation: "http://griffan.github.io/VerifyBamID"
+      tool_dev_url: "https://github.com/Griffan/VerifyBamID"
+      doi: "10.1101/gr.246934.118"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAI/CRAI/CSI index file
+      pattern: "*.{bai,crai,csi}"
+  - svd_ud:
+      type: file
+      description: .UD matrix file from SVD result of genotype matrix
+      pattern: "*.UD"
+  - svd_mu:
+      type: file
+      description: .mu matrix file of genotype matrix
+      pattern: "*.mu"
+  - svd_bed:
+      type: file
+      description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
+      pattern: "*.bed"
+  - references:
+      type: file
+      description: reference file [Required]
+      pattern: "*.fasta"
+  - refvcf:
+      type: file
+      description: Reference panel VCF with genotype information, for generation of .UD .mu .bed files [Optional]
+      pattern: "*.vcf"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - mu:
+      type: file
+      description: .mu matrix file of genotype matrix from customized reference vcf input
+      pattern: "*.mu"
+  - ud:
+      type: file
+      description: .UD matrix file from customized reference vcf input
+      pattern: "*.UD"
+  - bed:
+      type: file
+      description: .Bed file from customized reference marker vcf input
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - log:
+      type: file
+      description: Detailed summary of the VerifyBamId2 results
+      pattern: "*.log"
+  - self_sm:
+      type: file
+      description: Shares the same format as legacy VB1 and the key information FREEMIX indicates the estimated contamination level.
+      pattern: "*.selfSM"
+  - ancenstry:
+      type: file
+      description: PC coordinates for both intended sample and contaminating sample, with each row being one PC.
+      pattern: "*.Ancestry"
+
+authors:
+  - "@manifestoso"

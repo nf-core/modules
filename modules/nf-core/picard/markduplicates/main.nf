@@ -2,13 +2,15 @@ process PICARD_MARKDUPLICATES {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam)
+    path fasta
+    path fai
 
     output:
     tuple val(meta), path("*.bam")        , emit: bam
@@ -35,6 +37,7 @@ process PICARD_MARKDUPLICATES {
         $args \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.bam \\
+        --REFERENCE_SEQUENCE $fasta \\
         --METRICS_FILE ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml

@@ -7,7 +7,6 @@ include { YARA_INDEX  } from '../../../../../modules/nf-core/yara/index/main.nf'
 include { YARA_MAPPER } from '../../../../../modules/nf-core/yara/mapper/main.nf'
 
 workflow test_yara_single_end {
-
     input = [
         [ id:'test', single_end:true ], // meta map
         [
@@ -16,12 +15,11 @@ workflow test_yara_single_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    YARA_INDEX ( fasta )
+    YARA_INDEX ( [ input[0], fasta ] )
     YARA_MAPPER ( input, YARA_INDEX.out.index )
 }
 
 workflow test_yara_paired_end {
-
     input = [
         [ id:'test', single_end:false ], // meta map
         [
@@ -31,6 +29,6 @@ workflow test_yara_paired_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    YARA_INDEX ( fasta )
+    YARA_INDEX ( [ input[0], fasta ] )
     YARA_MAPPER ( input, YARA_INDEX.out.index )
 }

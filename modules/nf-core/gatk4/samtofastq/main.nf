@@ -2,10 +2,10 @@ process GATK4_SAMTOFASTQ {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
+    conda "bioconda::gatk4=4.3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -26,10 +26,10 @@ process GATK4_SAMTOFASTQ {
     if (!task.memory) {
         log.info '[GATK SamToFastq] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" SamToFastq \\
+    gatk --java-options "-Xmx${avail_mem}M" SamToFastq \\
         --INPUT $bam \\
         $output \\
         --TMP_DIR . \\

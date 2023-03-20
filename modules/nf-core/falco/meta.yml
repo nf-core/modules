@@ -1,0 +1,51 @@
+name: falco
+description: Run falco on sequenced reads
+keywords:
+  - quality control
+  - qc
+  - adapters
+  - fastq
+tools:
+  - fastqc:
+      description: "falco is a drop-in C++ implementation of FastQC to assess the quality of sequence reads."
+
+      homepage: "https://falco.readthedocs.io/"
+      documentation: "https://falco.readthedocs.io/"
+
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - html:
+      type: file
+      description: FastQC like report
+      pattern: "*_{fastqc_report.html}"
+  - txt:
+      type: file
+      description: falco report data
+      pattern: "*_{data.txt}"
+  - txt:
+      type: file
+      description: falco summary file
+      pattern: "*_{summary.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@lucacozzuto"

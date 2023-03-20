@@ -8,19 +8,17 @@ include { MALT_RUN   } from '../../../../../modules/nf-core/malt/run/main.nf'
 
 workflow test_malt_run {
 
-    fastas        = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    seq_type      = "DNA"
-    map_accession = [ [], file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true) ]
-    mapping_type  = 'ref'
-    mapping_db    = 'taxonomy'
+    fastas = file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
+    gff = [] // file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['test1_gff'], checkIfExists: true)
+    mapping_db = [ [], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/megan-nucl-Feb2022.db.zip", checkIfExists: true) ]
+
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_se_fastq_gz'], checkIfExists: true)
     ]
-    mode = "BlastN"
 
-    UNZIP ( map_accession )
-    MALT_BUILD ( fastas, seq_type, UNZIP.out.unzipped_archive.map{ it[1] }, "ref", "taxonomy" )
-    MALT_RUN ( input, mode, MALT_BUILD.out.index )
+    UNZIP ( mapping_db )
+    MALT_BUILD ( fastas, gff, UNZIP.out.unzipped_archive.map { it[1] } )
+    MALT_RUN ( input, MALT_BUILD.out.index )
 }
 

@@ -2,14 +2,13 @@ process BEDTOOLS_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
+    conda "bioconda::bedtools=2.30.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
         'quay.io/biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
 
     input:
     tuple val(meta), path(bed)
-    val(number_of_files)
 
     output:
     tuple val(meta), path("*.bed"), emit: beds
@@ -27,8 +26,7 @@ process BEDTOOLS_SPLIT {
         split \\
         $args \\
         -i $bed \\
-        -p $prefix \\
-        -n $number_of_files
+        -p $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

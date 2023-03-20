@@ -1,0 +1,52 @@
+name: "mageck_count"
+description: mageck count for functional genomics, reads are usually mapped to a specific sgRNA
+keywords:
+  - sort
+  - functional genomics
+  - sgRNA
+  - CRISPR-Cas9
+tools:
+  - "mageck":
+      description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
+      homepage: "https://sourceforge.net/p/mageck/wiki/Home/"
+      documentation: "https://sourceforge.net/p/mageck/wiki/demo/#step-4-run-the-mageck-count-command"
+
+      doi: "10.1186/s13059-014-0554-4"
+      licence: "['BSD License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - library:
+      type: file
+      description: library file containing the sgRNA and gene name
+      pattern: "*.{csv,txt,tsv}"
+  - inputfile:
+      type: file
+      description: library fastq file containing the sgRNA and gene name or count table containing the sgRNA and number of reads to per sample
+      pattern: "*.{fq,fastq,fastq.gz,fq.gz,csv,txt,tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - norm:
+      type: file
+      description: File containing normalized read counts
+      pattern: "*.count_normalized.txt"
+  - count:
+      type: file
+      description: File containing read counts
+      pattern: "*.countsummary.txt"
+
+authors:
+  - "@LaurenceKuhl"
