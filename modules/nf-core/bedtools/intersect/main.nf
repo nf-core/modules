@@ -9,7 +9,6 @@ process BEDTOOLS_INTERSECT {
 
     input:
     tuple val(meta), path(intervals1), path(intervals2)
-    val extension
     path chrom_sizes
 
     output:
@@ -22,6 +21,7 @@ process BEDTOOLS_INTERSECT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = tast.ext.suffix ?: "bed"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
@@ -43,6 +43,7 @@ process BEDTOOLS_INTERSECT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = tast.ext.suffix ?: "bed"
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
