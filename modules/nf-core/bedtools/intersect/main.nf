@@ -10,7 +10,7 @@ process BEDTOOLS_INTERSECT {
     input:
     tuple val(meta), path(intervals1), path(intervals2)
     val extension
-    tuple val(meta2), path(chrom_sizes)
+    path chrom_sizes
 
     output:
     tuple val(meta), path("*.${extension}"), emit: intersect
