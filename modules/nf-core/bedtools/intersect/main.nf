@@ -21,7 +21,7 @@ process BEDTOOLS_INTERSECT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = task.ext.suffix ? task.ext.suffix : "bed"
+    extension = task.ext.suffix ?: "bed"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
