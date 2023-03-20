@@ -4,8 +4,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
 
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.3.0.0':
-        'broadinstitute/gatk:4.3.0.0' }"
+        'broadinstitute/gatk:4.4.0.0':
+        'broadinstitute/gatk:4.4.0.0' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
