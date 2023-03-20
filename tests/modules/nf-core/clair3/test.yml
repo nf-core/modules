@@ -1,0 +1,7 @@
+- name: clair3 test_clair3
+  command: nextflow run ./tests/modules/nf-core/clair3 -entry test_clair3 -c ./tests/config/nextflow.config
+  tags:
+    - clair3
+  files:
+    - path: output/clair3/versions.yml
+
