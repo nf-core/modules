@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_INTERSECT } from '../../../../../modules/nf-core/bedtools/intersect/main.nf'
+include { BEDTOOLS_INTERSECT                           } from '../../../../../modules/nf-core/bedtools/intersect/main.nf'
+include { BEDTOOLS_INTERSECT as BEDTOOLS_INTERSECT_BAM } from '../../../../../modules/nf-core/bedtools/intersect/main.nf'
 
 workflow test_bedtools_intersect {
     input = [
@@ -23,7 +24,5 @@ workflow test_bedtools_intersect_bam {
         file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
     ]
 
-    extension = 'bam'
-
-    BEDTOOLS_INTERSECT ( input, extension, [] )
+    BEDTOOLS_INTERSECT_BAM ( input, [] )
 }
