@@ -1,0 +1,61 @@
+name: pepper
+description: short-variant calling with pepper
+keywords:
+  - pepper
+  - short-variant calling
+tools:
+  - pepper:
+      description: a genome inference module based on recurrent neural networks that enables long-read variant calling
+      homepage: https://github.com/kishwarshafin/pepper
+      documentation: https://github.com/kishwarshafin/pepper#readme
+      tool_dev_url: https://github.com/kishwarshafin/pepper
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: Index of BAM file
+      pattern: "*.bai"
+  - intervals:
+      type: list
+      description: list of intervals
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
+  - fasta:
+      type: file
+      description: |
+        Reference database in FASTA format
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Compressed VCF file tabix track format
+      pattern: "*.vcf.gz.tbi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@christopher-hakkaart"
+  - "@yuukiiwa"
