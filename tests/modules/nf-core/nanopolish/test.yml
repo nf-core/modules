@@ -1,0 +1,10 @@
+- name: nanopolish
+  command: nextflow run tests/modules/nf-core/nanopolish -entry test_nanopolish -c tests/config/nextflow.config
+  tags:
+    - nanopolish
+  files:
+    - path: output/nanopolish/test_eventalign.txt
+      md5sum: 6aa037e925277396feb613c08571e0b6
+    - path: output/nanopolish/test_summary.txt
+      md5sum: b209069bb8e0fdd2393e65fadf9516a3
+    - path: output/nanopolish/versions.yml
