@@ -1,0 +1,18 @@
+- name: hicexplorer hicfindtads test_hicexplorer_hicfindtads
+  command: nextflow run ./tests/modules/nf-core/hicexplorer/hicfindtads -entry test_hicexplorer_hicfindtads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hicexplorer/hicfindtads/nextflow.config
+  tags:
+    - hicexplorer/hicfindtads
+    - hicexplorer
+  files:
+    - path: output/hicexplorer/test_20000_hicfindtads_boundaries.bed
+      md5sum: 87146810fcf8412a396b400b646fa798
+    - path: output/hicexplorer/test_20000_hicfindtads_boundaries.gff
+      md5sum: 31616013d97ba57bb3c889349f25a438
+    - path: output/hicexplorer/test_20000_hicfindtads_domains.bed
+      md5sum: e647679a7bfab0f495b49b49957dd052
+    - path: output/hicexplorer/test_20000_hicfindtads_score.bedgraph
+      md5sum: 008ef72985007d91b0d3e2014e202510
+    - path: output/hicexplorer/test_20000_hicfindtads_tad_score.bm
+      md5sum: fc03b415f12e22fbf6d544af456ebaa1
+    - path: output/hicexplorer/test_20000_hicfindtads_zscore_matrix.cool
+    - path: output/hicexplorer/versions.yml
