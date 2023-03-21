@@ -55,7 +55,7 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
                 UMITOOLS_EXTRACT
                     .out
                     .reads
-                    .map { 
+                    .map {
                         meta, reads ->
                             meta.single_end ? [ meta, reads ] : [ meta + ['single_end': true], reads[umi_discard_read % 2] ]
                     }
@@ -84,7 +84,7 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
             .out
             .reads
             .join(trim_log, remainder: true)
-            .map { 
+            .map {
                 meta, reads, trim_log ->
                     if (trim_log) {
                         num_reads = getTrimGaloreReadsAfterFiltering(meta.single_end ? trim_log : trim_log[-1])
