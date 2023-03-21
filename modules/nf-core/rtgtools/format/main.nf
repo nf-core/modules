@@ -53,7 +53,7 @@ process RTGTOOLS_FORMAT {
     if (!task.memory) {
         log.info '[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue() + "G"
+        avail_mem = (task.memory.mega*0.8).intValue() + "M"
     }
     """
     touch ${prefix}.sdf
