@@ -13,7 +13,7 @@ workflow test_bedtools_unionbedg {
 		      ]
             ]
 
-    BEDTOOLS_UNIONBEDG ( input, [] )
+    BEDTOOLS_UNIONBEDG ( input, [[:],[]] )
 }
 
 workflow test_bedtools_unionbedg_empty {
