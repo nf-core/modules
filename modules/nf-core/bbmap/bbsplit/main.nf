@@ -42,7 +42,7 @@ process BBMAP_BBSPLIT {
         if (primary_ref && other_ref_names && other_ref_paths) {
             """
             bbsplit.sh \\
-                -Xmx${avail_mem}g \\
+                -Xmx${avail_mem}M \\
                 ref_primary=$primary_ref \\
                 ${other_refs.join(' ')} \\
                 path=bbsplit \\
@@ -70,7 +70,7 @@ process BBMAP_BBSPLIT {
         def fastq_out = meta.single_end ? "basename=${prefix}_%.fastq.gz" : "basename=${prefix}_%_#.fastq.gz"
         """
         bbsplit.sh \\
-            -Xmx${avail_mem}g \\
+            -Xmx${avail_mem}M \\
             $index_files \\
             threads=$task.cpus \\
             $fastq_in \\

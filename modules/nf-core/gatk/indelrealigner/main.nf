@@ -37,7 +37,7 @@ process GATK_INDELREALIGNER {
 
     """
     gatk3 \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         -T IndelRealigner \\
         -R ${fasta} \\
         -I ${bam} \\

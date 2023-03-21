@@ -28,7 +28,7 @@ process BBMAP_SENDSKETCH {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    sendsketch.sh -Xmx${avail_mem}g \\
+    sendsketch.sh -Xmx${avail_mem}M \\
         in=${file_used} \\
         out=${prefix}.txt \\
         $args

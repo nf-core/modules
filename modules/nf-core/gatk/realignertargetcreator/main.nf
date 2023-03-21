@@ -36,7 +36,7 @@ process GATK_REALIGNERTARGETCREATOR {
 
     """
     gatk3 \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         -T RealignerTargetCreator \\
         -nt ${task.cpus} \\
         -I ${input} \\

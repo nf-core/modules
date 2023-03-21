@@ -27,7 +27,7 @@ process SNPEFF_DOWNLOAD {
     }
     """
     snpEff \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         download ${genome}.${cache_version} \\
         -dataDir \${PWD}/snpeff_cache \\
         ${args}

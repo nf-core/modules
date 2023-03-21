@@ -29,7 +29,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     }
     """
     picard \\
-        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+        -Xmx${avail_mem}M \\
         AddOrReplaceReadGroups \\
         $args \\
         --INPUT ${bam} \\

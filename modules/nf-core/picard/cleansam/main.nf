@@ -28,7 +28,7 @@ process PICARD_CLEANSAM {
     }
     """
     picard \\
-        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+        -Xmx${avail_mem}M \\
         CleanSam  \\
         ${args} \\
         --INPUT ${bam} \\

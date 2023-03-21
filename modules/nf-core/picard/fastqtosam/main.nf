@@ -28,7 +28,7 @@ process PICARD_FASTQTOSAM {
     def sample_name = args.contains("--SAMPLE_NAME") || args.contains("-SM") ? "" : "--SAMPLE_NAME ${prefix}"
     """
     picard \\
-        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+        -Xmx${avail_mem}M \\
         FastqToSam \\
         ${args} \\
         ${input} \\

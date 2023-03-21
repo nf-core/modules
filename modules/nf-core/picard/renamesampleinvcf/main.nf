@@ -32,7 +32,7 @@ process PICARD_RENAMESAMPLEINVCF {
     """
     picard \\
         RenameSampleInVcf \\
-        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+        -Xmx${avail_mem}M \\
         --INPUT $vcf \\
         --OUTPUT ${prefix}_renam.vcf.gz \\
         $extended_args

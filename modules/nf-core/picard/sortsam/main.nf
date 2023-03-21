@@ -30,7 +30,7 @@ process PICARD_SORTSAM {
     """
     picard \\
         SortSam \\
-        -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+        -Xmx${avail_mem}M \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.bam \\
         --SORT_ORDER $sort_order

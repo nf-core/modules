@@ -38,7 +38,7 @@ process BEAGLE5_BEAGLE {
     }
 
     """
-    beagle -Xmx${avail_mem}g \\
+    beagle -Xmx${avail_mem}M \\
         gt=${vcf} \\
         out=${prefix} \\
         $args \\

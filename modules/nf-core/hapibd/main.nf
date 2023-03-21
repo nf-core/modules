@@ -35,7 +35,7 @@ process HAPIBD {
     }
 
     """
-    hap-ibd -Xmx${avail_mem}g \\
+    hap-ibd -Xmx${avail_mem}M \\
         gt=${vcf} \\
         map=${map} \\
         out=${prefix} \\

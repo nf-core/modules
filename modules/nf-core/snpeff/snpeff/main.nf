@@ -34,7 +34,7 @@ process SNPEFF_SNPEFF {
     def cache_command = cache ? "-dataDir \${PWD}/${cache}" : ""
     """
     snpEff \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         $db \\
         $args \\
         -csvStats ${prefix}.csv \\

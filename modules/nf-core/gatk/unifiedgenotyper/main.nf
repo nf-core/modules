@@ -41,7 +41,7 @@ process GATK_UNIFIEDGENOTYPER {
 
     """
     gatk3 \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         -nt ${task.cpus} \\
         -T UnifiedGenotyper \\
         -I ${input} \\

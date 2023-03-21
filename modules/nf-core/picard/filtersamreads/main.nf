@@ -31,7 +31,7 @@ process PICARD_FILTERSAMREADS {
         """
         picard \\
             FilterSamReads \\
-            -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+            -Xmx${avail_mem}M \\
             --INPUT $bam \\
             --OUTPUT ${prefix}.bam \\
             --FILTER $filter \\
@@ -46,7 +46,7 @@ process PICARD_FILTERSAMREADS {
         """
         picard \\
             FilterSamReads \\
-            -Xmx${avail_mem}g -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 \\
+            -Xmx${avail_mem}M \\
             --INPUT $bam \\
             --OUTPUT ${prefix}.bam \\
             --FILTER $filter \\
