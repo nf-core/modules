@@ -25,7 +25,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = input.collect(){"--INPUT $it"}.join(" ")
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK EstimateLibraryComplexity] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
