@@ -35,7 +35,9 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     fastqc_raw_html = Channel.empty()
     fastqc_raw_zip  = Channel.empty()
     if (!skip_fastqc) {
-        FASTQC_RAW (reads)
+        FASTQC_RAW (
+            reads
+        )
         fastqc_raw_html = FASTQC_RAW.out.html
         fastqc_raw_zip  = FASTQC_RAW.out.zip
         ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
@@ -44,18 +46,21 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     umi_reads = reads
     umi_log   = Channel.empty()
     if (with_umi && !skip_umi_extract) {
-        UMITOOLS_EXTRACT (reads)
+        UMITOOLS_EXTRACT (
+            reads
+        )
         umi_reads   = UMITOOLS_EXTRACT.out.reads
         umi_log     = UMITOOLS_EXTRACT.out.log
         ch_versions = ch_versions.mix(UMITOOLS_EXTRACT.out.versions.first())
 
         // Discard R1 / R2 if required
         if (umi_discard_read in [1,2]) {
-            UMITOOLS_EXTRACT.out.reads
-                .map { meta, reads ->
-                    meta.single_end ?
-                        [ meta, reads ] :
-                        [ meta + [single_end: true], reads[umi_discard_read % 2]]
+            UMITOOLS_EXTRACT
+                .out
+                .reads
+                .map { 
+                    meta, reads ->
+                        meta.single_end ? [ meta, reads ] : [ meta + [single_end: true], reads[umi_discard_read % 2] ]
                 }
                 .set { umi_reads }
         }
@@ -87,7 +92,9 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
         //
         // Filter FastQ files based on minimum trimmed read count after adapter trimming
         //
-        FASTP.out.reads
+        FASTP
+            .out
+            .reads
             .join(trim_json)
             .map { meta, reads, json -> [ meta, reads, getFastpReadsAfterFiltering(json) ] }
             .set { ch_num_trimmed_reads }
@@ -102,7 +109,9 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .set { trim_read_count }
 
         if (!skip_fastqc) {
-            FASTQC_TRIM (trim_reads)
+            FASTQC_TRIM (
+                trim_reads
+            )
             fastqc_trim_html = FASTQC_TRIM.out.html
             fastqc_trim_zip  = FASTQC_TRIM.out.zip
             ch_versions      = ch_versions.mix(FASTQC_TRIM.out.versions.first())
