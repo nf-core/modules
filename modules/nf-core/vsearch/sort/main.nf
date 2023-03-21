@@ -31,7 +31,17 @@ process VSEARCH_SORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
+        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
     END_VERSIONS
     """
 }
