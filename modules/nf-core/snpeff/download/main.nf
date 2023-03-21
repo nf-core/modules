@@ -23,7 +23,7 @@ process SNPEFF_DOWNLOAD {
     if (!task.memory) {
         log.info '[snpEff] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     snpEff \\

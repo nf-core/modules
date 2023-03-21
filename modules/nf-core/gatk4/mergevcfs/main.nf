@@ -25,7 +25,7 @@ process GATK4_MERGEVCFS {
     def input_list = vcf.collect{ "--INPUT $it"}.join(' ')
     def reference_command = dict ? "--SEQUENCE_DICTIONARY $dict" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK MergeVcfs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

@@ -26,7 +26,7 @@ process GATK4_APPLYVQSR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_command = fasta ? "--reference $fasta" : ''
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK ApplyVQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

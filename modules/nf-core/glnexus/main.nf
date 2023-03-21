@@ -23,11 +23,11 @@ process GLNEXUS {
 
     // Make list of GVCFs to merge
     def input = gvcfs.collect { it.toString() }
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Glnexus] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     glnexus_cli \\

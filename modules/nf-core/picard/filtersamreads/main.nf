@@ -21,11 +21,11 @@ process PICARD_FILTERSAMREADS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
         """

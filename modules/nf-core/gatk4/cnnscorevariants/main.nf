@@ -34,7 +34,7 @@ process GATK4_CNNSCOREVARIANTS {
     def architecture = architecture ? "--architecture $architecture" : ""
     def weights = weights ? "--weights $weights" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK CnnScoreVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
