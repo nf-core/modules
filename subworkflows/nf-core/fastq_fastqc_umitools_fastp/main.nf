@@ -58,7 +58,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             UMITOOLS_EXTRACT
                 .out
                 .reads
-                .map { 
+                .map {
                     meta, reads ->
                         meta.single_end ? [ meta, reads ] : [ meta + [single_end: true], reads[umi_discard_read % 2] ]
                 }
