@@ -1,6 +1,6 @@
-process WINDOWMASKER {
+process WINDOWMASKER_USTAT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "bioconda::blast=2.13.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,37 +8,32 @@ process WINDOWMASKER {
         'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
+    tuple val(meta), path(counts)
     tuple val(meta), path(ref)
 
     output:
-    tuple val(meta), path("${output}")  , emit: wm_intervals
+    tuple val(meta), path("${output}")  , emit: intervals
     path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args1   = task.ext.args1    ?: ""
-    def args2   = task.ext.args2    ?: ""
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
-    def outfmt  = task.ext.outfmt   ?: "interval"
+    def args    = task.ext.args         ?: ""
+    def prefix  = task.ext.prefix       ?: "${meta.id}"
+    def outfmt  = task.ext.suffix       ?: "interval"
     output  = "${prefix}.${outfmt}"
 
     """
-    windowmasker -mk_counts \\
-        $args1 \\
-        -in ${ref} \\
-        -out ${prefix}.txt
-
     windowmasker -ustat \\
-        ${prefix}.txt \\
-        $args2 \\
+        ${counts} \\
+        $args \\
         -in ${ref} \\
         -out ${output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full 2>&1)
+        windowmasker: \$(windowmasker -version-full | head -n 1)
     END_VERSIONS
     """
 }

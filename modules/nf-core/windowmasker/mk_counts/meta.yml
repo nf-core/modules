@@ -1,10 +1,10 @@
-name: windowmasker
-description: A program to mask highly repetitive and low complexity DNA sequences within a genome.
+name: windowmasker_mkcounts
+description: A program to generate frequency counts of repetitive units.
 keywords:
   - fasta
   - interval
 tools:
-  - miniprot:
+  - windowmasker:
       description: |
         A program to mask highly repetitive and low complexity DNA sequences within a genome.
       homepage: https://github.com/ncbi/ncbi-cxx-toolkit-public
@@ -25,12 +25,12 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - wm_intervals:
+  - intervals:
       type: file
       description: |
         An output file containing genomic locations of low
         complexity and highly repetitive regions
-      pattern: "${prefix}.${outfmt}"
+      pattern: "${prefix}.txt"
   - versions:
       type: file
       description: File containing software versions
