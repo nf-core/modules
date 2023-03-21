@@ -26,7 +26,7 @@ process GATK4_SELECTVARIANTS {
     if (!task.memory) {
         log.info '[GATK SelectVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.toGiga()
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     gatk --java-options "-Xmx${avail_mem}M" SelectVariants \\
