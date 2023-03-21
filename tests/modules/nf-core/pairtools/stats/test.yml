@@ -1,9 +1,9 @@
 - name: pairtools stats test_pairtools_stats
   command: nextflow run ./tests/modules/nf-core/pairtools/stats -entry test_pairtools_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pairtools/stats/nextflow.config
   tags:
-    - pairtools/stats
     - pairtools
+    - pairtools/stats
   files:
     - path: output/pairtools/test.stats.tsv
-      md5sum: 77a1b2b0b146e00313435f4a707d2d0d
+      md5sum: f4e12e091f5ca9898f67816c51e6fdb6
     - path: output/pairtools/versions.yml

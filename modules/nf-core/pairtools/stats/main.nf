@@ -2,10 +2,10 @@ process PAIRTOOLS_STATS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pairtools=1.0.2"
+    conda "bioconda::pairtools=0.3.0 numpy=1.19"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pairtools:1.0.2--py39h2a9f597_0' :
-        'quay.io/biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
+        'https://depot.galaxyproject.org/singularity/pairtools:0.3.0--py37hb9c2fc3_5' :
+        'quay.io/biocontainers/pairtools:0.3.0--py37hb9c2fc3_5' }"
 
     input:
     tuple val(meta), path(pairs)
