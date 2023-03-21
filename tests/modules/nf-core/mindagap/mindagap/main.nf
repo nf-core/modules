@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINDAGAP } from '../../../../modules/nf-core/mindagap/main.nf'
+include { MINDAGAP } from '../../../../../modules/nf-core/mindagap/mindagap/main.nf'
 
 workflow test_mindagap {
 
