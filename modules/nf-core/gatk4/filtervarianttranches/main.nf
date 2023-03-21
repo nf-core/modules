@@ -29,7 +29,7 @@ process GATK4_FILTERVARIANTTRANCHES {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def resources = resources.collect{"--resource $it"}.join(' ')
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK FilterVariantTranches] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
