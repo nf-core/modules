@@ -31,7 +31,7 @@ process GATK4_FILTERMUTECTCALLS {
     def estimate_command        = estimate        ? " --contamination-estimate ${estimate} "                                    : ''
     def table_command           = table           ? " --contamination-table ${table} "                                          : ''
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK FilterMutectCalls] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

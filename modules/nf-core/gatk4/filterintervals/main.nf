@@ -25,7 +25,7 @@ process GATK4_FILTERINTERVALS {
     def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
     def read_counts_command = read_counts ? "--input $read_counts" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK FilterIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

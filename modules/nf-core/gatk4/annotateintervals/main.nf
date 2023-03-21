@@ -32,7 +32,7 @@ process GATK4_ANNOTATEINTERVALS {
     def mappability_track = mappable_regions ? "--mappability-track ${mappable_regions}" : ""
     def segmental_duplication_tracks = segmental_duplication_regions ? "--segmental-duplication-track ${segmental_duplication_regions}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK AnnotateIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
