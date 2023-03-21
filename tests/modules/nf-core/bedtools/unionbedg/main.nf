@@ -23,7 +23,8 @@ workflow test_bedtools_unionbedg_empty {
 		        file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) 
 		      ]
             ]
-	sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+	sizes = [ [ id: 'genome' ],
+              file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true) ]
 
 BEDTOOLS_UNIONBEDG_EMPTY ( input, sizes )
 }
