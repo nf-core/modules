@@ -43,7 +43,7 @@ process TRINITY {
 
     Trinity \\
     --seqType ${seqType_args} \\
-    --max_memory ${avail_mem}G \\
+    --max_memory ${avail_mem}M \\
     ${reads_args} \\
     --output ${prefix}_trinity \\
     --CPU $task.cpus \\
