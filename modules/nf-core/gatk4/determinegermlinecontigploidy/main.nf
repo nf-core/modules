@@ -4,8 +4,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
 
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.3.0.0':
-        'broadinstitute/gatk:4.3.0.0' }"
+        'broadinstitute/gatk:4.4.0.0':
+        'broadinstitute/gatk:4.4.0.0' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -41,16 +41,16 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     ) : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK DetermineGermlineContigPloidy] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     ${untar_model}
 
-    gatk --java-options "-Xmx${avail_mem}g" DetermineGermlineContigPloidy \\
+    gatk --java-options "-Xmx${avail_mem}M" DetermineGermlineContigPloidy \\
         ${input_list} \\
         --output ./ \\
         --output-prefix ${prefix} \\
