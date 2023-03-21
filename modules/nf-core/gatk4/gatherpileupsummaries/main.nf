@@ -24,7 +24,7 @@ process GATK4_GATHERPILEUPSUMMARIES {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = pileup.collect{ "--I $it" }.join(' ')
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK GatherPileupSummaries] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {

@@ -29,7 +29,7 @@ process GATK4_SITEDEPTHTOBAF {
     def site_depth_input = site_depths.collect({"--site-depth ${it}"}).join(" ")
     def reference = fasta ? "--reference ${fasta}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK SiteDepthtoBAF] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
