@@ -1,13 +1,16 @@
-name: bedtools_intersect
-description: Allows one to screen for overlaps between two sets of genomic features.
+name: bedtools_unionbedg
+description: Combines multiple BedGraph files into a single file
 keywords:
   - bed
-  - intersect
+  - unionBedGraphs
+  - bedGraph
+  - comparisons
+  - combine
 tools:
   - bedtools:
       description: |
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
-      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
       licence: ["MIT"]
 input:
   - meta:
@@ -15,18 +18,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - intervals1:
+  - bedgraph:
       type: file
-      description: BAM/BED/GFF/VCF
-      pattern: "*.{bam|bed|gff|vcf}"
-  - intervals2:
-      type: file
-      description: BAM/BED/GFF/VCF
-      pattern: "*.{bam|bed|gff|vcf}"
+      description: |
+        Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
+      pattern: "*.{bedGraph,bedgraph}"
   - meta2:
       type: map
       description: |
-        Groovy Map containing reference chromosome sizes
+        Groovy Map containing meta information for the reference chromosome sizes
         e.g. [ id:'test' ]
   - chrom_sizes:
       type: optional file
@@ -38,16 +38,13 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - intersect:
+  - bed:
       type: file
-      description: File containing the description of overlaps found between the two features
-      pattern: "*.${extension}"
+      description: Combined BED file with values from all bedGraph files
+      pattern: "*.{bed}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
-  - "@Emiller88"
-  - "@sruthipsuresh"
-  - "@drpatelh"
-  - "@sidorov-si"
+  - "@ekushele"
