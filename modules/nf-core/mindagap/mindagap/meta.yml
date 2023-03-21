@@ -24,6 +24,9 @@ input:
       description: A tiffile containing gridlines as produced by Molecular Cartography imaging.
       pattern: "*.{tiff}"
 
+  # args = optional arguments
+  # args2 = positional arguments s (box size for gaussian kernel) and r (number of rounds to apply gaussianBlur)
+
 output:
   - meta:
       type: map
