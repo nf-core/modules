@@ -23,6 +23,11 @@ input:
       description: |
         Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
       pattern: "*.{bedGraph,bedgraph}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference chromosome sizes
+        e.g. [ id:'test' ]
   - chrom_sizes:
       type: optional file
       description: Chromosome sizes file
