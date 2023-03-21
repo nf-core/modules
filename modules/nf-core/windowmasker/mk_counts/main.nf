@@ -20,7 +20,7 @@ process WINDOWMASKER_MKCOUNTS {
     script:
     def args    = task.ext.args     ?: ""
     def prefix  = task.ext.prefix   ?: "${meta.id}"
-    
+
     def memory = 3072
     if (!task.memory) {
         log.info '[WINDOWMASKER: MK_COUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
