@@ -21,11 +21,12 @@ process VSEARCH_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     vsearch \\
         $sort_arg $fasta \\
         --threads $task.cpus \\
-        --output ${prefix}_sorted.fasta \\
+        --output ${prefix}.fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
