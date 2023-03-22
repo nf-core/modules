@@ -8,8 +8,8 @@ process WINDOWMASKER_USTAT {
         'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
-    tuple val(meta), path(counts)
-    tuple val(meta), path(ref)
+    tuple val(meta) , path(counts)
+    tuple val(meta2), path(ref)
 
     output:
     tuple val(meta), path("${output}")  , emit: intervals
@@ -19,9 +19,8 @@ process WINDOWMASKER_USTAT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args         ?: ""
-    def prefix  = task.ext.prefix       ?: "${meta.id}"
-
+    def args    =   task.ext.args         ?: ""
+    def prefix  =   task.ext.prefix       ?: "${meta.id}"
     def outfmt  =   args.contains('-outfmt fasta')                ? 'fasta'               :
                     args.contains('-outfmt maskinfo_asn1_bin')    ? 'maskinfo_asn1_bin'   :
                     args.contains('-outfmt maskinfo_asn1_text')   ? 'maskinfo_asn1_text'  :
@@ -47,8 +46,31 @@ process WINDOWMASKER_USTAT {
     """
 
     stub:
+    def args    =   task.ext.args         ?: ""
+    def prefix  =   task.ext.prefix       ?: "${meta.id}"
+    def outfmt  =   args.contains('-outfmt fasta')                ? 'fasta'               :
+                    args.contains('-outfmt maskinfo_asn1_bin')    ? 'maskinfo_asn1_bin'   :
+                    args.contains('-outfmt maskinfo_asn1_text')   ? 'maskinfo_asn1_text'  :
+                    args.contains('-outfmt maskinfo_xml')         ? 'maskinfo_xml'        :
+                    args.contains('-outfmt seqloc_asn1_bin')      ? 'seqloc_asn1_bin'     :
+                    args.contains('-outfmt seqloc_asn1_text')     ? 'seqloc_asn1_text'    :
+                    args.contains('-outfmt seqloc_xml')           ? 'seqloc_xml'          :
+                    'interval'
+
+    output  = "${prefix}.${outfmt}"
     """
-    mkdir windowmasker
-    touch windowmasker/test.inteval
+    touch ${prefix}.fasta
+    touch ${prefix}.interval
+    touch ${prefix}.maskinfo_asn1_bin
+    touch ${prefix}.maskinfo_asn1_text
+    touch ${prefix}.maskinfo_xml
+    touch ${prefix}.seqloc_asn1_bin
+    touch ${prefix}.seqloc_asn1_text
+    touch ${prefix}.seqloc_xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        windowmasker: \$(windowmasker -version-full | head -n 1)
+    END_VERSIONS
     """
 }
