@@ -2,7 +2,7 @@ process TRINITY {
     tag "$meta.id"
     label 'process_high_memory'
 
-    conda (params.enable_conda ? "bioconda::trinity=2.13.2" : null)
+    conda "bioconda::trinity=2.13.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.13.2--h00214ad_1':
         'quay.io/biocontainers/trinity:2.13.2--h00214ad_1' }"
@@ -31,11 +31,11 @@ process TRINITY {
     seqType_args = reads[0] ==~ /(.*fasta(.gz)?$)|(.*fa(.gz)?$)/ ? "fa" : "fq"
 
     // Define the memory requirements. Trinity needs this as an option.
-    def avail_mem = 7
+    def avail_mem = 7168
     if (!task.memory) {
         log.info '[Trinity] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
@@ -43,7 +43,7 @@ process TRINITY {
 
     Trinity \\
     --seqType ${seqType_args} \\
-    --max_memory ${avail_mem}G \\
+    --max_memory ${avail_mem}M \\
     ${reads_args} \\
     --output ${prefix}_trinity \\
     --CPU $task.cpus \\

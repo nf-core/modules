@@ -1,0 +1,58 @@
+name: "taxpasta_merge"
+description: Standardise and merge two or more taxonomic profiles into a single table
+keywords:
+  - taxonomic profile
+  - standardise
+  - standardisation
+  - metagenomics
+  - taxonomic profiling
+  - otu tables
+  - taxon tables
+tools:
+  - "taxpasta":
+      description: "TAXonomic Profile Aggregation and STAndardisation"
+      homepage: "https://taxpasta.readthedocs.io/"
+      documentation: "https://taxpasta.readthedocs.io/"
+      tool_dev_url: "https://github.com/taxprofiler/taxpasta"
+
+      licence: "['Apache-2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - profiles:
+      type: file
+      description: A list of taxonomic profiler output files (typically in text format, mandatory)
+      pattern: "*.{tsv,csv,arrow,parquet,biom}"
+  - samplesheet:
+      type: file
+      description:
+        A samplesheet describing the sample name and a filepath to a taxonomic abundance profile that needs to be relative
+        from the work environment. The profiles must be provided even if you give a samplesheet as argument (optional)
+      pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet}"
+  - taxonomy:
+      type: directory
+      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
+      pattern: "*/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - merged_profiles:
+      type: file
+      description: Output file with standardised multiple profiles in one go and have all profiles combined into a single table.
+      pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet,biom}"
+
+authors:
+  - "@sofstam"
+  - "@jfy133"

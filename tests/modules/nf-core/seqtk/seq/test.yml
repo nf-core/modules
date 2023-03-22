@@ -5,7 +5,8 @@
     - seqtk
   files:
     - path: output/seqtk/test.seqtk-seq.fasta.gz
-      md5sum: 50d73992c8c7e56dc095ef47ec52a754
+      contains:
+        - ">MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome"
 
 - name: seqtk seq test_seqtk_seq_fq
   command: nextflow run ./tests/modules/nf-core/seqtk/seq -entry test_seqtk_seq_fq -c ./tests/config/nextflow.config
