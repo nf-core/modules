@@ -26,7 +26,7 @@ process BEDTOOLS_SPLIT {
     bedtools \\
         split \\
         $args \\
-        -n ${count}
+        -n ${count} \\
         -i ${bed} \\
         -p ${prefix}
 
