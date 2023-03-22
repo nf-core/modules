@@ -30,7 +30,7 @@ process CLAIR3 {
     $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        clair3: \$( /usr/local/bin/run_clair3.sh --version | sed 's/ /,/' )
+        clair3: \$( /usr/local/bin/run_clair3.sh --version | sed 's/Clair3 v//' )
     END_VERSIONS
     """
 }
