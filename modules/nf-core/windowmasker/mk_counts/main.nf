@@ -25,7 +25,7 @@ process WINDOWMASKER_MKCOUNTS {
     if (!task.memory) {
         log.info '[WINDOWMASKER: MK_COUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        memory = (task.memory.toMega()*0.8).intValue()
+        memory = (task.memory.toMega()).intValue()
     }
 
     """
@@ -39,5 +39,11 @@ process WINDOWMASKER_MKCOUNTS {
     "${task.process}":
         windowmasker: \$(windowmasker -version-full | head -n 1)
     END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir windowmasker
+    touch windowmasker/test.txt
     """
 }
