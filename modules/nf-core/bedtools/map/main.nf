@@ -44,7 +44,7 @@ process BEDTOOLS_MAP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = tast.ext.suffix ?: "bed"
+    extension = tast.ext.suffix ?: "bed"
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
