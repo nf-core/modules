@@ -25,6 +25,11 @@ input:
       type: file
       description: Index of BAM file
       pattern: "*.bai"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'fasta' ]
   - fasta:
       type: file
       description: |
