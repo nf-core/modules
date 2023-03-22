@@ -11,7 +11,7 @@ process DEEPCELL {
 
     // Output a .tif image, don't touch versions
     output:
-    tuple val(meta), path("*.tif"), emit: tif
+    tuple val(meta), path("*.tif"), emit: mask
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,16 +20,18 @@ process DEEPCELL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
-    python /usr/src/app/run_app.py mesmer \
+
+    mesmer \
         --nuclear-image $img \
         --nuclear-channel 0 \
         --squeeze \
         --output-directory . \
         --output-name cell.tif \
+        --mpp 0.115 \
         --compartment whole-cell
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         deepcell_mesmer_whole_cell: \$(echo latest)
