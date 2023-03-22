@@ -21,7 +21,16 @@ process WINDOWMASKER_USTAT {
     script:
     def args    = task.ext.args         ?: ""
     def prefix  = task.ext.prefix       ?: "${meta.id}"
-    def outfmt  = task.ext.suffix       ?: "interval"
+
+    def outfmt  = args.contains('-outfmt fasta')                ? 'fasta'               :
+                  args.contains('-outfmt maskinfo_asn1_bin')    ? 'maskinfo_asn1_bin'   :
+                  args.contains('-outfmt maskinfo_asn1_text')   ? 'maskinfo_asn1_text'  :
+                  args.contains('-outfmt maskinfo_xml')         ? 'maskinfo_xml'        :
+                  args.contains('-outfmt seqloc_asn1_bin')      ? 'seqloc_asn1_bin'     :
+                  args.contains('-outfmt seqloc_asn1_text')     ? 'seqloc_asn1_text'    :
+                  args.contains('-outfmt seqloc_xml')           ? 'seqloc_xml'          :
+                  'interval'
+
     output  = "${prefix}.${outfmt}"
 
     """
@@ -35,5 +44,11 @@ process WINDOWMASKER_USTAT {
     "${task.process}":
         windowmasker: \$(windowmasker -version-full | head -n 1)
     END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir windowmasker
+    touch windowmasker/test.inteval
     """
 }
