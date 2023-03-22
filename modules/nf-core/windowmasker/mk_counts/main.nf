@@ -42,8 +42,14 @@ process WINDOWMASKER_MKCOUNTS {
     """
 
     stub:
+    def prefix  = task.ext.prefix   ?: "${meta.id}"
+    
     """
-    mkdir windowmasker
-    touch windowmasker/test.txt
+    touch ${prefix}.txt
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        windowmasker: \$(windowmasker -version-full | head -n 1)
+    END_VERSIONS
     """
 }
