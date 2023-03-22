@@ -25,7 +25,7 @@ process NANOPOLISH_INDEX_EVENTALIGN {
     nanopolish eventalign  --reads $fastq --bam $bam --genome $genome --scale-events --signal-index --summary $sample_summary --threads $task.cpus > $sample_eventalign
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nanopolish: \$( nanopolish --version | sed -e 's/nanopolish version //g' )
+        nanopolish: \$( nanopolish --version| head -n 1 | sed 's/nanopolish version //g')
     END_VERSIONS
     """
 }
