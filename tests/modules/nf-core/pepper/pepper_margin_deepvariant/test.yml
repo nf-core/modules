@@ -1,7 +1,7 @@
 - name: pepper_margin_deepvariant test_pepper_margin_deepvariant
-  command: nextflow run ./tests/modules/nf-core/pepper_margin_deepvariant -entry test_pepper_margin_deepvariant -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/pepper/pepper_margin_deepvariant -entry test_pepper_margin_deepvariant -c ./tests/config/nextflow.config
   tags:
-    - pepper_margin_deepvariant
+    - pepper/pepper_margin_deepvariant
   files:
     - path: output/pepper/test_out.vcf.gz
       md5sum: a0c7b99ee79418258f3a5e50b07af464
