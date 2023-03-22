@@ -8,7 +8,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bam_index), path(intervals)
+    tuple val(meta), path(bam), path(bam_index), path(intervals), path(intervals_index)
     path  fasta
     path  fasta_fai
     path  dict
