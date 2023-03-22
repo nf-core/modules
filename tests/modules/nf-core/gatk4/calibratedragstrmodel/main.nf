@@ -10,8 +10,6 @@ workflow test_gatk4_calibratedragstrmodel_bam {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-        [],
-        []
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -31,8 +29,6 @@ workflow test_gatk4_calibratedragstrmodel_cram {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-        [],
-        []
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -52,8 +48,6 @@ workflow test_gatk4_calibratedragstrmodel_beds {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
-        []
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -73,8 +67,6 @@ workflow test_gatk4_calibratedragstrmodel_gzipped_beds {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_bed_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_bed_gz_tbi'], checkIfExists: true)
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
