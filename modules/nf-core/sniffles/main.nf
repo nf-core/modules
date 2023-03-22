@@ -25,8 +25,8 @@ process SNIFFLES {
     """
     sniffles \\
         --input $bam \\
-        --vcf ${meta.id}_sniffles.vcf \\
-        --snf ${meta.id}_sniffles.snf \\
+        --vcf ${prefix}.vcf \\
+        --snf ${prefix}.snf \\
         --reference $fasta \\
         -t $task.cpus \\
         $args
