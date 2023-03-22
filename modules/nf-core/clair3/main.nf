@@ -2,10 +2,10 @@ process CLAIR3 {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'bioconda::clair3=0.1.10'
+    conda 'bioconda::clair3=1.0.0'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clair3:0.1.10--hdfd78af_0' :
-        'quay.io/biocontainers/clair3:0.1.10--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/clair3:1.0.0--py39hb9dc472_1' :
+        'quay.io/biocontainers/clair3:1.0.0--py39hb9dc472_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
