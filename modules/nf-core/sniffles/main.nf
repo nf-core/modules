@@ -13,8 +13,8 @@ process SNIFFLES {
 
 
     output:
-    tuple val(meta), path("*_sniffles.vcf"), emit: sv_vcf
-    tuple val(meta), path("*_sniffles.snf"), emit: sv_snf
+    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.snf"), emit: snf
     path "versions.yml"                    , emit: versions
 
     when:
