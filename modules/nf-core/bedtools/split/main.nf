@@ -9,6 +9,7 @@ process BEDTOOLS_SPLIT {
 
     input:
     tuple val(meta), path(bed)
+    val(count)
 
     output:
     tuple val(meta), path("*.bed"), emit: beds
@@ -25,8 +26,28 @@ process BEDTOOLS_SPLIT {
     bedtools \\
         split \\
         $args \\
-        -i $bed \\
-        -p $prefix
+        -n ${count}
+        -i ${bed} \\
+        -p ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    create_beds = (1..count).collect {
+        number = "0".multiply(4 - it.toString().size()) + "${it}"
+        "    touch ${prefix}.${number}.bed"
+    }.join("\n")
+
+    """
+    ${create_beds}
+
+    exit 1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
