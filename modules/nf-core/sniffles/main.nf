@@ -33,7 +33,7 @@ process SNIFFLES {
         $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version: //')
+        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
     END_VERSIONS
     """
 }
