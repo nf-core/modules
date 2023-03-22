@@ -2,10 +2,10 @@ process NANOPOLISH_INDEX_EVENTALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::nanopolish=0.13.2"
+    conda "bioconda::nanopolish=0.14.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanopolish:0.13.2--he3b7ca5_2' :
-        'quay.io/biocontainers/nanopolish:0.13.2--he3b7ca5_2' }"
+        'https://depot.galaxyproject.org/singularity/nanopolish:0.14.0--h893af9b_2' :
+        'quay.io/biocontainers/nanopolish:0.14.0--h893af9b_2' }"
 
     input:
     tuple val(meta), path(genome), path(gtf), path(fast5), path(fastq), path(bam), path(bai)
