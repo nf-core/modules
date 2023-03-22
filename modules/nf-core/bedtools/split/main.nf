@@ -47,8 +47,6 @@ process BEDTOOLS_SPLIT {
     """
     ${create_beds}
 
-    exit 1
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
