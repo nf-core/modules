@@ -23,9 +23,15 @@ input:
       type: file
       description: BAM/BED/GFF/VCF
       pattern: "*.{bam|bed|gff|vcf}"
-  - extension:
-      type: value
-      description: Extension of the output file. It is set by the user and corresponds to the file format which depends on arguments (e. g., ".bed", ".bam", ".txt", etc.).
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference chromosome sizes
+        e.g. [ id:'test' ]
+  - chrom_sizes:
+      type: optional file
+      description: Chromosome sizes file
+      pattern: "*{.sizes,.txt}"
 output:
   - meta:
       type: map
