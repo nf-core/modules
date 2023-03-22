@@ -19,7 +19,7 @@ workflow test_bedtools_map {
 workflow test_bedtools_map_bam {
     input = [
         [ id:'test' ],
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
     ]
 
