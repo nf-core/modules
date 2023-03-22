@@ -22,7 +22,7 @@ process CLAIR3 {
     script:
     def args = task.ext.args ?: ''
     """
-    /usr/local/bin/run_clair3.sh \
+    run_clair3.sh \
     --bam_fn=$bam \
     --ref_fn=$fasta \
     --threads=$task.cpus \
