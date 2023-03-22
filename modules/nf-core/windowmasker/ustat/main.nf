@@ -30,7 +30,7 @@ process WINDOWMASKER_USTAT {
                   args.contains('-outfmt seqloc_asn1_text')     ? 'seqloc_asn1_text'    :
                   args.contains('-outfmt seqloc_xml')           ? 'seqloc_xml'          :
                   'interval'
- 
+
     output  = "${prefix}.${outfmt}"
 
     """
