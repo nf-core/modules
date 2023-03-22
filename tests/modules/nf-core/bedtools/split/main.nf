@@ -9,7 +9,8 @@ workflow test_bedtools_split {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true),
+        2
     ]
 
-    BEDTOOLS_SPLIT ( input, 2 )
+    BEDTOOLS_SPLIT ( input )
 }

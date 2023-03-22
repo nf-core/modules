@@ -8,8 +8,7 @@ process BEDTOOLS_SPLIT {
         'quay.io/biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
 
     input:
-    tuple val(meta), path(bed)
-    val(count)
+    tuple val(meta), path(bed), val(count)
 
     output:
     tuple val(meta), path("*.bed"), emit: beds
