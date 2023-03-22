@@ -59,14 +59,7 @@ process WINDOWMASKER_USTAT {
 
     output  = "${prefix}.${outfmt}"
     """
-    touch ${prefix}.fasta
-    touch ${prefix}.interval
-    touch ${prefix}.maskinfo_asn1_bin
-    touch ${prefix}.maskinfo_asn1_text
-    touch ${prefix}.maskinfo_xml
-    touch ${prefix}.seqloc_asn1_bin
-    touch ${prefix}.seqloc_asn1_text
-    touch ${prefix}.seqloc_xml
+    touch ${output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
