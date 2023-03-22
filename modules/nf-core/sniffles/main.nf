@@ -9,7 +9,7 @@ process SNIFFLES {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path fasta
+    tuple val(meta2), path(fasta)
 
 
     output:
