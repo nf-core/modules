@@ -11,7 +11,9 @@ workflow test_cutesv {
                                file(params.test_data['sarscov2']['nanopore']['test_sorted_bam_bai'], checkIfExists: true),
                                 ])
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = Channel.of( [ [id: 'fasta'],
+                         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ])
 
     CUTESV ( bam_tuple_ch, fasta )
 }

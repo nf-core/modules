@@ -9,10 +9,10 @@ process CUTESV {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*_cuteSV.vcf"), emit: sv_vcf // vcf files
+    tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"                  , emit: versions
 
     when:
@@ -20,12 +20,13 @@ process CUTESV {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def genotyping = params.enable_genotyping ? "--genotyping" : ''
     """
     cuteSV \
         ${bam} \\
         ${fasta} \\
-        ${meta.id}_cuteSV.vcf \\
+        ${prefix}.vcf \\
         . \\
         --threads $task.cpus \\
         --sample ${meta.id} \\
