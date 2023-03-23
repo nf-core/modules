@@ -36,7 +36,11 @@ process SENTIEON_BWAMEM {
 
     """
 
-    export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+    echo "\$SENTIEON_LICENSE_BASE64"
+
+    export SENTIEON_LICENSE=\$(echo -n "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+
+    echo "\$SENTIEON_LICENSE"
 
     if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ] && [ ${sentieon_auth_data_base64} ]; then
         # Try to use the test-license
