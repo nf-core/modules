@@ -153,9 +153,7 @@ jobs:
       - name: Set up nextflow secrets
         run: |
           nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-          nextflow secrets set SENTIEON_ENCRYPTION_KEY_BASE64 ${{ secrets.ENCRYPTION_KEY_BASE64 }}
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
-          nextflow secrets set SENTIEON_LICENSE_MESSAGE_BASE64 ${{ secrets.LICENSE_MESSAGE_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
           SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
           SENTIEON_AUTH_DATA=$(python tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")

@@ -29,19 +29,15 @@ process SENTIEON_BWAMEM {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sentieon_encryption_key_base64 = task.ext.sentieon_encryption_key_base64 ?: ''
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    def sentieon_license_message_base64 = task.ext.sentieon_license_message_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
     export SENTIEON_LICENSE=\$(echo -n "\$SENTIEON_LICENSE_BASE64" | base64 -d)
 
-    if [ ${sentieon_encryption_key_base64} ] && [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_license_message_base64} ] && [ ${sentieon_auth_data_base64} ]; then
+    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
         # Try to use the test-license
-        # export SENTIEON_ENCRYPTION_KEY=\$(echo -n "${sentieon_encryption_key_base64}" | base64 -d)
         export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        # export SENTIEON_LICENSE_MESSAGE=\$(echo -n "${sentieon_license_message_base64}" | base64 -d)
         export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
