@@ -14,7 +14,7 @@ process CENTRIFUGE_BUILD {
     path name_table
 
     output:
-    tuple val(meta), path("*.cf")   , emit: cf
+    tuple val(meta), path("*.cf") , emit: cf
     path "versions.yml"           , emit: versions
 
     when:
