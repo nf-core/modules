@@ -2,7 +2,7 @@ process MCQUANT {
     tag "$meta.id"
     label 'process_single'
 
-    container "labsyspharm/quantification:1.5"
+    container "labsyspharm/quantification:1.5.4"
 
     input:
     tuple val(meta), path(image)
@@ -31,7 +31,7 @@ process MCQUANT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mcquant: \$(echo 1.5)
+        mcquant: \$(echo 1.5.4)
     END_VERSIONS
     """
 }
