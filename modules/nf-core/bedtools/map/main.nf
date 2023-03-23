@@ -21,8 +21,7 @@ process BEDTOOLS_MAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    //Extension of the output file. It is set by the user via "ext.suffix" in the config. Corresponds to the file format which depends on arguments (e. g., ".bed", ".bam", ".txt", etc.).
-    extension = task.ext.suffix ?: "bed"
+    extension = ( intervals1.getExtension() == "bam" || intervals2.getExtension() == "bam" ) && !args.contains("-bed") ?  "bam" : "bed"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
