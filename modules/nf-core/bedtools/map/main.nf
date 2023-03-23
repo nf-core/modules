@@ -21,7 +21,7 @@ process BEDTOOLS_MAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = ( intervals1.getExtension() == "bam" || intervals2.getExtension() == "bam" ) && !args.contains("-bed") ?  "bam" : "bed"
+    extension = intervals1.getExtension()
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("$intervals1" == "${prefix}.${extension}" ||
         "$intervals2" == "${prefix}.${extension}")
