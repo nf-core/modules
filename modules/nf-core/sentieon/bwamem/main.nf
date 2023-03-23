@@ -38,7 +38,7 @@ process SENTIEON_BWAMEM {
     if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
         # Try to use the test-license
         export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        # export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
+        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
