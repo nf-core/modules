@@ -21,7 +21,6 @@ process CUTESV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def genotyping = params.enable_genotyping ? "--genotyping" : ''
     """
     cuteSV \
         ${bam} \\
@@ -29,8 +28,6 @@ process CUTESV {
         ${prefix}.vcf \\
         . \\
         --threads $task.cpus \\
-        --sample ${meta.id} \\
-        $genotyping \\
         $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
