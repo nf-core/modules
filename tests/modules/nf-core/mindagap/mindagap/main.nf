@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINDAGAP } from '../../../../../modules/nf-core/mindagap/mindagap/main.nf'
+include { MINDAGAP_MINDAGAP } from '../../../../../modules/nf-core/mindagap/mindagap/main.nf'
 
 workflow test_mindagap {
 
@@ -11,5 +11,5 @@ workflow test_mindagap {
         file(params.test_data['spatialomics']['tiff']['mouse_heart_wga_tiff'], checkIfExists: true)
     ]
 
-    MINDAGAP ( input )
+    MINDAGAP_MINDAGAP ( input )
 }
