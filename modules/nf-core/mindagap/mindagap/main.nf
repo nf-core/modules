@@ -3,7 +3,9 @@ process MINDAGAP_MINDAGAP {
     label 'process_low'
 
     conda "bioconda::mindagap=0.0.2"
-    container "quay.io/biocontainers/mindagap:0.0.2--pyhdfd78af_0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_0' :
+    'quay.io/biocontainers/mindagap:0.0.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(tiff)
