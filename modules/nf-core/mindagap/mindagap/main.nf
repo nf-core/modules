@@ -1,4 +1,4 @@
-process MINDAGAP {
+process MINDAGAP_MINDAGAP {
     tag "$meta.id"
     label 'process_low'
 
