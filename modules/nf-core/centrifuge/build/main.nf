@@ -33,8 +33,8 @@ process CENTRIFUGE_BUILD {
     --name-table $name_table \\
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-    centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
+        "${task.process}":
+        centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
     END_VERSIONS
     """
 }
