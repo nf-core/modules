@@ -2,10 +2,10 @@ process CENTRIFUGE_BUILD {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::centrifuge=1.0.4"
+    conda "bioconda::centrifuge=1.0.4_beta"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4--hd03093a_0':
-        'quay.io/biocontainers/centrifuge:1.0.4--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4_beta--h9a82719_6':
+        'quay.io/biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
 
     input:
     tuple val(meta), path(fasta)
