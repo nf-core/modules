@@ -9,10 +9,9 @@ process BEDTOOLS_MAKEWINDOWS {
 
     input:
     tuple val(meta), path(regions)
-    val(use_bed)
 
     output:
-    tuple val(meta), path("*.tab"), emit: tab
+    tuple val(meta), path("*.bed"), emit: bed
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,13 +20,26 @@ process BEDTOOLS_MAKEWINDOWS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def arg_input = use_bed ? "-b $regions" : "-g $regions"
+    def arg_input = regions.extension in ["bed", "tab"] ? "-b ${regions}" : "-g ${regions}"
+    if ("${regions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     bedtools \\
         makewindows \\
         ${arg_input} \\
-        $args \\
-        > ${prefix}.tab
+        ${args} \\
+        > ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${regions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

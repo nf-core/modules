@@ -127,7 +127,7 @@ opt <- list(
     sample_name_col = 'file',
     background = TRUE,
     normalize = TRUE,
-    bg_version = 2,
+    bgversion = 2,
     destructive=FALSE,
     cdfname = NULL,
     rm.mask = FALSE,
@@ -251,7 +251,7 @@ if (opt\$build_annotation){
                 anno,
                 anno\$PROBEID
             ),
-            function(x) apply(x, 2, function(y) paste(unique(y), collapse=','))
+            function(x) apply(x, 2, function(y) paste(unique(y), collapse=', '))
         )
     )
 
@@ -275,7 +275,8 @@ saveRDS(eset, file = paste0(output_prefix, 'eset.rds'))
 write.table(
     data.frame(
         probe_id = rownames(eset),
-        round_dataframe_columns(as.data.frame(exprs(eset)))
+        round_dataframe_columns(as.data.frame(exprs(eset))),
+        check.names = FALSE
     ),
     file = paste0(output_prefix, 'matrix.tsv'),
     col.names = TRUE,
