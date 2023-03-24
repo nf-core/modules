@@ -24,15 +24,15 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
+      description: BAM/CRAM/SAM file (Mandatory)
       pattern: "*.{bam,cram,sam}"
   - config:
       type: file
-      description: AuthentiCT configuration text file
+      description: Optional AuthentiCT configuration text file
       pattern: "*"
   - positions:
       type: file
-      description: text file with positions that sequences should overlap
+      description: Optional text file with positions that sequences should overlap
       pattern: "*"
 
 output:

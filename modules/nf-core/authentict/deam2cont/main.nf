@@ -38,6 +38,7 @@ process AUTHENTICT_DEAM2CONT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         authentict: \$(echo \$(AuthentiCT --version 2>&1) )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
