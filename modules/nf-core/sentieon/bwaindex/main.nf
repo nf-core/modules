@@ -3,8 +3,6 @@ process SENTIEON_BWAINDEX {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
