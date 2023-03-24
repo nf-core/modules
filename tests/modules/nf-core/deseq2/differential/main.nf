@@ -218,3 +218,55 @@ workflow test_deseq2_differential_vst_nsub {
         ch_empty_spikes
     )
 }
+
+// Test with contrast sample subsetting enabled
+
+workflow test_deseq2_differential_subset_to_contrast {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+    Channel.fromPath(expression_contrasts)
+        .splitCsv ( header:true, sep:',' )
+        .map{
+            tuple(it, it.variable, it.reference, it.target)
+        }
+        .set{
+            ch_contrasts
+        }
+
+    ch_matrix = [[id: 'test'], expression_sample_sheet, expression_matrix_file]
+
+    DESEQ2_DIFFERENTIAL (
+        ch_contrasts,
+        ch_matrix,
+        ch_empty_spikes
+    )
+}
+
+// Test with sample exclusion enabled
+
+workflow test_deseq2_differential_exclude_samples {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+    Channel.fromPath(expression_contrasts)
+        .splitCsv ( header:true, sep:',' )
+        .map{
+            tuple(it, it.variable, it.reference, it.target)
+        }
+        .set{
+            ch_contrasts
+        }
+
+    ch_matrix = [[id: 'test'], expression_sample_sheet, expression_matrix_file]
+
+    DESEQ2_DIFFERENTIAL (
+        ch_contrasts,
+        ch_matrix,
+        ch_empty_spikes
+    )
+}
