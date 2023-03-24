@@ -95,9 +95,9 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 opt <- list(
     count_file = '$counts',
     sample_file = '$samplesheet',
-    contrast_variable = NULL,
-    reference_level = NULL,
-    treatment_level = NULL,
+    contrast_variable = '$contrast_variable',
+    reference_level = '$reference',
+    treatment_level = '$target',
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
     sizefactors_from_controls = FALSE,
