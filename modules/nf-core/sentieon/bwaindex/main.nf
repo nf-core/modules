@@ -25,16 +25,6 @@ process SENTIEON_BWAINDEX {
     script:
     def args = task.ext.args ?: ''
     """
-    if [ \${SENTIEON_LICENSE_BASE64:-"unset"} != "unset" ]; then
-        echo "Initializing SENTIEON_LICENSE env variable"
-        if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then # Sentieon License server
-            export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        else  # Localhost license file
-            export SENTIEON_LICENSE=\$(mktemp)
-            echo -e "\$LICENSE_ENCODED" | base64 -d > \$SENTIEON_LICENSE
-        fi
-    fi
-
     mkdir bwa
 
     sentieon \\
