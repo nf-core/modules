@@ -23,12 +23,12 @@ process PICARD_FASTQTOSAM {
     if (!task.memory) {
         log.warn '[Picard FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     }
-    def avail_mem = task.memory ? task.memory.giga : 3
+    def avail_mem = task.memory ? (task.memory.mega*0.8).intValue() : 3072
     def input = meta.single_end ? "--FASTQ ${reads}" : "--FASTQ ${reads[0]} --FASTQ2 ${reads[1]}"
     def sample_name = args.contains("--SAMPLE_NAME") || args.contains("-SM") ? "" : "--SAMPLE_NAME ${prefix}"
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         FastqToSam \\
         ${args} \\
         ${input} \\
