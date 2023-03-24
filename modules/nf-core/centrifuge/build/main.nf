@@ -2,10 +2,10 @@ process CENTRIFUGE_BUILD {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::centrifuge=1.0.4"
+    conda "bioconda::centrifuge=1.0.4_beta"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4--hd03093a_0':
-        'quay.io/biocontainers/centrifuge:1.0.4--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4_beta--h9a82719_6':
+        'quay.io/biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -14,7 +14,7 @@ process CENTRIFUGE_BUILD {
     path name_table
 
     output:
-    tuple val(meta), path("*.cf")   , emit: cf
+    tuple val(meta), path("*.cf") , emit: cf
     path "versions.yml"           , emit: versions
 
     when:
@@ -33,8 +33,8 @@ process CENTRIFUGE_BUILD {
     --name-table $name_table \\
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-    centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
+        "${task.process}":
+        centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
     END_VERSIONS
     """
 }
