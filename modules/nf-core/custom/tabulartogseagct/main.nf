@@ -22,6 +22,7 @@ process CUSTOM_TABULARTOGSEAGCT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def separator = args.separator ? "${args.separator}" : ( tabular.getName().endsWith(".csv") ? ',': '\t' )
     separator = separator == '\t' ? '\\t': separator
+    def strip_versions = args.strip_versions ?: false
 
     """
     n_columns=\$(head -n 1 $tabular | tr "$separator" "\\n" | wc -l)
@@ -30,7 +31,16 @@ process CUSTOM_TABULARTOGSEAGCT {
 
     echo -e "#1.2\$(printf '\\t%.0s' {1..\$n_columns})\\n\$((n_lines-1))\\t\$((n_columns-1))\$(printf '\\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
     echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 $tabular | cut -f1 -d\$'$separator' --complement | awk -F'$separator' 'BEGIN { OFS = "\\t"}; {\$1=\$1}1' )" >> \$gct_file
-    cat $tabular | tail -n +2 | awk -F'$separator' 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
+
+    # If strip_versions is specified, remove suffixes like .1 from feature names
+
+    if [ '$strip_versions' == 'true' ]; then
+        awk_command='BEGIN { OFS = "\\t"} {gsub(/\\.[0-9]+/,"",\$1);\$1=\$1"\\tNA"}1'
+    else
+        awk_command='BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1'
+    fi
+
+    cat $tabular | tail -n +2 | awk -F'$separator' "\$awk_command" >> \$gct_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -76,3 +76,21 @@ workflow test_custom_tabulartogseagct_csv_override_pipe {
 
     CUSTOM_TABULARTOGSEAGCT ( input )
 }
+
+workflow test_custom_tabulartogseagct_strip_versions {
+
+    input = Channel.fromPath(infile)
+        .splitCsv(sep: "\t", header: false)
+        .map{
+            lst = new ArrayList(it);
+            lst.remove(1);
+            lst[0] = lst[0] + '.1'
+            lst.join('\t')
+        }
+        .collectFile(name: 'test.tsv', newLine: true, sort: false)
+        .map{
+            [ [ id:'test' ], it]
+        }
+
+    CUSTOM_TABULARTOGSEAGCT ( input )
+}
