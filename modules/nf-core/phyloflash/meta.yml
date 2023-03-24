@@ -25,11 +25,11 @@ input:
       description: Channel containing single or paired-end reads
       pattern: "*.{fastq.gz,fq.gz}"
   - sliva_db:
-      type: folder
+      type: directory
       description: Folder containing the SILVA database
       pattern: "ref"
   - univec_db:
-      type: folder
+      type: directory
       description: Folder containing UniVec database
       pattern: "UniVec"
 
@@ -40,7 +40,7 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - results:
-      type: folder
+      type: directory
       description: Folder containing the results of phyloFlash analysis
       pattern: "${prefix}*"
   - versions:
