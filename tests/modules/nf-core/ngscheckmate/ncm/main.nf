@@ -22,7 +22,7 @@ workflow test_ngscheckmate_ncm_bam {
                  file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
 
     BEDTOOLS_MAKEWINDOWS(inputBed, true).
-    tab.
+    bed.
     map{it[1]}.
     view().
     set{snp_channel}
@@ -47,12 +47,11 @@ workflow test_ngscheckmate_ncm_vcf {
     BCFTOOLS_MPILEUP ( input1, fasta, false )
     BCFTOOLS_MPILEUP2 ( input2, fasta, false )
 
-    BCFTOOLS_MPILEUP2.out.vcf.
-        combine( BCFTOOLS_MPILEUP.out.vcf ).
-        map { [ it[1], it[3] ] }.
+    BCFTOOLS_MPILEUP2.out.vcf.map{it[1]]}
+        combine( BCFTOOLS_MPILEUP.out.vcf{it[1]} ).
         set { vcf_channel }
 
-    BEDTOOLS_MAKEWINDOWS( inputBed, true ).tab.
+    BEDTOOLS_MAKEWINDOWS( inputBed, true ).bed.
         map { it[1] }.
         view().
         set { snp_channel }
