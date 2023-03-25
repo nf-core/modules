@@ -47,7 +47,7 @@ workflow test_ngscheckmate_ncm_vcf {
     BCFTOOLS_MPILEUP ( input1, fasta, false )
     BCFTOOLS_MPILEUP2 ( input2, fasta, false )
 
-    BCFTOOLS_MPILEUP2.out.vcf.map{it[1]]}
+    BCFTOOLS_MPILEUP2.out.vcf.map{it[1]}
         combine( BCFTOOLS_MPILEUP.out.vcf{it[1]} ).
         set { vcf_channel }
 
