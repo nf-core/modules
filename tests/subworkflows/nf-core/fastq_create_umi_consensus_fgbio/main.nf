@@ -26,8 +26,8 @@ workflow test_fastq_create_umi_consensus_fgbio_duplex_umi {
     reads = [
         [ id:'test_duplex', single_end:false ], // meta map
         [
-            file('/home/lescai/tests/nf-development/umi_test_data/nils_homer_simulator/duplex_simulated_rnames_L001_R1_001.fastq.gz', checkIfExists: true),
-            file('/home/lescai/tests/nf-development/umi_test_data/nils_homer_simulator/duplex_simulated_rnames_L001_R2_001.fastq.gz', checkIfExists: true)
+            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_2_fastq_gz'], checkIfExists: true)
         ]
     ]
     fasta          =    file(params.test_data['homo_sapiens']['genome']['genome_fasta'],            checkIfExists: true)
