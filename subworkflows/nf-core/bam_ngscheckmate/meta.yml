@@ -44,9 +44,9 @@ output:
       type: file
       description: A txt file containing all the sample comparisons, whether they match or not
       pattern: "*all.txt"
-  - vcfs:
+  - vcf:
       type: file
-      description: If ran in bam mode, vcf files for each sample giving the SNP calls
+      description: vcf files for each sample giving the SNP calls
       pattern: "*.vcf"
   - versions:
       type: file
