@@ -1,15 +1,15 @@
 name: bedtools_makewindows
-
 description: Makes adjacent or sliding windows across a genome or BED file.
 keywords:
   - bed
   - windows
+  - fai
+  - chunking
 tools:
   - bedtools:
       description: A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       homepage: https://bedtools.readthedocs.io
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/makewindows.html
-      tool_dev_url: None
       doi: "10.1093/bioinformatics/btq033"
       licence: ["MIT"]
 input:
@@ -21,10 +21,7 @@ input:
   - regions:
       type: file
       description: BED file OR Genome details file (<chromName><TAB><chromSize>)
-      pattern: "*.{bed,fai,tab}"
-  - use_bed:
-      type: boolean
-      description: true = input is a BED file; false = input is a genome details file
+      pattern: "*.{bed,tab,fai}"
 output:
   - meta:
       type: map
@@ -37,7 +34,8 @@ output:
       pattern: "versions.yml"
   - tab:
       type: file
-      description: Windows TAB file (BED or BED-like format)
+      description: BED file containing the windows
       pattern: "*.tab"
 authors:
   - "@kevbrick"
+  - "@nvnieuwk"
