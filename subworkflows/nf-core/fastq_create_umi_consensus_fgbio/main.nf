@@ -113,8 +113,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // in config file
         // samtools view module also needs a tuple with index
         // creating a dummy one
-        def dummyIndex = new File("dummy.bai")
-        dummyIndex.createNewFile()
         dummy_index = Channel.fromPath( 'dummy.bai' )
         // then joining channel so input tuple includes it
         ZIPPERBAMS_PRE.out.bam
