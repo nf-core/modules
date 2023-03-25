@@ -111,7 +111,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     if (duplex) {
         // filter params are -f 1 i.e. paired and defined
         // in config file
-        BAMFILTER ( ZIPPERBAMS_PRE.out.bam, [], [] )
+        // samtools view module needs a tuple with index:
+        // creating a dummy one
+        dummy_index = Channel.empty()
+        ZIPPERBAMS_PRE.out.bam
+            .join(dummy_index, remainder: true)
+            .set { temp_bam_bai }
+        BAMFILTER ( temp_bam_bai, [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
         groupready_bam = BAMFILTER.out.bam
 
