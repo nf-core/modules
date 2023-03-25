@@ -118,7 +118,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         ZIPPERBAMS_PRE.out.bam
             .join(dummy_index, by: [0], remainder: true)
             .set { bam_bai }
-
+        check_dummy_bam_bai = bam_bai.dump(tag: 'dummy index')
         // then applying samtools view to filter only paired reads
         BAMFILTER ( bam_bai, [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
