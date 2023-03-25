@@ -113,14 +113,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // in config file
         // samtools view module also needs a tuple with index
         // creating a dummy one
-        dummy_index = Channel.fromPath( 'dummy.bai' )
         // then joining channel so input tuple includes it
         ZIPPERBAMS_PRE.out.bam
-            .join(dummy_index, by: [0], remainder: true)
-            .set { bam_bai }
-        check_dummy_bam_bai = bam_bai.dump(tag: 'dummy index')
+            .join(ZIPPERBAMS_PRE.out.bam, by: [0], remainder: true)
+            .set { dummy_bam_bai }
+        check_dummy_bam_bai = dummy_bam_bai.dump(tag: 'dummy index')
         // then applying samtools view to filter only paired reads
-        BAMFILTER ( bam_bai, [], [] )
+        BAMFILTER ( dummy_bam_bai, [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
         groupready_bam = BAMFILTER.out.bam
 
