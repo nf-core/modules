@@ -20,6 +20,7 @@ include { FGBIO_ZIPPERBAMS                  as ZIPPERBAMS_POST     } from '../..
 include { SAMTOOLS_FASTQ                    as BAM2FASTQ_PRE       } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_FASTQ                    as BAM2FASTQ_POST      } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_SORT                     as SORTBAM             } from '../../../modules/nf-core/samtools/sort/main.nf'
+include { SAMTOOLS_VIEW                     as BAMFILTER           } from '../../../modules/nf-core/samtools/view/main.nf'
 
 
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
@@ -101,6 +102,23 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     ZIPPERBAMS_PRE ( FASTQTOBAM.out.bam, aligned_bam, fasta, dict )
     ch_versions = ch_versions.mix(ZIPPERBAMS_PRE.out.versions)
 
+    // if using duplex UMI paired strategy must be used and therefore
+    // only BAM files with all reads paired will be accepted
+    // to avoid groupReadsByUmi throwing an error we must filter the zipped BAM
+
+    groupready_bam = Channel.empty()
+
+    if (duplex) {
+        // filter params are -f 1 i.e. paired and defined
+        // in config file
+        BAMFILTER ( ZIPPERBAMS_PRE.out.bam, [], [] )
+        ch_versions = ch_versions.mix(BAMFILTER.out.versions)
+        groupready_bam = BAMFILTER.out.bam
+
+    } else {
+        groupready_bam = ZIPPERBAMS_PRE.out.bam
+    }
+
     // appropriately tagged reads are now grouped by UMI information
     // note that in tests ext.args has been set to recommended --edits 1
     // if UMIs are significantly longer (e.g. 20bp) or have more errors, --edits can be increased
@@ -108,7 +126,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // For multiplex PCR and similar data where reads' genomic positions are fixed by the primers
     // it is recommended to use --strategy Identity to reduce runtime at the expense of lower accuracy
     // For duplex UMIs reads MUST be grouped using --strategy paired
-    GROUPREADSBYUMI ( ZIPPERBAMS_PRE.out.bam, groupreadsbyumi_strategy )
+    GROUPREADSBYUMI ( groupready_bam, groupreadsbyumi_strategy )
     ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
 
     // prepare output channel independently on UMI structure
