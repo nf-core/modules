@@ -1,15 +1,11 @@
 name: "bam_ngscheckmate"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Take a set of bam files and run NGSCheckMate to determine whether samples match with each other, using a set of SNPs.
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules used in the subworkflow
+  - ngscheckmate
+  - qc
 modules:
-  - samtools/sort
-  - samtools/index
+  - bcftools/mpileup
+  - ngscheckmate/ncm
 ## TODO nf-core: List all of the variables used as input, including their types and descriptions
 input:
   - meta:
@@ -23,23 +19,26 @@ input:
       pattern: "*.{bam,cram,sam}"
 ## TODO nf-core: List all of the variables used as output, including their types and descriptions
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
+  - pdf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
+      description: A pdf containing a dendrogram showing how the samples match up
+      pattern: "*.{pdf}"
+  - corr_matrix:
       type: file
-      description: BAM/CRAM/SAM samtools index
-      pattern: "*.{bai,crai,sai}"
-  - csi:
+      description: A text file containing the correlation matrix between each sample
+      pattern: "*corr_matrix.txt"
+  - matched:
       type: file
-      description: CSI samtools index
-      pattern: "*.csi"
+      description: A txt file containing only the samples that match with each other
+      pattern: "*matched.txt"
+  - all:
+      type: file
+      description: A txt file containing all the sample comparisons, whether they match or not
+      pattern: "*all.txt"
+  - vcfs:
+      type: file
+      description: If ran in bam mode, vcf files for each sample giving the SNP calls
+      pattern: "*.vcf"
   - versions:
       type: file
       description: File containing software versions
