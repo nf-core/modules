@@ -6,7 +6,6 @@ keywords:
 modules:
   - bcftools/mpileup
   - ngscheckmate/ncm
-## TODO nf-core: List all of the variables used as input, including their types and descriptions
 input:
   - meta:
       type: map
@@ -15,9 +14,19 @@ input:
         e.g. [ id:'test' ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-## TODO nf-core: List all of the variables used as output, including their types and descriptions
+      description: BAM files for each sample
+      pattern: "*.{bam}"
+  - snp_bed:
+      type: file
+      description: BED file containing the SNPs to analyse. NGSCheckMate provides some default ones for hg19/hg38.
+      pattern: "*.{bed}"
+
+  - fasta:
+      type: file
+      description: fasta file for the genome
+      pattern: "*.{fasta}"
+
+
 output:
   - pdf:
       type: file
