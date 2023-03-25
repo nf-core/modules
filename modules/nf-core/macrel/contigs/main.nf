@@ -2,7 +2,7 @@ process MACREL_CONTIGS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::macrel=1.1.0" : null)
+    conda "bioconda::macrel=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macrel:1.1.0--py36hc5360cc_0':
         'quay.io/biocontainers/macrel:1.1.0--py36hc5360cc_0' }"

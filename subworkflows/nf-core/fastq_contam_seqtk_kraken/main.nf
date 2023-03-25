@@ -38,7 +38,7 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
                 false
         )
         ch_versions = ch_versions.mix(KRAKEN2.out.versions.first())
-        ch_reports.mix(KRAKEN2.out.report)
+        ch_reports  = ch_reports.mix(KRAKEN2.out.report)
 
     emit:
         reports  = ch_reports     // channel: [ [meta], log  ]

@@ -23,14 +23,14 @@ input:
       type: file
       description: VCF/BCF file
       pattern: "*.{vcf.gz,vcf,bcf}"
-  - fai:
-      type: file
-      description: Fasta index to update header sequences with
-      pattern: "*.{fai}"
   - header:
       type: file
       description: New header to add to the VCF
       pattern: "*.{header.txt}"
+  - fai:
+      type: file
+      description: Fasta index to update header sequences with
+      pattern: "*.{fai}"
 
 output:
   - meta:
@@ -44,8 +44,9 @@ output:
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: VCF with updated header
-      pattern: "*.{vcf.gz}"
+      description: VCF with updated header, bgzipped per default
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
 
 authors:
   - "@bjohnnyd"
+  - "@jemten"

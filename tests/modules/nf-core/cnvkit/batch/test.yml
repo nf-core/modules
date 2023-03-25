@@ -8,7 +8,7 @@
     - path: output/cnvkit/baits.target.bed
       md5sum: 26d25ff2d6c45b6d92169b3559c6acdb
     - path: output/cnvkit/reference.cnn
-      md5sum: 035d031f54c5f1b43b903da96559b475
+      md5sum: ac99c1ad8b917b96ae15119146c91ab9
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.bintest.cns
@@ -38,7 +38,7 @@
     - path: output/cnvkit/genome.target.bed
       md5sum: a13353ae9c8405e701390c069255bbd2
     - path: output/cnvkit/reference.cnn
-      md5sum: 1606a85410bfaa79464be6e98699aa83
+      md5sum: 05c6211e0179885b8a83e44fd21d5f86
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.targetcoverage.cnn
@@ -68,7 +68,7 @@
     - path: output/cnvkit/genome.target.bed
       md5sum: a13353ae9c8405e701390c069255bbd2
     - path: output/cnvkit/reference.cnn
-      md5sum: 1606a85410bfaa79464be6e98699aa83
+      md5sum: 05c6211e0179885b8a83e44fd21d5f86
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.targetcoverage.cnn
@@ -181,3 +181,9 @@
       md5sum: 4e67451dbcb6601fc3fa5dd7e570f1d4
     - path: output/cnvkit/test2.paired_end.recalibrated.sorted.targetcoverage.cnn
       md5sum: b4a49faf170e436ec32dcc21ccc3ce8f
+
+- name: cnvkit batch test_cnvkit_pon
+  command: nextflow run ./tests/modules/nf-core/cnvkit/batch -entry test_cnvkit_pon -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cnvkit/batch/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/batch

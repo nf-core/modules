@@ -1,11 +1,11 @@
 process WFMASH {
-    tag '$bam'
+    tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::wfmash=0.10.0" : null)
+    conda "bioconda::wfmash=0.10.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wfmash:0.10.0--hfdddef0_0':
-        'quay.io/biocontainers/wfmash:0.10.0--hfdddef0_0' }"
+        'https://depot.galaxyproject.org/singularity/wfmash:0.10.2--hfdddef0_0':
+        'quay.io/biocontainers/wfmash:0.10.2--hfdddef0_0' }"
 
     input:
     tuple val(meta), path(fasta_gz)
@@ -41,7 +41,7 @@ process WFMASH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v'))
+        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
 }
