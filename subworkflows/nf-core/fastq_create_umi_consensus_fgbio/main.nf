@@ -122,6 +122,8 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         BAMFILTER ( dummy_bam_bai, [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
         groupready_bam = BAMFILTER.out.bam
+        // deleting dummy file
+        dummyIndexFile.delete()
 
     } else {
         // for Adjacency strategy the above is not necessary
