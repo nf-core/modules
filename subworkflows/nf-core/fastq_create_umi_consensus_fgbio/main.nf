@@ -21,7 +21,7 @@ include { SAMTOOLS_FASTQ                    as BAM2FASTQ_PRE       } from '../..
 include { SAMTOOLS_FASTQ                    as BAM2FASTQ_POST      } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_SORT                     as SORTBAM             } from '../../../modules/nf-core/samtools/sort/main.nf'
 include { SAMTOOLS_VIEW                     as BAMFILTER           } from '../../../modules/nf-core/samtools/view/main.nf'
-
+include { SAMTOOLS_INDEX                    as INDEXBAM            } from '../../../modules/nf-core/samtools/index/main.nf'
 
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
@@ -111,17 +111,23 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     if (duplex) {
         // filter params are -f 1 i.e. paired and defined
         // in config file
-        // samtools view module needs a tuple with index:
-        // creating a dummy one
-        dummy_index = Channel.empty()
+        // samtools view module also needs a tuple with index
+        // indexing first
+        INDEXBAM (ZIPPERBAMS_PRE.out.bam )
+        ch_versions = ch_versions.mix(INDEXBAM.out.versions.first())
+
+        // then joining channel so input tuple includes it
         ZIPPERBAMS_PRE.out.bam
-            .join(dummy_index, remainder: true)
-            .set { temp_bam_bai }
-        BAMFILTER ( temp_bam_bai, [], [] )
+            .join(INDEXBAM.out.bai, by: [0], remainder: true)
+            .set { bam_bai }
+
+        // then applying samtools view to filter only paired reads
+        BAMFILTER ( bam_bai, [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
         groupready_bam = BAMFILTER.out.bam
 
     } else {
+        // for Adjacency strategy the above is not necessary
         groupready_bam = ZIPPERBAMS_PRE.out.bam
     }
 
