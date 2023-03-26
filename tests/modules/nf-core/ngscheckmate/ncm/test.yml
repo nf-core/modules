@@ -1,24 +1,46 @@
 - name: ngscheckmate ncm test_ngscheckmate_ncm_bam
-  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_bam -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/ncm/nextflow.config
   tags:
     - ngscheckmate/ncm
     - ngscheckmate
   files:
+    - path: output/bedtools/test_split.bed
+      md5sum: 5058157987313b598f1c260e6965d6f7
+    - path: output/bedtools/versions.yml
+    - path: output/ngscheckmate/output.pdf
     - path: output/ngscheckmate/output_all.txt
       md5sum: f71a712c3f6ecf64dd526365212f1b7c
     - path: output/ngscheckmate/output_corr_matrix.txt
       md5sum: 6777377aa9ae3d57f841b12896318db0
     - path: output/ngscheckmate/output_matched.txt
       md5sum: f71a712c3f6ecf64dd526365212f1b7c
+    - path: output/ngscheckmate/test.paired_end.methylated.sorted.vcf
+    - path: output/ngscheckmate/test.paired_end.sorted.vcf
     - path: output/ngscheckmate/versions.yml
-      md5sum: fbb2bebd65b4f4e1e93c6bf5c08a6829
 
 - name: ngscheckmate ncm test_ngscheckmate_ncm_vcf
-  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_vcf -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/ncm/nextflow.config
   tags:
     - ngscheckmate/ncm
     - ngscheckmate
   files:
+    - path: output/bcftools/test1.bcftools_stats.txt
+      md5sum: 4c6220cb084b6e1dc0705021b7b56064
+    - path: output/bcftools/test1.vcf.gz
+      md5sum: ef38cd14e3da448bf4eec72a31377b85
+    - path: output/bcftools/test1.vcf.gz.tbi
+      md5sum: 32d99ec78db23f32f1280c6becf29b5f
+    - path: output/bcftools/test2.bcftools_stats.txt
+      md5sum: d472f09c758c4d259b7f0c68be0846f8
+    - path: output/bcftools/test2.vcf.gz
+      md5sum: 6e2d723a2ef083b0586012b7a03fccac
+    - path: output/bcftools/test2.vcf.gz.tbi
+      md5sum: 32d99ec78db23f32f1280c6becf29b5f
+    - path: output/bcftools/versions.yml
+    - path: output/bedtools/test_split.bed
+      md5sum: 5058157987313b598f1c260e6965d6f7
+    - path: output/bedtools/versions.yml
+    - path: output/ngscheckmate/output.pdf
     - path: output/ngscheckmate/output_all.txt
       md5sum: fd74956dcac279b6f58e82ea73e344f8
     - path: output/ngscheckmate/output_corr_matrix.txt
@@ -26,4 +48,3 @@
     - path: output/ngscheckmate/output_matched.txt
       md5sum: fd74956dcac279b6f58e82ea73e344f8
     - path: output/ngscheckmate/versions.yml
-      md5sum: f06910b83dde194a47870c553cefe193

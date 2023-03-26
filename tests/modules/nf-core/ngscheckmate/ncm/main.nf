@@ -21,7 +21,7 @@ workflow test_ngscheckmate_ncm_bam {
     inputBed = [ [ id:'test'],
                  file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
 
-    BEDTOOLS_MAKEWINDOWS(inputBed, true).
+    BEDTOOLS_MAKEWINDOWS(inputBed).
     bed.
     map{it[1]}.
     view().
@@ -31,28 +31,30 @@ workflow test_ngscheckmate_ncm_bam {
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    input1   = [ [ id:'test1' ], // meta map
-                 [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
-               ]
-
-    input2   = [ [ id:'test2' ], // meta map
-                 [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
-               ]
-
     fasta    = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     inputBed = [ [ id:'test'],
-                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+
+    input1   = [ [ id:'test1' ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+
+    input2   = [ [ id:'test2' ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
 
     BCFTOOLS_MPILEUP ( input1, fasta, false )
-    BCFTOOLS_MPILEUP2 ( input2, fasta, false )
+    BCFTOOLS_MPILEUP_TWO ( input2, fasta, false )
 
-    BCFTOOLS_MPILEUP2.out.vcf.
+    BCFTOOLS_MPILEUP_TWO.out.vcf.
         combine( BCFTOOLS_MPILEUP.out.vcf ).
         map { [ it[1], it[3] ] }.
         set { vcf_channel }
 
-    BEDTOOLS_MAKEWINDOWS( inputBed, true ).bed.
+    BEDTOOLS_MAKEWINDOWS( inputBed).bed.
         map { it[1] }.
         view().
         set { snp_channel }
