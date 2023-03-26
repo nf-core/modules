@@ -8,7 +8,7 @@ include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_VCF} from '../../../../../modules
 include { BEDTOOLS_MAKEWINDOWS } from '../../../../../modules/nf-core/bedtools/makewindows/main.nf'
 
 include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
-include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP2 } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
+include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP_TWO } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
 
 workflow test_ngscheckmate_ncm_bam {
     input    = [ file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
@@ -47,8 +47,9 @@ workflow test_ngscheckmate_ncm_vcf {
     BCFTOOLS_MPILEUP ( input1, fasta, false )
     BCFTOOLS_MPILEUP2 ( input2, fasta, false )
 
-    BCFTOOLS_MPILEUP2.out.vcf.map{it[1]}
-        combine( BCFTOOLS_MPILEUP.out.vcf{it[1]} ).
+    BCFTOOLS_MPILEUP2.out.vcf.
+        combine( BCFTOOLS_MPILEUP.out.vcf ).
+        map { [ it[1], it[3] ] }.
         set { vcf_channel }
 
     BEDTOOLS_MAKEWINDOWS( inputBed, true ).bed.
