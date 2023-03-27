@@ -26,16 +26,19 @@ workflow test_limma_differential {
         [[],[]] 
     )
 
-    // Now test this modules
+    // Now do the actual differential analysis
 
-    ch_differential_inputs = AFFY_JUSTRMA.out.expression
-        .join(ch_samplesheet)
+    ch_intensities = ch_samplesheet
+        .join(AFFY_JUSTRMA.out.expression)
+
+    ch_contrasts = Channel.of(['variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
         .map{
-            tuple(['variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia', 'blocking': ''], it[2], it[1])
+            tuple(it, it.variable, it.reference, it.target)
         }
 
     LIMMA_DIFFERENTIAL (
-        ch_differential_inputs
+        ch_contrasts,
+        ch_intensities
     )
 }
 

@@ -67,9 +67,9 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 opt <- list(
     count_file = '$intensities',
     sample_file = '$samplesheet',
-    contrast_variable = NULL,
-    reference_level = NULL,
-    treatment_level = NULL,
+    contrast_variable = '$contrast_variable',
+    reference_level = '$reference',
+    target_level = '$target',
     blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
