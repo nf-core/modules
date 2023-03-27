@@ -13,6 +13,15 @@ workflow test_untar {
     UNTAR ( input )
 }
 
+workflow test_untar_emit_files {
+    input = [
+        [],
+        file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
+    ]
+
+    UNTAR ( input )
+}
+
 
 workflow test_untar_different_output_path {
     input = [

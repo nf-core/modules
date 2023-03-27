@@ -13,3 +13,13 @@ workflow test_unzip {
 
     UNZIP ( archive )
 }
+
+workflow test_unzip_emit_files {
+
+    archive = [
+        [],
+        file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+    ]
+
+    UNZIP ( archive )
+}

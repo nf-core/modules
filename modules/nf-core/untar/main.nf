@@ -11,9 +11,9 @@ process UNTAR {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("$prefix")        , emit: untar
-    tuple val(meta), path("${prefix}/**")   , emit: files
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("$prefix")            , emit: untar
+    tuple val(meta), path("${prefix}_files/**") , emit: files, optional: true
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,8 +21,10 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
-
+    def emit_files = args3.contains("--emit-files") ? "true": ''
+    
     """
     mkdir $prefix
 
@@ -42,6 +44,9 @@ process UNTAR {
             $args \\
             $archive \\
             $args2
+    fi
+    if [[ -n "$emit_files" ]]; then
+        ln -s $prefix ${prefix}_files
     fi
 
     cat <<-END_VERSIONS > versions.yml
