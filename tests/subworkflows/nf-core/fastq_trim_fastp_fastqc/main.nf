@@ -1,97 +1,147 @@
-include { FASTQC as FASTQC_RAW  } from '../../modules/nf-core/fastqc/main'
-include { FASTQC as FASTQC_TRIM } from '../../modules/nf-core/fastqc/main'
-include { FASTP                 } from '../../modules/nf-core/fastp/main'
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+include { FASTQ_TRIM_FASTP_FASTQC } from '../../../../subworkflows/nf-core/fastq_trim_fastp_fastqc/main.nf'
 
 //
-// Function that parses fastp json output file to get total number of reads after trimming
+// Test with single-end data
 //
-import groovy.json.JsonSlurper
+workflow test_fastq_trim_fastp_fastqc_single_end {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = false
 
-def getFastpReadsAfterFiltering(json_file) {
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
-    return json['after_filtering']['total_reads'].toInteger()
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
 }
 
-workflow FASTQ_TRIM_FASTP_FASTQC {
-    take:
-    reads             // channel: [ val(meta), [ reads ] ]
-    adapter_fasta     // file: adapter.fasta
-    save_trimmed_fail // value: boolean
-    save_merged       // value: boolean
+//
+// Test with paired-end data
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = false
 
-    main:
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
 
-    ch_versions = Channel.empty()
+//
+// Test with intereleaved data
+//
+workflow test_fastq_trim_fastp_fastqc_interleaved {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = false
 
-    fastqc_raw_html = Channel.empty()
-    fastqc_raw_zip  = Channel.empty()
-    if (!params.skip_fastqc) {
-        FASTQC_RAW (
-            reads
-        )
-        fastqc_raw_html = FASTQC_RAW.out.html
-        fastqc_raw_zip  = FASTQC_RAW.out.zip
-        ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
-    }
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
 
-    trim_reads        = reads
-    trim_json         = Channel.empty()
-    trim_html         = Channel.empty()
-    trim_log          = Channel.empty()
-    trim_reads_fail   = Channel.empty()
-    trim_reads_merged = Channel.empty()
-    fastqc_trim_html  = Channel.empty()
-    fastqc_trim_zip   = Channel.empty()
-    if (!params.skip_fastp) {
-        FASTP (
-            reads,
-            adapter_fasta,
-            save_trimmed_fail,
-            save_merged
-        )
-        trim_reads        = FASTP.out.reads
-        trim_json         = FASTP.out.json
-        trim_html         = FASTP.out.html
-        trim_log          = FASTP.out.log
-        trim_reads_fail   = FASTP.out.reads_fail
-        trim_reads_merged = FASTP.out.reads_merged
-        ch_versions       = ch_versions.mix(FASTP.out.versions.first())
+//
+// Test with single-end data with saving trimming fails
+//
+workflow test_fastq_trim_fastp_fastqc_single_end_trim_fail {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = true
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = false
 
-        //
-        // Filter empty FastQ files after adapter trimming so FastQC doesn't fail
-        //
-        trim_reads
-            .join(trim_json)
-            .map {
-                meta, reads, json ->
-                    if (getFastpReadsAfterFiltering(json) > 0) {
-                        [ meta, reads ]
-                    }
-            }
-            .set { trim_reads }
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
 
-        if (!params.skip_fastqc) {
-            FASTQC_TRIM (
-                trim_reads
-            )
-            fastqc_trim_html = FASTQC_TRIM.out.html
-            fastqc_trim_zip  = FASTQC_TRIM.out.zip
-            ch_versions      = ch_versions.mix(FASTQC_TRIM.out.versions.first())
-        }
-    }
+//
+// Test with paired-end data with saving trimming fails
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end_trim_fail {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = true
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = false
 
-    emit:
-    ch_reads = trim_reads // channel: [ val(meta), [ reads ] ]
-    ch_trim_json          // channel: [ val(meta), [ json ] ]
-    ch_trim_html          // channel: [ val(meta), [ html ] ]
-    ch_trim_log           // channel: [ val(meta), [ log ] ]
-    ch_trim_reads_fail    // channel: [ val(meta), [ fastq.gz ] ]
-    trim_reads_merged  // channel: [ val(meta), [ fastq.gz ] ]
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
 
-    fastqc_raw_html    // channel: [ val(meta), [ html ] ]
-    fastqc_raw_zip     // channel: [ val(meta), [ zip ] ]
-    fastqc_trim_html   // channel: [ val(meta), [ html ] ]
-    fastqc_trim_zip    // channel: [ val(meta), [ zip ] ]
+//
+// Test with paired-end data with merging
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end_merged {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = true
+    skip_fastqc       = false
+    skip_fastp        = false
 
-    versions = ch_versions.ifEmpty(null) // channel: [ versions.yml ]
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
+
+//
+// Test with paired-end data with predefined adapter list
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end_merged_adapterlist {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    adapter_fasta = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/fastp/adapters.fasta", checkIfExists: true)
+    save_trimmed_fail = false
+    save_merged       = true
+    skip_fastqc       = false
+    skip_fastp        = false
+
+    FASTQ_TRIM_FASTP_FASTQC ( input, adapter_fasta, save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
+
+//
+// Test with paired-end data with skipping fastqc
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end_skip_fastqc {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+    skip_fastqc       = true
+    skip_fastp        = false
+
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
+}
+
+//
+// Test with paired-end data with skipping fastp
+//
+workflow test_fastq_trim_fastp_fastqc_paired_end_skip_fastp {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+    skip_fastqc       = false
+    skip_fastp        = true
+
+    FASTQ_TRIM_FASTP_FASTQC ( input, [], save_trimmed_fail, save_merged, skip_fastp, skip_fastqc )
 }
