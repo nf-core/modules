@@ -100,6 +100,7 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
+      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
     steps:
       - uses: actions/checkout@v3
 
@@ -155,6 +156,7 @@ jobs:
 
       # Set up secrets
       - name: Set up nextflow secrets
+        if: env.SENTIEON_LICENSE_BASE64 != null
         run: |
           nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
