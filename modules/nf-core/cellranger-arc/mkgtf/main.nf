@@ -6,7 +6,7 @@ process CELLRANGER_ARC_MKGTF {
         exit 1, "CELLRANGER_ARC_MKGTF module does not support Conda. 
         Please use docker or singularity containers."
     }
-    container "nfcore/cellranger-arc:2.0.2"
+    container "heylf/cellranger-arc:2.0.2"
 
     input:
     path gtf

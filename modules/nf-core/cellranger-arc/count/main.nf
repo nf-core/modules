@@ -6,7 +6,7 @@ process CELLRANGER_ARC_COUNT {
         exit 1, "CELLRANGER_ARC_COUNT module does not support Conda. 
         Please use docker or singularity containers."
     }
-    container "nfcore/cellranger-arc:2.0.2"
+    container "heylf/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), path(reads)
