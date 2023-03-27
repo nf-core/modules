@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import scimap as sm
 import anndata as ad
 import pandas as pd
