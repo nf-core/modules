@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK } from '../../../../subworkflows/nf-core/bam_somatic_tumor_only_variant_calling_gatk/main'
 
 workflow test_bam_somatic_tumor_only_variant_calling_gatk {
-   input = input = Channel.of(
+    input = Channel.of(
         [
             [ id:'test'], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),

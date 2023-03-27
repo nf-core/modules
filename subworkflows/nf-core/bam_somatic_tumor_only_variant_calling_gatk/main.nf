@@ -53,7 +53,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
         [meta, input_file[0], input_index[0]]
     }
 
-     GETPILEUPSUMMARIES (
+    GETPILEUPSUMMARIES (
         ch_pileup_tumor_input,
         ch_germline_resource,
         ch_germline_resource_tbi,
@@ -85,10 +85,10 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
     ch_contamination.add([])
 
     ch_filtermutect_in = ch_vcf
-                             .join(ch_tbi, failOnDuplicate: true, failOnMismatch: true)
-                             .join(ch_stats, failOnDuplicate: true, failOnMismatch: true)
-                             .join(ch_segment, failOnDuplicate: true, failOnMismatch: true)
-                             .join(ch_contamination, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_tbi, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_stats, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_segment, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_contamination, failOnDuplicate: true, failOnMismatch: true)
 
     FILTERMUTECTCALLS (
         ch_filtermutect_in,

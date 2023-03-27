@@ -6,6 +6,7 @@ description: |
 keywords:
   - gatk4
   - mutect2
+  - learnreadorientationmodel
   - getpileupsummaries
   - calculatecontamination
   - filtermutectcalls
@@ -14,6 +15,7 @@ keywords:
   - filtered_vcf
 modules:
   - gatk4/mutect2
+  - gatk4/learnreadorientationmodel
   - gatk4/getpileupsummaries
   - gatk4/calculatecontamination
   - gatk4/filtermutectcalls
@@ -56,7 +58,7 @@ input:
         File containing intervals.
         Structure: [ path(interval_files) ]
 output:
- - versions:
+  - versions:
       description: |
         Files containing software versions
         Structure: [ path(versions.yml) ]
@@ -98,3 +100,4 @@ output:
         Structure: [ val(meta), path(stats) ]
 authors:
   - "@GCJMackenzie"
+
