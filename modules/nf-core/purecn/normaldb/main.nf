@@ -35,7 +35,6 @@ process PURECN_NORMALDB {
         --genome $genome \\
         $args
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purecn: \$(Rscript /usr/local/lib/R/library/PureCN/extdata/PureCN.R --version)
