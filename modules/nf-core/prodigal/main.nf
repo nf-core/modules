@@ -33,7 +33,7 @@ process PRODIGAL {
         -a "${prefix}.faa" \\
         -s "${prefix}_all.txt"
 
-    pigz -K ${prefix}*
+    pigz ${prefix}*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
