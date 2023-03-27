@@ -73,6 +73,9 @@ opt <- list(
     blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
+    subset_to_contrast_samples = FALSE,
+    exclude_samples_col = NULL,
+    exclude_samples_values = NULL,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
     block = NULL,                # lmFit
@@ -182,7 +185,7 @@ if (length(missing_samples) > 0) {
     ))
 } else{
     # Save any non-count data, will gene metadata etc we might need later
-    noncount.table <-
+    nonintensities.table <-
         intensities.table[, !colnames(intensities.table) %in% rownames(sample.sheet), drop = FALSE]
     intensities.table <- intensities.table[, rownames(sample.sheet)]
 }
@@ -223,6 +226,32 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
             )
         )
     }
+}
+# Optionally, subset to only the samples involved in the contrast
+
+if (opt\$subset_to_contrast_samples){
+    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    intensities.table <- intensities.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
+}
+
+# Optionally, remove samples with specified values in a given field (probably
+# don't use this as well as the above)
+
+if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+    exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
+
+    if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
+        stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
+    }
+
+    print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
+    sample_selector <- ! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values
+
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    intensities.table <- intensities.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
 }
 
 # Now specify the model. Use cell-means style so we can be explicit with the
