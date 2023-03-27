@@ -1,4 +1,3 @@
-
 process SAMBAMBA_FLAGSTAT {
     tag "$meta.id"
     label 'process_single'
