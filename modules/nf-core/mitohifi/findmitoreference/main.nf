@@ -4,8 +4,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     // MitoHifi does not exist as conda package
     // The MitoHiFi image is only available on Dockerhub
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://biocontainers/mitohifi:2.2_cv1' }"
+    container 'docker://ghcr.io/marcelauliano/mitohifi:master'
 
     input:
     val species
