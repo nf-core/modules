@@ -76,7 +76,7 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
             }
             .set { ch_trim_reads }
 
-        if (val_skip_fastqc) {
+        if (!val_skip_fastqc) {
             FASTQC_TRIM (
                 ch_trim_reads
             )
