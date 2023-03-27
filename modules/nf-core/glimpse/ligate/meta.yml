@@ -2,6 +2,8 @@ name: "glimpse_ligate"
 description: Concatenates imputation chunks in a single VCF/BCF file ligating phased information.
 keywords:
   - ligate
+  - low-coverage
+  - glimpse
   - imputation
 tools:
   - "glimpse":
@@ -19,10 +21,15 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - input:
+  - input_list:
       type: file
-      description: Text file containing the full list of files to ligate (one file per line)
-      pattern: "*.txt"
+      description: VCF/BCF file containing genotype probabilities (GP field).
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - input_index:
+      type: file
+      description: Index file of the input VCF/BCF file containing genotype likelihoods.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
 
 output:
   - meta:
@@ -38,7 +45,9 @@ output:
 
   - merged_variants:
       type: file
-      description: Output VCF/BCF file for the merged regions. Phased information (HS field) is updated accordingly for the full region.
+      description: |
+        Output VCF/BCF file for the merged regions.
+        Phased information (HS field) is updated accordingly for the full region.
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:

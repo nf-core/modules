@@ -1,5 +1,5 @@
 process WFMASH {
-    tag '$bam'
+    tag "$meta.id"
     label 'process_medium'
 
     conda "bioconda::wfmash=0.10.2"
@@ -25,8 +25,7 @@ process WFMASH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
+    def prefix = task.ext.prefix ? task.ext.prefix : paf ? "${meta.id}" + "." + paf.baseName.split("\\.")[-1] : "${meta.id}"
     def query = query_self ? "${fasta_gz}" : ""
     def paf_mappings = paf ? "--input-paf ${paf}" : ""
     """
@@ -41,7 +40,7 @@ process WFMASH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v'))
+        wfmash: \$(echo \$(wfmash --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
 }

@@ -17,6 +17,13 @@ jobs:
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
+      # indication that the linting is being fixed
+      - name: React on comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: eyes
+
       # Action runs on the issue comment, so we don't get the PR by default
       # Use the gh cli to check out the PR
       - name: Checkout Pull Request
@@ -41,6 +48,15 @@ jobs:
       - name: Run 'prettier --write'
         if: steps.prettier_status.outputs.result == 'fail'
         run: prettier --write ${GITHUB_WORKSPACE}
+
+      - name: Post nothing-to-do comment
+        if: steps.prettier_status.outputs.result == 'pass'
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Nothing for me to do here! :shrug:
+            This is probably because the linting errors come from `nf-core lint` and have to be fixed manually (or with `nf-core lint --fix`).
 
       - name: Commit & push changes
         if: steps.prettier_status.outputs.result == 'fail'

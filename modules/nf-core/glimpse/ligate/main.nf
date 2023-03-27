@@ -8,7 +8,7 @@ process GLIMPSE_LIGATE {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input_list), path(input_index)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
@@ -22,11 +22,13 @@ process GLIMPSE_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
+    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
+
     GLIMPSE_ligate \\
         $args \\
-        --input $input \\
+        --input all_files.txt \\
         --thread $task.cpus \\
-        --output ${prefix}_merged.${suffix}
+        --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
