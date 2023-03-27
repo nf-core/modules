@@ -1,12 +1,20 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core subworkflows create-test-yml 
-- name: "bam_trim_primers_ivar"
+- name: bam_trim_primers_ivar test_bam_trim_primers_ivar
   command: nextflow run ./tests/subworkflows/nf-core/bam_trim_primers_ivar -entry test_bam_trim_primers_ivar -c ./tests/config/nextflow.config
   tags:
-    - "subworkflows"
-    - "subworkflows/bam_trim_primers_ivar"
+    - ivar
+    - ivar/trim
+    - subworkflows
+    - subworkflows/bam_sort_stats_samtools
+    - subworkflows/bam_trim_primers_ivar
   files:
-    - path: "output/bam_trim_primers_ivar/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/bam_trim_primers_ivar/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/ivar/test.bam
+      md5sum: 12cff17d43b1efdba8120a6bff5311e3
+    - path: output/ivar/test.ivar.log
+      md5sum: e97b025016cfe0d1f723b8cfa1c7c66d
+    - path: output/samtools/test.paired_end.sorted.bam
+    - path: output/samtools/test.paired_end.sorted.bam.bai
+    - path: output/samtools/test.paired_end.sorted.bam.flagstat
+      md5sum: c6b56420e8a30bff3487dbd6ec13ba5f
+    - path: output/samtools/test.paired_end.sorted.bam.idxstats
+      md5sum: 6d48b63094316587ab5564d11d7e897f
+    - path: output/samtools/test.paired_end.sorted.bam.stats
