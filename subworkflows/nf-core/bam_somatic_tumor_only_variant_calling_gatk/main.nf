@@ -28,7 +28,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
 
     main:
     ch_versions = Channel.empty()
-    germline_resource_pileup     = ch_germline_resource_tbi ? germline_resource : Channel.empty()
+    germline_resource_pileup     = ch_germline_resource_tbi ? ch_germline_resource : Channel.empty()
     germline_resource_pileup_tbi = ch_germline_resource_tbi ?: Channel.empty()
 
 
