@@ -195,10 +195,10 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
 
     emit:
-    ubam               = FASTQTOBAM.out.bam        // channel: [ val(meta), [ bam ] ]
+    ubam               = FASTQTOBAM.out.bam             // channel: [ val(meta), [ bam ] ]
     groupbam           = GROUPREADSBYUMI.out.bam        // channel: [ val(meta), [ bam ] ]
     consensusbam       = consensus_bam                  // channel: [ val(meta), [ bam ] ]
-    mappedconsensusbam = SORTBAM.out.bam                // channel: [ val(meta), [ bam ]  ]
+    mappedconsensusbam = SORTBAM.out.bam                // channel: [ val(meta), [ bam ] ]
     versions           = ch_versions                    // channel: [ versions.yml ]
 }
 
