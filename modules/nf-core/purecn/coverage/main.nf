@@ -29,7 +29,7 @@ process PURECN_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-   Rscript Coverage.R \
+    Rscript Coverage.R \
         --out-dir /purecn/coverage/${meta.id}/ \
         --bam ${bam} \
         --intervals ${intervals}
