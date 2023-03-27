@@ -30,7 +30,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
      cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version )
+        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
     END_VERSIONS
     """
 }
