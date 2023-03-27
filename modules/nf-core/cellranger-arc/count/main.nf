@@ -1,9 +1,10 @@
 process CELLRANGER_ARC_COUNT {
-    tag "$meta.gem"
+    tag "$meta.id"
     label 'process_high'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGER_ARC_COUNT module does not support Conda. 
+        Please use docker or singularity containers."
     }
     container "nfcore/cellranger-arc:2.0.2"
 
@@ -13,24 +14,22 @@ process CELLRANGER_ARC_COUNT {
     path  reference
 
     output:
-    tuple val(meta), path("sample-${meta.gem}/outs/*"), emit: outs
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
     def lib_csv_name = lib_csv.name
     def reference_name = reference.name
     """
     cellranger-arc \\
         count \\
-        --id='sample-${meta.gem}' \\
+        --id='${meta.id}' \\
         --libraries=$lib_csv_name \\
         --reference=$reference_name \\
-        --sample=$sample_arg \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
         $args
@@ -43,8 +42,8 @@ process CELLRANGER_ARC_COUNT {
 
     stub:
     """
-    mkdir -p "sample-${meta.gem}/outs/"
-    touch sample-${meta.gem}/outs/fake_file.txt
+    mkdir -p "${meta.id}/outs/"
+    touch ${meta.id}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
