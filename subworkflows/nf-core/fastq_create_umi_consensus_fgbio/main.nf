@@ -79,7 +79,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // to be configured in ext.args of your config
         BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM_PRE.out.versions)
-        aligned_bam = BWAMEM1_MEM_PRE.out.bam
+        aligned_bam = aligned_bam.mix(BWAMEM1_MEM_PRE.out.bam)
     } else {
 
         BWAMEM2_INDEX ( fasta_meta )
