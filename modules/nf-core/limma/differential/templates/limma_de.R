@@ -108,7 +108,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -207,7 +207,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
 } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
-        'Please choose reference and treatment levels that are present in the',
+        'Please choose reference and target levels that are present in the',
         contrast_variable,
         'column of the sample sheet'
         )
@@ -277,7 +277,7 @@ if (! is.null(opt\$correlation)){
 fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
-contrast <- paste(paste(contrast_variable, c(opt\$treatment_level, opt\$reference_level), sep='.'), collapse='-')
+contrast <- paste(paste(contrast_variable, c(opt\$target_level, opt\$reference_level), sep='.'), collapse='-')
 contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
@@ -311,12 +311,12 @@ comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 ################################################
 ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
+prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
 prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
 output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 contrast.name <-
-    paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
+    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of
