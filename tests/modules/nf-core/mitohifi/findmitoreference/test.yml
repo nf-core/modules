@@ -1,14 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml mitohifi/findmitoreference
-- name: "mitohifi findmitoreference"
+- name: mitohifi findmitoreference test_mitohifi_findmitoreference
   command: nextflow run ./tests/modules/nf-core/mitohifi/findmitoreference -entry test_mitohifi_findmitoreference -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mitohifi/findmitoreference/nextflow.config
   tags:
-    - "mitohifi"
-    - "mitohifi/findmitoreference"
+    - mitohifi/findmitoreference
+    - mitohifi
   files:
-    - path: "output/mitohifi/OM714790.1.fasta"
-    #      md5sum:
-    - path: "output/mitohifi/OM714790.1.gb"
-    #      md5sum:
-    - path: "output/mitohifi/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/mitohifi/OP605624.1.fasta
+      md5sum: f56acaca857649b052e24d019edce2c9
+    - path: output/mitohifi/OP605624.1.gb
+      md5sum: 94c37fe970ef7373404dae7eb8d5a203
+    - path: output/mitohifi/versions.yml
