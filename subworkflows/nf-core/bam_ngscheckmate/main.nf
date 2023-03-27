@@ -20,7 +20,7 @@ workflow BAM_NGSCHECKMATE {
     BCFTOOLS_MPILEUP
     .out
     .vcf
-    .map{it[1]}
+    .map{meta, vcf -> vcf}
     .collect()
     .set {ch_flat_vcfs}
 
