@@ -11,8 +11,9 @@ process UNZIP {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("${archive.baseName}/"), emit: unzipped_archive
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("${archive.baseName}/")  , emit: unzipped_archive
+    tuple val(meta), path("${archive.baseName}/**"), emit: files
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
