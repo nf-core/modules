@@ -12,7 +12,7 @@ workflow BAM_NGSCHECKMATE {
 
     ch_versions = Channel.empty()
 
-    ch_bam_bed  = ch_bam.combine(ch_bed).view()
+    ch_bam_bed  = ch_bam.combine(ch_bed)
 
     BCFTOOLS_MPILEUP (ch_bam_bed, ch_fasta.collect(), false)
     ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions)
