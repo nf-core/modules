@@ -3,6 +3,7 @@ description: Build a normal database for coverage normalization from all the (GC
 keywords:
   - copy number alteration calling
   - normal database
+  - panel of normals
 tools:
   - "purecn":
       description: "Copy number calling and SNV classification using targeted short read sequencing"
@@ -19,7 +20,6 @@ input:
       pattern: "*.loess.txt.gz"
 
 output:
-  #Only when we have meta
   - normal_db:
       type: file
       description: File containing the generated panel of normals
@@ -28,10 +28,16 @@ output:
       type: file
       description: Calculated mapping bias from the normal files
       pattern: "mapping_bias*.rds"
+  - interval_weights:
+      type: file
+      description: Plot of interval weights calculated from the panel of normals
+      pattern: "interval_weights*.png"
   - low_coverage_targets:
       type: file
-      description: Calculated mapping bias from the normal files
-      pattern: "mapping_bias*.rds"
+      description: |
+        Graph with possibly low coverage targets identified, only
+        generated if there are low coverage targets
+      pattern: "low_coverage_targets*.png"
   - versions:
       type: file
       description: File containing software versions
