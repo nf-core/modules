@@ -28,7 +28,6 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
 
     main:
     ch_versions = Channel.empty()
-    mutect2_input = channel.from(input)
 
     //
     //Perform variant calling using mutect2 module in tumor single mode.
