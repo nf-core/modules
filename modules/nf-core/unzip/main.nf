@@ -22,7 +22,7 @@ process UNZIP {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
-    
+
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     def emit_files = args2.contains("--emit-files") ? "true": ''
     """
@@ -31,7 +31,7 @@ process UNZIP {
         -o"${prefix}"/ \\
         $args \\
         $archive
-    
+
     if [[ -n "$emit_files" ]]; then
         ln -s $prefix ${prefix}_files
     fi
