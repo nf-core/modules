@@ -31,7 +31,7 @@ process ISLANDPATH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-         islandpath: $VERSION
+        islandpath: $VERSION
     END_VERSIONS
     """
 }
