@@ -28,7 +28,6 @@ process METAPHLAN_MAKEDB {
         metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """
-    
     stub:
     """
     mkdir metaphlan_db_latest
