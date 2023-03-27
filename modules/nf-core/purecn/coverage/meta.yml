@@ -1,16 +1,16 @@
 name: "purecn_coverage"
-## TODO nf-core: Add a description of the module and list keywords
 description: Calculate GC-normalized coverages
 keywords:
-  - sort
+  - copy number alteration calling
+  - coverage
 tools:
   - "purecn":
       description: "Copy number calling and SNV classification using targeted short read sequencing"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      tool_dev_url: "https://github.com/lima1/PureCN"
       doi: "10.1186/s13029-016-0060-z"
-      licence: "['Artistic-2.0']"
+      licence: "Artistic-2.0"
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -48,3 +48,4 @@ output:
 
 authors:
   - "@aldosr"
+  - "@lbeltrame"

@@ -2,6 +2,10 @@ process PURECN_COVERAGE {
     tag "$meta.id"
     label 'process_low'
 
+    // TODO: This needs a proper container
+    // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
+    // cf: https://github.com/BioContainers/multi-package-containers/pull/2554
+
     conda "bioconda::bioconductor-purecn=2.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
@@ -13,7 +17,8 @@ process PURECN_COVERAGE {
     path intervals
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    //TODO: proper output needs to be set up
+    //tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
