@@ -11,7 +11,7 @@ tools:
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
-      doi: ""
+
       licence: ["MIT"]
 input:
   - meta:
@@ -65,7 +65,7 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - results:
-      type:
+      type: file
       description: Aggregated FastQ files
       pattern: "*.fastq.gz"
   - bam:
