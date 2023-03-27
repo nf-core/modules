@@ -29,6 +29,9 @@ process WFMASH {
     def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
     def query = query_self ? "${fasta_gz}" : ""
     def paf_mappings = paf ? "--input-paf ${paf}" : ""
+    if (paf) {
+        prefix = "${paf}"
+    }
     """
     wfmash \\
         ${fasta_gz} \\
