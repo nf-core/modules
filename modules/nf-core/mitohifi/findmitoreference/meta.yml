@@ -15,12 +15,6 @@ tools:
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   #
   ## TODO nf-core: Delete / customise this example input
   - bam:
@@ -30,12 +24,6 @@ input:
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   #
   - versions:
       type: file

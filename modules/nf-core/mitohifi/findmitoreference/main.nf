@@ -16,13 +16,17 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process MITOHIFI_FINDMITOREFERENCE {
-    tag "$meta.id"
+    tag '$bam'
     label 'process_low'
 
-    // MitoHifi does not exist as conda package
-    // The MitoHiFi image is only available on Dockerhub
+    // TODO nf-core: List required Conda package(s).
+    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
+    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
+    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
+    conda "YOUR-TOOL-HERE"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://biocontainers/mitohifi:2.2_cv1' }"
+        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -31,11 +35,11 @@ process MITOHIFI_FINDMITOREFERENCE {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    path bam
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    path "*.bam", emit: bam
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -44,7 +48,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -59,8 +63,6 @@ process MITOHIFI_FINDMITOREFERENCE {
         sort \\
         $args \\
         -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
         $bam
 
     cat <<-END_VERSIONS > versions.yml
