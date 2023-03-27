@@ -2,8 +2,9 @@ process CELLRANGER_ARC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger Arc tool. Please use docker or singularity containers."
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGER_ARC_MKFASTQ module does not support Conda. 
+        Please use docker or singularity containers."
     }
     container "nfcore/cellranger-arcmkfastq:2.0.2"
 
