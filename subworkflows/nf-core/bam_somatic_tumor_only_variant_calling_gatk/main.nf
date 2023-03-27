@@ -56,11 +56,11 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
     }
 
     GETPILEUPSUMMARIES(ch_pileup_tumor_input,
-            fasta,
-            fai,
-            dict,
-            germline_resource_pileup,
-            germline_resource_pileup_tbi)
+            ch_fasta,
+            ch_fai,
+            ch_dict,
+            ch_germline_resource_pileup,
+            ch_germline_resource_pileup_tbi)
 
     ch_versions = ch_versions.mix(GETPILEUPSUMMARIES.out.versions.first())
 
