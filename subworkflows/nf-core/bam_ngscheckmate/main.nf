@@ -22,7 +22,6 @@ workflow BAM_NGSCHECKMATE {
     .vcf
     .map{it[1]}
     .collect()
-    .view()
     .set {ch_flat_vcfs}
 
     NGSCHECKMATE_NCM (ch_flat_vcfs, ch_bed, ch_fasta)
