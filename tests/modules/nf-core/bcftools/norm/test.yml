@@ -5,6 +5,8 @@
     - bcftools/norm
   files:
     - path: output/bcftools/test2.vcf.gz
+      md5sum: a7524541481cd4e7d38267ded10253e2
+    - path: output/bcftools/versions.yml
 
 - name: bcftools norm test_bcftools_norm_tbi
   command: nextflow run ./tests/modules/nf-core/bcftools/norm -entry test_bcftools_norm_tbi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/norm/nextflow.config
@@ -13,3 +15,45 @@
     - bcftools/norm
   files:
     - path: output/bcftools/test2.vcf.gz
+      md5sum: a7524541481cd4e7d38267ded10253e2
+    - path: output/bcftools/versions.yml
+
+- name: bcftools norm test_bcftools_norm_tbi_output_vcf
+  command: nextflow run ./tests/modules/nf-core/bcftools/norm -entry test_bcftools_norm_tbi_output_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/norm/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/norm
+  files:
+    - path: output/bcftools/test3.vcf
+      md5sum: c1055480d753c27ba40c0501ae7c2a92
+    - path: output/bcftools/versions.yml
+
+- name: bcftools norm test_bcftools_norm_tbi_output_vcfgz
+  command: nextflow run ./tests/modules/nf-core/bcftools/norm -entry test_bcftools_norm_tbi_output_vcfgz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/norm/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/norm
+  files:
+    - path: output/bcftools/test4.vcf.gz
+      md5sum: a7524541481cd4e7d38267ded10253e2
+    - path: output/bcftools/versions.yml
+
+- name: bcftools norm test_bcftools_norm_tbi_output_bcfgz
+  command: nextflow run ./tests/modules/nf-core/bcftools/norm -entry test_bcftools_norm_tbi_output_bcfgz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/norm/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/norm
+  files:
+    - path: output/bcftools/test5.bcf.gz
+      md5sum: ba58d0ef98c22f6787c6cc2cba21cbd4
+    - path: output/bcftools/versions.yml
+
+- name: bcftools norm test_bcftools_norm_tbi_output_bcf
+  command: nextflow run ./tests/modules/nf-core/bcftools/norm -entry test_bcftools_norm_tbi_output_bcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/norm/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/norm
+  files:
+    - path: output/bcftools/test6.bcf
+      md5sum: ba58d0ef98c22f6787c6cc2cba21cbd4
+    - path: output/bcftools/versions.yml

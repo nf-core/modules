@@ -35,9 +35,7 @@ workflow test_concoct_concoct {
     CONCOCT_CONCOCTCOVERAGETABLE ( ch_concoctcoveragetable_input )
 
     ch_concoctconcoct_input = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
-                                .dump(tag: "tsv")
-                                .join(CONCOCT_CUTUPFASTA.out.fasta.dump(tag: "fasta"))
-                                .dump(tag: "hello")
+                                .join(CONCOCT_CUTUPFASTA.out.fasta)
 
     CONCOCT_CONCOCT( ch_concoctconcoct_input )
 

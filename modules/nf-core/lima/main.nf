@@ -2,10 +2,10 @@ process LIMA {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
+    conda "bioconda::lima=2.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lima:2.2.0--h9ee0642_0' :
-        'quay.io/biocontainers/lima:2.2.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/lima:2.6.0--h9ee0642_0' :
+        'quay.io/biocontainers/lima:2.6.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(ccs)
@@ -64,7 +64,7 @@ process LIMA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+        lima: \$( lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
 }

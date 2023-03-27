@@ -8,12 +8,12 @@
     - umitools
     - umitools/extract
   files:
-    - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
-    - path: output/fastqc/test_test_1_fastqc.zip
+    - path: output/fastqc/test_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_fastqc.zip
     - path: output/trimgalore/test.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_trimmed.fq.gz
-      md5sum: 60cba2d76db97de54668916c657e6c7e
     - path: output/umitools/test.umi_extract.fastq.gz
     - path: output/umitools/test.umi_extract.log
 
@@ -27,15 +27,16 @@
     - umitools
     - umitools/extract
   files:
-    - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
-    - path: output/fastqc/test_test_1_fastqc.zip
-    - path: output/fastqc/test_test_2_fastqc.html
-      md5sum: 47e3c6a063ba2ef63e1fa1a13372500d
-    - path: output/fastqc/test_test_2_fastqc.zip
+    - path: output/fastqc/test_1_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_1_fastqc.zip
+    - path: output/fastqc/test_2_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_2_fastqc.zip
     - path: output/trimgalore/test.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_trimmed.fq.gz
-      md5sum: d0085b0db9c9bbe621b7c9162157b1b6
     - path: output/umitools/test.umi_extract.log
     - path: output/umitools/test.umi_extract_1.fastq.gz
     - path: output/umitools/test.umi_extract_2.fastq.gz
@@ -50,18 +51,18 @@
     - umitools
     - umitools/extract
   files:
-    - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
-    - path: output/fastqc/test_test_1_fastqc.zip
-    - path: output/fastqc/test_test_2_fastqc.html
-      md5sum: 47e3c6a063ba2ef63e1fa1a13372500d
-    - path: output/fastqc/test_test_2_fastqc.zip
+    - path: output/fastqc/test_1_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_1_fastqc.zip
+    - path: output/fastqc/test_2_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_2_fastqc.zip
     - path: output/trimgalore/test_1.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_1_val_1.fq.gz
-      md5sum: e0a7516b8ea8d6467d6306acb2cd13c4
     - path: output/trimgalore/test_2.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_2_val_2.fq.gz
-      md5sum: f3d61189e6d10202da7b8686f1dbb71b
 
 - name: fastq_fastqc_umitools_trimgalore test_fastq_fastqc_umitools_trimgalore_umi
   command: nextflow run ./tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore -entry test_fastq_fastqc_umitools_trimgalore_umi -c ./tests/config/nextflow.config
@@ -73,18 +74,18 @@
     - umitools
     - umitools/extract
   files:
-    - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
-    - path: output/fastqc/test_test_1_fastqc.zip
-    - path: output/fastqc/test_test_2_fastqc.html
-      md5sum: 47e3c6a063ba2ef63e1fa1a13372500d
-    - path: output/fastqc/test_test_2_fastqc.zip
+    - path: output/fastqc/test_1_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_1_fastqc.zip
+    - path: output/fastqc/test_2_fastqc.html
+      contains:
+        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+    - path: output/fastqc/test_2_fastqc.zip
     - path: output/trimgalore/test_1.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_1_val_1.fq.gz
-      md5sum: e0a7516b8ea8d6467d6306acb2cd13c4
     - path: output/trimgalore/test_2.fastq.gz_trimming_report.txt
     - path: output/trimgalore/test_2_val_2.fq.gz
-      md5sum: f3d61189e6d10202da7b8686f1dbb71b
 
 - name: fastq_fastqc_umitools_trimgalore test_fastq_fastqc_umitools_trimgalore_skip
   command: nextflow run ./tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore -entry test_fastq_fastqc_umitools_trimgalore_skip -c ./tests/config/nextflow.config

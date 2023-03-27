@@ -4,6 +4,14 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Prettier:

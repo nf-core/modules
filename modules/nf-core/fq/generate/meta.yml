@@ -1,0 +1,39 @@
+name: "fq_generate"
+description: |
+  fq generate is a FASTQ file pair generator. It creates two reads, formatting names as described by Illumina. While generate creates "valid" FASTQ reads, the content of the files are completely random. The sequences do not align to any genome. This requires a seed (--seed) to be supplied in ext.args.
+keywords:
+  - generate
+  - fastq
+tools:
+  - "fq":
+      description: "fq is a library to generate and validate FASTQ file pairs."
+      homepage: "https://github.com/stjude-rust-labs/fq"
+      documentation: "https://github.com/stjude-rust-labs/fq"
+      tool_dev_url: "https://github.com/stjude-rust-labs/fq"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Random generated FASTQ files.
+      pattern: "*_R[12].fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@adamrtalbot"
