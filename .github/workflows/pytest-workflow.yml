@@ -38,6 +38,8 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: ilastik/multicut   
+          - profile: "conda"
             tags: bases2fastq
           - profile: "conda"
             tags: bcl2fastq
