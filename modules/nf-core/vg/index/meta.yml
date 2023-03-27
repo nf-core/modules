@@ -1,0 +1,48 @@
+name: "vg_index"
+description: write your description here
+keywords:
+  - vg
+  - index
+  - graph
+  - structural_variants
+tools:
+  - vg:
+      description: |
+        Variation graph data structures, interchange formats, alignment, genotyping,
+        and variant calling methods.
+      homepage: https://github.com/vgteam/vg
+      documentation: https://github.com/vgteam/vg/wiki
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file(s)
+      description: One or more input graph files created with `vg/construct`
+      pattern: "*.vg"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - xg:
+      type: file
+      description: File containing a succint, queryable version of the input graph(s) or read for GCSA or distance indexing
+      pattern: "*.xg"
+  - vg_index:
+      type: file
+      description: An index of the graph(s) created when `--index-sorted-vg` is supplied.
+      pattern: "*.vgi"
+
+authors:
+  - "@nvnieuwk"

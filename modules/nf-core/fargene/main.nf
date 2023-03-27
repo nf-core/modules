@@ -3,7 +3,7 @@ process FARGENE {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::fargene=0.1" : null)
+    conda "bioconda::fargene=0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fargene:0.1--py27h21c881e_4' :
         'quay.io/biocontainers/fargene:0.1--py27h21c881e_4' }"

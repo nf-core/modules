@@ -2,10 +2,15 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-    if(params.enable_conda){
-        error "Conda environments cannot be used for GATK4/DetermineGermlineContigPloidy at the moment. Please use docker or singularity containers."
+
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'broadinstitute/gatk:4.4.0.0':
+        'broadinstitute/gatk:4.4.0.0' }"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "broadinstitute/gatk:4.3.0.0"
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
@@ -36,16 +41,16 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     ) : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK DetermineGermlineContigPloidy] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     ${untar_model}
 
-    gatk --java-options "-Xmx${avail_mem}g" DetermineGermlineContigPloidy \\
+    gatk --java-options "-Xmx${avail_mem}M" DetermineGermlineContigPloidy \\
         ${input_list} \\
         --output ./ \\
         --output-prefix ${prefix} \\
@@ -58,6 +63,20 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
 
     tar czf ${prefix}-calls.tar.gz ${prefix}-calls
     ${tar_model}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-calls.tar.gz
+    touch ${prefix}-model.tar.gz
+    touch ${prefix}.tsv
+    touch ${prefix}2.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

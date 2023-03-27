@@ -4,29 +4,28 @@ keywords:
   - rtgtools
   - pedfilter
   - vcf
+  - ped
 tools:
   - "rtgtools":
       description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison and manipulation"
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
       documentation: "https://github.com/RealTimeGenomics/rtg-tools"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      doi: ""
+
       licence: "['BSD']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - ped:
+  - input:
       type: file
-      description: PED file
-      pattern: "*.ped"
+      description: The input file, can be either a PED or a VCF file
+      pattern: "*.{vcf,vcf.gz,ped}"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -36,10 +35,12 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - vcf:
+  - output:
       type: file
-      description: VCF file containing only headers fetched from the PED file
-      pattern: "*.vcf.gz"
+      description: |
+        The output file, can be either a filtered PED file
+        or a VCF file containing the PED headers (needs --vcf as argument)
+      pattern: "*.{vcf.gz,ped}"
 
 authors:
   - "@nvnieuwk"
