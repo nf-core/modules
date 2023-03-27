@@ -1,0 +1,91 @@
+name: "svaba"
+description: SvABA is an efficient and accurate method for detecting SVs from short-read sequencing data using genome-wide local assembly with low memory and computing requirements
+keywords:
+  - sv
+  - structural variants
+  - detecting svs
+  - short-read sequencing
+tools:
+  - "svaba":
+      description: "Structural variation and indel detection by local assembly"
+      homepage: "https://github.com/walaj/svaba"
+      documentation: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5880247/"
+      tool_dev_url: "https://github.com/walaj/svaba"
+      doi: "10.1101/gr.221028.117"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - tumorbam:
+      type: file
+      description: Tumor or metastatic sample, BAM, SAM or CRAM file
+      pattern: "*.{bam,cram,sam}"
+  - tummorbai:
+      type: file
+      description: Index
+      pattern: "*.{bai,crai,sai}"
+  - normalbam:
+      type: file
+      description: Control (or normal) of matching tumor/metastatic sample, BAM, SAM or CRAM file
+      pattern: "*.{bam,cram,sam}"
+  - normalbai:
+      type: file
+      description: Index
+      pattern: "*.{bai,crai,sai}"
+  - bwa_index:
+      type: file
+      description: BWA genome index files
+      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - dbsnp:
+      type: file
+      description: VCF file including dbSNP variants
+      pattern: "*.vcf.gz"
+  - dbsnp_tbi:
+      type: file
+      description: Index of VCF file including dbSNP variants
+      pattern: "*.vcf.gz.tbi"
+  - regions:
+      type: file
+      description: Targeted intervals. Accepts BED file or Samtools-style string
+      pattern: "*.bed|*.txt|*.tab"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - somatic_sv:
+      type: file
+      description: Somatic SVs
+      pattern: "*.vcf"
+  - somatic_indel:
+      type: file
+      description: Somatic Indels
+      pattern: "*.vcf"
+  - raw:
+      type: file
+      description: Raw, unfiltered variants
+      pattern: "*.txt.gz"
+  - discordants:
+      type: file
+      description: Information on all clusters of discordant reads identified with 2+ reads
+      pattern: "*.txt.gz"
+  - log:
+      type: file
+      description: Log file
+      pattern: "*.txt.gz"
+  - alignment_txt:
+      type: file
+      description: An ASCII plot of variant-supporting contigs and the BWA-MEM alignment of reads to the contigs.
+      pattern: "*.txt.gz"
+authors:
+  - "@kubranarci"
