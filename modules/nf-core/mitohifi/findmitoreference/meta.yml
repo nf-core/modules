@@ -1,18 +1,17 @@
 name: "mitohifi_findmitoreference"
-description: Download a mitochondrial genome in fasta and genbank format to be used as reference for MitoHiFi
+description: Download a mitochondrial genome to be used as reference for MitoHiFi
 keywords:
   - mitochondrial genome
   - reference genome
   - NCBI
 tools:
   - "mitohifi":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+      description: Fetch mitochondrial genome in Fasta and Genbank format from NCBI
+      homepage: https://github.com/marcelauliano/MitoHiFi
+      documentation: https://github.com/marcelauliano/MitoHiFi
+      tool_dev_url: https://github.com/marcelauliano/MitoHiFi
+      doi: "10.1101/2022.12.23.521667"
+      licence: ["MIT"]
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
