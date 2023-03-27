@@ -1,4 +1,4 @@
-process CELLRANGER_MKREF {
+process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
@@ -25,10 +25,11 @@ process CELLRANGER_MKREF {
     def args = task.ext.args ?: ''
     """
     cellranger \\
-        mkref \\
+        mkvdjref \\
         --genome=$reference_name \\
         --fasta=$fasta \\
-        --genes=$gtf
+        --genes=$gtf \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
