@@ -21,6 +21,21 @@
     - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
       md5sum: 1077cf03a8c6a155932eaaed7415b74c
 
+- name: deseq2 differential test_deseq2_differential_noblocking
+  command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_noblocking -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
+  tags:
+    - deseq2
+    - deseq2/differential
+  files:
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
+      md5sum: 4034522732d975951c79731acc1c9731
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
+      md5sum: 6332f21889ecac387bb12eeb04f23849
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
+      md5sum: 827cdf01f366d72d6e4b500e9862ba74
+    - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
+      md5sum: 1077cf03a8c6a155932eaaed7415b74c
+
 - name: deseq2 differential test_deseq2_differential_spikes
   command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_spikes -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
   tags:
@@ -118,3 +133,49 @@
       md5sum: 827cdf01f366d72d6e4b500e9862ba74
     - path: output/deseq2/treatment-mCherry-hND6.vst.tsv
       md5sum: 0960df48c0116a626289960284148fbb
+
+- name: deseq2 differential test_deseq2_differential_subset_to_contrast
+  command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_subset_to_contrast -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
+  tags:
+    - deseq2
+    - deseq2/differential
+  files:
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
+      md5sum: 86f0312a4691dfb4d7c15643059d8fb8
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.sizefactors.tsv
+      md5sum: 6332f21889ecac387bb12eeb04f23849
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.normalised_counts.tsv
+      md5sum: 827cdf01f366d72d6e4b500e9862ba74
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.rlog.tsv
+      md5sum: 1077cf03a8c6a155932eaaed7415b74c
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
+      md5sum: 4034522732d975951c79731acc1c9731
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
+      md5sum: 6332f21889ecac387bb12eeb04f23849
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
+      md5sum: 827cdf01f366d72d6e4b500e9862ba74
+    - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
+      md5sum: 1077cf03a8c6a155932eaaed7415b74c
+
+- name: deseq2 differential test_deseq2_differential_exclude_samples
+  command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_exclude_samples -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
+  tags:
+    - deseq2
+    - deseq2/differential
+  files:
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
+      contains: ["ENSMUSG00000023978\t396.73852567\t4.843056\t1.18395002\t2.130893e-06\t7.938188e-05"]
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.sizefactors.tsv
+      md5sum: 87d6d634ffea2d7a9df9f9bae91b4d90
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.normalised_counts.tsv
+      md5sum: 32c6fb71cc4b296c66e06f6eed96428b
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.rlog.tsv
+      md5sum: 1ed46435eed7cda5d7fcb91b2b5d4429
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
+      contains: ["ENSMUSG00000023978\t396.73852567\t7.724976\t1.52788385\t4.774373e-08\t5.231349e-06"]
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
+      md5sum: 87d6d634ffea2d7a9df9f9bae91b4d90
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
+      md5sum: 32c6fb71cc4b296c66e06f6eed96428b
+    - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
+      md5sum: 1ed46435eed7cda5d7fcb91b2b5d4429
