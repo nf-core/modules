@@ -19,14 +19,10 @@ process MITOHIFI_FINDMITOREFERENCE {
     tag '$bam'
     label 'process_low'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "YOUR-TOOL-HERE"
+    // MitoHifi does not exist as conda package
+    // The MitoHiFi image is only available on Dockerhub
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'docker://biocontainers/mitohifi:2.2_cv1' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
