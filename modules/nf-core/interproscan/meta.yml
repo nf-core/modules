@@ -1,51 +1,38 @@
 name: "interproscan"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Produces protein annotations and predictions from a FASTA file 
 keywords:
-  - sort
+  - annotation
+  - fasta
+  - interproscan
 tools:
   - "interproscan":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "InterPro integrates together predictive information about proteins function from a number of partner resources"
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://www.ebi.ac.uk/interpro/search/sequence/"
+      documentation: "https://interproscan-docs.readthedocs.io"
       tool_dev_url: "https://github.com/ebi-pf-team/interproscan"
-      doi: ""
+      doi: "doi.org/10.1093/bioinformatics/btu031"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input fasta file containing query sequences
+      pattern: "*.{fa,fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
+  - tsv:
+      type: file
+      description: Tab separated file containing with detailed hits
+      pattern: "*.{tsv}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@toniher"
