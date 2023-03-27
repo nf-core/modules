@@ -9,11 +9,11 @@ include { SALMON_QUANT } from '../../../modules/nf-core/salmon/quant/main'
 
 workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     take:
-    ch_reads            // channel: [ val(meta), [ reads ] ]
-    ch_genome_fasta     // channel: /path/to/genome.fasta
-    ch_transcript_fasta // channel: /path/to/transcript.fasta
-    ch_gtf              // channel: /path/to/genome.gtf
-    ch_index            // channel: /path/to/salmon/index/
+    ch_reads            // channel: [ val(meta), path(reads) ]
+    ch_genome_fasta     // channel: [ path(g_fasta)]      (/path/to/genome.fasta)
+    ch_transcript_fasta // channel: [ path(t_fasta)]      (/path/to/transcript.fasta)
+    ch_gtf              // channel: [ path(gtf)]          (/path/to/genome.gtf)
+    ch_index            // channel: [ path(index)]                      (/path/to/salmon/index/)
     make_index          // boolean: Whether to create salmon index before running salmon quant
 
     main:
@@ -43,12 +43,12 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     ch_versions = ch_versions.mix(SALMON_QUANT.out.versions.first())
 
     emit:
-    index     = ch_index                   // channel: [ index ]
+    index     = ch_index                   // channel: [ path(index) ]
 
-    reads     = FQ_SUBSAMPLE.out.fastq     // channel: [ val(meta), fastq ]
+    reads     = FQ_SUBSAMPLE.out.fastq     // channel: [ val(meta), path(fastq) ]
 
-    results   = SALMON_QUANT.out.results   // channel: [ val(meta), results_dir ]
-    json_info = SALMON_QUANT.out.json_info // channel: [ val(meta), json_info
+    results   = SALMON_QUANT.out.results   // channel: [ val(meta), path(results_dir) ]
+    json_info = SALMON_QUANT.out.json_info // channel: [ val(meta), path(json_info) ]
 
-    versions  = ch_versions                // channel: [ versions.yml ]
+    versions  = ch_versions                // channel: [ path(versions.yml) ]
 }

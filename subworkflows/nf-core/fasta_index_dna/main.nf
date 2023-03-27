@@ -13,9 +13,9 @@ include { SNAPALIGNER_INDEX as SNAP_INDEX   } from '../../../modules/nf-core/sna
 workflow FASTA_INDEX_DNA {
 
     take:
-        ch_fasta        // channel: [mandatory] [ val(meta), path(fasta) ]
-        ch_altliftover  // channel: [mandatory, if aligner is bwamem or bwamem2 or snap] [ val(meta), path(altliftover) ]
-        val_aligner     // string:  [mandatory] aligner [bowtie2, bwamem, bwamem2, dragmap, snap]
+        ch_fasta        // channel:  [ val(meta), path(fasta) ]    (mandatory)
+        ch_altliftover  // channel:  [ val(meta), path(altliftover) ]    (mandatory, if aligner is bwamem or bwamem2 or snap)
+        val_aligner     // string:  aligner [bowtie2, bwamem, bwamem2, dragmap, snap] (mandatory)
 
     main:
 

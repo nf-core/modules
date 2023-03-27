@@ -8,11 +8,11 @@ include { PICARD_COLLECTHSMETRICS       } from '../../../modules/nf-core/picard/
 
 workflow BAM_QC_PICARD {
     take:
-    ch_bam_bai          // channel: [ val(meta), [ bam ], [bai]]
-    ch_fasta            // channel: [ val(meta), fasta ]
-    ch_fasta_fai        // channel: [ val(meta), fasta_fai ]
-    ch_bait_interval    // channel: [ bait_interval ]
-    ch_target_interval  // channel: [ target_interval ]
+    ch_bam_bai          // channel: [ val(meta), path(bam), path(bai)]
+    ch_fasta            // channel: [ val(meta), path(fasta) ]
+    ch_fasta_fai        // channel: [ val(meta), path(fasta_fai) ]
+    ch_bait_interval    // channel: [ path(bait_interval) ]
+    ch_target_interval  // channel: [ path(target_interval) ]
 
     main:
     ch_versions = Channel.empty()
@@ -34,8 +34,8 @@ workflow BAM_QC_PICARD {
     }
 
     emit:
-    coverage_metrics    = ch_coverage_metrics                       // channel: [ val(meta), [ coverage_metrics ] ]
-    multiple_metrics    = PICARD_COLLECTMULTIPLEMETRICS.out.metrics // channel: [ val(meta), [ multiple_metrics ] ]
+    coverage_metrics    = ch_coverage_metrics                       // channel: [ val(meta), path(coverage_metrics) ]
+    multiple_metrics    = PICARD_COLLECTMULTIPLEMETRICS.out.metrics // channel: [ val(meta), path(multiple_metrics) ]
 
-    versions            = ch_versions                               // channel: [ versions.yml ]
+    versions            = ch_versions                               // channel: [ path(versions.yml) ]
 }

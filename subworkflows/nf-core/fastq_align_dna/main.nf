@@ -15,8 +15,8 @@ include { SNAPALIGNER_ALIGN as SNAP_ALIGN   } from '../../../modules/nf-core/sna
 
 workflow FASTQ_ALIGN_DNA {
     take:
-        ch_reads            // channel: [mandatory] meta, reads
-        ch_aligner_index    // channel: [mandatory] aligner index
+        ch_reads            // channel: [mandatory] [ val(meta), path(reads)]
+        ch_aligner_index    // channel: [mandatory] [ path (index)]
         aligner             // string:  [mandatory] aligner [bowtie2, bwamem, bwamem2, dragmap, snap]
         sort                // boolean: [mandatory] true -> sort, false -> don't sort
 
@@ -61,8 +61,8 @@ workflow FASTQ_ALIGN_DNA {
         }
 
     emit:
-        bam      = ch_bam         // channel: [ [meta], bam  ]
-        bai      = ch_bai         // channel: [ [meta], bai  ]
-        reports  = ch_reports     // channel: [ [meta], log  ]
-        versions = ch_versions    // channel: [ versions.yml ]
+        bam      = ch_bam         // channel: [ val(meta), path(bam) ]
+        bai      = ch_bai         // channel: [ val(meta), path(bai) ]
+        reports  = ch_reports     // channel: [ val(meta), path(log) ]
+        versions = ch_versions    // channel: [ path(versions.yml) ]
 }

@@ -149,6 +149,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     taxonomy_profile    = GAPPA_ASSIGN.out.profile
     taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
     heattree            = GAPPA_HEATTREE.out.svg
-    versions            = ch_versions                     // channel: [ versions.yml ]
+    versions            = ch_versions                     // channel: [ path(versions.yml) ]
 }
 

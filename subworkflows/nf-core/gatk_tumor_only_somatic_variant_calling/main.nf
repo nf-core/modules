@@ -14,15 +14,15 @@ include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../..
 
 workflow GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING {
     take:
-    input                     // channel: [ val(meta), [ input ], [ input_index ], [] ]
-    fasta                     // channel: /path/to/reference/fasta
-    fai                       // channel: /path/to/reference/fasta/index
-    dict                      // channel: /path/to/reference/fasta/dictionary
-    germline_resource         // channel: /path/to/germline/resource
-    germline_resource_tbi     // channel: /path/to/germline/index
-    panel_of_normals          // channel: /path/to/panel/of/normals
-    panel_of_normals_tbi      // channel: /path/to/panel/of/normals/index
-    interval_file             // channel: /path/to/interval/file
+    input                     // channel: [ val(meta), path(input), path(input_index) ]
+    fasta                     // channel: [ path(fasta)]                     /path/to/reference/fasta
+    fai                       // channel: [ path(fai)]                       /path/to/reference/fasta/index
+    dict                      // channel: [ path(dict)]                      /path/to/reference/fasta/dictionary
+    germline_resource         // channel: [ path(resource)]                  /path/to/germline/resource
+    germline_resource_tbi     // channel: [ path(resource_tbi)]              /path/to/germline/index
+    panel_of_normals          // channel: [ path(pon)]                       /path/to/panel/of/normals
+    panel_of_normals_tbi      // channel: [ path(index)]                     /path/to/panel/of/normals/index
+    interval_file             // channel: [ path(interval)]                  /path/to/interval/file
 
 
     main:
@@ -71,18 +71,18 @@ workflow GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING {
     ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
 
     emit:
-    mutect2_vcf            = MUTECT2.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
-    mutect2_index          = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
-    mutect2_stats          = MUTECT2.out.stats.collect()                           // channel: [ val(meta), [ stats ] ]
+    mutect2_vcf            = MUTECT2.out.vcf.collect()                             // channel: [ val(meta), path(vcf)]
+    mutect2_index          = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), path(tbi)]
+    mutect2_stats          = MUTECT2.out.stats.collect()                           // channel: [ val(meta), path(stats)]
 
-    pileup_table           = GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), [ table ] ]
+    pileup_table           = GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), path(table)]
 
-    contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
-    segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
+    contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), path(contamination) ]
+    segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), path(segmentation) ]
 
-    filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), [ vcf ] ]
-    filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
-    filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
+    filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), path(vcf) ]
+    filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), path(tbi) ]
+    filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), path(stats)]
 
-    versions               = ch_versions                                           // channel: [ versions.yml ]
+    versions               = ch_versions                                           // channel: [ path(versions.yml) ]
 }

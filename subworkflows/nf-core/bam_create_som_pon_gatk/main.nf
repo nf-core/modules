@@ -15,7 +15,7 @@ workflow BAM_CREATE_SOM_PON_GATK {
     ch_fasta            // channel: [ path(fasta) ]
     ch_fai              // channel: [ path(fai) ]
     ch_dict             // channel: [ path(dict) ]
-    val_pon_norm        // string:  name for panel of normals
+    ch_val_pon_norm        // string:  name for panel of normals
     ch_gendb_intervals  // channel: [ path(interval_file) ]
 
     main:
@@ -42,7 +42,7 @@ workflow BAM_CREATE_SOM_PON_GATK {
     //
     ch_vcf          = GATK4_MUTECT2.out.vcf.collect{it[1]}.toList()
     ch_index        = GATK4_MUTECT2.out.tbi.collect{it[1]}.toList()
-    ch_gendb_input  = Channel.of([id:val_pon_norm])
+    ch_gendb_input  = Channel.of([id:ch_val_pon_norm])
         .combine(ch_vcf)
         .combine(ch_index)
         .combine(ch_gendb_intervals)

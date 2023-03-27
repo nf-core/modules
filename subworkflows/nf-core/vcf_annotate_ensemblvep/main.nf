@@ -7,18 +7,18 @@ include { TABIX_TABIX    } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
-    vcf               // channel: [ val(meta), vcf ]
-    fasta             //   value: fasta to use (optionnal)
-    vep_genome        //   value: genome to use
-    vep_species       //   value: species to use
-    vep_cache_version //   value: cache version to use
-    vep_cache         //    path: /path/to/vep/cache (optionnal)
-    vep_extra_files   // channel: [ file1, file2...] (optionnal)
+    ch_vcf               // channel: [ val(meta), path(vcf) ]
+    ch_fasta             // channel: [ path(fasta)]      fasta to use (optionnal)
+    ch_vep_genome        // channel: [ val(genome)]      genome to use
+    ch_vep_species       // channel: [val(species)]      species to use
+    ch_vep_cache_version // channel: [val(species)]      cache version to use
+    ch_vep_cache         // channel: [ path(cache)]      path: (/path/to/vep/cache (optionnal)
+    ch_vep_extra_files   // channel: [ path(file1), path(file2)......] (optionnal additional files)
 
     main:
     ch_versions = Channel.empty()
 
-    ENSEMBLVEP_VEP(vcf, vep_genome, vep_species, vep_cache_version, vep_cache, fasta, vep_extra_files)
+    ENSEMBLVEP_VEP(ch_vcf, ch_vep_genome, ch_vep_species, ch_vep_cache_version, ch_vep_cache, ch_fasta, ch_vep_extra_files)
     TABIX_TABIX(ENSEMBLVEP_VEP.out.vcf)
 
     ch_vcf_tbi = ENSEMBLVEP_VEP.out.vcf.join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
@@ -28,9 +28,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
-    vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), vcf.gz, vcf.gz.tbi ]
-    json     = ENSEMBLVEP_VEP.out.json     // channel: [ val(meta), json ]
-    tab      = ENSEMBLVEP_VEP.out.tab      // channel: [ val(meta), tab ]
-    reports  = ENSEMBLVEP_VEP.out.report   // channel: [ *.html ]
-    versions = ch_versions                 // channel: [ versions.yml ]
+    vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
+    json     = ENSEMBLVEP_VEP.out.json     // channel: [ val(meta), path(json) ]
+    tab      = ENSEMBLVEP_VEP.out.tab      // channel: [ val(meta), path(tab) ]
+    reports  = ENSEMBLVEP_VEP.out.report   // channel: [ path(html) ]
+    versions = ch_versions                 // channel: [ path(versions.yml) ]
 }
