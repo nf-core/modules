@@ -1,0 +1,32 @@
+name: "vibrant_downloaddb"
+description: Download the VIBRANT database
+keywords:
+  - genomes
+  - vibrant
+  - database
+  - phage
+  - virus
+  - prophage
+  - annotation
+tools:
+  - "vibrant":
+      description: Virus Identification By iteRative ANnoTation
+      homepage: https://github.com/AnantharamanLab/VIBRANT
+      documentation: https://github.com/AnantharamanLab/VIBRANT#running-vibrant-
+      tool_dev_url: https://github.com/AnantharamanLab/VIBRANT
+      doi: "doi:10.1186/s40168-020-00867-0"
+      licence: "['GPL v3', 'GPL']"
+
+output:
+  - db:
+      type: directory
+      description: Path to db directory containing 'databases' and 'files'
+        subdirectories
+      pattern: "vibrant_db/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jvfe"

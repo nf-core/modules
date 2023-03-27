@@ -1,0 +1,25 @@
+- name: vibrant downloaddb test_vibrant_downloaddb
+  command: nextflow run ./tests/modules/nf-core/vibrant/downloaddb -entry test_vibrant_downloaddb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vibrant/downloaddb/nextflow.config
+  tags:
+    - vibrant/downloaddb
+    - vibrant
+  files:
+    - path: output/vibrant/versions.yml
+    - path: output/vibrant/vibrant_db/databases/VIBRANT_setup.log
+      md5sum: b2ecc37edd0e6ab1f2bb1e1822240033
+    - path: output/vibrant/vibrant_db/databases/VIBRANT_setup.py
+      md5sum: 3db55b5919725c0c65641b3a62c13920
+    - path: output/vibrant/vibrant_db/databases/profile_names/VIBRANT_kegg_profiles.txt
+      md5sum: 247943a014766601a8c045c454c8b928
+    - path: output/vibrant/vibrant_db/databases/profile_names/VIBRANT_vog_profiles.txt
+      md5sum: 34082852e3d92b30c241d675f85aa602
+    - path: output/vibrant/vibrant_db/files/VIBRANT_AMGs.tsv
+      md5sum: deec5ba7b06c08bf52fa956ce81a29ee
+    - path: output/vibrant/vibrant_db/files/VIBRANT_KEGG_pathways_summary.tsv
+      md5sum: 42def90629857554dbf98cf089106896
+    - path: output/vibrant/vibrant_db/files/VIBRANT_categories.tsv
+      md5sum: f1dcb8c4c33cf84ae77b97199d6d2e5b
+    - path: output/vibrant/vibrant_db/files/VIBRANT_machine_model.sav
+      md5sum: c68a3195e1afa5483c7f01adcd598a58
+    - path: output/vibrant/vibrant_db/files/VIBRANT_names.tsv
+      md5sum: d3deeb8ebd206ad1819cf667863eadf1
