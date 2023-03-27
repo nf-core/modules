@@ -26,18 +26,19 @@ input:
       description: Minimum length of the mitochondrial genome
       pattern: "[0-9]*"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - mitoref_fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Downloaded mitochondrial genome in Fasta format
+      pattern: "*.{fasta,fa}"
+  - mitoref_gb:
+      type: file
+      description: Downloaded mitochondrial genome in Genbank format
+      pattern: "*.gb"
 
 authors:
   - "@verku"
