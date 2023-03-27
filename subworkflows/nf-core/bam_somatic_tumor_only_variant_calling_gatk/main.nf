@@ -7,8 +7,8 @@ params.getpileup_options   = [:]
 params.calccontam_options  = [:]
 params.filtercalls_options = [suffix: '_filtered']
 
-include { GATK4_MUTECT2                as MUTECT2 }                  from '../../../modules/nf-core/gatk4/mutect2/main'
-include { GATK4_GETPILEUPSUMMARIES     as GETPILEUPSUMMARIES }       from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
+include { GATK4_MUTECT2                   as MUTECT2         } from '../../../modules/nf-core/gatk4/mutect2/main'
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES        } from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
 include { GATK4_CALCULATECONTAMINATION as CALCULATECONTAMINATION }   from '../../../modules/nf-core/gatk4/calculatecontamination/main'
 include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../../../modules/nf-core/gatk4/filtermutectcalls/main'
 
@@ -28,6 +28,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
 
     main:
     ch_versions = Channel.empty()
+
 
     //
     //Perform variant calling using mutect2 module in tumor single mode.
@@ -52,12 +53,12 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK  {
         [meta, input_file[0], input_index[0]]
     }
 
-    GETPILEUPSUMMARIES (
-        ch_pileup_tumor_input,
-        ch_germline_resource,
-        ch_germline_resource_tbi,
-        ch_interval_file
-    )
+    GETPILEUPSUMMARIES(ch_pileup_tumor_input,
+            fasta,
+            fai,
+            dict,
+            germline_resource_pileup,
+            germline_resource_pileup_tbi)
 
     ch_versions = ch_versions.mix(GETPILEUPSUMMARIES.out.versions.first())
 
