@@ -7,23 +7,21 @@ process FREYJA_UPDATE {
         'https://depot.galaxyproject.org/singularity/freyja:1.3.12--pyhdfd78af_0':
         'quay.io/biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
     input:
-    val(db_name)
+    val db_name
 
     output:
-    path "${db_name}/usher_barcodes.csv"     , emit: barcodes
-    path "${db_name}/lineages.yml"           , emit: lineages_topology
-    path "${db_name}/curated_lineages.json"  , emit: lineages_meta
-    path "versions.yml"                      , emit: versions
+    path "${db_name}/usher_barcodes.csv"   , emit: barcodes
+    path "${db_name}/lineages.yml"         , emit: lineages_topology
+    path "${db_name}/curated_lineages.json", emit: lineages_meta
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-
     """
-    mkdir $db_name
-
+    mkdir -p $db_name
     freyja \\
         update \\
         --outdir $db_name

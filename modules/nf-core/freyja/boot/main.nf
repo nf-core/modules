@@ -11,13 +11,13 @@ process FREYJA_BOOT {
     tuple val(meta),  path(variants)
     tuple val(meta2), path(depths)
     val repeats
-    tuple val(meta3), path (barcodes)
-    tuple val(meta4), path (lineages_meta)
+    tuple val(meta3), path(barcodes)
+    tuple val(meta4), path(lineages_meta)
 
     output:
-    tuple val(meta), path("*lineages.csv")     , emit: lineages
-    tuple val(meta), path("*summarized.csv")   , emit: summarized
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*lineages.csv")  , emit: lineages
+    tuple val(meta), path("*summarized.csv"), emit: summarized
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,6 @@ process FREYJA_BOOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     freyja \\
         boot \\

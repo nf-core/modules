@@ -8,13 +8,13 @@ process FREYJA_VARIANTS {
         'quay.io/biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2),path(fasta)
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.variants.tsv") ,emit: variants
-    tuple val(meta), path("*.depth.tsv")    ,emit: depths
-    path "versions.yml"                     ,emit: versions
+    tuple val(meta), path("*.variants.tsv"), emit: variants
+    tuple val(meta), path("*.depth.tsv")   , emit: depths
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process FREYJA_VARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     freyja \\
         variants \\
