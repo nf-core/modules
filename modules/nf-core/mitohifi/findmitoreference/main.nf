@@ -13,8 +13,8 @@ process MITOHIFI_FINDMITOREFERENCE {
     val min_length
 
     output:
-    path "*.fasta",                 emit: mitoref_fasta
-    path "*.gb",                    emit: mitoref_gb
+    path "*.fasta",                 emit: fasta
+    path "*.gb",                    emit: gb
     path "versions.yml",            emit: versions
 
     when:
