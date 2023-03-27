@@ -6,7 +6,7 @@ include { MITOHIFI_FINDMITOREFERENCE } from '../../../../../modules/nf-core/mito
 
 workflow test_mitohifi_findmitoreference {
     
-    species = "Homo sapiens"
+    species = "'Homo sapiens'"
     email = "test@email.se"
     min_length = 16000
 
