@@ -13,14 +13,18 @@ tools:
       doi: "10.1101/2022.12.23.521667"
       licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - species:
+      type: string
+      description: Latin name of the species for which a mitochondrial genome should be fetched
+      pattern: "[A-Z]?[a-z]* [a-z]*"
+  - email:
+      type: string
+      description: Email address for NCBI query
+  - min_length:
+      type: integer
+      description: Minimum length of the mitochondrial genome
+      pattern: "[0-9]*"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
