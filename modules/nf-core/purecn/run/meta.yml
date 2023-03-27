@@ -1,17 +1,15 @@
 name: "purecn_run"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: run PureCN to normalize, segment and determine purity and ploidy
 keywords:
-  - sort
+  - copy number alteration calling
 tools:
   - "purecn":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Copy number calling and SNV classification using targeted short read sequencing"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['Artistic-2.0']"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      tool_dev_url: "https://github.com/lima1/PureCN"
+      doi: "10.1186/s13029-016-0060-z"
+      licence: "Artistic-2.0"
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -49,3 +47,4 @@ output:
 
 authors:
   - "@aldosr"
+  - "@lbeltrame"
