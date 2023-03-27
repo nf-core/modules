@@ -25,19 +25,14 @@ process MITOHIFI_FINDMITOREFERENCE {
         'docker://biocontainers/mitohifi:2.2_cv1' }"
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path bam
+    val species
+    val email
+    val min_length
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    path "*.bam", emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    path "*.fasta",                 emit: mitoref_fasta
+    path "*.gb",                    emit: mitoref_gb
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
