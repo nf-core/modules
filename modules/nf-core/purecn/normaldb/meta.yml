@@ -12,39 +12,30 @@ tools:
       doi: "10.1186/s13029-016-0060-z"
       licence: "Artistic-2.0"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - coverage_files:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Coverage files from normal samples
+      pattern: "*.loess.txt.gz"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
+  - normal_db:
+      type: file
+      description: File containing the generated panel of normals
+      pattern: "normalDB*.rds"
+  - mapping_bias:
+      type: file
+      description: Calculated mapping bias from the normal files
+      pattern: "mapping_bias*.rds"
+  - low_coverage_targets:
+      type: file
+      description: Calculated mapping bias from the normal files
+      pattern: "mapping_bias*.rds"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@aldosr"
