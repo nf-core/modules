@@ -1,5 +1,5 @@
 process CELLRANGER_VDJ {
-    tag "$meta.gem"
+    tag "$meta.id"
     label 'process_high'
 
     container "nfcore/cellranger:7.1.0"
@@ -14,8 +14,8 @@ process CELLRANGER_VDJ {
     path  reference
 
     output:
-    tuple val(meta), path("sample-${meta.gem}/outs/*"), emit: outs
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process CELLRANGER_VDJ {
     """
     cellranger \\
         vdj \\
-        --id='sample-${meta.gem}' \\
+        --id='${meta.id}' \\
         --fastqs=. \\
         --reference=$reference_name \\
         --sample=$sample_arg \\
@@ -43,8 +43,8 @@ process CELLRANGER_VDJ {
 
     stub:
     """
-    mkdir -p "sample-${meta.gem}/outs/"
-    touch sample-${meta.gem}/outs/fake_file.txt
+    mkdir -p "${meta.id}/outs/"
+    touch ${meta.id}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
