@@ -1,6 +1,6 @@
 name: "mcmicro_scimap"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: SCIMAP is a suite of tools that enables spatial single-cell analyses
 keywords:
   - sort
 tools:
@@ -23,10 +23,10 @@ input:
         e.g. [ id:'test', single_end:false ]
   #
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - cellByFeature:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: CSV file with cell by feature table
+      pattern: "*.{csv}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -42,10 +42,14 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - annotedData:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted CSV/H5AD file
+      pattern: "*.{csv,h5ad}"
+  - clusterPlot:
+      type: file
+      description: UPMA plot of the data in pdf file
+      pattern: "*.pdf"
 
 authors:
   - "@luiskuhn"
