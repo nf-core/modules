@@ -6,7 +6,9 @@ include { MITOHIFI_FINDMITOREFERENCE } from '../../../../../modules/nf-core/mito
 
 workflow test_mitohifi_findmitoreference {
     
-    input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+    species = "Homo sapiens"
+    email = "verena.kutschera@scilifelab.se"
+    min_length = 16000
 
-    MITOHIFI_FINDMITOREFERENCE ( input )
+    MITOHIFI_FINDMITOREFERENCE ( species, email, min_length )
 }
