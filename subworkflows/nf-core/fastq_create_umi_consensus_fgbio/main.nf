@@ -170,8 +170,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     BAM2FASTQ_POST ( FILTERCONSENSUS.out.bam, false )
     ch_versions = ch_versions.mix(BAM2FASTQ_POST.out.versions)
 
-    aligned_bam_post = Channel.empty()
-
     if (aligner == "bwa-mem") {
         // index made available through previous steps
         BWAMEM1_MEM_POST ( BAM2FASTQ_POST.out.fastq, bwaindex, false )
