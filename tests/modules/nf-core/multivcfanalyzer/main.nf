@@ -26,7 +26,6 @@ workflow test_multivcfanalyzer {
     mva_vcf = GUNZIP ( GATK_UNIFIEDGENOTYPER.out.vcf ).gunzip
         .map{it[1]}
         .collect()
-        .dump()
 
     snpeff_results          = []
     gff                     = []

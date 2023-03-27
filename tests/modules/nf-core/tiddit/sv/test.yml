@@ -5,9 +5,20 @@
     - tiddit/sv
   files:
     - path: output/tiddit/test.ploidies.tab
-      md5sum: 6319d3611f7b6b94425a184d274b3dfc
+      md5sum: c69e73fe090b260d379205935c64b63c
     - path: output/tiddit/test.vcf
-      md5sum: 157907671297c34bacfd3e73eff9bbdf
+      md5sum: 6e045e4e03729dd0f03e2b6d2193ed88
+
+- name: tiddit sv test_tiddit_sv_bam_no_bwa
+  command: nextflow run ./tests/modules/nf-core/tiddit/sv -entry test_tiddit_sv_bam_no_bwa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiddit/sv/nextflow.config
+  tags:
+    - tiddit
+    - tiddit/sv
+  files:
+    - path: output/tiddit/test.ploidies.tab
+      md5sum: c69e73fe090b260d379205935c64b63c
+    - path: output/tiddit/test.vcf
+      md5sum: 9e03f9ef4eda29ef748c67dc293235b3
 
 - name: tiddit sv test_tiddit_sv_cram
   command: nextflow run ./tests/modules/nf-core/tiddit/sv -entry test_tiddit_sv_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiddit/sv/nextflow.config
@@ -16,28 +27,17 @@
     - tiddit/sv
   files:
     - path: output/tiddit/test.ploidies.tab
-      md5sum: f1162a940ddc8b963f6e0e506bb5c136
+      md5sum: 13c4762ede32d319e8582cf7d6d77b71
     - path: output/tiddit/test.vcf
-      md5sum: 56687eeffa452f78f18d54a69dd17c78
+      md5sum: 4ec60aa26e0f055ce51d3fb84fb40cc0
 
-- name: tiddit sv test_tiddit_sv_nobwa_bam
-  command: nextflow run ./tests/modules/nf-core/tiddit/sv -entry test_tiddit_sv_nobwa_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiddit/sv/nextflow.config
+- name: tiddit sv test_tiddit_sv_cram_no_bwa
+  command: nextflow run ./tests/modules/nf-core/tiddit/sv -entry test_tiddit_sv_cram_no_bwa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiddit/sv/nextflow.config
   tags:
     - tiddit
     - tiddit/sv
   files:
     - path: output/tiddit/test.ploidies.tab
-      md5sum: 6319d3611f7b6b94425a184d274b3dfc
+      md5sum: 13c4762ede32d319e8582cf7d6d77b71
     - path: output/tiddit/test.vcf
-      md5sum: ddac94f9cd4f991b6ce2052d7f78a525
-
-- name: tiddit sv test_tiddit_sv_nobwa_cram
-  command: nextflow run ./tests/modules/nf-core/tiddit/sv -entry test_tiddit_sv_nobwa_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tiddit/sv/nextflow.config
-  tags:
-    - tiddit
-    - tiddit/sv
-  files:
-    - path: output/tiddit/test.ploidies.tab
-      md5sum: f1162a940ddc8b963f6e0e506bb5c136
-    - path: output/tiddit/test.vcf
-      md5sum: 680e60574cc28d38c9673a916ecd675c
+      md5sum: 6d0ae57587bd2af0603d52d993053523

@@ -3,10 +3,10 @@ process HISAT2_ALIGN {
     label 'process_high'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::hisat2=2.2.1 bioconda::samtools=1.15.1" : null)
+    conda (params.enable_conda ? "bioconda::hisat2=2.2.1 bioconda::samtools=1.16.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:38aed4501da19db366dc7c8d52d31d94e760cfaf-0' :
-        'quay.io/biocontainers/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:38aed4501da19db366dc7c8d52d31d94e760cfaf-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:2cdf6bf1e92acbeb9b2834b1c58754167173a410-0' :
+        'quay.io/biocontainers/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:2cdf6bf1e92acbeb9b2834b1c58754167173a410-0' }"
 
     input:
     tuple val(meta), path(reads)

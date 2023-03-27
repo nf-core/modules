@@ -1,5 +1,5 @@
 process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
-    tag '${meta.id}'
+    tag "${meta.id}"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::atlas-gene-annotation-manipulation=1.1.0" : null)
@@ -27,8 +27,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     """
     gtf2featureAnnotation.R \\
         --gtf-file $gtf \\
-        --feature-type "gene" \\
-        --first-field "gene_id" \\
         --output-file ${prefix}.anno.tsv \\
         $reference_cdna \\
         $args

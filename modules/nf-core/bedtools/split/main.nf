@@ -9,7 +9,6 @@ process BEDTOOLS_SPLIT {
 
     input:
     tuple val(meta), path(bed)
-    val(number_of_files)
 
     output:
     tuple val(meta), path("*.bed"), emit: beds
@@ -27,8 +26,7 @@ process BEDTOOLS_SPLIT {
         split \\
         $args \\
         -i $bed \\
-        -p $prefix \\
-        -n $number_of_files
+        -p $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
