@@ -1,0 +1,36 @@
+name: "nanocomp"
+description: Compare multiple runs of long read sequencing data and alignments
+keywords:
+  - bam
+  - fasta
+  - fastq
+  - qc
+  - nanopore
+tools:
+  - "nanocomp":
+      description: "Compare multiple runs of long read sequencing data and alignments"
+      homepage: "https://github.com/wdecoster/nanocomp"
+      documentation: "https://github.com/wdecoster/nanocomp"
+      licence: "MIT License"
+
+input:
+  - filetype:
+      type: value
+      description: Type of input file you use, either fastq, fasta, bam or Nanopore summary file
+      pattern: "{fastq,fasta,summary,bam}"
+  - filelist:
+      type: file
+      description: List of all the files you want to compare, they have to be the same filetype that you indicated with the filetype parameter
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - html_nanocomp_output:
+      type: file
+      description: List of html report files
+      pattern: "*.{html}"
+
+authors:
+  - "@paulwolk"
