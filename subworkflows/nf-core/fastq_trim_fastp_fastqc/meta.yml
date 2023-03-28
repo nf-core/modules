@@ -15,7 +15,8 @@ input:
       type: file
       description: |
         Structure: [ val(meta), path (reads) ]
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ], List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively. If you wish to run interleaved paired-end data,  supply as single-end data
         but with `--interleaved_in` in your `modules.conf`'s `ext.args` for the module.
   - ch_adapter_fasta:
@@ -45,6 +46,11 @@ input:
         skip the fastp process if true
 
 output:
+  - meta:
+    type: value
+    description:
+      Groovy Map containing sample information
+      e.g. [ id:'test', single_end:false ]
   - reads:
     type: file
     description: |

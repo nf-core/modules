@@ -18,7 +18,7 @@ def getFastpReadsAfterFiltering(json_file) {
 
 workflow FASTQ_TRIM_FASTP_FASTQC {
     take:
-    ch_reads              // channel: [ val(meta), [ reads ] ]
+    ch_reads              // channel: [ val(meta), path(reads)  ]
     ch_adapter_fasta      // channel: [ path(fasta) ]
     val_save_trimmed_fail // value: boolean
     val_save_merged       // value: boolean
@@ -87,17 +87,17 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     }
 
     emit:
-    reads             = ch_trim_reads         // channel: [ val(meta), [ reads ] ]
-    trim_json         = ch_trim_json          // channel: [ val(meta), [ json ] ]
-    trim_html         = ch_trim_html          // channel: [ val(meta), [ html ] ]
-    trim_log          = ch_trim_log           // channel: [ val(meta), [ log ] ]
-    trim_reads_fail   = ch_trim_reads_fail    // channel: [ val(meta), [ fastq.gz ] ]
-    trim_reads_merged = ch_trim_reads_merged  // channel: [ val(meta), [ fastq.gz ] ]
+    reads             = ch_trim_reads         // channel: [ val(meta), path(reads) ]
+    trim_json         = ch_trim_json          // channel: [ val(meta), path(json) ]
+    trim_html         = ch_trim_html          // channel: [ val(meta), path(html) ]
+    trim_log          = ch_trim_log           // channel: [ val(meta), path(log) ]
+    trim_reads_fail   = ch_trim_reads_fail    // channel: [ val(meta), path(fastq.gz) ]
+    trim_reads_merged = ch_trim_reads_merged  // channel: [ val(meta), path(fastq.gz) ]
 
-    fastqc_raw_html  = ch_fastqc_raw_html    // channel: [ val(meta), [ html ] ]
-    fastqc_raw_zip   = ch_fastqc_raw_zip     // channel: [ val(meta), [ zip ] ]
-    fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), [ html ] ]
-    fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), [ zip ] ]
+    fastqc_raw_html  = ch_fastqc_raw_html    // channel: [ val(meta), path(html) ]
+    fastqc_raw_zip   = ch_fastqc_raw_zip     // channel: [ val(meta), path(zip) ]
+    fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
+    fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
 
-    versions = ch_versions.ifEmpty(null) // channel: [ versions.yml ]
+    versions = ch_versions.ifEmpty(null) // channel: [ path(versions.yml) ]
 }
