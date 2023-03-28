@@ -47,9 +47,9 @@ process INTERPROSCAN {
         -i $fasta \\ 
         -o ${prefix}.${out_ext} \\ 
         -dp \\ 
-        -cpu $task.cpus 
-        ${appl} \\ 
-        ${args}
+        -cpu $task.cpus \\
+        ${args} \\
+        ${appl}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
