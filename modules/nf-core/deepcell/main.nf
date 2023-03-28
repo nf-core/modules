@@ -11,7 +11,7 @@ process DEEPCELL {
 
     // Output a .tif image, don't touch versions
     output:
-    tuple val(meta), path("cell.tif"), emit: mask
+    tuple val(meta), path("mask.tif"), emit: mask
     path "versions.yml"              , emit: versions
 
     when:
@@ -25,8 +25,9 @@ process DEEPCELL {
     python /usr/src/app/run_app.py mesmer \
         --squeeze \
         --nuclear-image $img \
+        --membrane-image $img \
         --output-directory . \
-        --output-name cell.tif \
+        --output-name mask.tif \
         $args
 
     cat <<-END_VERSIONS > versions.yml
