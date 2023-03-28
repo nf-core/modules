@@ -18,14 +18,13 @@ process SVABA {
     path regions
 
     output:
-    tuple val(meta), path("*.svaba*vcf")                    , emit: sv, optional: true
-    tuple val(meta), path("*.svaba*vcf")                    , emit: indel, optional: true
-    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_sv, optional: true
-    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_indel, optional: true
+    tuple val(meta), path("*.svaba*vcf")                    , emit: sv
+    tuple val(meta), path("*.svaba*vcf")                    , emit: indel
+    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_sv
+    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_indel
     tuple val(meta), path("*.bps.txt.gz")                   , emit: raw_calls
     tuple val(meta), path("*.discordants.txt.gz")           , emit: discordants, optional: true
     tuple val(meta), path("*.log")                          , emit: log
-    tuple val(meta), path("*.alignments.txt.gz")            , emit: alignment_txt
     path "versions.yml"                                     , emit: versions
 
     when:
@@ -54,7 +53,7 @@ process SVABA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        svaba: \$(echo \$(svaba --version 2>&1) | sed 's/^.*Version //; s/Contact*\$//' ))
+        svaba: \$(echo \$(svaba --version 2>&1) | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/' ))
     END_VERSIONS
     """
 }
