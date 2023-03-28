@@ -40,14 +40,7 @@ workflow test_bam_variant_demix_boot_freyja_withdb {
 
     repeats=100
     ch_barcodes=FREYJA_UPDATE.out.barcodes
-            .map{ barcodes  ->
-                [[], barcodes]
-            }
-
     ch_lineages_meta=FREYJA_UPDATE.out.lineages_meta
-            .map{ lineages  ->
-                [[], lineages ]
-            }
 
     BAM_VARIANT_DEMIX_BOOT_FREYJA ( input, fasta,repeats,db_name, ch_barcodes, ch_lineages_meta )
 }

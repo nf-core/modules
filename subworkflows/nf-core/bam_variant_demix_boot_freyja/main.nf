@@ -7,11 +7,11 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
 
     take:
     ch_bam              // channel: [ val(meta), path(bam) ]
-    ch_fasta            // channel: [ val(meta), path(fasta) ]
+    ch_fasta            // channel: [ path(fasta) ]
     val_repeats         // value repeats
     val_db_name         // string db_name
-    ch_barcodes         // channel:  [ val(meta), path(barcodes)]
-    ch_lineages_meta    // channel:  [ val(meta), path(lineages_meta)]
+    ch_barcodes         // channel:  [ path(barcodes)]
+    ch_lineages_meta    // channel:  [ path(lineages_meta)]
 
     main:
     ch_versions = Channel.empty()
@@ -24,7 +24,6 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
         ch_fasta
     )
     ch_freyja_variants = FREYJA_VARIANTS.out.variants
-    ch_freyja_depths   = FREYJA_VARIANTS.out.depths
 
     ch_versions = ch_versions.mix(FREYJA_VARIANTS.out.versions.first())
 
@@ -35,19 +34,11 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
         FREYJA_UPDATE (
             val_db_name
         )
+
+        ch_barcodes      = FREYJA_UPDATE.out.barcodes
+        ch_lineages_meta = FREYJA_UPDATE.out.lineages_meta
+
         ch_versions = ch_versions.mix(FREYJA_UPDATE.out.versions.first())
-
-        FREYJA_UPDATE
-            .out
-            .barcodes
-            .map { barcodes  -> [ [], barcodes ] }
-            .set { ch_barcodes }
-
-        FREYJA_UPDATE
-            .out
-            .lineages_meta
-            .map { lineages  -> [ [], lineages ] }
-            .set { ch_lineages_meta }
     }
 
 
@@ -56,7 +47,6 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     //
     FREYJA_DEMIX (
         ch_freyja_variants,
-        ch_freyja_depths,
         ch_barcodes,
         ch_lineages_meta
     )
@@ -69,7 +59,6 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     //
     FREYJA_BOOT (
         ch_freyja_variants,
-        ch_freyja_depths,
         val_repeats,
         ch_barcodes,
         ch_lineages_meta
@@ -77,13 +66,12 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     ch_versions = ch_versions.mix(FREYJA_BOOT.out.versions.first())
 
     emit:
-    variants       = FREYJA_VARIANTS.out.variants  // channel: [ val(meta), path(variants_tsv) ]
-    depths         = FREYJA_VARIANTS.out.depths    // channel: [ val(meta), path(depths_tsv) ]
+    variants       = FREYJA_VARIANTS.out.variants  // channel: [ val(meta), path(variants_tsv), path(depths_tsv) ]
     demix          = FREYJA_DEMIX.out.demix        // channel: [ val(meta), path(demix_tsv) ]
     lineages       = FREYJA_BOOT.out.lineages      // channel: [ val(meta), path(lineages_csv) ]
     summarized     = FREYJA_BOOT.out.summarized    // channel: [ val(meta), path(summarized_csv) ]
-    barcodes       = ch_barcodes                   // channel: [ val(meta), path(barcodes) ]
-    lineages_meta  = ch_lineages_meta              // channel: [ val(meta), path(lineages_meta) ]
+    barcodes       = ch_barcodes                   // channel: [ path(barcodes) ]
+    lineages_meta  = ch_lineages_meta              // channel: [ path(lineages_meta) ]
     versions       = ch_versions                   // channel: [ path(versions.yml) ]
     }
 

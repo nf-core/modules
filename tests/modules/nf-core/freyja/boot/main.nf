@@ -23,16 +23,9 @@ workflow test_freyja_boot {
     FREYJA_UPDATE(db_name)
 
     variants= FREYJA_VARIANTS.out.variants
-    depths  = FREYJA_VARIANTS.out.depths
     repeats = 100
     barcodes=FREYJA_UPDATE.out.barcodes
-            .map{ barcodes  ->
-                [[], barcodes]
-            }
     lineages_meta=FREYJA_UPDATE.out.lineages_meta
-            .map{ lineages  ->
-                [[], lineages ]
-            }
 
-    FREYJA_BOOT (variants, depths, repeats, barcodes, lineages_meta)
+    FREYJA_BOOT (variants,  repeats, barcodes, lineages_meta)
 }

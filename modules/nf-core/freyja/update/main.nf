@@ -6,6 +6,7 @@ process FREYJA_UPDATE {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/freyja:1.3.12--pyhdfd78af_0':
         'quay.io/biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
+
     input:
     val db_name
 

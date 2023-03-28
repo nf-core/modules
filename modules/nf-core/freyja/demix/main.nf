@@ -8,10 +8,9 @@ process FREYJA_DEMIX {
         'quay.io/biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta),  path(variants)
-    tuple val(meta2), path(depths)
-    tuple val(meta3), path(barcodes)
-    tuple val(meta4), path(lineages_meta)
+    tuple val(meta), path(variants), path(depths)
+    path barcodes
+    path lineages_meta
 
     output:
     tuple val(meta), path("*.tsv"), emit: demix
