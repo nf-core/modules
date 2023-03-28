@@ -1,0 +1,11 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml lofreq3
+- name: "lofreq3_preprocessing"
+  command: nextflow run ./tests/modules/nf-core/lofreq3/preprocessing -entry test_lofreq3 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lofreq3/preprocessing/nextflow.config
+  tags:
+    - "lofreq3_preprocessing"
+  files:
+    - path: "output/lofreq3/preprocessing/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/lofreq3/preprocessing/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
