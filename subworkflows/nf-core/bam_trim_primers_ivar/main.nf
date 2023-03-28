@@ -30,15 +30,15 @@ workflow BAM_TRIM_PRIMERS_IVAR {
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions.first())
 
     emit:
-    bam_orig = IVAR_TRIM.out.bam                    // channel: [ val(meta), bam   ]
-    log_out  = IVAR_TRIM.out.log                    // channel: [ val(meta), log
+    bam_orig = IVAR_TRIM.out.bam                    // channel: [ val(meta), path(bam) ]
+    log_out  = IVAR_TRIM.out.log                    // channel: [ val(meta), path(log) ]
 
-    bam      = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
-    bai      = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
-    csi      = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), [ csi ] ]
-    stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
-    flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
-    idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ]
+    bam      = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
+    bai      = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
+    csi      = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), path(csi) ]
+    stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
+    flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
 
-    versions = ch_versions                          // channel: [ versions.yml ]
+    versions = ch_versions                          // channel: [ path(versions.yml) ]
 }
