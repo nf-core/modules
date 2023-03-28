@@ -26,13 +26,14 @@ process HYPO {
     // def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    echo -e "${reads.join('\n')}" > sr.fofn
+    echo "${reads.join(' ')}" | tr " " "\\n" > sr.fofn
     hypo \\
         -r @sr.fofn \\
         -d $draft \\
         -b $sr_bam \\
         -c $reads_coverage \\
         -s $genome_size \\
+        -t $task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
