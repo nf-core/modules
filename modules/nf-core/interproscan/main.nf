@@ -30,12 +30,11 @@ process INTERPROSCAN {
         appl = "" 
     }
     switch ( out_ext ) {
-        case "tsv": outfmt = '-f tsv'; break
-        case "xml": outfmt = '-f xml'; break
-        case "gff3": outfmt = '-f gff3'; break
-        case "json": outfmt = '-f json'; break
+        case "tsv": break
+        case "xml": break
+        case "gff3": break
+        case "json": break
         default:
-            outfmt = '-f tsv';
             out_ext = 'tsv';
             log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
             break
@@ -45,7 +44,7 @@ process INTERPROSCAN {
     """
     interproscan.sh \\ 
         -i $fasta \\
-        -f $outfmt \\
+        -f ${out_ext} \\
         -o ${prefix}.${out_ext} \\ 
         -dp \\ 
         -cpu $task.cpus \\
