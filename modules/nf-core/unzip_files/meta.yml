@@ -28,10 +28,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - unzipped_archive:
-      type: directory
-      description: Directory contents of the unzipped archive
-      pattern: "${archive.baseName}/"
   - files:
       type: list
       description: A list containing references to individual archive files
