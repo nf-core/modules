@@ -11,7 +11,7 @@ process MINDAGAP_MINDAGAP {
     tuple val(meta), path(tiff)
 
     output:
-    tuple val(meta), path("*.tiff"), emit: tiff
+    tuple val(meta), path("*gridfilled.tiff"), emit: tiff
     path "versions.yml"            , emit: versions
 
     when:
@@ -26,6 +26,17 @@ process MINDAGAP_MINDAGAP {
         $args \\
         $tiff \\
         $args2
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mindagap: \$(mindagap.py test -v)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gridfilled.tiff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

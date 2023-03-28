@@ -1,4 +1,4 @@
-name: "mindagap"
+name: "mindagap_mindagap"
 description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted values.
 keywords:
   - imaging
@@ -25,7 +25,7 @@ input:
       pattern: "*.{tiff}"
 
   # args = optional arguments
-  # args2 = positional arguments s (box size for gaussian kernel) and r (number of rounds to apply gaussianBlur)
+  # args2 = positional arguments (required) s (box size for gaussian kernel) and r (number of rounds to apply gaussianBlur)
 
 output:
   - meta:
