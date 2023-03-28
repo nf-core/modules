@@ -7,7 +7,6 @@ keywords:
   - illumina
 tools:
   - "hypo":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Super Fast and Accurate Polisher for Long Read Genome Assemblies."
       homepage: "https://github.com/kensung-lab/hypo"
       documentation: "https://github.com/kensung-lab/hypo/blob/master/README.md"
@@ -16,7 +15,6 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -40,7 +38,6 @@ input:
       description: Appprimate depth of coverage of short reads.
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
