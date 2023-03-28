@@ -1,0 +1,11 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml interproscan
+- name: "interproscan"
+  command: nextflow run ./tests/modules/nf-core/interproscan -entry test_interproscan -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/interproscan/nextflow.config
+  tags:
+    - "interproscan"
+  files:
+    - path: "output/interproscan/test.tsv"
+      md5sum: 608997ef38cc0f66d26044d779222e68
+    - path: "output/interproscan/versions.yml"
+      md5sum: 8840a3d0621061601c4da4c19c276aac
