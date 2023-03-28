@@ -26,6 +26,9 @@ input:
       type: file
       description: Files containing signature (hash sketches) of reference genomes
       pattern: "*.{sig}"
+  - ksize:
+      type: val
+      description: Flag to specify which k-mer size should be selected, required
 
 output:
   - meta:
