@@ -1,5 +1,5 @@
 process UNZIP_FILES {
-    tag "$archive"
+    tag "$meta.id"
     label 'process_single'
 
     conda "conda-forge::p7zip=16.02"
@@ -21,7 +21,7 @@ process UNZIP_FILES {
     def args = task.ext.args ?: ''
     if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
 
-    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     7za \\
         x \\

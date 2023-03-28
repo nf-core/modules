@@ -1,5 +1,5 @@
 process UNTAR_FILES {
-    tag "$archive"
+    tag "$meta.id"
     label 'process_single'
 
     conda "conda-forge::sed=4.7 bioconda::grep=3.4 conda-forge::tar=1.34"
@@ -20,28 +20,19 @@ process UNTAR_FILES {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
+    prefix    = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir $prefix
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
     ## If just files or multiple directories, place all in prefix
-    if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
-        tar \\
-            -C $prefix --strip-components 1 \\
-            -xavf \\
-            $args \\
-            $archive \\
-            $args2
-    else
-        tar \\
-            -C $prefix \\
-            -xavf \\
-            $args \\
-            $archive \\
-            $args2
-    fi
+    tar \\
+        -C $prefix \\
+        -xavf \\
+        $args \\
+        $archive \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -50,7 +41,7 @@ process UNTAR_FILES {
     """
 
     stub:
-    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.toString().replaceFirst(/\.[^\.]+(.gz)?$/, ""))
+    prefix    = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
     touch ${prefix}/file.txt
