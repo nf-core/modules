@@ -20,9 +20,11 @@ process INTERPROSCAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
+    def appl = "TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+
     """
-    interproscan.sh -i $fasta -o ${prefix}.tsv -f tsv
+    interproscan.sh -i $fasta -o ${prefix}.tsv -f tsv -dp -appl ${appl}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
