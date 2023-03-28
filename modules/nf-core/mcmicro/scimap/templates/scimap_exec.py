@@ -7,4 +7,4 @@ filepath = ['$cellbyfeature']
 adata = sm.pp.mcmicro_to_scimap(filepath)
 
 #need to save adata
-adata.write('scimap_output.h5ad')
+adata.write('scimap_output.csv')

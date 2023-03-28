@@ -44,7 +44,7 @@ process MCMICRO_SCIMAP {
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     tuple val(meta), path("*.csv"), emit: cellbyfeature
     // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    //path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
