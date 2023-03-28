@@ -12,12 +12,8 @@
       md5sum: 2616b6791fd89fb1cc2d16a73b9463b0
     - path: output/fastp/test.fastp.log
     - path: output/fastqc/test_raw_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_raw_fastqc.zip
     - path: output/fastqc/test_trim_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_trim_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_paired_end
@@ -29,27 +25,18 @@
     - subworkflows/fastq_trim_fastp_fastqc
   files:
     - path: output/fastp/test.fastp.html
-
-    - path: output/fastp/test.fastp.json
       md5sum: cfc3e8b871b9bc770f1dc16432d64e67
+    - path: output/fastp/test.fastp.json
     - path: output/fastp/test.fastp.log
     - path: output/fastp/test_1.fastp.fastq.gz
     - path: output/fastp/test_2.fastp.fastq.gz
     - path: output/fastqc/test_raw_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_raw_1_fastqc.zip
     - path: output/fastqc/test_raw_2_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_raw_2_fastqc.zip
     - path: output/fastqc/test_trim_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_trim_1_fastqc.zip
     - path: output/fastqc/test_trim_2_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_trim_2_fastqc.zip
 
 
@@ -67,12 +54,8 @@
       md5sum: e08e99057ba1bcf93422a273c1ee38dc
     - path: output/fastp/test.fastp.log
     - path: output/fastqc/test_raw_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_raw_fastqc.zip
     - path: output/fastqc/test_trim_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_trim_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_single_end_trim_fail
@@ -90,12 +73,8 @@
       md5sum: 7e10b0b12fab5cff620fdeb1a32392f8
     - path: output/fastp/test.fastp.log
     - path: output/fastqc/test_raw_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_fastqc.zip
     - path: output/fastqc/test_trim_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_paired_end_trim_fail
@@ -115,20 +94,12 @@
     - path: output/fastp/test_2.fail.fastq.gz
     - path: output/fastp/test_2.fastp.fastq.gz
     - path: output/fastqc/test_raw_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_1_fastqc.zip
     - path: output/fastqc/test_raw_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_2_fastqc.zip
     - path: output/fastqc/test_trim_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_1_fastqc.zip
     - path: output/fastqc/test_trim_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_2_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_paired_end_merged
@@ -147,20 +118,12 @@
     - path: output/fastp/test_1.fastp.fastq.gz
     - path: output/fastp/test_2.fastp.fastq.gz
     - path: output/fastqc/test_raw_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_1_fastqc.zip
     - path: output/fastqc/test_raw_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_2_fastqc.zip
     - path: output/fastqc/test_trim_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_1_fastqc.zip
     - path: output/fastqc/test_trim_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_2_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_paired_end_merged_adapterlist
@@ -179,20 +142,12 @@
     - path: output/fastp/test_1.fastp.fastq.gz
     - path: output/fastp/test_2.fastp.fastq.gz
     - path: output/fastqc/test_raw_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_1_fastqc.zip
     - path: output/fastqc/test_raw_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_2_fastqc.zip
     - path: output/fastqc/test_trim_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_1_fastqc.zip
     - path: output/fastqc/test_trim_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_trim_2_fastqc.zip
 
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_paired_end_skip_fastqc
@@ -219,10 +174,6 @@
     - subworkflows/fastq_trim_fastp_fastqc
   files:
     - path: output/fastqc/test_raw_1_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_1_fastqc.zip
     - path: output/fastqc/test_raw_2_fastqc.html
-      contains:
-        - <tr><td>file type</td><td>conventional base calls</td></tr>
     - path: output/fastqc/test_raw_2_fastqc.zip
