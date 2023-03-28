@@ -40,7 +40,7 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(picard CollectInsertSizeMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$(picard CollectInsertSizeMetrics --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 
@@ -52,7 +52,7 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
     touch ${prefix}.insert_size_metrics.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(picard CollectInsertSizeMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$(picard CollectInsertSizeMetrics --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 
