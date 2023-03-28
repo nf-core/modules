@@ -10,19 +10,23 @@ process SVABA {
 
     input:
     tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)
-    tuple val(id), path(fasta)
+    tuple val(id1), path(fasta)
+    tuple val(id2), path(fasta_fai)
+    tuple val(id3), path(bwa_index)
     path dbsnp
     path dbsnp_tbi
     path regions
 
     output:
-    tuple val(meta), path("*.svaba.unfiltered.somatic.sv.vcf")   , emit: somatic_sv
-    tuple val(meta), path("*.svaba.unfiltered.somatic.indel.vcf"), emit: somatic_indel
-    tuple val(meta), path("*.bps.txt.gz")                        , emit: raw
-    tuple val(meta), path("*.discordants.txt.gz")                , emit: discordants
-    tuple val(meta), path("*.log")                               , emit: log
-    tuple val(meta), path("*.alignments.txt.gz")                 , emit: alignment_txt
-    path "versions.yml"                                          , emit: versions
+    tuple val(meta), path("*.svaba*vcf")                    , emit: sv, optional: true
+    tuple val(meta), path("*.svaba*vcf")                    , emit: indel, optional: true
+    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_sv, optional: true
+    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_indel, optional: true
+    tuple val(meta), path("*.bps.txt.gz")                   , emit: raw_calls
+    tuple val(meta), path("*.discordants.txt.gz")           , emit: discordants, optional: true
+    tuple val(meta), path("*.log")                          , emit: log
+    tuple val(meta), path("*.alignments.txt.gz")            , emit: alignment_txt
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,8 +37,11 @@ process SVABA {
     def bamlist = normalbam ? "-t ${tumorbam} -n ${normalbam}" : "-t ${tumorbam}"
     def dbsnp   = dbsnp ? "-D ${dbsnp}" : ""
     def regions = regions ? "-k ${regions}" : ""
+    def bwa     = bwa_index ? "cp -s ${bwa_index}/* ." : ""
 
     """
+    ${bwa}
+
     svaba \\
         run \\
         $bamlist \\

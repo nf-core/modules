@@ -40,6 +40,14 @@ input:
       type: file
       description: BWA genome index files
       pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - fasta:
+      type: file
+      description: FASTA file
+      pattern: "*.{fasta|fa}"
+  - fasta_fai:
+      type: file
+      description: Index of FASTA file
+      pattern: "*.{fai}"
   - dbsnp:
       type: file
       description: VCF file including dbSNP variants
@@ -63,15 +71,23 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - somatic_sv:
+  - sv:
       type: file
-      description: Somatic SVs
+      description: SVs (If normal file exist, this will both include somatic and germline)
       pattern: "*.vcf"
-  - somatic_indel:
+  - indel:
       type: file
-      description: Somatic Indels
+      description: Indels (If normal file exist, this will both include somatic and germline)
       pattern: "*.vcf"
-  - raw:
+  - unfiltered_sv:
+      type: file
+      description: Raw SVs (If normal file exist, this will both include somatic and germline)
+      pattern: "*.vcf"
+  - unfiltered_indel:
+      type: file
+      description: Raw Indels (If normal file exist, this will both include somatic and germline)
+      pattern: "*.vcf"
+  - raw_calls:
       type: file
       description: Raw, unfiltered variants
       pattern: "*.txt.gz"
