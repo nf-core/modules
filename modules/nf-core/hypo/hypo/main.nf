@@ -27,7 +27,7 @@ process HYPO {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     tuple val(meta), path(sr_bam)
     tuple val(meta), path(reads)
-    path fasta
+    path draft
     val genome_size
     val reads_coverage
 
@@ -40,19 +40,18 @@ process HYPO {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
     """
     echo -e "${reads.join('\n')}" > sr.fofn
     hypo \\
-        $args \\
         -r @sr.fofn \\
-        -d $fasta \\
+        -d $draft \\
         -b $sr_bam \\
         -c $reads_coverage \\
         -s $genome_size \\
-        -o $prefix \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

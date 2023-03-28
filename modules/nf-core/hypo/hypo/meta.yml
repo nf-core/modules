@@ -1,5 +1,4 @@
 name: "hypo"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - assembly
@@ -16,7 +15,6 @@ tools:
       doi: "10.1101/2019.12.19.882506"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -24,14 +22,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Short reads file(s). In fastq or fasta, compressed or uncompressed
+  - sr_bam:
+      type: file
+      description: Aligned short-read BAM/SAM file. Must have CIGAR information.
+      pattern: "*.{bam,sam}"
+  - draft:
+      type: file
+      description: Input (fasta) file containing draft contig assembly
+  - genome_size:
+      type: string
+      description: Estimated size of the genome. Number or nts or use suffixes k/m/g, e.g. 5m, 3.2g
+  - reads_coverage:
+      type: integer
+      description: Appprimate depth of coverage of short reads.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -39,16 +46,13 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+  - fasta:
+      type: file
+      description: Polished assembly fasta file
+      pattern: "*.fasta"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
 authors:
   - "@remiolsen"
