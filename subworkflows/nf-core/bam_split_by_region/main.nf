@@ -59,10 +59,10 @@ workflow BAM_SPLIT_BY_REGION {
     // Emit channel in the same format as was taken in by joining each bam with its bai.
     //
 
-    ch_output = SAMTOOLS_VIEW.out.bam.join(SAMTOOLS_INDEX.out.bai)
+    ch_index = SAMTOOLS_VIEW.out.bam.join(SAMTOOLS_INDEX.out.bai)
 
     emit:
-    bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
+    bam_bai     = ch_index                         // channel: [ val(meta), path(bam), path(bai) ]
     versions    = ch_versions                       // channel: [ path(versions.yml) ]
 }
 
