@@ -1,0 +1,65 @@
+name: "wisecondorx_convert"
+description: Convert and filter aligned reads to .npz
+keywords:
+  - bam
+  - cram
+  - copy-number
+tools:
+  - "wisecondorx":
+      description: "WIthin-SamplE COpy Number aberration DetectOR, including sex chromosomes"
+      homepage: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      doi: "10.1093/nar/gky1263"
+      licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Reads in BAM/CRAM format
+      pattern: "*.{bam,cram}"
+  - bai:
+      type: file
+      description: index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference fasta meta information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: The reference FASTA file (mandatory when using CRAM files)
+      pattern: "*.{fasta,fa,fna}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference fasta index meta information
+        e.g. [ id:'test' ]
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file (mandatory when using CRAM files)
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - npz:
+      type: file
+      description: The output NPZ file
+      pattern: "*.npz"
+
+authors:
+  - "@nvnieuwk"
