@@ -5,9 +5,9 @@ process SHAPEIT5_PHASERARE {
     beforeScript  """
     if cat /proc/cpuinfo | grep avx2 -q
     then
-        echo "Feature AVX2 present"
+        echo "Feature AVX2 present on host"
     else
-        echo "Feature AVX2 not present on node"
+        echo "Feature AVX2 not present on host"
         exit 1
     fi
     """

@@ -10,8 +10,8 @@ include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/mai
 workflow FASTQ_ALIGN_BWAALN {
 
     take:
-    ch_reads // channel (mandatory): [ val(meta), [ reads ] ]. subworkImportant: meta REQUIRES single_end` entry!
-    ch_index // channel (mandatory): [ val(meta), [ index ] ]
+    ch_reads // channel (mandatory): [ val(meta), path(reads) ]. subworkImportant: meta REQUIRES single_end` entry!
+    ch_index // channel (mandatory): [ val(meta), path(index) ]
 
     main:
 
@@ -40,10 +40,10 @@ workflow FASTQ_ALIGN_BWAALN {
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     emit:
-    bam      = ch_bam_for_index           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai     // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi     // channel: [ val(meta), [ csi ] ]
+    bam      = ch_bam_for_index           // channel: [ val(meta), path(bam) ]
+    bai      = SAMTOOLS_INDEX.out.bai     // channel: [ val(meta), path(bai) ]
+    csi      = SAMTOOLS_INDEX.out.csi     // channel: [ val(meta), path(csi) ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions = ch_versions                // channel: [ path(versions.yml) ]
 }
 
