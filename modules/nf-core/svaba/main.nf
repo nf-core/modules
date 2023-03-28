@@ -10,9 +10,9 @@ process SVABA {
 
     input:
     tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)
-    tuple val(id1), path(fasta)
-    tuple val(id2), path(fasta_fai)
-    tuple val(id3), path(bwa_index)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(bwa_index)
     path dbsnp
     path dbsnp_tbi
     path regions
