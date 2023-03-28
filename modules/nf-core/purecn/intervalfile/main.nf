@@ -1,5 +1,7 @@
+def VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
 
 process PURECN_INTERVALFILE {
+    tag "${meta.id}"
     label 'process_low'
 
     // TODO: This needs a proper container
@@ -11,14 +13,14 @@ process PURECN_INTERVALFILE {
         'quay.io/biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-        path  target_bed
+        tuple val(meta), path(target_bed)
         path  fasta
         val   genome
 
     output:
-        tuple path("*.txt"), emit: baits_intervals
+        tuple val(meta), path("*.txt"), emit: baits_intervals
         // Only produced if --export is used
-        tuple path("*.bed"), emit: baits_optimized, optional: true
+        tuple val(meta), path("*.bed"), emit: baits_optimized, optional: true
         path "versions.yml"           , emit: versions
 
     when:
@@ -36,7 +38,7 @@ process PURECN_INTERVALFILE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: \$(Rscript /usr/local/lib/R/library/PureCN/extdata/PureCN.R --version)
+        purecn: ${VERSION}
     END_VERSIONS
     """
 }
