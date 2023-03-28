@@ -28,14 +28,26 @@ workflow FASTQ_ALIGN_BWA {
 
     BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
+    ch_index =
+        .join(BAM_SORT_STATS_SAMTOOLS.out.bai, by: [0])
+        .join(BAM_SORT_STATS_SAMTOOLS.out.csi, by: [0])
+        .map {
+            meta, bam, bai, csi ->
+                if (bai) {
+                    [ meta, bam, bai ]
+                } else {
+                    [ meta, bam, csi ]
+                }
+        }
 
     emit:
     bam_orig = BWA_MEM.out.bam                      // channel: [ val(meta), path(bam) ]
 
     bam      = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
-    // bai      = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
-    // csi      = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), path(csi) ]
-    index    = BAM_SORT_STATS_SAMTOOLS.out.index    // channel: [ val(meta), path(bai/csi) ]
+    // bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
+    // csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    index    = ch_index                        // channel: [ val(meta), path(bai), path(csi) ]
+
     stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
