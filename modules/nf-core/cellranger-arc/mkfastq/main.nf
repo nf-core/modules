@@ -3,7 +3,7 @@ process CELLRANGER_ARC_MKFASTQ {
     label 'process_medium'
 
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_ARC_MKFASTQ module does not support Conda. 
+        exit 1, "CELLRANGER_ARC_MKFASTQ module does not support Conda.
         Please use docker or singularity containers."
     }
     container "heylf/cellranger-arc:2.0.2"
