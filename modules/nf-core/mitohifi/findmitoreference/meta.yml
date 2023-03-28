@@ -5,7 +5,7 @@ keywords:
   - reference genome
   - NCBI
 tools:
-  - "mitohifi":
+  - "findMitoReference.py":
       description: Fetch mitochondrial genome in Fasta and Genbank format from NCBI
       homepage: https://github.com/marcelauliano/MitoHiFi
       documentation: https://github.com/marcelauliano/MitoHiFi
@@ -31,11 +31,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - mitoref_fasta:
+  - fasta:
       type: file
       description: Downloaded mitochondrial genome in Fasta format
       pattern: "*.{fasta,fa}"
-  - mitoref_gb:
+  - gb:
       type: file
       description: Downloaded mitochondrial genome in Genbank format
       pattern: "*.gb"
