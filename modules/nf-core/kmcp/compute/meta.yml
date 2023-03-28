@@ -1,0 +1,49 @@
+name: "kmcp_compute"
+description: Generate k-mers (sketches) from FASTA/Q sequences
+keywords:
+  - sort
+tools:
+  - "kmcp": KMCP is a k-mer-based metagenomic profiling tool that utilizes genome coverage information by splitting the reference genomes into chunks and stores k-mers in a modified and optimized Compact Bit-Sliced Signature Index for fast alignment-free sequence searching.
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations by pseudo-mapping"
+      homepage: "https://github.com/shenwei356/kmcp"
+      documentation: "https://github.com/shenwei356/kmcp#documents"
+      tool_dev_url: "https://github.com/shenwei356/kmcp"
+      doi: "10.1093/bioinformatics/btac845"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sequences:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+  - input_list:
+      type: file
+      description: File of input files list (one file per line)
+      pattern: "*.txt"
+  - input_directory:
+      type: directory
+      description: Directory containing fasta/fastq files.
+      pattern: "*/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tmp:
+      type: directory
+      description: Output directory containing all .unik files and a summary file in .txt format.
+      pattern: "*/"
+
+authors:
+  - "@sofstam"

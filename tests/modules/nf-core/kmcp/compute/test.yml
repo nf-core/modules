@@ -1,0 +1,11 @@
+- name: kmcp compute test_kmcp_compute
+  command: nextflow run ./tests/modules/nf-core/kmcp/compute -entry test_kmcp_compute -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/compute/nextflow.config
+  tags:
+    - kmcp/compute
+    - kmcp
+  files:
+    - path: output/kmcp/tmp/_info.txt
+      md5sum: 8523c2c3fc86cc17f9e3d08b2a128513
+    - path: output/kmcp/tmp/genome.fasta.unik
+      md5sum: 158f49b1bdd8dd1aff91de66772509ff
+    - path: output/kmcp/versions.yml
