@@ -16,7 +16,7 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}.fna.gz"),                 emit: nucleotide_fasta
     tuple val(meta), path("${prefix}.faa.gz"),                 emit: amino_acid_fasta
     tuple val(meta), path("${prefix}_all.txt.gz"),             emit: all_gene_annotations
-    path "versions.yml",                                        emit: versions
+    path "versions.yml",                                       emit: versions
 
     when:
     task.ext.when == null || task.ext.when
