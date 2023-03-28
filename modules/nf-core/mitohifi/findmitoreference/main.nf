@@ -37,8 +37,8 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     stub:
     """
-    touch ${prefix}.fasta
-    touch ${prefix}.gb
+    touch accession.fasta
+    touch accession.gb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
