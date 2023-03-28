@@ -26,8 +26,8 @@ process INTERPROSCAN {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
-    if ( args.contains("-appl") ) { 
-        appl = "" 
+    if ( args.contains("-appl") ) {
+        appl = ""
     }
     switch ( out_ext ) {
         case "tsv": break
