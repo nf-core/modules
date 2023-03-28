@@ -20,10 +20,10 @@ process WINDOWMASKER_CONVERT {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outfmt = args.contains('-sformat binary')  ? 'binary'  :
-                 args.contains('-sformat oascii')  ? 'oascii'  :
-                 args.contains('-sformat obinary') ? 'obinary' :
-                 'ascii'
+    def outfmt =    args.contains('-sformat binary')  ? 'binary'  :
+                    args.contains('-sformat oascii')  ? 'oascii'  :
+                    args.contains('-sformat obinary') ? 'obinary' :
+                    'ascii'
     output  = "${prefix}.${outfmt}"
     """
     windowmasker -convert \\
