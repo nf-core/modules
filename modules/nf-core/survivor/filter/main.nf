@@ -8,8 +8,7 @@ process SURVIVOR_FILTER {
         'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
 
     input:
-    tuple val(meta), path(vcf_file) // VCF file to filter
-    path(bed)           // file with regions to ignore (NA to disable)
+    tuple val(meta), path(vcf_file), path(bed) // VCF file to filter and BED file with regions to ignore (NA to disable)
     val(minsv)          // Min SV size (-1 to disable)
     val(maxsv)          // Max SV size (-1 to disable)
     val(minallelefreq)  // Min allele frequency (0-1)
@@ -38,6 +37,17 @@ process SURVIVOR_FILTER {
         $minnumreads \\
         ${prefix}.vcf
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.vcf
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))

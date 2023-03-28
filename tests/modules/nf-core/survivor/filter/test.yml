@@ -1,12 +1,19 @@
-- name: "survivor filter"
-  command: nextflow run ./tests/modules/nf-core/survivor/filter -entry test_survivor_filter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/filter/nextflow.config
+- name: "survivor filter without regions to ignore (bed file)"
+  command: nextflow run ./tests/modules/nf-core/survivor/filter -entry test_survivor_filter_no_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/filter/nextflow.config
   tags:
     - "survivor"
     - "survivor/filter"
   files:
-    - path: output/survivor/test.survivor_filter.vcf
+    - path: output/survivor/test.vcf
       contains:
         - "##fileformat=VCFv4.2"
       md5sum: ec23f83ba5bb098d45027e63fab93d05
     - path: output/survivor/versions.yml
       md5sum: 3ad078d42b6c1dfccb930f1ddede4251
+- name: "survivor filter with regions to ignore (bed file)"
+  command: nextflow run ./tests/modules/nf-core/survivor/filter -entry test_survivor_filter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/filter/nextflow.config
+  tags:
+    - "survivor"
+    - "survivor/filter"
+  files:
+    - path: output/survivor/test.vcf
