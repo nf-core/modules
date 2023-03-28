@@ -9,9 +9,13 @@ process INTERPROSCAN {
 
     input:
     tuple val(meta), path(fasta)
-    
+    val(out_ext)
+
     output:
-    tuple val(meta), path('*.tsv'), emit: tsv
+    tuple val(meta), path('*.tsv'), optional: true, emit: tsv
+    tuple val(meta), path('*.xml'), optional: true, emit: xml
+    tuple val(meta), path('*.gff3'), optional: true, emit: gff3
+    tuple val(meta), path('*.json'), optional: true, emit: json
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,10 +25,31 @@ process INTERPROSCAN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def appl = "TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+    if ( args.contains("-appl") ) { 
+        appl = "" 
+    }
+    switch ( out_ext ) {
+        case "tsv": outfmt = '-f tsv'; break
+        case "xml": outfmt = '-f xml'; break
+        case "gff3": outfmt = '-f gff3'; break
+        case "json": outfmt = '-f json'; break
+        default:
+            outfmt = '-f tsv';
+            out_ext = 'tsv';
+            log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
+            break
+    }
 
+    //  -dp (disable precalculation) is on so no online dependency
     """
-    interproscan.sh -i $fasta -o ${prefix}.tsv -f tsv -dp -appl ${appl}
+    interproscan.sh \\ 
+        -i $fasta \\ 
+        -o ${prefix}.${out_ext} \\ 
+        -dp \\ 
+        -cpu $task.cpus 
+        ${appl} \\ 
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

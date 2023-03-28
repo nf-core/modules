@@ -10,6 +10,7 @@ workflow test_interproscan {
         [ id:'test' ],
         file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
     ]
+    out_ext = 'tsv'
 
-    INTERPROSCAN ( input )
+    INTERPROSCAN ( input, out_ext )
 }
