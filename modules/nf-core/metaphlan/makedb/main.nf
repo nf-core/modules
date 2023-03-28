@@ -7,7 +7,7 @@ process METAPHLAN_MAKEDB {
         'quay.io/biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
 
     output:
-    path "metaphlan_db_latest" , emit: db
+    path "metaphlan_db_latest"      , emit: db
     path "versions.yml"         , emit: versions
 
     when:
