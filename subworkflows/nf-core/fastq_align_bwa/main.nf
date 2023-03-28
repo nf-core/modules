@@ -28,17 +28,7 @@ workflow FASTQ_ALIGN_BWA {
 
     BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
-    ch_index =
-        .join(BAM_SORT_STATS_SAMTOOLS.out.bai, by: [0])
-        .join(BAM_SORT_STATS_SAMTOOLS.out.csi, by: [0])
-        .map {
-            meta, bam, bai, csi ->
-                if (bai) {
-                    [ meta, bam, bai ]
-                } else {
-                    [ meta, bam, csi ]
-                }
-        }
+    ch_index = BAM_SORT_STATS_SAMTOOLS.out.bai.join(BAM_SORT_STATS_SAMTOOLS.out.csi)
 
     emit:
     bam_orig = BWA_MEM.out.bam                      // channel: [ val(meta), path(bam) ]
