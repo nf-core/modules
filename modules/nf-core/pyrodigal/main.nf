@@ -4,8 +4,8 @@ process PYRODIGAL {
 
     conda "bioconda::pyrodigal=2.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pyrodigal:2.1.0--py39hbf8eff0_0':
-        'quay.io/biocontainers/pyrodigal:2.1.0--py39hbf8eff0_0' }"
+        'https://depot.galaxyproject.org/singularity/pyrodigal:2.1.0--py310h1425a21_0':
+        'quay.io/biocontainers/pyrodigal:2.1.0--py310h1425a21_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -30,7 +30,7 @@ process PYRODIGAL {
         -o ${prefix}.gff \\
         -d ${prefix}.fna \\
         -a ${prefix}.faa \\
-        -s ${prefix}.score \\
+        -s ${prefix}.score
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
