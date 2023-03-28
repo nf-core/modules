@@ -11,11 +11,11 @@ process PYRODIGAL {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.gff")      , emit: gff
-    tuple val(meta), path("${prefix}.fna")      , emit: fna
-    tuple val(meta), path("${prefix}.faa")      , emit: faa
-    tuple val(meta), path("${prefix}.score")    , emit: score
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.gff")      , emit: gff
+    tuple val(meta), path("*.fna")      , emit: fna
+    tuple val(meta), path("*.faa")      , emit: faa
+    tuple val(meta), path("*.score")    , emit: score
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
