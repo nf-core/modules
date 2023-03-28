@@ -36,7 +36,7 @@ process SURVIVOR_FILTER {
         $maxsv \\
         $minallelefreq \\
         $minnumreads \\
-        ${prefix}.survivor_filter.vcf
+        ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
