@@ -34,7 +34,7 @@ process ART_ILLUMINA {
         -l $read_length \\
         -f $fold_coverage \\
         -o $prefix \\
-        $args 
+        $args
 
     gzip --no-name $prefix*.fq
 
