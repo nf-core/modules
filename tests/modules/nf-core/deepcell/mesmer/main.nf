@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPCELL } from '../../../../modules/nf-core/deepcell/main.nf'
+include { MESMER } from '../../../../../modules/nf-core/deepcell/mesmer/main.nf'
 
 workflow test_deepcell {
 
@@ -10,5 +10,5 @@ workflow test_deepcell {
         [ id:'test_img'], // meta map
         file("/workspace/modules/to_test/cycif_tonsil_small.ome.tif", checkIfExists: true)
     ]
-    DEEPCELL ( img )
+    MESMER ( img )
 }

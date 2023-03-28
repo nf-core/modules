@@ -1,4 +1,4 @@
-process DEEPCELL {
+process MESMER {
     tag "$meta.id"
     label 'process_medium'
 
