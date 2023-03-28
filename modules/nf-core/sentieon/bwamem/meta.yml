@@ -1,10 +1,12 @@
-name: sentieon_bwaindex
-description: Create BWA index for reference genome
+name: sentieon_bwamem
+description: Performs fastq alignment to a fasta reference using Sentieon's BWA MEM
 keywords:
-  - index
-  - fasta
-  - genome
-  - reference
+  - mem
+  - bwa
+  - alignment
+  - map
+  - fastq
+  - bam
   - sentieon
 tools:
   - sentieon:
@@ -19,11 +21,10 @@ input:
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
-  - fasta:
+  - reads:
       type: file
-      description: Input genome fasta file
-output:
-  - meta:
+      description: Genome fastq files (single-end or paired-end)
+  - meta2:
       type: map
       description: |
         Groovy Map containing reference information.
@@ -32,10 +33,30 @@ output:
       type: file
       description: BWA genome index files
       pattern: "*.{amb,ann,bwt,pac,sa}"
+  - fasta:
+      type: file
+      description: Genome fasta file
+      pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: The index of the FASTA reference. Needed when the argument `--sorted` is used
+      pattern: "*.fai"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file. If the BAM file is not indexed, this tool will run samtools index before extracting reads.
+      pattern: "*.bam"
+  - bai:
+      description: BAI file
+      pattern: "*.bai"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
-  - "@drpatelh"
-  - "@maxulysse"
+  - "@asp8200"
