@@ -17,8 +17,11 @@ process PURECN_COVERAGE {
     path intervals
 
     output:
-    //TODO: proper output needs to be set up
-    //tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.txt.gz"), emit: coverage
+    tuple val(meta), path("*_loess.png"), emit: coverage_loess_plot
+    tuple val(meta), path("*_loess_qc.txt"), emit: coverage_loess_qc
+    tuple val(meta), path("*_loess.txt.gz"), emit: coverage_loess
+
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,10 +32,11 @@ process PURECN_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    Rscript Coverage.R \
-        --out-dir /purecn/coverage/${meta.id}/ \
-        --bam ${bam} \
-        --intervals ${intervals}
+    Rscript /usr/local/lib/R/library/PureCN/extdata/Coverage.R \\
+        --out-dir /purecn/coverage/${meta.id}/ \\
+        --bam ${bam} \\
+        --intervals ${intervals} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
