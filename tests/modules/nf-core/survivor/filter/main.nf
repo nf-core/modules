@@ -28,8 +28,8 @@ workflow test_survivor_filter {
     input_bed = [
         [ id:'test'], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['illumina']['genome_bed'], checkIfExists: true)
-    ]
+            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+        ]
 
     SURVIVOR_FILTER_BED ( 
         input_bed,
