@@ -1,6 +1,5 @@
 
 process PURECN_INTERVALFILE {
-    tag "$meta.id"
     label 'process_low'
 
     // TODO: This needs a proper container
@@ -18,7 +17,8 @@ process PURECN_INTERVALFILE {
 
     output:
         tuple path("*.txt"), emit: baits_intervals
-        tuple path("*.bed"), emit: baits_optimized
+        // Only produced if --export is used
+        tuple path("*.bed"), emit: baits_optimized, optional: true
         path "versions.yml"           , emit: versions
 
     when:
@@ -26,14 +26,12 @@ process PURECN_INTERVALFILE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    Rscript IntervalFile.R --in-file ${target_bed} \\
+    Rscript /usr/local/lib/R/library/PureCN/extdata/IntervalFile.R --in-file ${target_bed} \\
         --fasta ${fasta} \\
-        --out-file /reference_files/baits_intervals.txt \\
+        --out-file baits_intervals.txt \\
         --genome ${genome} \\
-        --export /reference_files/baits_optimized.bed \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
