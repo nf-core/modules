@@ -5,11 +5,10 @@ nextflow.enable.dsl = 2
 include { PURECN_INTERVALFILE } from '../../../../../modules/nf-core/purecn/intervalfile/main.nf'
 
 workflow test_purecn_intervalfile {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
 
-    PURECN_INTERVALFILE ( input )
+    bed_input = file(params.test_data['homo_sapiens']['genome']['genome_21_annotated_bed'], checkIfExists: true)
+    sequence = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    genome = Channel.value("hg38")
+
+    PURECN_INTERVALFILE ( bed_input, sequence, genome )
 }
