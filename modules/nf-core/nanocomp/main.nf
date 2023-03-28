@@ -1,5 +1,4 @@
 process NANOCOMP {
-    tag '$bam'
     label 'process_medium'
 
     conda "bioconda:nanocomp=1.21.0"
