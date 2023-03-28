@@ -37,19 +37,18 @@ input:
   - val_skip_fastqc:
     type: boolean
     description: |
-        Structure: val(skip_fastqc)
-        skip the fastqc process if true
+      Structure: val(skip_fastqc)
+      skip the fastqc process if true
   - val_skip_fastp:
     type: boolean
     description: |
-        Structure: val(skip_fastp)
-        skip the fastp process if true
+      Structure: val(skip_fastp)
+      skip the fastp process if true
 
 output:
   - meta:
     type: value
-    description:
-      Groovy Map containing sample information
+    description: Groovy Map containing sample information
       e.g. [ id:'test', single_end:false ]
   - reads:
     type: file

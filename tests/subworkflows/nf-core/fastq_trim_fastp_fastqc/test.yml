@@ -37,7 +37,6 @@
     - path: output/fastqc/test_trim_2_fastqc.html
     - path: output/fastqc/test_trim_2_fastqc.zip
 
-
 - name: fastq_trim_fastp_fastqc test_fastq_trim_fastp_fastqc_interleaved
   command: nextflow run ./tests/subworkflows/nf-core/fastq_trim_fastp_fastqc -entry test_fastq_trim_fastp_fastqc_interleaved -c ./tests/config/nextflow.config
   tags:
