@@ -9,8 +9,6 @@ process KMCP_COMPUTE {
 
     input:
     tuple val(meta), path(sequences)
-    path input_list
-    path input_directory
 
     output:
     tuple val(meta), path("tmp/*") , emit: tmp
@@ -22,17 +20,14 @@ process KMCP_COMPUTE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def list_files = input_list ? "--infile-list ${input_list}": ""
-    def dir_fastq = input_directory ? "--in-dir ${input_directory}": ""
+    def input = sequences.isDirectory()? "--in-dir ${sequences}" : "${sequences}"
     """
     kmcp \\
         compute \\
         $args \\
         --threads $task.cpus \\
         --out-dir 'tmp/' \\
-        $sequences \\
-        $list_files \\
-        $dir_fastq
+        $input \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -21,14 +21,6 @@ input:
       type: file
       description: fasta file
       pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
-  - input_list:
-      type: file
-      description: File of input files list (one file per line)
-      pattern: "*.txt"
-  - input_directory:
-      type: directory
-      description: Directory containing fasta/fastq files.
-      pattern: "*/"
 
 output:
   - meta:
