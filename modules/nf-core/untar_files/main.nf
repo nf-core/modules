@@ -1,5 +1,5 @@
 process UNTAR_FILES {
-    tag "$meta.id"
+    tag "$archive"
     label 'process_single'
 
     conda "conda-forge::sed=4.7 bioconda::grep=3.4 conda-forge::tar=1.34"
@@ -20,7 +20,7 @@ process UNTAR_FILES {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
 
     """
     mkdir $prefix
