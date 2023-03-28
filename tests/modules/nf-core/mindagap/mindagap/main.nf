@@ -11,5 +11,8 @@ workflow test_mindagap {
         file(params.test_data['spatialomics']['tiff']['mouse_heart_wga_tiff'], checkIfExists: true)
     ]
 
-    MINDAGAP_MINDAGAP ( input )
+    boxsize = 3
+    loopnum = 40
+
+    MINDAGAP_MINDAGAP ( input, boxsize, loopnum )
 }

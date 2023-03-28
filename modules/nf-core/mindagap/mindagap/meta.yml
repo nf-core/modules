@@ -23,9 +23,12 @@ input:
       type: file
       description: A tiff file containing gridlines as produced by Molecular Cartography imaging.
       pattern: "*.{tiff}"
-
-  # args = optional arguments
-  # args2 = positional arguments (required) s (box size for gaussian kernel) and r (number of rounds to apply gaussianBlur)
+  - boxsize:
+      type: integer
+      description: A larger number allows to overcome large gaps, but makes looses fine details in new filled grid.
+  - loopnum:
+      type: integer
+      description: The number of times gaussian blur is run consecutively on the gridlines. A smaller number is faster, but the result is less good.
 
 output:
   - meta:

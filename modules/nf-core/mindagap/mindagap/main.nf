@@ -9,6 +9,8 @@ process MINDAGAP_MINDAGAP {
 
     input:
     tuple val(meta), path(tiff)
+    val(box_size)
+    val(loopnum)
 
     output:
     tuple val(meta), path("*gridfilled.tiff"), emit: tiff
@@ -25,7 +27,8 @@ process MINDAGAP_MINDAGAP {
     mindagap.py \\
         $args \\
         $tiff \\
-        $args2
+        $boxsize \\
+        $loopnum
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
