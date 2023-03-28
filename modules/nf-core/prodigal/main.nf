@@ -12,10 +12,10 @@ process PRODIGAL {
     val(output_format)
 
     output:
-    tuple val(meta), path("${prefix}.${output_format}.zip"),    emit: gene_annotations
-    tuple val(meta), path("${prefix}.fna.zip"),                 emit: nucleotide_fasta
-    tuple val(meta), path("${prefix}.faa.zip"),                 emit: amino_acid_fasta
-    tuple val(meta), path("${prefix}_all.txt.zip"),             emit: all_gene_annotations
+    tuple val(meta), path("${prefix}.${output_format}.gz"),    emit: gene_annotations
+    tuple val(meta), path("${prefix}.fna.gz"),                 emit: nucleotide_fasta
+    tuple val(meta), path("${prefix}.faa.gz"),                 emit: amino_acid_fasta
+    tuple val(meta), path("${prefix}_all.txt.gz"),             emit: all_gene_annotations
     path "versions.yml",                                        emit: versions
 
     when:
