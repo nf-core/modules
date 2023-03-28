@@ -24,7 +24,7 @@ process WINDOWMASKER_CONVERT {
                  args.contains('-sformat oascii')  ? 'oascii'  :
                  args.contains('-sformat obinary') ? 'obinary' :
                  'ascii'
-    def output  = "${prefix}.${outfmt}"
+    output  = "${prefix}.${outfmt}"
     """
     windowmasker -convert \\
         -in $counts \\
@@ -33,7 +33,7 @@ process WINDOWMASKER_CONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        windowmasker: \$(windowmasker -version-full | head -n 1)
     END_VERSIONS
     """
 }

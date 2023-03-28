@@ -1,10 +1,11 @@
-- name: "windowmasker convert"
-  command: nextflow run ./tests/modules/nf-core/blast/windowmasker -entry test_windowmasker_convert -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/windowmasker/convert/nextflow.config
+- name: windowmasker convert test_windowmasker_convert
+  command: nextflow run ./tests/modules/nf-core/windowmasker/convert -entry test_windowmasker_convert -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/windowmasker/convert/nextflow.config
   tags:
-    - "windowmasker"
-    - "windowmasker/convert"
+    - windowmasker/convert
+    - windowmasker
   files:
-    - path: "output/blast/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/blast/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/windowmasker/test.oascii
+      md5sum: 0f04a2ea77f7d462283c330adfc0feb8
+    - path: output/windowmasker/test.txt
+      md5sum: 902be82b1b12b7cd1637ed9a7ab1fc7a
+    - path: output/windowmasker/versions.yml
