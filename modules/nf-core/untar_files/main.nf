@@ -25,8 +25,6 @@ process UNTAR_FILES {
     """
     mkdir $prefix
 
-    ## Ensures --strip-components only applied when top level of tar contents is a directory
-    ## If just files or multiple directories, place all in prefix
     tar \\
         -C $prefix \\
         -xavf \\
