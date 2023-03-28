@@ -41,8 +41,6 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
-            tags: ilastik/pixelclassification
-          - profile: "conda"
             tags: bases2fastq
           - profile: "conda"
             tags: bcl2fastq
@@ -76,6 +74,10 @@ jobs:
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
             tags: genescopefk
+          - profile: "conda"
+            tags: ilastik/multicut
+          - profile: "conda"
+            tags: ilastik/pixelclassification
           - profile: "conda"
             tags: imputeme/vcftoprs
           - profile: "conda"
