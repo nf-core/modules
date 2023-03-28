@@ -9,7 +9,7 @@ process MINDAGAP_MINDAGAP {
 
     input:
     tuple val(meta), path(tiff)
-    val(box_size)
+    val(boxsize)
     val(loopnum)
 
     output:
