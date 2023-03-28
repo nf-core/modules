@@ -1,8 +1,8 @@
 - name: "survivor filter without regions to ignore"
   command: nextflow run ./tests/modules/nf-core/survivor/filter -entry test_survivor_filter_no_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/filter/nextflow.config
   tags:
-    - "survivor"
-    - "survivor/filter"
+    - survivor
+    - survivor/filter
   files:
     - path: output/survivor/test.vcf
       contains:
@@ -14,8 +14,8 @@
 - name: "survivor filter with regions to ignore"
   command: nextflow run ./tests/modules/nf-core/survivor/filter -entry test_survivor_filter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/filter/nextflow.config
   tags:
-    - "survivor"
-    - "survivor/filter"
+    - survivor
+    - survivor/filter
   files:
     - path: output/survivor/test.vcf
       md5sum: ec23f83ba5bb098d45027e63fab93d05
