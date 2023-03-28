@@ -8,7 +8,7 @@ process METAPHLAN_MAKEDB {
 
     output:
     path "metaphlan_db_latest" , emit: db
-    path "versions.yml"          , emit: versions
+    path "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
