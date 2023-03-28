@@ -44,7 +44,8 @@ process INTERPROSCAN {
     //  -dp (disable precalculation) is on so no online dependency
     """
     interproscan.sh \\ 
-        -i $fasta \\ 
+        -i $fasta \\
+        -f $outfmt \\
         -o ${prefix}.${out_ext} \\ 
         -dp \\ 
         -cpu $task.cpus \\
