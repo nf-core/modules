@@ -8,7 +8,7 @@ workflow test_deepcell {
 
     img = [
         [ id:'test_img'], // meta map
-        file("/workspace/modules/to_docker/Snap-1985.ome.tif", checkIfExists: true)
+        file("/workspace/modules/to_test/Snap-1975.ome.tif", checkIfExists: true)
     ]
 
     DEEPCELL ( img )

@@ -3,7 +3,7 @@ process DEEPCELL {
     label 'process_medium'
 
     // Setting up the container to latest all the time because why not.
-    container "vanvalenlab/deepcell-applications:0.4.0"
+    container "vanvalenlab/deepcell-applications:latest"
 
     // Mesmer, requieres one image to segment and the mpp(microns per pixel)
     input:
@@ -23,13 +23,11 @@ process DEEPCELL {
 
     """
     python /usr/src/app/run_app.py mesmer \
-        --nuclear-image $img \
-        --nuclear-channel 0 \
         --squeeze \
+        --nuclear-image $img \
         --output-directory . \
         --output-name cell.tif \
-        --image-mpp 0.115 \
-        --compartment whole-cell
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
