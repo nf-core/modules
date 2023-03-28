@@ -1,0 +1,46 @@
+name: "chopper"
+description: Filter and trim long read data.
+keywords:
+  - filter
+  - trimming
+  - fastq
+  - nanopore
+  - qc
+tools:
+  - "chopper":
+      description: "A rust command line for filtering and trimming long reads."
+      homepage: "https://github.com/wdecoster/chopper"
+      documentation: "None"
+      tool_dev_url: "https://github.com/wdecoster/chopper"
+      doi: "10.1093/bioinformatics/bty149"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: FastQ with reads
+      pattern: "*.{fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO compressed/uncompressed output? cf. main.nf
+  - fastq:
+      type: file
+      description: Filtered and trimmed fastq file
+      pattern: "*.{filtered.fastq.gz}"
+
+authors:
+  - "@FynnFreyer"
