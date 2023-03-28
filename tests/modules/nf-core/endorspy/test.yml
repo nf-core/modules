@@ -6,9 +6,6 @@
     - path: output/endorspy/test_percent_on_target_mqc.json
       md5sum: 4f161c6bbcaac68a24b83628e2072777
     - path: output/endorspy/versions.yml
-    - path: output/samtools/test.flagstat
-      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
-    - path: output/samtools/versions.yml
 
 - name: endorspy test_endorspy_raw_qualityfilter
   command: nextflow run ./tests/modules/nf-core/endorspy -entry test_endorspy_raw_qualityfilter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/endorspy/nextflow.config
