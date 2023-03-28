@@ -26,6 +26,7 @@ process WFMASH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? task.ext.prefix : paf ? "${meta.id}" + "." + paf.baseName.split("\\.")[-1] : "${meta.id}"
+    def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
     def query = query_self ? "${fasta_gz}" : ""
     def paf_mappings = paf ? "--input-paf ${paf}" : ""
     """
