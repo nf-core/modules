@@ -33,7 +33,7 @@ process CELLPOSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellpose: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        cellpose: \$(echo 2.1.1_cv1)
     END_VERSIONS
     """
     stub:
