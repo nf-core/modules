@@ -13,6 +13,5 @@ workflow test_pyrodigal {
     ]
 
     GUNZIP( input )
-    GUNZIP.out.gunzip.view()
     PYRODIGAL ( GUNZIP.out.gunzip )
 }
