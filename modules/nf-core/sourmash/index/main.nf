@@ -8,7 +8,7 @@ process SOURMASH_INDEX {
         'quay.io/biocontainers/sourmash:4.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(signature)
+    tuple val(meta), path(signatures)
 
     output:
     tuple val(meta), path("*.sbt.zip"), emit: signature_index
@@ -24,7 +24,7 @@ process SOURMASH_INDEX {
     sourmash index \\
         $args \\
         '${prefix}.sbt.zip' \\
-        $signature
+        $signatures
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

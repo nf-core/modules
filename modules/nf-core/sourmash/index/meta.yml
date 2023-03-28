@@ -1,7 +1,7 @@
 name: "sourmash_index"
 description: Create a database of sourmash signatures (a group of FracMinHash sketches) to be used as references.
 keywords:
-  - signature
+  - signatures
   - sourmash
   - genomics
   - metagenomics
@@ -22,7 +22,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - signature:
+  - signatures:
       type: file
       description: Files containing signature (hash sketches) of reference genomes
       pattern: "*.{sig}"
