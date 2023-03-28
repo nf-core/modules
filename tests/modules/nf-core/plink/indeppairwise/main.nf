@@ -7,10 +7,10 @@ include { PLINK_VCF           } from '../../../../../modules/nf-core/plink/vcf/m
 
 workflow test_plink_indeppairwise {
 
-input = [
-        [ id:'test', single_end:false ], // meta map
-        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists: true)
-    ]
+    input = [
+            [ id:'test', single_end:false ], // meta map
+            file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists: true)
+            ]
 
     PLINK_VCF ( input )
 
