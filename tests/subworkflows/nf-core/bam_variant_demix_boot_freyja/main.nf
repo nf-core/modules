@@ -12,10 +12,7 @@ workflow test_bam_variant_demix_boot_freyja_nodb {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = [
-        [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     repeats= 100
     barcodes= []
@@ -31,10 +28,8 @@ workflow test_bam_variant_demix_boot_freyja_withdb {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = [
-        [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+
     db_name="freyja_db"
     FREYJA_UPDATE(db_name)
 

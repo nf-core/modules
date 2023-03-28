@@ -13,10 +13,7 @@ workflow test_freyja_demix {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
-    fasta = [
-        [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     FREYJA_VARIANTS ( input,fasta )
     db_name="freyja_db"
