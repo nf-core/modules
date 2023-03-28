@@ -64,9 +64,11 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     if (aligner == "bwa-mem") {
 
-        BWAMEM1_INDEX ( fasta_meta )
-        ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
-        check_module_out = BWAMEM1_INDEX.out.index.dump(tag: 'index_out')
+        if(!bwa_index){
+            BWAMEM1_INDEX ( fasta_meta )
+            ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
+            check_module_out = BWAMEM1_INDEX.out.index.dump(tag: 'index_out')
+        }
 
         // sets bwaindex to correct input
         bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM1_INDEX.out.index : []
@@ -82,8 +84,10 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         aligned_bam = aligned_bam.mix(BWAMEM1_MEM_PRE.out.bam)
     } else {
 
-        BWAMEM2_INDEX ( fasta_meta )
-        ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
+        if(!bwa_index){
+            BWAMEM2_INDEX ( fasta_meta )
+            ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
+        }
 
         // sets bwaindex to correct input
         bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM2_INDEX.out.index : []
