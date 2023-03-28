@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml sourmash/index
-- name: "sourmash index"
+- name: sourmash index test_sourmash_index
   command: nextflow run ./tests/modules/nf-core/sourmash/index -entry test_sourmash_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sourmash/index/nextflow.config
   tags:
-    - "sourmash"
-    - "sourmash/index"
+    - sourmash/index
+    - sourmash
   files:
-    - path: "output/sourmash/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/sourmash/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/sourmash/test.sbt.zip
+    - path: output/sourmash/test.sig
+      md5sum: c23a5a251d2b6babba8ae0e3905e8d04
+    - path: output/sourmash/versions.yml
