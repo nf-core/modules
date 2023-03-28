@@ -2,15 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../../modules/nf-core/unzip/main.nf'
+include { UNZIP_FILES } from '../../../../modules/nf-core/unzip_files/main.nf'
 
-workflow test_unzip {
+workflow test_unzip_files {
 
     archive = [
         [],
         file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
     ]
 
-    UNZIP ( archive )
+    UNZIP_FILES ( archive )
 }
 
