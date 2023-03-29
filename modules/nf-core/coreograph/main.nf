@@ -21,6 +21,7 @@ process COREOGRAPH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.2.9'
 
     """
     python /app/UNetCoreograph.py \\
@@ -31,7 +32,7 @@ process COREOGRAPH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        coreograph: \$(echo 2.2.9)
+        coreograph: $VERSION
     END_VERSIONS
     """
 }
