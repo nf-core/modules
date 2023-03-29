@@ -74,7 +74,7 @@ process LOFREQ3_PREPROCESSING {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        lofreq3: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        lofreq3: \$(echo "3.0 - reimplementation of 2 in Nim")
     END_VERSIONS
     """
 }
