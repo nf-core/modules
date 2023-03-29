@@ -9,8 +9,8 @@ include { CELLRANGER_ARC_COUNT } from '../../../../../modules/nf-core/cellranger
 workflow test_cellranger_arc_count {
 
     input = [ [ id:'test', single_end:false ], // meta map
-            [  file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_10x_2_fastq_gz'], checkIfExists: true),
+            [  file(params.test_data['homo_sapiens']['illumina']['test_scARC_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test_scARC_2_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scARC_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scARC_3_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scARC_2_fastq_gz'], checkIfExists: true)
