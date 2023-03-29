@@ -7,7 +7,7 @@ include { CELLRANGER_ATAC_COUNT } from '../../../../../modules/nf-core/cellrange
 
 workflow test_cellranger_atac_count {
 
-    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: 'scATAC', samples: ["scATAC"] ], // meta map
+    input = [ [ id:'test', single_end:false, samples: ["test_scATAC"] ], // meta map
              [  file(params.test_data['homo_sapiens']['illumina']['test_scATAC_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scATAC_3_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scATAC_2_fastq_gz'], checkIfExists: true)
