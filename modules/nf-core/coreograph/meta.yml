@@ -1,5 +1,5 @@
 name: "coreograph"
-description:  Great....yet another TMA dearray program. What does this one do? Coreograph uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types.
+description: Great....yet another TMA dearray program. What does this one do? Coreograph uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types.
 keywords:
   - UNet
   - TMA dearray
@@ -14,19 +14,16 @@ tools:
       doi: "https://doi.org/10.1038/s41592-021-01308-y"
       licence: "MIT License"
 
-
 input:
-
   - image:
       type: file
       description: ome.tif/tif file
       pattern: "*.{ome.tif,tif}"
 
   - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-
+      type: map
+      description: |
+        Groovy Map containing sample information
 
 output:
   #
@@ -56,10 +53,9 @@ output:
       pattern: "centroidsY-X.txt"
 
   - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-
+      type: map
+      description: |
+        Groovy Map containing sample information
 
 authors:
   - "@arozhada"
