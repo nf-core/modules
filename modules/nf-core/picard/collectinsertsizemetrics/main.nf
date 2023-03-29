@@ -34,8 +34,8 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
         CollectInsertSizeMetrics \\
         $args \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.insert_size_metrics.txt \\
-        --Histogram_FILE ${prefix}.insert_size_histogram.pdf \\
+        --OUTPUT ${prefix}.txt \\
+        --Histogram_FILE ${prefix}.pdf \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
