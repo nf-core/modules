@@ -2,6 +2,7 @@ process MCQUANT {
     tag "$meta.id"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "labsyspharm/quantification:1.5.4"
 
     input:
@@ -36,7 +37,7 @@ process MCQUANT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch cycif_tonsil_registered_cell.csv
+    touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
