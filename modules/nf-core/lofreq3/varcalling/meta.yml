@@ -1,51 +1,58 @@
-name: "lofreq3_varcalling"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: "lofreq3"
+description: "LoFreq Version 3 is a reimplementation of LoFreq version 2 in Nim."
 keywords:
-  - sort
-tools:
-  - "lofreq3":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+  - varcalling
 
-## TODO nf-core: Add a description of all of the variables used as input
+tools:
+  - "lofreq3/preprocessing":
+      description: "Variant calling LoFreq3"
+      homepage: "https://github.com/andreas-wilm/lofreq3"
+      documentation: "https://github.com/andreas-wilm/lofreq3"
+      tool_dev_url: "https://github.com/andreas-wilm"
+      doi: "10.1093/nar/gks918"
+      licence: [ "MIT" ]
+
 input:
-  # Only when we have meta
+
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
+
+  - reffa:
+      type: file
+      description: Reference FASTA file
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file from preprocessing
+      pattern: "*.{bam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - lofreq3_dir:
+      type: directory
+      description: Directory with prepeocessed files
+
+
 output:
-  #Only when we have meta
+
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Variant calling VCF file
+      pattern: "*.{vcf}"
 
 authors:
   - "@gordondraskic"
+  - "@VojislavLukic"
