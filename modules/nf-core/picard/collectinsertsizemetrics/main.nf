@@ -48,8 +48,8 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.insert_size_histogram.pdf
-    touch ${prefix}.insert_size_metrics.txt
+    touch ${prefix}.pdf
+    touch ${prefix}.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(picard CollectInsertSizeMetrics --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
