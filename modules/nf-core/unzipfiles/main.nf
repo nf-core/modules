@@ -1,4 +1,4 @@
-process UNZIP_FILES {
+process UNZIPFILES {
     tag "$archive"
     label 'process_single'
 
