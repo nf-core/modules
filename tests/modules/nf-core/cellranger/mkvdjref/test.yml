@@ -1,0 +1,10 @@
+- name: cellranger mkvdjref test_cellranger_mkvdjref
+  command: nextflow run ./tests/modules/nf-core/cellranger/mkvdjref -entry test_cellranger_mkvdjref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellranger/mkvdjref/nextflow.config
+  tags:
+    - cellranger/mkvdjref
+    - cellranger
+  files:
+    - path: output/cellranger/homo_sapiens_chr22_reference/fasta/regions.fa
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/cellranger/homo_sapiens_chr22_reference/reference.json
+      md5sum: 2c26cd53849676e0e77db13269c99699
