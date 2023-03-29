@@ -24,7 +24,6 @@ process WISECONDORX_NEWREF {
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}    
-
     """
     WisecondorX newref \\
         *.npz \\
