@@ -8,7 +8,7 @@ process CRISPRCLEANR {
         'quay.io/biocontainers/r-crisprcleanr:3.0.0--r42hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(count_file), path(library)
+    tuple val(meta), path(count_file), path(library_file)
     val(min_reads)
     val(min_targeted_genes)
 
@@ -26,7 +26,7 @@ process CRISPRCLEANR {
     """
     #!/usr/bin/env Rscript
     library(CRISPRcleanR)
-    library <- read.delim('${library}', header=T,sep="\t")
+    library <- read.delim('${library_file}', header=T,sep="\t")
     row.names(library) <- library[["CODE"]]
     normANDfcs <- ccr.NormfoldChanges('${count_file}',saveToFig = FALSE,min_reads=${min_reads},EXPname='${meta.id}', libraryAnnotation=library,display=FALSE)
     gwSortedFCs <- ccr.logFCs2chromPos(normANDfcs[["logFCs"]],library)
