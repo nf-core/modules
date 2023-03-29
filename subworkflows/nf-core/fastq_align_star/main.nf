@@ -27,7 +27,6 @@ workflow FASTQ_ALIGN_STAR {
     //
     BAM_SORT_STATS_SAMTOOLS ( STAR_ALIGN.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
-    ch_index = BAM_SORT_STATS_SAMTOOLS.out.bai
 
     emit:
 
@@ -41,7 +40,7 @@ workflow FASTQ_ALIGN_STAR {
     tab            = STAR_ALIGN.out.tab             // channel: [ val(meta), path(tab)            ]
 
     bam            = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
-    bai            = ch_index      // channel: [ val(meta), path(bai) ]
+    bai            = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
     stats          = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat       = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats       = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
