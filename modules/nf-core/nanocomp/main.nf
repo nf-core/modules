@@ -7,12 +7,11 @@ process NANOCOMP {
         'quay.io/biocontainers/nanocomp:1.21.0--pyhdfd78af_0' }"
 
     input:
-    val filetype
-    path filelist
+    tuple val(meta), path(filelist)
 
     output:
-    path "*.html", emit: html_nanocomp_output
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.html"), emit: html_nanocomp_output
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

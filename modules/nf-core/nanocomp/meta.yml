@@ -14,19 +14,21 @@ tools:
       licence: "MIT License"
 
 input:
-  - filetype:
-      type: value
-      description: Type of input file you use, either fastq, fasta, bam or Nanopore summary file
-      pattern: "{fastq,fasta,summary,bam}"
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]        
   - filelist:
       type: file
-      description: List of all the files you want to compare, they have to be the same filetype that you indicated with the filetype parameter
+      description: List of all the files you want to compare, they have to be all the same filetype
 
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - html_nanocomp_output:
       type: file
       description: List of html report files
