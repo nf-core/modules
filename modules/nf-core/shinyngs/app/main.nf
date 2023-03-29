@@ -22,6 +22,7 @@ process SHINYNGS_APP {
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
     tuple val(meta2), path(contrasts), path(differential_results)           // Differential info: contrasts and differential stats
+    val(contrast_stats_assay)
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
@@ -42,6 +43,7 @@ process SHINYNGS_APP {
         --feature_metadata $feature_meta \\
         --assay_files ${assay_files.join(',')} \\
         --contrast_file $contrasts \\
+        --contrast_stats_assay $contrast_stats_assay \\
         --differential_results ${differential_results.join(',')} \\
         --output_dir $prefix \\
         $args \\
