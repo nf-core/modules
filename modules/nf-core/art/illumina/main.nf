@@ -53,9 +53,9 @@ process ART_ILLUMINA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2016.06.05'
     """
-    touch ${prefix}.fq && gzip --no-name ${prefix}.fq
-    touch ${prefix}1.fq && gzip --no-name ${prefix}1.fq
-    touch ${prefix}2.fq && gzip --no-name ${prefix}2.fq
+    touch ${prefix}.fq.gz
+    touch ${prefix}1.fq.gz
+    touch ${prefix}2.fq.gz
     touch ${prefix}.aln
     touch ${prefix}1.aln
     touch ${prefix}2.aln
