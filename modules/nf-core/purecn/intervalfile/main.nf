@@ -30,7 +30,9 @@ process PURECN_INTERVALFILE {
     def args = task.ext.args ?: ''
 
     """
-    Rscript /usr/local/lib/R/library/PureCN/extdata/IntervalFile.R --in-file ${target_bed} \\
+
+    library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
+    Rscript "$\{library_path}/PureCN/extdata/IntervalFile.R" --in-file ${target_bed} \\
         --fasta ${fasta} \\
         --out-file baits_intervals.txt \\
         --genome ${genome} \\
