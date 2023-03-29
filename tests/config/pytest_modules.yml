@@ -1135,6 +1135,22 @@ freebayes:
   - modules/nf-core/freebayes/**
   - tests/modules/nf-core/freebayes/**
 
+freyja/boot:
+  - modules/nf-core/freyja/boot/**
+  - tests/modules/nf-core/freyja/boot/**
+
+freyja/demix:
+  - modules/nf-core/freyja/demix/**
+  - tests/modules/nf-core/freyja/demix/**
+
+freyja/update:
+  - modules/nf-core/freyja/update/**
+  - tests/modules/nf-core/freyja/update/**
+
+freyja/variants:
+  - modules/nf-core/freyja/variants/**
+  - tests/modules/nf-core/freyja/variants/**
+
 gamma/gamma:
   - modules/nf-core/gamma/gamma/**
   - tests/modules/nf-core/gamma/gamma/**
@@ -1733,6 +1749,10 @@ igv/js:
   - modules/nf-core/igv/js/**
   - tests/modules/nf-core/igv/js/**
 
+ilastik/multicut:
+  - modules/nf-core/ilastik/multicut/**
+  - tests/modules/nf-core/ilastik/multicut/**
+
 ilastik/pixelclassification:
   - modules/nf-core/ilastik/pixelclassification/**
   - tests/modules/nf-core/ilastik/pixelclassification/**
@@ -2097,6 +2117,10 @@ metabat2/jgisummarizebamcontigdepths:
 metabat2/metabat2:
   - modules/nf-core/metabat2/metabat2/**
   - tests/modules/nf-core/metabat2/metabat2/**
+
+metaphlan/makedb:
+  - modules/nf-core/metaphlan/makedb/**
+  - tests/modules/nf-core/metaphlan/makedb/**
 
 metaphlan3/mergemetaphlantables:
   - modules/nf-core/metaphlan3/mergemetaphlantables/**
@@ -2511,6 +2535,10 @@ plink/indep:
   - modules/nf-core/plink/indep/**
   - tests/modules/nf-core/plink/indep/**
 
+plink/indeppairwise:
+  - modules/nf-core/plink/indeppairwise/**
+  - tests/modules/nf-core/plink/indeppairwise/**
+
 plink/recode:
   - modules/nf-core/plink/recode/**
   - tests/modules/nf-core/plink/recode/**
@@ -2602,6 +2630,10 @@ pydamage/analyze:
 pydamage/filter:
   - modules/nf-core/pydamage/filter/**
   - tests/modules/nf-core/pydamage/filter/**
+
+pyrodigal:
+  - modules/nf-core/pyrodigal/**
+  - tests/modules/nf-core/pyrodigal/**
 
 qcat:
   - modules/nf-core/qcat/**
@@ -2726,6 +2758,10 @@ salsa2:
 sam2lca/analyze:
   - modules/nf-core/sam2lca/analyze/**
   - tests/modules/nf-core/sam2lca/analyze/**
+
+sambamba/flagstat:
+  - modules/nf-core/sambamba/flagstat/**
+  - tests/modules/nf-core/sambamba/flagstat/**
 
 sambamba/markdup:
   - modules/nf-core/sambamba/markdup/**
@@ -3192,6 +3228,10 @@ subworkflows/bam_variant_calling_freebayes:
   - subworkflows/nf-core/bam_variant_calling_freebayes/**
   - tests/subworkflows/nf-core/bam_variant_calling_freebayes/**
 
+subworkflows/bam_variant_demix_boot_freyja:
+  - subworkflows/nf-core/bam_variant_demix_boot_freyja/**
+  - tests/subworkflows/nf-core/bam_variant_demix_boot_freyja/**
+
 subworkflows/bcl_demultiplex:
   - subworkflows/nf-core/bcl_demultiplex/**
   - tests/subworkflows/nf-core/bcl_demultiplex/**
@@ -3248,6 +3288,10 @@ subworkflows/fastq_contam_seqtk_kraken:
   - subworkflows/nf-core/fastq_contam_seqtk_kraken/**
   - tests/subworkflows/nf-core/fastq_contam_seqtk_kraken/**
 
+subworkflows/fastq_create_umi_consensus_fgbio:
+  - subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
+  - tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
+
 subworkflows/fastq_download_prefetch_fasterqdump_sratools:
   - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
   - tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
@@ -3263,6 +3307,18 @@ subworkflows/fastq_fastqc_umitools_trimgalore:
 subworkflows/fastq_subsample_fq_salmon:
   - subworkflows/nf-core/fastq_subsample_fq_salmon/**
   - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
+
+subworkflows/fastq_trim_fastp_fastqc:
+  - subworkflows/nf-core/fastq_trim_fastp_fastqc/**
+  - tests/subworkflows/nf-core/fastq_trim_fastp_fastqc/**
+
+subworkflows/gatk_create_som_pon:
+  - subworkflows/nf-core/gatk_create_som_pon/**
+  - tests/subworkflows/nf-core/gatk_create_som_pon/**
+
+subworkflows/gatk_tumor_normal_somatic_variant_calling:
+  - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+  - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
 
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
@@ -3532,6 +3588,10 @@ wgsim:
 whamg:
   - modules/nf-core/whamg/**
   - tests/modules/nf-core/whamg/**
+
+wisecondorx/convert:
+  - modules/nf-core/wisecondorx/convert/**
+  - tests/modules/nf-core/wisecondorx/convert/**
 
 windowmasker/mk_counts:
   - modules/nf-core/windowmasker/mk_counts/**
