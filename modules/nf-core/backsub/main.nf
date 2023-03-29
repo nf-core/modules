@@ -22,8 +22,8 @@ process BACKSUB {
     def VERSION = 'echo python3 /background_subtraction/background_sub.py --version'
     """
     python3 /background_subtraction/background_sub.py \
-        -o ${prefix}_backsub.ome.tif \
-        -mo ${prefix}markerout.csv \
+        -o ./img_backsub.ome.tif \
+        -mo ./markerout.csv \
         -r $image \
         -m $markerfile \
         $args
@@ -38,12 +38,11 @@ process BACKSUB {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = 'echo python3 /background_subtraction/background_sub.py --version'
     """
-    touch ${prefix}_backsub.ome.tif
-    touch ${prefix}markerout.csv
+    touch ${prefix}.img_backsub.ome.tif
+    touch ${prefix}.markerout.csv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         backsub: ${VERSION:1}
     END_VERSIONS
     """
-
 }

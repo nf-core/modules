@@ -13,7 +13,7 @@ workflow test_backsub {
 
     markerfile = [
         [ id:'test' ], // meta map
-        file(params.test_data['imaging']['background_subtraction']['marker'], checkIfExists: true)
+        file(params.test_data['imaging']['background_subtraction']['markers'], checkIfExists: true)
     ]
 
     BACKSUB ( image, markerfile )
