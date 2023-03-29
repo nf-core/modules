@@ -35,13 +35,18 @@ process LOFREQ3_PREPROCESSING {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
-
+    tuple val(meta),
+          path(reffa),
+          path(fq1),
+          path(fq2)
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     tuple val(meta), path("*.bam"), emit: bam
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
+
+    fname = $fq1.name.replace('_1.fq','').replace('_1.fastq','').replace('.gz','')
+    obam = fname + ".bam"
 
     when:
     task.ext.when == null || task.ext.when
@@ -59,17 +64,17 @@ process LOFREQ3_PREPROCESSING {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    bwa mem $reffa  $fq1 $fq2 | \
+        samtools fixmate - - | \
+        lofreq viterbi -f $reffa -b - | \
+        samtools sort - | \
+        lofreq indelqual -f $reffa -b - | \
+        lofreq alnqual -f $reffa  -b - | \
+        samtools view -b - -o $obam;
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        lofreq3: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        lofreq3: \$(echo "3.0 - reimplementation of 2 in Nim")
     END_VERSIONS
     """
 }
