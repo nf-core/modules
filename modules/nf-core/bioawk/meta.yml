@@ -1,0 +1,48 @@
+name: "bioawk"
+description: Bioawk is an extension to Brian Kernighan's awk, adding the support of several common biological data formats.
+keywords:
+  - bioawk
+  - fastq
+  - fasta
+  - sam
+  - file manipulation
+  - awk
+tools:
+  - "bioawk":
+      description: "BWK awk modified for biological data"
+      homepage: "https://github.com/lh3/bioawk"
+      documentation: "https://github.com/lh3/bioawk"
+      tool_dev_url: "https://github.com/lh3/bioawk"
+
+      licence: "['Free software license (https://github.com/lh3/bioawk/blob/master/README.awk#L1)']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: Input sequence biological sequence file (optionally gzipped) to be manipulated via program specified in `$args`.
+      pattern: "*.{bed,gff,sam,vcf,fastq,fasta,tab,bed.gz,gff.gz,sam.gz,vcf.gz,fastq.gz,fasta.gz,tab.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - output:
+      type: file
+      description: |
+        Manipulated and gzipped version of input sequence file following program specified in `args`.
+        File name will be what is specified in `$prefix`. Do not include `.gz` suffix in `$prefix`! Output files` will be gzipped for you!
+      pattern: "*.gz"
+
+authors:
+  - "@jfy133"

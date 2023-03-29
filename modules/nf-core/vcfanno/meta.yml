@@ -10,11 +10,11 @@ keywords:
 tools:
   - vcfanno:
       description: annotate a VCF with other VCFs/BEDs/tabixed files
-      homepage: None
+
       documentation: https://github.com/brentp/vcfanno#vcfanno
       tool_dev_url: https://github.com/brentp/vcfanno
       doi: "10.1186/s13059-016-0973-5"
-      licence: ["MIT"]
+      license: ["MIT"]
 
 input:
   - meta:
@@ -32,14 +32,15 @@ input:
       pattern: "*.vcf.gz.tbi"
   - toml:
       type: file
-      description: configuration file
+      description: configuration file with reference file basenames
       pattern: "*.toml"
-  - resource_dir:
+  - lua:
       type: file
-      description: |
-        This directory contains referenced files in the TOML config,
-        and the corresponding indicies e.g. exac.vcf.gz + exac.vcf.gz.tbi,
-        with exception to the lua file.
+      description: Lua file for custom annotations
+      pattern: "*.lua"
+  - resources:
+      type: list
+      description: List of reference files defined in toml config, must also include indices.
 
 output:
   - meta:
@@ -58,3 +59,4 @@ output:
 
 authors:
   - "@projectoriented"
+  - "@matthdsm"

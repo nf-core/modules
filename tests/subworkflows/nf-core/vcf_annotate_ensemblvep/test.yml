@@ -1,0 +1,12 @@
+- name: vcf_annotate_ensemblvep vcf_annotation_ensemblvep
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep -entry vcf_annotation_ensemblvep -c ./tests/config/nextflow.config
+  tags:
+    - ensemblvep
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/ensemblvep/test.summary.html
+    - path: output/ensemblvep/test.vcf.gz
+    - path: output/tabix/test.vcf.gz.tbi

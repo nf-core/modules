@@ -10,7 +10,7 @@ tools:
       description: "A flexible read trimming tool for Illumina NGS data"
       homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
       documentation: "https://github.com/usadellab/Trimmomatic"
-      tool_dev_url: "None"
+
       doi: "10.1093/bioinformatics/btu170"
       licence: "['GPL v3']"
 
@@ -44,6 +44,10 @@ output:
       type: file
       description: trimmomatic log file
       pattern: "*.log"
+  - summary:
+      type: file
+      description: trimmomatic summary file of surviving and dropped reads
+      pattern: "*.summary"
   - versions:
       type: file
       description: File containing software versions

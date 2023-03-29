@@ -1,0 +1,48 @@
+name: "custom_tabulartogseacls"
+description: Make a GSEA class file (.cls) from tabular inputs
+keywords:
+  - gsea
+  - cls
+  - convert
+  - tabular
+tools:
+  - custom:
+      description: "Make a GSEA class file (.cls) from tabular inputs"
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseacls/main.nf"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing metadata including an id, the sample sheet column
+        used to define groups, and optionally a separator to override defaults e.g. [
+          id:'test', variable:'treatment', separator:',' ]. The way these values are
+        passed to the associated module parameters is then defined via an ext.args
+        specification for the process from the workflow, like: ext.args = { [
+          "separator": "\t", "variable": "$meta.variable" ] } ('variable' is
+        compulsory here).
+  - samples:
+      type: file
+      description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
+        and variables by column.
+      pattern: "*.{csv,tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing metadata e.g. [ id:'test', variable:'treatment',
+        separator:',' ]
+  - cls:
+      type: file
+      description: |
+        A categorical class format file (.cls) as defined by the Broad
+        documentation at
+        https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"

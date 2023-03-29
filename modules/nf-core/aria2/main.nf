@@ -3,7 +3,7 @@ process ARIA2 {
     tag "$source_url"
     label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::aria2=1.36.0" : null)
+    conda "conda-forge::aria2=1.36.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
         'quay.io/biocontainers/aria2:1.36.0' }"
