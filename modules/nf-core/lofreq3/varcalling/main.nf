@@ -35,11 +35,14 @@ process LOFREQ3_VARCALLING {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta),
+          path(bam),
+          path(reffa),
+          path(lofreq3_dir)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf"), emit: vcf
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -59,17 +62,11 @@ process LOFREQ3_VARCALLING {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    lofreq call -b $bam -f $reffa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        lofreq3: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+         lofreq3: \$(echo "3.0 - reimplementation of 2 in Nim")
     END_VERSIONS
     """
 }
