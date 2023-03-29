@@ -60,6 +60,17 @@ process INTERPROSCAN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    switch ( out_ext ) {
+        case "tsv": break
+        case "xml": break
+        case "gff3": break
+        case "json": break
+        default:
+            out_ext = 'tsv';
+            log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
+            break
+    }
+
     """
     touch ${prefix}.${out_ext}
 
