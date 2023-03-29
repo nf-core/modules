@@ -8,7 +8,7 @@ workflow test_cellpose {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("/workspace/modules/modules/nf-core/cellpose/cycif_tonsil_small.ome.tif", checkIfExists: true)
+        file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
     ]
 
     CELLPOSE ( input )
