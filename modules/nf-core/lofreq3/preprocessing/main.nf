@@ -6,7 +6,7 @@ process LOFREQ3_PREPROCESSING {
     conda "YOUR-TOOL-HERE"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'quay.io/vojalu/lofreq:3.0' }"
 
     input:
     tuple val(meta),
@@ -17,16 +17,7 @@ process LOFREQ3_PREPROCESSING {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    fname = fq1.name.replace('.fq','').replace('.fastq','').replace('.gz','')
-=======
     fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
->>>>>>> Varcalling and pileup processes added. Bam outname edited. Extra nf-c… (#3208)
-=======
-
-    fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
->>>>>>> 68544d9cec9b9ccf9ddf20cff1af1612a2f97eb0
     obam = fname + ".bam"
 
     when:

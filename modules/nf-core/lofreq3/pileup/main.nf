@@ -6,7 +6,7 @@ process LOFREQ3_PILEUP {
     conda "YOUR-TOOL-HERE"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'quay.io/vojalu/lofreq:3.0' }"
 
     input:
     tuple val(meta),
@@ -14,8 +14,7 @@ process LOFREQ3_PILEUP {
 
     output:
     tuple val(meta), path("*.json"), emit: pileup
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

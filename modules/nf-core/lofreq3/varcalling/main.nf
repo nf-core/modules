@@ -6,7 +6,7 @@ process LOFREQ3_VARCALLING {
     conda "YOUR-TOOL-HERE"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'quay.io/vojalu/lofreq:3.0' }"
 
     input:
     tuple val(meta),
