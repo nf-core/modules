@@ -25,8 +25,8 @@ input:
   - annotation_dir:
       type: file
       description: |
-        Path to folder containing vcf files with precomputed CADD scores.
-        These files can be downloaded from https://cadd.gs.washington.edu/download.
+        Path to folder containing the vcf files with precomputed CADD scores.
+        This folder contains the uncompressed files that would otherwise be in data/annotation folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
       pattern: "*.{vcf,vcf.gz}"
 
 output:
