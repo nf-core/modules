@@ -98,7 +98,51 @@ output:
       pattern: "versions.yml"
   - sv:
       type: file
-      description: Raw and filtered SVs and Indels (If normal file exist, this will both include somatic and germline)
+      description: Filtered SVs for tumor only cases
+      pattern: "*.vcf.gz"
+  - indel:
+      type: file
+      description: Filtered Indels for tumor only cases
+      pattern: "*.vcf.gz"
+  - som_sv:
+      type: file
+      description: Somatic filtered SVs for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - som_indel:
+      type: file
+      description: Somatic filtered Indels for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - germ_sv:
+      type: file
+      description: Germline filtered SVs for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - germ_indel:
+      type: file
+      description: Germline filtered Indels for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - unfiltered_sv:
+      type: file
+      description: Unfiltered SVs for tumor only cases
+      pattern: "*.vcf.gz"
+  - unfiltered_indel:
+      type: file
+      description: Unfiltered Indels for tumor only cases
+      pattern: "*.vcf.gz"
+  - unfiltered_som_sv:
+      type: file
+      description: Unfiltered somatic SVs for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - unfiltered_som_indel:
+      type: file
+      description: Unfiltered somatic Indels for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - unfiltered_germ_sv:
+      type: file
+      description: Unfiltered germline SVs for tumor/normal paired samples
+      pattern: "*.vcf.gz"
+  - unfiltered_germ_indel:
+      type: file
+      description: Unfiltered germline Indels for tumor/normal paired samples
       pattern: "*.vcf.gz"
   - raw_calls:
       type: file
