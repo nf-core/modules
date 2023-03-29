@@ -18,9 +18,9 @@ process PURECN_INTERVALFILE {
         val   genome
 
     output:
-        tuple val(meta), path("*.txt"), emit: baits_intervals
+        tuple val(meta), path("*.txt"), emit: txt
         // Only produced if --export is used
-        tuple val(meta), path("*.bed"), emit: baits_optimized, optional: true
+        tuple val(meta), path("*.bed"), emit: bed, optional: true
         path "versions.yml"           , emit: versions
 
     when:
