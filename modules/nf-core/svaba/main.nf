@@ -18,11 +18,22 @@ process SVABA {
     tuple val(meta5), path(regions)
 
     output:
-    tuple val(meta), path("*.vcf.gz")                       , emit: vcfs
-    tuple val(meta), path("*.bps.txt.gz")                   , emit: raw_calls
-    tuple val(meta), path("*.discordants.txt.gz")           , emit: discordants, optional: true
-    tuple val(meta), path("*.log")                          , emit: log
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*.svaba.sv.vcf.gz")                        , emit: sv, optional: true
+    tuple val(meta), path("*.svaba.indel.vcf.gz")                     , emit: indel, optional: true
+    tuple val(meta), path("*.svaba.germline.indel.vcf.gz")            , emit: germ_indel, optional: true
+    tuple val(meta), path("*.svaba.germline.sv.vcf.gz")               , emit: germ_sv, optional: true
+    tuple val(meta), path("*.svaba.somatic.indel.vcf.gz")             , emit: som_indel,  optional: true
+    tuple val(meta), path("*.svaba.somatic.sv.vcf.gz")                , emit: som_sv, optional: true
+    tuple val(meta), path("*.svaba.unfiltered.sv.vcf.gz")             , emit: unfiltered_sv, optional: true
+    tuple val(meta), path("*.svaba.unfiltered.indel.vcf.gz")          , emit: unfiltered_indel, optional: true
+    tuple val(meta), path("*.svaba.unfiltered.germline.indel.vcf.gz") , emit: unfiltered_germ_indel, optional: true
+    tuple val(meta), path("*.svaba.unfiltered.germline.sv.vcf.gz")    , emit: unfiltered_germ_sv, optional: true
+    tuple val(meta), path("*.svaba.unfiltered.somatic.indel.vcf.gz")  , emit: unfiltered_som_indel,  optional: true
+    tuple val(meta), path("*.svaba.unfiltered.somatic.sv.vcf.gz")     , emit: unfiltered_som_sv, optional: true
+    tuple val(meta), path("*.bps.txt.gz")                             , emit: raw_calls
+    tuple val(meta), path("*.discordants.txt.gz")                     , emit: discordants, optional: true
+    tuple val(meta), path("*.log")                                    , emit: log
+    path "versions.yml"                                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
