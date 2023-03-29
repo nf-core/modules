@@ -24,7 +24,7 @@ workflow FASTQ_ALIGN_BWA {
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
-    //
+    //  
 
     BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
