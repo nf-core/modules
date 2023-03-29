@@ -34,6 +34,17 @@ workflow BAM_MARKDUPLICATES_PICARD {
                     [ meta, bam, csi ]
                 }
         }
+    SAMTOOLS_INDEX.out.bai
+        .join(SAMTOOLS_INDEX.out.bai, by: [0])
+        .map {
+            meta, bam, bai, csi ->
+                if (bai) {
+                    [ meta, bam, bai, csi ]
+                } else {
+                    [ meta, bam, csi, bai ]
+                }
+        }
+        .set { ch_bam_index }
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
@@ -41,8 +52,9 @@ workflow BAM_MARKDUPLICATES_PICARD {
     emit:
     bam      = PICARD_MARKDUPLICATES.out.bam     // channel: [ val(meta), path(bam) ]
     metrics  = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(bam) ]
-    bai      = SAMTOOLS_INDEX.out.bai            // channel: [ val(meta), path(bai) ]
-    csi      = SAMTOOLS_INDEX.out.csi            // channel: [ val(meta), path(csi) ]
+    // bai      = SAMTOOLS_INDEX.out.bai            // channel: [ val(meta), path(bai) ]
+    // csi      = SAMTOOLS_INDEX.out.csi            // channel: [ val(meta), path(csi) ]
+    index = ch_bam_index
 
     stats    = BAM_STATS_SAMTOOLS.out.stats      // channel: [ val(meta), path(stats) ]
     flagstat = BAM_STATS_SAMTOOLS.out.flagstat   // channel: [ val(meta), path(flagstat) ]

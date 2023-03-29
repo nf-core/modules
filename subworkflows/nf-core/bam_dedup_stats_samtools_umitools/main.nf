@@ -27,26 +27,40 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     SAMTOOLS_INDEX ( UMITOOLS_DEDUP.out.bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    ch_bam_bai_dedup = UMITOOLS_DEDUP.out.bam
+    // ch_bam_bai_dedup = UMITOOLS_DEDUP.out.bam
+    //     .join(SAMTOOLS_INDEX.out.bai, by: [0])
+    //     .join(SAMTOOLS_INDEX.out.csi, by: [0])
+    //     .map {
+    //         meta, bam, bai, csi ->
+    //             if (bai) {
+    //                 [ meta, bam, bai, csi ]
+    //             } else {
+    //                 [ meta, bam, csi, bai ]
+    //             }
+    //     }
+    UMITOOLS_DEDUP.out.bam
         .join(SAMTOOLS_INDEX.out.bai, by: [0])
         .join(SAMTOOLS_INDEX.out.csi, by: [0])
         .map {
             meta, bam, bai, csi ->
                 if (bai) {
-                    [ meta, bam, bai ]
+                    [ meta, bam, bai, csi ]
                 } else {
-                    [ meta, bam, csi ]
+                    [ meta, bam, csi, bai ]
                 }
         }
+        .set { ch_bam_index }
 
-    BAM_STATS_SAMTOOLS ( ch_bam_bai_dedup, [] )
+    BAM_STATS_SAMTOOLS ( ch_bam_index, [] )
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam      = UMITOOLS_DEDUP.out.bam          // channel: [ val(meta), path(bam) ]
 
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), path(bai) ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), path(csi) ]
+    // bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), path(bai) ]
+    // csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), path(csi) ]
+    index     = ch_bam_index                    // channel: [ val(meta), [ bai, csi ] ]
+
     stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
