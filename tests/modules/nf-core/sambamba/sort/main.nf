@@ -4,7 +4,8 @@ nextflow.enable.dsl = 2
 
 include { SAMBAMBA_SORT } from '../../../../../modules/nf-core/sambamba/sort/main.nf'
 
-workflow test_sambamba_sort {
+// test for bam output
+workflow test_sambamba_sort{
     
     input = [
         [ id:'test', single_end:false ], // meta map

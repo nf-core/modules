@@ -20,7 +20,7 @@ workflow test_sickle_single_end {
 // Test with paired-end data
 //
 workflow test_sickle_paired_end {
-    input = [ [ id:'test', single_end:false, qual:'sanger' ], // meta map
+    input = [ [ id:'test', single_end:false], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ],
               "sanger"
