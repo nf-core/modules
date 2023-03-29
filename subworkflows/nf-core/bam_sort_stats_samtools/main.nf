@@ -22,8 +22,8 @@ workflow BAM_SORT_STATS_SAMTOOLS {
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     SAMTOOLS_SORT.out.bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0])
-        .join(SAMTOOLS_INDEX.out.csi, by: [0])
+        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
+        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
         .map {
             meta, bam, bai, csi ->
                 if (bai) {
@@ -36,13 +36,13 @@ workflow BAM_SORT_STATS_SAMTOOLS {
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
-    ch_index = SAMTOOLS_INDEX.out.bai.join(SAMTOOLS_INDEX.out.csi)
+    ch_index = ch_bam_bai
 
     emit:
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
+    // bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
     // bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
     // csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
-    index    = ch_index                        // channel: [ val(meta), path(bai), path(csi) ]
+    index = ch_index
 
     stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
     flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
