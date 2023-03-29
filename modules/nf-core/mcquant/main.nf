@@ -20,13 +20,23 @@ process MCQUANT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    // TODO: Replace fixed version number by mcquant command. PR to Mcquant needed!
     """
     python /app/CommandSingleCellExtraction.py \
         --masks $mask \
         --image $image \
         --output . \
         --channel_names $markerfile
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mcquant: \$(echo 1.5.4)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch cycif_tonsil_registered_cell.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
