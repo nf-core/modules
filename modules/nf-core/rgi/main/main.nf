@@ -2,7 +2,7 @@ process RGI_MAIN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::rgi=5.2.1" : null)
+    conda "bioconda::rgi=5.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rgi:5.2.1--pyha8f3691_2':
         'quay.io/biocontainers/rgi:5.2.1--pyha8f3691_2' }"

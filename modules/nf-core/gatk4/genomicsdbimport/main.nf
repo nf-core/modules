@@ -1,11 +1,11 @@
 process GATK4_GENOMICSDBIMPORT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.3.0.0" : null)
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(interval_file), val(interval_value), path(wspace)
@@ -31,6 +31,7 @@ process GATK4_GENOMICSDBIMPORT {
 
     genomicsdb_command = "--genomicsdb-workspace-path ${prefix}"
     interval_command = interval_file ? "--intervals ${interval_file}" : "--intervals ${interval_value}"
+    updated_db = ""
 
     // settings changed for running get intervals list mode if run_intlist is true
     if (run_intlist) {
@@ -45,14 +46,14 @@ process GATK4_GENOMICSDBIMPORT {
         updated_db = "${wspace}"
     }
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK GenomicsDBImport] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" GenomicsDBImport \\
+    gatk --java-options "-Xmx${avail_mem}M" GenomicsDBImport \\
         $input_command \\
         $genomicsdb_command \\
         $interval_command \\
@@ -70,6 +71,7 @@ process GATK4_GENOMICSDBIMPORT {
 
     genomicsdb_command = "--genomicsdb-workspace-path ${prefix}"
     interval_command = interval_file ? "--intervals ${interval_file}" : "--intervals ${interval_value}"
+    updated_db = ""
 
     // settings changed for running get intervals list mode if run_intlist is true
     if (run_intlist) {
@@ -86,7 +88,7 @@ process GATK4_GENOMICSDBIMPORT {
 
     def stub_genomicsdb = genomicsdb_command == "--genomicsdb-workspace-path ${prefix}" ? "touch ${prefix}" : ""
     def stub_interval   = interval_command == "--output-interval-list-to-file ${prefix}.interval_list" ? "touch ${prefix}.interval_list" : ""
-    def stub_update     = updated_db ? "touch ${wspace}" : ""
+    def stub_update     = updated_db != "" ? "touch ${wspace}" : ""
 
     """
     ${stub_genomicsdb}

@@ -2,7 +2,7 @@ process ISOSEQ3_REFINE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::isoseq3=3.8.1" : null)
+    conda "bioconda::isoseq3=3.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/isoseq3:3.8.1--h9ee0642_0' :
         'quay.io/biocontainers/isoseq3:3.8.1--h9ee0642_0' }"
