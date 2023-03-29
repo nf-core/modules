@@ -20,7 +20,7 @@ process MCQUANT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def VERSION = '1.5.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     python /app/CommandSingleCellExtraction.py \
         --masks $mask \
@@ -30,18 +30,19 @@ process MCQUANT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mcquant: \$(echo 1.5.4)
+        mcquant: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.5.4'
     """
     touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mcquant: \$(echo 1.5.4)
+        mcquant: $VERSION
     END_VERSIONS
     """
 }
