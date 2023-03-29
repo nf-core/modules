@@ -16,10 +16,11 @@ tools:
 input:
   - meta:
       type: map
-      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]        
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - filelist:
       type: file
-      description: List of all the files you want to compare, they have to be all the same filetype
+      description: List of all the files you want to compare, they have to be all the same filetype (either fastq, fasta, bam or Nanopore sequencing summary)
+      pattern: "*.{fastq,fq,fna,ffn,faa,frn,fa,fasta,txt,bam}"      
 
 output:
   - versions:
