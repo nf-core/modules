@@ -28,7 +28,8 @@ process PURECN_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    Rscript /usr/local/lib/R/library/PureCN/extdata/Coverage.R \\
+    library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
+    Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
         --out-dir /purecn/coverage/${meta.id}/ \\
         --bam ${bam} \\
         --intervals ${intervals} \\
