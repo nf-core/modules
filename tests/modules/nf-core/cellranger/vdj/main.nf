@@ -8,9 +8,7 @@ workflow test_cellranger_count {
 
     input = [ [ id:'test_cellranger_vdj_human_bcell', single_end:true, strandedness:'forward', gem: '123', samples: ["subsampled_sc5p_v2_hs_B_1k_b"] ], // meta map
              [ file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L001_R1_001.fastq.gz", checkIfExists: true), 
-               file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L001_R2_001.fastq.gz", checkIfExists: true), 
-               file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L002_R1_001.fastq.gz", checkIfExists: true), 
-               file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L002_R2_001.fastq.gz", checkIfExists: true)
+               file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L001_R2_001.fastq.gz", checkIfExists: true)
         ]
     ]
 
