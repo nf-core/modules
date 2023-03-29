@@ -1,51 +1,47 @@
-name: "lofreq3_pileup"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: "lofreq3"
+description: "LoFreq Version 3 is a reimplementation of LoFreq version 2 in Nim."
 keywords:
-  - sort
+  - pileup
+
 tools:
-  - "lofreq3":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+  - "lofreq3/pileup":
+      description: "Pileup reads with bam file"
+      homepage: "https://github.com/andreas-wilm/lofreq3"
+      documentation: "https://github.com/andreas-wilm/lofreq3"
+      tool_dev_url: "https://github.com/andreas-wilm"
+      doi: "10.1093/nar/gks918"
+      licence: [ "MIT" ]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
-output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+
+  - lofreq3_dir:
+      type: directory
+      description: Directory with preprocessed lofreq3 files
+
+output:
+
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - pileup:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: LoFreq3 json pileup file
+      pattern: "*.{json}"
 
 authors:
   - "@gordondraskic"
+  - "@VojislavLukic"

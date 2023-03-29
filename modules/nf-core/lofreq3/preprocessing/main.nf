@@ -17,6 +17,7 @@ process LOFREQ3_PREPROCESSING {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
+
     fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
     obam = fname + ".bam"
 
