@@ -1,0 +1,9 @@
+- name: sambamba sort test_sambamba_sort
+  command: nextflow run ./tests/modules/nf-core/sambamba/sort -entry test_sambamba_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sambamba/sort/nextflow.config
+  tags:
+    - sambamba/sort
+    - sambamba
+  files:
+    - path: output/sambamba/test.paired_end.sorted.bam
+      md5sum: 23e5290412afbc4f74abefc98d8c8b71
+    - path: output/sambamba/versions.yml
