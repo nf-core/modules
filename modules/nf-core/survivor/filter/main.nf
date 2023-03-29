@@ -26,8 +26,8 @@ process SURVIVOR_FILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed_file = bed ? "${bed}" : "NA"
 
-    if( "$bed" == "${prefix}.bed" ){
-        prefix = "${meta.id}_filtered"
+    if( "$vcf_file" == "${prefix}.vcf" ){
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
     """
     SURVIVOR \\
@@ -48,6 +48,11 @@ process SURVIVOR_FILTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bed_file = bed ? "${bed}" : "NA"
+    
+    if( "$vcf_file" == "${prefix}.vcf" ){
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
 
     """
     touch ${prefix}.vcf
