@@ -26,6 +26,9 @@ process SURVIVOR_FILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed_file = bed ? "${bed}" : "NA"
 
+    if( "$bed" == "${prefix}.bed" ){
+        prefix = "${meta.id}_filtered"
+    }
     """
     SURVIVOR \\
         filter \\
