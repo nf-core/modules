@@ -62,7 +62,7 @@ process ART_ILLUMINA {
     touch ${prefix}.sam
     touch ${prefix}1.sam
     touch ${prefix}2.sam
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         art: $VERSION
