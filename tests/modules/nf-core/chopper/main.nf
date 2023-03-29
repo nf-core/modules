@@ -8,7 +8,7 @@ include { CHOPPER } from '../../../../modules/nf-core/chopper/main.nf'
 workflow test_chopper {
 
     input = [
-        [id:'test', single_end:false ], // meta map
+        [id:'test_out' ], // meta map
         file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
 
