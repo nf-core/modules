@@ -25,8 +25,8 @@ process MCQUANT {
     python /app/CommandSingleCellExtraction.py \
         --masks $mask \
         --image $image \
-        --output . \
-        --channel_names $markerfile
+        --channel_names $markerfile \
+        --output .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
