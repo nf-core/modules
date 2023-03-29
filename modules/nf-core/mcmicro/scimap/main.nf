@@ -18,7 +18,7 @@ process MCMICRO_SCIMAP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    scimap-mcmicro $cellbyfeature -o .
+    scimap-mcmicro $cellbyfeature ${prefix} ${args}
     """
-    //${prefix} ${args}
+
 }
