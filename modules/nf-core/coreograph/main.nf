@@ -10,7 +10,7 @@ process COREOGRAPH {
     output:
     tuple val(meta), path("*[0-9]*.tif"), emit: cores
     tuple val(meta), path("./masks/"), emit: masks
-    tuple val(meta), path("TMA_MAP.tif"), emit: TMA_map
+    tuple val(meta), path("TMA_MAP.tif"), emit: tma_map
     tuple val(meta), path("centroidsY-X.txt"), emit: centroids
 
     path "versions.yml" , emit: versions
