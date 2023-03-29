@@ -1,8 +1,8 @@
-- name: deepcell mesmer test_deepcell
+- name: mesmer test_deepcell
   command: nextflow run ./tests/modules/nf-core/deepcell/mesmer -entry test_deepcell -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepcell/mesmer/nextflow.config
   tags:
-    - deepcell/mesmer
     - deepcell
+    - deepcell/mesmer
   files:
     - path: output/mesmer/mask.tif
       md5sum: e6bf933bcd897e7a0652378a29b9ef61

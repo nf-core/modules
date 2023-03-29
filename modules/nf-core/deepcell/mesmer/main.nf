@@ -20,6 +20,7 @@ process MESMER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "0.4.0"
 
     """
     python /usr/src/app/run_app.py mesmer \
@@ -32,7 +33,7 @@ process MESMER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepcell_mesmer: \$(echo 0.4.0)
+        deepcell_mesmer:: $VERSION
     END_VERSIONS
     """
 }
