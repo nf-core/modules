@@ -28,6 +28,7 @@ process LOFREQ3_PREPROCESSING {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    bwa mem index $reffa
     bwa mem $reffa  $fq1 $fq2 | \
         samtools fixmate - - | \
         lofreq viterbi -f $reffa -b - | \
