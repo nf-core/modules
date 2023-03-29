@@ -1,0 +1,7 @@
+- name: crisprcleanr test_crisprcleanr
+  command: nextflow run ./tests/modules/nf-core/crisprcleanr -entry test_crisprcleanr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/crisprcleanr/nextflow.config
+  tags:
+    - crisprcleanr
+  files:
+    - path: output/crisprcleanr/all_norm_table.tsv
+      md5sum: ba36e7e31a511ba4dadc888ea13f30e7
