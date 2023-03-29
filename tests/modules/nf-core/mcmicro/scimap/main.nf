@@ -6,10 +6,10 @@ include { MCMICRO_SCIMAP } from '../../../../../modules/nf-core/mcmicro/scimap/m
 
 workflow test_mcmicro_scimap {
 
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file("/Users/luiskuhn/Downloads/cycif_tonsil_small--unmicst_cell.csv", checkIfExists: true)
+    feature_table = [
+        [ id:'test' ], // meta map
+        file(params.test_data['imaging']['downstream']['cell_feature_array'], checkIfExists: true)
     ]
 
-    MCMICRO_SCIMAP ( input )
+    MCMICRO_SCIMAP ( feature_table )
 }
