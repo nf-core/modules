@@ -28,9 +28,8 @@ process CELLPOSE {
     --image_path $image \
     --channel_axis 0 \
     --no_npy \
-    --diameter 8 \
     --save_tif \
-    --verbose
+    --verbose \
     $args
 
     cat <<-END_VERSIONS > versions.yml

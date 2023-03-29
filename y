@@ -4,5 +4,5 @@
     - cellpose
   files:
     - path: output/cellpose/cycif_tonsil_small.ome_cp_masks.tif
-      md5sum: 2575f6bebac56364c142c3cf6d31671c
+      md5sum: 59af5f94e1bf55a88b50a840c6cfb244
     - path: output/cellpose/versions.yml
