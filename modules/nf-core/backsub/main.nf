@@ -19,7 +19,7 @@ process BACKSUB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 
+    def VERSION = 'echo python3 /background_subtraction/background_sub.py --version'
     """
     python3 /background_subtraction/background_sub.py \
         -o ./img_backsub.ome.tif \
@@ -30,7 +30,7 @@ process BACKSUB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        backsub: \$(python3 /background_subtraction/background_sub.py --version)
+        backsub: ${VERSION:1}
     END_VERSIONS
     """
 }

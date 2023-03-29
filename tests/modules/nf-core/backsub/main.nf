@@ -8,12 +8,12 @@ workflow test_backsub {
 
     image = [
         [ id:'test' ], // meta map
-        file('/workspace/modules/test_backsub/recyzed_test.ome.tif', checkIfExists: true)
+        file("/workspace/modules/test_backsub/recyzed_test.ome.tif", checkIfExists: true)
     ]
 
     markerfile = [
         [ id:'test' ], // meta map
-        file('/workspace/modules/test_backsub/markers.csv', checkIfExists: true)
+        file("/workspace/modules/test_backsub/markers.csv", checkIfExists: true)
     ]
 
     BACKSUB ( image, markerfile )
