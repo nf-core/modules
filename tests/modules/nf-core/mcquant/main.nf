@@ -8,17 +8,17 @@ workflow test_mcquant {
 
     image = [
         [ id:'test' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/mcquant/image.tiff", checkIfExists: true) // TODO : replace with public test data
+        file(params.test_data['imaging']['quantification']['image'], checkIfExists: true)
     ]
 
     mask = [
         [ id:'test' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/mcquant/mask.tif", checkIfExists: true)  // TODO : replace with public test data
+        file(params.test_data['imaging']['quantification']['mask'], checkIfExists: true)
     ]
 
     markerfile = [
         [ id:'test' ], // meta map
-        file("/Users/florian_wuennemann/1_Projects/nf_core/test_data/mcquant/channel_names.csv", checkIfExists: true)  // TODO : replace with public test data
+        file(params.test_data['imaging']['quantification']['markers'], checkIfExists: true)
     ]
 
     MCQUANT ( image, mask, markerfile )

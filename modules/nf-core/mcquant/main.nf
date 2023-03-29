@@ -8,7 +8,6 @@ process MCQUANT {
     tuple val(meta), path(image)
     tuple val(meta2), path(mask)
     tuple val(meta3), path(markerfile)
-    // marker.csv ?
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
