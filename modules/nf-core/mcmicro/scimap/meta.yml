@@ -35,10 +35,15 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - annotedData:
+  - annotedDataCsv:
       type: file
-      description: Sorted CSV/H5AD file
-      pattern: "*.{csv,h5ad}"
+      description: Sorted CSV file
+      pattern: "*.{csv}"
+  - annotedDataH5ad:
+      type: file
+      description: Sorted H5AD file
+      pattern: "*.{h5ad}"
+
   # - clusterPlot:
   #     type: file
   #     description: UPMA plot of the data in pdf file

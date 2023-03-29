@@ -8,7 +8,7 @@ workflow test_mcmicro_scimap {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("/workspace/test/cycif_tonsil_small--unmicst_cell.csv", checkIfExists: true)
+        file("/Users/luiskuhn/Downloads/cycif_tonsil_small--unmicst_cell.csv", checkIfExists: true)
     ]
 
     MCMICRO_SCIMAP ( input )

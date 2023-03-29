@@ -8,7 +8,8 @@ process MCMICRO_SCIMAP {
     tuple val(meta), path(cellbyfeature)
 
     output:
-    tuple val(meta), path("*.csv"), emit: annotedData
+    tuple val(meta), path("*.csv"), emit: annotedDataCsv, optional:true
+    tuple val(meta), path("*.h5ad"), emit: annotedDataH5ad, optional:true
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,4 +20,5 @@ process MCMICRO_SCIMAP {
     """
     scimap-mcmicro $cellbyfeature -o .
     """
+    //${prefix} ${args}
 }
