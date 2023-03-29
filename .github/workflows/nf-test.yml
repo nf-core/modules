@@ -1,4 +1,4 @@
-name: Pytest-workflow
+name: nf-test
 on:
   push:
     branches: [master]
@@ -26,7 +26,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/pytest_modules.yml"
+          filters: "tests/config/nftest_modules.yml"
 
   test:
     runs-on: ubuntu-20.04
@@ -104,21 +104,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.x"
-
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install Python dependencies
-        run: python -m pip install --upgrade pip pytest-workflow cryptography
-
       - uses: actions/cache@v3
         with:
           path: /usr/local/bin/nextflow
@@ -132,6 +117,21 @@ jobs:
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
+
+      - name: Cache nf-test installation
+        id: cache-software
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/local/bin/nf-test
+            /home/runner/.nf-test/nf-test.jar
+          key: ${{ runner.os }}-nftest
+
+      - name: Install nf-test
+        if: steps.cache-software.outputs.cache-hit != 'true'
+        run: |
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -167,26 +167,14 @@ jobs:
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
       # Test the module
-      - name: Run pytest-workflow
-        # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
-
-      - name: Output log on failure
-        if: failure()
+      - name: Run nf-test
         run: |
-          sudo apt-get update > /dev/null
-          sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
+          nf-test test \
+            --profile=${{ matrix.profile }} \
+            --tag ${{ matrix.tags }} \
+            --tap=test.tap
 
-      - name: Upload logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v2
+      - uses: pcolby/tap-summary@v1
         with:
-          name: logs-${{ matrix.profile }}
-          path: |
-            /home/runner/pytest_workflow_*/*/.nextflow.log
-            /home/runner/pytest_workflow_*/*/log.out
-            /home/runner/pytest_workflow_*/*/log.err
-            /home/runner/pytest_workflow_*/*/work
-            !/home/runner/pytest_workflow_*/*/work/conda
-            !/home/runner/pytest_workflow_*/*/work/singularity
+          path: >-
+            test.tap
