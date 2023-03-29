@@ -1,0 +1,47 @@
+name: "thermorawfileparser"
+description: conversor for Thermo Fisher RAW file format to mzML
+keywords:
+  - sort
+tools:
+  - "thermorawfileparser":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Wrapper around the .net (C#) ThermoFisher ThermoRawFileReader library for running on Linux with mono"
+      homepage: "https://github.com/compomics/ThermoRawFileParser/blob/master/README.md"
+      documentation: "https://github.com/compomics/ThermoRawFileParser/blob/master/README.md"
+      tool_dev_url: "https://github.com/compomics/ThermoRawFileParser"
+      doi: ""
+      licence: "['Apache Software']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - raw:
+      type: file
+      description: Thermo Fisher RAW file
+      pattern: "*.{raw}"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - mzML:
+      type: file
+      description: mzML file
+      pattern: "*.{mzML}"
+
+authors:
+  - "@rolivella"
+  - "@nielshulstaert"
