@@ -1,4 +1,4 @@
-process MCMICRO_SCIMAP {
+process SCIMAP_MCMICRO {
     tag "$meta.id"
     label 'process_single'
 
@@ -25,11 +25,11 @@ process MCMICRO_SCIMAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='0.22.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    scimap-mcmicro $cellbyfeature -o ${args}
+    scimap-mcmicro $cellbyfeature -o .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        scimap: $VERSION 
+        scimap: $VERSION
     END_VERSIONS
     """
 
