@@ -7,7 +7,7 @@ process PURECN_INTERVALFILE {
     // TODO: This needs a proper container
     // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
     // cf: https://github.com/BioContainers/multi-package-containers/pull/2554
-    conda "bioconda::bioconductor-purecn=2.4.0"
+    conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.16.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
         'quay.io/biocontainers/YOUR-TOOL-HERE' }"
