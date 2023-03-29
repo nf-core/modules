@@ -23,12 +23,28 @@ input:
       type: file
       description: Input fasta file containing query sequences
       pattern: "*.{fa,fasta}"
+  - out_ext:
+      type: string
+      description: Specify the type of output file to be generated
+      pattern: "tsv|xml|gff3|json"
 
 output:
   - tsv:
       type: file
       description: Tab separated file containing with detailed hits
       pattern: "*.{tsv}"
+  - xml:
+      type: file
+      description: XML file containing with detailed hits
+      pattern: "*.{xml}"
+  - gff3:
+      type: file
+      description: GFF3 file containing with detailed hits
+      pattern: "*.{gff3}"
+  - json:
+      type: file
+      description: JSON file containing with detailed hits
+      pattern: "*.{json}"
   - versions:
       type: file
       description: File containing software versions

@@ -49,4 +49,16 @@ process INTERPROSCAN {
         interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.${out_ext}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
+    END_VERSIONS
+    """
 }
