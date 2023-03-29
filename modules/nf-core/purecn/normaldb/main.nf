@@ -1,3 +1,5 @@
+
+
 process PURECN_NORMALDB {
     tag "$meta.id"
     label 'process_medium'
@@ -11,16 +13,17 @@ process PURECN_NORMALDB {
         'quay.io/biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-        path coverage_files
+        tuple val(meta), path(coverage_files)
+        tuple val(meta), path(normal_panel)
         val  genome
 
     output:
 
-        path("normalDB*.rds")               , emit: normal_db
-        path("mapping_bias*.rds")           , emit: mapping_bias
-        path("interval_weights*.png")       , emit: interval_weights
-        path("low_coverage_targets*.png")   , emit: low_coverage_targets, optional: true
-        path "versions.yml"                 , emit: versions
+        tuple val(meta), path("normalDB*.rds")               , emit: normal_db
+        tuple val(meta), path("mapping_bias*.rds")           , emit: mapping_bias
+        tuple val(meta), path("interval_weights*.png")       , emit: interval_weights
+        tuple val(meta), path("low_coverage_targets*.png")   , emit: low_coverage_targets, optional: true
+        path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,14 +33,25 @@ process PURECN_NORMALDB {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    Rscript NormalDB.R --out-dir normal_dbs \\
+    library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
+    Rscript "\$library_path"/PureCN/extdata/NormalDB.R --out-dir ./ \\
         --coverage-files $coverage_files \\
         --genome $genome \\
+        --assay ${prefix}
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purecn: \$(Rscript /usr/local/lib/R/library/PureCN/extdata/PureCN.R --version)
     END_VERSIONS
+    """
+
+    stub:
+
+    """
+    touch normalDB_${prefix}_${genome}.rds
+    touch mapping_bias_${prefix}_${genome}.rds
+    touch interval_weights_${prefix}_${genome}.png
+    touch low_coverage_targets_${prefix}_${genome}.png
     """
 }
