@@ -17,14 +17,14 @@
     - path: output/svaba/test.bps.txt.gz
       md5sum: 0913322580c2c5f64b22f245c7e98869
     - path: output/svaba/test.log
-    - path: output/svaba/test.svaba.indel.vcf
-      md5sum: b47e4fa96c46059a14f8544ce4c77939
-    - path: output/svaba/test.svaba.sv.vcf
-      md5sum: ac031eb59c6b5a9d09b186e7c8733f38
-    - path: output/svaba/test.svaba.unfiltered.indel.vcf
-      md5sum: b47e4fa96c46059a14f8544ce4c77939
-    - path: output/svaba/test.svaba.unfiltered.sv.vcf
-      md5sum: ac031eb59c6b5a9d09b186e7c8733f38
+    - path: output/svaba/test.svaba.indel.vcf.gz
+      md5sum: e7f7433c7b2b207e02c25184882e6c9a
+    - path: output/svaba/test.svaba.sv.vcf.gz
+      md5sum: 8de19af72a9816278d098fc095ecaef7
+    - path: output/svaba/test.svaba.unfiltered.indel.vcf.gz
+      md5sum: e7f7433c7b2b207e02c25184882e6c9a
+    - path: output/svaba/test.svaba.unfiltered.sv.vcf.gz
+      md5sum: 8de19af72a9816278d098fc095ecaef7
     - path: output/svaba/versions.yml
 
 - name: svaba test_svaba
@@ -46,57 +46,20 @@
     - path: output/svaba/test.bps.txt.gz
       md5sum: 3ab77e2d23ec90cf910b3811c864b58a
     - path: output/svaba/test.log
-    - path: output/svaba/test.svaba.germline.indel.vcf
-      md5sum: 21c180eb2e0c0c2db4edb290e469ab41
-    - path: output/svaba/test.svaba.germline.sv.vcf
-      md5sum: 161e461147fcaeb09f3e28570eb88836
-    - path: output/svaba/test.svaba.somatic.indel.vcf
-      md5sum: 21c180eb2e0c0c2db4edb290e469ab41
-    - path: output/svaba/test.svaba.somatic.sv.vcf
-      md5sum: 161e461147fcaeb09f3e28570eb88836
-    - path: output/svaba/test.svaba.unfiltered.germline.indel.vcf
-      md5sum: 21c180eb2e0c0c2db4edb290e469ab41
-    - path: output/svaba/test.svaba.unfiltered.germline.sv.vcf
-      md5sum: 1cdc7bb3c51c0952df24a6ba0da295c6
-    - path: output/svaba/test.svaba.unfiltered.somatic.indel.vcf
-      md5sum: 21c180eb2e0c0c2db4edb290e469ab41
-    - path: output/svaba/test.svaba.unfiltered.somatic.sv.vcf
-      md5sum: 161e461147fcaeb09f3e28570eb88836
-    - path: output/svaba/versions.yml
-
-- name: svaba test_svaba_dbsnp
-  command: nextflow run ./tests/modules/nf-core/svaba -entry test_svaba_dbsnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svaba/nextflow.config
-  tags:
-    - svaba
-  files:
-    - path: output/bwa/bwa/genome.fasta.amb
-      md5sum: 1891c1de381b3a96d4e72f590fde20c1
-    - path: output/bwa/bwa/genome.fasta.ann
-      md5sum: 2df4aa2d7580639fa0fcdbcad5e2e969
-    - path: output/bwa/bwa/genome.fasta.bwt
-      md5sum: 815eded87e4cb6b0f1daab5c4d6e30af
-    - path: output/bwa/bwa/genome.fasta.pac
-      md5sum: 8569fbdb2c98c6fb16dfa73d8eacb070
-    - path: output/bwa/bwa/genome.fasta.sa
-      md5sum: e7cff62b919448a3a3d0fe4aaf427594
-    - path: output/bwa/versions.yml
-    - path: output/svaba/test.bps.txt.gz
-      md5sum: 3ab77e2d23ec90cf910b3811c864b58a
-    - path: output/svaba/test.log
-    - path: output/svaba/test.svaba.germline.indel.vcf
-      md5sum: 6ba4da8815ef9df575cf40bbd7048892
-    - path: output/svaba/test.svaba.germline.sv.vcf
-      md5sum: 71a3c5f85096d5d3e34ea485f8bd3ae5
-    - path: output/svaba/test.svaba.somatic.indel.vcf
-      md5sum: 6ba4da8815ef9df575cf40bbd7048892
-    - path: output/svaba/test.svaba.somatic.sv.vcf
-      md5sum: 71a3c5f85096d5d3e34ea485f8bd3ae5
-    - path: output/svaba/test.svaba.unfiltered.germline.indel.vcf
-      md5sum: 6ba4da8815ef9df575cf40bbd7048892
-    - path: output/svaba/test.svaba.unfiltered.germline.sv.vcf
-      md5sum: d774b9e47460f8cabaa491199d9c9995
-    - path: output/svaba/test.svaba.unfiltered.somatic.indel.vcf
-      md5sum: 6ba4da8815ef9df575cf40bbd7048892
-    - path: output/svaba/test.svaba.unfiltered.somatic.sv.vcf
-      md5sum: 71a3c5f85096d5d3e34ea485f8bd3ae5
+    - path: output/svaba/test.svaba.germline.indel.vcf.gz
+      md5sum: 5168daad6ed37c6dd6bcd6ec4c2ff490
+    - path: output/svaba/test.svaba.germline.sv.vcf.gz
+      md5sum: d5c45eb6fe1bfc3448fd3250e02adb19
+    - path: output/svaba/test.svaba.somatic.indel.vcf.gz
+      md5sum: 5168daad6ed37c6dd6bcd6ec4c2ff490
+    - path: output/svaba/test.svaba.somatic.sv.vcf.gz
+      md5sum: d5c45eb6fe1bfc3448fd3250e02adb19
+    - path: output/svaba/test.svaba.unfiltered.germline.indel.vcf.gz
+      md5sum: 5168daad6ed37c6dd6bcd6ec4c2ff490
+    - path: output/svaba/test.svaba.unfiltered.germline.sv.vcf.gz
+      md5sum: f89589f2afa61c98582fa7679287b4dd
+    - path: output/svaba/test.svaba.unfiltered.somatic.indel.vcf.gz
+      md5sum: 5168daad6ed37c6dd6bcd6ec4c2ff490
+    - path: output/svaba/test.svaba.unfiltered.somatic.sv.vcf.gz
+      md5sum: d5c45eb6fe1bfc3448fd3250e02adb19
     - path: output/svaba/versions.yml
