@@ -45,7 +45,11 @@ process LOFREQ3_PREPROCESSING {
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
+<<<<<<< HEAD
     fname = fq1.name.replace('.fq','').replace('.fastq','').replace('.gz','')
+=======
+    fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
+>>>>>>> Varcalling and pileup processes added. Bam outname edited. Extra nf-c… (#3208)
     obam = fname + ".bam"
 
     when:
