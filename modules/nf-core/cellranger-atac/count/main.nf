@@ -1,5 +1,5 @@
 process CELLRANGER_ATAC_COUNT {
-    tag "$meta.gem"
+    tag "$meta.id"
     label 'process_high'
 
     if (params.enable_conda) {
@@ -12,7 +12,7 @@ process CELLRANGER_ATAC_COUNT {
     path  reference
 
     output:
-    tuple val(meta), path("sample-${meta.gem}/outs/*"), emit: outs
+    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
     path "versions.yml"                               , emit: versions
 
     when:
@@ -25,7 +25,7 @@ process CELLRANGER_ATAC_COUNT {
     """
     cellranger-atac \\
         count \\
-        --id='sample-${meta.gem}' \\
+        --id='${meta.id}' \\
         --fastqs=. \\
         --reference=$reference_name \\
         --sample=$sample_arg \\
@@ -41,8 +41,8 @@ process CELLRANGER_ATAC_COUNT {
 
     stub:
     """
-    mkdir -p "sample-${meta.gem}/outs/"
-    touch sample-${meta.gem}/outs/fake_file.txt
+    mkdir -p "${meta.id}/outs/"
+    touch ${meta.id}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
