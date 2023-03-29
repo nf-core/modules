@@ -50,11 +50,11 @@ output:
       pattern: "*.fq.gz"
   - aln:
       type: file
-      description: OPTIONAL Alignment file of the simulated reads
+      description: OPTIONAL Alignment file of the simulated reads. Enabled by default, to disable, use -na/--noALN.
       pattern: "*.aln"
   - sam:
       type: file
-      description: OPTIONAL Alignment file in SAM format of the simulated reads
+      description: OPTIONAL Alignment file in SAM format of the simulated reads. Enabled with -sam/--samout.
       pattern: "*.sam"
 
 authors:
