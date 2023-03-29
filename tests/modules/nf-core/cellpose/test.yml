@@ -1,11 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml cellpose
-- name: "cellpose"
+- name: cellpose test_cellpose
   command: nextflow run ./tests/modules/nf-core/cellpose -entry test_cellpose -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellpose/nextflow.config
   tags:
-    - "cellpose"
+    - cellpose
   files:
-    - path: "output/cellpose/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/cellpose/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/cellpose/cycif_tonsil_small.ome_cp_masks.tif
+      md5sum: ed55fc12c7c6efde1192050d0feeffee
+    - path: output/cellpose/versions.yml

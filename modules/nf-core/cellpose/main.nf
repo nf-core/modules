@@ -13,7 +13,8 @@ process CELLPOSE {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*mask.tif"), emit: mcquant
+    tuple val(meta), path("*masks.tif"),   emit: mask
+    path "versions.yml"                ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,15 +26,16 @@ process CELLPOSE {
     """
     cellpose \
     --image_path $image \
-    --channel_axis=0 \
+    --channel_axis 0 \
     --no_npy \
+    --diameter 8 \
     --save_tif \
     --verbose
     $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellpose: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        cellpose: \$(echo 2.1.1_cv1)
     END_VERSIONS
     """
     stub:
