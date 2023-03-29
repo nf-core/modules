@@ -34,3 +34,25 @@
         - "GAGCTACCAGACGAATTCGTGGTGGTGACGGTAAAATGAAAGATCTCAGTCCAAGATGGTATTTCTACTACCTAGGAACTGGGCCAGAAGCTGGACTTCCCTATGGTGCTAACAAAGACGGCATCATATGGGTTGCAACTGAGGGAGCCT"
         - "1CCGGGGGGGCGGGJJJJJGJG1GJGJ=JGJJCJJJCJJJGJ1GJGJGGJJC8JGG=JGGCGCCGCGGCCCGJCGGGGCJC==CGG88CGGGCGGGCCCGGC8JJJJCGGCGGCCGGGG=CGGGGCCGGCCCGCGCCCCG8GGGG=GGGC"
     - path: output/art/versions.yml
+
+- name: art illumina test_art_illumina_single_end_stub
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config -stub
+  tags:
+    - art
+    - art/illumina
+  files:
+    - path: output/art/test.aln
+    - path: output/art/test.fq.gz
+    - path: output/art/versions.yml
+
+- name: art illumina test_art_illumina_paired_end_stub
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config -stub
+  tags:
+    - art
+    - art/illumina
+  files:
+    - path: output/art/test1.aln
+    - path: output/art/test1.fq.gz
+    - path: output/art/test2.aln
+    - path: output/art/test2.fq.gz
+    - path: output/art/versions.yml

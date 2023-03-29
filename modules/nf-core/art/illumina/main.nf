@@ -1,4 +1,5 @@
 process ART_ILLUMINA {
+
     tag "$meta.id"
     label 'process_single'
 
@@ -42,6 +43,26 @@ process ART_ILLUMINA {
         $args2 \\
         $prefix*.fq
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        art: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2016.06.05'
+    """
+    touch ${prefix}.fq && gzip --no-name ${prefix}.fq
+    touch ${prefix}1.fq && gzip --no-name ${prefix}1.fq
+    touch ${prefix}2.fq && gzip --no-name ${prefix}2.fq
+    touch ${prefix}.aln
+    touch ${prefix}1.aln
+    touch ${prefix}2.aln
+    touch ${prefix}.sam
+    touch ${prefix}1.sam
+    touch ${prefix}2.sam
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         art: $VERSION
