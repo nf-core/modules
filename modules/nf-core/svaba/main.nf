@@ -13,15 +13,12 @@ process SVABA {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
     tuple val(meta4), path(bwa_index)
-    path dbsnp
-    path dbsnp_tbi
+    tuple val(meta5), path(dbsnp)
+    tuple val(meta6), path(dbsnp_tbi)
     path regions
 
     output:
-    tuple val(meta), path("*.svaba*vcf")                    , emit: sv
-    tuple val(meta), path("*.svaba*vcf")                    , emit: indel
-    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_sv
-    tuple val(meta), path("*.svaba.unfiltered*vcf")         , emit: unfiltered_indel
+    tuple val(meta), path("*.vcf.gz")                       , emit: vcfs
     tuple val(meta), path("*.bps.txt.gz")                   , emit: raw_calls
     tuple val(meta), path("*.discordants.txt.gz")           , emit: discordants, optional: true
     tuple val(meta), path("*.log")                          , emit: log
@@ -33,9 +30,9 @@ process SVABA {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def bamlist = normalbam ? "-t ${tumorbam} -n ${normalbam}" : "-t ${tumorbam}"
-    def dbsnp   = dbsnp ? "-D ${dbsnp}" : ""
-    def regions = regions ? "-k ${regions}" : ""
+    def bamlist = normalbam ? "--case-bam ${tumorbam} --control-bam ${normalbam}" : "--case-bam ${tumorbam}"
+    def dbsnp   = dbsnp ? "--dbsnp-vcf ${dbsnp}" : ""
+    def regions = regions ? "--region ${regions}" : ""
     def bwa     = bwa_index ? "cp -s ${bwa_index}/* ." : ""
 
     """
@@ -44,12 +41,24 @@ process SVABA {
     svaba \\
         run \\
         $bamlist \\
-        -p $task.cpus \\
+        --threads $task.cpus \\
         $dbsnp \\
-        -a $meta.id \\
-        -G $fasta \\
+        --id-string $meta.id \\
+        --reference-genome $fasta \\
+        --g-zip \\
         $regions \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        svaba: \$(echo \$(svaba --version 2>&1) | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/' ))
+    END_VERSIONS
+    """
+        stub:
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.bps.txt.gz
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
