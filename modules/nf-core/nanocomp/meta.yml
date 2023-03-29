@@ -30,10 +30,79 @@ output:
   - meta:
       type: map
       description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
-  - html_nanocomp_output:
+  - nanocomp_report_html:
       type: file
-      description: List of html report files
-      pattern: "*.{html}"
+      description: Summary of all collected statistics
+      pattern: "*NanoComp-report.html"
+  - nanocomp_lengths_violin_html:
+      type: file
+      description: Violin plot of the sequence lengths
+      pattern: "*NanoComp_lengths_violin.html"
+  - nanocomp_log_length_violin_html:
+      type: file
+      description: Violin plot of the sequence lengths, log function applied
+      pattern: "*NanoComp_log_length_violin.html"
+  - nanocomp_n50_html:
+      type: file
+      description: Bar plot of N50 sequence length per sample
+      pattern: "*NanoComp_N50.html"
+  - nanocomp_number_of_reads_html:
+      type: file
+      description: Bar plot of number of reads per sample
+      pattern: "*NanoComp_number_of_reads.html"
+  - nanocomp_overlay_histogram_html:
+      type: file
+      description: Histogram of all read lengths per sample
+      pattern: "*NanoComp_OverlayHistogram.html"
+  - nanocomp_overlay_histogram_normalized_html:
+      type: file
+      description: Normalized histogram of all read lengths per sample
+      pattern: "*NanoComp_OverlayHistogram_Normalized.html"
+  - nanocomp_overlay_log_histogram_html:
+      type: file
+      description: Histogram of all read lengths per sample, log function applied
+      pattern: "*NanoComp_OverlayLogHistogram.html"
+  - nanocomp_overlay_log_histogram_normalized_html:
+      type: file
+      description: Normalized histogram of all read lengths per sample, log function applied
+      pattern: "*NanoComp_OverlayLogHistogram_Normalized.html"
+  - nanocomp_total_throughput_html:
+      type: file
+      description: Barplot comparing throughput in bases
+      pattern: "*NanoComp_total_throughput.html"
+  - nanocomp_quals_violin_html:
+      type: file
+      description: Violin plot of base qualities, only for bam, fastq and sequencing summary input
+      pattern: "*NanoComp_quals_violin.html"
+  - nanocomp_overlay_histogram_identity_html:
+      type: file
+      description: Histogram of perfect reference identity, only for bam input
+      pattern: "*NanoComp_OverlayHistogram_Identity.html"
+  - nanocomp_overlay_histogram_phredscore_html:
+      type: file
+      description: Histogram of phred scores, only for bam input
+      pattern: "*NanoComp_OverlayHistogram_PhredScore.html"
+  - nanocomp_percent_identity_violin_html:
+      type: file
+      description: Violin plot comparing perfect reference identity, only for bam input
+      pattern: "*NanoComp_percentIdentity_violin.html"
+  - nanocomp_active_pores_over_time_html:
+      type: file
+      description: Scatter plot of active pores over time, only for sequencing summary input
+      pattern: "*NanoComp_ActivePoresOverTime.html"
+  - nanocomp_cumulative_yield_plot_gigabases_html:
+      type: file
+      description: Scatter plot of cumulative yield, only for sequencing summary input
+      pattern: "*NanoComp_CumulativeYieldPlot_Gigabases.html"
+  - nanocomp_sequencing_speed_over_time_html:
+      type: file
+      description: Scatter plot of sequencing speed over time, only for sequencing summary input
+      pattern: "*NanoComp_sequencing_speed_over_time.html"
+  - nanocomp_stats_txt:
+      type: file
+      description: txt file with basic statistics
+      pattern: "*NanoStats.txt"
+
 
 authors:
   - "@paulwolk"

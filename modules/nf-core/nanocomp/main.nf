@@ -10,7 +10,24 @@ process NANOCOMP {
     tuple val(meta), path(filelist)
 
     output:
-    tuple val(meta), path("*.html"), emit: html_nanocomp_output
+    tuple val(meta), path("*NanoComp-report.html"), emit: nanocomp_report_html
+    tuple val(meta), path("*NanoComp_lengths_violin.html"), emit: nanocomp_lengths_violin_html
+    tuple val(meta), path("*NanoComp_log_length_violin.html"), emit: nanocomp_log_length_violin_html
+    tuple val(meta), path("*NanoComp_N50.html"), emit: nanocomp_n50_html
+    tuple val(meta), path("*NanoComp_number_of_reads.html"), emit: nanocomp_number_of_reads_html
+    tuple val(meta), path("*NanoComp_OverlayHistogram.html"), emit: nanocomp_overlay_histogram_html
+    tuple val(meta), path("*NanoComp_OverlayHistogram_Normalized.html"), emit: nanocomp_overlay_histogram_normalized_html
+    tuple val(meta), path("*NanoComp_OverlayLogHistogram.html"), emit: nanocomp_overlay_log_histogram_html
+    tuple val(meta), path("*NanoComp_OverlayLogHistogram_Normalized.html"), emit: nanocomp_overlay_log_histogram_normalized_html
+    tuple val(meta), path("*NanoComp_total_throughput.html"), emit: nanocomp_total_throughput_html
+    tuple val(meta), path("*NanoComp_quals_violin.html"), emit: nanocomp_quals_violin_html, optional: true
+    tuple val(meta), path("*NanoComp_OverlayHistogram_Identity.html"), emit: nanocomp_overlay_histogram_identity_html, optional: true
+    tuple val(meta), path("*NanoComp_OverlayHistogram_PhredScore.html"), emit: nanocomp_overlay_histogram_phredscore_html, optional: true
+    tuple val(meta), path("*NanoComp_percentIdentity_violin.html"), emit: nanocomp_percent_identity_violin_html, optional: true
+    tuple val(meta), path("*NanoComp_ActivePoresOverTime.html"), emit: nanocomp_active_pores_over_time_html, optional: true
+    tuple val(meta), path("*NanoComp_CumulativeYieldPlot_Gigabases.html"), emit: nanocomp_cumulative_yield_plot_gigabases_html, optional: true
+    tuple val(meta), path("*NanoComp_sequencing_speed_over_time.html"), emit: nanocomp_sequencing_speed_over_time_html, optional: true
+    tuple val(meta), path("*NanoStats.txt"), emit: nanocomp_stats_txt
     path "versions.yml", emit: versions
 
     when:
@@ -50,7 +67,7 @@ process NANOCOMP {
                 extension_found = true
                 break
             } else if (namepart == "bam") {
-                filetypes.add("fasta")
+                filetypes.add("bam")
                 extension_found = true
                 break
             } else if (namepart == "txt") {
@@ -85,5 +102,28 @@ process NANOCOMP {
     "${task.process}":
         nanocomp: \$(echo \$(NanoComp --version 2>&1) | sed 's/^.*NanoComp //; s/Using.*\$//' ))
     END_VERSIONS
+    """
+    
+    stub:
+    """
+    touch versions.yml
+    touch NanoComp_lengths_violin.html
+    touch NanoComp_log_length_violin.html
+    touch NanoComp_N50.html
+    touch NanoComp_number_of_reads.html
+    touch NanoComp_OverlayHistogram.html
+    touch NanoComp_OverlayHistogram_Normalized.html
+    touch NanoComp_OverlayLogHistogram.html
+    touch NanoComp_OverlayLogHistogram_Normalized.html
+    touch NanoComp-report.html
+    touch NanoComp_total_throughput.html
+    touch NanoComp_quals_violin.html
+    touch NanoComp_OverlayHistogram_Identity.html
+    touch NanoComp_OverlayHistogram_PhredScore.html
+    touch NanoComp_percentIdentity_violin.html
+    touch NanoComp_ActivePoresOverTime.html
+    touch NanoComp_CumulativeYieldPlot_Gigabases.html
+    touch NanoComp_sequencing_speed_over_time.html
+    touch NanoStats.txt
     """
 }
