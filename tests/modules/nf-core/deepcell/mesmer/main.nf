@@ -8,7 +8,7 @@ workflow test_deepcell {
 
     img = [
         [ id:'test_img'], // meta map
-        file("/workspace/modules/to_test/cycif_tonsil_small.ome.tif", checkIfExists: true)
+        file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
     ]
     MESMER ( img )
 }

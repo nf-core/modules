@@ -3,7 +3,7 @@ process MESMER {
     label 'process_medium'
 
     // Setting up the container to latest all the time because why not.
-    container "vanvalenlab/deepcell-applications:latest"
+    container "vanvalenlab/deepcell-applications:0.4.0"
 
     // Mesmer, requieres one image to segment and the mpp(microns per pixel)
     input:
@@ -32,7 +32,7 @@ process MESMER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepcell_mesmer_whole_cell: \$(echo latest)
+        deepcell_mesmer: \$(echo 0.4.0)
     END_VERSIONS
     """
 }
