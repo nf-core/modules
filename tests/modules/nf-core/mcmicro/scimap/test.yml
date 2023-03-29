@@ -1,8 +1,8 @@
 - name: mcmicro scimap test_mcmicro_scimap
   command: nextflow run ./tests/modules/nf-core/mcmicro/scimap -entry test_mcmicro_scimap -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mcmicro/scimap/nextflow.config
   tags:
-    - mcmicro
     - mcmicro/scimap
+    - mcmicro
   files:
     - path: output/mcmicro/cycif_tonsil_cell.h5ad
       contains:
@@ -10,3 +10,4 @@
     - path: output/mcmicro/cycif_tonsil_cell.h5ad.csv
       contains:
         - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/mcmicro/versions.yml

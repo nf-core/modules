@@ -2,14 +2,20 @@ process MCMICRO_SCIMAP {
     tag "$meta.id"
     label 'process_single'
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     container "labsyspharm/scimap:0.22.0"
 
     input:
     tuple val(meta), path(cellbyfeature)
 
     output:
-    tuple val(meta), path("*.csv"), emit: annotedDataCsv, optional:true
-    tuple val(meta), path("*.h5ad"), emit: annotedDataH5ad, optional:true
+    tuple val(meta), path("*.csv")      , emit: annotedDataCsv, optional:true
+    tuple val(meta), path("*.h5ad")     , emit: annotedDataH5ad, optional:true
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,8 +23,14 @@ process MCMICRO_SCIMAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION='0.22.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    scimap-mcmicro $cellbyfeature ${prefix} ${args}
+    scimap-mcmicro $cellbyfeature -o ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        scimap: $VERSION 
+    END_VERSIONS
     """
 
 }
