@@ -24,7 +24,6 @@ process CHOPPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     zcat \\
         $args \\
