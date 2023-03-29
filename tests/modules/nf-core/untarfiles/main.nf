@@ -2,32 +2,32 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR_FILES } from '../../../../modules/nf-core/untar_files/main.nf'
+include { UNTARFILES } from '../../../../modules/nf-core/untarfiles/main.nf'
 
-workflow test_untar_files {
+workflow test_untarfiles {
     input = [
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
     ]
 
-    UNTAR_FILES ( input )
+    UNTARFILES ( input )
 }
 
-workflow test_untar_files_different_output_path {
+workflow test_untarfiles_different_output_path {
     input = [
         [id: 'test'],
         file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
     ]
 
-    UNTAR_FILES ( input )
+    UNTARFILES ( input )
 }
 
 
-workflow test_untar_files_onlyfiles {
+workflow test_untarfiles_onlyfiles {
     input = [
         [id: 'test'],
         file(params.test_data['generic']['tar']['tar_gz'], checkIfExists: true)
     ]
 
-    UNTAR_FILES ( input )
+    UNTARFILES ( input )
 }

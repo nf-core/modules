@@ -1,4 +1,4 @@
-process UNTAR_FILES {
+process UNTARFILES {
     tag "$archive"
     label 'process_single'
 
