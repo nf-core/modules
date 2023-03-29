@@ -19,6 +19,31 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
+        id: should be the identification number or sample name. If there is normal file meta should be common
+        e.g. [ id:'test' ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing FASTA information
+        id: should be the identification number for alignment file and should be the same used to create BWA index files
+        e.g. [ id:'fasta' ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing BWA information
+        id: should be the identification number same as fasta file
+        e.g. [ id:'bwa' ]
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing dbSNP information
+        id: should be the identification number for dbSNP files
+        e.g. [ id:'test' ]
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing regions information
+        id: should be the identification number for regions
         e.g. [ id:'test' ]
   - tumorbam:
       type: file
@@ -73,20 +98,8 @@ output:
       pattern: "versions.yml"
   - sv:
       type: file
-      description: SVs (If normal file exist, this will both include somatic and germline)
-      pattern: "*.vcf"
-  - indel:
-      type: file
-      description: Indels (If normal file exist, this will both include somatic and germline)
-      pattern: "*.vcf"
-  - unfiltered_sv:
-      type: file
-      description: Raw SVs (If normal file exist, this will both include somatic and germline)
-      pattern: "*.vcf"
-  - unfiltered_indel:
-      type: file
-      description: Raw Indels (If normal file exist, this will both include somatic and germline)
-      pattern: "*.vcf"
+      description: Raw and filtered SVs and Indels (If normal file exist, this will both include somatic and germline)
+      pattern: "*.vcf.gz"
   - raw_calls:
       type: file
       description: Raw, unfiltered variants
