@@ -8,7 +8,7 @@ workflow test_mindagap {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['spatialomics']['tiff']['mouse_heart_wga_tiff'], checkIfExists: true)
+        file(params.test_data['imaging']['tiff']['mouse_heart_wga_tiff'], checkIfExists: true)
     ]
 
     boxsize = 3
