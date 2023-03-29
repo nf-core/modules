@@ -9,3 +9,22 @@
     - path: output/kmcp/tmp/genome.fasta.unik
       md5sum: 158f49b1bdd8dd1aff91de66772509ff
     - path: output/kmcp/versions.yml
+
+- name: kmcp compute test_kmcp_compute_directory
+  command: nextflow run ./tests/modules/nf-core/kmcp/compute -entry test_kmcp_compute_directory -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/compute/nextflow.config
+  tags:
+    - kmcp/compute
+    - kmcp
+  files:
+    - path: output/kmcp/tmp/_info.txt
+      md5sum: ce6387006a2a72a5a85b5b7dcfb5c795
+    - path: output/kmcp/tmp/genome.fasta.unik
+      md5sum: 158f49b1bdd8dd1aff91de66772509ff
+    - path: output/kmcp/tmp/transcriptome.fasta.unik
+      md5sum: 1c81408c27fee27a2a7e28ba61bbe122
+    - path: output/kmcp/versions.yml
+    - path: output/untar/test/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
+    - path: output/untar/test/transcriptome.fasta
+      md5sum: b40600ad3be77f076df716e6cf99c64c
+    - path: output/untar/versions.yml

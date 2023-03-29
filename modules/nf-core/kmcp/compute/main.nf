@@ -27,7 +27,7 @@ process KMCP_COMPUTE {
         $args \\
         --threads $task.cpus \\
         --out-dir 'tmp/' \\
-        $input \\
+        $input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
