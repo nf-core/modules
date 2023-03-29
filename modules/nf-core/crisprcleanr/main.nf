@@ -13,7 +13,7 @@ process CRISPRCLEANR {
     val(min_targeted_genes)
 
     output:
-    tuple val(meta), path("*_norm_table.tsv"), emit: norm_count
+    tuple val(meta), path("*_norm_table.tsv"), emit: norm_count_file
     path "versions.yml"           , emit: versions
 
     when:
