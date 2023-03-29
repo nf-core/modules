@@ -2,11 +2,7 @@ process PURECN_COVERAGE {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO: This needs a proper container
-    // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
-    // cf: https://github.com/BioContainers/multi-package-containers/pull/2554
-
-    conda "bioconda::bioconductor-purecn=2.4.0"
+    conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
         'quay.io/biocontainers/YOUR-TOOL-HERE' }"
@@ -17,12 +13,12 @@ process PURECN_COVERAGE {
     path intervals
 
     output:
-    tuple val(meta), path("*.txt.gz"), emit: coverage
-    tuple val(meta), path("*_loess.png"), emit: coverage_loess_plot
-    tuple val(meta), path("*_loess_qc.txt"), emit: coverage_loess_qc
-    tuple val(meta), path("*_loess.txt.gz"), emit: coverage_loess
+    tuple val(meta), path("*.txt.gz")      , emit: txt
+    tuple val(meta), path("*_loess.png")   , emit: png
+    tuple val(meta), path("*_loess_qc.txt"), emit: loess_qc_txt, optional: true
+    tuple val(meta), path("*_loess.txt.gz"), emit: loess_txt   , optional: true
 
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
