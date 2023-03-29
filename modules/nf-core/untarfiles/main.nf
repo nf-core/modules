@@ -11,7 +11,7 @@ process UNTARFILES {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("${prefix}/**") , emit: files, optional: true
+    tuple val(meta), path("${prefix}/**") , emit: files
     path "versions.yml"                   , emit: versions
 
     when:
