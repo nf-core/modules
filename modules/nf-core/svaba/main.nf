@@ -11,11 +11,11 @@ process SVABA {
     input:
     tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
-    tuple val(meta4), path(bwa_index)
-    tuple val(meta5), path(dbsnp)
-    tuple val(meta6), path(dbsnp_tbi)
-    path regions
+    tuple val(meta2), path(fasta_fai)
+    tuple val(meta3), path(bwa_index)
+    tuple val(meta4), path(dbsnp)
+    tuple val(meta4), path(dbsnp_tbi)
+    tuple val(meta5), path(regions)
 
     output:
     tuple val(meta), path("*.vcf.gz")                       , emit: vcfs
@@ -30,7 +30,7 @@ process SVABA {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def bamlist = normalbam ? "--case-bam ${tumorbam} --control-bam ${normalbam}" : "--case-bam ${tumorbam}"
+    def bamlist = normalbam ? "-t ${tumorbam} -n ${normalbam}" : "-t ${tumorbam}"
     def dbsnp   = dbsnp ? "--dbsnp-vcf ${dbsnp}" : ""
     def regions = regions ? "--region ${regions}" : ""
     def bwa     = bwa_index ? "cp -s ${bwa_index}/* ." : ""
