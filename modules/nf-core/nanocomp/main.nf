@@ -23,7 +23,6 @@ process NANOCOMP {
     if ! [[ $filetype = @(fastq|fasta|summary|bam) ]]; then echo "Input should only be fastq, fasta, summary or bam type, but is $filetype" && exit 1; fi
     NanoComp \\
         --$filetype $filelist \\
-        --verbose \\
         --threads $task.cpus \\
         $args
 
