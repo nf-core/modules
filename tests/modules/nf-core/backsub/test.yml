@@ -1,0 +1,10 @@
+- name: backsub test_backsub
+  command: nextflow run ./tests/modules/nf-core/backsub -entry test_backsub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/backsub/nextflow.config
+  tags:
+    - backsub
+  files:
+    - path: output/backsub/img_backsub.ome.tif
+      md5sum: aa1f084dbba4e6aeab95829c3187187d
+    - path: output/backsub/markerout.csv
+      md5sum: 3bfaf306ca5df6ed501c7b12338bfb33
+    - path: output/backsub/versions.yml
