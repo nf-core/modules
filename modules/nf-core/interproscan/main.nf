@@ -42,7 +42,14 @@ process INTERPROSCAN {
 
     //  -dp (disable precalculation) is on so no online dependency
     """
-    interproscan.sh -i $fasta -f ${out_ext} -o ${prefix}.${out_ext} -dp -cpu $task.cpus ${appl} ${args}
+    interproscan.sh \\
+        -cpu $task.cpus \\
+        -i $fasta \\
+        -f ${out_ext} \\
+        -dp \\
+        ${appl} \\
+        ${args} \\
+        -o ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
