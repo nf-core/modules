@@ -10,24 +10,24 @@ process NANOCOMP {
     tuple val(meta), path(filelist)
 
     output:
-    tuple val(meta), path("*NanoComp-report.html"), emit: nanocomp_report_html
-    tuple val(meta), path("*NanoComp_lengths_violin.html"), emit: nanocomp_lengths_violin_html
-    tuple val(meta), path("*NanoComp_log_length_violin.html"), emit: nanocomp_log_length_violin_html
-    tuple val(meta), path("*NanoComp_N50.html"), emit: nanocomp_n50_html
-    tuple val(meta), path("*NanoComp_number_of_reads.html"), emit: nanocomp_number_of_reads_html
-    tuple val(meta), path("*NanoComp_OverlayHistogram.html"), emit: nanocomp_overlay_histogram_html
-    tuple val(meta), path("*NanoComp_OverlayHistogram_Normalized.html"), emit: nanocomp_overlay_histogram_normalized_html
-    tuple val(meta), path("*NanoComp_OverlayLogHistogram.html"), emit: nanocomp_overlay_log_histogram_html
-    tuple val(meta), path("*NanoComp_OverlayLogHistogram_Normalized.html"), emit: nanocomp_overlay_log_histogram_normalized_html
-    tuple val(meta), path("*NanoComp_total_throughput.html"), emit: nanocomp_total_throughput_html
-    tuple val(meta), path("*NanoComp_quals_violin.html"), emit: nanocomp_quals_violin_html, optional: true
-    tuple val(meta), path("*NanoComp_OverlayHistogram_Identity.html"), emit: nanocomp_overlay_histogram_identity_html, optional: true
-    tuple val(meta), path("*NanoComp_OverlayHistogram_PhredScore.html"), emit: nanocomp_overlay_histogram_phredscore_html, optional: true
-    tuple val(meta), path("*NanoComp_percentIdentity_violin.html"), emit: nanocomp_percent_identity_violin_html, optional: true
-    tuple val(meta), path("*NanoComp_ActivePoresOverTime.html"), emit: nanocomp_active_pores_over_time_html, optional: true
-    tuple val(meta), path("*NanoComp_CumulativeYieldPlot_Gigabases.html"), emit: nanocomp_cumulative_yield_plot_gigabases_html, optional: true
-    tuple val(meta), path("*NanoComp_sequencing_speed_over_time.html"), emit: nanocomp_sequencing_speed_over_time_html, optional: true
-    tuple val(meta), path("*NanoStats.txt"), emit: nanocomp_stats_txt
+    tuple val(meta), path("*NanoComp-report.html"), emit: report_html
+    tuple val(meta), path("*NanoComp_lengths_violin.html"), emit: lengths_violin_html
+    tuple val(meta), path("*NanoComp_log_length_violin.html"), emit: log_length_violin_html
+    tuple val(meta), path("*NanoComp_N50.html"), emit: n50_html
+    tuple val(meta), path("*NanoComp_number_of_reads.html"), emit: number_of_reads_html
+    tuple val(meta), path("*NanoComp_OverlayHistogram.html"), emit: overlay_histogram_html
+    tuple val(meta), path("*NanoComp_OverlayHistogram_Normalized.html"), emit: overlay_histogram_normalized_html
+    tuple val(meta), path("*NanoComp_OverlayLogHistogram.html"), emit: overlay_log_histogram_html
+    tuple val(meta), path("*NanoComp_OverlayLogHistogram_Normalized.html"), emit: overlay_log_histogram_normalized_html
+    tuple val(meta), path("*NanoComp_total_throughput.html"), emit: total_throughput_html
+    tuple val(meta), path("*NanoComp_quals_violin.html"), emit: quals_violin_html, optional: true
+    tuple val(meta), path("*NanoComp_OverlayHistogram_Identity.html"), emit: overlay_histogram_identity_html, optional: true
+    tuple val(meta), path("*NanoComp_OverlayHistogram_PhredScore.html"), emit: overlay_histogram_phredscore_html, optional: true
+    tuple val(meta), path("*NanoComp_percentIdentity_violin.html"), emit: percent_identity_violin_html, optional: true
+    tuple val(meta), path("*NanoComp_ActivePoresOverTime.html"), emit: active_pores_over_time_html, optional: true
+    tuple val(meta), path("*NanoComp_CumulativeYieldPlot_Gigabases.html"), emit: cumulative_yield_plot_gigabases_html, optional: true
+    tuple val(meta), path("*NanoComp_sequencing_speed_over_time.html"), emit: sequencing_speed_over_time_html, optional: true
+    tuple val(meta), path("*NanoStats.txt"), emit: stats_txt
     path "versions.yml", emit: versions
 
     when:
