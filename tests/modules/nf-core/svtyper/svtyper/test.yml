@@ -1,8 +1,8 @@
 - name: svtyper svtyper test_svtyper_svtyper
   command: nextflow run ./tests/modules/nf-core/svtyper/svtyper -entry test_svtyper_svtyper -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svtyper/svtyper/nextflow.config
   tags:
-    - svtyper/svtyper
     - svtyper
+    - svtyper/svtyper
   files:
     - path: output/svtyper/test.gt.vcf
       md5sum: ec7892bbd87b463565b5e209e99c7879
