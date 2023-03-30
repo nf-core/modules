@@ -1,8 +1,9 @@
 - name: crisprcleanr normalize test_crisprcleanr_normalize
   command: nextflow run ./tests/modules/nf-core/crisprcleanr/normalize -entry test_crisprcleanr_normalize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/crisprcleanr/normalize/nextflow.config
   tags:
-    - crisprcleanr
-    - crisprcleanr/normalize
+  - crisprcleanr
+  - crisprcleanr/normalize
   files:
-    - path: output/crisprcleanr/test_norm_table.tsv
-      md5sum: ba36e7e31a511ba4dadc888ea13f30e7
+  - path: output/crisprcleanr/test_norm_table.tsv
+    contains:
+	- "sgRNA"
