@@ -6,7 +6,7 @@ keywords:
   - genotyping
 tools:
   - "svtyper":
-      description: "Bayesian genotyper for structural variants"
+      description: "Compute genotype of structural variants based on breakpoint depth"
       homepage: "https://github.com/hall-lab/svtyper"
       documentation: " https://github.com/hall-lab/svtyper"
       tool_dev_url: "https://github.com/hall-lab/svtyper"
@@ -32,6 +32,14 @@ input:
       type: file
       description: Matching VCF of alignments
       pattern: "*.vcf"
+  - fasta:
+      type: file
+      description: FASTA file used to generate alignments
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: FAI file used to generate alignments
+      pattern: "*.{fai}"
 output:
   - meta:
       type: map
@@ -46,9 +54,13 @@ output:
       type: file
       description: JSON file including Library information
       pattern: "*.json"
-  - vcf:
+  - gt_vcf:
       type: file
       description: Genotyped SVs
       pattern: "*.vcf"
+  - bam:
+      type: file
+      description: Relevant alignments
+      pattern: "*.bam"
 authors:
   - "@kubranarci"
