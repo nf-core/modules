@@ -32,7 +32,7 @@ process SVTYPER_SVTYPER {
         $vcf \\
         --bam $bam \\
         --lib_info ${prefix}.json \\
-        --output_vcf ${prefix}.gt.vcf \\
+        --output_vcf ${prefix}.vcf \\
         --ref_fasta $fasta \\
         --write_alignment ${prefix}.bam \\
         $args
