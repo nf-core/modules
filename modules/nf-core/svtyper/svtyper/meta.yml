@@ -24,11 +24,6 @@ input:
       description: |
         Groovy Map containing sample information for FASTA file
         e.g. [ id:'fasta']
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information for FAI file
-        e.g. [ id:'fai']
   - bam:
       type: file
       description: BAM/CRAM/SAM file
@@ -63,7 +58,7 @@ output:
       type: file
       description: Genotyped SVs
       pattern: "*.vcf"
-  - bam:
+  - relevant_bam:
       type: file
       description: Relevant alignments
       pattern: "*.bam"
