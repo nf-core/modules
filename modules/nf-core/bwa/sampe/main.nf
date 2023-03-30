@@ -2,10 +2,10 @@ process BWA_SAMPE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bwa=0.7.17 bioconda::samtools=1.15.1" : null)
+    conda "bioconda::bwa=0.7.17 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:8110a70be2bfe7f75a2ea7f2a89cda4cc7732095-0' :
-        'quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:8110a70be2bfe7f75a2ea7f2a89cda4cc7732095-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:219b6c272b25e7e642ae3ff0bf0c5c81a5135ab4-0' :
+        'quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:219b6c272b25e7e642ae3ff0bf0c5c81a5135ab4-0' }"
 
     input:
     tuple val(meta), path(reads), path(sai)
@@ -24,14 +24,14 @@ process BWA_SAMPE {
     def read_group = meta.read_group ? "-r ${meta.read_group}" : ""
 
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
     bwa sampe \\
         $args \\
         $read_group \\
         \$INDEX \\
         $sai \\
-        $reads | samtools sort -@ ${task.cpus - 1} -O bam - > ${prefix}.bam
+        $reads | samtools sort -@ ${task.cpus} -O bam - > ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

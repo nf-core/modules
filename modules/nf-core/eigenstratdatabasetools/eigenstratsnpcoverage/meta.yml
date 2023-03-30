@@ -1,0 +1,57 @@
+name: "eigenstratdatabasetools_eigenstratsnpcoverage"
+description: Provide the SNP coverage of each individual in an eigenstrat formatted dataset.
+keywords:
+  - coverage
+  - eigenstrat
+  - eigenstratdatabasetools
+  - snp
+  - snps
+tools:
+  - "eigenstratdatabasetools":
+      description: "A set of tools to compare and manipulate the contents of EingenStrat databases, and to calculate SNP coverage statistics in such databases."
+
+      documentation: "https://github.com/TCLamnidis/EigenStratDatabaseTools/README.md"
+      tool_dev_url: "https://github.com/TCLamnidis/EigenStratDatabaseTools"
+
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - geno:
+      type: file
+      description: An Eigenstrat formatted genotype file
+      pattern: "*.{geno}"
+  - snp:
+      type: file
+      description: An Eigenstrat formatted snp file
+      pattern: "*.{snp}"
+  - ind:
+      type: file
+      description: An Eigenstrat formatted individual file
+      pattern: "*.{ind}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: A TSV table with the number of covered SNPs per individual.
+      pattern: "*.{tsv}"
+  - json:
+      type: file
+      description: A json table with the number of covered SNPs per individual.
+      pattern: "*.{json}"
+
+authors:
+  - "@TCLamnidis"

@@ -2,13 +2,15 @@ process DESEQ2_DIFFERENTIAL {
     tag "$meta"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bioconductor-deseq2=1.34.0" : null)
+    conda "bioconda::bioconductor-deseq2=1.34.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-deseq2%3A1.34.0--r41hc247a5b_3' :
+        'https://depot.galaxyproject.org/singularity/bioconductor-deseq2:1.34.0--r41hc247a5b_3' :
         'quay.io/biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
 
     input:
-    tuple val(meta), path(samplesheet), path(counts)
+    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta2), path(samplesheet), path(counts)
+    tuple val(control_genes_meta), path(control_genes_file)
 
     output:
     tuple val(meta), path("*.deseq2.results.tsv")              , emit: results
@@ -19,7 +21,7 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
     tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
     tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
-    tuple val(meta), path("versions.yml")                      , emit: versions
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

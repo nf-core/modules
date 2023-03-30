@@ -2,8 +2,8 @@ process GATK4_MARKDUPLICATES_SPARK {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312" : null)
-    container 'broadinstitute/gatk:4.3.0.0'
+    conda "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312"
+    container 'broadinstitute/gatk:4.4.0.0'
 
     input:
     tuple val(meta), path(bam)
@@ -25,14 +25,14 @@ process GATK4_MARKDUPLICATES_SPARK {
     def input_list = bam.collect{"--input $it"}.join(' ')
 
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK MarkDuplicatesSpark] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
+    gatk --java-options "-Xmx${avail_mem}M" MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\
         --reference $fasta \\

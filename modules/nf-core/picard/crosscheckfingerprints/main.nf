@@ -2,10 +2,10 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(input1)
@@ -26,15 +26,15 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     def input1_string = input1.join(" --INPUT ")
     def input2_string = input2 ? "--SECOND_INPUT " + input2.join(" --SECOND_INPUT ") : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard CrosscheckFingerprints] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         CrosscheckFingerprints \\
         $args \\
         --NUM_THREADS ${task.cpus} \\

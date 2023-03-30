@@ -2,10 +2,12 @@ process BASES2FASTQ {
     tag "$meta.id"
     label 'process_high'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using bases2fastq. Please use docker or singularity containers."
-    }
     container "elembio/bases2fastq:1.1.0"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(run_manifest), path(run_dir)

@@ -2,7 +2,7 @@ process MAPDAMAGE2 {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::mapdamage2=2.2.1" : null)
+    conda "bioconda::mapdamage2=2.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0' :
         'quay.io/biocontainers/mapdamage2:2.2.1--pyr40_0' }"
@@ -25,7 +25,7 @@ process MAPDAMAGE2 {
     tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf"), optional: true       ,emit: stats_out_mcmc_post_pred
     tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv"), optional: true    ,emit: stats_out_mcmc_correct_prob
     tuple val(meta), path("results_*/dnacomp_genome.csv"), optional: true                 ,emit: dnacomp_genome
-    tuple val(meta), path("results_*/rescaled.bam"), optional: true                       ,emit: rescaled
+    tuple val(meta), path("results_*/*rescaled.bam"), optional: true                      ,emit: rescaled
     tuple val(meta), path("results_*/5pCtoT_freq.txt"), optional: true                    ,emit: pctot_freq
     tuple val(meta), path("results_*/3pGtoA_freq.txt"), optional: true                    ,emit: pgtoa_freq
     tuple val(meta), path("results_*/*.fasta"), optional: true                            ,emit: fasta

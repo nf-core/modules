@@ -2,16 +2,17 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai,     optional: true
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,31 +21,19 @@ process PICARD_ADDORREPLACEREADGROUPS {
     script:
     def args = task.ext.args        ?: ''
     def prefix = task.ext.prefix    ?: "${meta.id}"
-    def ID = task.ext.id            ?: "id"
-    def LIBRARY= task.ext.library   ?: "library"
-    def PLATFORM= task.ext.platform ?: "illumina"
-    def BARCODE= task.ext.barcode   ?: "barcode"
-    def SAMPLE= task.ext.sample     ?: "sample"
-    def INDEX= task.ext.index       ?: "index"
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         AddOrReplaceReadGroups \\
         $args \\
         --INPUT ${bam} \\
-        --OUTPUT ${prefix}.bam \\
-        --RGID ${ID} \\
-        --RGLB ${LIBRARY} \\
-        --RGPL ${PLATFORM} \\
-        --RGPU ${BARCODE} \\
-        --RGSM ${SAMPLE} \\
-        --CREATE_INDEX true
+        --OUTPUT ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
