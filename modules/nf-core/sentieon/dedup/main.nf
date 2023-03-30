@@ -51,7 +51,7 @@ process SENTIEON_DEDUP {
     fi
 
     sentieon driver $args $input_list -r ${fasta} --algo LocusCollector $args2 --fun score_info ${prefix}.score
-    sentieon driver $driver_args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix}.score --metrics ${prefix}.metrics ${prefix}${suffix}
+    sentieon driver $args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix}.score --metrics ${prefix}.metrics ${prefix}${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
