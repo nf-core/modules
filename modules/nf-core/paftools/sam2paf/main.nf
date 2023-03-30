@@ -9,10 +9,11 @@ process PAFTOOLS_SAM2PAF {
         'quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0' }"
 
     input:
-    tuple val( meta ), path( bam )
+    tuple val(meta), path(bam)
 
     output:
-    tuple val( meta ), file( "*.paf" )      ,emit: paf
+    tuple val(meta), file("*.paf")      , emit: paf
+    path "versions.yml"                     , emit: versions
 
     script:
     def args    = task.ext.args     ?: ""
