@@ -7,17 +7,17 @@ include { MCQUANT } from '../../../../modules/nf-core/mcquant/main.nf'
 workflow test_mcquant {
 
     image = [
-        [ id:'test' ], // meta map
+        [ id:'image' ], // meta map
         file(params.test_data['imaging']['quantification']['image'], checkIfExists: true)
     ]
 
     mask = [
-        [ id:'test' ], // meta map
+        [ id:'mask' ], // meta map
         file(params.test_data['imaging']['quantification']['mask'], checkIfExists: true)
     ]
 
     markerfile = [
-        [ id:'test' ], // meta map
+        [ id:'marker' ], // meta map
         file(params.test_data['imaging']['quantification']['markers'], checkIfExists: true)
     ]
 
