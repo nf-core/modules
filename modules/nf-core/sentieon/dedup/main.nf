@@ -61,6 +61,7 @@ process SENTIEON_DEDUP {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.cram
     touch ${prefix}.cram.crai
