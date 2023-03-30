@@ -23,7 +23,7 @@ process HYPO {
 
     script:
     def args = task.ext.args ?: ''
-    // def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "${reads.join(' ')}" | tr " " "\\n" > sr.fofn
@@ -34,6 +34,7 @@ process HYPO {
         -c $reads_coverage \\
         -s $genome_size \\
         -t $task.cpus \\
+        -o hypo_${prefix}.fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
