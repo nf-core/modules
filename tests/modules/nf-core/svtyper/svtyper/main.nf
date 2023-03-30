@@ -6,9 +6,12 @@ include { SVTYPER_SVTYPER } from '../../../../../modules/nf-core/svtyper/svtyper
 
 
 workflow test_svtyper_svtyper {
-    ref = [
+    fasta = [
         [id:"ref"],
-        fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+        fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [
+        [id:"ref"],
         fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     ]
     input = [
@@ -18,5 +21,5 @@ workflow test_svtyper_svtyper {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
     ]
 
-    SVTYPER_SVTYPER ( input, ref )
+    SVTYPER_SVTYPER ( input, fasta, fai )
 }
