@@ -38,7 +38,7 @@ process SVTYPER_SVTYPER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        svtyper: \$(echo \$(svtyper -h 2>&1 | grep "version:" | sed 's/^version: //'))
+        svtyper: \$(echo \$(svtyper -h 2>&1 | grep "version:" | sed 's/^version: v//'))
     END_VERSIONS
     """
     stub:
