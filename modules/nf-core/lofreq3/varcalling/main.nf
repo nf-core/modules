@@ -3,10 +3,12 @@ process LOFREQ3_VARCALLING {
     tag "$meta.id"
     label 'process_low'
 
-    conda "YOUR-TOOL-HERE"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/vojalu/lofreq:3.0' }"
+    //conda "lofreq:3.0"
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //    'https://depot.galaxyproject.org/singularity/lofreq:3.0':
+    //    'quay.io/biocontainers/lofreq:3.0' }"
+    container 'quay.io/vojalu/lofreq:3.0'
+"
 
     input:
     tuple val(meta),
