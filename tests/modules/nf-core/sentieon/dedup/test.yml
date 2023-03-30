@@ -14,7 +14,7 @@
       md5sum: 4a36fe59dc6865cd5ee9e7ecd936106e
     - path: ./output/sentieon/versions.yml
 - name: sentieon test_dedup_remove_duplicate_reads
-  command: nextflow run ./tests/modules/nf-core/sentieon/dedup -entry test_dedup_remove_duplicate_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dedup/nextflow.config --rmdup
+  command: nextflow run ./tests/modules/nf-core/sentieon/dedup -entry test_dedup_remove_duplicate_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dedup/nextflow.config
   tags:
     - sentieon
     - sentieon/dedup
