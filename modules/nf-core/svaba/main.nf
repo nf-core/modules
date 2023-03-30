@@ -1,91 +1,51 @@
-
-process SVABA {
-    tag "$meta.id"
+process BWA_INDEX {
+    tag "$fasta"
     label 'process_single'
 
-    conda "bioconda::svaba=1.1.0"
+    conda "bioconda::bwa=0.7.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svaba:1.1.0--h7d7f7ad_2':
-        'quay.io/biocontainers/svaba:1.1.0--h7d7f7ad_2' }"
+        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7' :
+        'quay.io/biocontainers/bwa:0.7.17--hed695b0_7' }"
 
     input:
-    tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)
-    tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fasta_fai)
-    tuple val(meta3), path(bwa_index)
-    tuple val(meta4), path(dbsnp)
-    tuple val(meta4), path(dbsnp_tbi)
-    tuple val(meta5), path(regions)
+    tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.svaba.sv.vcf.gz")                        , emit: sv, optional: true
-    tuple val(meta), path("*.svaba.indel.vcf.gz")                     , emit: indel, optional: true
-    tuple val(meta), path("*.svaba.germline.indel.vcf.gz")            , emit: germ_indel, optional: true
-    tuple val(meta), path("*.svaba.germline.sv.vcf.gz")               , emit: germ_sv, optional: true
-    tuple val(meta), path("*.svaba.somatic.indel.vcf.gz")             , emit: som_indel,  optional: true
-    tuple val(meta), path("*.svaba.somatic.sv.vcf.gz")                , emit: som_sv, optional: true
-    tuple val(meta), path("*.svaba.unfiltered.sv.vcf.gz")             , emit: unfiltered_sv, optional: true
-    tuple val(meta), path("*.svaba.unfiltered.indel.vcf.gz")          , emit: unfiltered_indel, optional: true
-    tuple val(meta), path("*.svaba.unfiltered.germline.indel.vcf.gz") , emit: unfiltered_germ_indel, optional: true
-    tuple val(meta), path("*.svaba.unfiltered.germline.sv.vcf.gz")    , emit: unfiltered_germ_sv, optional: true
-    tuple val(meta), path("*.svaba.unfiltered.somatic.indel.vcf.gz")  , emit: unfiltered_som_indel,  optional: true
-    tuple val(meta), path("*.svaba.unfiltered.somatic.sv.vcf.gz")     , emit: unfiltered_som_sv, optional: true
-    tuple val(meta), path("*.bps.txt.gz")                             , emit: raw_calls
-    tuple val(meta), path("*.discordants.txt.gz")                     , emit: discordants, optional: true
-    tuple val(meta), path("*.log")                                    , emit: log
-    path "versions.yml"                                               , emit: versions
+    tuple val(meta), path(bwa) , emit: index
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def bamlist = normalbam ? "-t ${tumorbam} -n ${normalbam}" : "-t ${tumorbam}"
-    def dbsnp   = dbsnp ? "--dbsnp-vcf ${dbsnp}" : ""
-    def regions = regions ? "--region ${regions}" : ""
-    def bwa     = bwa_index ? "cp -s ${bwa_index}/* ." : ""
-
+    def args = task.ext.args ?: ''
     """
-    ${bwa}
-
-    svaba \\
-        run \\
-        $bamlist \\
-        --threads $task.cpus \\
-        $dbsnp \\
-        --id-string $meta.id \\
-        --reference-genome $fasta \\
-        --g-zip \\
-        $regions \\
-        $args
+    mkdir bwa
+    bwa \\
+        index \\
+        $args \\
+        -p bwa/${fasta} \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        svaba: \$(echo \$(svaba --version 2>&1) | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/' )
+        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
+
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.svaba.sv.vcf.gz
-    touch ${prefix}.svaba.indel.vcf.gz
-    touch ${prefix}.svaba.germline.indel.vcf.gz
-    touch ${prefix}.svaba.germline.sv.vcf.gz
-    touch ${prefix}.svaba.somatic.sv.vcf.gz
-    touch ${prefix}.svaba.somatic.indel.vcf.gz
-    touch ${prefix}.svaba.unfiltered.sv.vcf.gz
-    touch ${prefix}.svaba.unfiltered.indel.vcf.gz
-    touch ${prefix}.svaba.unfiltered.germline.indel.vcf.gz
-    touch ${prefix}.svaba.unfiltered.germline.sv.vcf.gz
-    touch ${prefix}.svaba.unfiltered.somatic.sv.vcf.gz
-    touch ${prefix}.svaba.unfiltered.somatic.indel.vcf.gz
-    touch ${prefix}.bps.txt.gz
-    touch ${prefix}.log
+    mkdir bwa
+
+    touch bwa/genome.amb
+    touch bwa/genome.ann
+    touch bwa/genome.bwt
+    touch bwa/genome.pac
+    touch bwa/genome.sa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        svaba: \$(echo \$(svaba --version 2>&1) | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/' )
+        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
 }
