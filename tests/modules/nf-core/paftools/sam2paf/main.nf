@@ -5,8 +5,12 @@ include { PAFTOOLS_SAM2PAF } from '../../../../../modules/nf-core/paftools/sam2p
 
 workflow test_paftools_sam2paf {
     
-    input = file(params.test_data['homo_sapiens']['scramble']['bam'], checkIfExists: true)
+    input = [
+        [id:'test'],
+        file(params.test_data['homo_sapiens']['scramble']['bam'],
+        checkIfExists: true)
+    ]
 
-    PAFTOOLS_SAM2PAF ( [ [id:'test'], input ] )
+    PAFTOOLS_SAM2PAF ( input )
 
 }
