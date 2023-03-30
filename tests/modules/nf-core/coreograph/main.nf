@@ -8,7 +8,7 @@ workflow test_coreograph {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('/workspace/modules/tests/modules/nf-core/coreograph/TestdataCoreographHighRes.tif', checkIfExists: true)
+        file(params.test_data['imaging']['core_detection']['image'], checkIfExists: true)
     ]
 
     COREOGRAPH ( input )
