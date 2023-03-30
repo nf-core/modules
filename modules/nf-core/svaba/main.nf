@@ -68,7 +68,18 @@ process SVABA {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    touch ${prefix}.svaba.sv.vcf.gz
+    touch ${prefix}.svaba.indel.vcf.gz
+    touch ${prefix}.svaba.germline.indel.vcf.gz
+    touch ${prefix}.svaba.germline.sv.vcf.gz
+    touch ${prefix}.svaba.somatic.sv.vcf.gz
+    touch ${prefix}.svaba.somatic.indel.vcf.gz
+    touch ${prefix}.svaba.unfiltered.sv.vcf.gz
+    touch ${prefix}.svaba.unfiltered.indel.vcf.gz
+    touch ${prefix}.svaba.unfiltered.germline.indel.vcf.gz
+    touch ${prefix}.svaba.unfiltered.germline.sv.vcf.gz
+    touch ${prefix}.svaba.unfiltered.somatic.sv.vcf.gz
+    touch ${prefix}.svaba.unfiltered.somatic.indel.vcf.gz
     touch ${prefix}.bps.txt.gz
     touch ${prefix}.log
 
