@@ -1,0 +1,41 @@
+name: "fastq_umiextract_umitools"
+## TODO nf-core: Add a description of the subworkflow and list keywords
+description: Extract umis from a fastq read onto the
+keywords:
+  - fastq
+  - umi
+  - extract
+modules:
+  - cat/fastq
+  - seqkit/split2
+  - umitools/extract
+## TODO nf-core: List all of the variables used as input, including their types and descriptions
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+## TODO nf-core: List all of the variables used as output, including their types and descriptions
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path(reads) ]
+        The fastq reads with UMIs extracted and move into the read header
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@sppearce"
