@@ -58,6 +58,7 @@ process SENTIEON_BWAMEM {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
