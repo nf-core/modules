@@ -25,8 +25,6 @@ process CELLPOSE {
     """
     cellpose \
     --image_path $image \
-    --channel_axis 0 \
-    --no_npy \
     --save_tif \
     --verbose \
     $args
