@@ -5,7 +5,6 @@ process PURECN_INTERVALFILE {
     label 'process_low'
 
     // TODO: This needs a proper container
-    // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
     // cf: https://github.com/BioContainers/multi-package-containers/pull/2554
     conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,15 +12,15 @@ process PURECN_INTERVALFILE {
         'quay.io/biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-        tuple val(meta), path(target_bed)
-        path  fasta
-        val   genome
+    tuple val(meta), path(target_bed)
+    path  fasta
+    val   genome
 
     output:
-        tuple val(meta), path("*.txt"), emit: txt
-        // Only produced if --export is used
-        tuple val(meta), path("*.bed"), emit: bed, optional: true
-        path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.txt"), emit: txt
+    // Only produced if --export is used
+    tuple val(meta), path("*.bed"), emit: bed, optional: true
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,8 +29,7 @@ process PURECN_INTERVALFILE {
     def args = task.ext.args ?: ''
 
     """
-
-    library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
+    library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/IntervalFile.R --in-file ${target_bed} \\
         --fasta ${fasta} \\
         --out-file baits_intervals.txt \\
