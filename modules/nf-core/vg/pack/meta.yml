@@ -1,0 +1,49 @@
+name: "vg_pack"
+## TODO nf-core: Add a description of the module and list keywords
+description: Computes the read support from a gam file
+keywords:
+  - vg
+  - pack
+  - gam
+tools:
+  - "vg":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Variation graph data structures, interchange formats, alignment, genotyping, and variant calling methods"
+      homepage: "https://github.com/vgteam/vg"
+      documentation: "https://github.com/vgteam/vg/wiki"
+      licence: "['MIT']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - xg:
+      type: file
+      description: File containing a succint, queryable version of the input graph(s) or read for GCSA or distance indexing
+      pattern: "*.xg"
+  - gam:
+      type: file
+      description: GAM file
+      pattern: "*.gam"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - pack:
+      type: file
+      description: File containing supports for given input graph
+      pattern: "*.pack"
+authors:
+  - "@WackerO"
