@@ -65,7 +65,8 @@ process SVABA {
         svaba: \$(echo \$(svaba --version 2>&1) | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/' )
     END_VERSIONS
     """
-        stub:
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.bps.txt.gz
