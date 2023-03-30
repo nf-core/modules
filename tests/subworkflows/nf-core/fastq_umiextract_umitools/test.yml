@@ -12,10 +12,10 @@
   files:
     - path: output/cat/test_1.merged.fastq.gz
       contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/cat/test_2.merged.fastq.gz
       contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
 
 - name: fastq_umiextract_umitools test_fastq_umiextract_umitools_singleend
   command: nextflow run ./tests/subworkflows/nf-core/fastq_umiextract_umitools -entry test_fastq_umiextract_umitools_singleend -c ./tests/config/nextflow.config
@@ -31,4 +31,4 @@
   files:
     - path: output/cat/test.merged.fastq.gz
       contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
