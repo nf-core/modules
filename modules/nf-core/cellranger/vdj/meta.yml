@@ -32,7 +32,7 @@ output:
   - outs:
       type: file
       description: Files containing the outputs of Cell Ranger
-      pattern: "sample-${meta.gem}/outs/*"
+      pattern: "${meta.id}/outs/*"
   - versions:
       type: file
       description: File containing software version
