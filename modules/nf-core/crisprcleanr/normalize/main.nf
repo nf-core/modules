@@ -40,13 +40,16 @@ process CRISPRCLEANR {
 
     write.table(correctedCounts, file="all_norm_table.tsv",row.names=FALSE,quote=FALSE,sep="\t")
 
-    version_file_path <- "versions.yml"
-    version_crispr <- paste(unlist(packageVersion("CRISPRcleanR")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    CRISPRcleanR: ", f, sep = "")
-    writeLines(version_crispr, f)
-    close(f)
+    r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+    crisprcleanr.version <- as.character(packageVersion('CRISPRcleanR'))
+
+    writeLines(
+        c(
+            '"${task.process}":',
+            paste('    r-base:', r.version),
+            paste('    CRISPRcleanR:', crisprcleanr.version)
+        ),
+    'versions.yml')
 
     """
 }
