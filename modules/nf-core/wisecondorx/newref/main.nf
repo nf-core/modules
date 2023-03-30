@@ -26,7 +26,8 @@ process WISECONDORX_NEWREF {
     inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}
 
     """
-    WisecondorX newref \\
+    WisecondorX \\
+        newref \\
         *.npz \\
         ${prefix}.npz \\
         --cpus ${task.cpus} \\
