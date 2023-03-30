@@ -62,10 +62,10 @@ process SENTIEON_DEDUP {
 
     stub:
     """
-    touch test.cram
-    touch test.cram.crai
-    touch test.metrics
-    touch test.score
+    touch ${prefix}.cram
+    touch ${prefix}.cram.crai
+    touch ${prefix}.metrics
+    touch ${prefix}.score
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
