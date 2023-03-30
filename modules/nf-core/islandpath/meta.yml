@@ -6,10 +6,9 @@ keywords:
   - prediction
 tools:
   - "islandpath":
-      ## TODO nf-core: Add a description and other details for the software below
+   
       description:
-        "IslandPath-DIMOB is a standalone software to predict genomic islands in bacterial and archaeal genomes based on the presence of dinucleotide biases and mobility genes.
-        Genomic islands (GIs) are clusters of genes in prokaryotic genomes of probable horizontal origin."
+        "IslandPath-DIMOB is a standalone software to predict genomic islands (GIs - clusters of genes in prokaryotic genomes of probable horizontal origin) in bacterial and archaeal genomes based on the presence of dinucleotide biases and mobility genes."
       homepage: https://github.com/brinkmanlab/islandpath
       documentation: https://github.com/brinkmanlab/islandpath#readme
       tool_dev_url: https://github.com/brinkmanlab/islandpath
@@ -26,12 +25,19 @@ input:
       type: file
       description: |
         Genome file in .gbk or .embl format.
+        pattern: "*.{gbk, embl, gbff}"
+        
 
 output:
   - gff:
       type: file
       description: GFF file listing the predicted genomic islands and their coordinates
       pattern: "*.gff"
+  - log:
+      type: file
+      description: log file of the islandpath run
+      pattern: "*.log"
+      
   - versions:
       type: file
       description: File containing software versions

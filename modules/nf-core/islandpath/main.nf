@@ -11,7 +11,7 @@ process ISLANDPATH {
     tuple val(meta), path(genome)
 
     output:
-    tuple val(meta), path("*.gff"), emit: gff
+    tuple val(meta), path("*.gff")        , emit: gff
     path "Dimob.log"                      , emit: log
     path "versions.yml"                   , emit: versions
 
