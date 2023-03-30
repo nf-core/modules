@@ -34,7 +34,7 @@ process HYPO {
         -c $reads_coverage \\
         -s $genome_size \\
         -t $task.cpus \\
-        -o hypo_${prefix}.fasta \\
+        -o ${prefix}.fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
