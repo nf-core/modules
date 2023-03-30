@@ -10,9 +10,9 @@ process LOFREQ3_VARCALLING {
 
     input:
     tuple val(meta),
+          path(reffa),
           path(bam),
           path(bai),
-          path(reffa)
     val pileup
 
     output:

@@ -25,11 +25,6 @@ input:
       description: Reference FASTA file
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 
-  - reffa_index:
-      type: file
-      description: BWA genome index files
-      pattern: "Directory containing BWA index *.{amb,ann,bwt,fai,pac,sa}"
-
   - fq1:
       type: file
       description: Reads paired end 1
@@ -53,11 +48,24 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  
+  - reffa:
+      type: file
+      description: Reference FASTA file
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
+      description: Sorted BAM file
       pattern: "*.{bam}"
+  
+  - bai:
+      type: file
+      description: Index of sorted BAM file
+      pattern: "*.{bam}"
+
+
+
 
 authors:
   - "@gordondraskic"

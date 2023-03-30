@@ -11,7 +11,6 @@ process LOFREQ3_PREPROCESSING {
     input:
     tuple val(meta),
           path(reffa),
-          path(reffa_index),
           path(fq1),
           path(fq2)
 
@@ -34,9 +33,9 @@ process LOFREQ3_PREPROCESSING {
 
 
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+    bwa index $reffa
 
-    bwa mem \$INDEX $fq1 $fq2 | \
+    bwa mem $reffa $fq1 $fq2 | \
         samtools fixmate - - | \
         lofreq viterbi -f $reffa -b - | \
         samtools sort - | \

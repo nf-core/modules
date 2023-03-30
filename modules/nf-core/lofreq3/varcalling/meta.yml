@@ -30,9 +30,14 @@ input:
       description: BAM file from preprocessing
       pattern: "*.{bam}"
 
-  - lofreq3_dir:
-      type: directory
-      description: Directory with prepeocessed files
+  - bai:
+      type: file
+      description: BAM index file from preprocessing
+      pattern: "*.{bai}"
+
+  - pileup:
+      type: val
+      description: If true, pileup will be done in variant calling
 
 
 output:
