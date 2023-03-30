@@ -33,7 +33,7 @@ process SVTYPER_SVTYPER {
         --lib_info ${prefix}.json \\
         --output_vcf ${prefix}.gt.vcf \\
         --ref_fasta $fasta \\
-        --write_alignment ${prefix}.relevant.bam \\
+        --write_alignment ${prefix}.bam \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
