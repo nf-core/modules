@@ -1,8 +1,25 @@
-- name: sentieon dedup
+- name: sentieon dedup mark duplicate reads
   command: nextflow run ./tests/modules/nf-core/sentieon/dedup -entry test_sentieon_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dedup/nextflow.config
   tags:
     - sentieon
     - sentieon/dedup
+    - mark_duplicate_reads
+  files:
+    - path: ./output/sentieon/test.cram
+      md5sum: 6abb0fc667edc1ce61b67929c1ec0881
+    - path: ./output/sentieon/test.cram.crai
+      md5sum: f8da02b770410adb02561aa69a46cc15
+    - path: ./output/sentieon/test.metrics
+      md5sum: aba47c5fed7143500d91cc39df1e2eb2
+    - path: ./output/sentieon/test.score
+      md5sum: 4a36fe59dc6865cd5ee9e7ecd936106e
+    - path: ./output/sentieon/versions.yml
+- name: sentieon dedup remove duplicate reads
+  command: nextflow run ./tests/modules/nf-core/sentieon/dedup -entry test_sentieon_dedup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dedup/nextflow.config --rmdup
+  tags:
+    - sentieon
+    - sentieon/dedup
+    - remove_duplicate_reads
   files:
     - path: ./output/sentieon/test.cram
       md5sum: 6abb0fc667edc1ce61b67929c1ec0881
