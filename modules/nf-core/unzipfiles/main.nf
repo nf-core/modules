@@ -1,4 +1,4 @@
-process UNZIP {
+process UNZIPFILES {
     tag "$archive"
     label 'process_single'
 
@@ -11,8 +11,8 @@ process UNZIP {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: unzipped_archive
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${prefix}/**"), emit: files
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
