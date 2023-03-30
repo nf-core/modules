@@ -1,4 +1,4 @@
-process CRISPRCLEANR {
+process CRISPRCLEANR_NORMALIZE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -38,18 +38,15 @@ process CRISPRCLEANR {
                             minTargetedGenes=${min_targeted_genes},
                             OutDir='./')
 
-    write.table(correctedCounts, file="all_norm_table.tsv",row.names=FALSE,quote=FALSE,sep="\t")
+    write.table(correctedCounts, file=paste0("${meta.id}","_norm_table.tsv"),row.names=FALSE,quote=FALSE,sep="\t")
 
-    r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-    crisprcleanr.version <- as.character(packageVersion('CRISPRcleanR'))
-
-    writeLines(
-        c(
-            '"${task.process}":',
-            paste('    r-base:', r.version),
-            paste('    CRISPRcleanR:', crisprcleanr.version)
-        ),
-    'versions.yml')
+    version_file_path <- "versions.yml"
+    version_crisprcleanr <- paste(unlist(packageVersion("CRISPRcleanR")), collapse = ".")
+    f <- file(version_file_path, "w")
+    writeLines('"${task.process}":', f)
+    writeLines("    crisprcleanr: ", f, sep = "")
+    writeLines(version_crisprcleanr, f)
+    close(f)
 
     """
 }

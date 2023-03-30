@@ -2,9 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { CRISPRCLEANR } from '../../../../modules/nf-core/crisprcleanr/main.nf'
-
-workflow test_crisprcleanr {
+include { CRISPRCLEANR_NORMALIZE } from '../../../../../modules/nf-core/crisprcleanr/normalize/main.nf'
+workflow test_crisprcleanr_normalize {
 
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -12,5 +11,5 @@ workflow test_crisprcleanr {
         file(params.test_data['homo_sapiens']['genome']['crispr_functional_library'], checkIfExists: true)
     ]
 
-    CRISPRCLEANR ( input, 30, 5)
+    CRISPRCLEANR_NORMALIZE ( input, 30, 5)
 }
