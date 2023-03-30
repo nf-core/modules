@@ -59,8 +59,8 @@ process SENTIEON_BWAMEM {
 
     stub:
     """
-    touch test.bam
-    touch test.bam.bai
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
