@@ -13,7 +13,7 @@ process SVTYPER_SVTYPER {
     tuple val(meta2), path(fai)
 
     output:
-    tuple val(meta), path("*.json")        , emit: json
+    tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.vcf") , emit: gt_vcf
     tuple val(meta), path("*.bam") , emit: bam
     path "versions.yml"            , emit: versions
