@@ -38,7 +38,7 @@ process CELLPOSE {
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "2.1.1_cv1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = "2.1.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_cp_masks.tif
 
