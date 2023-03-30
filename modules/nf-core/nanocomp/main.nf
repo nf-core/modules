@@ -35,6 +35,13 @@ process NANOCOMP {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: ""
+    print(prefix)
+    if (prefix == ""){
+        prefixflag = ""
+    } else {
+        prefixflag = "--prefix " + prefix
+    }
 
     //determine input file type
     filetypes = []
@@ -96,6 +103,7 @@ process NANOCOMP {
     NanoComp \\
         --$filetype $filelist \\
         --threads $task.cpus \\
+        $prefixflag
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -105,25 +113,26 @@ process NANOCOMP {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: ""
     """
-    touch versions.yml
-    touch NanoComp_lengths_violin.html
-    touch NanoComp_log_length_violin.html
-    touch NanoComp_N50.html
-    touch NanoComp_number_of_reads.html
-    touch NanoComp_OverlayHistogram.html
-    touch NanoComp_OverlayHistogram_Normalized.html
-    touch NanoComp_OverlayLogHistogram.html
-    touch NanoComp_OverlayLogHistogram_Normalized.html
-    touch NanoComp-report.html
-    touch NanoComp_total_throughput.html
-    touch NanoComp_quals_violin.html
-    touch NanoComp_OverlayHistogram_Identity.html
-    touch NanoComp_OverlayHistogram_PhredScore.html
-    touch NanoComp_percentIdentity_violin.html
-    touch NanoComp_ActivePoresOverTime.html
-    touch NanoComp_CumulativeYieldPlot_Gigabases.html
-    touch NanoComp_sequencing_speed_over_time.html
-    touch NanoStats.txt
+    touch "${prefix}"versions.yml
+    touch "${prefix}"NanoComp_lengths_violin.html
+    touch "${prefix}"NanoComp_log_length_violin.html
+    touch "${prefix}"NanoComp_N50.html
+    touch "${prefix}"NanoComp_number_of_reads.html
+    touch "${prefix}"NanoComp_OverlayHistogram.html
+    touch "${prefix}"NanoComp_OverlayHistogram_Normalized.html
+    touch "${prefix}"NanoComp_OverlayLogHistogram.html
+    touch "${prefix}"NanoComp_OverlayLogHistogram_Normalized.html
+    touch "${prefix}"NanoComp-report.html
+    touch "${prefix}"NanoComp_total_throughput.html
+    touch "${prefix}"NanoComp_quals_violin.html
+    touch "${prefix}"NanoComp_OverlayHistogram_Identity.html
+    touch "${prefix}"NanoComp_OverlayHistogram_PhredScore.html
+    touch "${prefix}"NanoComp_percentIdentity_violin.html
+    touch "${prefix}"NanoComp_ActivePoresOverTime.html
+    touch "${prefix}"NanoComp_CumulativeYieldPlot_Gigabases.html
+    touch "${prefix}"NanoComp_sequencing_speed_over_time.html
+    touch "${prefix}"NanoStats.txt
     """
 }
