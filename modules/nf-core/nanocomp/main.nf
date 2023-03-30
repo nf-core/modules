@@ -35,7 +35,7 @@ process NANOCOMP {
 
     script:
     def args = task.ext.args ?: ''
-    
+
     //determine input file type
     filetypes = []
     for (file in filelist){
@@ -43,15 +43,15 @@ process NANOCOMP {
         if (tokenized_filename.size() < 2){
             throw new java.lang.IndexOutOfBoundsException("Every input file to nanocomp has to have a file ending.")
         }
-        
+
         first_namepart = true
         extension_found = false
-        
+
         for (namepart in tokenized_filename){
             if (namepart == ""){
                 continue
             }
-            
+
             // prevent the file name to be seen as extension
             if (first_namepart == true){
                 first_namepart = false
@@ -76,13 +76,13 @@ process NANOCOMP {
                 break
             }
         }
-        
+
         if (extension_found == false){
-            throw new java.lang.IllegalArgumentException("There was no suitable filetype found for " + file.getName() + 
+            throw new java.lang.IllegalArgumentException("There was no suitable filetype found for " + file.getName() +
             ". NanoComp only accepts fasta (fasta, fna, ffn, faa, frn, fa), fastq (fastq, fq), bam and Nanopore sequencing summary (txt).")
         }
     }
-    
+
     filetypes.unique()
     if (filetypes.size() < 1){
         throw new java.lang.IllegalArgumentException("There was no suitable filetype found in NanoComp input. Please use fasta, fastq, bam or Nanopore sequencing summary.")
@@ -103,7 +103,7 @@ process NANOCOMP {
         nanocomp: \$(echo \$(NanoComp --version 2>&1) | sed 's/^.*NanoComp //; s/Using.*\$//' ))
     END_VERSIONS
     """
-    
+
     stub:
     """
     touch versions.yml
