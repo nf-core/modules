@@ -15,7 +15,7 @@ process SVTYPER_SVTYPER {
 
     output:
     tuple val(meta), path("*.json")        , emit: json
-    tuple val(meta), path("*.gt.vcf")      , emit: gt_vcf
+    tuple val(meta), path("*.gt.vcf") , emit: gt_vcf
     tuple val(meta), path("*.relevant.bam"), emit: bam
     path "versions.yml"                    , emit: versions
 
@@ -32,9 +32,9 @@ process SVTYPER_SVTYPER {
         $vcf \\
         --bam $bam \\
         --lib_info ${prefix}.json \\
-        --output_vcf ${prefix}.vcf \\
+        --output_vcf ${prefix}.gt.vcf \\
         --ref_fasta $fasta \\
-        --write_alignment ${prefix}.bam \\
+        --write_alignment ${prefix}.relevant.bam \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
