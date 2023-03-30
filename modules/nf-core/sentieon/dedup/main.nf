@@ -32,6 +32,7 @@ process SENTIEON_DEDUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = '.cram'
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def input_list = bam.collect{"-i $it"}.join(' ')
@@ -46,8 +47,8 @@ process SENTIEON_DEDUP {
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
-    sentieon driver $input_list -r ${fasta} --algo LocusCollector --fun score_info ${prefix}.score
-    sentieon driver -t $task.cpus $input_list -r ${fasta} --algo Dedup $args --score_info ${prefix}.score --metrics ${prefix}.metrics ${prefix}
+    sentieon driver $input_list -r ${fasta} --algo LocusCollector --fun score_info ${prefix}${suffix}.score
+    sentieon driver -t $task.cpus $input_list -r ${fasta} --algo Dedup $args --score_info ${prefix}${suffix}.score --metrics ${prefix}${suffix}.metrics ${prefix}${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
