@@ -56,7 +56,6 @@ process SENTIEON_DEDUP {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
 
