@@ -1,4 +1,3 @@
-
 process SVTYPER_SVTYPER {
     tag "$meta.id"
     label 'process_medium'
