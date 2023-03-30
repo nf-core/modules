@@ -46,8 +46,8 @@ process SVTYPER_SVTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.json
-    touch ${prefix}.gt.vcf
-    touch ${prefix}.relevant.bam
+    touch ${prefix}.vcf
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
