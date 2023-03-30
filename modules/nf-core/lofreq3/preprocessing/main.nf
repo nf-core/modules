@@ -11,14 +11,16 @@ process LOFREQ3_PREPROCESSING {
     input:
     tuple val(meta),
           path(reffa),
+          path(reffa_index),
           path(fq1),
           path(fq2)
-    output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
 
-    fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
-    obam = fname + ".bam"
+    output:
+    tuple val(meta), 
+          path("*.bam"), 
+          path(".bai"), 
+          path(reffa),            , emit: bam
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,9 +29,14 @@ process LOFREQ3_PREPROCESSING {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    fname = fname = fq1.name.replace('_1','').replace('_R1','').replace('_r1','').replace('.fq','').replace('.fastq','').replace('.gz','')
+    obam = fname + ".bam"
+
+
     """
-    bwa mem index $reffa
-    bwa mem $reffa  $fq1 $fq2 | \
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+
+    bwa mem \$INDEX $fq1 $fq2 | \
         samtools fixmate - - | \
         lofreq viterbi -f $reffa -b - | \
         samtools sort - | \

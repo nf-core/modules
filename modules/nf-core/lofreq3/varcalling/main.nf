@@ -13,6 +13,7 @@ process LOFREQ3_VARCALLING {
           path(bam),
           path(bai),
           path(reffa)
+    val pileup
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -24,9 +25,11 @@ process LOFREQ3_VARCALLING {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (pileup) pileup_command = "-p"
+    else pileup_command = ""
 
     """
-    lofreq call -b $bam -f $reffa
+    lofreq call $pileup_command -b $bam -f $reffa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

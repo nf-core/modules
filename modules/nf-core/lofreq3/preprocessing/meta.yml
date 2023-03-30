@@ -25,6 +25,11 @@ input:
       description: Reference FASTA file
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 
+  - reffa_index:
+      type: file
+      description: BWA genome index files
+      pattern: "Directory containing BWA index *.{amb,ann,bwt,fai,pac,sa}"
+
   - fq1:
       type: file
       description: Reads paired end 1
