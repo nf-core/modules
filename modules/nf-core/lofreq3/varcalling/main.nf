@@ -11,8 +11,8 @@ process LOFREQ3_VARCALLING {
     input:
     tuple val(meta),
           path(bam),
-          path(reffa),
-          path(lofreq3_dir)
+          path(bai),
+          path(reffa)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
