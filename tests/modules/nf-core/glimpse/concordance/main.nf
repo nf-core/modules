@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { GLIMPSE_PHASE       } from '../../../../../modules/nf-core/glimpse/phase/main.nf'
 include { GLIMPSE_LIGATE      } from '../../../../../modules/nf-core/glimpse/ligate/main.nf'
 include { GLIMPSE_CONCORDANCE } from '../../../../../modules/nf-core/glimpse/concordance/main.nf'
-include { BCFTOOLS_INDEX  } from '../../../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX      } from '../../../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow test_glimpse_concordance {
     
