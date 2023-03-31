@@ -2,10 +2,12 @@ process CELLRANGERATAC_MKREF {
     tag "$reference_config"
     label 'process_medium'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
-    }
     container "heylf/cellranger-atac:2.1.0"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     path fasta
@@ -26,7 +28,7 @@ process CELLRANGERATAC_MKREF {
     """
     cellranger-atac \\
         mkref \\
-        --config=$reference_config
+        --config=$reference_config 2> /dev/null
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
