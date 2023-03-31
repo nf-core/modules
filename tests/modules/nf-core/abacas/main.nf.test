@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process ABACAS"
+    script "modules/nf-core/abacas/main.nf"
+    config "tests/modules/nf-core/abacas/nextflow.config"
+    process "ABACAS"
+    tag "abacas"
+
+    test("test_abacas") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                           ]
+
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert process.out.results
+            with(process.out.results) {
+                assert size() == 1
+                with(get(0)) {
+                    assert get(0).id == "test"
+                    assert get(0).single_end == false
+                    with(get(1)) {
+                        assert size() == 11
+                        assert get(0) ==~ ".*/test.abacas.MULTIFASTA.fa"
+                        assert get(1) ==~ ".*/test.abacas.bin"
+                        assert get(2) ==~ ".*/test.abacas.crunch"
+                        assert get(3) ==~ ".*/test.abacas.fasta"
+                        assert get(4) ==~ ".*/test.abacas.gaps"
+                        assert get(5) ==~ ".*/test.abacas.gaps.tab"
+                        assert get(6) ==~ ".*/test.abacas.nucmer.delta"
+                        assert get(7) ==~ ".*/test.abacas.nucmer.filtered.delta"
+                        assert get(8) ==~ ".*/test.abacas.nucmer.tiling"
+                        assert get(9) ==~ ".*/test.abacas.tab"
+                        assert get(10) ==~ ".*/test.abacas.unused.contigs.out"
+                    }
+                }
+            }
+
+            assert process.out.versions
+            with(process.out.versions) {
+                assert size() == 1
+                assert get(0) ==~ ".*/versions.yml"
+            }
+        }
+
+    }
+
+}
