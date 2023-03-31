@@ -2,8 +2,6 @@ process ASHLAR {
     tag '$meta.id'
     label 'process_single'
 
-    conda "bioconda::ashlar=1.17.0"
-
     input:
     tuple val(meta), path(file_in)
 
