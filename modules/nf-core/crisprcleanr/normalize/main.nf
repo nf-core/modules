@@ -14,7 +14,7 @@ process CRISPRCLEANR_NORMALIZE {
 
     output:
     tuple val(meta), path("*_norm_table.tsv"), emit: norm_count_file
-    path "versions.yml"           , emit: versions
+    path "versions.yml",                       emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,7 +38,7 @@ process CRISPRCLEANR_NORMALIZE {
                             minTargetedGenes=${min_targeted_genes},
                             OutDir='./')
 
-    write.table(correctedCounts, file=paste0("${meta.id}","_norm_table.tsv"),row.names=FALSE,quote=FALSE,sep="\t")
+    write.table(correctedCounts, file=paste0("${prefix}","_norm_table.tsv"),row.names=FALSE,quote=FALSE,sep="\t")
 
     version_file_path <- "versions.yml"
     version_crisprcleanr <- paste(unlist(packageVersion("CRISPRcleanR")), collapse = ".")
