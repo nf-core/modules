@@ -1,12 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core subworkflows create-test-yml 
-- name: "bam_docounts_contamination_angsd"
+- name: bam_docounts_contamination_angsd test_bam_docounts_contamination_angsd
   command: nextflow run ./tests/subworkflows/nf-core/bam_docounts_contamination_angsd -entry test_bam_docounts_contamination_angsd -c ./tests/config/nextflow.config
   tags:
-    - "subworkflows"
-    - "subworkflows/bam_docounts_contamination_angsd"
+    - angsd
+    - angsd/contamination
+    - angsd/docounts
+    - subworkflows
+    - subworkflows/bam_docounts_contamination_angsd
   files:
-    - path: "output/bam_docounts_contamination_angsd/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/bam_docounts_contamination_angsd/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/angsd/test.icnts.gz
+      md5sum: de524782a29d647d4a358fb98756665b
+    - path: output/angsd/test.txt
+      contains:
+        - "Method1: old_llh"
+        - "Method2: old_llh"
