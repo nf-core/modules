@@ -23,8 +23,7 @@ process DEEPCELL_MESMER {
     def VERSION = "0.4.0"
 
     """
-    #!/usr/bin/python
-    /usr/src/app/run_app.py mesmer \
+    python /usr/src/app/run_app.py mesmer \
         --squeeze \
         --nuclear-image $img \
         --output-directory . \
