@@ -596,6 +596,10 @@ cdhit/cdhit:
   - modules/nf-core/cdhit/cdhit/**
   - tests/modules/nf-core/cdhit/cdhit/**
 
+cellpose:
+  - modules/nf-core/cellpose/**
+  - tests/modules/nf-core/cellpose/**
+
 cellranger/count:
   - modules/nf-core/cellranger/count/**
   - tests/modules/nf-core/cellranger/count/**
@@ -774,6 +778,10 @@ cooler/zoomify:
   - modules/nf-core/cooler/zoomify/**
   - tests/modules/nf-core/cooler/zoomify/**
 
+crisprcleanr/normalize:
+  - modules/nf-core/crisprcleanr/normalize/**
+  - tests/modules/nf-core/crisprcleanr/normalize/**
+
 coreograph:
   - modules/nf-core/coreograph/**
   - tests/modules/nf-core/coreograph/**
@@ -857,6 +865,10 @@ deepbgc/download:
 deepbgc/pipeline:
   - modules/nf-core/deepbgc/pipeline/**
   - tests/modules/nf-core/deepbgc/pipeline/**
+
+deepcell/mesmer:
+  - modules/nf-core/deepcell/mesmer/**
+  - tests/modules/nf-core/deepcell/mesmer/**
 
 deeptools/bamcoverage:
   - modules/nf-core/deeptools/bamcoverage/**
@@ -2395,6 +2407,11 @@ parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
 
+# GitHub Actions doesn't support GPUs, so stub
+parabricks/applybqsr:
+  - modules/nf-core/parabricks/applybqsr/**
+  - tests/modules/nf-core/parabricks/applybqsr/**
+
 paraclu:
   - modules/nf-core/paraclu/**
   - tests/modules/nf-core/paraclu/**
@@ -2925,7 +2942,11 @@ sentieon/bwaindex:
 
 sentieon/bwamem:
   - modules/nf-core/sentieon/bwamem/**
-  - tests/modules/nf-core/sentieon/bwameminde/**
+  - tests/modules/nf-core/sentieon/bwamem/**
+
+sentieon/dedup:
+  - modules/nf-core/sentieon/dedup/**
+  - tests/modules/nf-core/sentieon/dedup/**
 
 seqkit/pair:
   - modules/nf-core/seqkit/pair/**
@@ -3423,6 +3444,10 @@ svtk/standardize:
 svtk/vcf2bed:
   - modules/nf-core/svtk/vcf2bed/**
   - tests/modules/nf-core/svtk/vcf2bed/**
+
+svtyper/svtyper:
+  - modules/nf-core/svtyper/svtyper/**
+  - tests/modules/nf-core/svtyper/svtyper/**
 
 tabix/bgzip:
   - modules/nf-core/tabix/bgzip/**

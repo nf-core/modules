@@ -1,12 +1,11 @@
-name: sentieon_bwamem
-description: Performs fastq alignment to a fasta reference using Sentieon's BWA MEM
+name: sentieon_dedup
+description: Runs the sentieon tool LocusCollector followed by Dedup. LocusCollector collects read information that is used by Dedup which in turn marks or removes duplicate reads.
 keywords:
   - mem
-  - bwa
-  - alignment
+  - dedup
   - map
-  - fastq
   - bam
+  - cram
   - sentieon
 tools:
   - sentieon:
@@ -21,18 +20,13 @@ input:
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - bam:
       type: file
-      description: Genome fastq files (single-end or paired-end)
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: file
-      description: BWA genome index files
-      pattern: "*.{amb,ann,bwt,pac,sa}"
+      description: BAM file.
+      pattern: "*.bam"
+  - bai:
+      description: BAI file
+      pattern: "*.bai"
   - fasta:
       type: file
       description: Genome fasta file
@@ -47,6 +41,14 @@ output:
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
+  - cram:
+      type: file
+      description: CRAM file
+      pattern: "*.cram"
+  - crai:
+      type: file
+      description: CRAM index file
+      pattern: "*.crai"
   - bam:
       type: file
       description: BAM file.
@@ -54,6 +56,14 @@ output:
   - bai:
       description: BAI file
       pattern: "*.bai"
+  - score:
+      type: file
+      description: The score file indicates which reads LocusCollector finds are likely duplicates.
+      pattern: "*.score"
+  - metrics:
+      type: file
+      description: Output file containing the metrics data from Dedup.
+      pattern: "*.metrics"
   - versions:
       type: file
       description: File containing software versions

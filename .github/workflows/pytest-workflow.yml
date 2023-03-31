@@ -41,6 +41,8 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: cellpose
+          - profile: "conda"
             tags: mcquant
           - profile: "conda"
             tags: bases2fastq
@@ -58,6 +60,8 @@ jobs:
             tags: cellranger/mkgtf
           - profile: "conda"
             tags: cellranger/mkref
+          - profile: "conda"
+            tags: deepcell/mesmer
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
@@ -96,6 +100,8 @@ jobs:
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
+          - profile: "conda"
+            tags: sentieon/dedup
           - profile: "conda"
             tags: universc
           - profile: "singularity"
