@@ -1,0 +1,53 @@
+nextflow_process {
+
+    name "Test Process ABRICATE_RUN"
+    script "modules/nf-core/abricate/run/main.nf"
+    config "tests/modules/nf-core/abricate/run/nextflow.config"
+    process "ABRICATE_RUN"
+    tag "abricate"
+
+    test("ABRICATE_RUN") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                             [ id:'test', single_end:false ], // meta map
+                             file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert process.out.report
+            with(process.out.report) {
+                assert size() == 1
+                def report_tuple = get(0)
+                assert report_tuple.get(0).id == "test"
+                assert report_tuple.get(0).single_end == false
+                def test_txt = report_tuple.get(1)
+                assert test_txt ==~ ".*/test.txt"
+
+                // Assertion 1: Check the header line
+                assert path(test_txt).readLines().contains("#FILE\tSEQUENCE\tSTART\tEND\tSTRAND\tGENE\tCOVERAGE\tCOVERAGE_MAP\tGAPS\t%COVERAGE\t%IDENTITY\tDATABASE\tACCESSION\tPRODUCT\tRESISTANCE")
+
+                // Assertion 2: Check the line related to the cepA gene
+                assert path(test_txt).readLines().contains("genome.fna.gz\tNZ_CP069563.1\t1906639\t1907541\t+\tcepA\t1-903/903\t===============\t0/0\t100.00\t100.00\tncbi\tNG_047625.1\tCepA family class A extended-spectrum beta-lactamase\tCEPHALOSPORIN")
+
+                // Assertion 3: Check the line related to the tet(Q) gene
+                assert path(test_txt).readLines().contains("genome.fna.gz\tNZ_CP069563.1\t4410553\t4412478\t+\ttet(Q)\t1-1926/1926\t===============\t0/0\t100.00\t99.84\tncbi\tNG_048270.1\ttetracycline resistance ribosomal protection protein Tet(Q)\tTETRACYCLINE")
+            }
+
+            assert process.out.versions
+            with(process.out.versions) {
+                assert size() == 1
+                assert get(0) ==~ ".*/versions.yml"
+            }
+        }
+
+    }
+
+}
