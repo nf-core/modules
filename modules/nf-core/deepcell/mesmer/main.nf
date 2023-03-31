@@ -2,17 +2,15 @@ process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_medium'
 
-    // Setting up the container to latest all the time because why not.
     container "vanvalenlab/deepcell-applications:0.4.0"
 
-    // Mesmer, requieres one image to segment and the mpp(microns per pixel)
     input:
     tuple val(meta) , path(img)
     tuple val(meta2), path(membrane_img)
 
     // Output a .tif image, don't touch versions
     output:
-    tuple val(meta), path("${prefix}.mask.tif"), emit: mask
+    tuple val(meta), path("mask.tif"), emit: mask
     path "versions.yml"              , emit: versions
 
     when:
@@ -21,15 +19,17 @@ process DEEPCELL_MESMER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
     def VERSION = "0.4.0"
 
     """
-    python /usr/src/app/run_app.py mesmer \
+     #!/usr/bin/python
+    /usr/src/app/run_app.py mesmer \
         --squeeze \
         --nuclear-image $img \
-        --membrane-image $membrane_img \
         --output-directory . \
-        --output-name ${prefix}.mask.tif \
+        --output-name mask.tif \
+        $membrane_command \
         $args
 
     cat <<-END_VERSIONS > versions.yml
