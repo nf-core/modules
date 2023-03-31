@@ -1,22 +1,22 @@
-- name: cellranger-atac count test_cellranger_atac_count
-  command: nextflow run ./tests/modules/nf-core/cellranger-atac/count -entry test_cellranger_atac_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellranger-atac/count/nextflow.config
+- name: cellrangeratac count test_cellrangeratac_count
+  command: nextflow run ./tests/modules/nf-core/cellrangeratac/count -entry test_cellrangeratac_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellrangeratac/count/nextflow.config
   tags:
-    - cellranger-atac/count
-    - cellranger-atac
+    - cellrangeratac/count
+    - cellrangeratac
   files:
-    - path: output/cellranger-atac/cellranger_atac_reference/fasta/genome.fa
+    - path: output/cellrangeratac/cellrangeratac_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
-    - path: output/cellranger-atac/cellranger_atac_reference/fasta/genome.fa.fai
+    - path: output/cellrangeratac/cellrangeratac_reference/fasta/genome.fa.fai
       md5sum: 3520cd30e1b100e55f578db9c855f685
-    - path: output/cellranger-atac/cellranger_atac_reference/genes/genes.gtf.gz
+    - path: output/cellrangeratac/cellrangeratac_reference/genes/genes.gtf.gz
       md5sum: ac6684e31647e45e50b02087d36ee77e
-    - path: output/cellranger-atac/cellranger_atac_reference/reference.json
+    - path: output/cellrangeratac/cellrangeratac_reference/reference.json
       md5sum: 6285417cb3b40bfedfc96b2ae72c211e
-    - path: output/cellranger-atac/cellranger_atac_reference/regions/motifs.pfm
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/motifs.pfm
       md5sum: 294d4041e4ffd4c633376c2b9d180ac0
-    - path: output/cellranger-atac/cellranger_atac_reference/regions/transcripts.bed
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/transcripts.bed
       md5sum: 6de75fb6b95c6eb5aaaeba4d248d6840
-    - path: output/cellranger-atac/cellranger_atac_reference/regions/tss.bed
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/tss.bed
       md5sum: fbb45d7397b1ee20a6a9d5e55f6e7ff3
     - path: output/cellranger/test_scATAC/outs/filtered_peak_bc_matrix.h5
       md5sum: 258d556223e3c6b943518e1a1a7618bc

@@ -1,4 +1,4 @@
-process CELLRANGER_ATAC_COUNT {
+process CELLRANGERATAC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
@@ -35,7 +35,7 @@ process CELLRANGER_ATAC_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-atac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 
@@ -46,7 +46,7 @@ process CELLRANGER_ATAC_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-atac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }

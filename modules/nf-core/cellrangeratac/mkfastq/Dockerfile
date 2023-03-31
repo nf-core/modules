@@ -17,9 +17,9 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # Copy pre-downloaded bcl2fastq2 and cellranger-atac file
 ENV BCL2FASTQ2_VER=v2-20-0-linux-x86-64 \
-    CELLRANGER_ATAC_VER=2.1.0
+    CELLRANGERATAC_VER=2.1.0
 COPY bcl2fastq2-$BCL2FASTQ2_VER.zip /tmp/bcl2fastq2-$BCL2FASTQ2_VER.zip
-COPY cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz /opt/cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz
+COPY cellranger-atac-$CELLRANGERATAC_VER.tar.gz /opt/cellranger-atac-$CELLRANGERATAC_VER.tar.gz
 
 # Install bcl2fastq2
 RUN \
@@ -34,7 +34,7 @@ RUN \
 # Install cellranger-atac
 RUN \
     cd /opt && \
-    tar -xzvf cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz && \
-    export PATH=/opt/cellranger-atac-$CELLRANGER_ATAC_VER:$PATH && \
-    ln -s /opt/cellranger-atac-$CELLRANGER_ATAC_VER/cellranger-atac /usr/bin/cellranger-atac && \
-    rm -rf /opt/cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz
+    tar -xzvf cellranger-atac-$CELLRANGERATAC_VER.tar.gz && \
+    export PATH=/opt/cellranger-atac-$CELLRANGERATAC_VER:$PATH && \
+    ln -s /opt/cellranger-atac-$CELLRANGERATAC_VER/cellranger-atac /usr/bin/cellranger-atac && \
+    rm -rf /opt/cellranger-atac-$CELLRANGERATAC_VER.tar.gz

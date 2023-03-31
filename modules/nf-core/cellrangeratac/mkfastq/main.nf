@@ -1,11 +1,11 @@
-process CELLRANGER_ATAC_MKFASTQ {
+process CELLRANGERATAC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger-atacmkfastq:2.1.0"
+    container "nfcore/cellrangeratacmkfastq:2.1.0"
 
     input:
     path bcl
@@ -28,7 +28,7 @@ process CELLRANGER_ATAC_MKFASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-atac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 
@@ -39,7 +39,7 @@ process CELLRANGER_ATAC_MKFASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-atac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }
