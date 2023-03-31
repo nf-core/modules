@@ -592,6 +592,10 @@ cdhit/cdhit:
   - modules/nf-core/cdhit/cdhit/**
   - tests/modules/nf-core/cdhit/cdhit/**
 
+cellpose:
+  - modules/nf-core/cellpose/**
+  - tests/modules/nf-core/cellpose/**
+
 cellranger/count:
   - modules/nf-core/cellranger/count/**
   - tests/modules/nf-core/cellranger/count/**
@@ -2395,6 +2399,11 @@ parabricks/fq2bam:
   - modules/nf-core/parabricks/fq2bam/**
   - tests/modules/nf-core/parabricks/fq2bam/**
 
+# GitHub Actions doesn't support GPUs, so stub
+parabricks/applybqsr:
+  - modules/nf-core/parabricks/applybqsr/**
+  - tests/modules/nf-core/parabricks/applybqsr/**
+
 paraclu:
   - modules/nf-core/paraclu/**
   - tests/modules/nf-core/paraclu/**
@@ -2925,7 +2934,11 @@ sentieon/bwaindex:
 
 sentieon/bwamem:
   - modules/nf-core/sentieon/bwamem/**
-  - tests/modules/nf-core/sentieon/bwameminde/**
+  - tests/modules/nf-core/sentieon/bwamem/**
+
+sentieon/dedup:
+  - modules/nf-core/sentieon/dedup/**
+  - tests/modules/nf-core/sentieon/dedup/**
 
 seqkit/pair:
   - modules/nf-core/seqkit/pair/**
