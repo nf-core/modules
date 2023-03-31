@@ -12,11 +12,21 @@ tools:
       doi: 10.1016/S0022-2836(05)80360-2
       licence: ["US-Government-Work"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - counts:
       type: file
       description: valid unit counts file
       pattern: "*.{ascii,binary,oascii,obinary,txt}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - counts:
       type: file
       description: valid unit counts file
