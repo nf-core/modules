@@ -17,7 +17,7 @@ workflow test_deepvariant {
 
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    DEEPVARIANT ( bam_tuple_ch, fasta, fai)
+    DEEPVARIANT ( bam_tuple_ch, fasta, fai, [] )
 }
 
 workflow test_deepvariant_cram_intervals {
@@ -32,5 +32,20 @@ workflow test_deepvariant_cram_intervals {
 
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    DEEPVARIANT_INTERVALS ( cram_tuple_ch, fasta, fai)
+    DEEPVARIANT_INTERVALS ( cram_tuple_ch, fasta, fai, [] )
+}
+
+workflow test_deepvariant_no_fasta_gzi {
+
+    bam_tuple_ch = Channel.of([ [ id:'test', single_end:false ], // meta map
+                               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                               []
+                                ])
+
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
+
+    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    DEEPVARIANT ( bam_tuple_ch, fasta, fai, [] )
 }
