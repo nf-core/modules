@@ -13,7 +13,6 @@ workflow BAM_DOCOUNTS_CONTAMINATION_ANGSD {
     ch_hapmap_file // channel: [ val(meta), [ hapmap_file ] ]
 
     main:
-
     ch_versions = Channel.empty()
 
     ch_input = ch_bam
