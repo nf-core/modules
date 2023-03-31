@@ -1,6 +1,6 @@
 process DEEPCELL_MESMER {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     container "vanvalenlab/deepcell-applications:0.4.0"
 
@@ -23,7 +23,7 @@ process DEEPCELL_MESMER {
     def VERSION = "0.4.0"
 
     """
-     #!/usr/bin/python
+    #!/usr/bin/python
     /usr/src/app/run_app.py mesmer \
         --squeeze \
         --nuclear-image $img \
