@@ -35,8 +35,7 @@ process NANOCOMP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ""
-    print(prefix)
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (prefix == ""){
         prefixflag = ""
     } else {
@@ -103,7 +102,7 @@ process NANOCOMP {
     NanoComp \\
         --$filetype $filelist \\
         --threads $task.cpus \\
-        $prefixflag
+        $prefixflag \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -113,9 +112,9 @@ process NANOCOMP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}"versions.yml
+    touch versions.yml
     touch "${prefix}"NanoComp_lengths_violin.html
     touch "${prefix}"NanoComp_log_length_violin.html
     touch "${prefix}"NanoComp_N50.html
