@@ -1,9 +1,15 @@
 - name: angsd contamination test_angsd_contamination
   command: nextflow run ./tests/modules/nf-core/angsd/contamination -entry test_angsd_contamination -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/angsd/contamination/nextflow.config
   tags:
-    - angsd/contamination
     - angsd
+    - angsd/contamination
   files:
+    - path: output/angsd/test.counts.gz
+      md5sum: c1d296252105cce5f4a891985d98f3db
+    - path: output/angsd/test.icnts.gz
+      md5sum: de524782a29d647d4a358fb98756665b
+    - path: output/angsd/test.pos.gz
+      md5sum: 2ac40e7f6bf7e5735c8267b892b99368
     - path: output/angsd/test.txt
       contains:
         - "Method1: old_llh"
