@@ -36,4 +36,21 @@ process WINDOWMASKER_CONVERT {
         windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outfmt =    args.contains('-sformat binary')  ? 'binary'  :
+                    args.contains('-sformat oascii')  ? 'oascii'  :
+                    args.contains('-sformat obinary') ? 'obinary' :
+                    'ascii'
+    output  = "${prefix}.${outfmt}"
+    """
+    touch ${output}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
