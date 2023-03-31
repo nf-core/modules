@@ -11,5 +11,5 @@ workflow test_deepcell_mesmer {
         file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
     ]
 
-    DEEPCELL_MESMER ( img,  [])
+    DEEPCELL_MESMER ( img,  [[:],[])
 }
