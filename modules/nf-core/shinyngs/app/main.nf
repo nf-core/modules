@@ -8,8 +8,7 @@ process SHINYNGS_APP {
     // following in the nextflow.config:
     //
     // withName: SHINYNGS_APP {
-    //     secret 'SHINYAPPS_TOKEN'
-    //     secret 'SHINYAPPS_SECRET
+    //     secret = [ 'SHINYAPPS_TOKEN', 'SHINYAPPS_SECRET' ]
     // }
     //
     // Those values must then be set in your Nextflow secrets.
