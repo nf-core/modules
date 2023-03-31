@@ -11,5 +11,5 @@ workflow test_cellpose {
         file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
     ]
 
-    CELLPOSE ( input )
+    CELLPOSE ( input, [] )
 }
