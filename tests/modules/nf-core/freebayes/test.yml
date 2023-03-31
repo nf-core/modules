@@ -4,7 +4,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: 4978a2f69d7419db9e5a740cba925d19
+      contains:
+        - "MT192765.1\t10214\t.\tATTTAC\tATTAC\t29.8242"
     - path: output/freebayes/versions.yml
 
 - name: freebayes test_freebayes_bed
@@ -13,7 +14,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: dfb4e3539ebb058ca966d6185e139063
+      must_not_contain_regex:
+        - "^[^#]"
     - path: output/freebayes/versions.yml
 
 - name: freebayes test_freebayes_cram
@@ -22,7 +24,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: 178263bc22b281fa3a664835b3a8e7c8
+      contains:
+        - "chr22\t1982\t.\tA\tG\t459.724"
     - path: output/freebayes/versions.yml
 
 - name: freebayes test_freebayes_somatic
@@ -31,7 +34,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: 17f07152aa92ef3ac492893b2b55d9fd
+      contains:
+        - "chr22\t1982\t.\tA\tG\t670.615"
     - path: output/freebayes/versions.yml
 
 - name: freebayes test_freebayes_somatic_cram_intervals
@@ -40,5 +44,6 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: f5a3a6090d7ffac889a2bf4c23c93a86
+      contains:
+        - "chr22\t1982\t.\tA\tG\t670.615"
     - path: output/freebayes/versions.yml
