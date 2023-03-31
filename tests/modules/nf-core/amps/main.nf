@@ -15,7 +15,7 @@ workflow test_amps {
     fastas = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     gff = []
     seq_type = "DNA"
-    map_db = [ [], file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true) ]
+    map_db = [ [], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true) ]
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
