@@ -2,13 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-include { MESMER } from '../../../../../modules/nf-core/deepcell/mesmer/main.nf'
+include { DEEPCELL_MESMER } from '../../../../../modules/nf-core/deepcell/mesmer/main.nf'
 
-workflow test_deepcell {
+workflow test_deepcell_mesmer {
 
     img = [
         [ id:'test_img'], // meta map
         file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
     ]
-    MESMER ( img )
+
+    DEEPCELL_MESMER ( img,  [])
 }

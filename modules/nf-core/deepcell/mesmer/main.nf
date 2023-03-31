@@ -1,4 +1,4 @@
-process MESMER {
+process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_medium'
 
@@ -7,11 +7,12 @@ process MESMER {
 
     // Mesmer, requieres one image to segment and the mpp(microns per pixel)
     input:
-    tuple val(meta), path(img)
+    tuple val(meta) , path(img)
+    tuple val(meta2), path(membrane_img)
 
     // Output a .tif image, don't touch versions
     output:
-    tuple val(meta), path("mask.tif"), emit: mask
+    tuple val(meta), path("${prefix}.mask.tif"), emit: mask
     path "versions.yml"              , emit: versions
 
     when:
@@ -26,9 +27,9 @@ process MESMER {
     python /usr/src/app/run_app.py mesmer \
         --squeeze \
         --nuclear-image $img \
-        --membrane-image $img \
+        --membrane-image $membrane_img \
         --output-directory . \
-        --output-name mask.tif \
+        --output-name ${prefix}.mask.tif \
         $args
 
     cat <<-END_VERSIONS > versions.yml
