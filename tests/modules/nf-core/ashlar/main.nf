@@ -2,25 +2,28 @@
 
 nextflow.enable.dsl = 2
 
-include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf'
+include { ASHLAR } from '../../../../modules/nf-core/ashlar/main.nf'
 // we zero out the UUID of output tiff images with ZERO_UUID so we get a consistent md5sum
 include { ZERO_UUID } from './zero_uuid.nf'
 
-def TEST_ORIG_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
-def TEST_ORIG_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
-def TEST_ORIG_IMG_2 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-07.ome.tiff"
-def TEST_ORIG_DFP_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/illumination/exemplar-001-cycle-06-dfp.tif"
-def TEST_ORIG_FFP_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/illumination/exemplar-001-cycle-06-ffp.tif"
+workflow test_ashlar_1_file {
 
-def TEST_IMG_ALL = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle{1,2,3}.ome.tif"
-def TEST_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle1.ome.tif"
-def TEST_IMG_2 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle2.ome.tif"
-def TEST_IMG_3 = "/home/pollen/HITS/nextflow/mcmicro/cycif-tonsil/cycif-tonsil-cycle3.ome.tif"
+    input_list =  [ [ [ id:'test_all', args: '' ],
+               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ] ]
+    input_channel = Channel.fromList(input_list)
+
+    ASHLAR ( input_channel )
+
+    ZERO_UUID ( ASHLAR.out[0], "8390123" )
+
+}
 
 workflow test_ashlar_all_files {
 
     input_list =  [ [ [ id:'test_all', args: '' ],
-               "${TEST_IMG_ALL}" ] ]
+               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true),
+                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
+                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ] ]
     input_channel = Channel.fromList(input_list)
 
     ASHLAR ( input_channel )
@@ -31,12 +34,14 @@ workflow test_ashlar_all_files {
 
 workflow test_ashlar_all_files_tile_size {
 
-    input_list =  [ [ [ id:'test_all_tile_size', args: '--tile-size 512' ],
-               "${TEST_IMG_ALL}" ] ]
+    input_list =  [ [ [ id:'test_all', args: '--tile-size 512' ],
+               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true),
+                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
+                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ] ]
     input_channel = Channel.fromList(input_list)
 
     ASHLAR ( input_channel )
 
-    ZERO_UUID ( ASHLAR.out[0], "6295275" )
+    ZERO_UUID ( ASHLAR.out[0], "12586923" )
 
 }

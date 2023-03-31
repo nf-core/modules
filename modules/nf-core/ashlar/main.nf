@@ -2,11 +2,10 @@ process ASHLAR {
     tag '$meta.id'
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::ashlar=1.17.0" : null)
-    container 'docker.io/labsyspharm/ashlar:1.17.0'
+    conda "bioconda::ashlar=1.17.0"
 
     input:
-    tuple val(meta), val(file_in)
+    tuple val(meta), path(file_in)
 
     output:
     tuple val(meta), path("*.tif")      ,   emit: ashlar_tif
