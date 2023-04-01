@@ -32,7 +32,7 @@ process PURECN_COVERAGE {
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
-        --out-dir /purecn/coverage/${meta.id}/ \\
+        --out-dir ./ \\
         --bam ${bam} \\
         --intervals ${intervals} \\
         $args
