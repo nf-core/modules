@@ -23,7 +23,7 @@ process CELLPOSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--pretrained_model $model" : ""
-    def VERSION='2.1.1'
+    def VERSION = '2.1.1'
     """
     cellpose \
     --image_path $image \
