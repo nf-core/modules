@@ -1,4 +1,4 @@
-sdef VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
+def VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
 
 process PURECN_INTERVALFILE {
     tag "${meta.id}"
