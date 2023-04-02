@@ -23,12 +23,15 @@ input:
   - input:
       type: file
       description: Query VCF or BCF file, can be either uncompressed or compressed
+  - index:
+      type: file
+      description: Index of the query VCF or BCF file
   - annotations:
       type: file
-      description: Bgzip-compressed and tabix-indexed file with annotations.
+      description: Bgzip-compressed and tabix-indexed file with annotations
   - header_lines:
       type: file
-      description: Contains lines to append to the output VCF header.
+      description: Contains lines to append to the output VCF header
 
 output:
   - meta:

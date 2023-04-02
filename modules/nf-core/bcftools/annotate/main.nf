@@ -8,7 +8,7 @@ process BCFTOOLS_ANNOTATE {
         'quay.io/biocontainers/bcftools:1.16--hfe4b78e_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index)
     path(annotations)
     path(header_lines)
 
