@@ -21,8 +21,15 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - input:
-      type: files
+      type: file
       description: Query VCF or BCF file, can be either uncompressed or compressed
+  - annotations:
+      type: file
+      description: Bgzip-compressed and tabix-indexed file with annotations.
+  - header_lines:
+      type: file
+      description: Contains lines to append to the output VCF header.
+
 output:
   - meta:
       type: map
@@ -36,10 +43,8 @@ output:
   - vcf:
       type: file
       description: Compressed annotated VCF file
-      pattern: "*_annotated.vcf.gz"
-  - bcf:
-      type: file
-      description: Compressed annotated BCF file
-      pattern: "*_annotated.bcf"
+      pattern: "*{vcf,vcf.gz,bcf,bcf.gz}"
+
 authors:
   - "@projectoriented"
+  - "@ramprasadn"
