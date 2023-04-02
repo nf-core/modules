@@ -28,7 +28,10 @@ input:
       description: Index of the query VCF or BCF file
   - annotations:
       type: file
-      description: Bgzip-compressed and tabix-indexed file with annotations
+      description: Bgzip-compressed file with annotations
+  - annotations_index:
+      type: file
+      description: Index of the annotations file
   - header_lines:
       type: file
       description: Contains lines to append to the output VCF header
