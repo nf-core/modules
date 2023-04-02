@@ -22,9 +22,8 @@ input:
       description: tif file for ready for segmentation
       pattern: "*.{tif,tiff}"
   - model:
-      type: pretrained model from the model zoo
-      description: string for picking a pretrained model
-      pattern: "{nuclei,cyto,cyto2,tissuenet,tissuenet,TN1,TN2,TN3,LC1,LC2,LC3,LC4}"
+      type: file
+      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop approach.
 
 output:
   - meta:
@@ -36,7 +35,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - image_mask:
+  - mask:
       type: tif_file
       description: labelled mask output from cellpose in tif format
       pattern: "*.{tif, tiff}"

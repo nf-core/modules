@@ -37,7 +37,7 @@ process WINDOWMASKER_MKCOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -49,7 +49,7 @@ process WINDOWMASKER_MKCOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 }
