@@ -1,8 +1,8 @@
 - name: angsd contamination test_angsd_contamination
   command: nextflow run ./tests/modules/nf-core/angsd/contamination -entry test_angsd_contamination -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/angsd/contamination/nextflow.config
   tags:
-    - angsd/contamination
     - angsd
+    - angsd/contamination
   files:
     - path: output/angsd/test.txt
       contains:
