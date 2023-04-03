@@ -4,11 +4,11 @@
     - cellrangeratac
     - cellrangeratac/mkfastq
   files:
-    - path: output/cellrangeratac/cellrangeratac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
+    - path: output/cellrangeratac/cellranger-atac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
 - name: cellrangeratac mkfastq test_cellrangeratac_mkfastq_illumina
   command: nextflow run ./tests/modules/nf-core/cellrangeratac/mkfastq -entry test_cellrangeratac_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellrangeratac/mkfastq/nextflow.config -stub-run
   tags:
     - cellrangeratac
     - cellrangeratac/mkfastq
   files:
-    - path: output/cellrangeratac/cellrangeratac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
+    - path: output/cellrangeratac/cellranger-atac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
