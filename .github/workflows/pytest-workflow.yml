@@ -92,6 +92,8 @@ jobs:
             tags: universc
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: "conda"
+            tags: "mitohifi/findmitoreference"
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE: ${{ secrets.SENTIEON_LICSRVR_IP }}
