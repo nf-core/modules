@@ -27,7 +27,8 @@ process BCFTOOLS_ANNOTATE {
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+                    "vcf"
+    if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     bcftools \\
         annotate \\
@@ -51,7 +52,7 @@ process BCFTOOLS_ANNOTATE {
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+                    "vcf"
     """
     touch ${prefix}.${extension}
 
