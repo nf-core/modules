@@ -2,7 +2,7 @@ process CELLRANGERATAC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nfcore/cellranger-atac:2.1.0"
+    container "heylf/cellranger-atac:2.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -15,7 +15,7 @@ process CELLRANGERATAC_COUNT {
 
     output:
     tuple val(meta), path("${meta.id}/outs/*"), emit: outs
-    path "versions.yml"                               , emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
