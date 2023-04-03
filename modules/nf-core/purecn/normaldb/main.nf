@@ -1,28 +1,28 @@
-
+def VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
 
 process PURECN_NORMALDB {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO: This needs a proper container
-    // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
-    // cf: https://github.com/BioContainers/multi-package-containers/pull/2554
-    conda "bioconda::bioconductor-purecn=2.4.0"
+
+    conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
+        'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+
 
     input:
         tuple val(meta), path(coverage_files)
-        tuple val(meta), path(normal_panel)
-        val  genome
+
+        val   genome
+        val   assay
 
     output:
 
-        tuple val(meta), path("normalDB*.rds")               , emit: normal_db
-        tuple val(meta), path("mapping_bias*.rds")           , emit: mapping_bias
-        tuple val(meta), path("interval_weights*.png")       , emit: interval_weights
-        tuple val(meta), path("low_coverage_targets*.png")   , emit: low_coverage_targets, optional: true
+        tuple val(meta), path("normalDB*.rds")               , emit: rds
+        tuple val(meta), path("mapping_bias*.rds")           , emit: bias_rds
+        tuple val(meta), path("interval_weights*.png")       , emit: png
+        tuple val(meta), path("low_coverage_targets*.png")   , emit: low_cov_png, optional: true
         path "versions.yml"                                  , emit: versions
 
     when:
@@ -37,7 +37,7 @@ process PURECN_NORMALDB {
     Rscript "\$library_path"/PureCN/extdata/NormalDB.R --out-dir ./ \\
         --coverage-files $coverage_files \\
         --genome $genome \\
-        --assay ${prefix}
+        --assay ${assay} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
