@@ -5,11 +5,15 @@ nextflow.enable.dsl = 2
 include { PURECN_NORMALDB } from '../../../../../modules/nf-core/purecn/normaldb/main.nf'
 
 workflow test_purecn_normaldb {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
 
-    PURECN_NORMALDB ( input )
+    input  = [
+        [ id:'test' ],
+        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.list', checkIfExists: true),
+        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.txt.gz', checkIfExists: true),
+        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal2.txt.gz'), checkIfExists: true)
+    ]
+    genome = 'hg38'
+    assay  = 'illumina'
+
+    PURECN_NORMALDB ( input, genome, assay )
 }
