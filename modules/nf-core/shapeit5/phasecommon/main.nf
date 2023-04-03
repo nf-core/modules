@@ -8,7 +8,7 @@ process SHAPEIT5_PHASECOMMON {
         'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
-        tuple val(meta) , path(input), path(input_index), val(region), path(pedigree)
+        tuple val(meta) , path(input), path(input_index), path(pedigree), val(region)
         tuple val(meta2), path(reference), path(reference_index)
         tuple val(meta3), path(scaffold), path(scaffold_index)
         tuple val(meta4), path(map)
@@ -30,11 +30,6 @@ process SHAPEIT5_PHASECOMMON {
     def reference_command = reference ? "--reference $reference" : ""
     def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
-
-    meta.put("SHAPEIT5_PHASECOMMON", ["reference":"", "map":"", "scaffold":""])
-    meta.SHAPEIT5_PHASECOMMON.reference = reference ? meta2 :"None"
-    meta.SHAPEIT5_PHASECOMMON.map       = map       ? meta3 :"None"
-    meta.SHAPEIT5_PHASECOMMON.scaffold  = scaffold  ? meta4 :"None"
 
     """
     SHAPEIT5_phase_common \\

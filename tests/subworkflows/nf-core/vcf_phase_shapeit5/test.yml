@@ -1,0 +1,27 @@
+- name: vcf_phase_shapeit5 test_vcf_phase_shapeit5
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_phase_shapeit5 -entry test_vcf_phase_shapeit5 -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/index
+    - bedtools
+    - bedtools/makewindows
+    - shapeit5
+    - shapeit5/ligate
+    - shapeit5/phasecommon
+    - subworkflows
+    - subworkflows/vcf_phase_shapeit5
+  files:
+    - path: output/bedtools/input1_chr21:16600115-16799989.bed
+      md5sum: d2ae8a51fbfe83eb5c4fe782752ed069
+    - path: output/shapeit5/input1.vcf.gz
+    - path: output/shapeit5/input1_chr21_16600115-16660115.vcf.gz
+    - path: output/shapeit5/input1_chr21_16640115-16700115.vcf.gz
+    - path: output/shapeit5/input1_chr21_16680115-16740115.vcf.gz
+    - path: output/shapeit5/input1_chr21_16720115-16780115.vcf.gz
+    - path: output/shapeit5/input1_chr21_16760115-16799989.vcf.gz
+    - path: output/vcf/input1.vcf.gz.csi
+    - path: output/vcf/input1_chr21_16600115-16660115.vcf.gz.csi
+    - path: output/vcf/input1_chr21_16640115-16700115.vcf.gz.csi
+    - path: output/vcf/input1_chr21_16680115-16740115.vcf.gz.csi
+    - path: output/vcf/input1_chr21_16720115-16780115.vcf.gz.csi
+    - path: output/vcf/input1_chr21_16760115-16799989.vcf.gz.csi
