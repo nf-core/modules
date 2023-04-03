@@ -1,5 +1,5 @@
 include { BEDTOOLS_MAKEWINDOWS              } from '../../../modules/nf-core/bedtools/makewindows/main.nf'
-include { SHAPEIT5_PHASECOMMON              } from '../../../modules/nf-core/shapeit5/phasecommon/main'  
+include { SHAPEIT5_PHASECOMMON              } from '../../../modules/nf-core/shapeit5/phasecommon/main'
 include { SHAPEIT5_LIGATE                   } from '../../../modules/nf-core/shapeit5/ligate/main'
 include { BCFTOOLS_INDEX as VCF_INDEX1      } from '../../../modules/nf-core/bcftools/index/main.nf'
 include { BCFTOOLS_INDEX as VCF_INDEX2      } from '../../../modules/nf-core/bcftools/index/main.nf'
@@ -38,7 +38,7 @@ workflow VCF_PHASE_SHAPEIT5 {
         .join(ch_merged_region)
         .map {mid, meta, region_file -> [meta, region_file]}
         .set { ch_region_file }
-    
+
     BEDTOOLS_MAKEWINDOWS(ch_region_file)
     ch_versions = ch_versions.mix(BEDTOOLS_MAKEWINDOWS.out.versions.first())
 
@@ -66,7 +66,7 @@ workflow VCF_PHASE_SHAPEIT5 {
                                             .groupTuple(),
                                             by:0)
 
-    SHAPEIT5_LIGATE(ligate_input) 
+    SHAPEIT5_LIGATE(ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
 
     VCF_INDEX2(SHAPEIT5_LIGATE.out.merged_variants)
