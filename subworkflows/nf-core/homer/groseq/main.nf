@@ -9,8 +9,8 @@ include { HOMER_POS2BED          } from '../../../../modules/nf-core/homer/pos2b
 
 workflow HOMER_GROSEQ {
     take:
-    bam   // channel: [ val(meta), [ reads ] ]
-    fasta //    file: /path/to/bwa/index/
+    ch_bam   // channel: [ val(meta), path(reads) ]
+    ch_fasta // channel: [ path(fasta)]   (file: /path/to/bwa/index/)
 
     main:
 
@@ -19,7 +19,7 @@ workflow HOMER_GROSEQ {
     /*
     * Create a Tag Directory From The GRO-Seq experiment
     */
-    HOMER_MAKETAGDIRECTORY ( bam, fasta )
+    HOMER_MAKETAGDIRECTORY ( ch_bam, ch_fasta )
     ch_versions = ch_versions.mix(HOMER_MAKETAGDIRECTORY.out.versions.first())
 
     /*
@@ -41,10 +41,10 @@ workflow HOMER_GROSEQ {
     ch_versions = ch_versions.mix(HOMER_POS2BED.out.versions.first())
 
     emit:
-    tagdir             = HOMER_MAKETAGDIRECTORY.out.tagdir // channel: [ val(meta), [ tagdir ] ]
-    bed_graph          = HOMER_MAKEUCSCFILE.out.bedGraph   // channel: [ val(meta), [ tag_dir/*ucsc.bedGraph.gz ] ]
-    peaks              = HOMER_FINDPEAKS.out.txt           // channel: [ val(meta), [ *peaks.txt ] ]
-    bed                = HOMER_POS2BED.out.bed             // channel: [ val(meta), [ *peaks.txt ] ]
+    tagdir             = HOMER_MAKETAGDIRECTORY.out.tagdir // channel: [ val(meta), path(tagdir) ]
+    bed_graph          = HOMER_MAKEUCSCFILE.out.bedGraph   // channel: [ val(meta), path(bed_graph) ]
+    peaks              = HOMER_FINDPEAKS.out.txt           // channel: [ val(meta), path(peaks) ]
+    bed                = HOMER_POS2BED.out.bed             // channel: [ val(meta), path(bed) ]
 
-    versions = ch_versions                                 // channel: [ versions.yml ]
+    versions = ch_versions                                 // channel: [ path(versions.yml) ]
 }

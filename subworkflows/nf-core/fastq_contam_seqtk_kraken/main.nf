@@ -9,9 +9,9 @@ include { SEQTK_SAMPLE               } from '../../../modules/nf-core/seqtk/samp
 workflow FASTQ_CONTAM_SEQTK_KRAKEN {
 
     take:
-        ch_reads    //channel: [mandatory] meta,reads
+        ch_reads    //channel: [mandatory] [ val(meta), path(reads)]
         sample_size //string:  [mandatory] number of reads to subsample
-        kraken2_db  //string:  [mandatory] path to Kraken2 DB to use for screening
+        kraken2_db  //channel: [mandatory] [ path(db) ]     path to Kraken2 DB to use for screening)
 
     main:
         ch_reports  = Channel.empty()
@@ -41,6 +41,6 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         ch_reports  = ch_reports.mix(KRAKEN2.out.report)
 
     emit:
-        reports  = ch_reports     // channel: [ [meta], log  ]
-        versions = ch_versions    // channel: [ versions.yml ]
+        reports  = ch_reports     // channel: [ val(meta), path(log) ]
+        versions = ch_versions    // channel: [ path(versions.yml) ]
 }

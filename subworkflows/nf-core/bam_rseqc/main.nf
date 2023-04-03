@@ -13,9 +13,9 @@ include { RSEQC_TIN                } from '../../../modules/nf-core/rseqc/tin/ma
 
 workflow BAM_RSEQC {
     take:
-    ch_bam_bai    // channel: [ val(meta), [ bam, bai ] ]
-    ch_bed        //    file: /path/to/genome.bed
-    rseqc_modules //    list: rseqc modules to run
+    ch_bam_bai    // channel: [ val(meta), path(bam), path(bai)]
+    ch_bed        // channel: [ path(bed) ]      (file: /path/to/genome.bed)
+    ch_rseqc_modules // channel: [ path(list)]    (list: rseqc modules to run)
 
     main:
 
@@ -29,7 +29,7 @@ workflow BAM_RSEQC {
     // Run RSeQC bam_stat.py
     //
     bamstat_txt = Channel.empty()
-    if ('bam_stat' in rseqc_modules) {
+    if ('bam_stat' in ch_rseqc_modules) {
         RSEQC_BAMSTAT ( ch_bam )
         bamstat_txt = RSEQC_BAMSTAT.out.txt
         ch_versions = ch_versions.mix(RSEQC_BAMSTAT.out.versions.first())
@@ -43,7 +43,7 @@ workflow BAM_RSEQC {
     innerdistance_mean     = Channel.empty()
     innerdistance_pdf      = Channel.empty()
     innerdistance_rscript  = Channel.empty()
-    if ('inner_distance' in rseqc_modules) {
+    if ('inner_distance' in ch_rseqc_modules) {
         RSEQC_INNERDISTANCE ( ch_bam, ch_bed )
         innerdistance_distance = RSEQC_INNERDISTANCE.out.distance
         innerdistance_freq     = RSEQC_INNERDISTANCE.out.freq
@@ -57,7 +57,7 @@ workflow BAM_RSEQC {
     // Run RSeQC infer_experiment.py
     //
     inferexperiment_txt = Channel.empty()
-    if ('infer_experiment' in rseqc_modules) {
+    if ('infer_experiment' in ch_rseqc_modules) {
         RSEQC_INFEREXPERIMENT ( ch_bam, ch_bed )
         inferexperiment_txt = RSEQC_INFEREXPERIMENT.out.txt
         ch_versions = ch_versions.mix(RSEQC_INFEREXPERIMENT.out.versions.first())
@@ -73,7 +73,7 @@ workflow BAM_RSEQC {
     junctionannotation_events_pdf   = Channel.empty()
     junctionannotation_rscript      = Channel.empty()
     junctionannotation_log          = Channel.empty()
-    if ('junction_annotation' in rseqc_modules) {
+    if ('junction_annotation' in ch_rseqc_modules) {
         RSEQC_JUNCTIONANNOTATION ( ch_bam, ch_bed )
         junctionannotation_bed          = RSEQC_JUNCTIONANNOTATION.out.bed
         junctionannotation_interact_bed = RSEQC_JUNCTIONANNOTATION.out.interact_bed
@@ -90,7 +90,7 @@ workflow BAM_RSEQC {
     //
     junctionsaturation_pdf     = Channel.empty()
     junctionsaturation_rscript = Channel.empty()
-    if ('junction_saturation' in rseqc_modules) {
+    if ('junction_saturation' in ch_rseqc_modules) {
         RSEQC_JUNCTIONSATURATION ( ch_bam, ch_bed )
         junctionsaturation_pdf     = RSEQC_JUNCTIONSATURATION.out.pdf
         junctionsaturation_rscript = RSEQC_JUNCTIONSATURATION.out.rscript
@@ -101,7 +101,7 @@ workflow BAM_RSEQC {
     // Run RSeQC read_distribution.py
     //
     readdistribution_txt = Channel.empty()
-    if ('read_distribution' in rseqc_modules) {
+    if ('read_distribution' in ch_rseqc_modules) {
         RSEQC_READDISTRIBUTION ( ch_bam, ch_bed )
         readdistribution_txt = RSEQC_READDISTRIBUTION.out.txt
         ch_versions = ch_versions.mix(RSEQC_READDISTRIBUTION.out.versions.first())
@@ -114,7 +114,7 @@ workflow BAM_RSEQC {
     readduplication_pos_xls = Channel.empty()
     readduplication_pdf     = Channel.empty()
     readduplication_rscript = Channel.empty()
-    if ('read_duplication' in rseqc_modules) {
+    if ('read_duplication' in ch_rseqc_modules) {
         RSEQC_READDUPLICATION ( ch_bam )
         readduplication_seq_xls = RSEQC_READDUPLICATION.out.seq_xls
         readduplication_pos_xls = RSEQC_READDUPLICATION.out.pos_xls
@@ -127,42 +127,42 @@ workflow BAM_RSEQC {
     // Run RSeQC tin.py
     //
     tin_txt = Channel.empty()
-    if ('tin' in rseqc_modules) {
+    if ('tin' in ch_rseqc_modules) {
         RSEQC_TIN ( ch_bam_bai, ch_bed )
         tin_txt     = RSEQC_TIN.out.txt
         ch_versions = ch_versions.mix(RSEQC_TIN.out.versions.first())
     }
 
     emit:
-    bamstat_txt                     // channel: [ val(meta), txt ]
+    bamstat_txt                     // channel: [ val(meta), path(txt) ]
 
-    innerdistance_distance          // channel: [ val(meta), txt ]
-    innerdistance_freq              // channel: [ val(meta), txt ]
-    innerdistance_mean              // channel: [ val(meta), txt ]
-    innerdistance_pdf               // channel: [ val(meta), pdf ]
-    innerdistance_rscript           // channel: [ val(meta), r   ]
+    innerdistance_distance          // channel: [ val(meta), path(txt) ]
+    innerdistance_freq              // channel: [ val(meta), path(txt) ]
+    innerdistance_mean              // channel: [ val(meta), path(txt) ]
+    innerdistance_pdf               // channel: [ val(meta), ppath(pdf) ]
+    innerdistance_rscript           // channel: [ val(meta), path(r)   ]
 
-    inferexperiment_txt             // channel: [ val(meta), txt ]
+    inferexperiment_txt             // channel: [ val(meta), path(txt) ]
 
-    junctionannotation_bed          // channel: [ val(meta), bed ]
-    junctionannotation_interact_bed // channel: [ val(meta), bed ]
-    junctionannotation_xls          // channel: [ val(meta), xls ]
-    junctionannotation_pdf          // channel: [ val(meta), pdf ]
-    junctionannotation_events_pdf   // channel: [ val(meta), pdf ]
-    junctionannotation_rscript      // channel: [ val(meta), r   ]
-    junctionannotation_log          // channel: [ val(meta), log ]
+    junctionannotation_bed          // channel: [ val(meta), path(bed) ]
+    junctionannotation_interact_bed // channel: [ val(meta), path(bed) ]
+    junctionannotation_xls          // channel: [ val(meta), path(xls) ]
+    junctionannotation_pdf          // channel: [ val(meta), path(pdf) ]
+    junctionannotation_events_pdf   // channel: [ val(meta), path(pdf) ]
+    junctionannotation_rscript      // channel: [ val(meta), path(r) ]
+    junctionannotation_log          // channel: [ val(meta), path(log) ]
 
-    junctionsaturation_pdf          // channel: [ val(meta), pdf ]
-    junctionsaturation_rscript      // channel: [ val(meta), r   ]
+    junctionsaturation_pdf          // channel: [ val(meta), path(pdf) ]
+    junctionsaturation_rscript      // channel: [ val(meta), path(r)]
 
-    readdistribution_txt            // channel: [ val(meta), txt ]
+    readdistribution_txt            // channel: [ val(meta), path(txt) ]
 
-    readduplication_seq_xls         // channel: [ val(meta), xls ]
-    readduplication_pos_xls         // channel: [ val(meta), xls ]
-    readduplication_pdf             // channel: [ val(meta), pdf ]
-    readduplication_rscript         // channel: [ val(meta), r   ]
+    readduplication_seq_xls         // channel: [ val(meta), path(xls) ]
+    readduplication_pos_xls         // channel: [ val(meta), path(xls) ]
+    readduplication_pdf             // channel: [ val(meta), path(pdf) ]
+    readduplication_rscript         // channel: [ val(meta), path(r) ]
 
-    tin_txt                         // channel: [ val(meta), txt ]
+    tin_txt                         // channel: [ val(meta), path(txt) ]
 
-    versions = ch_versions          // channel: [ versions.yml ]
+    versions = ch_versions          // channel: [ path(versions.yml)]
 }

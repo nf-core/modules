@@ -10,7 +10,7 @@ include { UNTAR      } from "../../../modules/nf-core/untar/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
-        ch_flowcell     // [[id:"", lane:""],samplesheet.csv, path/to/bcl/files]
+        ch_flowcell      // channel: [ [id:"", lane:""], path(samplesheet), path(files) ]     (path to samplesheet.csv and path to bcl files)
         demultiplexer   // bclconvert or bcl2fastq
 
     main:

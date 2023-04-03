@@ -7,8 +7,8 @@ include { UCSC_BEDGRAPHTOBIGWIG } from '../../../modules/nf-core/ucsc/bedgraphto
 
 workflow BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG {
     take:
-    bedgraph // channel: [ val(meta), [ bedgraph ] ]
-    sizes    //    path: chrom.sizes
+    ch_bedgraph // channel: [ val(meta), path(bedgraph) ]
+    ch_sizes    // channel: [ path (chrom.sizes)]
 
     main:
 
@@ -17,18 +17,18 @@ workflow BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG {
     //
     // Clip bedGraph file
     //
-    UCSC_BEDCLIP ( bedgraph, sizes )
+    UCSC_BEDCLIP ( ch_bedgraph, ch_sizes )
     ch_versions = ch_versions.mix(UCSC_BEDCLIP.out.versions.first())
 
     //
     // Convert bedGraph to bigWig
     //
-    UCSC_BEDGRAPHTOBIGWIG ( UCSC_BEDCLIP.out.bedgraph, sizes )
+    UCSC_BEDGRAPHTOBIGWIG ( UCSC_BEDCLIP.out.ch_bedgraph, ch_sizes )
     ch_versions = ch_versions.mix(UCSC_BEDGRAPHTOBIGWIG.out.versions.first())
 
     emit:
-    bigwig   = UCSC_BEDGRAPHTOBIGWIG.out.bigwig // channel: [ val(meta), [ bigwig ] ]
-    bedgraph = UCSC_BEDCLIP.out.bedgraph        // channel: [ val(meta), [ bedgraph ] ]
+    bigwig   = UCSC_BEDGRAPHTOBIGWIG.out.bigwig // channel: [ val(meta), path(bigwig) ]
+    bedgraph = UCSC_BEDCLIP.out.bedgraph        // channel: [ val(meta), path(bedgraph) ]
 
-    versions = ch_versions                      // channel: [ versions.yml ]
+    versions = ch_versions                      // channel: [ path(versions.yml) ]
 }
