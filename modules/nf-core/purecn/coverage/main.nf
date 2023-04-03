@@ -1,4 +1,4 @@
-sdef VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
+def VERSION = '2.4.0' // PureCN outputs to stderr instead of stdout, and exits with 1 with --version
 
 process PURECN_COVERAGE {
     tag "$meta.id"
@@ -10,7 +10,7 @@ process PURECN_COVERAGE {
         'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     path intervals
 
