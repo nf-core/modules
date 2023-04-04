@@ -25,6 +25,7 @@ RUN micromamba install -y --name base -c conda-forge -c bioconda -c defaults \
     && micromamba clean --all --yes
 
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
+RUN cd /
 RUN wget https://github.com/lgmgeo/AnnotSV/archive/refs/tags/v$VERSION.tar.gz && \
     tar -xvf v$VERSION.tar.gz -C . && \
     cd AnnotSV* && \
