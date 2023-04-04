@@ -8,12 +8,13 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
         'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam), val(target_num_reads), val(fraction)
+    tuple val(meta), path(bam), val(fraction)
 
     output:
     tuple val(meta), path("*.ds*.bam")        , emit: bam
     tuple val(meta), path("*.ds*.bai")        , optional:true, emit: bai
-    path  "versions.yml"                  , emit: versions
+    tuple val(meta), env(ACTUAL_NUM_READS)    , optional:true, emit: num_reads
+    path  "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,8 +35,12 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
         $args \\
         --CREATE_INDEX \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.ds${target_num_reads}.bam \\
-        --FRACTION  ${fraction}
+        --OUTPUT ${prefix}.ds.bam \\
+        --FRACTION ${fraction} 2> tool_stderr
+
+    ACTUAL_NUM_READS=\$(tail -n 10 tool_stderr | grep Kept | sed -E 's/.*Kept ([0-9]+) out of.*/\\1/')
+    mv "${prefix}.ds.bam" "${prefix}.ds\${ACTUAL_NUM_READS}.bam"
+    mv "${prefix}.ds.bai" "${prefix}.ds\${ACTUAL_NUM_READS}.bai"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
