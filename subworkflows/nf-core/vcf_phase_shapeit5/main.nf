@@ -45,9 +45,8 @@ workflow VCF_PHASE_SHAPEIT5 {
         .view()
 
     // Count the number of chunks
-    ch_chunks_number = ch_chunk_output
-        .groupTuple()
-        .map { meta, chunks -> [meta, chunks.size()]}
+    ch_chunks_number = BEDTOOLS_MAKEWINDOWS.out.bed
+        .map { meta, bed -> [meta, bed.countLines().intValue()]}
 
     ch_phase_input = ch_vcf
         .map { m, vcf, index, pedigree, region ->
@@ -64,11 +63,11 @@ workflow VCF_PHASE_SHAPEIT5 {
     ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
-        .combine(chunks_number, by:0)
+        .combine(ch_chunks_number, by:0)
         .map{meta, vcf, chunks_num -> [groupKey(meta, chunks_num), vcf]}
         .groupTuple()
         .combine(VCF_INDEX1.out.csi
-            .combine(chunks_number, by:0)
+            .combine(ch_chunks_number, by:0)
             .map{meta, csi, chunks_num -> [groupKey(meta, chunks_num), csi]}
             .groupTuple(),
             by:0)
