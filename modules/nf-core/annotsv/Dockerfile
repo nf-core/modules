@@ -29,5 +29,3 @@ RUN wget https://github.com/lgmgeo/AnnotSV/archive/refs/tags/v$VERSION.tar.gz &&
     tar -xvf v$VERSION.tar.gz -C . && \
     cd AnnotSV* && \
     make PREFIX=${ANNOTSV} install
-
-CMD [ "bash" ]

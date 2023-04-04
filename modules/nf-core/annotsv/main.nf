@@ -23,7 +23,6 @@ process ANNOTSV {
     tuple val(meta), path("*.unannotated.tsv")  , emit: unannotated_tsv, optional:true
     // VCF output is a bit flaky and is prone to failures (https://github.com/lgmgeo/AnnotSV/issues/168)
     tuple val(meta), path("*.vcf")              , emit: vcf, optional:true
-    tuple val(meta), path("*.unannotated.vcf")  , emit: unannotated_vcf, optional:true
     path "versions.yml"                         , emit: versions
 
     when:
@@ -60,11 +59,11 @@ process ANNOTSV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf && touch ${prefix}.unnanotated.vcf" : ""
+    def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
 
     """
     touch ${prefix}.tsv
-    touch ${prefix}.unnanotated.tsv
+    touch ${prefix}.unannotated.tsv
     ${create_vcf}
 
     cat <<-END_VERSIONS > versions.yml
