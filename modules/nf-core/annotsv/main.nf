@@ -51,7 +51,7 @@ process ANNOTSV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        annotsv: \$(echo \$(AnnotSV -help) 2>&1 | head -n1 | sed 's/^AnnotSV //')
+        annotsv: \$(echo \$(AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //'))
     END_VERSIONS
     """
 
@@ -68,7 +68,7 @@ process ANNOTSV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        annotsv: \$(echo \$(AnnotSV -help) 2>&1 | head -n1 | sed 's/^AnnotSV //')
+        annotsv: \$(echo \$(AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //'))
     END_VERSIONS
     """
 }
