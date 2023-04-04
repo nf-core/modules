@@ -30,7 +30,7 @@ workflow VCF_PHASE_SHAPEIT5 {
     // Create the File in bed format and use the meta id for the file name
     ch_region.region
         .collectFile { mid, region -> [ "${mid}.bed", region.replace(":","\t").replace("-","\t") ] }
-        .map { file -> [ file.simpleName, file ] }
+        .map { file -> [ file.baseName, file ] }
         .set { ch_merged_region }
 
     // Link back the meta map with the file
