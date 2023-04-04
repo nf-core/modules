@@ -75,11 +75,11 @@ workflow VCF_PHASE_SHAPEIT5 {
         .groupTuple()
         .map{ meta, vcf, csi ->
                 [ meta,
-                  vcf.sort { a, b ->
+                vcf.sort { a, b ->
                     def aStart = a.getName().split('-')[1].toInteger()
                     def bStart = b.getName().split('-')[1].toInteger()
                     aStart <=> bStart},
-                  csi]}
+                csi]}
 
     SHAPEIT5_LIGATE(ch_ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
