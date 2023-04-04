@@ -4,7 +4,7 @@ LABEL authors="Nicolas Vannieuwkerke <nicolas.vannieuwkerke@ugent.be>" \
     description="Docker image containing AnnotSV"
 
 ENV VERSION=3.3.2
-ENV ANNOTSV=/tmp/AnnotSV-${VERSION}
+ENV ANNOTSV=/home/mambauser/AnnotSV-${VERSION}
 ENV PATH="${PATH}:${ANNOTSV}/bin"
 
 # Install mamba dependencies
@@ -25,8 +25,10 @@ RUN micromamba install -y --name base -c conda-forge -c bioconda -c defaults \
     && micromamba clean --all --yes
 
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
-RUN cd /
 RUN wget https://github.com/lgmgeo/AnnotSV/archive/refs/tags/v$VERSION.tar.gz && \
+    mv v${VERSION}.tar.gz /home/mambauser && \
+    cd /home/mambauser && \
     tar -xvf v$VERSION.tar.gz -C . && \
     cd AnnotSV* && \
-    make PREFIX=${ANNOTSV} install
+    make PREFIX=${ANNOTSV} install && \
+    rm ../v${VERSION}.tar.gz

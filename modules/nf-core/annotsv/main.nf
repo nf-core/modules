@@ -37,7 +37,16 @@ process ANNOTSV {
     def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
     def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
+    if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
+        error("VCF conversion is not supported when running ")
+    }
+
     """
+    if [[ -n SINGULARITY_NAME ]]; then
+        export MAMBA_SKIP_ACTIVATE=0
+        source _activate_current_env.sh
+    fi
+
     AnnotSV \\
         -annotationsDir ${annotations} \\
         ${cand_genes} \\
@@ -60,6 +69,10 @@ process ANNOTSV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
+
+    if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
+        error("VCF conversion is not supported when running ")
+    }
 
     """
     touch ${prefix}.tsv
