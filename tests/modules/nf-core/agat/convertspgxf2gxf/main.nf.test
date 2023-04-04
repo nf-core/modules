@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process AGAT_CONVERTSPGXF2GXF"
+    script "modules/nf-core/agat/convertspgxf2gxf/main.nf"
+    config "tests/modules/nf-core/agat/convertspgxf2gxf/nextflow.config"
+    process "AGAT_CONVERTSPGXF2GXF"
+
+    test("test_gff") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                                [ id: 'test' ], // meta map
+                                file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert snapshot(
+                            path("$outputDir/agat/test.agat.gff"),
+                            path("$outputDir/agat/versions.yml")
+                           ).match("test_gff")
+
+            assert new File("$outputDir/agat/genome.agat.log").exists()
+        }
+
+    }
+
+    test("test_gtf") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                                [ id: 'test' ], // meta map
+                                file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert snapshot(
+                            path("$outputDir/agat/test.agat.gff"),
+                            path("$outputDir/agat/versions.yml")
+                           ).match("test_gtf")
+
+            assert new File("$outputDir/agat/genome.agat.log").exists()
+        }
+
+    }
+
+}

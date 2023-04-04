@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process AGAT_CONVERTSPGFF2GTF"
+    script "modules/nf-core/agat/convertspgff2gtf/main.nf"
+    config "tests/modules/nf-core/agat/convertspgff2gtf/nextflow.config"
+    process "AGAT_CONVERTSPGFF2GTF"
+
+    test("test_gff") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                             [ id: 'test' ], // meta map
+                             file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert snapshot(
+                            path("$outputDir/agat/test.agat.gtf"),
+                            path("$outputDir/agat/versions.yml")
+                           ).match("test_gff")
+
+            assert new File("$outputDir/agat/genome.agat.log").exists()
+        }
+
+    }
+
+}
