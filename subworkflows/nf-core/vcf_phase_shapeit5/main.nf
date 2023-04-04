@@ -20,36 +20,35 @@ workflow VCF_PHASE_SHAPEIT5 {
     // The meta map needing to be conserved the following steps a required
 
     // Keep the meta map and the region in two separated channel but keed id field to link them back
-    ch_vcf
+    ch_region = ch_vcf
         .multiMap { m, vcf, csi, pedigree, region ->
-            metadata: [m.id, m]
-            region: [m.id,region ]
+            metadata: [ m.id, m]
+            region  : [ m.id, region]
         }
-        .set { ch_region }
 
     // Create the File in bed format and use the meta id for the file name
-    ch_region.region
+    ch_merged_region = ch_region.region
         .collectFile { mid, region -> [ "${mid}.bed", region.replace(":","\t").replace("-","\t") ] }
         .map { file -> [ file.baseName, file ] }
-        .set { ch_merged_region }
 
     // Link back the meta map with the file
-    ch_region.metadata
+    ch_region_file = ch_region.metadata
         .join(ch_merged_region, failOnMismatch:true, failOnDuplicate:true)
-        .map {mid, meta, region_file -> [meta, region_file]}
-        .set { ch_region_file }
+        .map { mid, meta, region_file -> [meta, region_file] }
 
     BEDTOOLS_MAKEWINDOWS(ch_region_file)
     ch_versions = ch_versions.mix(BEDTOOLS_MAKEWINDOWS.out.versions.first())
 
-    chunk_output = BEDTOOLS_MAKEWINDOWS.out.bed
-                                .splitCsv(header: ['Chr', 'Start', 'End'], sep: "\t", skip: 0)
-                                .map { meta, it -> [meta, it["Chr"]+":"+it["Start"]+"-"+it["End"]]}
+    ch_chunk_output = BEDTOOLS_MAKEWINDOWS.out.bed
+        .splitCsv(header: ['Chr', 'Start', 'End'], sep: "\t", skip: 0)
+        .map { meta, it -> [meta, it["Chr"]+":"+it["Start"]+"-"+it["End"]] }
 
-    phase_input = ch_vcf.map{m, vcf, index, pedigree, region -> [m, vcf, index, pedigree]}
-                    .combine(chunk_output, by:0)
+    ch_phase_input = ch_vcf
+        .map { m, vcf, index, pedigree, region ->
+            [m, vcf, index, pedigree] }
+        .combine(ch_chunk_output, by:0)
 
-    SHAPEIT5_PHASECOMMON ( phase_input,
+    SHAPEIT5_PHASECOMMON ( ch_phase_input,
                             ch_ref,
                             ch_scaffold,
                             ch_map )
@@ -58,15 +57,15 @@ workflow VCF_PHASE_SHAPEIT5 {
     VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
     ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
 
-    ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
-                                        .map{meta, vcf -> [meta, vcf]}
-                                        .groupTuple()
-                                        .combine(VCF_INDEX1.out.csi
-                                            .map{meta, vcf -> [meta, vcf]}
-                                            .groupTuple(),
-                                            by:0)
+    ch_ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
+        .map{meta, vcf -> [meta, vcf]}
+        .groupTuple()
+        .combine(VCF_INDEX1.out.csi
+            .map{meta, vcf -> [meta, vcf]}
+            .groupTuple(),
+            by:0)
 
-    SHAPEIT5_LIGATE(ligate_input)
+    SHAPEIT5_LIGATE(ch_ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
 
     VCF_INDEX2(SHAPEIT5_LIGATE.out.merged_variants)
