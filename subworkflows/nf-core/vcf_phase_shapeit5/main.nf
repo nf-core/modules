@@ -45,7 +45,7 @@ workflow VCF_PHASE_SHAPEIT5 {
         .view()
 
     // Count the number of chunks
-    chunks_number = ch_chunk_output
+    ch_chunks_number = ch_chunk_output
         .groupTuple()
         .map { meta, chunks -> [meta, chunks.size()]}
 
