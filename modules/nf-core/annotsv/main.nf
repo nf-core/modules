@@ -38,7 +38,7 @@ process ANNOTSV {
     def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
     if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
-        error("VCF conversion is not supported when running ")
+        error("VCF conversion is not supported when using singularity")
     }
 
     """
@@ -71,7 +71,7 @@ process ANNOTSV {
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
 
     if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
-        error("VCF conversion is not supported when running ")
+        error("VCF conversion is not supported when using singularity")
     }
 
     """
