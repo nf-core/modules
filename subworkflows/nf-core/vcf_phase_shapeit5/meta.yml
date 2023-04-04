@@ -27,23 +27,23 @@ input:
         Pedigree information in the following format: offspring father mother.
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ meta, vcf, csi, pedigree, region ]
+        Structure: [ val(meta), path(vcf), path(csi), path(pedigree), val(region) ]
   - ch_ref:
       type: file
       description: |
         Reference panel of haplotypes in VCF/BCF format.
         Index file of the Reference panel file.
-        Structure: [ meta, vcf, csi ]
-  - ch_ref:
+        Structure: [ val(meta), path(ref), path(csi) ]
+  - ch_scaffold:
       type: file
       description: |
         Scaffold of haplotypes in VCF/BCF format.
         Index file of the Scaffold of haplotypes file.
-        Structure: [ meta, vcf, csi ]
+        Structure: [ val(meta), path(scaffold), path(csi) ]
   - ch_map:
       type: file
       description: File containing the genetic map.
-      Structure: [meta, gmap]
+      Structure: [val(meta), path(map)]
 
 output:
   - meta:

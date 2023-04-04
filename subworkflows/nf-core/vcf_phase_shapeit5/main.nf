@@ -7,10 +7,10 @@ include { BCFTOOLS_INDEX as VCF_INDEX2      } from '../../../modules/nf-core/bcf
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf        // channel (mandatory): [ [id, ref], vcf, csi, pedigree, region ]
-    ch_ref        // channel (optional) : [ meta, ref, csi ]
-    ch_scaffold   // channel (optional) : [ meta, scaffold, csi ]
-    ch_map        // channel (optional) : [ meta, map]
+    ch_vcf        // channel (mandatory): [ val(meta), path(vcf), path(csi), path(pedigree), val(region) ]
+    ch_ref        // channel (optional) : [ val(meta), path(ref), path(csi) ]
+    ch_scaffold   // channel (optional) : [ val(meta), path(scaffold), path(csi) ]
+    ch_map        // channel (optional) : [ val(meta), path(map)]
 
     main:
 
