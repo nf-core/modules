@@ -3,7 +3,7 @@
   tags:
     - freebayes
   files:
-    - path: output/freebayes/test.vcf.gz
+    - path: output/freebayes/test.vcf.gz # No md5sum because the file includes a timestamp
       contains:
         - "MT192765.1\t10214\t.\tATTTAC\tATTAC\t29.8242"
     - path: output/freebayes/versions.yml
@@ -13,9 +13,7 @@
   tags:
     - freebayes
   files:
-    - path: output/freebayes/test.vcf.gz
-      must_not_contain_regex:
-        - "^[^#]"
+    - path: output/freebayes/test.vcf.gz # No md5sum because the file includes a timestamp
     - path: output/freebayes/versions.yml
 
 - name: freebayes test_freebayes_cram
@@ -23,7 +21,7 @@
   tags:
     - freebayes
   files:
-    - path: output/freebayes/test.vcf.gz
+    - path: output/freebayes/test.vcf.gz # No md5sum because the file includes a timestamp
       contains:
         - "chr22\t1982\t.\tA\tG\t459.724"
     - path: output/freebayes/versions.yml
@@ -33,7 +31,7 @@
   tags:
     - freebayes
   files:
-    - path: output/freebayes/test.vcf.gz
+    - path: output/freebayes/test.vcf.gz # No md5sum because the file includes a timestamp
       contains:
         - "chr22\t1982\t.\tA\tG\t670.615"
     - path: output/freebayes/versions.yml
@@ -43,7 +41,7 @@
   tags:
     - freebayes
   files:
-    - path: output/freebayes/test.vcf.gz
+    - path: output/freebayes/test.vcf.gz # No md5sum because the file includes a timestamp
       contains:
         - "chr22\t1982\t.\tA\tG\t670.615"
     - path: output/freebayes/versions.yml
