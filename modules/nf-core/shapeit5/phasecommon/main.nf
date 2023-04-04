@@ -25,6 +25,7 @@ process SHAPEIT5_PHASECOMMON {
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+    if ("$input" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def map_command       = map       ? "--map $map"             : ""
     def reference_command = reference ? "--reference $reference" : ""
