@@ -21,37 +21,39 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     // Keep the meta map and the region in two separated channel but keed id field to link them back
     ch_region = ch_vcf
-        .multiMap { m, vcf, csi, pedigree, region ->
-            metadata: [ m.id, m]
-            region  : [ m.id, region]
+        .multiMap { meta, vcf, csi, pedigree, region ->
+            metadata: [ meta.id, meta]
+            region  : [ meta.id, region]
         }
 
     // Create the File in bed format and use the meta id for the file name
     ch_merged_region = ch_region.region
-        .collectFile { mid, region -> [ "${mid}.bed", region.replace(":","\t").replace("-","\t") ] }
-        .map { file -> [ file.baseName, file ] }
+        .collectFile { metaid, region -> ["${metaid}.bed", region.replace(":","\t").replace("-","\t")] }
+        .map { file -> [file.baseName, file] }
 
     // Link back the meta map with the file
     ch_region_file = ch_region.metadata
         .join(ch_merged_region, failOnMismatch:true, failOnDuplicate:true)
-        .map { mid, meta, region_file -> [meta, region_file] }
+        .map { mid, meta, region_file -> [meta, region_file]}
 
     BEDTOOLS_MAKEWINDOWS(ch_region_file)
     ch_versions = ch_versions.mix(BEDTOOLS_MAKEWINDOWS.out.versions.first())
 
     ch_chunk_output = BEDTOOLS_MAKEWINDOWS.out.bed
         .splitCsv(header: ['Chr', 'Start', 'End'], sep: "\t", skip: 0)
-        .map { meta, it -> [meta, it["Chr"]+":"+it["Start"]+"-"+it["End"]] }
-        .view()
+        .map { meta, it -> [meta, it["Chr"]+":"+it["Start"]+"-"+it["End"]]}
 
     // Count the number of chunks
     ch_chunks_number = BEDTOOLS_MAKEWINDOWS.out.bed
         .map { meta, bed -> [meta, bed.countLines().intValue()]}
 
     ch_phase_input = ch_vcf
-        .map { m, vcf, index, pedigree, region ->
-            [m, vcf, index, pedigree] }
+        .map { meta, vcf, index, pedigree, region ->
+            [meta, vcf, index, pedigree] }
         .combine(ch_chunk_output, by:0)
+        .map { meta, vcf, index, pedigree, chunk ->
+                [meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
+                vcf, index, pedigree, chunk]}
 
     SHAPEIT5_PHASECOMMON ( ch_phase_input,
                             ch_ref,
@@ -62,15 +64,15 @@ workflow VCF_PHASE_SHAPEIT5 {
     VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
     ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
 
-    ch_ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
+    ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
+        .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
+        .map{ meta, vcf, csi -> 
+            meta.id = meta.id.substring(0, meta.id.indexOf('_'))
+            [meta, vcf, csi]}
         .combine(ch_chunks_number, by:0)
-        .map{meta, vcf, chunks_num -> [groupKey(meta, chunks_num), vcf]}
+        .map{meta, vcf, csi, chunks_num -> [groupKey(meta, chunks_num), vcf, csi]}
         .groupTuple()
-        .combine(VCF_INDEX1.out.csi
-            .combine(ch_chunks_number, by:0)
-            .map{meta, csi, chunks_num -> [groupKey(meta, chunks_num), csi]}
-            .groupTuple(),
-            by:0)
+        .view()
 
     SHAPEIT5_LIGATE(ch_ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
