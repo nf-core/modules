@@ -35,7 +35,7 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     // Link back the meta map with the file
     ch_region.metadata
-        .join(ch_merged_region)
+        .join(ch_merged_region, failOnMismatch:true, failOnDuplicate:true)
         .map {mid, meta, region_file -> [meta, region_file]}
         .set { ch_region_file }
 
