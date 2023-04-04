@@ -52,7 +52,7 @@ workflow VCF_PHASE_SHAPEIT5 {
             [meta, vcf, index, pedigree] }
         .combine(ch_chunk_output, by:0)
         .map { meta, vcf, index, pedigree, chunk ->
-                [meta + [id: "${meta.id}_${chunk.replace(":","_")}"], // The meta.id field need to be modified to be unique for each chunk
+                [meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
                 vcf, index, pedigree, chunk]}
 
     SHAPEIT5_PHASECOMMON ( ch_phase_input,
@@ -70,8 +70,16 @@ workflow VCF_PHASE_SHAPEIT5 {
             newmeta = meta + [id: meta.id.substring(0, meta.id.indexOf('_'))]
             [newmeta, vcf, csi]}
         .combine(ch_chunks_number, by:0)
-        .map{meta, vcf, csi, chunks_num -> [groupKey(meta, chunks_num), vcf, csi]}
+        .map{meta, vcf, csi, chunks_num ->
+            [groupKey(meta, chunks_num), vcf, csi]}
         .groupTuple()
+        .map{ meta, vcf, csi ->
+                [ meta,
+                  vcf.sort { a, b ->
+                    def aStart = a.getName().split('-')[1].toInteger()
+                    def bStart = b.getName().split('-')[1].toInteger()
+                    aStart <=> bStart},
+                  csi]}
 
     SHAPEIT5_LIGATE(ch_ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
