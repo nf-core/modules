@@ -1,0 +1,9 @@
+- name: annotsv test_annotsv
+  command: nextflow run ./tests/modules/nf-core/annotsv -entry test_annotsv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/annotsv/nextflow.config -stub
+  tags:
+    - annotsv
+  files:
+    - path: output/annotsv/test.tsv
+    - path: output/annotsv/test.unannotated.tsv
+    - path: output/annotsv/test.vcf
+    - path: output/annotsv/versions.yml
