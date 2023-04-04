@@ -12,8 +12,8 @@ workflow test_shapeit5_phaserare {
     [ id:'input', single_end:false ], // meta map
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-    "chr21",
     []
+    "chr21",
     ])
 
     ref_panel = Channel.of([[],[],[]])
@@ -33,8 +33,8 @@ workflow test_shapeit5_phaserare {
     [ id:'input', single_end:false ], // meta map
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-    "chr21:16600000-16800000",
     []
+    "chr21:16600000-16800000",
     ])
     SHAPEIT5_PHASERARE ( input_vcf, scaffold, map )
 
