@@ -9,6 +9,9 @@ nextflow_process {
     test("test_abacas") {
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
@@ -23,34 +26,21 @@ nextflow_process {
         then {
             assert process.success
 
-            assert process.out.results
-            with(process.out.results) {
-                assert size() == 1
-                with(get(0)) {
-                    assert get(0).id == "test"
-                    assert get(0).single_end == false
-                    with(get(1)) {
-                        assert size() == 11
-                        assert get(0) ==~ ".*/test.abacas.MULTIFASTA.fa"
-                        assert get(1) ==~ ".*/test.abacas.bin"
-                        assert get(2) ==~ ".*/test.abacas.crunch"
-                        assert get(3) ==~ ".*/test.abacas.fasta"
-                        assert get(4) ==~ ".*/test.abacas.gaps"
-                        assert get(5) ==~ ".*/test.abacas.gaps.tab"
-                        assert get(6) ==~ ".*/test.abacas.nucmer.delta"
-                        assert get(7) ==~ ".*/test.abacas.nucmer.filtered.delta"
-                        assert get(8) ==~ ".*/test.abacas.nucmer.tiling"
-                        assert get(9) ==~ ".*/test.abacas.tab"
-                        assert get(10) ==~ ".*/test.abacas.unused.contigs.out"
-                    }
-                }
-            }
+            assert snapshot(
+                            path("$outputDir/abacas/test.abacas.crunch"),
+                            path("$outputDir/abacas/test.abacas.fasta"),
+                            path("$outputDir/abacas/test.abacas.gaps"),
+                            path("$outputDir/abacas/test.abacas.gaps.tab"),
+                            path("$outputDir/abacas/test.abacas.MULTIFASTA.fa"),
+                            path("$outputDir/abacas/test.abacas.nucmer.tiling"),
+                            path("$outputDir/abacas/test.abacas.tab"),
+                            path("$outputDir/abacas/test.abacas.unused.contigs.out"),
+                            path("$outputDir/abacas/versions.yml")
+                           ).match("abacas")
 
-            assert process.out.versions
-            with(process.out.versions) {
-                assert size() == 1
-                assert get(0) ==~ ".*/versions.yml"
-            }
+            assert new File("$outputDir/abacas/test.abacas.bin").exists()
+            assert new File("$outputDir/abacas/test.abacas.nucmer.delta").exists()
+            assert new File("$outputDir/abacas/test.abacas.nucmer.filtered.delta").exists()
         }
 
     }

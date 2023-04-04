@@ -9,6 +9,9 @@ nextflow_process {
     test("Single_End") {
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:true, collapse:false ], // meta map
@@ -23,36 +26,7 @@ nextflow_process {
         then {
             assert process.success
 
-            // Assertion for output channel 0: singles_truncated
-            assert process.out.singles_truncated.size() == 1
-            with(process.out.singles_truncated[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == true
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.truncated.fastq.gz"
-            }
-
-            // Assertion for output channel 1: discarded
-            assert process.out.discarded.size() == 1
-            with(process.out.discarded[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == true
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.discarded.fastq.gz"
-            }
-
-            // Assertion for output channel 6: settings
-            assert process.out.settings.size() == 1
-            with(process.out.settings[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == true
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.settings"
-            }
-
-            // Assertion for output channel 7: versions
-            assert process.out.versions.size() == 1
-            assert process.out.versions[0] ==~ ".*/versions.yml"
+            assert snapshot(path(params.outdir).list()).match("single_end")
         }
 
     }
@@ -60,6 +34,9 @@ nextflow_process {
     test("Paired_End") {
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false, collapse:false ], // meta map
@@ -75,44 +52,19 @@ nextflow_process {
         then {
             assert process.success
 
-            // Assertion for output channel 1: discarded
-            assert process.out.discarded.size() == 1
-            with(process.out.discarded[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.discarded.fastq.gz"
-            }
-
-            // Assertion for output channel 2: paired_truncated
-            assert process.out.paired_truncated.size() == 1
-            with(process.out.paired_truncated[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1)[0] ==~ ".*/test.pair1.truncated.fastq.gz"
-                assert get(1)[1] ==~ ".*/test.pair2.truncated.fastq.gz"
-            }
-
-            // Assertion for output channel 6: settings
-            assert process.out.settings.size() == 1
-            with(process.out.settings[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.settings"
-            }
-
-            // Assertion for output channel 7: versions
-            assert process.out.versions.size() == 1
-            assert process.out.versions[0] ==~ ".*/versions.yml"
+            assert snapshot(path(params.outdir).list()).match("paired_end")
         }
 
     }
 
     test("Paired_End_Collapse") {
 
+        options "--collapse"
+
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
@@ -128,41 +80,19 @@ nextflow_process {
         then {
             assert process.success
 
-            // Assertion for output channel 1: discarded
-            assert process.out.discarded.size() == 1
-            with(process.out.discarded[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(1) ==~ ".*/test.discarded.fastq.gz"
-            }
-
-            // Assertion for output channel 2: paired_truncated
-            assert process.out.paired_truncated.size() == 1
-            with(process.out.paired_truncated[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(1)[0] ==~ ".*/test.pair1.truncated.fastq.gz"
-                assert get(1)[1] ==~ ".*/test.pair2.truncated.fastq.gz"
-            }
-
-            // Assertion for output channel 6: settings
-            assert process.out.settings.size() == 1
-            with(process.out.settings[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(1) ==~ ".*/test.settings"
-            }
-
-            // Assertion for output channel 7: versions
-            assert process.out.versions.size() == 1
-            assert process.out.versions[0] ==~ ".*/versions.yml"
+            assert snapshot(path(params.outdir).list()).match("paired_end_collapse")
         }
 
     }
 
     test("Paired_End_AdapterList") {
 
+        options "--collapse"
+
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false, collapse:false ], // meta map
@@ -170,7 +100,6 @@ nextflow_process {
                                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                             ]
                 input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/adapterremoval/adapterremoval_adapterlist.txt", checkIfExists: true)
-
                 """
             }
         }
@@ -178,37 +107,7 @@ nextflow_process {
         then {
             assert process.success
 
-            // Assertion for output channel 1: discarded
-            assert process.out.discarded.size() == 1
-            with(process.out.discarded[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.discarded.fastq.gz"
-            }
-
-            // Assertion for output channel 2: paired_truncated
-            assert process.out.paired_truncated.size() == 1
-            with(process.out.paired_truncated[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1)[0] ==~ ".*/test.pair1.truncated.fastq.gz"
-                assert get(1)[1] ==~ ".*/test.pair2.truncated.fastq.gz"
-            }
-
-            // Assertion for output channel 6: settings
-            assert process.out.settings.size() == 1
-            with(process.out.settings[0]) {
-                assert get(0).id == "test"
-                assert get(0).single_end == false
-                assert get(0).collapse == false
-                assert get(1) ==~ ".*/test.settings"
-            }
-
-            // Assertion for output channel 7: versions
-            assert process.out.versions.size() == 1
-            assert process.out.versions[0] ==~ ".*/versions.yml"
+            assert snapshot(path(params.outdir).list()).match()
         }
 
     }

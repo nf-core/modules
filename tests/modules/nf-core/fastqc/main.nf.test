@@ -2,12 +2,16 @@ nextflow_process {
 
     name "Test Process FASTQC"
     script "modules/nf-core/fastqc/main.nf"
+    config "tests/modules/nf-core/fastqc/nextflow.config"
     process "FASTQC"
     tag "fastqc"
 
     test("Single-Read") {
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [
@@ -22,9 +26,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert process.out.html.get(0).get(1) ==~ ".*/test_fastqc.html"
-            assert path(process.out.html.get(0).get(1)).getText().contains("<tr><td>File type</td><td>Conventional base calls</td></tr>")
-            assert process.out.zip.get(0).get(1) ==~ ".*/test_fastqc.zip"
+
+            assert snapshot(
+                            path("$outputDir/fastqc/test_fastqc.html"),
+                            path("$outputDir/fastqc/versions.yml")
+                           ).match("single_read")
+
+            assert new File("$outputDir/fastqc/test_fastqc.zip").exists()
         }
 
     }
