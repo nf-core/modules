@@ -53,10 +53,6 @@ workflow VCF_PHASE_SHAPEIT5 {
         .map { m, vcf, index, pedigree, region ->
             [m, vcf, index, pedigree] }
         .combine(ch_chunk_output, by:0)
-        .combine(chunks_number, by:0)
-        .map { meta, vcf, index, pedigree, chunk, chunks_num ->
-            [ meta + ["chunks_num": chunks_num], vcf, index, pedigree, chunk ]
-        }.view()
 
     SHAPEIT5_PHASECOMMON ( ch_phase_input,
                             ch_ref,
@@ -68,10 +64,12 @@ workflow VCF_PHASE_SHAPEIT5 {
     ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
-        .map{meta, vcf -> [groupKey(meta, meta.chunks_num), vcf]}
+        .combine(chunks_number, by:0)
+        .map{meta, vcf, chunks_num -> [groupKey(meta, chunks_num), vcf]}
         .groupTuple()
         .combine(VCF_INDEX1.out.csi
-            .map{meta, vcf -> [groupKey(meta, meta.chunks_num), vcf]}
+            .combine(chunks_number, by:0)
+            .map{meta, csi, chunks_num -> [groupKey(meta, chunks_num), csi]}
             .groupTuple(),
             by:0)
 
