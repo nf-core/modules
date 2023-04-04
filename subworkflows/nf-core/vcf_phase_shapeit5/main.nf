@@ -58,10 +58,10 @@ workflow VCF_PHASE_SHAPEIT5 {
     ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.output.phased_variant
-        .map{meta, vcf -> [meta, vcf]}
+        .map{meta, vcf -> [groupKey(meta), vcf]}
         .groupTuple()
         .combine(VCF_INDEX1.out.csi
-            .map{meta, vcf -> [meta, vcf]}
+            .map{meta, vcf -> [groupKey(meta), vcf]}
             .groupTuple(),
             by:0)
 
