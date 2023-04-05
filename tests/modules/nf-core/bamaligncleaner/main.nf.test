@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BAMALIGNCLEANER"
     script "modules/nf-core/bamaligncleaner/main.nf"
     process "BAMALIGNCLEANER"
+    config "tests/modules/nf-core/bamaligncleaner/nextflow.config"
+    tag "bamaligncleaner"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

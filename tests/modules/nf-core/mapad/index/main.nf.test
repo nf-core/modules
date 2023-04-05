@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MAPAD_INDEX"
     script "modules/nf-core/mapad/index/main.nf"
     process "MAPAD_INDEX"
+    config "tests/modules/nf-core/mapad_index/nextflow.config"
+    tag "mapad_index"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

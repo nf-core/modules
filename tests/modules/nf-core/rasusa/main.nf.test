@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process RASUSA"
     script "modules/nf-core/rasusa/main.nf"
     process "RASUSA"
+    config "tests/modules/nf-core/rasusa/nextflow.config"
+    tag "rasusa"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

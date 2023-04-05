@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process RSEQC_JUNCTIONANNOTATION"
     script "modules/nf-core/rseqc/junctionannotation/main.nf"
     process "RSEQC_JUNCTIONANNOTATION"
+    config "tests/modules/nf-core/rseqc_junctionannotation/nextflow.config"
+    tag "rseqc_junctionannotation"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process CUSTOM_TABULARTOGSEAGCT"
     script "modules/nf-core/custom/tabulartogseagct/main.nf"
     process "CUSTOM_TABULARTOGSEAGCT"
+    config "tests/modules/nf-core/custom_tabulartogseagct/nextflow.config"
+    tag "custom_tabulartogseagct"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

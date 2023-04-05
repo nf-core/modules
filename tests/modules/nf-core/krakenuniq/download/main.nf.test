@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process KRAKENUNIQ_DOWNLOAD"
     script "modules/nf-core/krakenuniq/download/main.nf"
     process "KRAKENUNIQ_DOWNLOAD"
+    config "tests/modules/nf-core/krakenuniq_download/nextflow.config"
+    tag "krakenuniq_download"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

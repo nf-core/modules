@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SAMTOOLS_MPILEUP"
     script "modules/nf-core/samtools/mpileup/main.nf"
     process "SAMTOOLS_MPILEUP"
+    config "tests/modules/nf-core/samtools_mpileup/nextflow.config"
+    tag "samtools_mpileup"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

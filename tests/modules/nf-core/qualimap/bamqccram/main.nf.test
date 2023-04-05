@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process QUALIMAP_BAMQCCRAM"
     script "modules/nf-core/qualimap/bamqccram/main.nf"
     process "QUALIMAP_BAMQCCRAM"
+    config "tests/modules/nf-core/qualimap_bamqccram/nextflow.config"
+    tag "qualimap_bamqccram"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

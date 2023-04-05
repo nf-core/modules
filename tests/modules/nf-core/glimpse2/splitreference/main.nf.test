@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GLIMPSE2_SPLITREFERENCE"
     script "modules/nf-core/glimpse2/splitreference/main.nf"
     process "GLIMPSE2_SPLITREFERENCE"
+    config "tests/modules/nf-core/glimpse2_splitreference/nextflow.config"
+    tag "glimpse2_splitreference"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

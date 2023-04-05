@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ENSEMBLVEP_DOWNLOAD"
     script "modules/nf-core/ensemblvep/download/main.nf"
     process "ENSEMBLVEP_DOWNLOAD"
+    config "tests/modules/nf-core/ensemblvep_download/nextflow.config"
+    tag "ensemblvep_download"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

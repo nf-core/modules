@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GTDBTK_CLASSIFYWF"
     script "modules/nf-core/gtdbtk/classifywf/main.nf"
     process "GTDBTK_CLASSIFYWF"
+    config "tests/modules/nf-core/gtdbtk_classifywf/nextflow.config"
+    tag "gtdbtk_classifywf"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

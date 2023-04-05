@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ARCASHLA_EXTRACT"
     script "modules/nf-core/arcashla/extract/main.nf"
     process "ARCASHLA_EXTRACT"
+    config "tests/modules/nf-core/arcashla_extract/nextflow.config"
+    tag "arcashla_extract"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process VSEARCH_USEARCHGLOBAL"
     script "modules/nf-core/vsearch/usearchglobal/main.nf"
     process "VSEARCH_USEARCHGLOBAL"
+    config "tests/modules/nf-core/vsearch_usearchglobal/nextflow.config"
+    tag "vsearch_usearchglobal"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

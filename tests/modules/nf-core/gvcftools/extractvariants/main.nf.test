@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GVCFTOOLS_EXTRACTVARIANTS"
     script "modules/nf-core/gvcftools/extractvariants/main.nf"
     process "GVCFTOOLS_EXTRACTVARIANTS"
+    config "tests/modules/nf-core/gvcftools_extractvariants/nextflow.config"
+    tag "gvcftools_extractvariants"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

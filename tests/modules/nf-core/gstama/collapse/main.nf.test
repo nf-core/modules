@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GSTAMA_COLLAPSE"
     script "modules/nf-core/gstama/collapse/main.nf"
     process "GSTAMA_COLLAPSE"
+    config "tests/modules/nf-core/gstama_collapse/nextflow.config"
+    tag "gstama_collapse"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GENMAP_INDEX"
     script "modules/nf-core/genmap/index/main.nf"
     process "GENMAP_INDEX"
+    config "tests/modules/nf-core/genmap_index/nextflow.config"
+    tag "genmap_index"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

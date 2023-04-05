@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process HMMCOPY_GCCOUNTER"
     script "modules/nf-core/hmmcopy/gccounter/main.nf"
     process "HMMCOPY_GCCOUNTER"
+    config "tests/modules/nf-core/hmmcopy_gccounter/nextflow.config"
+    tag "hmmcopy_gccounter"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

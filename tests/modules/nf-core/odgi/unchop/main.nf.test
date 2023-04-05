@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ODGI_UNCHOP"
     script "modules/nf-core/odgi/unchop/main.nf"
     process "ODGI_UNCHOP"
+    config "tests/modules/nf-core/odgi_unchop/nextflow.config"
+    tag "odgi_unchop"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

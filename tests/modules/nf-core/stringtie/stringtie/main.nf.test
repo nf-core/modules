@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process STRINGTIE_STRINGTIE"
     script "modules/nf-core/stringtie/stringtie/main.nf"
     process "STRINGTIE_STRINGTIE"
+    config "tests/modules/nf-core/stringtie_stringtie/nextflow.config"
+    tag "stringtie_stringtie"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

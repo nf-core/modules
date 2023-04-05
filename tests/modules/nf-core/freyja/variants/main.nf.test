@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process FREYJA_VARIANTS"
     script "modules/nf-core/freyja/variants/main.nf"
     process "FREYJA_VARIANTS"
+    config "tests/modules/nf-core/freyja_variants/nextflow.config"
+    tag "freyja_variants"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

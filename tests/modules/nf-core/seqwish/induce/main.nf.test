@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SEQWISH_INDUCE"
     script "modules/nf-core/seqwish/induce/main.nf"
     process "SEQWISH_INDUCE"
+    config "tests/modules/nf-core/seqwish_induce/nextflow.config"
+    tag "seqwish_induce"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

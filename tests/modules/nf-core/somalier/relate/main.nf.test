@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SOMALIER_RELATE"
     script "modules/nf-core/somalier/relate/main.nf"
     process "SOMALIER_RELATE"
+    config "tests/modules/nf-core/somalier_relate/nextflow.config"
+    tag "somalier_relate"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

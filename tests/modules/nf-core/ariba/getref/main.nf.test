@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ARIBA_GETREF"
     script "modules/nf-core/ariba/getref/main.nf"
     process "ARIBA_GETREF"
+    config "tests/modules/nf-core/ariba_getref/nextflow.config"
+    tag "ariba_getref"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

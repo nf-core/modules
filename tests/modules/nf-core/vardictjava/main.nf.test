@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process VARDICTJAVA"
     script "modules/nf-core/vardictjava/main.nf"
     process "VARDICTJAVA"
+    config "tests/modules/nf-core/vardictjava/nextflow.config"
+    tag "vardictjava"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

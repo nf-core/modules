@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ISOSEQ3_CLUSTER"
     script "modules/nf-core/isoseq3/cluster/main.nf"
     process "ISOSEQ3_CLUSTER"
+    config "tests/modules/nf-core/isoseq3_cluster/nextflow.config"
+    tag "isoseq3_cluster"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

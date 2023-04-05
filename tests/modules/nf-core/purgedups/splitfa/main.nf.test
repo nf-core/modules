@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PURGEDUPS_SPLITFA"
     script "modules/nf-core/purgedups/splitfa/main.nf"
     process "PURGEDUPS_SPLITFA"
+    config "tests/modules/nf-core/purgedups_splitfa/nextflow.config"
+    tag "purgedups_splitfa"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

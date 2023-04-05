@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PLINK_BCF"
     script "modules/nf-core/plink/bcf/main.nf"
     process "PLINK_BCF"
+    config "tests/modules/nf-core/plink_bcf/nextflow.config"
+    tag "plink_bcf"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

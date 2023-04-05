@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process AMRFINDERPLUS_UPDATE"
     script "modules/nf-core/amrfinderplus/update/main.nf"
     process "AMRFINDERPLUS_UPDATE"
+    config "tests/modules/nf-core/amrfinderplus_update/nextflow.config"
+    tag "amrfinderplus_update"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

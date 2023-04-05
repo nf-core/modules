@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process TBPROFILER_PROFILE"
     script "modules/nf-core/tbprofiler/profile/main.nf"
     process "TBPROFILER_PROFILE"
+    config "tests/modules/nf-core/tbprofiler_profile/nextflow.config"
+    tag "tbprofiler_profile"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

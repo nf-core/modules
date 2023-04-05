@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MAGECK_MLE"
     script "modules/nf-core/mageck/mle/main.nf"
     process "MAGECK_MLE"
+    config "tests/modules/nf-core/mageck_mle/nextflow.config"
+    tag "mageck_mle"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

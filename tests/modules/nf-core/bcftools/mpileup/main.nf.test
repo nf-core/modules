@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BCFTOOLS_MPILEUP"
     script "modules/nf-core/bcftools/mpileup/main.nf"
     process "BCFTOOLS_MPILEUP"
+    config "tests/modules/nf-core/bcftools_mpileup/nextflow.config"
+    tag "bcftools_mpileup"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

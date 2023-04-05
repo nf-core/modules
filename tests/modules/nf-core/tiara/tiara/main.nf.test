@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process TIARA_TIARA"
     script "modules/nf-core/tiara/tiara/main.nf"
     process "TIARA_TIARA"
+    config "tests/modules/nf-core/tiara_tiara/nextflow.config"
+    tag "tiara_tiara"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SEQSERO2"
     script "modules/nf-core/seqsero2/main.nf"
     process "SEQSERO2"
+    config "tests/modules/nf-core/seqsero2/nextflow.config"
+    tag "seqsero2"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

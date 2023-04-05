@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process FCS_FCSGX"
     script "modules/nf-core/fcs/fcsgx/main.nf"
     process "FCS_FCSGX"
+    config "tests/modules/nf-core/fcs_fcsgx/nextflow.config"
+    tag "fcs_fcsgx"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

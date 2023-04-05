@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process TRANSDECODER_LONGORF"
     script "modules/nf-core/transdecoder/longorf/main.nf"
     process "TRANSDECODER_LONGORF"
+    config "tests/modules/nf-core/transdecoder_longorf/nextflow.config"
+    tag "transdecoder_longorf"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

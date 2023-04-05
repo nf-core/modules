@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SAM2LCA_ANALYZE"
     script "modules/nf-core/sam2lca/analyze/main.nf"
     process "SAM2LCA_ANALYZE"
+    config "tests/modules/nf-core/sam2lca_analyze/nextflow.config"
+    tag "sam2lca_analyze"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

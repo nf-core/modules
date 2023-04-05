@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process OPTITYPE"
     script "modules/nf-core/optitype/main.nf"
     process "OPTITYPE"
+    config "tests/modules/nf-core/optitype/nextflow.config"
+    tag "optitype"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

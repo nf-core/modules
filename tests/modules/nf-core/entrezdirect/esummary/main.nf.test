@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ENTREZDIRECT_ESUMMARY"
     script "modules/nf-core/entrezdirect/esummary/main.nf"
     process "ENTREZDIRECT_ESUMMARY"
+    config "tests/modules/nf-core/entrezdirect_esummary/nextflow.config"
+    tag "entrezdirect_esummary"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

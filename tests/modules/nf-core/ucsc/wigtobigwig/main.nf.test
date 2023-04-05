@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process UCSC_WIGTOBIGWIG"
     script "modules/nf-core/ucsc/wigtobigwig/main.nf"
     process "UCSC_WIGTOBIGWIG"
+    config "tests/modules/nf-core/ucsc_wigtobigwig/nextflow.config"
+    tag "ucsc_wigtobigwig"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process HAMRONIZATION_ABRICATE"
     script "modules/nf-core/hamronization/abricate/main.nf"
     process "HAMRONIZATION_ABRICATE"
+    config "tests/modules/nf-core/hamronization_abricate/nextflow.config"
+    tag "hamronization_abricate"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

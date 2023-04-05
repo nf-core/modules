@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process DSHBIO_SPLITBED"
     script "modules/nf-core/dshbio/splitbed/main.nf"
     process "DSHBIO_SPLITBED"
+    config "tests/modules/nf-core/dshbio_splitbed/nextflow.config"
+    tag "dshbio_splitbed"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

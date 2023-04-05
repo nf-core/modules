@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MANTA_SOMATIC"
     script "modules/nf-core/manta/somatic/main.nf"
     process "MANTA_SOMATIC"
+    config "tests/modules/nf-core/manta_somatic/nextflow.config"
+    tag "manta_somatic"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MSISENSORPRO_SCAN"
     script "modules/nf-core/msisensorpro/scan/main.nf"
     process "MSISENSORPRO_SCAN"
+    config "tests/modules/nf-core/msisensorpro_scan/nextflow.config"
+    tag "msisensorpro_scan"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

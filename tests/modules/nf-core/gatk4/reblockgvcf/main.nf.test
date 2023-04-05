@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GATK4_REBLOCKGVCF"
     script "modules/nf-core/gatk4/reblockgvcf/main.nf"
     process "GATK4_REBLOCKGVCF"
+    config "tests/modules/nf-core/gatk4_reblockgvcf/nextflow.config"
+    tag "gatk4_reblockgvcf"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

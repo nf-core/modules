@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process HAMRONIZATION_DEEPARG"
     script "modules/nf-core/hamronization/deeparg/main.nf"
     process "HAMRONIZATION_DEEPARG"
+    config "tests/modules/nf-core/hamronization_deeparg/nextflow.config"
+    tag "hamronization_deeparg"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

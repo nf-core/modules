@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process LEGSTA"
     script "modules/nf-core/legsta/main.nf"
     process "LEGSTA"
+    config "tests/modules/nf-core/legsta/nextflow.config"
+    tag "legsta"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

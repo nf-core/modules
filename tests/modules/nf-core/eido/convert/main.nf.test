@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process EIDO_CONVERT"
     script "modules/nf-core/eido/convert/main.nf"
     process "EIDO_CONVERT"
+    config "tests/modules/nf-core/eido_convert/nextflow.config"
+    tag "eido_convert"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

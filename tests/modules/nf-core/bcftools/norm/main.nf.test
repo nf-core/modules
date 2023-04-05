@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BCFTOOLS_NORM"
     script "modules/nf-core/bcftools/norm/main.nf"
     process "BCFTOOLS_NORM"
+    config "tests/modules/nf-core/bcftools_norm/nextflow.config"
+    tag "bcftools_norm"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

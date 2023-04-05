@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process CNVKIT_CALL"
     script "modules/nf-core/cnvkit/call/main.nf"
     process "CNVKIT_CALL"
+    config "tests/modules/nf-core/cnvkit_call/nextflow.config"
+    tag "cnvkit_call"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process WFMASH"
     script "modules/nf-core/wfmash/main.nf"
     process "WFMASH"
+    config "tests/modules/nf-core/wfmash/nextflow.config"
+    tag "wfmash"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process CIRCEXPLORER2_ANNOTATE"
     script "modules/nf-core/circexplorer2/annotate/main.nf"
     process "CIRCEXPLORER2_ANNOTATE"
+    config "tests/modules/nf-core/circexplorer2_annotate/nextflow.config"
+    tag "circexplorer2_annotate"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PBPTYPER"
     script "modules/nf-core/pbptyper/main.nf"
     process "PBPTYPER"
+    config "tests/modules/nf-core/pbptyper/nextflow.config"
+    tag "pbptyper"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

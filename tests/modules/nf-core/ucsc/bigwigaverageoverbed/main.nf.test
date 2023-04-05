@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process UCSC_BIGWIGAVERAGEOVERBED"
     script "modules/nf-core/ucsc/bigwigaverageoverbed/main.nf"
     process "UCSC_BIGWIGAVERAGEOVERBED"
+    config "tests/modules/nf-core/ucsc_bigwigaverageoverbed/nextflow.config"
+    tag "ucsc_bigwigaverageoverbed"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GLIMPSE_PHASE"
     script "modules/nf-core/glimpse/phase/main.nf"
     process "GLIMPSE_PHASE"
+    config "tests/modules/nf-core/glimpse_phase/nextflow.config"
+    tag "glimpse_phase"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ICHORCNA_CREATEPON"
     script "modules/nf-core/ichorcna/createpon/main.nf"
     process "ICHORCNA_CREATEPON"
+    config "tests/modules/nf-core/ichorcna_createpon/nextflow.config"
+    tag "ichorcna_createpon"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

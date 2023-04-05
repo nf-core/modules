@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MAXBIN2"
     script "modules/nf-core/maxbin2/main.nf"
     process "MAXBIN2"
+    config "tests/modules/nf-core/maxbin2/nextflow.config"
+    tag "maxbin2"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

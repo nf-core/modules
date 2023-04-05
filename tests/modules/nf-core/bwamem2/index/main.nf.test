@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BWAMEM2_INDEX"
     script "modules/nf-core/bwamem2/index/main.nf"
     process "BWAMEM2_INDEX"
+    config "tests/modules/nf-core/bwamem2_index/nextflow.config"
+    tag "bwamem2_index"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

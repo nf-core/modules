@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process EIDO_VALIDATE"
     script "modules/nf-core/eido/validate/main.nf"
     process "EIDO_VALIDATE"
+    config "tests/modules/nf-core/eido_validate/nextflow.config"
+    tag "eido_validate"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

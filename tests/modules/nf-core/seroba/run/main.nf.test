@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SEROBA_RUN"
     script "modules/nf-core/seroba/run/main.nf"
     process "SEROBA_RUN"
+    config "tests/modules/nf-core/seroba_run/nextflow.config"
+    tag "seroba_run"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

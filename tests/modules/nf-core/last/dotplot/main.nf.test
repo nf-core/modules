@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process LAST_DOTPLOT"
     script "modules/nf-core/last/dotplot/main.nf"
     process "LAST_DOTPLOT"
+    config "tests/modules/nf-core/last_dotplot/nextflow.config"
+    tag "last_dotplot"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

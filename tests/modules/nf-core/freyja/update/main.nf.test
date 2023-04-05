@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process FREYJA_UPDATE"
     script "modules/nf-core/freyja/update/main.nf"
     process "FREYJA_UPDATE"
+    config "tests/modules/nf-core/freyja_update/nextflow.config"
+    tag "freyja_update"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

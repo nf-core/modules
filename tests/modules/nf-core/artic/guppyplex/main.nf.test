@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process ARTIC_GUPPYPLEX"
     script "modules/nf-core/artic/guppyplex/main.nf"
     process "ARTIC_GUPPYPLEX"
+    config "tests/modules/nf-core/artic_guppyplex/nextflow.config"
+    tag "artic_guppyplex"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

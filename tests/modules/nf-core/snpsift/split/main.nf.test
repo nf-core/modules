@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SNPSIFT_SPLIT"
     script "modules/nf-core/snpsift/split/main.nf"
     process "SNPSIFT_SPLIT"
+    config "tests/modules/nf-core/snpsift_split/nextflow.config"
+    tag "snpsift_split"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

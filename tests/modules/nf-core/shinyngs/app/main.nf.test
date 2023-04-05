@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SHINYNGS_APP"
     script "modules/nf-core/shinyngs/app/main.nf"
     process "SHINYNGS_APP"
+    config "tests/modules/nf-core/shinyngs_app/nextflow.config"
+    tag "shinyngs_app"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

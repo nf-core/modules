@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BBMAP_CLUMPIFY"
     script "modules/nf-core/bbmap/clumpify/main.nf"
     process "BBMAP_CLUMPIFY"
+    config "tests/modules/nf-core/bbmap_clumpify/nextflow.config"
+    tag "bbmap_clumpify"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

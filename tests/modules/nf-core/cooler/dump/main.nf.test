@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process COOLER_DUMP"
     script "modules/nf-core/cooler/dump/main.nf"
     process "COOLER_DUMP"
+    config "tests/modules/nf-core/cooler_dump/nextflow.config"
+    tag "cooler_dump"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

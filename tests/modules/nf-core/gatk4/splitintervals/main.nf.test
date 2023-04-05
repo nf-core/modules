@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GATK4_SPLITINTERVALS"
     script "modules/nf-core/gatk4/splitintervals/main.nf"
     process "GATK4_SPLITINTERVALS"
+    config "tests/modules/nf-core/gatk4_splitintervals/nextflow.config"
+    tag "gatk4_splitintervals"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

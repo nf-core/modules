@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GRAPHTYPER_VCFCONCATENATE"
     script "modules/nf-core/graphtyper/vcfconcatenate/main.nf"
     process "GRAPHTYPER_VCFCONCATENATE"
+    config "tests/modules/nf-core/graphtyper_vcfconcatenate/nextflow.config"
+    tag "graphtyper_vcfconcatenate"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

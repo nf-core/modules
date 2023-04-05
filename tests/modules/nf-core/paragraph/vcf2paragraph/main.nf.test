@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PARAGRAPH_VCF2PARAGRAPH"
     script "modules/nf-core/paragraph/vcf2paragraph/main.nf"
     process "PARAGRAPH_VCF2PARAGRAPH"
+    config "tests/modules/nf-core/paragraph_vcf2paragraph/nextflow.config"
+    tag "paragraph_vcf2paragraph"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

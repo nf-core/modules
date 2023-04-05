@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BAKTA_BAKTA"
     script "modules/nf-core/bakta/bakta/main.nf"
     process "BAKTA_BAKTA"
+    config "tests/modules/nf-core/bakta_bakta/nextflow.config"
+    tag "bakta_bakta"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

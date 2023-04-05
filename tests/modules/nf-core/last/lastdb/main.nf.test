@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process LAST_LASTDB"
     script "modules/nf-core/last/lastdb/main.nf"
     process "LAST_LASTDB"
+    config "tests/modules/nf-core/last_lastdb/nextflow.config"
+    tag "last_lastdb"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

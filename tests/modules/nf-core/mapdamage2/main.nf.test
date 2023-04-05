@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MAPDAMAGE2"
     script "modules/nf-core/mapdamage2/main.nf"
     process "MAPDAMAGE2"
+    config "tests/modules/nf-core/mapdamage2/nextflow.config"
+    tag "mapdamage2"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process DEEPTOOLS_PLOTFINGERPRINT"
     script "modules/nf-core/deeptools/plotfingerprint/main.nf"
     process "DEEPTOOLS_PLOTFINGERPRINT"
+    config "tests/modules/nf-core/deeptools_plotfingerprint/nextflow.config"
+    tag "deeptools_plotfingerprint"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

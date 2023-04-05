@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process HMMER_HMMBUILD"
     script "modules/nf-core/hmmer/hmmbuild/main.nf"
     process "HMMER_HMMBUILD"
+    config "tests/modules/nf-core/hmmer_hmmbuild/nextflow.config"
+    tag "hmmer_hmmbuild"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

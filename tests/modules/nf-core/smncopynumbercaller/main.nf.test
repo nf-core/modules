@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SMNCOPYNUMBERCALLER"
     script "modules/nf-core/smncopynumbercaller/main.nf"
     process "SMNCOPYNUMBERCALLER"
+    config "tests/modules/nf-core/smncopynumbercaller/nextflow.config"
+    tag "smncopynumbercaller"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process STRELKA_SOMATIC"
     script "modules/nf-core/strelka/somatic/main.nf"
     process "STRELKA_SOMATIC"
+    config "tests/modules/nf-core/strelka_somatic/nextflow.config"
+    tag "strelka_somatic"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

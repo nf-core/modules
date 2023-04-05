@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SENTIEON_BWAINDEX"
     script "modules/nf-core/sentieon/bwaindex/main.nf"
     process "SENTIEON_BWAINDEX"
+    config "tests/modules/nf-core/sentieon_bwaindex/nextflow.config"
+    tag "sentieon_bwaindex"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

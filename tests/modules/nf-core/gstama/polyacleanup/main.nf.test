@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GSTAMA_POLYACLEANUP"
     script "modules/nf-core/gstama/polyacleanup/main.nf"
     process "GSTAMA_POLYACLEANUP"
+    config "tests/modules/nf-core/gstama_polyacleanup/nextflow.config"
+    tag "gstama_polyacleanup"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

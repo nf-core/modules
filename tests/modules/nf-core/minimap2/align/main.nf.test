@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MINIMAP2_ALIGN"
     script "modules/nf-core/minimap2/align/main.nf"
     process "MINIMAP2_ALIGN"
+    config "tests/modules/nf-core/minimap2_align/nextflow.config"
+    tag "minimap2_align"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

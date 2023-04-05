@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process YARA_INDEX"
     script "modules/nf-core/yara/index/main.nf"
     process "YARA_INDEX"
+    config "tests/modules/nf-core/yara_index/nextflow.config"
+    tag "yara_index"
 
     test("Should run without failures") {
 
@@ -19,7 +21,10 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

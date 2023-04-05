@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GATK_REALIGNERTARGETCREATOR"
     script "modules/nf-core/gatk/realignertargetcreator/main.nf"
     process "GATK_REALIGNERTARGETCREATOR"
+    config "tests/modules/nf-core/gatk_realignertargetcreator/nextflow.config"
+    tag "gatk_realignertargetcreator"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GAPPA_EXAMINEASSIGN"
     script "modules/nf-core/gappa/examineassign/main.nf"
     process "GAPPA_EXAMINEASSIGN"
+    config "tests/modules/nf-core/gappa_examineassign/nextflow.config"
+    tag "gappa_examineassign"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

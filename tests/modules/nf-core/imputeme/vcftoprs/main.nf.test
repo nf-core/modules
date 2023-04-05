@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process IMPUTEME_VCFTOPRS"
     script "modules/nf-core/imputeme/vcftoprs/main.nf"
     process "IMPUTEME_VCFTOPRS"
+    config "tests/modules/nf-core/imputeme_vcftoprs/nextflow.config"
+    tag "imputeme_vcftoprs"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

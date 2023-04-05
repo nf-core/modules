@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PRESEQ_LCEXTRAP"
     script "modules/nf-core/preseq/lcextrap/main.nf"
     process "PRESEQ_LCEXTRAP"
+    config "tests/modules/nf-core/preseq_lcextrap/nextflow.config"
+    tag "preseq_lcextrap"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process SAMTOOLS_COLLATEFASTQ"
     script "modules/nf-core/samtools/collatefastq/main.nf"
     process "SAMTOOLS_COLLATEFASTQ"
+    config "tests/modules/nf-core/samtools_collatefastq/nextflow.config"
+    tag "samtools_collatefastq"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

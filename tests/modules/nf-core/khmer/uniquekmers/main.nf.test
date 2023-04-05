@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process KHMER_UNIQUEKMERS"
     script "modules/nf-core/khmer/uniquekmers/main.nf"
     process "KHMER_UNIQUEKMERS"
+    config "tests/modules/nf-core/khmer_uniquekmers/nextflow.config"
+    tag "khmer_uniquekmers"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BIOAWK"
     script "modules/nf-core/bioawk/main.nf"
     process "BIOAWK"
+    config "tests/modules/nf-core/bioawk/nextflow.config"
+    tag "bioawk"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

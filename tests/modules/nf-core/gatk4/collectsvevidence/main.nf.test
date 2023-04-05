@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GATK4_COLLECTSVEVIDENCE"
     script "modules/nf-core/gatk4/collectsvevidence/main.nf"
     process "GATK4_COLLECTSVEVIDENCE"
+    config "tests/modules/nf-core/gatk4_collectsvevidence/nextflow.config"
+    tag "gatk4_collectsvevidence"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

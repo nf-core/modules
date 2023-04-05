@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BEAGLE5_BEAGLE"
     script "modules/nf-core/beagle5/beagle/main.nf"
     process "BEAGLE5_BEAGLE"
+    config "tests/modules/nf-core/beagle5_beagle/nextflow.config"
+    tag "beagle5_beagle"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

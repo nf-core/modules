@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process IQTREE"
     script "modules/nf-core/iqtree/main.nf"
     process "IQTREE"
+    config "tests/modules/nf-core/iqtree/nextflow.config"
+    tag "iqtree"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

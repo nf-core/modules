@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PURGEDUPS_GETSEQS"
     script "modules/nf-core/purgedups/getseqs/main.nf"
     process "PURGEDUPS_GETSEQS"
+    config "tests/modules/nf-core/purgedups_getseqs/nextflow.config"
+    tag "purgedups_getseqs"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

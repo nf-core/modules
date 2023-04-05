@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GENMOD_SCORE"
     script "modules/nf-core/genmod/score/main.nf"
     process "GENMOD_SCORE"
+    config "tests/modules/nf-core/genmod_score/nextflow.config"
+    tag "genmod_score"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

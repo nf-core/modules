@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process KAT_HIST"
     script "modules/nf-core/kat/hist/main.nf"
     process "KAT_HIST"
+    config "tests/modules/nf-core/kat_hist/nextflow.config"
+    tag "kat_hist"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

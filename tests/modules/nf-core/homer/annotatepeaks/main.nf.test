@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process HOMER_ANNOTATEPEAKS"
     script "modules/nf-core/homer/annotatepeaks/main.nf"
     process "HOMER_ANNOTATEPEAKS"
+    config "tests/modules/nf-core/homer_annotatepeaks/nextflow.config"
+    tag "homer_annotatepeaks"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

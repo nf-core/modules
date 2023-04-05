@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MACREL_CONTIGS"
     script "modules/nf-core/macrel/contigs/main.nf"
     process "MACREL_CONTIGS"
+    config "tests/modules/nf-core/macrel_contigs/nextflow.config"
+    tag "macrel_contigs"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

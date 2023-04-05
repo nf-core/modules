@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process PICARD_CREATESEQUENCEDICTIONARY"
     script "modules/nf-core/picard/createsequencedictionary/main.nf"
     process "PICARD_CREATESEQUENCEDICTIONARY"
+    config "tests/modules/nf-core/picard_createsequencedictionary/nextflow.config"
+    tag "picard_createsequencedictionary"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

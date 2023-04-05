@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process CMSEQ_POLYMUT"
     script "modules/nf-core/cmseq/polymut/main.nf"
     process "CMSEQ_POLYMUT"
+    config "tests/modules/nf-core/cmseq_polymut/nextflow.config"
+    tag "cmseq_polymut"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

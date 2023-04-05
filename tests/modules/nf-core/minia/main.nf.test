@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MINIA"
     script "modules/nf-core/minia/main.nf"
     process "MINIA"
+    config "tests/modules/nf-core/minia/nextflow.config"
+    tag "minia"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

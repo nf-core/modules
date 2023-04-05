@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process MOBSUITE_RECON"
     script "modules/nf-core/mobsuite/recon/main.nf"
     process "MOBSUITE_RECON"
+    config "tests/modules/nf-core/mobsuite_recon/nextflow.config"
+    tag "mobsuite_recon"
 
     test("Should run without failures") {
 
@@ -19,7 +21,9 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 
