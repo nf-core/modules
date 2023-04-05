@@ -18,7 +18,7 @@ process SHAPEIT5_PHASERARE {
         'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0' }"
 
     input:
-        tuple val(meta) , path(input_plain), path(input_plain_index), val(input_region), path(pedigree)
+        tuple val(meta) , path(input_plain), path(input_plain_index), path(pedigree), val(input_region)
         tuple val(meta2), path(scaffold)   , path(scaffold_index)   , val(scaffold_region)
         tuple val(meta3), path(map)
 
@@ -32,8 +32,9 @@ process SHAPEIT5_PHASERARE {
     script:
     def args = task.ext.args ?: ''
 
-    def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":","_")}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+    if ("$input_plain" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def map_command       = map       ? "--map $map"             : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
