@@ -18,5 +18,5 @@ workflow vcf_annotation_ensemblvep {
         ]
     ])
 
-    VCF_ANNOTATE_ENSEMBLVEP ( input, [], "WBcel235", "caenorhabditis_elegans", "108", [], [], custom_extra_files )
+    VCF_ANNOTATE_ENSEMBLVEP ( input, [[],[]], "WBcel235", "caenorhabditis_elegans", "108", [[],[]], [], custom_extra_files )
 }
