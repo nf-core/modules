@@ -4,6 +4,7 @@ nextflow_process {
     script "modules/nf-core/agat/convertspgxf2gxf/main.nf"
     config "tests/modules/nf-core/agat/convertspgxf2gxf/nextflow.config"
     process "AGAT_CONVERTSPGXF2GXF"
+    tag "agat_convertspgxf2gxf"
 
     test("test_gff") {
 
@@ -22,6 +23,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(
@@ -51,6 +53,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(

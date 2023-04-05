@@ -24,6 +24,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(path(params.outdir).list()).match("single_end")
@@ -50,6 +51,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(path(params.outdir).list()).match("paired_end")
@@ -78,6 +80,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(path(params.outdir).list()).match("paired_end_collapse")
@@ -105,8 +108,10 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 

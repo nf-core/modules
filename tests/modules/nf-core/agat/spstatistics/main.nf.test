@@ -4,6 +4,7 @@ nextflow_process {
     script "modules/nf-core/agat/spstatistics/main.nf"
     config "tests/modules/nf-core/agat/spstatistics/nextflow.config"
     process "AGAT_SPSTATISTICS"
+    tag "agat_spstatbasic"
 
     test("test_statistics") {
 
@@ -19,6 +20,7 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
             assert snapshot(process.out).match("test_statistics")

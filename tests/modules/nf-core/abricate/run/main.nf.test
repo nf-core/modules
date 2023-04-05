@@ -23,8 +23,10 @@ nextflow_process {
         }
 
         then {
+            // Assert that the process ran successfully
             assert process.success
 
+            // Assert that the process produced the expected output
             assert snapshot(path(params.outdir).list()).match()
         }
 
