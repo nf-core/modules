@@ -1,0 +1,66 @@
+name: "wisecondorx_predict"
+description: Find copy number aberrations
+keywords:
+  - copy number variation
+  - bed
+  - npz
+  - png
+tools:
+  - "wisecondorx":
+      description: "WIthin-SamplE COpy Number aberration DetectOR, including sex chromosomes"
+      homepage: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      doi: "10.1093/nar/gky1263"
+      licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - npz:
+      type: file
+      description: An NPZ file created with WisecondorX convert
+      pattern: "*.npz"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test', single_end:false ]
+  - reference:
+      type: file
+      description: A reference NPZ file created with WisecondorX newref
+      pattern: "*.npz"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - blacklist:
+      type: file
+      description: OPTIONAL - A BED file containing blacklist regions (used mainly when the reference is small)
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: OPTIONAL - Output in BED format containing the most important information
+      pattern: "*.bed"
+  - plot:
+      type: file
+      description: OPTIONAL - Output in PNG format to easily visualize the results
+      pattern: "*.png"
+
+authors:
+  - "@nvnieuwk"
