@@ -25,7 +25,7 @@ process WISECONDORX_PREDICT {
     def args = task.ext.args ?: '--bed --plot'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = blacklist ? "--blacklist ${bed}" : ""
-    
+
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
