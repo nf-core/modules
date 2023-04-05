@@ -1,4 +1,4 @@
-- name: bam_variant_calling_freebayes test_bam_variant_calling_sort_freebayes_bcftools
+- name: bam_variant_calling_sort_freebayes_bcftools test_bam_variant_calling_sort_freebayes_bcftools
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_sort_freebayes_bcftools -entry test_bam_variant_calling_sort_freebayes_bcftools -c ./tests/config/nextflow.config
   tags:
     - bcftools
@@ -9,8 +9,10 @@
     - subworkflows/bam_variant_calling_sort_freebayes_bcftools
   files:
     - path: output/bcftools/aligned.sorted.vcf.gz
-      md5sum: 346be926e2d8b1f57188bea16e43ece6
+      contains:
+        - "chr22\t1982\t.\tA\tG\t459.724"
     - path: output/bcftools/aligned.sorted.vcf.gz.csi
-      md5sum: 70f91929264347b73c7a4c91e2c6606d
+      md5sum: 93ecb3ee8fb165cbd754e1a1676e41fe
     - path: output/freebayes/aligned.vcf.gz
-      md5sum: 2226beea7f94e4672d158b9067f19aaa
+      contains:
+        - "chr22\t1982\t.\tA\tG\t459.724"
