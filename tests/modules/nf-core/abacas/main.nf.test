@@ -6,7 +6,7 @@ nextflow_process {
     process "ABACAS"
     tag "abacas"
 
-    test("test_abacas") {
+    test("sarscov2 scaffold") {
 
         when {
             params {
@@ -24,24 +24,21 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(
-                            path("$outputDir/abacas/test.abacas.crunch"),
-                            path("$outputDir/abacas/test.abacas.fasta"),
-                            path("$outputDir/abacas/test.abacas.gaps"),
-                            path("$outputDir/abacas/test.abacas.gaps.tab"),
-                            path("$outputDir/abacas/test.abacas.MULTIFASTA.fa"),
-                            path("$outputDir/abacas/test.abacas.nucmer.tiling"),
-                            path("$outputDir/abacas/test.abacas.tab"),
-                            path("$outputDir/abacas/test.abacas.unused.contigs.out"),
-                            path("$outputDir/abacas/versions.yml")
-                           ).match("abacas")
-
-            assert new File("$outputDir/abacas/test.abacas.bin").exists()
-            assert new File("$outputDir/abacas/test.abacas.nucmer.delta").exists()
-            assert new File("$outputDir/abacas/test.abacas.nucmer.filtered.delta").exists()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/abacas/test.abacas.crunch"),
+                                    path("$outputDir/abacas/test.abacas.fasta"),
+                                    path("$outputDir/abacas/test.abacas.gaps"),
+                                    path("$outputDir/abacas/test.abacas.gaps.tab"),
+                                    path("$outputDir/abacas/test.abacas.MULTIFASTA.fa"),
+                                    path("$outputDir/abacas/test.abacas.nucmer.tiling"),
+                                    path("$outputDir/abacas/test.abacas.tab"),
+                                    path("$outputDir/abacas/test.abacas.unused.contigs.out"),
+                                    path("$outputDir/abacas/versions.yml")).match() },
+                    { assert new File("$outputDir/abacas/test.abacas.bin").exists() },
+                    { assert new File("$outputDir/abacas/test.abacas.nucmer.delta").exists() },
+                    { assert new File("$outputDir/abacas/test.abacas.nucmer.filtered.delta").exists() }
+            )
         }
 
     }

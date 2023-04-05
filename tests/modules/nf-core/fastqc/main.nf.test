@@ -6,7 +6,7 @@ nextflow_process {
     process "FASTQC"
     tag "fastqc"
 
-    test("Single-Read") {
+    test("Single Read") {
 
         when {
             params {
@@ -25,15 +25,12 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(
-                            path("$outputDir/fastqc/test_fastqc.html"),
-                            path("$outputDir/fastqc/versions.yml")
-                           ).match("single_read")
-
-            assert new File("$outputDir/fastqc/test_fastqc.zip").exists()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/fastqc/test_fastqc.html"),
+                                  path("$outputDir/fastqc/versions.yml")).match("single_read") },
+                { assert new File("$outputDir/fastqc/test_fastqc.zip").exists() }
+            )
         }
 
     }

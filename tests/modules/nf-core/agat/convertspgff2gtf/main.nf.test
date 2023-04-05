@@ -6,7 +6,7 @@ nextflow_process {
     process "AGAT_CONVERTSPGFF2GTF"
     tag "agat_convertspgff2gtf"
 
-    test("test_gff") {
+    test("Sarscov2 Genome GFF") {
 
         when {
             params {
@@ -23,15 +23,12 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(
-                            path("$outputDir/agat/test.agat.gtf"),
-                            path("$outputDir/agat/versions.yml")
-                           ).match("test_gff")
-
-            assert new File("$outputDir/agat/genome.agat.log").exists()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/agat/test.agat.gtf"),
+                                  path("$outputDir/agat/versions.yml")).match("test_gff") },
+                { assert new File("$outputDir/agat/genome.agat.log").exists() }
+            )
         }
 
     }

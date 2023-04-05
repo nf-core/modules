@@ -6,7 +6,7 @@ nextflow_process {
     process "ADAPTERREMOVAL"
     tag "adapterremoval"
 
-    test("Single_End") {
+    test("Single End") {
 
         when {
             params {
@@ -24,15 +24,15 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(path(params.outdir).list()).match("single_end")
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("single_end") }
+            )
         }
 
     }
 
-    test("Paired_End") {
+    test("Paired End") {
 
         when {
             params {
@@ -51,15 +51,15 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(path(params.outdir).list()).match("paired_end")
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("paired_end") }
+            )
         }
 
     }
 
-    test("Paired_End_Collapse") {
+    test("Paired End Collapse") {
 
         options "--collapse"
 
@@ -80,15 +80,15 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            assert snapshot(path(params.outdir).list()).match("paired_end_collapse")
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("paired_end_collapse") }
+            )
         }
 
     }
 
-    test("Paired_End_AdapterList") {
+    test("Paired End Collapse With AdapterList") {
 
         options "--collapse"
 
@@ -108,11 +108,10 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            // Assert that the process produced the expected output
-            assert snapshot(path(params.outdir).list()).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("paired_end_collapse_adapterlist") }
+            )
         }
 
     }

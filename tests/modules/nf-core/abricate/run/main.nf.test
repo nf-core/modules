@@ -6,7 +6,7 @@ nextflow_process {
     process "ABRICATE_RUN"
     tag "abricate"
 
-    test("ABRICATE_RUN") {
+    test("bacteroides fragilis genome") {
 
         when {
             params {
@@ -23,11 +23,10 @@ nextflow_process {
         }
 
         then {
-            // Assert that the process ran successfully
-            assert process.success
-
-            // Assert that the process produced the expected output
-            assert snapshot(path(params.outdir).list()).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match() }
+            )
         }
 
     }
