@@ -19,8 +19,14 @@ workflow test_bamcmp {
         [ file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
 
-    fasta1 = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fasta2 = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta1 = [
+        [ id:'homo_sapiens_genome'], // meta map
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    fasta2 = [
+        [ id:'sarscov2_genome'], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     BWA_INDEX ( fasta1 )
     BWA_MEM ( input, BWA_INDEX.out.index, false )
