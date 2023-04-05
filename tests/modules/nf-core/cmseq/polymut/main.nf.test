@@ -1,0 +1,29 @@
+nextflow_process {
+
+    name "Test Process CMSEQ_POLYMUT"
+    script "modules/nf-core/cmseq/polymut/main.nf"
+    process "CMSEQ_POLYMUT"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                // define inputs of the process here. Example:
+                // input[0] = file("test-file.txt")
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
