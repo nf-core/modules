@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process FASTQC"
+    script "modules/nf-core/fastqc/main.nf"
+    process "FASTQC"
+    tag "fastqc"
+
+    test("Single-Read") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:true ],
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.html.get(0).get(1) ==~ ".*/test_fastqc.html"
+            assert path(process.out.html.get(0).get(1)).getText().contains("<tr><td>File type</td><td>Conventional base calls</td></tr>")
+            assert process.out.zip.get(0).get(1) ==~ ".*/test_fastqc.zip"
+        }
+
+    }
+
+}

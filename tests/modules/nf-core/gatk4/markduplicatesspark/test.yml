@@ -6,6 +6,8 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: dc1a09ac6371aab7c50d1a554baa06d3
+    - path: output/gatk4/test.bam.bai
+      md5sum: 253c47e57247a2cee11afcbb414122a4
     - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams
@@ -15,7 +17,7 @@
     - gatk4
   files:
     - path: output/gatk4/test.bam
-      md5sum: 898cb0a6616897d8ada90bab53bf0837
+    - path: output/gatk4/test.bam.bai
     - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_cram_out
@@ -35,5 +37,7 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: 898cb0a6616897d8ada90bab53bf0837
+    - path: output/gatk4/test.bam.bai
+      md5sum: 7f7e858d1ded1cca89b373eb817fcb45
     - path: output/gatk4/test.metrics
     - path: output/gatk4/versions.yml
