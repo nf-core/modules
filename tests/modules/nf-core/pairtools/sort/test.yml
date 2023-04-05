@@ -4,4 +4,6 @@
     - pairtools/sort
     - pairtools
   files:
-    - path: output/pairtools/test.sorted.pairs.gz
+    - path: output/pairtools/test.sorted.pairs.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
+      contains:
+        - "readid08\t!\t0\t!\t0\t-\t-\tWW\treadid08"
