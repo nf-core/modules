@@ -66,9 +66,10 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
+        .view()
         .map{ meta, vcf, csi ->
-            newmeta = meta + [id: meta.id.substring(0, meta.id.indexOf('_'))]
-            [newmeta, vcf, csi]}
+            newmeta = meta + [id: meta.id.split("_")[0..-2].join("_")]
+            [newmeta, vcf, csi]}.view()
         .combine(ch_chunks_number, by:0)
         .map{meta, vcf, csi, chunks_num ->
             [groupKey(meta, chunks_num), vcf, csi]}
@@ -76,8 +77,8 @@ workflow VCF_PHASE_SHAPEIT5 {
         .map{ meta, vcf, csi ->
                 [ meta,
                 vcf.sort { a, b ->
-                    def aStart = a.getName().split('-')[1].toInteger()
-                    def bStart = b.getName().split('-')[1].toInteger()
+                    def aStart = a.getName().split('-')[-2].toInteger()
+                    def bStart = b.getName().split('-')[-2].toInteger()
                     aStart <=> bStart},
                 csi]}
 
