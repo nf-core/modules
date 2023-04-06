@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ENTREZDIRECT_ESEARCH as ENTREZDIRECT_ESEARCHP  } from "../../../../modules/entrezdirect/esearch/main.nf"
-include { ENTREZDIRECT_ESEARCH                           } from "../../../../modules/entrezdirect/esearch/main.nf"
+include { ENTREZDIRECT_ESEARCH as ENTREZDIRECT_ESEARCHP  } from '../../../../../modules/nf-core/entrezdirect/esearch/main.nf'
+include { ENTREZDIRECT_ESEARCH                           } from '../../../../../modules/nf-core/entrezdirect/esearch/main.nf'
 
 //
 // Test with PubMed database, using date range and spell check,
