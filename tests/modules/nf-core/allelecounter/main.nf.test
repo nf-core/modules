@@ -6,7 +6,7 @@ nextflow_process {
     config "tests/modules/nf-core/allelecounter/nextflow.config"
     tag "allelecounter"
 
-    test("BAM") {
+    test("Sarscov2 Illumina PE Sorted BAM") {
         when {
             params {
                 outdir = "$outputDir"
@@ -33,7 +33,7 @@ nextflow_process {
 
     }
 
-    test("CRAM") {
+    test("Sarscov2 Illumina PE Sorted CRAM") {
         when {
             params {
                 outdir = "$outputDir"

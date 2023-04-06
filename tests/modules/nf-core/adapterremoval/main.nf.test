@@ -6,7 +6,7 @@ nextflow_process {
     process "ADAPTERREMOVAL"
     tag "adapterremoval"
 
-    test("Single End") {
+    test("Sarscov2 Illumina Single End") {
 
         when {
             params {
@@ -32,7 +32,7 @@ nextflow_process {
 
     }
 
-    test("Paired End") {
+    test("Sarscov2 Illumina Paired End") {
 
         when {
             params {
@@ -59,7 +59,7 @@ nextflow_process {
 
     }
 
-    test("Paired End Collapse") {
+    test("Sarscov2 Illumina Paired End Collapse") {
 
         options "--collapse"
 
@@ -88,7 +88,7 @@ nextflow_process {
 
     }
 
-    test("Paired End Collapse With AdapterList") {
+    test("Sarscov2 Illumina Paired End Collapse With AdapterList") {
 
         options "--collapse"
 
