@@ -13,15 +13,16 @@ process SENTIEON_HAPLOTYPER {
     container 'nfcore/sentieon:202112.06'
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model) // Not sure that input_index and dragstr_model are needed for sentieon's haplotyper. (dragstr_model is used by GATK's haplotypecaller.)
+    val(emit_mode)
+    // tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model) // Not sure that dragstr_model are needed for sentieon's haplotyper. (dragstr_model is used by GATK's haplotypecaller.)
+    tuple val(meta), path(input), path(input_index), path(intervals)
     path  fasta
     path  fai
-    path  dict
     path  dbsnp
     path  dbsnp_tbi
 
     output:
-    tuple val(meta), path("*.unfiltered.vcf.gz")    , optional:true, emit: vcf   // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel 
+    tuple val(meta), path("*.unfiltered.vcf.gz")    , optional:true, emit: vcf   // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel
     tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), optional:true, emit: vcf_tbi
     tuple val(meta), path("*.g.vcf.gz")             , optional:true, emit: gvcf   // these output-files has to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
     tuple val(meta), path("*.g.vcf.gz.tbi")         , optional:true, emit: gvcf_tbi
@@ -35,22 +36,22 @@ process SENTIEON_HAPLOTYPER {
     def args2 = task.ext.args2 ?: ''  // options for the vcf generation
     def args3 = task.ext.args3 ?: ''  // options for the gvcf generation
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def dbsnp_command = dbsnp ? "-d $dbsnp" : ""
+    def dbsnp_command = dbsnp ? "-d $dbsnp " : ""   // Should it be possible to use dbsnp for say, vcf but not for gvcf when outputting both vcf and gvcf?
     def interval_command = intervals ? "--interval $intervals" : ""
-    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
+    // def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
+    // def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     vcf_cmd = ""
     gvcf_cmd = ""
-    base_cmd = '--algo Haplotyper --genotype_model multinomial ' + dbsnp_command + ' ' // TO-DO: Avoid hardcoding genotype_module; instead move it to args2 and args3?
+    base_cmd = '--algo Haplotyper ' + dbsnp_command
     // Perhaps it should be possible to use dbsnp for the vcf_cmd but not for the gvcf_cmd, or the other way round?
 
-    if (params.haplotypecaller_emit_vcf) {  // TO-DO: Find other control mechanism for nf-core version of this module. Could we use something like say task.ext.emit_vcf instead?
-        vcf_cmd = base_cmd + args2 + prefix + '.unfiltered.vcf.gz'
+    if (emit_mode != 'gvcf') {
+        vcf_cmd = base_cmd + args2 + ' ' + prefix + '.unfiltered.vcf.gz'
     }
 
-    if (params.haplotypecaller_emit_gvcf || params.joint_germline) {  // TO-DO: Find other control mechanism for nf-core version of this module. How about task.ext.emit_gvcf ?
-        gvcf_cmd = base_cmd + args3 + '--emit_mode gvcf ' + prefix + '.g.vcf.gz'
+    if (emit_mode == 'gvcf' || emit_mode == 'both') {
+        gvcf_cmd = base_cmd + args3 + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz'
     }
 
     """
