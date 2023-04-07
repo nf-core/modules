@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process BACKSUB"
+    script "modules/nf-core/backsub/main.nf"
+    config "tests/modules/nf-core/backsub/nextflow.config"
+    process "BACKSUB"
+
+    test("Background Subtraction Image Markers") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            file(params.test_data['imaging']['background_subtraction']['image'], checkIfExists: true)
+                           ]
+                input[1] = [
+                            [ id:'test' ], // meta map
+                            file(params.test_data['imaging']['background_subtraction']['markers'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match() }
+            )
+        }
+
+    }
+
+}
