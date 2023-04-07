@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process ATLAS_CALL"
     script "modules/nf-core/atlas/call/main.nf"
     process "ATLAS_CALL"
-    config "tests/modules/nf-core/atlas_call/nextflow.config"
+    config "tests/modules/nf-core/atlas/call/nextflow.config"
     tag "atlas_call"
 
-    test("Should run without failures") {
+    test("Sarscov2 Illumina PE Sorted BAM") {
 
         when {
             params {
@@ -14,8 +14,16 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                                [],
+                                []
+                            ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = []
+                input[4] = 'randomBase'
                 """
             }
         }
@@ -23,7 +31,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path("$outputDir/atlas/versions.yml")).match() },
+                { assert new File("$outputDir/atlas/test.paired_end.sorted_randomBase.vcf.gz").exists() },
             )
         }
 
