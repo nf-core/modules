@@ -61,6 +61,8 @@ jobs:
           - profile: "conda"
             tags: cellranger/mkref
           - profile: "conda"
+            tags: coreograph
+          - profile: "conda"
             tags: deepcell/mesmer
           - profile: "conda"
             tags: deepvariant
@@ -97,6 +99,10 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
+            tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: scimap/mcmicro
+          - profile: "conda"
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
@@ -108,10 +114,6 @@ jobs:
             tags: universc
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
-          - profile: "conda"
-            tags: coreograph
-          - profile: "conda"
-            tags: scimap/mcmicro
 
     env:
       NXF_ANSI_LOG: false
