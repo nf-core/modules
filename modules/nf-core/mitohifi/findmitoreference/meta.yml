@@ -1,0 +1,44 @@
+name: "mitohifi_findmitoreference"
+description: Download a mitochondrial genome to be used as reference for MitoHiFi
+keywords:
+  - mitochondrial genome
+  - reference genome
+  - NCBI
+tools:
+  - "findMitoReference.py":
+      description: Fetch mitochondrial genome in Fasta and Genbank format from NCBI
+      homepage: https://github.com/marcelauliano/MitoHiFi
+      documentation: https://github.com/marcelauliano/MitoHiFi
+      tool_dev_url: https://github.com/marcelauliano/MitoHiFi
+      doi: "10.1101/2022.12.23.521667"
+      licence: ["MIT"]
+
+input:
+  - species:
+      type: string
+      description: Latin name of the species for which a mitochondrial genome should be fetched
+      pattern: "[A-Z]?[a-z]* [a-z]*"
+  - email:
+      type: string
+      description: Email address for NCBI query
+  - min_length:
+      type: integer
+      description: Minimum length of the mitochondrial genome
+      pattern: "[0-9]*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Downloaded mitochondrial genome in Fasta format
+      pattern: "*.{fasta,fa}"
+  - gb:
+      type: file
+      description: Downloaded mitochondrial genome in Genbank format
+      pattern: "*.gb"
+
+authors:
+  - "@verku"
