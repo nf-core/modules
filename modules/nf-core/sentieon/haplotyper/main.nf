@@ -38,8 +38,8 @@ process SENTIEON_HAPLOTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_command = dbsnp ? "-d $dbsnp " : ""   // Should it be possible to use dbsnp for say, vcf but not for gvcf when outputting both vcf and gvcf?
     def interval_command = intervals ? "--interval $intervals" : ""
-    // def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    // def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
+    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
+    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     vcf_cmd = ""
     gvcf_cmd = ""
