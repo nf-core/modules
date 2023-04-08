@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BBMAP_PILEUP"
     script "modules/nf-core/bbmap/pileup/main.nf"
     process "BBMAP_PILEUP"
-    config "tests/modules/nf-core/bbmap_pileup/nextflow.config"
+    config "tests/modules/nf-core/bbmap/pileup/nextflow.config"
     tag "bbmap_pileup"
 
-    test("Should run without failures") {
+    test("Sarscov2 Illumina PE BAM") {
 
         when {
             params {
@@ -14,8 +14,10 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                           ]
                 """
             }
         }
