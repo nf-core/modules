@@ -1,0 +1,9 @@
+- name: mindagap duplicatefinder test_mindagap_duplicatefinder
+  command: nextflow run ./tests/modules/nf-core/mindagap/duplicatefinder -entry test_mindagap_duplicatefinder -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mindagap/duplicatefinder/nextflow.config
+  tags:
+    - mindagap
+    - mindagap/duplicatefinder
+  files:
+    - path: output/mindagap/test_spot_table_markedDups.txt
+      md5sum: e9582ac39004f057a95801a7e0ea469c
+    - path: output/mindagap/versions.yml
