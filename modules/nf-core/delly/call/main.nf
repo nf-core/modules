@@ -14,7 +14,7 @@ process DELLY_CALL {
 
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
-    tuple val(meta), path("*.csi")           , emit: csi, optional:true
+    tuple val(meta), path("*.{csi,tbi}")     , emit: csi
     path "versions.yml"                      , emit: versions
 
     when:
@@ -29,7 +29,7 @@ process DELLY_CALL {
     def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
 
     def bcf_output = suffix == "bcf" ? "--outfile ${prefix}.bcf" : ""
-    def vcf_output = suffix == "vcf" ? "| bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz" : ""
+    def vcf_output = suffix == "vcf" ? "| bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${prefix}.vcf.gz" : ""
 
     def genotype = vcf ? "--vcffile ${vcf}" : ""
 
@@ -54,8 +54,8 @@ process DELLY_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "bcf"
 
-    def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf" : ""
-    def vcf_output = suffix == "vcf" ? "touch ${prefix}.vcf.gz" : ""
+    def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf && touch ${prefix}.bcf.csi" : ""
+    def vcf_output = suffix == "vcf" ? "touch ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
 
     """
     ${bcf_output}

@@ -11,8 +11,8 @@ tools:
       description: Structural variant discovery by integrated paired-end and split-read analysis
       homepage: https://github.com/dellytools/delly
       documentation: https://github.com/dellytools/delly/blob/master/README.md
-      tool_dev_url: None
-      doi: "DOI:10.1093/bioinformatics/bts378"
+
+      doi: "10.1093/bioinformatics/bts378"
       licence: ["BSD-3-Clause"]
 
 input:
@@ -65,9 +65,9 @@ output:
       description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf" in ext.suffix to define the output type
       pattern: "*.{bcf,vcf.gz}"
   - csi:
-    type: file
-    description: A generated csi index that matches the bcf output (not generated for vcf files)
-    pattern: "*.{bcf.csi}"
+      type: file
+      description: A generated csi index that matches the bcf output (not generated for vcf files)
+      pattern: "*.{bcf.csi}"
 
 authors:
   - "@projectoriented"

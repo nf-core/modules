@@ -12,8 +12,8 @@ process TIARA_TIARA {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.out.{txt,txt.gz}")  , emit: classifications
-    tuple val(meta), path("log_*.out.{txt,txt.gz}")      , emit: log
+    tuple val(meta), path("${prefix}.{txt,txt.gz}")  , emit: classifications
+    tuple val(meta), path("log_*.{txt,txt.gz}")      , emit: log
     tuple val(meta), path("*.{fasta,fasta.gz}")          , emit: fasta, optional: true
     path "versions.yml"                                  , emit: versions
 
@@ -26,13 +26,13 @@ process TIARA_TIARA {
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tiara -i ${fasta} \
-        -o ${prefix}.out.txt \
+        -o ${prefix}.txt \
         --threads ${task.cpus} \
         ${args}
 
     ## fix gzip flag weirdness and ensure consistent .fasta filename output
     ## check if fasta files are being output
-    if echo "${args}" | grep -q "tf\|to-fasta"; then
+    if echo "${args}" | grep -qE "tf|to-fasta"; then
         ## check if we've asked for gzip output, then rename files consistently
         if echo "${args}" | grep -q "gz"; then
             find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%_*}_${prefix}.fasta.gz"' \\;

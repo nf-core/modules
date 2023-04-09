@@ -8,13 +8,10 @@
     - subworkflows
     - subworkflows/vcf_impute_glimpse
   files:
-    - path: output/glimpse/input.txt
-      md5sum: bd8641d4c685b87c25d3e0e54963f44b
-    - path: output/glimpse/input.vcf.gz
-    - path: output/glimpse/input0.bcf
-    - path: output/glimpse/input1.bcf
-    - path: output/glimpse/input2.bcf
-    - path: output/glimpse/input3.bcf
+    - path: output/glimpse/input1.txt
+      md5sum: 75bff56f26d8a590c429afee74df5110
+    - path: output/glimpse/input1.vcf.gz
+    - path: output/glimpse/input1_chr21_16600115-16799989.vcf.gz
 
 - name: vcf_impute_glimpse test_vcf_impute_glimpse_with_sample
   command: nextflow run ./tests/subworkflows/nf-core/vcf_impute_glimpse -entry test_vcf_impute_glimpse_with_sample -c ./tests/config/nextflow.config
@@ -26,10 +23,7 @@
     - subworkflows
     - subworkflows/vcf_impute_glimpse
   files:
-    - path: output/glimpse/input.txt
-      md5sum: bd8641d4c685b87c25d3e0e54963f44b
-    - path: output/glimpse/input.vcf.gz
-    - path: output/glimpse/input0.bcf
-    - path: output/glimpse/input1.bcf
-    - path: output/glimpse/input2.bcf
-    - path: output/glimpse/input3.bcf
+    - path: output/glimpse/input1.txt
+      md5sum: 75bff56f26d8a590c429afee74df5110
+    - path: output/glimpse/input1.vcf.gz
+    - path: output/glimpse/input1_chr21_16600115-16799989.vcf.gz
