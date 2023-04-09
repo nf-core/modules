@@ -2,7 +2,9 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-    container "broadinstitute/gatk:4.4.0.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'broadinstitute/gatk:4.4.0.0':
+        'broadinstitute/gatk:4.4.0.0' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -60,6 +62,20 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
 
     tar czf ${prefix}-calls.tar.gz ${prefix}-calls
     ${tar_model}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-calls.tar.gz
+    touch ${prefix}-model.tar.gz
+    touch ${prefix}.tsv
+    touch ${prefix}2.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

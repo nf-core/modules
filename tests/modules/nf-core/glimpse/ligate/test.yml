@@ -1,0 +1,9 @@
+- name: glimpse ligate test_glimpse_ligate
+  command: nextflow run ./tests/modules/nf-core/glimpse/ligate -entry test_glimpse_ligate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse/ligate/nextflow.config
+  tags:
+    - glimpse
+    - glimpse/ligate
+  files:
+    - path: output/glimpse/input1.vcf.gz
+    - path: output/glimpse/input.bcf
+    - path: output/glimpse/versions.yml

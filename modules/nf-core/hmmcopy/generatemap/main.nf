@@ -9,10 +9,10 @@ process HMMCOPY_GENERATEMAP {
         'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_7' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "*.map.bw"              , emit: bigwig
+    tuple val(meta), path("*.bw"), emit: bigwig
     path "versions.yml"          , emit: versions
 
     when:
@@ -20,6 +20,7 @@ process HMMCOPY_GENERATEMAP {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # build required indexes

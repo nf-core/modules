@@ -14,11 +14,21 @@ tools:
       licence: ["GPL v3"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input genome fasta file
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -26,7 +36,8 @@ output:
   - wig:
       type: file
       description: wig file containing gc content of each window of the genome
-      pattern: "*.{gc.wig}"
+      pattern: "*.wig"
 
 authors:
   - "@sppearce"
+  - "@adamrtalbot"

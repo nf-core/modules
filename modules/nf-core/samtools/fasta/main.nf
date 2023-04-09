@@ -9,10 +9,14 @@ process SAMTOOLS_FASTA {
 
     input:
     tuple val(meta), path(input)
+    val(interleave)
 
     output:
-    tuple val(meta), path("*.fasta.gz"), emit: fasta
-    path "versions.yml",                 emit: versions
+    tuple val(meta), path("*_{1,2}.fasta.gz")      , optional:true, emit: fasta
+    tuple val(meta), path("*_interleaved.fasta.gz"), optional:true, emit: interleaved
+    tuple val(meta), path("*_singleton.fasta.gz")  , optional:true, emit: singleton
+    tuple val(meta), path("*_other.fasta.gz")      , optional:true, emit: other
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,14 +24,17 @@ process SAMTOOLS_FASTA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def endedness = meta.single_end ? "-0 ${prefix}.fasta.gz" : "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz"
+    def output = ( interleave && ! meta.single_end ) ? "> ${prefix}_interleaved.fasta.gz" :
+        meta.single_end ? "-1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz" :
+        "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
     """
     samtools \\
         fasta \\
         $args \\
         --threads ${task.cpus-1} \\
-        $endedness \\
-        $input
+        -0 ${prefix}_other.fasta.gz \\
+        $input \\
+        $output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

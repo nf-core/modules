@@ -24,7 +24,7 @@ input:
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-      pattern: "*.{vcf,bcf}"
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
   - region:
       type: string

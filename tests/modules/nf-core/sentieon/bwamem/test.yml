@@ -1,0 +1,7 @@
+- name: sentieon bwamem single-end
+  command: nextflow run ./tests/modules/nf-core/sentieon/bwamem -entry test_sentieon_bwamem_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/bwamem/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/bwamem
+  files:
+    - path: ./output/sentieon/foo.bam

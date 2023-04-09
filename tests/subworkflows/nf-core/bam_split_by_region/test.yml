@@ -1,0 +1,35 @@
+- name: bam_split_by_region test_bam_split_by_region
+  command: nextflow run ./tests/subworkflows/nf-core/bam_split_by_region -entry test_bam_split_by_region -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/index
+    - samtools/view
+    - subworkflows
+    - subworkflows/bam_split_by_region
+  files:
+    - path: output/samtools/test.paired_end.markduplicates.sorted.bam.bai
+      md5sum: 15f1723181368484a9c783323b6699e5
+    - path: output/samtools/test2_chr21:1-23354000.bam
+      md5sum: 8a748b4c5f4de1fb608d11b5f8a0ab7a
+    - path: output/samtools/test2_chr21:1-23354000.bam.bai
+      md5sum: f0a4b60f07dc18947315061a4f9f7290
+    - path: output/samtools/test2_chr21:24132499-24910998.bam
+      md5sum: 109ae50864a96f1860590c4e3882bdaf
+    - path: output/samtools/test2_chr21:24132499-24910998.bam.bai
+      md5sum: 0d76977b2e36046cc176112776c5fa4e
+    - path: output/samtools/test2_chr21:25689497-46709983.bam
+      md5sum: 4ea99c517c4e1fc86ce3cb005494cf98
+    - path: output/samtools/test2_chr21:25689497-46709983.bam.bai
+      md5sum: d927e6f018561909fdfd34d5baba059a
+    - path: output/samtools/test_chr21:1-23354000.bam
+      md5sum: 2d9310c901a86ec271f4b60413318a85
+    - path: output/samtools/test_chr21:1-23354000.bam.bai
+      md5sum: f0a4b60f07dc18947315061a4f9f7290
+    - path: output/samtools/test_chr21:24132499-24910998.bam
+      md5sum: d15c78526767d6ab1474582e4cb99fb5
+    - path: output/samtools/test_chr21:24132499-24910998.bam.bai
+      md5sum: 0d76977b2e36046cc176112776c5fa4e
+    - path: output/samtools/test_chr21:25689497-46709983.bam
+      md5sum: 148fbebebdacba0547993fe5d381baa7
+    - path: output/samtools/test_chr21:25689497-46709983.bam.bai
+      md5sum: 3644ebe54d28cd9ac3d5c9217e0dc45d

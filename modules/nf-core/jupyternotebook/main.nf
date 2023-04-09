@@ -31,6 +31,7 @@ process JUPYTERNOTEBOOK {
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
+    def kernel   = task.ext.kernel ?: '-'
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
@@ -71,9 +72,9 @@ process JUPYTERNOTEBOOK {
     export NUMBA_NUM_THREADS="$task.cpus"
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
-    jupytext --to notebook --output - --set-kernel - ${notebook}  \\
-        | ${render_cmd} \\
-        | jupyter nbconvert --stdin --to html --output ${prefix}.html
+    jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
+    ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
+    jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

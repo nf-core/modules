@@ -33,12 +33,11 @@ process AMPCOMBI {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}'" : "--amp_results $amp_input/"
     def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
     """
     ampcombi \\
         $args \\
-        ${fileoption} \\
+        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
         --sample_list ${prefix} \\
         --log True \\
         --threads ${task.cpus} \\

@@ -2,10 +2,10 @@ process BISCUIT_EPIREAD {
     tag "$meta.id"
     label 'process_long'
 
-    conda "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.15=h1170115_1"
+    conda "bioconda::biscuit=1.1.0.20220707 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0':
-        'quay.io/biocontainers/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0':
+        'quay.io/biocontainers/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snp_bed)
@@ -30,7 +30,7 @@ process BISCUIT_EPIREAD {
     def unzipped_snp_bed = snp_bed ? snp_bed.toString() - ~/\.gz$/: ""
     // SNP BED input is optional
     def options_snp_bed = snp_bed ? "-B ${unzipped_snp_bed}" : ""
-    if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names for biscuit epiread are the same, set prefix in module configuration to disambiguate!"
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 

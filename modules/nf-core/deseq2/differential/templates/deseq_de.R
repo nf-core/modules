@@ -14,7 +14,7 @@
 
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
 
     # Ensure the option vectors are length 2 (key/ value) to catch empty ones
     args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
@@ -47,7 +47,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = FALSE
     )
 }
 
@@ -65,7 +66,10 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+    df[,columns] <- format(
+        data.frame(df[, columns], check.names = FALSE),
+        nsmall = digits
+    )
 
     # Convert columns back to numeric
 
@@ -178,6 +182,9 @@ count.table <-
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
+# Deal with spaces that may be in sample column
+opt\$sample_id_col <- make.names(opt\$sample_id_col)
+
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
     stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
 }
@@ -214,26 +221,27 @@ if (length(missing_samples) > 0) {
 ################################################
 ################################################
 
+contrast_variable <- make.names(opt\$contrast_variable)
 blocking.vars <- c()
 
-if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
+if (!contrast_variable %in% colnames(sample.sheet)) {
     stop(
         paste0(
         'Chosen contrast variable \"',
-        opt\$contrast_variable,
+        contrast_variable,
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[opt\$contrast_variable]])) {
+} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
         'Please choose reference and treatment levels that are present in the',
-        opt\$contrast_variable,
+        contrast_variable,
         'column of the sample sheet'
         )
     )
 } else if (!is.null(opt\$blocking_variables)) {
-    blocking.vars = unlist(strsplit(opt\$blocking_variables, split = ';'))
+    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
         stop(
@@ -256,13 +264,13 @@ if (!is.null(opt\$blocking_variables)) {
 
 # Make sure all the appropriate variables are factors
 
-for (v in c(blocking.vars, opt\$contrast_variable)) {
+for (v in c(blocking.vars, contrast_variable)) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
 # Variable of interest goes last, see https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 
-model <- paste(model, opt\$contrast_variable, sep = ' + ')
+model <- paste(model, contrast_variable, sep = ' + ')
 
 ################################################
 ################################################
@@ -308,7 +316,7 @@ comp.results <-
         pAdjustMethod = opt\$p_adjust_method,
         minmu = opt\$minmu,
         contrast = c(
-            opt\$contrast_variable,
+            contrast_variable,
             c(opt\$treatment_level, opt\$reference_level)
         )
     )
@@ -317,7 +325,7 @@ if (opt\$shrink_lfc){
     comp.results <- lfcShrink(dds,
         type = 'ashr',
         contrast = c(
-            opt\$contrast_variable,
+            contrast_variable,
             c(opt\$treatment_level, opt\$reference_level)
         )
     )
@@ -343,7 +351,8 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results))
+        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
+        check.names = FALSE
     ),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
@@ -368,7 +377,11 @@ saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
-sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)))
+sf_df = data.frame(
+    sample = names(sizeFactors(dds)),
+    data.frame(sizeFactors(dds), check.names = FALSE),
+    check.names = FALSE
+)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
@@ -382,7 +395,11 @@ write.table(
 # Write specified matrices
 
 write.table(
-    data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
+    data.frame(
+        gene_id=rownames(counts(dds)),
+        counts(dds, normalized = TRUE),
+        check.names = FALSE
+    ),
     file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -404,7 +421,10 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     write.table(
         data.frame(
             gene_id=rownames(counts(dds)),
-            round_dataframe_columns(data.frame(assay(vs_mat)))
+            round_dataframe_columns(
+                data.frame(assay(vs_mat), check.names = FALSE)
+            ),
+            check.names = FALSE
         ),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,

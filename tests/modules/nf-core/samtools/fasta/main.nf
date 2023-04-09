@@ -11,5 +11,15 @@ workflow test_samtools_fasta {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
-    SAMTOOLS_FASTA ( input )
+    SAMTOOLS_FASTA ( input, false )
+}
+
+workflow test_samtools_fasta_interleave {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+    ]
+
+    SAMTOOLS_FASTA ( input, true )
 }
