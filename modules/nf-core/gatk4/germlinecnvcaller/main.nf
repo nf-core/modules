@@ -8,7 +8,7 @@ process GATK4_GERMLINECNVCALLER {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit 1, "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     input:
