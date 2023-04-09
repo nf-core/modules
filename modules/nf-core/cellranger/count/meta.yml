@@ -10,7 +10,7 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      doi: ""
+
       licence: 10x Genomics EULA
 input:
   - meta:
@@ -24,7 +24,7 @@ input:
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
   - reference:
-      type: folder
+      type: directory
       description: Folder containing all the reference indices needed by Cell Ranger
 output:
   - outs:

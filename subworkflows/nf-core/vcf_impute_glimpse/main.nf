@@ -1,6 +1,7 @@
 include { GLIMPSE_CHUNK      } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE      } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE     } from '../../../modules/nf-core/glimpse/ligate/main'
+include { BCFTOOLS_INDEX     } from '../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow VCF_IMPUTE_GLIMPSE {
 
@@ -18,19 +19,22 @@ workflow VCF_IMPUTE_GLIMPSE {
     ch_versions = ch_versions.mix(GLIMPSE_CHUNK.out.versions)
 
     chunk_output = GLIMPSE_CHUNK.out.chunk_chr
-                                .collect()
-                                .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "	", skip: 0)
-                                .map { [it["RegionIn"][1], it["RegionOut"][1], it["ID"][1]]}
+                                .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
+                                .map { metamap, it -> [metamap, it["RegionIn"], it["RegionOut"]]}
+    phase_input = ch_vcf.map{[it[0], it[1], it[2]]}
+                            .join(chunk_output)
+                            .join(ch_ref)
+                            .join(ch_map)
+                            .join(ch_infos)
 
-    phase_input = ch_vcf.map{ [it[0], it[1], it[2]]}.combine(chunk_output).combine(ch_infos)
-
-    GLIMPSE_PHASE ( phase_input, ch_ref, ch_map) // [meta, vcf, index, regionin, regionout, sample], [meta, ref, index], map
+    GLIMPSE_PHASE ( phase_input ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
     ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
 
-    ligate_input.view()
-    GLIMPSE_LIGATE ( ligate_input.collect() )
+    BCFTOOLS_INDEX ( ligate_input )
+    GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
+
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
 
     emit:
