@@ -2,10 +2,14 @@ process GATK4_GERMLINECNVCALLER {
     tag "$meta.id"
     label 'process_single'
 
-    if(params.enable_conda){
-        error "Conda environments cannot be used for GATK4/GermlineCNVCaller at the moment. Please use docker or singularity containers."
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'broadinstitute/gatk:4.4.0.0':
+        'broadinstitute/gatk:4.4.0.0' }"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "broadinstitute/gatk:4.4.0.0"
 
     input:
     tuple val(meta), path(tsv)
