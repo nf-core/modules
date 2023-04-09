@@ -2,7 +2,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'broadinstitute/gatk:4.4.0.0':
         'broadinstitute/gatk:4.4.0.0' }"
