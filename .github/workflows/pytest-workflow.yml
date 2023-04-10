@@ -41,9 +41,13 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: cellpose
+          - profile: "conda"
             tags: mcquant
           - profile: "conda"
             tags: bases2fastq
+          - profile: "conda"
+            tags: backsub
           - profile: "conda"
             tags: bcl2fastq
           - profile: "conda"
@@ -56,6 +60,10 @@ jobs:
             tags: cellranger/mkgtf
           - profile: "conda"
             tags: cellranger/mkref
+          - profile: "conda"
+            tags: coreograph
+          - profile: "conda"
+            tags: deepcell/mesmer
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
@@ -91,19 +99,21 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
+            tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: scimap/mcmicro
+          - profile: "conda"
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
+          - profile: "conda"
+            tags: sentieon/dedup
           - profile: "conda"
             tags: universc
           - profile: "singularity"
             tags: universc
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
-          - profile: "conda"
-            tags: coreograph
-          - profile: "conda"
-            tags: scimap/mcmicro
 
     env:
       NXF_ANSI_LOG: false

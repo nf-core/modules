@@ -26,7 +26,8 @@ process MCQUANT {
         --masks $mask \
         --image $image \
         --channel_names $markerfile \
-        --output .
+        --output . \
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
