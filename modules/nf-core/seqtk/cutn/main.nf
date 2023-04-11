@@ -25,7 +25,8 @@ process SEQTK_CUTN {
     seqtk \\
         cutN \\
         $args \\
-        -g $fasta > ${prefix}.bed
+        -g $fasta \\
+        > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
