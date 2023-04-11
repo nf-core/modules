@@ -17,10 +17,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     path calls
 
     output:
-    tuple val(meta), path("genotyped-intervals-*-vs-cohort30.vcf.gz") , emit: intervals, optional: true
-    tuple val(meta), path("genotyped-segments-*-vs-cohort30.vcf.gz") , emit: segments, optional: true
-    tuple val(meta), path("denoised-*-vs-cohort30.vcf.gz") , emit: denoised, optional: true
-    path  "versions.yml"                    , emit: versions
+    tuple val(meta), path("genotyped-intervals-*-vs-cohort.vcf.gz") , emit: intervals, optional: true
+    tuple val(meta), path("genotyped-segments-*-vs-cohort.vcf.gz")  , emit: segments, optional: true
+    tuple val(meta), path("denoised-*-vs-cohort.vcf.gz")            , emit: denoised, optional: true
+    path  "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,9 +43,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         $ploidy_command \\
         $model_command \\
         $calls_command \\
-        --output-genotyped-intervals genotyped-intervals-${prefix}-vs-cohort30.vcf.gz \\
-        --output-genotyped-segments genotyped-segments-${prefix}-vs-cohort30.vcf.gz \\
-        --output-denoised-copy-ratios denoised-${prefix}-vs-cohort30.vcf.gz
+        --output-genotyped-intervals genotyped-intervals-${prefix}-vs-cohort.vcf.gz \\
+        --output-genotyped-segments genotyped-segments-${prefix}-vs-cohort.vcf.gz \\
+        --output-denoised-copy-ratios denoised-${prefix}-vs-cohort.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

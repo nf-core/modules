@@ -50,5 +50,5 @@ workflow test_gatk4_postprocessgermlinecnvcalls {
     gcnvc_case_input = gcnvc_cohort_input.map({ meta, counts, bed -> [ meta, counts, [] ]})
     GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input, GATK4_GERMLINECNVCALLER_COHORT.out.model.collect{ it[1] }, GATK4_DETERMINEGERMLINECONTIGPLOIDY_CASE.out.calls.collect{ it[1] } )
 
-    GATK4_POSTPROCESSGERMLINECNVCALLS ( GATK4_DETERMINEGERMLINECONTIGPLOIDY_CASE.out.calls, GATK4_GERMLINECNVCALLER_COHORT.out.model.collect{ it[1] }, GATK4_GERMLINECNVCALLER_COHORT.out.calls.collect{ it[1] } )
+    GATK4_POSTPROCESSGERMLINECNVCALLS ( GATK4_DETERMINEGERMLINECONTIGPLOIDY_CASE.out.calls, GATK4_GERMLINECNVCALLER_COHORT.out.model.collect{ it[1] }, GATK4_GERMLINECNVCALLER_CASE.out.calls.collect{ it[1] } )
 }
