@@ -28,12 +28,12 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def untar_ploidy = ploidy ? (ploidy ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${ploidy}" : "") : ""
-    def untar_model = model ? (model ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${model}" : "") : ""
-    def untar_calls = calls ? (calls ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${calls}" : "") : ""
-    def ploidy_command = ploidy ? (ploidy ==~ /^.*\.tar\.gz$/ ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
-    def model_command = model ? (model ==~ /^.*\.tar\.gz$/ ? "--model-shard-path ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model-shard-path ${model}/${prefix}-model") : ""
-    def calls_command = calls ? (calls ==~ /^.*\.tar\.gz$/ ? "--calls-shard-path ${calls.toString().replace(".tar.gz","")}/${prefix}-calls" : "--calls-shard-path ${model}/${prefix}-calls") : ""
+    def untar_ploidy = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "tar -xzf ${ploidy}" : "") : ""
+    def untar_model = model ? (model.name.endsWith(".tar.gz") ? "tar -xzf ${model}" : "") : ""
+    def untar_calls = calls ? (calls.name.endsWith(".tar.gz") ? "tar -xzf ${calls}" : "") : ""
+    def ploidy_command = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
+    def model_command = model ? (model.name.endsWith(".tar.gz") ? "--model-shard-path ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model-shard-path ${model}/${prefix}-model") : ""
+    def calls_command = calls ? (calls.name.endsWith(".tar.gz") ? "--calls-shard-path ${calls.toString().replace(".tar.gz","")}/${prefix}-calls" : "--calls-shard-path ${model}/${prefix}-calls") : ""
     """
     ${untar_ploidy}
     ${untar_model}

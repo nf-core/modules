@@ -2,10 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTREADCOUNTS } from '../../../../../modules/nf-core/gatk4/collectreadcounts/main.nf'
-include { GATK4_DETERMINEGERMLINECONTIGPLOIDY as GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT; GATK4_DETERMINEGERMLINECONTIGPLOIDY as GATK4_DETERMINEGERMLINECONTIGPLOIDY_CASE } from '../../../../../modules/nf-core/gatk4/determinegermlinecontigploidy/main.nf'
-include { GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_COHORT; GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_CASE } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
-include { GATK4_POSTPROCESSGERMLINECNVCALLS } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
+include { GATK4_COLLECTREADCOUNTS                                                               } from '../../../../../modules/nf-core/gatk4/collectreadcounts/main.nf'
+include { GATK4_DETERMINEGERMLINECONTIGPLOIDY as GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT     } from '../../../../../modules/nf-core/gatk4/determinegermlinecontigploidy/main.nf'
+include { GATK4_DETERMINEGERMLINECONTIGPLOIDY as GATK4_DETERMINEGERMLINECONTIGPLOIDY_CASE       } from '../../../../../modules/nf-core/gatk4/determinegermlinecontigploidy/main.nf'
+include { GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_COHORT                             } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
+include { GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_CASE                               } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
+include { GATK4_POSTPROCESSGERMLINECNVCALLS                                                     } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
 
 workflow test_gatk4_postprocessgermlinecnvcalls {
     bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
