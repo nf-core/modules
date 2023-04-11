@@ -12,8 +12,7 @@ process GATK4_GERMLINECNVCALLER {
     }
 
     input:
-    tuple val(meta), path(tsv)
-    path intervals
+    tuple val(meta), path(tsv),  path(intervals)
     path model
     path ploidy
 
