@@ -12,7 +12,7 @@ process ENSEMBLVEP_VEP {
     val   genome
     val   species
     val   cache_version
-    tuple val(meta2), path(cache)
+    path  cache
     tuple val(meta3), path(fasta)
     path  extra_files
 
