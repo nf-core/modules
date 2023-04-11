@@ -6,7 +6,7 @@ process CELLPOSE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."}
 
-    container "biocontainers/cellpose:2.1.1_cv1"
+    container "biocontainers/cellpose:2.1.1_cv2"
 
     input:
     tuple val(meta), path(image)
