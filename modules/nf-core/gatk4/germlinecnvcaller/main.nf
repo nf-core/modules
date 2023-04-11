@@ -12,8 +12,7 @@ process GATK4_GERMLINECNVCALLER {
     }
 
     input:
-    tuple val(meta), path(tsv)
-    path intervals
+    tuple val(meta), path(tsv), path(intervals)
     path model
     path ploidy
 
@@ -29,19 +28,19 @@ process GATK4_GERMLINECNVCALLER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def intervals_command = intervals ? "--intervals $intervals" : ""
-    def untar_ploidy = ploidy ? (ploidy ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${ploidy}" : "") : ""
-    def untar_model = model ? (model ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${model}" : "") : ""
-    def ploidy_command = ploidy ? (ploidy ==~ /^.*\.tar\.gz$/ ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
-    def model_command = model ? (model ==~ /^.*\.tar\.gz$/ ? "--model ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model ${model}/${prefix}-model") : ""
+    def untar_ploidy = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "tar -xzf ${ploidy}" : "") : ""
+    def untar_model = model ? (model.name.endsWith(".tar.gz") ? "tar -xzf ${model}" : "") : ""
+    def ploidy_command = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
+    def model_command = model ? (model.name.endsWith(".tar.gz") ? "--model ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model ${model}/${prefix}-model") : ""
     def input_list = tsv.collect{"--input $it"}.join(' ')
     def output_command = model ? "--output ${prefix}-calls" : "--output ${prefix}-model"
     def tar_output = model ? "tar -czf ${prefix}-calls.tar.gz ${prefix}-calls" : "tar -czf ${prefix}-model.tar.gz ${prefix}-model"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK GermlineCNVCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     ${untar_ploidy}
