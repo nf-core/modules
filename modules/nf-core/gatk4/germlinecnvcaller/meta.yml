@@ -24,6 +24,10 @@ input:
       type: file
       description: TSV file
       pattern: "*.tsv"
+  - bed:
+      type: file
+      description: Optional - A bed file containing the intervals to include in the process
+      pattern: "*.bed"
   - model:
       type: directory
       description: model directory
