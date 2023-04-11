@@ -25,6 +25,10 @@ input:
       type: file
       description: BGZIPPED FASTA target file to create the mappings from.
       pattern: "{fa.gz,fna.gz,fasta.gz}"
+  - paf_in:
+      type: file
+      description: Optional inpute file in PAF format to derive the precise alignments for.
+      pattern: "*.{paf}"
   - query_self:
       type: val
       description: If set to true, the input FASTA will also be used as the query FASTA.
@@ -41,10 +45,6 @@ input:
       type: file
       description: Optional inpute file in FASTA format specifying the query sequences as a list.
       pattern: "*.{fa,fna,fasta}"
-  - paf_in:
-      type: file
-      description: Optional inpute file in PAF format to derive the precise alignments for.
-      pattern: "*.{paf}"
 
 output:
   - meta:
