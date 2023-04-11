@@ -6,10 +6,11 @@ process CELLPOSE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."}
 
-    container "biocontainers/cellpose:2.1.1_cv1"
+    container "biocontainers/cellpose:2.1.1_cv2"
 
     input:
     tuple val(meta), path(image)
+    path(model)
 
     output:
     tuple val(meta), path("*masks.tif"),   emit: mask
@@ -21,12 +22,14 @@ process CELLPOSE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION='2.1.1'
+    def model_command = model ? "--pretrained_model $model" : ""
+    def VERSION = '2.1.1'
     """
     cellpose \
     --image_path $image \
     --save_tif \
     --verbose \
+    $model_command \
     $args
 
     cat <<-END_VERSIONS > versions.yml
