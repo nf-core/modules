@@ -11,72 +11,66 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-
-    input:
-    val(emit_mode)
-    tuple val(meta), path(input), path(input_index), path(intervals)
-    path  fasta
-    path  fai
-    path  dbsnp
-    path  dbsnp_tbi
-
 input:
   - emit_mode:
       type: string
       description: |
         Controls the output from the haplotyper.
         If emit_mode is set to "gvcf" then the haplotyper will only emit a gvcf.
-        If emit_mode is set to "both" then it will emit both a vcf and a gvcf.
-        Set to anything else, and it will only emit a vcf.
+        If emit_mode is set to "both" then the haplotyper will emit both a vcf and a gvcf.
+        Set emit_mode to anything else, and the haplotyper will only emit a vcf.
   - meta:
       type: map
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
-      description: BAM file.
-      pattern: "*.bam"
-  - bai:
-      description: BAI file
-      pattern: "*.bai"
+      description: BAM/CRAM file from alignment
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: BAI/CRAI file from alignment
+      pattern: "*.{bai,crai}"
+  - intervals:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
   - fasta:
       type: file
       description: Genome fasta file
       pattern: "*.{fa,fasta}"
-  - fasta_fai:
+  - fai:
       type: file
       description: The index of the FASTA reference.
       pattern: "*.fai"
+  - dbsnp:
+      type: file
+      description: VCF file containing known sites (optional)
+  - dbsnp_tbi:
+      type: file
+      description: VCF index of dbsnp (optional)
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
-  - cram:
+  - vcf:
       type: file
-      description: CRAM file
-      pattern: "*.cram"
-  - crai:
+      description: Compressed VCF file
+      pattern: "*.unfiltered.vcf.gz"
+  - vcf_tbi:
       type: file
-      description: CRAM index file
-      pattern: "*.crai"
-  - bam:
+      description: Index of VCF file
+      pattern: "*.unfiltered.vcf.gz.tbi"
+  - gvcf:
       type: file
-      description: BAM file.
-      pattern: "*.bam"
-  - bai:
-      description: BAI file
-      pattern: "*.bai"
-  - score:
+      description: Compressed GVCF file
+      pattern: "*.g.vcf.gz"
+  - gvcf_tbi:
       type: file
-      description: The score file indicates which reads LocusCollector finds are likely duplicates.
-      pattern: "*.score"
-  - metrics:
-      type: file
-      description: Output file containing the metrics data from Dedup.
-      pattern: "*.metrics"
+      description: Index of GVCF file
+      pattern: "*.g.vcf.gz.tbi"
   - versions:
       type: file
       description: File containing software versions
