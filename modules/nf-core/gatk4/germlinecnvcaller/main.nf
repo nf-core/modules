@@ -18,8 +18,8 @@ process GATK4_GERMLINECNVCALLER {
 
     output:
     tuple val(meta), path("*-calls.tar.gz"), emit: calls, optional: true
-    tuple val(meta), path("*-model.tar.gz") , emit: model, optional: true
-    path  "versions.yml"             , emit: versions
+    tuple val(meta), path("*-model.tar.gz"), emit: model, optional: true
+    path  "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
