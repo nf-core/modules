@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BCFTOOLS_SPLIT"
     script "modules/nf-core/bcftools/split/main.nf"
     process "BCFTOOLS_SPLIT"
-    config "tests/modules/nf-core/bcftools_split/nextflow.config"
+    config "tests/modules/nf-core/bcftools/split/nextflow.config"
     tag "bcftools_split"
 
-    test("Should run without failures") {
+    test("Human Illumina VCF") {
 
         when {
             params {
@@ -14,8 +14,11 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
+                            file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true)
+                           ]
                 """
             }
         }
@@ -23,10 +26,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path("$outputDir/bcftools/test.chr22.vcf.gz").linesGzip[95-226],
+                                  path("$outputDir/bcftools/versions.yml")).match() }
             )
         }
-
     }
-
 }

@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BCFTOOLS_ROH"
     script "modules/nf-core/bcftools/roh/main.nf"
     process "BCFTOOLS_ROH"
-    config "tests/modules/nf-core/bcftools_roh/nextflow.config"
+    config "tests/modules/nf-core/bcftools/roh/nextflow.config"
     tag "bcftools_roh"
 
-    test("Should run without failures") {
+    test("Sarscov2 Illumina VCF") {
 
         when {
             params {
@@ -14,8 +14,15 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
+                           ]
+                input[1] = [[],[]]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -26,7 +33,5 @@ nextflow_process {
                 { assert snapshot(path(params.outdir).list()).match() }
             )
         }
-
     }
-
 }

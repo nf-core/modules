@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BCFTOOLS_STATS"
     script "modules/nf-core/bcftools/stats/main.nf"
     process "BCFTOOLS_STATS"
-    config "tests/modules/nf-core/bcftools_stats/nextflow.config"
+    config "tests/modules/nf-core/bcftools/stats/nextflow.config"
     tag "bcftools_stats"
 
-    test("Should run without failures") {
+    test("Sarscov2 Illumina VCF") {
 
         when {
             params {
@@ -14,8 +14,13 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                             []
+                           ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -23,10 +28,62 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path(params.outdir).list()).match("stats") }
             )
         }
-
     }
 
+    test("Sarscov2 Illumina VCF With Regions") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                             []
+                           ]
+                input[1] = file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true)
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("stats_with_regions") }
+            )
+        }
+    }
+
+    test("Sarscov2 Illumina VCF With Targets") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                             []
+                           ]
+                input[1] = []
+                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_targets_tsv_gz'], checkIfExists: true)
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("stats_with_targets") }
+            )
+        }
+    }
 }
