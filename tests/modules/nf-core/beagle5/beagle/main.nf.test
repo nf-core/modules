@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BEAGLE5_BEAGLE"
     script "modules/nf-core/beagle5/beagle/main.nf"
     process "BEAGLE5_BEAGLE"
-    config "tests/modules/nf-core/beagle5_beagle/nextflow.config"
+    config "tests/modules/nf-core/beagle5/beagle/nextflow.config"
     tag "beagle5_beagle"
 
-    test("Should run without failures") {
+    test("Beagle VCF") {
 
         when {
             params {
@@ -14,8 +14,14 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+                           ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -23,10 +29,70 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path("$outputDir/beagle5/test.bglout.vcf.gz"),
+                                  path("$outputDir/beagle5/versions.yml")).match() },
+                { assert new File("$outputDir/beagle5/test.bglout.log").exists() }
             )
         }
-
     }
 
+    test("Beagle VCF With Ref") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+                           ]
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/beagle5/test.bglout.vcf.gz"),
+                                  path("$outputDir/beagle5/versions.yml")).match() },
+                { assert new File("$outputDir/beagle5/test.bglout.log").exists() }    
+            )
+        }
+    }
+
+    test("Beagle VCF With Ref & Map") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+                           ]
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+                input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/plink.chr22.GRCh38.map", checkIfExists: true)
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/beagle5/test.bglout.vcf.gz"),
+                                  path("$outputDir/beagle5/versions.yml")).match() },
+                { assert new File("$outputDir/beagle5/test.bglout.log").exists() }
+            )
+        }
+    }
 }

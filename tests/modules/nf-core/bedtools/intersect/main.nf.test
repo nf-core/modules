@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process BEDTOOLS_INTERSECT"
+    script "modules/nf-core/bedtools/intersect/main.nf"
+    process "BEDTOOLS_INTERSECT"
+    config "tests/modules/nf-core/bedtools/intersect/nextflow.config"
+    tag "bedtools_intersect"
+
+    test("Sarscov2 Genome BED") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("bed") }
+            )
+        }
+    }
+
+    test("Sarscov2 Genome BED With BAM") {
+
+        config "tests/modules/nf-core/bedtools/intersect/suffix_bam.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("bed_bam") }
+            )
+        }
+    }
+}

@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BEDTOOLS_COVERAGE"
     script "modules/nf-core/bedtools/coverage/main.nf"
     process "BEDTOOLS_COVERAGE"
-    config "tests/modules/nf-core/bedtools_coverage/nextflow.config"
+    config "tests/modules/nf-core/bedtools/coverage/nextflow.config"
     tag "bedtools_coverage"
 
-    test("Should run without failures") {
+    test("Sarscov2 Genome BED") {
 
         when {
             params {
@@ -14,8 +14,12 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                           ]
+                input[1] = []
                 """
             }
         }
@@ -23,10 +27,34 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path(params.outdir).list()).match("coverage") }
             )
         }
-
     }
 
+    test("Sarscov2 Genome BED With Fasta") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("coverage_fasta") }
+            )
+        }
+    }
 }

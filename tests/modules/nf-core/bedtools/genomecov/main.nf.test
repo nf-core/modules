@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BEDTOOLS_GENOMECOV"
     script "modules/nf-core/bedtools/genomecov/main.nf"
     process "BEDTOOLS_GENOMECOV"
-    config "tests/modules/nf-core/bedtools_genomecov/nextflow.config"
+    config "tests/modules/nf-core/bedtools/genomecov/nextflow.config"
     tag "bedtools_genomecov"
 
-    test("Should run without failures") {
+    test("Sarscov2 Illumina PE BAM No Scale") {
 
         when {
             params {
@@ -14,8 +14,13 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                            [ id:'test'],
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                            1
+                           ] 
+                input[1] = []
+                input[2] = 'txt'
                 """
             }
         }
@@ -23,10 +28,89 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path(params.outdir).list()).match("no_scale") }
             )
         }
-
     }
 
+    test("Sarscov2 Illumina PE Baits BED No Scale") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test'],
+                            file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true),
+                            1
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+                input[2] = 'txt'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("baits_bed_no_scale") }
+            )
+        }
+    }
+
+    test("Sarscov2 Illumina PE BAM Scale") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test'],
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                            0.5
+                           ]
+                input[1] = file('dummy_chromosome_sizes')
+                input[2] = 'txt'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("scale") }
+            )
+        }
+    }
+
+    test("Sarscov2 Illumina PE Baits BED Scale") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test'],
+                            file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true),
+                            0.5
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+                input[2] = 'txt'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("baits_bed_scale") }
+            )
+        }
+    }
 }

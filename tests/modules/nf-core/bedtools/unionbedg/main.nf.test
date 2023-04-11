@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process BEDTOOLS_UNIONBEDG"
+    script "modules/nf-core/bedtools/unionbedg/main.nf"
+    process "BEDTOOLS_UNIONBEDG"
+    config "tests/modules/nf-core/bedtools/unionbedg/nextflow.config"
+    tag "bedtools_unionbedg"
+
+    test("Sarscov2 Illumina & Genome BED") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test_output' ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) 
+                            ]
+                           ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("unionbedg") }
+            )
+        }
+    }
+
+    test("Sarscov2 Illumina & Genome BED With Sizes") {
+
+        config "tests/modules/nf-core/bedtools/unionbedg/unionbedg_empty.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test_output' ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) 
+                            ]
+                           ]
+                input[1] = [ [ id: 'genome' ],
+                             file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("unionbedg_sizes") }
+            )
+        }
+    }
+}

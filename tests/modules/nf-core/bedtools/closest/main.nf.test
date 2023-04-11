@@ -3,10 +3,10 @@ nextflow_process {
     name "Test Process BEDTOOLS_CLOSEST"
     script "modules/nf-core/bedtools/closest/main.nf"
     process "BEDTOOLS_CLOSEST"
-    config "tests/modules/nf-core/bedtools_closest/nextflow.config"
+    config "tests/modules/nf-core/bedtools/closest/nextflow.config"
     tag "bedtools_closest"
 
-    test("Should run without failures") {
+    test("Human Genome Bed") {
 
         when {
             params {
@@ -14,8 +14,15 @@ nextflow_process {
             }
             process {
                 """
-                // define inputs of the process here. Example:
-                // input[0] = file("test-file.txt")
+                input[0] = [
+                             [ id:'test' ], // meta map
+                             file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
+                             [
+                              file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true),
+                              file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                             ]
+                           ]
+                input[1] = []
                 """
             }
         }
@@ -23,10 +30,62 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(params.outdir).list()).match() }
+                { assert snapshot(path(params.outdir).list()).match("genome_bed") }
             )
         }
-
     }
 
+    test("Human Genome Bed With Fasta") {
+
+        options "--sorted"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
+                            file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
+                           ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("genome_bed_fasta") }
+            )
+        }
+    }
+
+    test("Human Genome VCF") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true),
+                            file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'], checkIfExists: true)
+                           ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(params.outdir).list()).match("vcf") }
+            )
+        }
+    }
 }
