@@ -1,8 +1,13 @@
 - name: annotsv test_annotsv
-  command: nextflow run ./tests/modules/nf-core/annotsv -entry test_annotsv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/annotsv/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/annotsv -entry test_annotsv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/annotsv/nextflow.config
   tags:
     - annotsv
   files:
     - path: output/annotsv/test.tsv
+      md5sum: dee57fe21539a9cebb53b7b92ecb721c
     - path: output/annotsv/test.unannotated.tsv
+      md5sum: 7e367ca08b44d0f370b35753733a5e1b
+    - path: output/annotsv/test.vcf
+      contains:
+        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/annotsv/versions.yml

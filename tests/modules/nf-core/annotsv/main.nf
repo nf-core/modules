@@ -12,15 +12,15 @@ workflow test_annotsv {
         file(params.test_data["homo_sapiens"]["illumina"]["test_sv_vcf_tbi"], checkIfExists: true)
     ]
 
-    annotations = [
-        [ id: 'annotations' ],
-        [] // For stub use only, this will fail if the actual module is run like this
-    ]
-
     // annotations = [
-    //     [ id:'annotations' ],
-    //     file("/home/nvnieuwk/Documents/data/AnnotSV/share/AnnotSV", checkIfExists: true)
+    //     [ id: 'annotations' ],
+    //     [] // For stub use only, this will fail if the actual module is run like this
     // ]
+
+    annotations = [
+        [ id:'annotations' ],
+        file("/home/nvnieuwk/Documents/data/AnnotSV/share/AnnotSV", checkIfExists: true)
+    ]
 
     genes = Channel
         .of('GENE1', 'GENE2', 'GENE3')

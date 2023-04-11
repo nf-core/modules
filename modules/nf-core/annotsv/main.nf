@@ -3,7 +3,7 @@ process ANNOTSV {
     label 'process_low'
 
     // Creation of the bioconda recipe is underway, but awaits some vital changes to the source code (https://github.com/lgmgeo/AnnotSV/issues/166)
-    container 'quay.io/cmgg/annotsv:3.3.2'
+    container 'quay.io/cmgg/annotsv:3.3.4'
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

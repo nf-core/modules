@@ -3,9 +3,7 @@ FROM mambaorg/micromamba:1.4-focal
 LABEL authors="Nicolas Vannieuwkerke <nicolas.vannieuwkerke@ugent.be>" \
     description="Docker image containing AnnotSV"
 
-ENV VERSION=3.3.2
-ENV ANNOTSV=/home/mambauser/AnnotSV-${VERSION}
-ENV PATH="${PATH}:${ANNOTSV}/bin"
+ENV VERSION=3.3.3
 
 # Install mamba dependencies
 RUN micromamba install -y --name base -c conda-forge -c bioconda -c defaults \
@@ -24,11 +22,10 @@ RUN micromamba install -y --name base -c conda-forge -c bioconda -c defaults \
     pyfaidx=0.7.2.1 \
     && micromamba clean --all --yes
 
+USER root
+
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
-RUN wget https://github.com/lgmgeo/AnnotSV/archive/refs/tags/v$VERSION.tar.gz && \
-    mv v${VERSION}.tar.gz /home/mambauser && \
-    cd /home/mambauser && \
-    tar -xvf v$VERSION.tar.gz -C . && \
-    cd AnnotSV* && \
-    make PREFIX=${ANNOTSV} install && \
-    rm ../v${VERSION}.tar.gz
+RUN git clone --branch patch_AnnotSV https://github.com/lgmgeo/AnnotSV.git && \
+    cd AnnotSV && \
+    make && \
+    make install 
