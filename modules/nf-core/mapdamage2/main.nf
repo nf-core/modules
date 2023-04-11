@@ -25,7 +25,7 @@ process MAPDAMAGE2 {
     tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf"), optional: true       ,emit: stats_out_mcmc_post_pred
     tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv"), optional: true    ,emit: stats_out_mcmc_correct_prob
     tuple val(meta), path("results_*/dnacomp_genome.csv"), optional: true                 ,emit: dnacomp_genome
-    tuple val(meta), path("results_*/rescaled.bam"), optional: true                       ,emit: rescaled
+    tuple val(meta), path("results_*/*rescaled.bam"), optional: true                      ,emit: rescaled
     tuple val(meta), path("results_*/5pCtoT_freq.txt"), optional: true                    ,emit: pctot_freq
     tuple val(meta), path("results_*/3pGtoA_freq.txt"), optional: true                    ,emit: pgtoa_freq
     tuple val(meta), path("results_*/*.fasta"), optional: true                            ,emit: fasta

@@ -9,11 +9,11 @@ include { BCFTOOLS_INDEX       } from '../../../../../modules/nf-core/bcftools/i
 workflow test_shapeit5_phaserare {
     
     input_vcf = Channel.of([
-    [ id:'input', single_end:false ], // meta map
+    [ id:'panel', single_end:false ], // meta map
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+    [],
     "chr21",
-    []
     ])
 
     ref_panel = Channel.of([[],[],[]])
@@ -27,14 +27,13 @@ workflow test_shapeit5_phaserare {
     scaffold = SHAPEIT5_PHASECOMMON.out.phased_variant
                     .join(BCFTOOLS_INDEX.out.csi)
                     .combine(Channel.of("chr21:16600000-16800000"))
-                    .view()
 
     input_vcf = Channel.of([
     [ id:'input', single_end:false ], // meta map
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+    [],
     "chr21:16600000-16800000",
-    []
     ])
     SHAPEIT5_PHASERARE ( input_vcf, scaffold, map )
 
