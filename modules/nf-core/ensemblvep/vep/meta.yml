@@ -41,16 +41,11 @@ input:
       type: integer
       description: |
         which version of the cache to annotate with
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing cache information
-        e.g. [ id:'test' ]
   - cache:
       type: file
       description: |
         path to VEP cache (optional)
-  - meta3:
+  - meta2:
       type: map
       description: |
         Groovy Map containing fasta reference information

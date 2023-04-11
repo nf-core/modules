@@ -13,7 +13,7 @@ process ENSEMBLVEP_VEP {
     val   species
     val   cache_version
     path  cache
-    tuple val(meta3), path(fasta)
+    tuple val(meta2), path(fasta)
     path  extra_files
 
     output:
