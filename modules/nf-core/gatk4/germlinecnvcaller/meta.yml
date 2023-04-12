@@ -21,20 +21,21 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - tsv:
-      type: file
-      description: TSV file
+      type: file(s)
+      description: One or more count TSV files created with gatk/collectreadcounts
       pattern: "*.tsv"
-  - bed:
+  - intervals:
       type: file
       description: Optional - A bed file containing the intervals to include in the process
       pattern: "*.bed"
   - model:
       type: directory
-      description: model directory
-  - tar:
+      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
+      pattern: "*.tar.gz"
+  - ploidy:
       type: file
-      description: TAR file
-      pattern: "*.tar"
+      description: Tar gzipped directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
+      pattern: "*.tar.gz"
 
 output:
   - meta:
@@ -46,10 +47,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - tar:
+  - calls:
       type: file
-      description: TAR file
+      description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
       pattern: "*.tar"
+  - model:
+      type: directory
+      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
+      pattern: "*.tar.gz"
 
 authors:
   - "@ryanjameskennedy"

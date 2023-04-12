@@ -2,9 +2,8 @@ process GATK4_GERMLINECNVCALLER {
     tag "$meta.id"
     label 'process_single'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.4.0.0':
-        'broadinstitute/gatk:4.4.0.0' }"
+    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
+    container "broadinstitute/gatk:4.4.0.0" //Biocontainers is missing a package
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -18,8 +17,8 @@ process GATK4_GERMLINECNVCALLER {
 
     output:
     tuple val(meta), path("*-calls.tar.gz"), emit: calls, optional: true
-    tuple val(meta), path("*-model.tar.gz") , emit: model, optional: true
-    path  "versions.yml"             , emit: versions
+    tuple val(meta), path("*-model.tar.gz"), emit: model, optional: true
+    path  "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
