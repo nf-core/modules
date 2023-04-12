@@ -2,7 +2,7 @@ process CELLRANGER_COUNT {
     tag "$meta.gem"
     label 'process_high'
 
-    container "nfcore/cellranger:7.0.0"
+    container "nfcore/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

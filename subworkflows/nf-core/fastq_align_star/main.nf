@@ -4,13 +4,13 @@ include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 workflow FASTQ_ALIGN_STAR {
 
     take:
-    ch_reads               // channel: [ val(meta), [ reads ] ]
-    ch_index               // channel: /path/to/star/index/
-    ch_gtf                 // channel: /path/to/genome.gtf
-    star_ignore_sjdbgtf    // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
-    seq_platform           // string : sequencing platform
-    seq_center             // string : sequencing center
-    ch_fasta               // channel: /path/to/reference.fasta
+    ch_reads                    // channel: [ val(meta), [ path(reads) ] ]
+    ch_index                    // channel: [ path(index) ]
+    ch_gtf                      // channel: [ path(gtf) ]
+    val_star_ignore_sjdbgtf     // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
+    val_seq_platform            // string : sequencing platform
+    val_seq_center              // string : sequencing center
+    ch_fasta                    // channel: [ path(fasta) ]
 
     main:
 
@@ -19,7 +19,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Map reads with STAR
     //
-    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, val_star_ignore_sjdbgtf, val_seq_platform, val_seq_center )
     ch_versions = ch_versions.mix(STAR_ALIGN.out.versions.first())
 
     //
@@ -30,20 +30,20 @@ workflow FASTQ_ALIGN_STAR {
 
     emit:
 
-    orig_bam       = STAR_ALIGN.out.bam             // channel: [ val(meta), bam            ]
-    log_final      = STAR_ALIGN.out.log_final       // channel: [ val(meta), log_final      ]
-    log_out        = STAR_ALIGN.out.log_out         // channel: [ val(meta), log_out        ]
-    log_progress   = STAR_ALIGN.out.log_progress    // channel: [ val(meta), log_progress   ]
-    bam_sorted     = STAR_ALIGN.out.bam_sorted      // channel: [ val(meta), bam_sorted     ]
-    bam_transcript = STAR_ALIGN.out.bam_transcript  // channel: [ val(meta), bam_transcript ]
-    fastq          = STAR_ALIGN.out.fastq           // channel: [ val(meta), fastq          ]
-    tab            = STAR_ALIGN.out.tab             // channel: [ val(meta), tab            ]
+    orig_bam       = STAR_ALIGN.out.bam             // channel: [ val(meta), path(bam)            ]
+    log_final      = STAR_ALIGN.out.log_final       // channel: [ val(meta), path(log_final)      ]
+    log_out        = STAR_ALIGN.out.log_out         // channel: [ val(meta), path(log_out)        ]
+    log_progress   = STAR_ALIGN.out.log_progress    // channel: [ val(meta), path(log_progress)   ]
+    bam_sorted     = STAR_ALIGN.out.bam_sorted      // channel: [ val(meta), path(bam)            ]
+    bam_transcript = STAR_ALIGN.out.bam_transcript  // channel: [ val(meta), path(bam)            ]
+    fastq          = STAR_ALIGN.out.fastq           // channel: [ val(meta), path(fastq)          ]
+    tab            = STAR_ALIGN.out.tab             // channel: [ val(meta), path(tab)            ]
 
-    bam            = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
-    bai            = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
-    stats          = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
-    flagstat       = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
-    idxstats       = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
+    bam            = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
+    bai            = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
+    stats          = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
+    flagstat       = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats       = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
 
-    versions       = ch_versions                    // channel: [ versions.yml ]
+    versions       = ch_versions                    // channel: [ path(versions.yml) ]
 }

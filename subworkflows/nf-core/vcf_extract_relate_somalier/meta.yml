@@ -11,74 +11,59 @@ modules:
   - somalier/extract
   - somalier/relate
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_vcfs:
-      type: file(s)
       description: |
-        The input VCFs to perform the stats on, optionally with their indices
-        Structure: [ meta, vcf, (tbi|[]) ]
+        The input VCFs to perform the stats on, optionally with their indices.
+        This channel can also contain the number of samples in the same family/group
+        to check relatedness. This is advised to add as it can improve the efficiency of your pipeline
+        Structure: [ val(meta), path(vcf), path(tbi), val(count) ]
   - ch_fasta:
-      type: file
       description: |
         The reference FASTA used to create the VCF files
-        Structure: [ fasta ]
+        Structure: [ path(fasta) ]
   - ch_fasta_fai:
-      type: file
       description: |
         The index of the reference FASTA
-        Structure: [ fasta_fai ]
+        Structure: [ path(fasta_fai) ]
   - ch_somalier_sites:
-      type: file
       description: |
         A VCF containing the common sites for Somalier
-        Structure: [ somalier_sites_vcf ]
+        Structure: [ path(somalier_sites_vcf) ]
   - ch_peds:
-      type: file
       description: |
-        Optional - A channel containing the PED files for the corresponding families
-        Structure: [ meta, ped ]
+        A channel containing an optional PED file for the corresponding families. This channel has to be given, but can be like `[meta, []]`.
+        When you don't want to use a PED file, you must supply a channel
+        containing the meta and an empty value (`[]`) instead of a PED
+        Structure: [ val(meta), path(ped) ]
   - ch_sample_groups:
-      type: file
       description: |
         Optional - A text file describing how the samples should be grouped
-        Structure: [ txt ]
-output:
-  - meta:
-      type: map
+        Structure: [ path(txt) ]
+  - val_common_id:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
+        Optional - A common identifier in the meta map.
+        This will be used to determine which VCFs should be used in somalier_relate.
+        This value should be given when using single sample VCFs
+output:
   - extract:
-      type: file
       description: |
         The extract file created with Somalier extract
-        Structure: [ meta, extract ]
-      pattern: "*.extract"
+        Structure: [ val(meta), path(extract) ]
   - html:
-      type: file
       description: |
         An HTML file containing an interactive graph on the relatedness of the samples
-        Structure: [ meta, html ]
-      pattern: "*.html"
+        Structure: [ val(meta), path(html) ]
   - pairs_tsv:
-      type: file
       description: |
         A TSV file detailing the relatedness between pairs of samples
-        Structure: [ meta, tsv ]
-      pattern: "*.tsv"
+        Structure: [ val(meta), path(tsv) ]
   - samples_tsv:
-      type: file
       description: |
         A TSV file detailing the relatedness between all samples with the same meta
-        Structure: [ meta, tsv ]
-      pattern: "*.tsv"
+        Structure: [ val(meta), path(tsv) ]
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 authors:
   - "@nvnieuwk"

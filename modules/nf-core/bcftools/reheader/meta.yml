@@ -44,8 +44,9 @@ output:
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: VCF with updated header
-      pattern: "*.{vcf.gz}"
+      description: VCF with updated header, bgzipped per default
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
 
 authors:
   - "@bjohnnyd"
+  - "@jemten"

@@ -8,8 +8,8 @@ tools:
       description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
       homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
-      tool_dev_url: "None"
-      doi: "https://doi.org/10.1101/105346"
+
+      doi: "10.1101/105346"
       licence: "['GPL v3']"
 
 input:
@@ -32,11 +32,11 @@ input:
       pattern: "*.txt"
   - alleles:
       type: file
-      descrition: Optional bed file with known alleles
+      description: Optional bed file with known alleles
       pattern: "*.bed"
   - invariant_sites:
       type: file
-      descrition: Optional bed file with invariant site coordinates
+      description: Optional bed file with invariant site coordinates
       pattern: "*.bed"
 
 output:
