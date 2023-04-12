@@ -11,7 +11,7 @@ input:
   - ch_vcf:
       description: |
         vcf file to annotate
-        Structure: [ val(meta), path(vcf) ]
+        Structure: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)...] ]
   - ch_fasta:
       description: |
         Reference genome fasta file (optional)
@@ -33,10 +33,6 @@ input:
       description: |
         any extra files needed by plugins for ensemblvep (optional)
         Structure: [ path(file1), path(file2)... ]
-  - ch_custom_extra_files:
-      description: |
-        any sample-specific extra files needed for `-custom` for ensemblvep (optional)
-        Structure: [ val(meta), [path(file1), path(file2)...] ]
 output:
   - vcf_tbi:
       description: |

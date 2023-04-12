@@ -33,7 +33,6 @@ process ENSEMBLVEP_VEP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     def reference = fasta ? "--fasta $fasta" : ""
-
     """
     vep \\
         -i $vcf \\
