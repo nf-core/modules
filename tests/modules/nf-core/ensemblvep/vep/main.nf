@@ -107,7 +107,7 @@ workflow test_ensemblvep_vep_no_fasta {
         []
     ]
 
-    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "108", [], [[],[]], [] )
+    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "108", [], [[], []], [] )
 }
 
 workflow test_ensemblvep_vep_fasta_custom {
