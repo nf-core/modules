@@ -7,26 +7,19 @@ include { TABIX_TABIX    } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
-    ch_vcf                      // channel: [ val(meta), path(vcf) ]
+    ch_vcf                      // channel: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)... (optionnal)]]
     ch_fasta                    // channel: [ val(meta2), path(fasta) ] (optional)
     val_genome                  //   value: genome to use
     val_species                 //   value: species to use
     val_cache_version           //   value: cache version to use
     ch_cache                    // channel: [ val(meta3), path(cache) ] (optional)
     ch_extra_files              // channel: [ path(file1), path(file2)... ] (optional)
-    ch_custom_extra_files       // channel: [ val(meta), [path(file1), path(file2)...] ] (optional)
 
     main:
     ch_versions = Channel.empty()
 
-    if(ch_custom_extra_files) {
-        ch_vep_input = ch_vcf.join(ch_custom_extra_files, failOnDuplicate:true, failOnMismatch:true)
-    } else {
-        ch_vep_input = ch_vcf.map { it + [[]] }
-    }
-
     ENSEMBLVEP_VEP(
-        ch_vep_input,
+        ch_vcf,
         val_genome,
         val_species,
         val_cache_version,
