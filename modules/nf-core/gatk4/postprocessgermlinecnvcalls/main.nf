@@ -2,9 +2,8 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     tag "$meta.id"
     label 'process_single'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.4.0.0':
-        'broadinstitute/gatk:4.4.0.0' }"
+    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
+    container "broadinstitute/gatk:4.4.0.0" //Biocontainers is missing a package
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -17,10 +16,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     path calls
 
     output:
-    tuple val(meta), path("genotyped-intervals-*-vs-cohort.vcf.gz") , emit: intervals, optional: true
-    tuple val(meta), path("genotyped-segments-*-vs-cohort.vcf.gz")  , emit: segments, optional: true
-    tuple val(meta), path("denoised-*-vs-cohort.vcf.gz")            , emit: denoised, optional: true
-    path  "versions.yml"                                              , emit: versions
+    tuple val(meta), path("*-vs-cohort-genotyped-intervals.vcf.gz") , emit: intervals, optional: true
+    tuple val(meta), path("*-vs-cohort-genotyped-segments.vcf.gz")  , emit: segments, optional: true
+    tuple val(meta), path("*-vs-cohort-denoised.vcf.gz")            , emit: denoised, optional: true
+    path  "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +33,13 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     def ploidy_command = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
     def model_command = model ? (model.name.endsWith(".tar.gz") ? "--model-shard-path ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model-shard-path ${model}/${prefix}-model") : ""
     def calls_command = calls ? (calls.name.endsWith(".tar.gz") ? "--calls-shard-path ${calls.toString().replace(".tar.gz","")}/${prefix}-calls" : "--calls-shard-path ${model}/${prefix}-calls") : ""
+    
+    def avail_mem = 3072
+    if (!task.memory) {
+        log.info '[GATK GermlineCNVCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = (task.memory.mega*0.8).intValue()
+    }
     """
     ${untar_ploidy}
     ${untar_model}
@@ -43,9 +49,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         $ploidy_command \\
         $model_command \\
         $calls_command \\
-        --output-genotyped-intervals genotyped-intervals-${prefix}-vs-cohort.vcf.gz \\
-        --output-genotyped-segments genotyped-segments-${prefix}-vs-cohort.vcf.gz \\
-        --output-denoised-copy-ratios denoised-${prefix}-vs-cohort.vcf.gz
+        --output-genotyped-intervals ${prefix}-vs-cohort-genotyped-intervals.vcf.gz \\
+        --output-genotyped-segments ${prefix}-vs-cohort-genotyped-segments.vcf.gz \\
+        --output-denoised-copy-ratios ${prefix}-vs-cohort-denoised.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -56,7 +62,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tar.gz
+    touch ${prefix}-vs-cohort-genotyped-intervals.vcf.gz
+    touch ${prefix}-vs-cohort-genotyped-segments.vcf.gz
+    touch ${prefix}-vs-cohort-denoised.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
