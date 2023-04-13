@@ -16,8 +16,8 @@ process GATK4_GERMLINECNVCALLER {
     path ploidy
 
     output:
-    tuple val(meta), path("*-calls.tar.gz"), emit: calls, optional: true
-    tuple val(meta), path("*-model.tar.gz"), emit: model, optional: true
+    tuple val(meta), path("*-cnv-calls.tar.gz"), emit: calls, optional: true
+    tuple val(meta), path("*-cnv-model.tar.gz"), emit: model, optional: true
     path  "versions.yml"                   , emit: versions
 
     when:
@@ -32,8 +32,8 @@ process GATK4_GERMLINECNVCALLER {
     def ploidy_command = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
     def model_command = model ? (model.name.endsWith(".tar.gz") ? "--model ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model ${model}/${prefix}-model") : ""
     def input_list = tsv.collect{"--input $it"}.join(' ')
-    def output_command = model ? "--output ${prefix}-calls" : "--output ${prefix}-model"
-    def tar_output = model ? "tar -czf ${prefix}-calls.tar.gz ${prefix}-calls" : "tar -czf ${prefix}-model.tar.gz ${prefix}-model"
+    def output_command = model ? "--output ${prefix}-cnv-calls" : "--output ${prefix}-cnv-model"
+    def tar_output = model ? "tar -czf ${prefix}-cnv-calls.tar.gz ${prefix}-cnv-calls" : "tar -czf ${prefix}-cnv-model.tar.gz ${prefix}-cnv-model"
 
     def avail_mem = 3072
     if (!task.memory) {
