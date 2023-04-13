@@ -33,7 +33,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     def ploidy_command = ploidy ? (ploidy.name.endsWith(".tar.gz") ? "--contig-ploidy-calls ${ploidy.toString().replace(".tar.gz","")}" : "--contig-ploidy-calls ${ploidy}") : ""
     def model_command = model ? (model.name.endsWith(".tar.gz") ? "--model-shard-path ${model.toString().replace(".tar.gz","")}/${prefix}-model" : "--model-shard-path ${model}/${prefix}-model") : ""
     def calls_command = calls ? (calls.name.endsWith(".tar.gz") ? "--calls-shard-path ${calls.toString().replace(".tar.gz","")}/${prefix}-calls" : "--calls-shard-path ${model}/${prefix}-calls") : ""
-    
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK GermlineCNVCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
