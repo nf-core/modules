@@ -12,21 +12,37 @@ tools:
       homepage: https://github.com/LANL-Bioinformatics/FaQCs
       documentation: https://github.com/LANL-Bioinformatics/FaQCs
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
-      doi: "https://doi.org/10.1186/s12859-014-0366-2"
+      doi: "10.1186/s12859-014-0366-2"
       licence: ["GPLv3 License"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
+        Metadata about the specific run.
+        I guess this can be used if you are running many different images in a single nextflow pass?
+        I have no clue.
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
+  - image:
+      type: image
       description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+        Obtained from cellpose documentation: Inputs
+        You can use tiffs or PNGs or JPEGs. We use the image loader from scikit-image.
+        Single plane images can read into data as nY x nX x channels or channels x nY x nX.
+        Then the channels settings will take care of reshaping the input appropriately for the network.
+        Note the model also rescales the input for each channel so that 0 = 1st percentile of image values and 1 = 99th percentile.
+  - image_metadata:
+      type: csv
+      description: |
+        This file will let Cellpose know which channels to use for segmentation.
+        The default will be channel 0.
+  - Model_to_use:
+      type: string
+      description: |
+        This will define which model to use.
+        The default will be nuclear.
+        All models from the model zoo should be usable, the exact string has to be passed.
 
 output:
   - meta:

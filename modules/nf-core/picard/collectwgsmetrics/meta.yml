@@ -29,6 +29,7 @@ input:
       description: (Optional) Aligned reads file index
       pattern: "*.{bai,crai}"
   - meta2:
+      type: map
       description: |
         Groovy Map containing reference information
         e.g. [ id:'genome' ]
@@ -37,6 +38,7 @@ input:
       description: Genome fasta file
       pattern: "*.{fa,fasta,fna}"
   - meta2:
+      type: map
       description: |
         Groovy Map containing reference information
         e.g. [ id:'genome' ]

@@ -11,7 +11,7 @@ process MERQURYFK_MERQURYFK {
     }
 
     input:
-    tuple val(meta), path(fastk_hist), path(fastk_ktab), path(assembly)
+    tuple val(meta), path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
 
     output:
     tuple val(meta), path("${prefix}.completeness.stats") , emit: stats
@@ -46,6 +46,7 @@ process MERQURYFK_MERQURYFK {
         -T$task.cpus \\
         ${fastk_ktab.find{ it.toString().endsWith(".ktab") }} \\
         $assembly \\
+        $haplotigs \\
         $prefix
 
     cat <<-END_VERSIONS > versions.yml

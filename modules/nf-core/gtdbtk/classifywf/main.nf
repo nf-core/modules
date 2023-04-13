@@ -5,8 +5,8 @@ process GTDBTK_CLASSIFYWF {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "bioconda::gtdbtk=1.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:1.5.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/gtdbtk:1.5.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gtdbtk:2.1.1--pyhdfd78af_1' :
+        'quay.io/biocontainers/gtdbtk:2.1.1--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path("bins/*")
@@ -30,7 +30,7 @@ process GTDBTK_CLASSIFYWF {
     script:
     def args = task.ext.args ?: ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
-    def VERSION = '1.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
     """
     export GTDBTK_DATA_PATH="\${PWD}/database"
     if [ ${pplacer_scratch} != "" ] ; then
@@ -59,6 +59,8 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
+    def VERSION = '2.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
     """
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.summary.tsv
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.classify.tree.gz
@@ -72,7 +74,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: $VERSION
+        gtdbtk: \$(echo "$VERSION")
     END_VERSIONS
     """
 }

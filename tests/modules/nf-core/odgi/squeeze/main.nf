@@ -8,10 +8,10 @@ workflow test_odgi_squeeze {
     odgi = file(params.test_data['homo_sapiens']['pangenome']['odgi']['pangenome_og'], checkIfExists: true)
     gfa = file(params.test_data['homo_sapiens']['pangenome']['pangenome_smoothxg_gfa'], checkIfExists: true)
 
-    input = Channel.of([ [ id:'test' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ odgi,
                 gfa]
-            ])
+            ]
 
     ODGI_SQUEEZE ( input )
 }

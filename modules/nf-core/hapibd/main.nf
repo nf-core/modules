@@ -27,15 +27,15 @@ process HAPIBD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    hap-ibd -Xmx${avail_mem}g \\
+    hap-ibd -Xmx${avail_mem}M \\
         gt=${vcf} \\
         map=${map} \\
         out=${prefix} \\

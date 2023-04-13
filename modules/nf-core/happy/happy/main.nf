@@ -59,4 +59,26 @@ process HAPPY_HAPPY {
         hap.py: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.summary.csv
+    touch ${prefix}.roc.all.csv.gz
+    touch ${prefix}.roc.Locations.INDEL.csv.gz
+    touch ${prefix}.roc.Locations.INDEL.PASS.csv.gz
+    touch ${prefix}.roc.Locations.SNP.csv.gz
+    touch ${prefix}.roc.Locations.SNP.PASS.csv.gz
+    touch ${prefix}.extended.csv
+    touch ${prefix}.runinfo.json
+    touch ${prefix}.metrics.json.gz
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hap.py: $VERSION
+    END_VERSIONS
+    """
 }

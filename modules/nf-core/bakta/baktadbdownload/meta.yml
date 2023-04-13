@@ -9,7 +9,7 @@ keywords:
   - download
 tools:
   - bakta:
-      description: Rapid & standardized annotation of bacterial genomes, MAGs & plasmids.
+      description: Rapid & standardized annotation of bacterial genomes, MAGs & plasmids
       homepage: https://github.com/oschwengers/bakta
       documentation: https://github.com/oschwengers/bakta
       tool_dev_url: https://github.com/oschwengers/bakta
@@ -21,10 +21,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - db_tar_gz:
-      type: file
-      description: Compressed TAR archive of BAKTA database
-      pattern: "db.tar.gz"
+  - db:
+      type: directory
+      description: BAKTA database directory
+      pattern: "db*/"
 
 authors:
   - "@jfy133"
+  - "@jasmezz"
