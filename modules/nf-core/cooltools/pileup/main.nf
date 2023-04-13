@@ -2,10 +2,10 @@ process COOLTOOLS_PILEUP {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::cooltools=0.5.2" : null)
+    conda "bioconda::cooltools=0.5.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooltools:0.5.2--py39hbf8eff0_3':
-        'quay.io/biocontainers/cooltools:0.5.2--py39hbf8eff0_3' }"
+        'https://depot.galaxyproject.org/singularity/cooltools:0.5.4--py39hbf8eff0_0':
+        'quay.io/biocontainers/cooltools:0.5.4--py39hbf8eff0_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)

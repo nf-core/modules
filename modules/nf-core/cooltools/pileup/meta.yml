@@ -1,7 +1,8 @@
 name: "cooltools_pileup"
 description: Perform retrieval of the snippets from .cool file.
 keywords:
-  - sort
+  - pileup
+  - heatmap
 tools:
   - "cooltools pileup":
       description: "Perform retrieval of the snippets from .cool file by cooltools."
@@ -12,19 +13,17 @@ tools:
       licence: "['MIT']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', bin:5000 ]
-  # cool files
   - cool:
       type: file
       description: |
         cooler file. The paths to a .cool file with a balanced Hi-C map.
         Use the '::' syntax to specify a group path in a multicooler file.
-      pattern: "*.{cool}"
+      pattern: "*.{cool,mcool}"
 
   - resolution:
       type: value
@@ -40,7 +39,6 @@ input:
         (but not in trans or between different regions in the view)
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
