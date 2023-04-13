@@ -12,8 +12,8 @@ process VSEARCH_SORT {
     val sort_arg
 
     output:
-    tuple val(meta), path("*_sorted.fasta"), emit: fasta
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -2,10 +2,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.4.0.0':
-        'broadinstitute/gatk:4.4.0.0' }"
+    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
+    container "broadinstitute/gatk:4.4.0.0" //Biocontainers is missing a package
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -28,17 +26,12 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def input_list = counts.collect(){"--input $it"}.join(" ")
     def intervals = bed ? "--intervals ${bed}" : ""
     def exclude = exclude_beds ? exclude_beds.collect(){"--exclude-intervals $it"}.join(" ") : ""
-    def untar_model = ploidy_model ? (
-        ploidy_model ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${ploidy_model}" : ""
-    ) : ""
+    def untar_model = ploidy_model ? (ploidy_model.name.endsWith(".tar.gz") ? "tar -xzf ${ploidy_model}" : "") : ""
     def tar_model = ploidy_model ? "" : "tar czf ${prefix}-model.tar.gz ${prefix}-model"
-    def model = ploidy_model ? (
-        ploidy_model ==~ /^.*\.tar\.gz$/ ? "--model ${ploidy_model.toString().replace(".tar.gz","")}" : "--model ${ploidy_model}"
-    ) : ""
+    def model = ploidy_model ? (ploidy_model.name.endsWith(".tar.gz") ? "--model ${ploidy_model.toString().replace(".tar.gz","")}" : "--model ${ploidy_model}") : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
 
     def avail_mem = 3072
