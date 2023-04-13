@@ -1,8 +1,8 @@
-- name: gatk_create_som_pon
-  command: nextflow run ./tests/subworkflows/nf-core/gatk_create_som_pon -entry test_gatk_create_som_pon -c tests/config/nextflow.config
+- name: bam_create_som_pon_gatk
+  command: nextflow run ./tests/subworkflows/nf-core/bam_create_som_pon_gatk -entry bam_create_som_pon_gatk -c tests/config/nextflow.config
   tags:
     - subworkflows
-    - subworkflows/gatk_create_som_pon
+    - subworkflows/bam_create_som_pon_gatk
     - gatk4
     # Modules
     - gatk4/mutect2
