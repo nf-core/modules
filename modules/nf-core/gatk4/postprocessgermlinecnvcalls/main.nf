@@ -16,9 +16,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     path calls
 
     output:
-    tuple val(meta), path("*-vs-cohort-genotyped-intervals.vcf.gz") , emit: intervals, optional: true
-    tuple val(meta), path("*-vs-cohort-genotyped-segments.vcf.gz")  , emit: segments, optional: true
-    tuple val(meta), path("*-vs-cohort-denoised.vcf.gz")            , emit: denoised, optional: true
+    tuple val(meta), path("*_genotyped_intervals.vcf.gz") , emit: intervals, optional: true
+    tuple val(meta), path("*_genotyped_segments.vcf.gz")  , emit: segments, optional: true
+    tuple val(meta), path("*_denoised.vcf.gz")            , emit: denoised, optional: true
     path  "versions.yml"                                            , emit: versions
 
     when:
@@ -49,9 +49,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         $ploidy_command \\
         $model_command \\
         $calls_command \\
-        --output-genotyped-intervals ${prefix}-vs-cohort-genotyped-intervals.vcf.gz \\
-        --output-genotyped-segments ${prefix}-vs-cohort-genotyped-segments.vcf.gz \\
-        --output-denoised-copy-ratios ${prefix}-vs-cohort-denoised.vcf.gz
+        --output-genotyped-intervals ${prefix}_genotyped_intervals.vcf.gz \\
+        --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
+        --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -62,9 +62,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}-vs-cohort-genotyped-intervals.vcf.gz
-    touch ${prefix}-vs-cohort-genotyped-segments.vcf.gz
-    touch ${prefix}-vs-cohort-denoised.vcf.gz
+    touch ${prefix}_genotyped_intervals.vcf.gz
+    touch ${prefix}_genotyped_segments.vcf.gz
+    touch ${prefix}_denoised.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
