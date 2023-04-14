@@ -1,0 +1,10 @@
+- name: basicpy test_basicpy
+  command: nextflow run ./tests/modules/nf-core/basicpy -entry test_basicpy -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/basicpy/nextflow.config
+  tags:
+    - basicpy
+  files:
+    - path: output/basicpy/stack_nocorr-dfp.tiff
+      md5sum: b107538fe9552720c2434f0f76df178a
+    - path: output/basicpy/stack_nocorr-ffp.tiff
+      md5sum: f14fe3ba5b625cff1c28093d70ff51c7
+    - path: output/basicpy/versions.yml

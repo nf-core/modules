@@ -1,0 +1,46 @@
+name: "basicpy"
+description: write your description here
+keywords:
+  - sort
+tools:
+  - "basicpy":
+      description: ""
+      homepage: ""
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence: ""
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - image:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{tiff}"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - fields:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{tiff}"
+
+authors:
+  - "@FloWuenne"
