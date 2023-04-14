@@ -17,7 +17,7 @@ process ANNOTSV_ANNOTSV {
 
     output:
     tuple val(meta), path("*.tsv")              , emit: tsv
-    tuple val(meta), path("*.unannotated.tsv")  , emit: unannotated_tsv, optional:true
+    tuple val(meta), path("*.unannotated.tsv")  , emit: unannotated_tsv, optional: true
     tuple val(meta), path("*.vcf")              , emit: vcf, optional:true
     path "versions.yml"                         , emit: versions
 
