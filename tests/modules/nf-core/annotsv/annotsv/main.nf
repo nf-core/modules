@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { ANNOTSV } from '../../../../modules/nf-core/annotsv/main.nf'
+include { ANNOTSV_ANNOTSV } from '../../../../../modules/nf-core/annotsv/annotsv/main.nf'
 
-workflow test_annotsv {
+workflow test_annotsv_annotsv {
     
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -12,15 +12,15 @@ workflow test_annotsv {
         file(params.test_data["homo_sapiens"]["illumina"]["test_sv_vcf_tbi"], checkIfExists: true)
     ]
 
-    // annotations = [
-    //     [ id: 'annotations' ],
-    //     [] // For stub use only, this will fail if the actual module is run like this
-    // ]
-
     annotations = [
-        [ id:'annotations' ],
-        file("/home/nvnieuwk/Documents/data/AnnotSV/share/AnnotSV", checkIfExists: true)
+        [ id: 'annotations' ],
+        [] // For stub use only, this will fail if the actual module is run like this
     ]
+
+    // annotations = [
+    //     [ id:'annotations' ],
+    //     file("/home/nvnieuwk/Documents/data/AnnotSV/share/AnnotSV", checkIfExists: true)
+    // ]
 
     genes = Channel
         .of('GENE1', 'GENE2', 'GENE3')
@@ -42,7 +42,7 @@ workflow test_annotsv {
         .collectFile(name:'gene_transcripts.txt')
         .map { [[id:'test'], it]}
 
-    ANNOTSV (
+    ANNOTSV_ANNOTSV (
         input,
         annotations,
         genes,

@@ -1,16 +1,11 @@
-process ANNOTSV {
+process ANNOTSV_ANNOTSV {
     tag "$meta.id"
     label 'process_low'
 
     conda "bioconda::annotsv=3.3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annotsv:3.3.4--pyhdfd78af_0' :
-        'quay.io/biocontainers/annotsv:3.3.4--pyhdfd78af_0' }"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "ANNOTSV module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+        'https://depot.galaxyproject.org/singularity/annotsv:3.3.4--py311hdfd78af_0' :
+        'quay.io/biocontainers/annotsv:3.3.4--py311hdfd78af_0' }"
 
     input:
     tuple val(meta), path(variants), path(variants_index)
@@ -23,7 +18,6 @@ process ANNOTSV {
     output:
     tuple val(meta), path("*.tsv")              , emit: tsv
     tuple val(meta), path("*.unannotated.tsv")  , emit: unannotated_tsv, optional:true
-    // VCF output is a bit flaky and is prone to failures (https://github.com/lgmgeo/AnnotSV/issues/168)
     tuple val(meta), path("*.vcf")              , emit: vcf, optional:true
     path "versions.yml"                         , emit: versions
 
@@ -39,16 +33,7 @@ process ANNOTSV {
     def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
     def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
-    if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
-        error("VCF conversion is not supported when using singularity")
-    }
-
     """
-    if [[ -n SINGULARITY_NAME ]]; then
-        export MAMBA_SKIP_ACTIVATE=0
-        source _activate_current_env.sh
-    fi
-
     AnnotSV \\
         -annotationsDir ${annotations} \\
         ${cand_genes} \\
@@ -71,10 +56,6 @@ process ANNOTSV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
-
-    if( args.contains("-vcf 1") && workflow.containerEngine == 'singularity') {
-        error("VCF conversion is not supported when using singularity")
-    }
 
     """
     touch ${prefix}.tsv
