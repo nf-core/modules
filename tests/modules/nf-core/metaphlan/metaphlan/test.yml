@@ -1,0 +1,128 @@
+- name: metaphlan metaphlan test_metaphlan_single_end
+  command: nextflow run ./tests/modules/nf-core/metaphlan/metaphlan -entry test_metaphlan_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaphlan/metaphlan/nextflow.config
+  tags:
+    - metaphlan
+    - metaphlan/metaphlan
+  files:
+    - path: output/metaphlan/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan/test.bowtie2out.txt
+      md5sum: ef46a9c6a8ce9cae26fbfd5527116fd5
+    - path: output/metaphlan/test_profile.txt
+      md5sum: c26f0bfd91d4a4e1d0e8fe1c8952087b
+    - path: output/metaphlan/versions.yml
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l
+      md5sum: f560f1878d407cad746b40e19c137b2f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l
+      md5sum: ada1fa4dbfa0bbd00fd9541458d0caab
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l
+      md5sum: 1b5ec794c2f0c456ea60deb5898f4840
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l
+      md5sum: fe7bbac658aece93db332255910e3f4f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2
+      md5sum: 43dd63a3263c01105af26b701a9b5562
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl
+      md5sum: 005453b7c66c85f3e01218653d09e266
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l
+      md5sum: 7b23ad55748937a1b21f8ed735fe0d73
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l
+      md5sum: acc38a28f2e590d5ce12a9defe4c8c87
+    - path: output/untar/versions.yml
+
+- name: metaphlan metaphlan test_metaphlan_paired_end
+  command: nextflow run ./tests/modules/nf-core/metaphlan/metaphlan -entry test_metaphlan_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaphlan/metaphlan/nextflow.config
+  tags:
+    - metaphlan
+    - metaphlan/metaphlan
+  files:
+    - path: output/metaphlan/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan/test.bowtie2out.txt
+      md5sum: 8c1bc21e1d8484b5551bf46331d61bd8
+    - path: output/metaphlan/test_profile.txt
+      md5sum: 3083c0cba4fe92e00dd7e619f9cac6af
+    - path: output/metaphlan/versions.yml
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l
+      md5sum: f560f1878d407cad746b40e19c137b2f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l
+      md5sum: ada1fa4dbfa0bbd00fd9541458d0caab
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l
+      md5sum: 1b5ec794c2f0c456ea60deb5898f4840
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l
+      md5sum: fe7bbac658aece93db332255910e3f4f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2
+      md5sum: 43dd63a3263c01105af26b701a9b5562
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl
+      md5sum: 005453b7c66c85f3e01218653d09e266
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l
+      md5sum: 7b23ad55748937a1b21f8ed735fe0d73
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l
+      md5sum: acc38a28f2e590d5ce12a9defe4c8c87
+    - path: output/untar/versions.yml
+
+- name: metaphlan metaphlan test_metaphlan_fasta
+  command: nextflow run ./tests/modules/nf-core/metaphlan/metaphlan -entry test_metaphlan_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaphlan/metaphlan/nextflow.config
+  tags:
+    - metaphlan
+    - metaphlan/metaphlan
+  files:
+    - path: output/metaphlan/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan/test.bowtie2out.txt
+      md5sum: 92b40168fcac2b08756c1d4a60687772
+    - path: output/metaphlan/test_profile.txt
+      md5sum: 60bb55773dc2298bb151ea5614aac9b0
+    - path: output/metaphlan/versions.yml
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l
+      md5sum: f560f1878d407cad746b40e19c137b2f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l
+      md5sum: ada1fa4dbfa0bbd00fd9541458d0caab
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l
+      md5sum: 1b5ec794c2f0c456ea60deb5898f4840
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l
+      md5sum: fe7bbac658aece93db332255910e3f4f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2
+      md5sum: 43dd63a3263c01105af26b701a9b5562
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl
+      md5sum: 005453b7c66c85f3e01218653d09e266
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l
+      md5sum: 7b23ad55748937a1b21f8ed735fe0d73
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l
+      md5sum: acc38a28f2e590d5ce12a9defe4c8c87
+    - path: output/untar/versions.yml
+
+- name: metaphlan metaphlan test_metaphlan_sam
+  command: nextflow run ./tests/modules/nf-core/metaphlan/metaphlan -entry test_metaphlan_sam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaphlan/metaphlan/nextflow.config
+  tags:
+    - metaphlan
+    - metaphlan/metaphlan
+  files:
+    - path: output/metaphlan/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan/test_profile.txt
+      md5sum: 00d9f3e9743c072bd490b94b9a692590
+    - path: output/metaphlan/versions.yml
+    - path: output/samtools/test.sam
+      md5sum: c005be615d7136bf89ae46239c094a5b
+    - path: output/samtools/versions.yml
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l
+      md5sum: f560f1878d407cad746b40e19c137b2f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l
+      md5sum: ada1fa4dbfa0bbd00fd9541458d0caab
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l
+      md5sum: 1b5ec794c2f0c456ea60deb5898f4840
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l
+      md5sum: fe7bbac658aece93db332255910e3f4f
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2
+      md5sum: 43dd63a3263c01105af26b701a9b5562
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl
+      md5sum: 005453b7c66c85f3e01218653d09e266
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l
+      md5sum: 7b23ad55748937a1b21f8ed735fe0d73
+    - path: output/untar/metaphlan4_database/mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l
+      md5sum: acc38a28f2e590d5ce12a9defe4c8c87
+    - path: output/untar/versions.yml
