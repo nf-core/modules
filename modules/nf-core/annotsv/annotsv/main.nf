@@ -39,6 +39,7 @@ process ANNOTSV_ANNOTSV {
         ${cand_genes} \\
         ${cand_small} \\
         ${fp_snv} \\
+        ${transcripts} \\
         -outputFile ${prefix}.tsv \\
         -SVinputFile ${variants} \\
         ${args}
