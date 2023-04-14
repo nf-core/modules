@@ -14,11 +14,13 @@ process BUSCO {
     path config_file                      // Optional:    busco configuration file
 
     output:
-    tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
-    tuple val(meta), path("short_summary.*.txt")      , emit: short_summaries_txt, optional: true
-    tuple val(meta), path("short_summary.*.json")     , emit: short_summaries_json, optional: true
-    tuple val(meta), path("*-busco")                  , emit: busco_dir
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*-busco.batch_summary.txt")      , emit: batch_summary
+    tuple val(meta), path("short_summary.*.txt")            , emit: short_summaries_txt, optional: true
+    tuple val(meta), path("short_summary.*.json")           , emit: short_summaries_json, optional: true
+    tuple val(meta), path("*-busco/*/run_*/full_table.tsv") , emit: full_table, optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences"), emit: seq_dir
+    tuple val(meta), path("*-busco")                        , emit: busco_dir
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
