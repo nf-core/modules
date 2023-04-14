@@ -1,15 +1,15 @@
 name: "basicpy"
 description: write your description here
-keywords:
+keywords: illumiation_correction, microscopy, imaging
   - sort
 tools:
   - "basicpy":
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+      description: "BaSiCPy is a python package for background and shading correction of optical microscopy images. It is developed based on the Matlab version of BaSiC tool with major improvements in the algorithm."
+      homepage: "https://github.com/peng-lab/BaSiCPy"
+      documentation: "https://basicpy.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
+      doi: "doi: 10.1038/ncomms14836."
+      licence: "MIT License"
 
 input:
   # Only when we have meta
@@ -17,12 +17,12 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
 
   - image:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{tiff}"
+      description: Tiff file to be used for dark and flat field illumination correction
+      pattern: "*.{tiff,tif}"
 
 output:
   #Only when we have meta
@@ -30,7 +30,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   #
   - versions:
       type: file
@@ -38,9 +38,9 @@ output:
       pattern: "versions.yml"
 
   - fields:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{tiff}"
+      type: Tiff fields for dark and flat field illumination correction
+      description:
+      pattern: "*.{tiff,tif}"
 
 authors:
   - "@FloWuenne"

@@ -7,9 +7,11 @@ include { BASICPY } from '../../../../modules/nf-core/basicpy/main.nf'
 workflow test_basicpy {
 
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file("/workspace/test_data/stack_nocorr.ome.tiff", checkIfExists: true)
+        [ id:'test' ], // meta map
+        file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)
     ]
 
-    BASICPY ( input )
+    cpu_gpu = "--cpu"
+
+    BASICPY ( input, cpu_gpu )
 }
