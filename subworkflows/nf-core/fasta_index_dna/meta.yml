@@ -5,6 +5,7 @@ description: |
 keywords:
   - fasta
   - index
+  - bowtie2
   - bwamem
   - bwamem2
   - dragmap
@@ -35,7 +36,7 @@ input:
         Sam formatted liftover file for the reference genome alt contigs
         See: https://github.com/lh3/bwa/blob/master/README-alt.md
         Download from: https://sourceforge.net/projects/bio-bwa/files/bwakit
-  - aligner:
+  - val_aligner:
       type: string
       description: Aligner to use for alignment
       enum:
@@ -59,3 +60,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@matthdsm"
+  - "@ramprasadn"

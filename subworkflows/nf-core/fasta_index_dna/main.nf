@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 //
-// FASTA_INDEX_DNA: Align fastq files to a reference genome
+// FASTA_INDEX_DNA: Build aligner specific index for fasta files
 //
 
 include { BOWTIE2_BUILD                     } from '../../../modules/nf-core/bowtie2/build/main'
@@ -13,16 +13,16 @@ include { SNAPALIGNER_INDEX as SNAP_INDEX   } from '../../../modules/nf-core/sna
 workflow FASTA_INDEX_DNA {
 
     take:
-        ch_fasta        // channel: [ val(meta), fasta ]
-        ch_altliftover  // channel: [ val(meta), altliftover ]
-        aligner         // string:  [mandatory] aligner [bowtie2, bwamem, bwamem2, dragmap, snap]
+        ch_fasta        // channel: [mandatory] [ val(meta), path(fasta) ]
+        ch_altliftover  // channel: [mandatory, if aligner is bwamem or bwamem2 or snap] [ val(meta), path(altliftover) ]
+        val_aligner     // string:  [mandatory] aligner [bowtie2, bwamem, bwamem2, dragmap, snap]
 
     main:
 
     ch_aligner_index    = Channel.empty()
     ch_versions         = Channel.empty()
 
-    switch (aligner) {
+    switch (val_aligner) {
         case 'bowtie2':
             BOWTIE2_BUILD(ch_fasta )                                             // if aligner is bowtie2
             ch_aligner_index = ch_aligner_index.mix(BOWTIE2_BUILD.out.index)
@@ -65,11 +65,10 @@ workflow FASTA_INDEX_DNA {
             ch_versions = ch_versions.mix(SNAP_INDEX.out.versions)
             break
         default:
-            exit 1, "Unknown aligner: ${aligner}"
+            exit 1, "Unknown aligner: ${val_aligner}"
     }
-    ch_aligner_index
 
     emit:
-        index    = ch_aligner_index // channel: [ val(meta), index ]
-        versions = ch_versions      // channel: [ versions.yml ]
+        index    = ch_aligner_index // channel: [ val(meta), path(index) ]
+        versions = ch_versions      // channel: [ path(versions.yml) ]
 }

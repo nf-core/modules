@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { GLIMPSE_PHASE       } from '../../../../../modules/nf-core/glimpse/phase/main.nf'
 include { GLIMPSE_LIGATE      } from '../../../../../modules/nf-core/glimpse/ligate/main.nf'
 include { GLIMPSE_CONCORDANCE } from '../../../../../modules/nf-core/glimpse/concordance/main.nf'
+include { BCFTOOLS_INDEX      } from '../../../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow test_glimpse_concordance {
     
@@ -37,7 +38,8 @@ workflow test_glimpse_concordance {
     ligate_input = GLIMPSE_PHASE.output.phased_variant
                                 .groupTuple()
 
-    GLIMPSE_LIGATE ( ligate_input )
+    BCFTOOLS_INDEX ( ligate_input )
+    GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
     
     allele_freq = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)]
