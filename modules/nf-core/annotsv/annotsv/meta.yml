@@ -92,16 +92,7 @@ output:
       type: file
       description: |
         OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
-        WARNING! The creation of VCF files is prone to failure at the moment, an issue has been created for this
-        (https://github.com/lgmgeo/AnnotSV/issues/168)
       pattern: "*.vcf"
-  - unannotated_vcf:
-      type: file
-      description: |
-        OPTIONAL - VCF file containing the unannotated variants (created when `-vcf 1` is specified in the args)
-        WARNING! The creation of VCF files is prone to failure at the moment, an issue has been created for this
-        (https://github.com/lgmgeo/AnnotSV/issues/168)
-      pattern: "*.unannotated.vcf"
 
 authors:
   - "@nvnieuwk"
