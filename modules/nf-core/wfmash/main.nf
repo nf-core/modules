@@ -8,12 +8,9 @@ process WFMASH {
         'quay.io/biocontainers/wfmash:0.10.2--hfdddef0_0' }"
 
     input:
-    tuple val(meta), path(fasta_gz)
+    tuple val(meta), path(fasta_gz), path(paf), path(gzi), path(fai)
     val(query_self)
-    path(gzi)
-    path(fai)
     path(fasta_query_list)
-    path(paf)
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
