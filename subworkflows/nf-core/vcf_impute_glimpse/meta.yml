@@ -30,8 +30,9 @@ input:
 
   - ch_map:
       type: file
-      description: File containing the genetic map.
-      Structure: [gmap]
+      description: |
+        File containing the genetic map.
+        Structure: [gmap]
 
   - ch_infos:
       type: file
@@ -45,8 +46,9 @@ input:
 output:
   - chunk_chr:
       type: file
-      description: Tab delimited output txt file containing buffer and imputation regions.
-      Structure: [meta, txt]
+      description: |
+        Tab delimited output txt file containing buffer and imputation regions.
+        Structure: [meta, txt]
 
   - phased_variants:
       type: file

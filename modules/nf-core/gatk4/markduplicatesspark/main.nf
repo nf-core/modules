@@ -13,6 +13,7 @@ process GATK4_MARKDUPLICATES_SPARK {
 
     output:
     tuple val(meta), path("${prefix}"),     emit: output
+    tuple val(meta), path("${prefix}.bai"), emit: bam_index, optional:true
     tuple val(meta), path("*.metrics"),     emit: metrics, optional: true
     path "versions.yml"               ,     emit: versions
 

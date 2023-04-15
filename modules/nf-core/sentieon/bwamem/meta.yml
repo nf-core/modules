@@ -39,7 +39,7 @@ input:
       pattern: "*.{fa,fasta}"
   - fasta_fai:
       type: file
-      description: The index of the FASTA reference. Needed when the argument `--sorted` is used
+      description: The index of the FASTA reference.
       pattern: "*.fai"
 output:
   - meta:
@@ -49,7 +49,7 @@ output:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM file. If the BAM file is not indexed, this tool will run samtools index before extracting reads.
+      description: BAM file.
       pattern: "*.bam"
   - bai:
       description: BAI file
