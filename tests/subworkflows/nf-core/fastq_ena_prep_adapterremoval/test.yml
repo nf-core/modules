@@ -1,0 +1,18 @@
+- name: fastq_ena_prep_adapterremoval test_fastq_ena_prep_adapterremoval
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_ena_prep_adapterremoval -entry test_fastq_ena_prep_adapterremoval -c ./tests/config/nextflow.config
+  tags:
+    - adapterremoval
+    - cat
+    - cat/cat
+    - md5sum
+    - subworkflows
+    - subworkflows/fastq_ena_prep_adapterremoval
+  files:
+    - path: output/cat/checksums.md5
+      md5sum: e0e2b4331761bc966b2e728a06c5f4a0
+    - path: output/ena/test.pair1.truncated.fastq.gz
+      md5sum: 294a6277f0139bd597e57c6fa31f39c7
+    - path: output/ena/test.pair2.truncated.fastq.gz
+      md5sum: de7b38e2c881bced8671acb1ab452d78
+    - path: output/ena/test.truncated.fastq.gz
+      md5sum: 62139afee94defad5b83bdd0b8475a1f
