@@ -41,6 +41,8 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: annotsv
+          - profile: "conda"
             tags: cellpose
           - profile: "conda"
             tags: mcquant
@@ -108,6 +110,8 @@ jobs:
             tags: sentieon/bwamem
           - profile: "conda"
             tags: sentieon/dedup
+          - profile: "conda"
+            tags: sentieon/haplotyper
           - profile: "conda"
             tags: universc
           - profile: "singularity"
