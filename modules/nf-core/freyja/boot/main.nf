@@ -1,6 +1,6 @@
 process FREYJA_BOOT {
     tag "$meta.id"
-    label 'process_long'
+    label 'process_high'
 
     conda "bioconda::freyja=1.3.12"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

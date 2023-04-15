@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -75,7 +75,7 @@ jobs:
         # HACK
         if: startsWith( matrix.tags, 'subworkflow' ) != true
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: /usr/local/bin/nextflow
           key: ${{ runner.os }}
