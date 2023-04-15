@@ -16,6 +16,8 @@ input:
         One or two FASTQ files for single or paired end data respectively.
         `phred_plus` specifies the `--qualitybase` option of AdapterRemoval
         for the respective FastQ files. Should be one of: [ `33`, `64` ].
+        If the meta already contains an attribute named `phred`, it will
+        be overwritten with the `phred_plus` value.
   - adapterlist:
       type: file
       description: Optional text file containing list of adapters to look for for removal
