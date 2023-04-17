@@ -41,6 +41,8 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: annotsv
+          - profile: "conda"
             tags: cellpose
           - profile: "conda"
             tags: mcquant
