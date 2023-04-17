@@ -14,6 +14,9 @@ process GNU_SORT {
     tuple val(meta), file( "*.sorted" )   , emit: sorted
     path "versions.yml"                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args        = task.ext.args     ?: ''
     def output      = task.ext.prefix   ?: "${meta.id}.txt"
