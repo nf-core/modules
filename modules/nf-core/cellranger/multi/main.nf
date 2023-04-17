@@ -7,10 +7,12 @@ process CELLRANGER_MULTI {
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(csv)
-    path  reference
+    path references
+    path fastqs
 
     output:
     tuple val(meta), path("${meta.id}/outs/*"), emit: outs 
@@ -21,12 +23,12 @@ process CELLRANGER_MULTI {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     cellranger \\
         multi \\
-        --id='${meta.id}' \\
-        --csv='${meta.csv}' \\
+        --id="${meta.id}" \\
+        --csv=$csv \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $args
@@ -35,6 +37,16 @@ process CELLRANGER_MULTI {
     "${task.process}":
         cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
+    """
 
+    stub:
+    """
+    mkdir -p "${meta.id}/outs/"
+    touch ${meta.id}/outs/fake_file.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
     """
 }
