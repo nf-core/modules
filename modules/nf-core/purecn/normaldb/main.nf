@@ -4,12 +4,9 @@ process PURECN_NORMALDB {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO: This needs a proper container
-    // cf: https://github.com/bioconda/bioconda-recipes/pull/40076
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
         'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
-
 
     input:
         tuple val(meta), path(coverage_files)
