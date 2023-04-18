@@ -32,7 +32,7 @@ process LOFREQ_SOMATIC {
         -t $tumor_bam \\
         -n $normal_bam \\
         ${options_target_bed} \\
-        -o ${prefix}_lofreq_paired_
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
