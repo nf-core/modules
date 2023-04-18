@@ -12,7 +12,7 @@ process PURECN_INTERVALFILE {
 
     input:
     tuple val(meta), path(target_bed)
-    path  fasta
+    tuple val(meta2), fasta
     val   genome
 
     output:
@@ -26,12 +26,14 @@ process PURECN_INTERVALFILE {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
-    Rscript "\$library_path"/PureCN/extdata/IntervalFile.R --in-file ${target_bed} \\
+    Rscript "\$library_path"/PureCN/extdata/IntervalFile.R \\
+        --in-file ${target_bed} \\
         --fasta ${fasta} \\
-        --out-file baits_intervals.txt \\
+        --out-file ${prefix}.txt \\
         --genome ${genome} \\
         $args
 
@@ -39,5 +41,12 @@ process PURECN_INTERVALFILE {
     "${task.process}":
         purecn: ${VERSION}
     END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.txt
+    touch ${prefix}.bed
+    touch versions.yml
     """
 }
