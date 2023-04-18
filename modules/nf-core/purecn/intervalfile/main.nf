@@ -11,7 +11,7 @@ process PURECN_INTERVALFILE {
 
     input:
     tuple val(meta), path(target_bed)
-    tuple val(meta2), fasta
+    tuple val(meta2), path(fasta)
     val   genome
 
     output:
