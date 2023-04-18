@@ -15,7 +15,7 @@ process BASICPY {
 
     output:
     tuple val(meta), path("*.tiff"), emit: fields
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +26,17 @@ process BASICPY {
     def VERSION = "0.1.2" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     /opt/main.py $cpu_gpu $image . $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        basicpy:: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.-dfp.tiff
+    touch ${prefix}.-dfp.tiff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
