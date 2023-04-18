@@ -38,7 +38,7 @@ process GNU_SORT {
     output_file     = "${output}.sorted"
     def VERSION     = "9.1"
     """
-    cat ${file} | sort ${args} > ${output_file}
+    sort ${args} ${file}> ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
