@@ -24,9 +24,7 @@ process GNU_SORT {
     def VERSION     = "9.1"             // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    cat ${file} | \\
-    sort ${args} > \\
-    ${output_file}
+    sort ${args} ${file} >  ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
