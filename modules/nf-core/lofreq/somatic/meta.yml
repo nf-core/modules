@@ -17,9 +17,17 @@ tools:
 input:
   - meta:
       type: map
-      description: |
+      description:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description:
+        Groovy Map containing reference information
+  - meta3:
+      type: map
+      description:
+        Groovy Map containing reference information
   - tumor_bam:
       type: file
       description: tumor sample input BAM file
