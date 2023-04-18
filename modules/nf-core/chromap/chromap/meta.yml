@@ -36,12 +36,17 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing information for the fasta
         e.g. [ id:'test' ]
   - fasta:
       type: file
       description: |
         The fasta reference file.
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information for the index
+        e.g. [ id:'test' ]
   - index:
       type: file
       description: |
