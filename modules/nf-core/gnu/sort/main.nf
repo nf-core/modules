@@ -8,23 +8,24 @@ process GNU_SORT {
     'ubuntu:20.04' }"
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), path(input)
 
     output:
-    tuple val(meta), file( "*.sorted" )   , emit: sorted
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), file( "${output_file}" )   , emit: sorted
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args        = task.ext.args     ?: ''
-    def output      = task.ext.prefix   ?: "${meta.id}.txt"
-    output_file     = "${output}.sorted"
+    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    suffix          = task.ext.suffix   ?: "${input.extension}"
+    output_file     = "${prefix}.${suffix}"
     def VERSION     = "9.1"             // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    sort ${args} ${file} >  ${output_file}
+    sort ${args} ${input} > ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,11 +35,12 @@ process GNU_SORT {
 
     stub:
     def args        = task.ext.args     ?: ''
-    def output      = task.ext.prefix   ?: "${meta.id}"
-    output_file     = "${output}.sorted"
+    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    suffix          = task.ext.suffix   ?: "${input.extension}"
+    output_file     = "${prefix}.${suffix}"
     def VERSION     = "9.1"
     """
-    sort ${args} ${file}> ${output_file}
+    sort ${args} ${input} > ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
