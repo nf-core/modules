@@ -6,7 +6,11 @@ repos:
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.21.0
     hooks:
-      - id: check-jsonschema
+      - id: check-modules-metajsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
         files: ^modules/nf-core/.*/meta\.yml$
-        args: ["--schemafile", "yaml-schema.json"]
+        args: ["--schemafile", "modules/yaml-schema.json"]
+      - id: check-subworkflows-metajsonschema
+        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        files: ^subworkflows/nf-core/.*/meta\.yml$
+        args: ["--schemafile", "subworkflows/yaml-schema.json"]
