@@ -7,13 +7,13 @@ include { GATK4_ASEREADCOUNTER } from '../../../../../modules/nf-core/gatk4/aser
 workflow test_gatk4_asereadcounter {
 
     input = [ [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
-                ]
-    vcf = [[ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+            ]
+    vcf = [ [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
-                ]
+            ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
