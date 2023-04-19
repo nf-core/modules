@@ -2,7 +2,7 @@ name: "basicpy"
 description: write your description here
 keywords:
   - illumiation_correction
-  -
+  - background_correction
   - microscopy
   - imaging
 tools:
@@ -13,6 +13,7 @@ tools:
       tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
       doi: "doi: 10.1038/ncomms14836."
       licence: "MIT License"
+      // Comment: When using Docker, this module requires the setting: docker.runOptions = '--entrypoint ""' as specified in the test nextflow.config.
 
 input:
   - meta:
