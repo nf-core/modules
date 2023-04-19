@@ -39,6 +39,11 @@ input:
       type: string
       description: Genome used for the BED file (e.g., "hg38", "mm10"...)
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - txt:
       type: file
       pattern: "*.txt"
