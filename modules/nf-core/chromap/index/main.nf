@@ -2,10 +2,10 @@ process CHROMAP_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::chromap=0.2.1"
+    conda "bioconda::chromap=0.2.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.1--hd03093a_0' :
-        'quay.io/biocontainers/chromap:0.2.1--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/chromap:0.2.4--hd03093a_0' :
+        'quay.io/biocontainers/chromap:0.2.4--hd03093a_0' }"
 
     input:
     tuple val(meta), path(fasta)
