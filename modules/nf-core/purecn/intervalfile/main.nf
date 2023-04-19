@@ -46,6 +46,9 @@ process PURECN_INTERVALFILE {
     """
     touch ${prefix}.txt
     touch ${prefix}.bed
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purecn: ${VERSION}
+    END_VERSIONS
     """
 }
