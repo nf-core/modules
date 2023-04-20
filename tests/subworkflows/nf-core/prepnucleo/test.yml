@@ -17,7 +17,8 @@
     - path: output/fastp/merged_fastq.fastp.json
       md5sum: 46bbed497953f1c7b3e4941771750f6d
     - path: output/fastp/merged_fastq.fastp.log
-      md5sum: 2284445cf51519aca6fabce18dcaac33
+      contains:
+        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/fastp/merged_fastq_1.fastp.fastq.gz
       md5sum: 697ad371be463f83b095e85152aa3046
     - path: output/fastp/merged_fastq_2.fastp.fastq.gz

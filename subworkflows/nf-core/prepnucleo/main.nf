@@ -24,7 +24,6 @@ workflow PREPNUCLEO {
     // FGBIO_FASTQTOBAM: get unmerged bams 
     // ch_fastq is a channel, which enables parallel
     // channels enable parallel: https://www.nextflow.io/docs/latest/faq.html?highlight=parallel
-    ch_fastq = Channel.fromList(ch_fastq)
     FGBIO_FASTQTOBAM (
         ch_fastq
     )
