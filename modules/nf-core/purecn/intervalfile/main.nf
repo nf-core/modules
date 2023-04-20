@@ -1,5 +1,3 @@
-def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
 process PURECN_INTERVALFILE {
     tag "${meta.id}"
     label 'process_low'
@@ -27,6 +25,7 @@ process PURECN_INTERVALFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
@@ -48,6 +47,7 @@ process PURECN_INTERVALFILE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = args.contains("--export") ? "touch ${prefix}.bed" : ""
+    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.txt
