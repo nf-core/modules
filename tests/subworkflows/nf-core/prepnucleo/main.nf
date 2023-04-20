@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PREPNUCLEO } from '../../../../subworkflows/nf-core/mskccprepnucleo/main.nf'
+include { PREPNUCLEO } from '../../../../subworkflows/nf-core/prepnucleo/main.nf'
 
 workflow test_prepnucleo {
     
