@@ -44,7 +44,11 @@ input:
       type: string
       description: |
       Reguired argument: defines the UMI assignment strategy.
-      Must be chosen among: Identity, Edit, Adjacency, Paired.
+      enum:
+        - Identity
+        - Edit
+        - Adjacency
+        - Paired
 output:
   - versions:
       type: file
