@@ -9,6 +9,7 @@ process SAMTOOLS_SORT {
 
     input:
     tuple val(meta), path(bam)
+    val x
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
