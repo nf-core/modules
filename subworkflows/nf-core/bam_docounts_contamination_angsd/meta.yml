@@ -23,7 +23,8 @@ input:
       description: BAM/SAM samtools index
       pattern: "*.{bai,csi}"
   - hapmap_file:
-      type:
+      type: file
+      description: Hapmap file
 output:
   - meta:
       type: map
