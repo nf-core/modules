@@ -9,5 +9,5 @@ workflow test_samtools_sort  {
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
             ]
 
-    SAMTOOLS_SORT ( input )
+    SAMTOOLS_SORT ( input, 0 )
 }
