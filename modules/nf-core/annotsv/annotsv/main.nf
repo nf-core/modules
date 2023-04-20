@@ -11,8 +11,8 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta), path(variants), path(variants_index), path(snv_vcf)
     tuple val(meta2), path(annotations)
     tuple val(meta3), path(candidate_genes)
-    tuple val(meta5), path(false_positive_snv)
-    tuple val(meta6), path(gene_transcripts)
+    tuple val(meta4), path(false_positive_snv)
+    tuple val(meta5), path(gene_transcripts)
 
     output:
     tuple val(meta), path("*.tsv")              , emit: tsv
