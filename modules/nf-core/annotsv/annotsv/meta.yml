@@ -20,18 +20,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - variants:
+  - sv_vcf:
       type: file
       description: A VCF or BED file containing the structural variants to be annotated
       pattern: "*.{bed,vcf,vcf.gz}"
-  - variants_index:
+  - sv_vcf_index:
       type: file
       description: OPTIONAL - The index for gzipped VCF files
       pattern: "*.tbi"
-  - snv_vcf:
+  - candidate_small_variants:
       type: file
       description: OPTIONAL - A file containing candidate small variants
-      pattern: "*.txt"
+      pattern: "*.{vcf,vcf.gz}"
   - meta2:
       type: map
       description: |

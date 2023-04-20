@@ -8,7 +8,7 @@ process ANNOTSV_ANNOTSV {
         'quay.io/biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(variants), path(variants_index), path(snv_vcf)
+    tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)
     tuple val(meta2), path(annotations)
     tuple val(meta3), path(candidate_genes)
     tuple val(meta4), path(false_positive_snv)
@@ -28,7 +28,7 @@ process ANNOTSV_ANNOTSV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def cand_genes = candidate_genes ? "-candidateGenesFile ${candidate_genes}" : ""
-    def snv = snv_vcf ? "-candidateSnvIndelFiles ${snv_vcf}" : ""
+    def small_variants = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
     def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
     def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
@@ -36,11 +36,11 @@ process ANNOTSV_ANNOTSV {
     AnnotSV \\
         -annotationsDir ${annotations} \\
         ${cand_genes} \\
-        ${snv} \\
+        ${small_variants} \\
         ${fp_snv} \\
         ${transcripts} \\
         -outputFile ${prefix}.tsv \\
-        -SVinputFile ${variants} \\
+        -SVinputFile ${sv_vcf} \\
         ${args}
 
     mv *_AnnotSV/* .
