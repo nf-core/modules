@@ -53,13 +53,22 @@
                             "default": {
                                 "type": ["string", "number", "boolean", "array", "object"],
                                 "description": "Default value for the input channel"
-                            }
-                        },
-                        "required": ["type", "description"]
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the input channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
+                            },
+                            "required": ["type", "description"]
+                        }
                     }
                 }
             }
         },
+
         "output": {
             "type": "array",
             "description": "Output channels for the module",
@@ -81,6 +90,14 @@
                             "pattern": {
                                 "type": "string",
                                 "description": "Pattern of the input channel, given in Java glob syntax"
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the output channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
                             }
                         },
                         "required": ["type", "description"]

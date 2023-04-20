@@ -54,6 +54,18 @@
                             "pattern": {
                                 "type": "string",
                                 "description": "Pattern of the input channel, given in Java glob syntax"
+                            },
+                            "default": {
+                                "type": ["string", "number", "boolean", "array", "object"],
+                                "description": "Default value for the input channel"
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the input channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
                             }
                         },
                         "required": ["description"]
@@ -81,6 +93,14 @@
                             "pattern": {
                                 "type": "string",
                                 "description": "Pattern of the input channel, given in Java glob syntax"
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the output channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
                             }
                         },
                         "required": ["description"]
