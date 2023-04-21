@@ -29,7 +29,7 @@ process BCL2FASTQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
-    def input_tar = run_dir.toString().endsWith(".tar.gz") ? true : ''
+    def input_tar = run_dir.toString().endsWith(".tar.gz") ? true : false
     def input_dir = input_tar ? run_dir.toString() - '.tar.gz' : run_dir
     """
     if [ ! -d ${input_dir} ]; then
