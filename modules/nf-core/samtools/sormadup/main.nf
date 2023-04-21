@@ -24,7 +24,7 @@ process SAMTOOLS_SORMADUP {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def sort_memory = task.memory.mega ?: "4G"
+    def sort_memory = (task.memory.mega/task.cpus).intValue()
 
     """
     samtools cat \\
@@ -49,6 +49,7 @@ process SAMTOOLS_SORMADUP {
         -u \\
         -T ${prefix} \\
         --threads $task.cpus \\
+        -m ${sort_memory}M \\
         - \\
     | \\
     samtools markdup \\
