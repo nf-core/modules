@@ -1,0 +1,11 @@
+- name: samtools sormadup test_samtools_sormadup
+  command: nextflow run ./tests/modules/nf-core/samtools/sormadup -entry test_samtools_sormadup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/sormadup/nextflow.config
+  tags:
+    - samtools
+    - samtools/sormadup
+  files:
+    - path: output/samtools/test.bam
+      md5sum: fb10dbd6bab869c542a602d2865451cb
+    - path: output/samtools/test.metrics
+      md5sum: eed0ad703bc356af8b7bcc851d906992
+    - path: output/samtools/versions.yml
