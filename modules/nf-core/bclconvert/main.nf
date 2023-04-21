@@ -13,28 +13,33 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("**[!Undetermined]_S*_R?_00?.fastq.gz")   ,emit: fastq
-    tuple val(meta), path("**[!Undetermined]_S*_I?_00?.fastq.gz")   ,optional:true, emit: fastq_idx
-    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")     ,optional:true, emit: undetermined
-    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")     ,optional:true, emit: undetermined_idx
-    tuple val(meta), path("Reports")                                ,emit: reports
-    tuple val(meta), path("Logs")                                   ,emit: logs
-    tuple val(meta), path("**/InterOp/*.bin")                       ,optional:true, emit: interop
-    path("versions.yml")                                            ,emit: versions
+    tuple val(meta), path("**[!Undetermined]_S*_R?_00?.fastq.gz"), emit: fastq
+    tuple val(meta), path("**[!Undetermined]_S*_I?_00?.fastq.gz"), optional:true, emit: fastq_idx
+    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")  , optional:true, emit: undetermined
+    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")  , optional:true, emit: undetermined_idx
+    tuple val(meta), path("Reports")                             , emit: reports
+    tuple val(meta), path("Logs")                                , emit: logs
+    tuple val(meta), path("InterOp/*.bin")                       , emit: interop
+    path("versions.yml")                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-
+    def untar_dir = run_dir.toString().endsWith(".tar.gz") ? "tar -xzvf ${run_dir}" : ''
+    def input_dir = untar_dir ? run_dir.toString() - '.tar.gz' : run_dir
     """
+    $untar_dir
+
     bcl-convert \\
         $args \\
         --output-directory . \\
-        --bcl-input-directory ${run_dir} \\
+        --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet} \\
         --bcl-num-parallel-tiles ${task.cpus}
+
+    cp -r ${input_dir}/InterOp .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
