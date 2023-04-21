@@ -7,7 +7,7 @@ include { PAIRTOOLS_SELECT } from '../../../../../modules/nf-core/pairtools/sele
 workflow test_pairtools_select {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['generic']['pairtools']['mock.pairsam'], checkIfExists: true) ]
+              file(params.test_data['generic']['pairtools']['mock_pairsam'], checkIfExists: true) ]
 
     PAIRTOOLS_SELECT ( input )
 }

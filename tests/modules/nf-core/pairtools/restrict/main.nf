@@ -7,8 +7,8 @@ include { PAIRTOOLS_RESTRICT } from '../../../../../modules/nf-core/pairtools/re
 workflow test_pairtools_restrict {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['generic']['pairtools']['mock.4flip.pairs'], checkIfExists: true) ]
-    frag = file(params.test_data['generic']['pairtools']['frag.bed'], checkIfExists: true)
+              file(params.test_data['generic']['pairtools']['mock_4flip_pairs'], checkIfExists: true) ]
+    frag = file(params.test_data['generic']['pairtools']['frag_bed'], checkIfExists: true)
 
     PAIRTOOLS_RESTRICT ( input, frag )
 }
