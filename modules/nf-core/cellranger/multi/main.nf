@@ -11,8 +11,8 @@ process CELLRANGER_MULTI {
 
     input:
     tuple val(meta), path(csv)
-    path references
-    path fastqs
+    path references, stageAs: "references/*"
+    path fastqs, stageAs: "fastqs/*"
 
     output:
     tuple val(meta), path("${meta.id}/outs/*"), emit: outs 
