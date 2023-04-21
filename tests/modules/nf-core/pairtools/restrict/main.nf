@@ -8,9 +8,7 @@ workflow test_pairtools_restrict {
 
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['generic']['pairtools']['mock.4flip.pairs'], checkIfExists: true) ]
-    File dig  = new File("${workflow.workDir}/frag.bed")
-    dig.write("chr1\t0\t50\r\nchr1\t50\t100\r\nchr2\t0\t50\r\nchr2\t50\t100\r\nchrU\t0\t50\r\nchrU\t50\t100\r\n!\t0\t1\r\n")
-    frag  = file(dig)
+    frag = file(params.test_data['generic']['pairtools']['frag.bed'], checkIfExists: true)
 
     PAIRTOOLS_RESTRICT ( input, frag )
 }
