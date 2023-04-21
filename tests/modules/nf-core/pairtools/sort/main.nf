@@ -7,7 +7,7 @@ include { PAIRTOOLS_SORT } from '../../../../../modules/nf-core/pairtools/sort/m
 workflow test_pairtools_sort {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file("https://raw.githubusercontent.com/open2c/pairtools/master/tests/data/mock.pairsam", checkIfExists: true) ]
+              file(params.test_data['generic']['pairtools']['mock.pairsam'], checkIfExists: true) ]
 
     PAIRTOOLS_SORT ( input )
 }

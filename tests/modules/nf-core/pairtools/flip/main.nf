@@ -7,8 +7,8 @@ include { PAIRTOOLS_FLIP } from '../../../../../modules/nf-core/pairtools/flip/m
 workflow test_pairtools_flip {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file("https://raw.githubusercontent.com/open2c/pairtools/master/tests/data/mock.4flip.pairs", checkIfExists: true) ]
-    sizes = file("https://raw.githubusercontent.com/open2c/pairtools/master/tests/data/mock.chrom.sizes", checkIfExists:true)
+              file(params.test_data['generic']['pairtools']['mock.4flip.pairs'], checkIfExists: true) ]
+    sizes = file(params.test_data['generic']['pairtools']['mock.chrom.sizes'], checkIfExists:true)
 
     PAIRTOOLS_FLIP ( input, sizes )
 }
