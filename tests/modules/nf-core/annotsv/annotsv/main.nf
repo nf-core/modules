@@ -9,7 +9,8 @@ workflow test_annotsv_annotsv {
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data["homo_sapiens"]["illumina"]["test_sv_vcf"], checkIfExists: true),
-        file(params.test_data["homo_sapiens"]["illumina"]["test_sv_vcf_tbi"], checkIfExists: true)
+        file(params.test_data["homo_sapiens"]["illumina"]["test_sv_vcf_tbi"], checkIfExists: true),
+        file(params.test_data["homo_sapiens"]["illumina"]["test2_haplotc_vcf_gz"], checkIfExists:true)
     ]
 
     annotations = [
@@ -27,11 +28,6 @@ workflow test_annotsv_annotsv {
         .collectFile(name:'gene_candidates.txt', newLine:true)
         .map { [[id:'test'], it]}
 
-    small_variants = [
-        [ id:'test' ],
-        file(params.test_data["homo_sapiens"]["illumina"]["test2_haplotc_vcf_gz"], checkIfExists:true)
-    ]
-
     false_positives = [
         [ id:'test' ],
         file(params.test_data["homo_sapiens"]["illumina"]["test_haplotc_cnn_vcf_gz"], checkIfExists:true)
@@ -46,7 +42,6 @@ workflow test_annotsv_annotsv {
         input,
         annotations,
         genes,
-        small_variants,
         false_positives,
         gene_transcripts
     )
