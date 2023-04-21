@@ -27,8 +27,8 @@ process BCL2FASTQ {
 
     script:
     def args = task.ext.args ?: ''
+    def input_dir = run_dir.toString().endsWith(".tar.gz") ? "\$(tar -tf ${run_dir} | head -n 1)" : run_dir
     def untar_dir = run_dir.toString().endsWith(".tar.gz") ? "tar -xzvf ${run_dir}" : ''
-    def input_dir = untar_dir ? run_dir.toString() - '.tar.gz' : run_dir
     """
     $untar_dir
 
