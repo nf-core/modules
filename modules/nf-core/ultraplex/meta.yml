@@ -1,51 +1,58 @@
 name: "ultraplex"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+
+description: Ultraplex is an all-in-one software package for processing and demultiplexing fastq files.
 keywords:
-  - sort
+  - demultiplexer
+  - fastq
+  - umi
 tools:
   - "ultraplex":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "fastq demultiplexer"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['MIT']"
+      description: fastq demultiplexer
+      homepage: https://github.com/ulelab/ultraplex
+      documentation: https://github.com/ulelab/ultraplex
+      tool_dev_url: https://github.com/ulelab/ultraplex
+      doi: "10.5281/zenodo.465128"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fastq:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Zipped FASTQ file
+      pattern: "*.{fastq.gz}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+  - fastq:
+      type: file
+      description: Demultiplexed sample FASTQ files
+      pattern: "*[!no_match].fastq.gz"
+  - no_match_fastq:
+      type: file
+      description: FASTQ file containing reads that could not be demultiplexed
+      pattern: "*no_match.fastq.gz"
+  - report:
+      type: file
+      description: File containing demultiplexing log
+      pattern: "*.log"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@CharlotteAnne"
+  - "@oscarwilkins"
+  - "@chris-cheshire"
+  - "@marc-jones"
+  - "@iraiosub"
+  - "@samirelanduk"
