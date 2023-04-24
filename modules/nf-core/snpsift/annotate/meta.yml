@@ -1,8 +1,10 @@
 name: "snpsift_annotate"
-description: 
+description:
 keywords:
-  - sort
-tools:
+  - variant calling
+  - annotate
+  - snpsift
+  - cancer genomics
 tools:
   - snpsift:
       description: SnpSift is a toolbox that allows you to filter and manipulate annotated files
@@ -34,7 +36,7 @@ input:
   - dbs_tbi:
       type: file
       description: Tabix file for compressed database provided
-      pattern: "*.{tbi}"  
+      pattern: "*.{tbi}"
 
 output:
   #Only when we have meta
