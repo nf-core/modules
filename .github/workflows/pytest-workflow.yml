@@ -41,6 +41,8 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
+            tags: annotsv
+          - profile: "conda"
             tags: cellpose
           - profile: "conda"
             tags: mcquant
@@ -114,6 +116,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: subworkflows/bcl_demultiplex
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
 
