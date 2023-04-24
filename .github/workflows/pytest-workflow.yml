@@ -117,6 +117,8 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: subworkflows/bcl_demultiplex
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
 
     env:
