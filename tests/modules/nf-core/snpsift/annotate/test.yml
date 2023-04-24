@@ -7,3 +7,13 @@
     - path: output/snpsift/test.vcf
       md5sum: 4f2f7f71349a4ec87422346184b620c3
     - path: output/snpsift/versions.yml
+- name: snpsift annotate test_snpsift_annotate_uncompressed
+  command: nextflow run ./tests/modules/nf-core/snpsift/annotate -entry test_snpsift_annotate_uncompressed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snpsift/annotate/nextflow.config
+  tags:
+    - snpsift
+    - snpsift/annotate
+  files:
+    - path: output/snpsift/tester.vcf
+      md5sum: 75d8b8d7da664c8f270758f925c4550c
+    - path: output/snpsift/versions.yml
+      md5sum: 77c2943ae406a46b88869f1e2730a44f

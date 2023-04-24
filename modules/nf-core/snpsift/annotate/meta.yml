@@ -1,19 +1,16 @@
 name: "snpsift_annotate"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: 
 keywords:
   - sort
 tools:
-  - "snpsift":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Toolbox that allows you to filter and manipulate annotated files"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['LGPL v3']"
-
-## TODO nf-core: Add a description of all of the variables used as input
+tools:
+  - snpsift:
+      description: SnpSift is a toolbox that allows you to filter and manipulate annotated files
+      homepage: https://pcingola.github.io/SnpEff/ss_introduction/
+      documentation: https://pcingola.github.io/SnpEff/ss_introduction/
+      tool_dev_url: https://github.com/pcingola/SnpEff
+      doi: "10.3389/fgene.2012.00035"
+      licence: ["MIT"]
 input:
   # Only when we have meta
   - meta:
@@ -22,13 +19,23 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF file
+      pattern: "*.{vcf, vcf.gz}"
+  - vcf_tbi:
+      type: file
+      description: Tabix file for compressed vcf provided
+      pattern: "*.{tbi}"
+  - database:
+      type: file
+      description: Database for use to annotate
+      pattern: "*.{vcf/vcf.gz}"
+  - dbs_tbi:
+      type: file
+      description: Tabix file for compressed database provided
+      pattern: "*.{tbi}"  
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -41,10 +48,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
+      description: Variant Calling File annotated
       pattern: "*.{bam,cram,sam}"
 
 authors:
