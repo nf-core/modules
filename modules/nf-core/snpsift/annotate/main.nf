@@ -4,11 +4,10 @@ process SNPSIFT_ANNOTATE {
 
     conda "bioconda::snpsift=5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+        'https://depot.galaxyproject.org/singularity/snpsift:5.1d--hdfd78af_0' :
+        'quay.io/biocontainers/snpsift:5.1d--hdfd78af_0' }"
 
     input:
-    
     tuple val(meta), path(vcf), path(vcf_tbi)
     tuple path(database), path(dbs_tbi)// TBI files are optional (use when compressed VCF file)
 
