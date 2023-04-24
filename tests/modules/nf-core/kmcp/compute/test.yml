@@ -4,8 +4,9 @@
     - kmcp/compute
     - kmcp
   files:
-    - path: output/kmcp/tmp/_info.txt
-    - path: output/kmcp/tmp/genome.fasta.unik
+    - path: output/kmcp/test_/_info.txt
+    - contains: "#path	name	chunkIdx	idxNum	genomeSize	kmers"
+    - path: output/kmcp/test_/genome.fasta.unik
     - path: output/kmcp/versions.yml
 
 - name: kmcp compute test_kmcp_compute_directory
@@ -14,9 +15,10 @@
     - kmcp/compute
     - kmcp
   files:
-    - path: output/kmcp/tmp/_info.txt
-    - path: output/kmcp/tmp/genome.fasta.unik
-    - path: output/kmcp/tmp/transcriptome.fasta.unik
+    - path: output/kmcp/test_/_info.txt
+    - contains: "#path	name	chunkIdx	idxNum	genomeSize	kmers"
+    - path: output/kmcp/test_/genome.fasta.unik
+    - path: output/kmcp/test_/transcriptome.fasta.unik
     - path: output/kmcp/versions.yml
     - path: output/untar/test/genome.fasta
     - path: output/untar/test/transcriptome.fasta

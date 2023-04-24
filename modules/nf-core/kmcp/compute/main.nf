@@ -11,22 +11,23 @@ process KMCP_COMPUTE {
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("tmp/*") , emit: tmp
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("${prefix}/*")           , emit: tmp
+    tuple val(meta), path("${prefix}/_info.txt")           , emit: info
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def input = sequences.isDirectory()? "--in-dir ${sequences}" : "${sequences}"
     """
     kmcp \\
         compute \\
         $args \\
         --threads $task.cpus \\
-        --out-dir 'tmp/' \\
+        --out-dir ${prefix}/ \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
