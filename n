@@ -1,9 +1,0 @@
-- name: snpsift annotate test_snpsift_annotate
-  command: nextflow run ./tests/modules/nf-core/snpsift/annotate -entry test_snpsift_annotate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snpsift/annotate/nextflow.config
-  tags:
-    - snpsift
-    - snpsift/annotate
-  files:
-    - path: output/snpsift/test.vcf
-      md5sum: 4f2f7f71349a4ec87422346184b620c3
-    - path: output/snpsift/versions.yml
