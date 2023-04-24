@@ -44,21 +44,21 @@ process BCLCONVERT {
             tar \\
                 -C $input_dir --strip-components 1 \\
                 -xavf \\
-                $args \\
+                $args2 \\
                 $run_dir \\
-                $args2
+                $args3
         else
             tar \\
                 -C $input_dir \\
                 -xavf \\
-                $args \\
+                $args2 \\
                 $run_dir \\
-                $args2
+                $args3
         fi
     fi
 
     bcl-convert \\
-        $args3 \\
+        $args \\
         --output-directory . \\
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet} \\

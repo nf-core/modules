@@ -44,21 +44,21 @@ process BCL2FASTQ {
             tar \\
                 -C $input_dir --strip-components 1 \\
                 -xavf \\
-                $args \\
+                $args2 \\
                 $run_dir \\
-                $args2
+                $args3
         else
             tar \\
                 -C $input_dir \\
                 -xavf \\
-                $args \\
+                $args2 \\
                 $run_dir \\
-                $args2
+                $args3
         fi
     fi
 
     bcl2fastq \\
-        $args3 \\
+        $args \\
         --output-dir . \\
         --runfolder-dir ${input_dir} \\
         --sample-sheet ${samplesheet} \\
