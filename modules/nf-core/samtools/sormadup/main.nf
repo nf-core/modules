@@ -20,17 +20,24 @@ process SAMTOOLS_SORMADUP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args  ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
+    def args4 = task.ext.args4 ?: ''
+    def args5 = task.ext.args5 ?: ''
+
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     def sort_memory = (task.memory.mega/task.cpus).intValue()
 
     """
     samtools cat \\
+        $args2 \\
         --threads $task.cpus \\
         ${input}  \\
     | \\
     samtools collate \\
+        $args3 \\
         -O \\
         -u \\
         --threads $task.cpus \\
@@ -38,6 +45,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools fixmate \\
+        $args4 \\
         -m \\
         -u \\
         --threads $task.cpus \\
@@ -45,6 +53,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools sort \\
+        $args5 \\
         -u \\
         -T ${prefix} \\
         --threads $task.cpus \\
