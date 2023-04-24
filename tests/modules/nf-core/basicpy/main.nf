@@ -11,7 +11,5 @@ workflow test_basicpy {
         file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)
     ]
 
-    cpu_gpu = "--cpu"
-
-    BASICPY ( input, cpu_gpu )
+    BASICPY ( input )
 }

@@ -7,7 +7,7 @@ keywords:
   - imaging
 tools:
   - "basicpy":
-      description: "BaSiCPy is a python package for background and shading correction of optical microscopy images. It is developed based on the Matlab version of BaSiC tool with major improvements in the algorithm."
+      description: "BaSiCPy is a python package for background and shading correction of optical microscopy images. It is developed based on the Matlab version of BaSiC tool with major improvements in the algorithm. The container of this tool needs to be initialized with an empty Entrypoint. See the nextflow.config of the tests for details."
       homepage: "https://github.com/peng-lab/BaSiCPy"
       documentation: "https://basicpy.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
@@ -25,10 +25,6 @@ input:
       type: file
       description: Tiff file to be used for dark and flat field illumination correction
       pattern: "*.{tiff,tif}"
-
-  - cpu_gpu:
-      type: val
-      description: Mandatory positional argument whether container should run with cpu or gpu. Can be either --cpu or --gpu
 
 output:
   - meta:
