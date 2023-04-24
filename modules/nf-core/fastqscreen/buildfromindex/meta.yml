@@ -1,17 +1,21 @@
 name: "fastqscreen_buildfromindex"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Build fastq screen config file from bowtie index files
 keywords:
-  - sort
+  - build
+  - index
+  - genome
+  - reference
 tools:
   - "fastqscreen":
       ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+      description: "FastQ Screen allows you to screen a library of sequences in FastQ format against a set of sequence databases so you can see if the
+      composition of the library matches with what you expect."
+      homepage: "https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/"
+      documentation: "https://stevenwingett.github.io/FastQ-Screen/"
+      tool_dev_url: "https://github.com/StevenWingett/FastQ-Screen/archive/refs/tags/v0.15.3.zip"
+      doi: "https://doi.org/10.5281/zenodo.5838377"
+      licence: ["GPL-3.0-or-later"]
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -23,10 +27,10 @@ input:
         e.g. [ id:'test', single_end:false ]
   #
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - index:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Bowtie2 genome index files
+      pattern: "*.bt2"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -42,10 +46,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - config:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fastq screen config file containing a path to index files of genome databases used
+      pattern: "*.{config}"
 
 authors:
   - "@snesic"
+  - "@JPejovicApis"

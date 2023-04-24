@@ -24,10 +24,10 @@ process RENAME_PATH {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "YOUR-TOOL-HERE"
+    conda "fastq-screen"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/fastq-screen%3A0.15.3--pl5321hdfd78af_0':
+        'quay.io/biocontainers/fastq-screen:0.15.3}"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -133,5 +133,10 @@ process FASTQSCREEN_BUILDFROMINDEX {
         sed "s/\$TO_REPLACE/\$REPLACE_WITH/g" $dir/fastq_screen.conf > new_conf.conf
         mv new_conf.conf $dir/fastq_screen.conf
     done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastq_screen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v //; s/ .*\$//')
+    END_VERSIONS
     """
 }
