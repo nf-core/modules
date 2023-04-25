@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
 name: fastq_align_bowtie2
 description: Align reads to a reference genome using bowtie2 then sort with samtools
 keywords:
@@ -33,9 +34,10 @@ input:
         Save reads that do not map to the reference (true) or discard them (false)
         (default: false)
   - sort_bam:
+      type: boolean
       description: |
         Save reads that do not map to the reference (true) or discard them (false)
-        (default: false)
+      default: false
   - ch_fasta:
       type: file
       description: Reference fasta file
