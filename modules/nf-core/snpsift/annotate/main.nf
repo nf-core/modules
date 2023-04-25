@@ -9,7 +9,7 @@ process SNPSIFT_ANNOTATE {
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
-    tuple path(database), path(dbs_tbi)// TBI files are optional (use when compressed VCF file)
+    tuple val(meta2), path(database), path(dbs_tbi)// TBI files are optional (use when compressed VCF file)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -27,7 +27,7 @@ process SNPSIFT_ANNOTATE {
         annotate \\
         $args \\
         $database \\
-        $vcf > ${prefix}.vcf \\
+        $vcf > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

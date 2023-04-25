@@ -14,13 +14,11 @@ tools:
       doi: "10.3389/fgene.2012.00035"
       licence: ["MIT"]
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information regarding vcf file provided
         e.g. [ id:'test', single_end:false ]
-  #
   - vcf:
       type: file
       description: VCF file
@@ -29,6 +27,10 @@ input:
       type: file
       description: Tabix file for compressed vcf provided
       pattern: "*.{tbi}"
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing sample information regarding database provided
   - database:
       type: file
       description: Database for use to annotate
@@ -39,7 +41,6 @@ input:
       pattern: "*.{tbi}"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -53,7 +54,7 @@ output:
   - vcf:
       type: file
       description: Variant Calling File annotated
-      pattern: "*.{bam,cram,sam}"
+      pattern: "*.{vcf}"
 
 authors:
   - "@LlaneroHiboreo"

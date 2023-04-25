@@ -13,6 +13,7 @@ workflow test_snpsift_annotate {
     ]
     
     input_dbs = [
+        [ id:'databases'],
         file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     ]
@@ -28,6 +29,7 @@ workflow test_snpsift_annotate_uncompressed{
     ]
     
     input_dbs = [
+        [id:'databases'],
         file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     ]
