@@ -22,7 +22,6 @@ process CELLRANGER_VDJ {
 
     script:
     def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
     cellranger \\
@@ -30,7 +29,7 @@ process CELLRANGER_VDJ {
         --id='${meta.id}' \\
         --fastqs=. \\
         --reference=$reference_name \\
-        --sample=$sample_arg \\
+        --sample=$meta.id \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $args

@@ -22,7 +22,6 @@ process CELLRANGER_COUNT {
 
     script:
     def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
     cellranger \\
@@ -30,7 +29,7 @@ process CELLRANGER_COUNT {
         --id='${meta.id}' \\
         --fastqs=. \\
         --transcriptome=$reference_name \\
-        --sample=$sample_arg \\
+        --sample=$meta.id \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
         $args

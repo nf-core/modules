@@ -6,15 +6,15 @@ include { CELLRANGER_VDJ } from '../../../../../modules/nf-core/cellranger/vdj/m
 
 workflow test_cellranger_vdj {
 
-    input = [ [ id:'test_cellranger_vdj_human_bcell', single_end:true, strandedness:'forward', gem: '123', samples: ["subsampled_sc5p_v2_hs_B_1k_b"] ], // meta map
-             [ file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L001_R1_001.fastq.gz", checkIfExists: true), 
-               file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/subsampled_sc5p_v2_hs_B_1k_b_fastqs/subsampled_sc5p_v2_hs_B_1k_b_S1_L001_R2_001.fastq.gz", checkIfExists: true)
-        ]
+    input = [ [ id:'subsampled_sc5p_v2_hs_B_1k_b', single_end:false, strandedness:'auto' ], // meta map
+		[ file(params.test_data['homo_sapiens']['illumina']['test_10x_b_1_fastq_gz'], checkIfExists: true),
+		  file(params.test_data['homo_sapiens']['illumina']['test_10x_b_2_fastq_gz'], checkIfExists: true)
+		],
     ]
 
-    reference_json = file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json", checkIfExists: true)
-    reference_fasta = file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa", checkIfExists: true)
-    reference_suppfasta = file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/10xgenomics/cellranger_vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa", checkIfExists: true)
+	reference_json = file(params.test_data['homo_sapiens']['illumina']['test_10x_vdj_ref_json'], checkIfExists: true)
+	reference_fasta = file(params.test_data['homo_sapiens']['illumina']['test_10x_vdj_ref_fasta'], checkIfExists: true)
+	reference_suppfasta = file(params.test_data['homo_sapiens']['illumina']['test_10x_vdj_ref_suppfasta'], checkIfExists: true)
 
     reference_json.copyTo("${workDir}/vdj_reference/reference.json")
     reference_fasta.copyTo("${workDir}/vdj_reference/fasta/regions.fa")
