@@ -1,23 +1,14 @@
 - name: bcftools annotate test_bcftools_annotate_out_vcf
-  command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_vcf -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/annotate/nextflow.config
   tags:
     - bcftools/annotate
     - bcftools
   files:
-    - path: output/bcftools/test.vcf
+    - path: output/bcftools/test_vcf.vcf.gz
     - path: output/bcftools/versions.yml
 
 - name: bcftools annotate test_bcftools_annotate_out_bcf
-  command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_bcf -c ./tests/config/nextflow.config
-  tags:
-    - bcftools/annotate
-    - bcftools
-  files:
-    - path: output/bcftools/test_ann.bcf
-    - path: output/bcftools/versions.yml
-
-- name: bcftools annotate test_bcftools_annotate_out_bcf_stub
-  command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_bcf -c ./tests/config/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_bcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/annotate/nextflow.config
   tags:
     - bcftools/annotate
     - bcftools

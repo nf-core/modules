@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { BCL_DEMULTIPLEX } from '../../../../subworkflows/nf-core/bcl_demultiplex/main.nf'
-include { UNTAR           } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_bcl_demultiplex_bclconvert {
 

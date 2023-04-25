@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
 name: bam_create_som_pon_gatk
 description: Perform variant calling on a set of normal samples using mutect2 panel of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then use this to create a panel of normals using createsomaticpanelofnormals.
 keywords:
@@ -14,6 +15,7 @@ modules:
   - gatk4/createsomaticpanelofnormals
 input:
   - ch_mutect2_in:
+      type: list
       description: |
         An input channel containing the following files:
         - input: One or more BAM/CRAM files
