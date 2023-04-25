@@ -39,7 +39,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - tmp:
+  - outdir:
       type: directory
       description: Output directory containing all .unik files and a summary file in .txt format. Every .unik file contains the sequence/reference ID,chunk index, number of chunks, and genome size of reference.
       pattern: "*/"
