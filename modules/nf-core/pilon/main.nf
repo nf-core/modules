@@ -29,12 +29,12 @@ process PILON {
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
-        pilon \\
-	--genome $fasta \\
-	--output ${meta.id} \\
-	--threads $task.cpus \\
+    pilon \\
+        --genome $fasta \\
+        --output ${meta.id} \\
+        --threads $task.cpus \\
         $args \\
-	--$pilon_mode $bam
+        --$pilon_mode $bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
