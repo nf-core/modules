@@ -27,7 +27,7 @@ input:
         features and samples, at a minimum an id.
         e.g. [ id:'test' ]
   - differential_results:
-      type: list
+      type: file
       description: |
         CSV or TSV-format tabular file with differential analysis outputs
   - sample:
@@ -39,7 +39,7 @@ input:
       description: |
         CSV or TSV-format feature (e.g. gene) metadata
   - assay_file:
-      type: list
+      type: file
       description: |
         CSV or TSV matrix file to use alongside differential statistics in
         interpretation. Usually a normalised form.
