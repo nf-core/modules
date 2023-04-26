@@ -16,7 +16,5 @@ workflow test_pilon {
                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
                                 ])
 
-    pilon_mode = "bam"
-
-    PILON ( input, bam_tuple_ch, pilon_mode )
+    PILON ( input, bam_tuple_ch, "bam" )
 }
