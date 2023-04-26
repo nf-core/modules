@@ -30,7 +30,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
     tuple val(meta), path('*.out.sam')               , optional:true, emit: sam
     tuple val(meta), path('*.wig')                   , optional:true, emit: wig
-    tuple val(meta), path('*.bedGraph')              , optional:true, emit: bedgraph
+    tuple val(meta), path('*.bg')                    , optional:true, emit: bedgraph
 
     when:
     task.ext.when == null || task.ext.when
@@ -89,7 +89,7 @@ process STAR_ALIGN {
     touch ${prefix}.Chimeric.out.junction
     touch ${prefix}.out.sam
     touch ${prefix}.wig
-    touch ${prefix}.bedGraph
+    touch ${prefix}.bg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
