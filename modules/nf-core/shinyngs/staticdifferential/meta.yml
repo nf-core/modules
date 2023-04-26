@@ -50,11 +50,16 @@ output:
       description: |
         Groovy Map containing contrast information
         e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
-  - volcanos:
-      type: tuple
+  - volcanos_png:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG and HTML plot for a volcano plot
-        built from the differential result table.
+        Meta-keyed tuple containing a PNG output for a volcano plot built from
+        the differential result table.
+  - volcanos_html:
+      type: file
+      description: |
+        Meta-keyed tuple containing an HTML output for a volcano plot built
+        from the differential result table.
   - versions:
       type: file
       description: File containing software versions
