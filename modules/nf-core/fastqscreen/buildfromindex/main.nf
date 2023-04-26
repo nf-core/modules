@@ -20,26 +20,17 @@ process RENAME_PATH {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "fastq-screen"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastq-screen%3A0.15.3--pl5321hdfd78af_0':
-        'quay.io/biocontainers/fastq-screen:0.15.3}"
+        'quay.io/biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
+
     tuple val(meta), path(folder)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
+
     tuple val(meta),  path(new_folder_name), emit: restaged
     path "versions.yml"           , emit: versions
 
@@ -47,18 +38,13 @@ process RENAME_PATH {
     script:
 
     new_folder_name = meta['id']
-
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     mv $folder $new_folder_name
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
+    END_VERSIONS
     """
 }
 
@@ -66,32 +52,19 @@ process FASTQSCREEN_BUILDFROMINDEX {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "YOUR-TOOL-HERE"
+    conda "fastq-screen"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/fastq-screen%3A0.15.3--pl5321hdfd78af_0':
+        'quay.io/biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     val(meta)
     path(index)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
+
     path("FastQ_Screen_Genomes"), emit: database
-    // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
-
-
 
     script:
 
@@ -106,15 +79,6 @@ process FASTQSCREEN_BUILDFROMINDEX {
         .collect { "########## ${it[0]} \nDATABASE ${it[0]} $dir/${it[1]}/${it[1] + '_to_be_replaced'}" }
         .join(' \n\n ')
 
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     mkdir $dir
     $copy_index
@@ -135,8 +99,21 @@ process FASTQSCREEN_BUILDFROMINDEX {
     done
 
     cat <<-END_VERSIONS > versions.yml
+
     "${task.process}":
-        fastq_screen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v //; s/ .*\$//')
+        fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+
+    """
+    mkdir $dir
+    touch $dir/fastq_screen.conf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
     END_VERSIONS
     """
 }
