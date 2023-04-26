@@ -82,6 +82,14 @@ angsd/docounts:
   - modules/nf-core/angsd/docounts/**
   - tests/modules/nf-core/angsd/docounts/**
 
+annotsv/annotsv:
+  - modules/nf-core/annotsv/annotsv/**
+  - tests/modules/nf-core/annotsv/annotsv/**
+
+annotsv/installannotations:
+  - modules/nf-core/annotsv/installannotations/**
+  - tests/modules/nf-core/annotsv/installannotations/**
+
 antismash/antismashlite:
   - modules/nf-core/antismash/antismashlite/**
   - tests/modules/nf-core/antismash/antismashlite/**
@@ -206,6 +214,10 @@ bases2fastq:
   - modules/nf-core/untar/**
   - modules/nf-core/bases2fastq/**
   - tests/modules/nf-core/bases2fastq/**
+
+basicpy:
+  - modules/nf-core/basicpy/**
+  - tests/modules/nf-core/basicpy/**
 
 bbmap/align:
   - modules/nf-core/bbmap/align/**
@@ -352,6 +364,10 @@ bedtools/getfasta:
 bedtools/intersect:
   - modules/nf-core/bedtools/intersect/**
   - tests/modules/nf-core/bedtools/intersect/**
+
+bedtools/jaccard:
+  - modules/nf-core/bedtools/jaccard/**
+  - tests/modules/nf-core/bedtools/jaccard/**
 
 bedtools/makewindows:
   - modules/nf-core/bedtools/makewindows/**
@@ -782,13 +798,13 @@ cooler/zoomify:
   - modules/nf-core/cooler/zoomify/**
   - tests/modules/nf-core/cooler/zoomify/**
 
-crisprcleanr/normalize:
-  - modules/nf-core/crisprcleanr/normalize/**
-  - tests/modules/nf-core/crisprcleanr/normalize/**
-
 coreograph:
   - modules/nf-core/coreograph/**
   - tests/modules/nf-core/coreograph/**
+
+crisprcleanr/normalize:
+  - modules/nf-core/crisprcleanr/normalize/**
+  - tests/modules/nf-core/crisprcleanr/normalize/**
 
 crumble:
   - modules/nf-core/crumble/**
@@ -1231,6 +1247,10 @@ gatk4/applyvqsr:
   - modules/nf-core/gatk4/applyvqsr/**
   - tests/modules/nf-core/gatk4/applyvqsr/**
 
+gatk4/asereadcounter:
+  - modules/nf-core/gatk4/asereadcounter/**
+  - tests/modules/nf-core/gatk4/asereadcounter/**
+
 gatk4/baserecalibrator:
   - modules/nf-core/gatk4/baserecalibrator/**
   - tests/modules/nf-core/gatk4/baserecalibrator/**
@@ -1378,6 +1398,10 @@ gatk4/mergevcfs:
 gatk4/mutect2:
   - modules/nf-core/gatk4/mutect2/**
   - tests/modules/nf-core/gatk4/mutect2/**
+
+gatk4/postprocessgermlinecnvcalls:
+  - modules/nf-core/gatk4/postprocessgermlinecnvcalls/**
+  - tests/modules/nf-core/gatk4/postprocessgermlinecnvcalls/**
 
 gatk4/preprocessintervals:
   - modules/nf-core/gatk4/preprocessintervals/**
@@ -1554,6 +1578,10 @@ glimpse2/splitreference:
 glnexus:
   - modules/nf-core/glnexus/**
   - tests/modules/nf-core/glnexus/**
+
+gnu/sort:
+  - modules/nf-core/gnu/sort/**
+  - tests/modules/nf-core/gnu/sort/**
 
 goat/taxonsearch:
   - modules/nf-core/goat/taxonsearch/**
@@ -1885,6 +1913,10 @@ kleborate:
   - modules/nf-core/kleborate/**
   - tests/modules/nf-core/kleborate/**
 
+kmcp/compute:
+  - modules/nf-core/kmcp/compute/**
+  - tests/modules/nf-core/kmcp/compute/**
+
 kofamscan:
   - modules/nf-core/kofamscan/**
   - tests/modules/nf-core/kofamscan/**
@@ -1997,6 +2029,10 @@ lofreq/filter:
 lofreq/indelqual:
   - modules/nf-core/lofreq/indelqual/**
   - tests/modules/nf-core/lofreq/indelqual/**
+
+lofreq/somatic:
+  - modules/nf-core/lofreq/somatic/**
+  - tests/modules/nf-core/lofreq/somatic/**
 
 macrel/contigs:
   - modules/nf-core/macrel/contigs/**
@@ -2178,13 +2214,13 @@ methyldackel/mbias:
   - modules/nf-core/methyldackel/mbias/**
   - tests/modules/nf-core/methyldackel/mbias/**
 
-mindagap/mindagap:
-  - modules/nf-core/mindagap/mindagap/**
-  - tests/modules/nf-core/mindagap/mindagap/**
-
 midas/run:
   - modules/nf-core/midas/run/**
   - tests/modules/nf-core/midas/run/**
+
+mindagap/mindagap:
+  - modules/nf-core/mindagap/mindagap/**
+  - tests/modules/nf-core/mindagap/mindagap/**
 
 minia:
   - modules/nf-core/minia/**
@@ -2427,14 +2463,13 @@ pangolin:
   - modules/nf-core/pangolin/**
   - tests/modules/nf-core/pangolin/**
 
-parabricks/fq2bam:
-  - modules/nf-core/parabricks/fq2bam/**
-  - tests/modules/nf-core/parabricks/fq2bam/**
-
-# GitHub Actions doesn't support GPUs, so stub
 parabricks/applybqsr:
   - modules/nf-core/parabricks/applybqsr/**
   - tests/modules/nf-core/parabricks/applybqsr/**
+
+parabricks/fq2bam:
+  - modules/nf-core/parabricks/fq2bam/**
+  - tests/modules/nf-core/parabricks/fq2bam/**
 
 paraclu:
   - modules/nf-core/paraclu/**
@@ -2663,6 +2698,10 @@ prodigal:
 prokka:
   - modules/nf-core/prokka/**
   - tests/modules/nf-core/prokka/**
+
+purecn/intervalfile:
+  - modules/nf-core/purecn/intervalfile/**
+  - tests/modules/nf-core/purecn/intervalfile/**
 
 purgedups/calcuts:
   - modules/nf-core/purgedups/calcuts/**
@@ -3156,6 +3195,10 @@ snpeff/download:
 snpeff/snpeff:
   - modules/nf-core/snpeff/snpeff/**
   - tests/modules/nf-core/snpeff/snpeff/**
+
+snpsift/annotate:
+  - modules/nf-core/snpsift/annotate/**
+  - tests/modules/nf-core/snpsift/annotate/**
 
 snpsift/split:
   - modules/nf-core/snpsift/split/**
@@ -3722,13 +3765,17 @@ wisecondorx/convert:
   - modules/nf-core/wisecondorx/convert/**
   - tests/modules/nf-core/wisecondorx/convert/**
 
-wisecondorx/predict:
-  - modules/nf-core/wisecondorx/predict/**
-  - tests/modules/nf-core/wisecondorx/predict/**
+wisecondorx/gender:
+  - modules/nf-core/wisecondorx/gender/**
+  - tests/modules/nf-core/wisecondorx/gender/**
 
 wisecondorx/newref:
   - modules/nf-core/wisecondorx/newref/**
   - tests/modules/nf-core/wisecondorx/newref/**
+
+wisecondorx/predict:
+  - modules/nf-core/wisecondorx/predict/**
+  - tests/modules/nf-core/wisecondorx/predict/**
 
 yahs:
   - modules/nf-core/yahs/**
