@@ -35,35 +35,35 @@ input:
         List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
 output:
   - boxplots:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG and HTML output for box plots
         covering input matrices.
   - densities:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG and HTML output for density plots
         covering input matrices.
   - pca2d:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG and HTML plot for 2D PCA plots
         covering specified input matrix (by default the last one in the input
         list.
   - pca3d:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG and HTML plot for 3D PCA plots
         covering specified input matrix (by default the last one in the input
         list.
   - mad:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG and  HTML plot for MAD correlation
         plots covering specified input matrix (by default the last one in the
         input list.
   - dendro:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG, for a sample clustering
         dendrogramcovering specified input matrix (by default the last one in
