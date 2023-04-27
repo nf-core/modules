@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK } from '../../../../subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/main'
+include { BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK } from '../../../../subworkflows/nf-core/bam_tumor_only_somatic_variant_calling_gatk/main'
 
-workflow bam_tumor_only_somatic_variant_calling_gatk {
+workflow test_bam_tumor_only_somatic_variant_calling_gatk {
     input         = [
                     [[ id:'test' ], // meta map
                     [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'],     checkIfExists: true)],
