@@ -9,10 +9,14 @@ include { BCFTOOLS_INDEX      } from '../../../../../modules/nf-core/bcftools/in
 
 workflow test_glimpse_concordance {
     
-   input_vcf = Channel.of([
+    samples_file = Channel.of('NA12878 2')
+                    .collectFile(name: 'sampleinfos.txt')
+
+    input_vcf = Channel.of([
         [ id:'input', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
+        samples_files,
         "chr21:16600000-16800000",
         "chr21:16650000-16750000"
     ])
@@ -26,31 +30,34 @@ workflow test_glimpse_concordance {
             file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
     ])
 
-    samples_file = Channel.of('NA12878 2')
-                    .collectFile(name: 'sampleinfos.txt')
-
     GLIMPSE_PHASE (
         input_vcf.combine(ref_panel)
                 .combine(ch_map)
-                .combine(samples_file)
-    ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
+    ) // [meta, vcf, sample_infos, index, regionin, regionout, regionindex, ref, ref_index, map]
 
     ligate_input = GLIMPSE_PHASE.output.phased_variant
                                 .groupTuple()
 
     BCFTOOLS_INDEX ( ligate_input )
+
     GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
     
-    allele_freq = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
-                   file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)]
+    allele_freq = [
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)
+    ]
     
-    truth = [file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
-                  file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)]
+    truth = [
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
+    ]
     
     list_inputs = Channel.of(["chr21", allele_freq[0], truth[0]])
                     .combine(GLIMPSE_LIGATE.out.merged_variants.map{it[1]}.collect().map{it[0]})
                     .collect()
+
     concordance_input = Channel.of([[ id:'input', single_end:false ]]).combine(list_inputs)
 
     GLIMPSE_CONCORDANCE ( concordance_input, [], [], []) // meta, Region, Frequencies, Truth, Estimate, minPROB, minDP, bins
+
 }
