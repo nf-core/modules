@@ -45,10 +45,10 @@ process {
 
 ...
     withName: CELLRANGER_MKGTF {
-        container = "nfcore/universc:1.2.5.1"
+        container = "docker.io/biocontainers/universc:1.2.5.1"
     }
     withName: CELLRANGER_MKREF{
-       container = "nfcore/universc:1.2.5.1"
+       container = "docker.io/biocontainers/universc:1.2.5.1"
     }
 ...
 }
