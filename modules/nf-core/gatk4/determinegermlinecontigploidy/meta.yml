@@ -39,7 +39,7 @@ input:
       description: The contig ploidy priors table
       pattern: "*.tsv"
   - ploidy_model:
-      type: folder
+      type: directory
       description: |
         Optional - A folder containing the ploidy model.
         When a model is supplied to tool will run in CASE mode.
@@ -57,11 +57,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - calls:
-      type: folder
+      type: directory
       description: A folder containing the calls from the input files
       pattern: "*.tar.gz"
   - model:
-      type: folder
+      type: directory
       description: |
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).

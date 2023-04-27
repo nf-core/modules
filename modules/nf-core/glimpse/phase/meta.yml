@@ -29,12 +29,12 @@ input:
       description: Index file of the input VCF/BCF file containing genotype likelihoods.
       pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
 
-  - input-region:
+  - input_region:
       type: string
       description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
-  - output-region:
+  - output_region:
       type: string
       description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
@@ -54,7 +54,7 @@ input:
       description: File containing the genetic map.
       pattern: "*.gmap"
 
-  - samples-file:
+  - samples_file:
       type: file
       description: |
         File with sample names and ploidy information.
@@ -69,17 +69,19 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bcf:
+
+  - phased_variants:
       type: file
       description: |
-        Output BCF file containing genotype probabilities (GP field),
+        Output VCF/BCF file containing genotype probabilities (GP field),
         imputed dosages (DS field), best guess genotypes (GT field),
         sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-      pattern: "*.bcf"
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
 authors:
   - "@louislenezet"

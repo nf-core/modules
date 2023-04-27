@@ -25,7 +25,7 @@ process QUALIMAP_BAMQCCRAM {
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
-    def memory     = task.memory.toGiga() + "G"
+    def memory = (task.memory.mega*0.8).intValue() + 'M'
     def regions = gff ? "--gff $gff" : ''
 
     def strandedness = 'non-strand-specific'
@@ -36,7 +36,7 @@ process QUALIMAP_BAMQCCRAM {
     }
     """
     unset DISPLAY
-    mkdir tmp
+    mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
 
     samtools view -hb -T ${fasta} ${cram} |

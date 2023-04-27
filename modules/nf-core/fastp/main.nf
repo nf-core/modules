@@ -62,7 +62,6 @@ process FASTP {
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
 
         fastp \\
-            --stdout \\
             --in1 ${prefix}.fastq.gz \\
             $out_fq1 \\
             --thread $task.cpus \\
