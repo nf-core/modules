@@ -50,28 +50,34 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     // Generate pileup summary tables using getepileupsummaries. tumor sample should always be passed in as the first input and input list entries of ch_mutect2_in,
     // to ensure correct file order for calculatecontamination.
     //
-    ch_pileup_tumor_input = ch_input.map {
-        meta, input_file, input_index, which_norm ->
-        [meta, input_file[0], input_index[0]]
+    ch_pileup_tumor_input = ch_input.combine(ch_interval_file).map {
+        meta, input_file, input_index, which_norm, intervals ->
+        [meta, input_file[0], input_index[0], intervals]
     }
 
-    ch_pileup_normal_input = ch_input.map {
-        meta, input_file, input_index, which_norm ->
-        [meta, input_file[1], input_index[1]]
+    ch_pileup_normal_input = ch_input.combine(ch_interval_file).map {
+        meta, input_file, input_index, which_norm, intervals ->
+        [meta, input_file[1], input_index[1], intervals]
     }
 
     GETPILEUPSUMMARIES_TUMOR (
         ch_pileup_tumor_input,
+        ch_fasta,
+        ch_fai,
+        ch_dict,
         ch_germline_resource,
-        ch_germline_resource_tbi,
-        ch_interval_file
+        ch_germline_resource_tbi
     )
+
     GETPILEUPSUMMARIES_NORMAL (
         ch_pileup_normal_input,
+        ch_fasta,
+        ch_fai,
+        ch_dict,
         ch_germline_resource,
-        ch_germline_resource_tbi,
-        ch_interval_file
+        ch_germline_resource_tbi
     )
+
     ch_versions = ch_versions.mix(GETPILEUPSUMMARIES_TUMOR.out.versions.first())
     ch_versions = ch_versions.mix(GETPILEUPSUMMARIES_NORMAL.out.versions.first())
 
@@ -81,7 +87,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     ch_pileup_tumor     = GETPILEUPSUMMARIES_TUMOR.out.table.collect()
     ch_pileup_normal    = GETPILEUPSUMMARIES_NORMAL.out.table.collect()
     ch_calccon_in       = ch_pileup_tumor.join(ch_pileup_normal, failOnDuplicate: true, failOnMismatch: true)
-    CALCULATECONTAMINATION ( ch_calccon_in, true )
+    CALCULATECONTAMINATION ( ch_calccon_in )
     ch_versions   = ch_versions.mix(CALCULATECONTAMINATION.out.versions)
 
     //
