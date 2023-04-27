@@ -2,13 +2,6 @@
 // Run GATK mutect2 in tumor normal mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
 //
 
-params.mutect2_options          = [:]
-params.learnorientation_options = [:]
-params.getpileup_tumor_options  = [suffix: '_tumor']
-params.getpileup_normal_options = [suffix: '_normal']
-params.calccontam_options       = [:]
-params.filtercalls_options      = [suffix: '_filtered']
-
 include { GATK4_MUTECT2                   as MUTECT2 }                   from '../../../modules/nf-core/gatk4/mutect2/main'
 include { GATK4_LEARNREADORIENTATIONMODEL as LEARNREADORIENTATIONMODEL } from '../../../modules/nf-core/gatk4/learnreadorientationmodel/main'
 include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_TUMOR }  from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
@@ -27,7 +20,6 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals          // channel: [ path(panel_of_normals) ]
     ch_panel_of_normals_tbi      // channel: [ path(panel_of_normals_tbi) ]
     ch_interval_file             // channel: [ path(interval_file) ]
-
 
     main:
     ch_versions = Channel.empty()
