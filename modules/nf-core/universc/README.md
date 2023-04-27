@@ -66,7 +66,7 @@ and for singularity use the `--writeable` parameter.
 These are set as default in universc/main.nf:
 
 ```
-    container "nfcore/universc:1.2.5.1"
+    container "docker.io/nfcore/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
         containerOptions = "--privileged"
     }
