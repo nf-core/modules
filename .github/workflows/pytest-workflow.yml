@@ -207,7 +207,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.profile }}
+          name: logs-${{ matrix.profile }}-${{ matrix.tags }}
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out
