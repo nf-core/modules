@@ -44,7 +44,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
 
     ch_pileup_input = ch_input.combine(ch_interval_file).map {
         meta, input_file, input_index, which_norm, intervals ->
-        [meta, input_file[0], input_index[0], intervals]
+        [meta, input_file, input_index, intervals]
     }
 
     GETPILEUPSUMMARIES (
@@ -74,20 +74,23 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     //Mutect2 calls filtered by filtermutectcalls using the contamination and segmentation tables.
     //
 
-    ch_vcf =   MUTECT2.out.vcf.collect()
-    ch_tbi =   MUTECT2.out.tbi.collect()
+    ch_vcf = MUTECT2.out.vcf.collect()
+    ch_tbi = MUTECT2.out.tbi.collect()
     ch_stats = MUTECT2.out.stats.collect()
 
-    //[] is added as a placeholder for the optional input file artifact priors, which is only used for tumor-normal samples and therefor isn't needed in this workflow.
-    ch_stats.add([])
-
-    ch_segment =       CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_segment = CALCULATECONTAMINATION.out.segmentation.collect()
     ch_contamination = CALCULATECONTAMINATION.out.contamination.collect()
 
-    //[] is added as a placeholder for entering a contamination estimate value, which is not needed as this workflow uses the contamination table instead.
-    ch_contamination.add([])
+    ch_filtermutect_in = ch_vcf
+        .combine(ch_tbi, by: 0)
+        .combine(ch_stats, by: 0)
+        .combine(ch_segment, by: 0)
+        .combine(ch_contamination, by: 0)
+    // Adding [] as a placeholder for the optional input file artifact priors, which is only used for tumor-normal samples and therefor isn't needed in this workflow.
+    // and [] as a placeholder for entering a contamination estimate value, which is not needed as this workflow uses the contamination table instead.
+        .map{ meta, vcf, tbi, stats, segment, contamination -> [meta, vcf, tbi, stats, [], segment, contamination, [] ] }
 
-    ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
+    ch_filtermutect_in.view()
 
     FILTERMUTECTCALLS ( ch_filtermutect_in, ch_fasta, ch_fai, ch_dict )
     ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
