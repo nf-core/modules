@@ -4,7 +4,7 @@ process IMPUTEME_VCFTOPRS {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img' :
-        'biocontainers/imputeme:vv1.0.7_cv1' }"
+        'docker.io/biocontainers/imputeme:vv1.0.7_cv1' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

@@ -5,7 +5,7 @@ process EIDO_CONVERT {
     conda "conda-forge::eido=0.1.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
-        'biocontainers/eido:0.1.9_cv1' }"
+        'docker.io/biocontainers/eido:0.1.9_cv1' }"
 
     input:
     path samplesheet
