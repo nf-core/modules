@@ -70,12 +70,17 @@ process CELLRANGER_MULTI {
 	// collect options for each section
 	// these are pulled from the meta maps
 	//def gex_options    = include_gex && meta_gex?.options ? meta_gex["options"].map { key, value -> key ? "$key,$value" : ''   }.reduce { line -> line ? "$line\n" : '' } : ''
+	//def vdj_options    = include_vdj && meta_gex?.options ? meta_vdj["options"].map { key, value -> key ? "$key,$value" : ''   }.reduce { line -> line ? "$line\n" : '' } : ''
+	//def ab_options     = include_fb && meta_ab?.options ? meta_ab["options"].map { key, value -> key ? "$key,$value" : ''    }.reduce { line -> line ? "$line\n" : '' } : ''
+	//def beam_options   = include_beam && meta_beam?.options ? meta_beam["options"].map { key, value -> key ? "$key,$value" : ''  }.reduce { line -> line ? "$line\n" : '' } : ''
+	//def cmo_options    = include_cmo && meta_cmo?.options ? meta_cmo["options"].map { key, value -> key ? "$key,$value" : ''   }.reduce { line -> line ? "$line\n" : '' } : ''
+	//def crispr_options = include_fb && meta_crispr["options"] ? meta_crispr["options"].map { key, value -> key ? "$key,$value" : ''}.reduce { line -> line ? "$line\n" : '' } : ''
 	def gex_options    = include_gex && meta_gex?.options ? meta_gex["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
-	def vdj_options    = include_vdj && meta_gex?.options ? meta_vdj["options"].map { key, value -> key ? "$key,$value" : ''   }.reduce { line -> line ? "$line\n" : '' } : ''
-	def ab_options     = include_ab && meta_ab?.options ? meta_ab["options"].map { key, value -> key ? "$key,$value" : ''    }.reduce { line -> line ? "$line\n" : '' } : ''
-	def beam_options   = include_beam && meta_beam?.options ? meta_beam["options"].map { key, value -> key ? "$key,$value" : ''  }.reduce { line -> line ? "$line\n" : '' } : ''
-	def cmo_options    = include_cmo && meta_cmo?.options ? meta_cmo["options"].map { key, value -> key ? "$key,$value" : ''   }.reduce { line -> line ? "$line\n" : '' } : ''
-	def crispr_options = include_crispr && meta_crispr["options"] ? meta_crispr["options"].map { key, value -> key ? "$key,$value" : ''}.reduce { line -> line ? "$line\n" : '' } : ''
+	def vdj_options    = include_vdj && meta_vdj?.options ? meta_vdj["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
+	def ab_options     = include_fb && meta_ab?.options ? meta_ab["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
+	def beam_options   = include_beam && meta_beam?.options ? meta_beam["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
+	def cmo_options    = include_cmo && meta_cmo?.options ? meta_cmo["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
+	def crispr_options = include_fb && meta_crispr["options"] ? meta_crispr["options"].inject('') { key, value -> key ? "$key,$value\n" : '' } : ''
 
 	// the feature barcodes section get options for either CRISPR or antibody capture assays
 	def fb_options     = (ab_options?.trim()) ? ab_options : crispr_options 
