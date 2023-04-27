@@ -12,7 +12,7 @@ include { GATK4_GETPILEUPSUMMARIES     as GETPILEUPSUMMARIES }       from '../..
 include { GATK4_CALCULATECONTAMINATION as CALCULATECONTAMINATION }   from '../../../modules/nf-core/gatk4/calculatecontamination/main'
 include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../../../modules/nf-core/gatk4/filtermutectcalls/main'
 
-workflow GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING {
+workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     take:
     input                     // channel: [ val(meta), [ input ], [ input_index ], [] ]
     fasta                     // channel: /path/to/reference/fasta

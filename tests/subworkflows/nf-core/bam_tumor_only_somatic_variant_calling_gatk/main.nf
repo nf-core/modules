@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/main'
+include { BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK } from '../../../../subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/main'
 
-workflow test_gatk_tumor_only_somatic_variant_calling {
+workflow bam_tumor_only_somatic_variant_calling_gatk {
     input         = [
                     [[ id:'test' ], // meta map
                     [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'],     checkIfExists: true)],
@@ -20,5 +20,5 @@ workflow test_gatk_tumor_only_somatic_variant_calling {
     panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
     interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'],                    checkIfExists: true)
 
-    GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
+    BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
 }

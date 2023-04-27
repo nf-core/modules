@@ -1,8 +1,8 @@
-- name: gatk_tumor_normal_somatic_variant_calling
-  command: nextflow run ./tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling -entry test_gatk_tumor_normal_somatic_variant_calling -c tests/config/nextflow.config
+- name: bam_tumor_normal_somatic_variant_calling_gatk
+  command: nextflow run ./tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk -entry test_bam_tnormal_only_somatic_variant_calling_gatk -c tests/config/nextflow.config
   tags:
     - subworkflows
-    - subworkflows/gatk_tumor_normal_somatic_variant_calling
+    - subworkflows/bam_tumor_normal_somatic_variant_calling_gatk
     # Modules
     - gatk4/mutect2
     - gatk4/learnreadorientationmodel
