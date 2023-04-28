@@ -42,27 +42,27 @@ output:
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
   - coverage:
-        type: file
-        description: Intervals coverage file
-        pattern: "*.txt.gz"
+      type: file
+      description: Intervals coverage file
+      pattern: "*.txt.gz"
   - gc_normalized_plot:
-        type: file
-        description: |
-          GC-normalized intervals coverage plot.
-          Generated only when GC-normalization is enabled.
-        pattern: "*.png"
+      type: file
+      description: |
+        GC-normalized intervals coverage plot.
+        Generated only when GC-normalization is enabled.
+      pattern: "*.png"
   - gc_normalized_metrics:
-        type: file
-        description: |
-          GC-normalized intervals coverage metrics.
-          Generated only when GC-normalization is enabled.
-        pattern: "*_loess_qc.txt"
+      type: file
+      description: |
+        GC-normalized intervals coverage metrics.
+        Generated only when GC-normalization is enabled.
+      pattern: "*_loess_qc.txt"
   - gc_normalized_coverage:
-        type: file
-        description: |
-          GC-normalized intervals coverage file.
-          Generated only when GC-normalization is enabled.
-        pattern: "*_loess.txt.gz"
+      type: file
+      description: |
+        GC-normalized intervals coverage file.
+        Generated only when GC-normalization is enabled.
+      pattern: "*_loess.txt.gz"
   - versions:
       type: file
       description: File containing software versions
