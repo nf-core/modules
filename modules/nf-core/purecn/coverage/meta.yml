@@ -1,8 +1,11 @@
 name: "purecn_coverage"
-description: Calculate GC-normalized coverages
+description: Calculate intervals coverage for each sample
 keywords:
   - copy number alteration calling
-  - coverage
+  - intervals coverage
+  - hybrid capture sequencing
+  - targeted sequencing
+  - DNA sequencing
 tools:
   - "purecn":
       description: "Copy number calling and SNV classification using targeted short read sequencing"
@@ -11,41 +14,59 @@ tools:
       tool_dev_url: "https://github.com/lima1/PureCN"
       doi: "10.1186/s13029-016-0060-z"
       licence: "Artistic-2.0"
+      args_id: "$args"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - intervals:
+      type: file
+      description: Annotated targets optimized for copy number calling
+      pattern: "*.txt"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
+  - coverage:
+        type: file
+        description: Intervals coverage file
+        pattern: "*.txt.gz"
+  - gc_normalized_plot:
+        type: file
+        description: |
+         GC-normalized intervals coverage plot.
+         Generated only when GC-normalization is enabled.
+        pattern: "*.png"
+  - gc_normalized_metrics:
+        type: file
+        description: |
+         GC-normalized intervals coverage metrics.
+         Generated only when GC-normalization is enabled.
+        pattern: "*_loess_qc.txt"
+  - gc_normalized_coverage:
+        type: file
+        description: |
+         GC-normalized intervals coverage file.
+         Generated only when GC-normalization is enabled.
+        pattern: "*_loess.txt.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@aldosr"
   - "@lbeltrame"
