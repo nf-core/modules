@@ -40,23 +40,25 @@ vdj_fasta.copyTo("$vdj_reference_dir/fasta/regions.fasta")
 vdj_suppfasta.copyTo("$vdj_reference_dir/fasta/supp_regions.fasta")
 
 // make an empty dummy file
-ch_dummy = file('EMPTY')
+empty_file = file("$workDir/EMPTY")
+empty_file.append("")
+
 
 // create empty channels to fill unused cellranger multi arguments
 // fastqs need a [ meta, ref ] structure
 // references just need a path
-ch_ab_fastqs         = Channel.fromPath('EMPTY').map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_beam_fastqs       = Channel.fromPath('EMPTY').map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_cmo_fastqs        = Channel.fromPath('EMPTY').map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_crispr_fastqs     = Channel.fromPath('EMPTY').map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_gex_frna_probeset = Channel.fromPath('EMPTY')
-ch_gex_targetpanel   = Channel.fromPath('EMPTY')
-ch_vdj_primer_index  = Channel.fromPath('EMPTY')
-ch_fb_reference      = Channel.fromPath('EMPTY')
-ch_beam_panel        = Channel.fromPath('EMPTY')
-ch_cmo_reference     = Channel.fromPath('EMPTY')
-ch_cmo_barcodes      = Channel.fromPath('EMPTY')
-ch_frna_sampleinfo   = Channel.fromPath('EMPTY')
+ch_ab_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_beam_fastqs       = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_cmo_fastqs        = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_crispr_fastqs     = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_gex_frna_probeset = Channel.fromPath( empty_file )
+ch_gex_targetpanel   = Channel.fromPath( empty_file )
+ch_vdj_primer_index  = Channel.fromPath( empty_file )
+ch_fb_reference      = Channel.fromPath( empty_file )
+ch_beam_panel        = Channel.fromPath( empty_file )
+ch_cmo_reference     = Channel.fromPath( empty_file )
+ch_cmo_barcodes      = Channel.fromPath( empty_file )
+ch_frna_sampleinfo   = Channel.fromPath( empty_file )
 
 def test_meta = [ id:'test', single_end:false ]
 

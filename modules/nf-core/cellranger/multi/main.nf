@@ -2,7 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nfcore/cellranger:7.1.0"
+    container "docker.io/nfcore/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -35,7 +35,6 @@ process CELLRANGER_MULTI {
 
     when:
     task.ext.when == null || task.ext.when
-    (gex_fastqs != null && gex_reference != null) || (vdj_fastqs != null && vdj_reference != null) 
 
     script:
     def args = task.ext.args ?: ''
@@ -123,12 +122,12 @@ process CELLRANGER_MULTI {
     println("$frna_csv_text")
 
 	// point config to FASTQs
-	def fastq_gex      = include_gex                  ? "${meta_gex.id},\$PWD/fastqs/gex/,Gene Expression" : ''
-	def fastq_vdj      = include_vdj                  ? "${meta_vdj.id},\$PWD/fastqs/vdj,VDJ" : ''
-	def fastq_antibody = include_fb && ab_options     ? "${meta_ab.id},\$PWD/fastqs/ab,Antibody Capture" : ''
-	def fastq_beam     = include_beam                 ? "${meta_beam.id},\$PWD/fastqs/beam,Antigen Capture" : ''
-	def fastq_crispr   = include_fb && crispr_options ? "${meta_crispr.id},\$PWD/fastqs/crispr,CRISPR Guide Capture" : ''
-	def fastq_cmo      = include_cmo                  ? "${meta_cmo.id},\$PWD/fastqs/cmo,Multiplexing Capture" : ''
+	def fastq_gex      = include_gex                  ? "${meta_gex.id},\$PWD/fastqs/gex/,,Gene Expression" : ''
+	def fastq_vdj      = include_vdj                  ? "${meta_vdj.id},\$PWD/fastqs/vdj,,VDJ" : ''
+	def fastq_antibody = include_fb && ab_options     ? "${meta_ab.id},\$PWD/fastqs/ab,,Antibody Capture" : ''
+	def fastq_beam     = include_beam                 ? "${meta_beam.id},\$PWD/fastqs/beam,,Antigen Capture" : ''
+	def fastq_crispr   = include_fb && crispr_options ? "${meta_crispr.id},\$PWD/fastqs/crispr,,CRISPR Guide Capture" : ''
+	def fastq_cmo      = include_cmo                  ? "${meta_cmo.id},\$PWD/fastqs/cmo,,Multiplexing Capture" : ''
 
     println("fastq_gex: $fastq_gex")
     println("fastq_vdj: $fastq_vdj")
@@ -186,7 +185,8 @@ process CELLRANGER_MULTI {
 
 	# list FASTQ directories
 	echo "[libraries]" >> \$config
-    echo "fastq_id,fastqs,lanes,feature_types,subsample_rate" >> \$config
+    #echo "fastq_id,fastqs,lanes,feature_types,subsample_rate" >> \$config
+    echo "fastq_id,fastqs,lanes,feature_types" >> \$config
 	echo "$fastq_gex" >> \$config
 	echo "$fastq_vdj" >> \$config
 	echo "$fastq_antibody" >> \$config
