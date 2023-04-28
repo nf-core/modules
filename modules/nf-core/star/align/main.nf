@@ -83,13 +83,14 @@ process STAR_ALIGN {
     touch ${prefix}.sortedByCoord.out.bam
     touch ${prefix}.toTranscriptome.out.bam
     touch ${prefix}.Aligned.unsort.out.bam
+    touch ${prefix}.Aligned.sortedByCoord.out.bam
     touch ${prefix}.unmapped_1.fastq.gz
     touch ${prefix}.unmapped_2.fastq.gz
     touch ${prefix}.tab
     touch ${prefix}.Chimeric.out.junction
     touch ${prefix}.out.sam
-    touch ${prefix}.wig
-    touch ${prefix}.bg
+    touch ${prefix}.Signal.UniqueMultiple.str1.out.wig
+    touch ${prefix}.Signal.UniqueMultiple.str1.out.bg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
