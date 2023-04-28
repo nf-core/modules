@@ -49,7 +49,7 @@ workflow test_glimpse2_phase_vcf {
         input_vcf.combine(ref_panel)
                 .combine(map_file),
         Channel.of([[],[],[]])
-        ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
+        ) // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
 }
 
 workflow test_glimpse2_phase_bam {
@@ -57,7 +57,7 @@ workflow test_glimpse2_phase_bam {
         input_bam.combine(ref_panel)
                 .combine(map_file),
         Channel.of([[],[],[]])
-        ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
+        ) // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
 }
 
 workflow test_glimpse2_phase_cram {
@@ -65,5 +65,5 @@ workflow test_glimpse2_phase_cram {
         input_cram.combine(ref_panel)
                 .combine(map_file),
         reference_genome
-        ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
+        ) // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
 }

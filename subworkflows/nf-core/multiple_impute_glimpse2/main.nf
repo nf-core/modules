@@ -20,7 +20,7 @@ workflow MULTIPLE_IMPUTE_GLIMPSE2 {
 
     // Chunk reference panel
     GLIMPSE2_CHUNK ( ch_ref, ch_map, chunk_model )
-    ch_versions = ch_versions.mix( GLIMPSE2_CHUNK.out.versions )
+    ch_versions = ch_versions.mix( GLIMPSE2_CHUNK.out.versions.first() )
 
     chunk_output = GLIMPSE2_CHUNK.out.chunk_chr
                                 .splitCsv(header: ['ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
