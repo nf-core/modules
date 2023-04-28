@@ -44,4 +44,22 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
+
+    stub:
+
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
+    def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
+    def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
+
+    """
+    touch ${prefix}.txt
+    touch ${prefix}.bed
+    ${png}
+    ${loess_qc_txt}
+    ${loess_txt}
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purecn: ${VERSION}
 }
