@@ -63,8 +63,7 @@ workflow test_glimpse2_phase_bam {
 workflow test_glimpse2_phase_cram {
     GLIMPSE2_PHASE (
         input_cram.combine(ref_panel)
-                .combine(map_file)
-                .combine(samples_file),
+                .combine(map_file),
         reference_genome
         ) // [meta, vcf, index, regionin, regionout, regionindex, sample_infos], map, sample, [meta, ref, index]
 }
