@@ -10,6 +10,7 @@ modules:
   - glimpse/chunk
   - glimpse/phase
   - glimpse/ligate
+  - bcftools/index
 
 input:
   - ch_vcf:
@@ -17,9 +18,10 @@ input:
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
         Index file of the input VCF/BCF file containing genotype likelihoods.
+        File with sample names and ploidy information.
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ meta, vcf, csi, region ]
+        Structure: [ meta, vcf, csi, txt, region ]
 
   - ch_ref:
       type: file
@@ -33,15 +35,6 @@ input:
       description: |
         File containing the genetic map.
         Structure: [gmap]
-
-  - ch_infos:
-      type: file
-      description: |
-        File with sample names and ploidy information.
-        One sample per line with a mandatory second column indicating ploidy (1 or 2).
-        Sample names that are not present are assumed to have ploidy 2 (diploids).
-        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-        Structure: [ txt ]
 
 output:
   - chunk_chr:
