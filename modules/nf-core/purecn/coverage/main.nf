@@ -15,10 +15,10 @@ process PURECN_COVERAGE {
 
     output:
     tuple val(meta), path("*.txt.gz")      , emit: txt
+    //Not generated when --skip-gc-norm is set
     tuple val(meta), path("*.png")         , emit: png         , optional: true
     tuple val(meta), path("*_loess_qc.txt"), emit: loess_qc_txt, optional: true
     tuple val(meta), path("*_loess.txt.gz"), emit: loess_txt   , optional: true
-
     path "versions.yml"                    , emit: versions
 
     when:
@@ -32,7 +32,7 @@ process PURECN_COVERAGE {
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
-        --out-dir ./ \\
+        --out-dir ${prefix} \\
         --bam ${bam} \\
         --bai ${bai} \\
         --intervals ${intervals} \\
