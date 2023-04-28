@@ -15,7 +15,7 @@ process PURECN_COVERAGE {
 
     output:
     tuple val(meta), path("*.txt.gz")      , emit: txt
-    tuple val(meta), path("*_loess.png")   , emit: png
+    tuple val(meta), path("*_loess.png")   , emit: png,          optional: true
     tuple val(meta), path("*_loess_qc.txt"), emit: loess_qc_txt, optional: true
     tuple val(meta), path("*_loess.txt.gz"), emit: loess_txt   , optional: true
 
@@ -34,6 +34,7 @@ process PURECN_COVERAGE {
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
         --out-dir ./ \\
         --bam ${bam} \\
+        --bai ${bai} \\
         --intervals ${intervals} \\
         $args
 
