@@ -216,14 +216,14 @@ jobs:
         id: parsed
         with:
           script: |
-            return '${{ matrix.tags }}'.toLowerCase().replaceAll(/\//g, '-').trim('-')
+            return '${{ matrix.tags }}'.toLowerCase().replaceAll(/\//g, '-').trim('-').trim('"')
           result-encoding: string
 
       - name: Upload logs on failure
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.profile }}-"${{ steps.parsed.outputs.result }}"
+          name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out
