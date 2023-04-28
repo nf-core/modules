@@ -22,7 +22,7 @@ process SHAPEIT5_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' | sort > all_files.txt
+    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
 
     SHAPEIT5_ligate \\
         $args \\
