@@ -1,6 +1,7 @@
 process PURECN_COVERAGE {
     tag "$meta.id"
     label 'process_low'
+    stageInMode "link"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
@@ -32,7 +33,7 @@ process PURECN_COVERAGE {
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
-        --out-dir ${prefix} \\
+        --out-dir ./ \\
         --bam ${bam} \\
         --bai ${bai} \\
         --intervals ${intervals} \\
