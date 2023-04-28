@@ -14,18 +14,21 @@ process CELLRANGER_MKFASTQ {
     path csv
 
     output:
-    path "versions.yml", emit: versions
-    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
+    path "**/outs/fastq_path/*.fastq.gz", emit: fastq
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
-    cellranger mkfastq --id=${bcl.getSimpleName()} \
-        --run=$bcl \
-        --csv=$csv \
+    cellranger \\
+        mkfastq \\
+        --id=${prefix} \\
+        --run=$bcl \\
+        --csv=$csv \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,9 +38,10 @@ process CELLRANGER_MKFASTQ {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
-    mkdir -p "${bcl.getSimpleName()}/outs/fastq_path/"
-    touch ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
+    mkdir -p "${prefix}/outs/fastq_path/"
+    touch ${prefix}/outs/fastq_path/fake_file.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -625,12 +625,8 @@ cellranger/count:
   - tests/modules/nf-core/cellranger/count/**
   - modules/nf-core/cellranger/mkref/**
   - tests/modules/nf-core/cellranger/mkref/**
-  - modules/nf-core/cellranger/gtf/**
-  - tests/modules/nf-core/cellranger/gtf/**
-
-cellranger/gtf:
-  - modules/nf-core/cellranger/gtf/**
-  - tests/modules/nf-core/cellranger/gtf/**
+  - modules/nf-core/cellranger/mkgtf/**
+  - tests/modules/nf-core/cellranger/mkgtf/**
 
 cellranger/mkfastq:
   - modules/nf-core/cellranger/mkfastq/**
@@ -643,8 +639,16 @@ cellranger/mkgtf:
 cellranger/mkref:
   - modules/nf-core/cellranger/mkref/**
   - tests/modules/nf-core/cellranger/mkref/**
-  - modules/nf-core/cellranger/gtf/**
-  - tests/modules/nf-core/cellranger/gtf/**
+  - modules/nf-core/cellranger/mkgtf/**
+  - tests/modules/nf-core/cellranger/mkgtf/**
+
+cellranger/mkvdjref:
+  - modules/nf-core/cellranger/mkvdjref/**
+  - tests/modules/nf-core/cellranger/mkvdjref/**
+
+cellranger/vdj:
+  - modules/nf-core/cellranger/vdj/**
+  - tests/modules/nf-core/cellranger/vdj/**
 
 centrifuge/centrifuge:
   - modules/nf-core/centrifuge/centrifuge/**
@@ -3360,6 +3364,10 @@ subworkflows/bam_tumor_normal_somatic_variant_calling_gatk:
   - subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
   - tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/**
 
+subworkflows/bam_tumor_only_somatic_variant_calling_gatk:
+  - subworkflows/nf-core/bam_tumor_only_somatic_variant_calling_gatk/**
+  - tests/subworkflows/nf-core/bam_tumor_only_somatic_variant_calling_gatk/**
+
 subworkflows/bam_variant_calling_sort_freebayes_bcftools:
   - subworkflows/nf-core/bam_variant_calling_sort_freebayes_bcftools/**
   - tests/subworkflows/nf-core/bam_variant_calling_sort_freebayes_bcftools/**
@@ -3451,14 +3459,6 @@ subworkflows/fastq_trim_fastp_fastqc:
 subworkflows/gatk_create_som_pon:
   - subworkflows/nf-core/gatk_create_som_pon/**
   - tests/subworkflows/nf-core/gatk_create_som_pon/**
-
-subworkflows/gatk_tumor_normal_somatic_variant_calling:
-  - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
-  - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
-
-subworkflows/gatk_tumor_only_somatic_variant_calling:
-  - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
-  - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
 
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
