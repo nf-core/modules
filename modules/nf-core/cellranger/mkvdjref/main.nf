@@ -1,32 +1,34 @@
-process CELLRANGER_MKGTF {
-    tag "$gtf"
-    label 'process_low'
+process CELLRANGER_MKVDJREF {
+    tag "$fasta"
+    label 'process_high'
 
     container "docker.io/nfcore/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit 1, "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     input:
+    path fasta
     path gtf
+    val reference_name
 
     output:
-    path "*.gtf"         , emit: gtf
-    path "versions.yml"  , emit: versions
+    path "${reference_name}", emit: reference
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     cellranger \\
-        mkgtf \\
-        $gtf \\
-        ${prefix}.gtf \\
+        mkvdjref \\
+        --genome=$reference_name \\
+        --fasta=$fasta \\
+        --genes=$gtf \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

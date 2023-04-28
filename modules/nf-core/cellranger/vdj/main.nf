@@ -1,12 +1,12 @@
-process CELLRANGER_COUNT {
-    tag "$meta.id"
+process CELLRANGER_VDJ {
+    tag "${meta.id}"
     label 'process_high'
 
     container "docker.io/nfcore/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit 1, "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     input:
@@ -26,11 +26,11 @@ process CELLRANGER_COUNT {
     def reference_name = reference.name
     """
     cellranger \\
-        count \\
-        --id='$prefix' \\
+        vdj \\
+        --id='${prefix}' \\
         --fastqs=. \\
-        --transcriptome=$reference_name \\
-        --localcores=$task.cpus \\
+        --reference=$reference_name \\
+        --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $args
 
@@ -43,8 +43,8 @@ process CELLRANGER_COUNT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}/outs/"
-    touch ${prefix}/outs/fake_file.txt
+    mkdir -p "${meta.id}/outs/"
+    touch ${meta.id}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
