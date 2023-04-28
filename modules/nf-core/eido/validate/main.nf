@@ -27,7 +27,7 @@ process EIDO_VALIDATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//' ))
+        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//' )
     END_VERSIONS
     """
 }
