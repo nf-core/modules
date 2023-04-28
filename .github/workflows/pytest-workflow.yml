@@ -211,11 +211,19 @@ jobs:
           sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
+      - name: Setting global variables
+        uses: actions/github-script@v6
+        id: parsed
+        with:
+          script: |
+            return '${{ matrix.tags }}'.toLowerCase().replaceAll(/\//g, '-').trim('-')
+          result-encoding: string
+
       - name: Upload logs on failure
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.profile }}-${{ matrix.tags }}
+          name: logs-${{ matrix.profile }}-"${{ steps.parsed.outputs.result }}"
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out
