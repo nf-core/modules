@@ -89,6 +89,8 @@ process STAR_ALIGN {
     touch ${prefix}.unmapped_1.fastq.gz
     touch ${prefix}.unmapped_2.fastq.gz
     touch ${prefix}.tab
+    touch ${prefix}.SJ.out.tab
+    touch ${prefix}.ReadsPerGene.out.tab
     touch ${prefix}.Chimeric.out.junction
     touch ${prefix}.out.sam
     touch ${prefix}.Signal.UniqueMultiple.str1.out.wig
