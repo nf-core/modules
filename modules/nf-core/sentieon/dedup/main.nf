@@ -4,7 +4,7 @@ process SENTIEON_DEDUP {
     label 'sentieon'
 
     secret 'SENTIEON_LICENSE_BASE64'
-    
+
     conda "bioconda::sentieon=202112.06"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sentieon:202112.06--h5b5514e_1' :
