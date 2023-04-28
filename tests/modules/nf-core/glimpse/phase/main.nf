@@ -13,8 +13,8 @@ include { GLIMPSE_PHASE } from '../../../../../modules/nf-core/glimpse/phase/mai
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)        
     ])
 
-    input_vcf_with_samples_infos    = input_vcf.combine(samples_infos).combine(region).view()
-    input_vcf_without_samples_infos = input_vcf.combine(empty_channel).combine(region).view()
+    input_vcf_with_samples_infos    = input_vcf.combine(samples_infos).combine(region)
+    input_vcf_without_samples_infos = input_vcf.combine(empty_channel).combine(region)
 
     ref_panel = Channel.of([
             file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
