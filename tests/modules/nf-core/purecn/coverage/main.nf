@@ -11,7 +11,7 @@ workflow test_purecn_coverage {
                   file("https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1.bam", checkIfExists: true),
                   file("https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1.bam.bai", checkIfExists: true)
                   ]
-    input_intervals = ["https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1_gcgene.txt"]
+    input_intervals = ["https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1_intervals.txt"]
 
 
     PURECN_COVERAGE ( input_bam, input_intervals )
