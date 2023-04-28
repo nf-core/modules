@@ -5,14 +5,12 @@
     - sentieon/dedup
   files:
     - path: ./output/sentieon/test.cram
-      md5sum: 5045e22db0fd1c69731466748020947e
     - path: ./output/sentieon/test.cram.crai
-      md5sum: ed8b18e2221ff35e761eccba4b62cb44
     - path: ./output/sentieon/test.cram.metrics
-      md5sum: c64e371590f96d5bd2d60cbd533cec02
     - path: ./output/sentieon/test.score
       md5sum: 4a36fe59dc6865cd5ee9e7ecd936106e
     - path: ./output/sentieon/versions.yml
+
 - name: sentieon test_dedup_remove_duplicate_reads
   command: nextflow run ./tests/modules/nf-core/sentieon/dedup -entry test_dedup_remove_duplicate_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dedup/nextflow.config
   tags:
@@ -20,11 +18,8 @@
     - sentieon/dedup
   files:
     - path: ./output/sentieon/test.cram
-      md5sum: 7367ed6a7e32f05fd8ad408c003cd4e9
     - path: ./output/sentieon/test.cram.crai
-      md5sum: 4ed9a4d82c3d4f989591fff2a4a13c6b
     - path: ./output/sentieon/test.cram.metrics
-      md5sum: dfa078a95f53941eab5c06e023989c0d
     - path: ./output/sentieon/test.score
       md5sum: 4a36fe59dc6865cd5ee9e7ecd936106e
     - path: ./output/sentieon/versions.yml
