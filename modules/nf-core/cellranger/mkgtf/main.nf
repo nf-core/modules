@@ -13,7 +13,7 @@ process CELLRANGER_MKGTF {
     path gtf
 
     output:
-    path "*.filtered.gtf", emit: gtf
+    path "*.gtf"         , emit: gtf
     path "versions.yml"  , emit: versions
 
     when:
@@ -21,11 +21,12 @@ process CELLRANGER_MKGTF {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     cellranger \\
         mkgtf \\
         $gtf \\
-        ${gtf.baseName}.filtered.gtf \\
+        ${prefix}.gtf \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

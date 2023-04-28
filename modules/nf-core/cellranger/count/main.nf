@@ -14,22 +14,22 @@ process CELLRANGER_COUNT {
     path  reference
 
     output:
-    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("**/outs/**"), emit: outs
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
     """
     cellranger \\
         count \\
-        --id='${meta.id}' \\
+        --id='$prefix' \\
         --fastqs=. \\
         --transcriptome=$reference_name \\
-        --sample=$meta.id \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
         $args
@@ -41,9 +41,10 @@ process CELLRANGER_COUNT {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${meta.id}/outs/"
-    touch ${meta.id}/outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
