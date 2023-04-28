@@ -2,7 +2,7 @@ process CELLRANGER_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "nfcore/cellrangermkfastq:7.1.0"
+    container "docker.io/nfcore/cellrangermkfastq:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
