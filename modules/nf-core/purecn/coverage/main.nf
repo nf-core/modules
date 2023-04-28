@@ -52,6 +52,7 @@ process PURECN_COVERAGE {
     def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
     def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
+    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.txt
@@ -62,4 +63,6 @@ process PURECN_COVERAGE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purecn: ${VERSION}
+    END_VERSIONS
+    """
 }
