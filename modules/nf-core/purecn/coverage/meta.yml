@@ -35,8 +35,8 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+         Groovy Map containing sample information
+         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
@@ -48,20 +48,20 @@ output:
   - gc_normalized_plot:
         type: file
         description: |
-         GC-normalized intervals coverage plot.
-         Generated only when GC-normalization is enabled.
+          GC-normalized intervals coverage plot.
+          Generated only when GC-normalization is enabled.
         pattern: "*.png"
   - gc_normalized_metrics:
         type: file
         description: |
-         GC-normalized intervals coverage metrics.
-         Generated only when GC-normalization is enabled.
+          GC-normalized intervals coverage metrics.
+          Generated only when GC-normalization is enabled.
         pattern: "*_loess_qc.txt"
   - gc_normalized_coverage:
         type: file
         description: |
-         GC-normalized intervals coverage file.
-         Generated only when GC-normalization is enabled.
+          GC-normalized intervals coverage file.
+          Generated only when GC-normalization is enabled.
         pattern: "*_loess.txt.gz"
   - versions:
       type: file
