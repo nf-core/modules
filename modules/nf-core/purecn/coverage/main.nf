@@ -41,7 +41,7 @@ process PURECN_COVERAGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: $VERSION
     END_VERSIONS
     """
 
@@ -60,9 +60,10 @@ process PURECN_COVERAGE {
     ${png}
     ${loess_qc_txt}
     ${loess_txt}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: $VERSION
     END_VERSIONS
     """
 }
