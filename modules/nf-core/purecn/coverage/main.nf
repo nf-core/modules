@@ -40,9 +40,9 @@ process PURECN_COVERAGE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: $VERSION
-    END_VERSIONS
+	"${task.process}":
+	    purecn: $VERSION
+	END_VERSIONS
     """
 
     stub:
@@ -62,8 +62,8 @@ process PURECN_COVERAGE {
     ${loess_txt}
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: $VERSION
-    END_VERSIONS
+	"${task.process}":
+	    purecn: $VERSION
+	END_VERSIONS
     """
 }
