@@ -36,8 +36,8 @@ def vdj_ref_name      = "vdj_reference"
 def vdj_reference_dir = "$workDir/$vdj_ref_name"
 vdj_reference         = file( vdj_reference_dir )
 vdj_json.copyTo("$vdj_reference_dir/reference.json")
-vdj_fasta.copyTo("$vdj_reference_dir/fasta/regions.fasta")
-vdj_suppfasta.copyTo("$vdj_reference_dir/fasta/supp_regions.fasta")
+vdj_fasta.copyTo("$vdj_reference_dir/fasta/regions.fa")
+vdj_suppfasta.copyTo("$vdj_reference_dir/fasta/supp_regions.fa")
 
 // make an empty dummy file
 empty_file = file("$workDir/EMPTY")
