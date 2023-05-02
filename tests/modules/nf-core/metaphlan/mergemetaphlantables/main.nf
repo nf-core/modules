@@ -13,7 +13,7 @@ workflow test_metaphlan_mergemetaphlantables {
         [[ id:'test2', single_end:true ], [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]]
     )
 
-    db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan4_database.tar.gz', checkIfExists: true) ]
+    db  = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan4_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
     METAPHLAN_METAPHLAN ( input, UNTAR.out.untar.map{ it[1] } )
