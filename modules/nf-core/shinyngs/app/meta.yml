@@ -34,7 +34,7 @@ input:
       description: |
         TSV-format feature (e.g. gene) metadata
   - assay_files:
-      type: list
+      type: file
       description: |
         List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
   - contrasts:
@@ -42,7 +42,7 @@ input:
       description: |
         CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
   - differential_results:
-      type: list
+      type: file
       description: |
         List of TSV-format differential analysis outputs, one per row of the contrasts file
 
