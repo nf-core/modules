@@ -51,7 +51,7 @@ process NEXTDENOVO {
 
         [assemble_option]
         minimap2_options_cns = -t ${task.cpus}
-        nextgraph_options = -a 1" > run.cfg
+        nextgraph_options = -a 1 -z 1 -l 1" > run.cfg
 
     #Run
     nextDenovo run.cfg
