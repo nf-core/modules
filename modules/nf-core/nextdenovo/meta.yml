@@ -32,7 +32,7 @@ input:
       pattern: "{clr,ont,hifi}"
   - step:
       type: string
-      description: task need to run, correct = only do the correction step, assemble = only do the assembly step, all = correct + assemble. 
+      description: task need to run, correct = only do the correction step, assemble = only do the assembly step, all = correct + assemble.
       pattern: "{all, correct, assemble}"
   - input_type:
       type: string
@@ -49,7 +49,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
   - versions:
       type: file
       description: File containing software versions
