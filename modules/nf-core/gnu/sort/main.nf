@@ -2,10 +2,10 @@ process GNU_SORT {
     tag "${meta.id}"
     label "process_low"
 
-    conda "conda-forge::coreutils=9.1"
+    conda "bioconda::coreutils=8.25"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-    'ubuntu:20.04' }"
+    'https://depot.galaxyproject.org/singularity/coreutils:8.25--1' :
+    '/coreutils:8.25--1' }"
 
     input:
     tuple val(meta), path(input)
