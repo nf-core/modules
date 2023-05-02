@@ -16,7 +16,7 @@ process NGSCHECKMATE_NCM {
     path "*_corr_matrix.txt", emit: corr_matrix
     path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
-    path "*.vcf"            , emit: vcfs, optional: true
+    path "*.vcf"            , emit: vcf, optional: true
     path "versions.yml"     , emit: versions
 
     when:

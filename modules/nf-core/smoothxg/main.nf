@@ -2,16 +2,16 @@ process SMOOTHXG {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::smoothxg=0.6.8"
+    conda "bioconda::smoothxg=0.7.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoothxg:0.6.8--hfb1f815_0' :
-        'quay.io/biocontainers/smoothxg:0.6.8--hfb1f815_0' }"
+        'https://depot.galaxyproject.org/singularity/smoothxg:0.7.0--hfb1f815_0' :
+        'quay.io/biocontainers/smoothxg:0.7.0--hfb1f815_0' }"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("*.gfa"), emit: gfa
+    tuple val(meta), path("*smoothxg.gfa"), emit: gfa
     path("*.maf") , optional: true, emit: maf
     path "versions.yml"           , emit: versions
 

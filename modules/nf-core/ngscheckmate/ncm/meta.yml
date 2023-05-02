@@ -10,7 +10,7 @@ tools:
       homepage: https://github.com/parklab/NGSCheckMate
       documentation: https://github.com/parklab/NGSCheckMate
       tool_dev_url: https://github.com/parklab/NGSCheckMate
-      doi: "doi:/10.1093/nar/gkx193"
+      doi: "10.1093/nar/gkx193"
       licence: ["MIT"]
 
 input:
@@ -55,9 +55,9 @@ output:
       description: A txt file containing all the sample comparisons, whether they match or not
       pattern: "*all.txt"
 
-  - vcfs:
+  - vcf:
       type: file
-      description: If ran in bam mode, vcf files for each sample giving the SNP calls
+      description: If ran in bam mode, vcf files for each sample giving the SNP calls used
       pattern: "*.vcf"
 
 authors:

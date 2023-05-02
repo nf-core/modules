@@ -2,10 +2,10 @@ process BAKTA_BAKTA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bakta=1.6.1"
+    conda "bioconda::bakta=1.7.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.6.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/bakta:1.6.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.7.0--pyhdfd78af_1' :
+        'quay.io/biocontainers/bakta:1.7.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -46,7 +46,7 @@ process BAKTA_BAKTA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bakta: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
+        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
     END_VERSIONS
     """
 
@@ -66,7 +66,7 @@ process BAKTA_BAKTA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bakta: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
+        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
     END_VERSIONS
     """
 }

@@ -1,0 +1,51 @@
+name: "taxpasta_standardise"
+description: "Standardise the output of a wide range of taxonomic profilers"
+keywords:
+  - taxonomic profile
+  - standardise
+  - standardisation
+  - metagenomics
+  - taxonomic profiling
+  - otu tables
+  - taxon tables
+tools:
+  - "taxpasta":
+      description: "TAXonomic Profile Aggregation and STAndardisation"
+      homepage: "https://taxpasta.readthedocs.io/"
+      documentation: "https://taxpasta.readthedocs.io/"
+      tool_dev_url: "https://github.com/taxprofiler/taxpasta"
+
+      licence: "['Apache-2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - profile:
+      type: file
+      description: profiler output file (mandatory)
+      pattern: "*"
+  - taxonomy:
+      type: directory
+      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
+      pattern: "*/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - standardised_profile:
+      type: file
+      description: Standardised taxonomic profile
+      pattern: "*.{tsv,csv,arrow,parquet,biom}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@Midnighter"

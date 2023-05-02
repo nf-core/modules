@@ -35,8 +35,7 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
-    - path: output/star/test.Aligned.out.bam
-      md5sum: 38e834541b052eee69021739d7ec5ef0
+    - path: output/star/test.Aligned.sortedByCoord.out.bam
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -79,12 +78,12 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
-    - path: output/star/test.Aligned.out.bam
-      md5sum: 9386dfd49c2ac04c32efe65db85a9c5f
+    - path: output/star/test.Aligned.sortedByCoord.out.bam
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
+    - path: output/star/test.Signal.UniqueMultiple.str1.out.bg
 
 - name: star align test_star_alignment_paired_end_for_fusion
   command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end_for_fusion -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
@@ -124,7 +123,6 @@
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 5b1be7b6568771e1f229f71bc5ff3d77
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -168,9 +166,7 @@
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 3dedddc6bbaad65d92476102d8feb696
     - path: output/star/test.Chimeric.out.junction
-      md5sum: 948d00613328fc0b11850468a0c0ebde
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -229,8 +225,7 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
-    - path: output/star/test.Aligned.out.bam
-      md5sum: 9d196b6d74bb202df99836f8d0734325
+    - path: output/star/test.Aligned.sortedByCoord.out.bam
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
