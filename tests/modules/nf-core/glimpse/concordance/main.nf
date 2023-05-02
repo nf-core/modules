@@ -12,7 +12,7 @@ workflow test_glimpse_concordance {
     samples_infos = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
     region        = Channel.of(["chr21:16600000-16800000","chr21:16650000-16750000"])
     input_vcf     = Channel.of([
-        [ id:'input'], // meta map
+        [ id:'input' ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)        
     ])
