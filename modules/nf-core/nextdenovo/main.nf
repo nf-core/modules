@@ -35,7 +35,7 @@ process NEXTDENOVO {
         task = all
         rewrite = yes
         deltmp = yes
-        parallel_jobs = 10
+        parallel_jobs = 4
         input_type = raw
         read_type = ${read_type}
         input_fofn = input.fofn
@@ -47,7 +47,7 @@ process NEXTDENOVO {
         sort_options = -t ${task.cpus}
         minimap2_options_raw = -t ${task.cpus}
         pa_correction = 1
-        correction_options = -p 30
+        correction_options = -p 10
 
         [assemble_option]
         minimap2_options_cns = -t ${task.cpus}

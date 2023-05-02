@@ -27,11 +27,11 @@ input:
       description: long reads file (fastq)
       pattern: "*.{fastq.gz}"
   - read_type:
-      type: value
+      type: string
       description: type of long reads used as input
       pattern: "{clr,ont,hifi}"
   - genome_size:
-      type: value
+      type: string
       description: estimated genome size, suffix K/M/G recognized
       pattern: "{3g}"
 

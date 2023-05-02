@@ -8,8 +8,8 @@ workflow test_nextdenovo {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+        file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
 
-    NEXTDENOVO ( input, "hifi", "100k" )
+    NEXTDENOVO ( input, "hifi", "0.2k" )
 }
