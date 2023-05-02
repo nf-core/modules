@@ -6,7 +6,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "biocontainers/ilastik:1.4.0_cv1"
+    container "docker.io/biocontainers/ilastik:1.4.0_cv1"
 
     input:
     tuple val(meta), path(input_img)
