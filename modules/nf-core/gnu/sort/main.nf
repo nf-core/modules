@@ -39,6 +39,8 @@ process GNU_SORT {
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
     def VERSION     = "9.1"
+   
+    if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     sort ${args} ${input} > ${output_file}
 
