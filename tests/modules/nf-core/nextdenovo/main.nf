@@ -11,5 +11,5 @@ workflow test_nextdenovo {
         file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
 
-    NEXTDENOVO ( input, "ont", "500k" )
+    NEXTDENOVO ( input, "ont", "all", "raw", "500k" )
 }

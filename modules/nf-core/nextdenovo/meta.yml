@@ -30,6 +30,14 @@ input:
       type: string
       description: type of long reads used as input
       pattern: "{clr,ont,hifi}"
+  - step:
+      type: string
+      description: task need to run, correct = only do the correction step, assemble = only do the assembly step, all = correct + assemble. 
+      pattern: "{all, correct, assemble}"
+  - input_type:
+      type: string
+      description: input reads type
+      pattern: "{raw, corrected}"
   - genome_size:
       type: string
       description: estimated genome size, suffix K/M/G recognized
