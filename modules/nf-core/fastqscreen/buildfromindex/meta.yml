@@ -1,5 +1,4 @@
 name: "fastqscreen_buildfromindex"
-## TODO nf-core: Add a description of the module and list keywords
 description: Build fastq screen config file from bowtie index files
 keywords:
   - build
@@ -8,49 +7,30 @@ keywords:
   - reference
 tools:
   - "fastqscreen":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "FastQ Screen allows you to screen a library of sequences in FastQ format against a set of sequence databases so you can see if the
       composition of the library matches with what you expect."
       homepage: "https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/"
       documentation: "https://stevenwingett.github.io/FastQ-Screen/"
       tool_dev_url: "https://github.com/StevenWingett/FastQ-Screen/archive/refs/tags/v0.15.3.zip"
-      doi: "https://doi.org/10.5281/zenodo.5838377"
+      doi: "10.5281/zenodo.5838377"
       licence: ["GPL-3.0-or-later"]
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
+  - id:
+      type: string
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
+        List of names for each index
   - index:
-      type: file
-      description: Bowtie2 genome index files
-      pattern: "*.bt2"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      type: directory
+      description: Bowtie2 genome directory with index files
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - config:
-      type: file
-      description: fastq screen config file containing a path to index files of genome databases used
-      pattern: "*.{config}"
-
+  - database:
+      type: directory
+      description: fastq screen database folder containing config file and index folders
+      pattern: "FastQ_Screen_Genomes"
 authors:
   - "@snesic"
   - "@JPejovicApis"
