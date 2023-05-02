@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { BAM_CREATE_SOM_PON_GATK } from '../../../../subworkflows/nf-core/bam_create_som_pon_gatk/main'
 
-workflow bam_create_som_pon_gatk {
+workflow test_bam_create_som_pon_gatk {
     ch_mutect2_in = Channel.of(
         [
             [ id:'test1' ], // meta map
