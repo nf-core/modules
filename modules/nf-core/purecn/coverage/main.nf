@@ -39,10 +39,10 @@ process PURECN_COVERAGE {
         --intervals ${intervals} \\
         $args
 
-	cat <<-END_VERSIONS > versions.yml
-	"${task.process}":
-	    purecn: $VERSION
-	END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purecn: $VERSION
+    END_VERSIONS
     """
 
     stub:
