@@ -1,4 +1,4 @@
-process KMCP_COMPUTE {
+process KMCP_INDEX {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,12 +8,11 @@ process KMCP_COMPUTE {
         'quay.io/biocontainers/kmcp:0.9.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(sequences)
+    tuple val(meta), path(outdir)
 
     output:
-    tuple val(meta), path("${prefix}")             , emit: outdir
-    tuple val(meta), path("${prefix}/_info.txt")   , emit: info
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("${prefix}")   , emit: kmcp
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,18 +20,18 @@ process KMCP_COMPUTE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def input = sequences.isDirectory()? "--in-dir ${sequences}" : "${sequences}"
     """
     kmcp \\
-        compute \\
+        index \\
+        --in-dir $outdir \\
         $args \\
         --threads $task.cpus \\
-        --out-dir ${prefix}/ \\
-        $input
+        --out-dir ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
+    kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
     END_VERSIONS
-    """
+"""
+
 }

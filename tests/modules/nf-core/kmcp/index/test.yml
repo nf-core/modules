@@ -1,0 +1,11 @@
+- name: kmcp index test_kmcp_index
+  command: nextflow run ./tests/modules/nf-core/kmcp/index -entry test_kmcp_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/index/nextflow.config
+  tags:
+    - kmcp
+    - kmcp/index
+  files:
+    - path: output/kmcp/test/_info.txt
+      md5sum: f2deeb4d7215f276cf1d2cfe23f30270
+    - path: output/kmcp/test/genome.fasta.unik
+      md5sum: 158f49b1bdd8dd1aff91de66772509ff
+    - path: output/kmcp/versions.yml
