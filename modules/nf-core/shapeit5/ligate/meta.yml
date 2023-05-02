@@ -24,7 +24,9 @@ input:
 
   - input_list:
       type: file
-      description: VCF/BCF files containing genotype probabilities (GP field).
+      description: |
+        VCF/BCF files containing genotype probabilities (GP field).
+        The files should be ordered by genomic position.
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
   - input_list_index:

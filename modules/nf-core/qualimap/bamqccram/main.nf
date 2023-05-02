@@ -36,7 +36,7 @@ process QUALIMAP_BAMQCCRAM {
     }
     """
     unset DISPLAY
-    mkdir tmp
+    mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
 
     samtools view -hb -T ${fasta} ${cram} |

@@ -3,7 +3,7 @@ process MCQUANT {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "labsyspharm/quantification:1.5.4"
+    container "docker.io/labsyspharm/quantification:1.5.4"
 
     input:
     tuple val(meta), path(image)
@@ -26,7 +26,8 @@ process MCQUANT {
         --masks $mask \
         --image $image \
         --channel_names $markerfile \
-        --output .
+        --output . \
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

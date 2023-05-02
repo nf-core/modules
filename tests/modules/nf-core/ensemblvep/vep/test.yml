@@ -53,6 +53,15 @@
     - path: output/ensemblvep/test.summary.html
     - path: output/ensemblvep/test.vcf.gz
 
+- name: ensemblvep test_ensemblvep_vep_fasta_custom
+  command: nextflow run ./tests/modules/nf-core/ensemblvep/vep -entry test_ensemblvep_vep_fasta_custom -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ensemblvep/vep/nextflow.config
+  tags:
+    - ensemblvep
+    - ensemblvep/vep
+  files:
+    - path: output/ensemblvep/test.summary.html
+    - path: output/ensemblvep/test.vcf.gz
+
 - name: ensemblvep test_ensemblvep_vep_no_fasta
   command: nextflow run ./tests/modules/nf-core/ensemblvep/vep -entry test_ensemblvep_vep_no_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ensemblvep/vep/nextflow.config
   tags:
