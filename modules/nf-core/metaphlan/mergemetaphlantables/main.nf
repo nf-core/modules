@@ -11,7 +11,7 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
 
     output:
     tuple val(meta), path("${prefix}.txt") , emit: txt
-    path "versions.yml"                       , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
