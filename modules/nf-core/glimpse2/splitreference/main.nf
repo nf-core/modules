@@ -31,7 +31,7 @@ process GLIMPSE2_SPLITREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
     def map_command = map ? "--map $map" : ""
 
     """
