@@ -47,18 +47,19 @@ empty_file.append("")
 // create empty channels to fill unused cellranger multi arguments
 // fastqs need a [ meta, ref ] structure
 // references just need a path
-ch_ab_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_beam_fastqs       = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_cmo_fastqs        = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_crispr_fastqs     = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-ch_gex_frna_probeset = Channel.fromPath( empty_file )
-ch_gex_targetpanel   = Channel.fromPath( empty_file )
-ch_vdj_primer_index  = Channel.fromPath( empty_file )
-ch_fb_reference      = Channel.fromPath( empty_file )
-ch_beam_panel        = Channel.fromPath( empty_file )
-ch_cmo_reference     = Channel.fromPath( empty_file )
-ch_cmo_barcodes      = Channel.fromPath( empty_file )
-ch_frna_sampleinfo   = Channel.fromPath( empty_file )
+ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
+ch_gex_frna_probeset     = Channel.fromPath( empty_file )
+ch_gex_targetpanel       = Channel.fromPath( empty_file )
+ch_vdj_primer_index      = Channel.fromPath( empty_file )
+ch_fb_reference          = Channel.fromPath( empty_file )
+ch_beam_panel            = Channel.fromPath( empty_file )
+ch_cmo_reference         = Channel.fromPath( empty_file )
+ch_cmo_barcodes          = Channel.fromPath( empty_file )
+ch_cmo_sample_assignment = Channel.fromPath( empty_file )
+ch_frna_sampleinfo       = Channel.fromPath( empty_file )
 
 def test_meta = [ id:'test', single_end:false ]
 
@@ -97,6 +98,7 @@ workflow test_cellranger_multi {
         ch_beam_panel,
         ch_cmo_reference,
         ch_cmo_barcodes,
+        ch_cmo_sample_assignment,
         ch_frna_sampleinfo
     )
 
