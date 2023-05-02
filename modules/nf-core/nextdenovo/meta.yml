@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "nextdenovo"
+description: string graph-based de novo assembler for long reads (CLR, HiFi and ONT)
+keywords:
+  - assembler
+  - long reads
+  - correaction
+  - genomics
+tools:
+  - "nextdenovo":
+      description: "String graph-based de novo assembler for long reads (CLR, HiFi and ONT)"
+      homepage: "https://nextdenovo.readthedocs.io/en/latest/index.html"
+      documentation: "https://nextdenovo.readthedocs.io/en/latest/OPTION.html"
+      tool_dev_url: "https://github.com/Nextomics/NextDenovo"
+      doi: "10.1101/2023.03.09.531669"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: long reads file (fastq)
+      pattern: "*.{fastq.gz}"
+  - read_type:
+      type: value
+      description: type of long reads used as input
+      pattern: "{clr,ont,hifi}"
+  - genome_size:
+      type: value
+      description: estimated genome size, suffix K/M/G recognized
+      pattern: "{3g}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - correacted_reads:
+      type: file
+      description: Final corrected reads file
+      pattern: "*.{fasta.gz}"
+  - assembly:
+      type: file
+      description: Final assembly result
+      pattern: "*.{fasta.gz}"
+  - stat:
+      type: file
+      description: basic statistical information
+      pattern: "*.{stat}"
+
+authors:
+  - "@scorreard"
