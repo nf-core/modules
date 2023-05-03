@@ -8,7 +8,7 @@ process GLIMPSE_PHASE {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-        tuple val(meta) , path(input), path(input_index), val(input_region), val(output_region), path(reference), path(reference_index), path(map), path(samples_file)
+        tuple val(meta) , path(input), path(input_index), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
 
     output:
         tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
