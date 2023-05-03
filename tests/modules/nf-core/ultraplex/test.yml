@@ -1,11 +1,44 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml ultraplex
-- name: "ultraplex"
+- name: ultraplex test_ultraplex
   command: nextflow run ./tests/modules/nf-core/ultraplex -entry test_ultraplex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ultraplex/nextflow.config
   tags:
-    - "ultraplex"
+    - ultraplex
   files:
-    - path: "output/ultraplex/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/ultraplex/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/ultraplex/ultraplex_demux_Sample1.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2587:1991_30rbc:NTGAA'
+    - path: output/ultraplex/ultraplex_demux_Sample2.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2427:1974_18rbc:NGCTG'
+    - path: output/ultraplex/versions.yml
+
+- name: ultraplex test_ultraplex_adaptor
+  command: nextflow run ./tests/modules/nf-core/ultraplex -entry test_ultraplex_adaptor -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ultraplex/nextflow.config
+  tags:
+    - ultraplex
+  files:
+    - path: output/ultraplex/ultraplex_demux_Sample1.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2587:1991_30rbc:NTGAA'
+    - path: output/ultraplex/ultraplex_demux_Sample2.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2427:1974_18rbc:NGCTG'
+    - path: output/ultraplex/versions.yml
+
+- name: ultraplex test_ultraplex_pairedend
+  command: nextflow run ./tests/modules/nf-core/ultraplex -entry test_ultraplex_pairedend -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ultraplex/nextflow.config
+  tags:
+    - ultraplex
+  files:
+    - path: output/ultraplex/ultraplex_demux_Sample1_Fwd.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2587:1991_30rbc:NTGAA'
+    - path: output/ultraplex/ultraplex_demux_Sample1_Rev.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2587:1991_30rbc:NTGAA'
+    - path: output/ultraplex/ultraplex_demux_Sample2_Fwd.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2427:1974_18rbc:NGCTG'
+    - path: output/ultraplex/ultraplex_demux_Sample2_Rev.fastq.gz
+      contains:
+        - '@SN1078:141:7:1101:2427:1974_18rbc:NGCTG'
+    - path: output/ultraplex/versions.yml
