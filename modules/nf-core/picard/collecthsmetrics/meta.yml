@@ -32,6 +32,14 @@ input:
       type: file
       description: Optional aligned BAM/CRAM/SAM file index
       pattern: "*.{bai,crai,sai}"
+  - bait_intervals:
+      type: file
+      description: An interval list file that contains the locations of the baits used.
+      pattern: "baits.interval_list"
+  - target_intervals:
+      type: file
+      description: An interval list file that contains the locations of the targets.
+      pattern: "targets.interval_list"
   - meta2:
       type: map
       description: |
@@ -52,14 +60,7 @@ input:
       type: file
       description: Index of FASTA file. Only needed when fasta is supplied.
       pattern: "*.fai"
-  - bait_intervals:
-      type: file
-      description: An interval list file that contains the locations of the baits used.
-      pattern: "baits.interval_list"
-  - target_intervals:
-      type: file
-      description: An interval list file that contains the locations of the targets.
-      pattern: "targets.interval_list"
+
 
 output:
   - meta:
