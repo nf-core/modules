@@ -59,9 +59,8 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-        # FIXME: Remove this when nf-core modules lint stabilizes and install stable release
-      - name: Install nf-core tools development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+      - name: Install nf-core tools
+        run: python -m pip install nf-core
 
       - name: Install Nextflow
         env:
