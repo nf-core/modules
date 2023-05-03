@@ -2,7 +2,7 @@ process ULTRAPLEX {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::ultraplex=1.2.5" : null)
+    conda "bioconda::ultraplex=1.2.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultraplex:1.2.5--py38h4a8c8d9_0' :
         'quay.io/biocontainers/ultraplex:1.2.5--py38h4a8c8d9_0' }"
