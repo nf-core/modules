@@ -19,7 +19,6 @@
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
 
-
 - name: bam_qc_picard test_bam_qc_picard_targetted
   command: nextflow run ./tests/subworkflows/nf-core/bam_qc_picard -entry test_bam_qc_picard_targetted -c ./tests/config/nextflow.config
   tags:
