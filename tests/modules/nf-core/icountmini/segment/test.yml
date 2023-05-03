@@ -1,13 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /segment
-- name: "icountmini segment"
+- name: icountmini segment test_icountmini_segment
   command: nextflow run ./tests/modules/nf-core/icountmini/segment -entry test_icountmini_segment -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/icountmini/segment/nextflow.config
   tags:
-    - "icountmini"
-    - "icountmini/segment"
+    - icountmini
+    - icountmini/segment
   files:
-    - path: "output/icountmini/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/icountmini/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/icountmini/chr21_gencode_regions.gtf.gz
+    - path: output/icountmini/chr21_gencode_seg.gtf
+      md5sum: f09f9a70cf223dbbf650b2d5d80f457d
+    - path: output/icountmini/versions.yml
