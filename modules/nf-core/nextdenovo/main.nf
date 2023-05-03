@@ -54,7 +54,7 @@ process NEXTDENOVO {
         sort_options = -t ${task.cpus} ${args_sort_options}
         minimap2_options_raw = -t ${task.cpus} ${args_minimap2_options_raw}
         pa_correction = 5
-        correction_options = -p 10 -a
+        correction_options = -p ${task.cpus}
 
         [assemble_option]
         minimap2_options_cns = -t ${task.cpus} ${args_minimap2_options_cns}
