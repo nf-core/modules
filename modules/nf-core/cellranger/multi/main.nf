@@ -85,13 +85,13 @@ process CELLRANGER_MULTI {
 
     // collect options for each section
     // these are pulled from the meta maps
-    def gex_options_use    = include_gex && meta_gex?.options   ? 'true' : null 
-    def vdj_options_use    = include_vdj && meta_vdj?.options   ? 'true' : null 
-    def ab_options_use     = include_fb && meta_ab?.options     ? 'true' : null 
-    def beam_options_use   = include_beam && meta_beam?.options ? 'true' : null 
-    def cmo_options_use    = include_cmo && meta_cmo?.options   ? 'true' : null 
-    def crispr_options_use = include_fb && meta_crispr?.options ? 'true' : null 
-    def fb_options_use     = include_fb && fb_options?.options  ? 'true' : null 
+    def gex_options_use    = include_gex && meta_gex?.options   ? 'true' : null
+    def vdj_options_use    = include_vdj && meta_vdj?.options   ? 'true' : null
+    def ab_options_use     = include_fb && meta_ab?.options     ? 'true' : null
+    def beam_options_use   = include_beam && meta_beam?.options ? 'true' : null
+    def cmo_options_use    = include_cmo && meta_cmo?.options   ? 'true' : null
+    def crispr_options_use = include_fb && meta_crispr?.options ? 'true' : null
+    def fb_options_use     = include_fb && fb_options?.options  ? 'true' : null
 
     def gex_options_filter_probes = gex_options_use && meta_gex.options.containsKey("filter-probes") ? "filter-probes,${meta_gex.options["filter-probes"]}" : ''
     def gex_options_r1_length     = gex_options_use && meta_gex.options.containsKey("r1-length")     ? "r1-length,${meta_gex.options["r1-length"]}"         : ''
@@ -127,84 +127,84 @@ process CELLRANGER_MULTI {
     def config = "cellranger_multi_config.csv"
 
     """
-	cat <<-CONFIG > $config
-		$include_gex
-		$gex_reference_path
-		$frna_probeset
-		$gex_options_filter_probes
-		$gex_options_r1_length
-		$gex_options_r2_length
-		$gex_options_chemistry
-		$gex_options_expect_cells
-		$gex_options_force_cells
-		$gex_options_no_secondary
-		$gex_options_no_bam
-		$gex_options_check_library_compatibility
-		$target_panel
-		$gex_options_no_target_umi_filter
-		$gex_options_include_introns
-		$cmo_options_min_assignment_confidence
-		$cmo_reference_path
-		$cmo_barcode_path
+    cat <<-CONFIG > $config
+        $include_gex
+        $gex_reference_path
+        $frna_probeset
+        $gex_options_filter_probes
+        $gex_options_r1_length
+        $gex_options_r2_length
+        $gex_options_chemistry
+        $gex_options_expect_cells
+        $gex_options_force_cells
+        $gex_options_no_secondary
+        $gex_options_no_bam
+        $gex_options_check_library_compatibility
+        $target_panel
+        $gex_options_no_target_umi_filter
+        $gex_options_include_introns
+        $cmo_options_min_assignment_confidence
+        $cmo_reference_path
+        $cmo_barcode_path
 
-		$include_fb
-		$fb_reference_path
-		$fb_options_r1_length
-		$fb_options_r2_length
+        $include_fb
+        $fb_reference_path
+        $fb_options_r1_length
+        $fb_options_r2_length
 
-		$include_vdj
-		$vdj_reference_path
-		$primer_index
-		$vdj_options_r1_length
-		$vdj_options_r2_length
+        $include_vdj
+        $vdj_reference_path
+        $primer_index
+        $vdj_options_r1_length
+        $vdj_options_r2_length
 
-		$include_beam
-		$beam_csv_text
+        $include_beam
+        $beam_csv_text
 
-		$include_cmo
-		$cmo_csv_text
+        $include_cmo
+        $cmo_csv_text
 
-		$include_frna
-		$frna_csv_text
+        $include_frna
+        $frna_csv_text
 
-		[libraries]
-		fastq_id,fastqs,lanes,feature_types
-		$fastq_gex
-		$fastq_vdj
-		$fastq_antibody
-		$fastq_beam
-		$fastq_crispr
-		$fastq_cmo
-	CONFIG
+        [libraries]
+        fastq_id,fastqs,lanes,feature_types
+        $fastq_gex
+        $fastq_vdj
+        $fastq_antibody
+        $fastq_beam
+        $fastq_crispr
+        $fastq_cmo
+    CONFIG
 
-	grep -v -e '^[[:space:]]*\$' $config > tmp.txt && mv tmp.txt $config # remove blank lines from config, only for aesthetics
+    grep -v -e '^[[:space:]]*\$' $config > tmp.txt && mv tmp.txt $config # remove blank lines from config, only for aesthetics
 
-	cellranger \\
-		multi \\
-		--id='${prefix}' \\
-		--csv=$config \\
-		--localcores=${task.cpus} \\
-		--localmem=${task.memory.toGiga()} \\
-		$args
+    cellranger \\
+        multi \\
+        --id='${prefix}' \\
+        --csv=$config \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
+        $args
 
-	cat <<-END_VERSIONS > versions.yml
-	"${task.process}":
-	    cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-	END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-	mkdir -p "${prefix}/outs/"
-	touch ${prefix}/outs/fake_file.txt
-	echo -n "" >> ${prefix}/outs/fake_file.txt
-	touch cellranger_multi_config.csv
-	echo -n "" >> cellranger_multi_config.csv
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
+    echo -n "" >> ${prefix}/outs/fake_file.txt
+    touch cellranger_multi_config.csv
+    echo -n "" >> cellranger_multi_config.csv
 
-	cat <<-END_VERSIONS > versions.yml
-	"${task.process}":
-	    cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-	END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
     """
 }
