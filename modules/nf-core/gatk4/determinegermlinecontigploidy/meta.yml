@@ -23,7 +23,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - counts:
-      type: file(s)
+      type: file
       description: One or more count TSV files created with gatk/collectreadcounts
       pattern: "*.tsv"
   - bed:
@@ -31,7 +31,7 @@ input:
       description: Optional - A bed file containing the intervals to include in the process
       pattern: "*.bed"
   - exclude_beds:
-      type: file(s)
+      type: file
       description: Optional - One or more bed files containing intervals to exclude from the process
       pattern: "*.bed"
   - contig_ploidy_table:
@@ -39,7 +39,7 @@ input:
       description: The contig ploidy priors table
       pattern: "*.tsv"
   - ploidy_model:
-      type: folder
+      type: directory
       description: |
         Optional - A folder containing the ploidy model.
         When a model is supplied to tool will run in CASE mode.
@@ -57,11 +57,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - calls:
-      type: folder
+      type: directory
       description: A folder containing the calls from the input files
       pattern: "*.tar.gz"
   - model:
-      type: folder
+      type: directory
       description: |
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).

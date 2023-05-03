@@ -132,3 +132,26 @@
       md5sum: fd74853a564297af9c9b1224fd24caf3
     - path: output/somalier/tumour.somalier
       md5sum: 1207e98a2c58d2027a296f641f701593
+
+- name: vcf_extract_relate_somalier test_vcf_extract_relate_somalier_mixed_combine_no_count
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_extract_relate_somalier -entry test_vcf_extract_relate_somalier_mixed_combine_no_count -c ./tests/config/nextflow.config
+  tags:
+    - somalier
+    - somalier/extract
+    - somalier/relate
+    - subworkflows
+    - subworkflows/vcf_extract_relate_somalier
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/somalier/disease_103.somalier
+      md5sum: 0b3a459e9fd464c1e8d61e280ddbec55
+    - path: output/somalier/test.html
+      md5sum: 2dd431ea38395b3da192a6cc6d554728
+    - path: output/somalier/test.pairs.tsv
+      md5sum: 1284fa75d29d11eafcf358690af2437b
+    - path: output/somalier/test.samples.tsv
+      md5sum: c4a240c3a3dc78a4f0050dcf0e50a1eb
+    - path: output/somalier/testN.somalier
+      md5sum: ee6661a917b00d9f663a5169a1d0b600
+    - path: output/tabix/test2_haplotc.ann.vcf.gz.tbi

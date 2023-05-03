@@ -1,0 +1,62 @@
+name: "gatk4_germlinecnvcaller"
+description: Calls copy-number variants in germline samples given their counts and the output of DetermineGermlineContigPloidy.
+keywords:
+  - gatk
+  - gatk4_germlinecnvcaller
+  - germline contig ploidy
+tools:
+  - "gatk4":
+      description:
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tsv:
+      type: file
+      description: One or more count TSV files created with gatk/collectreadcounts
+      pattern: "*.tsv"
+  - intervals:
+      type: file
+      description: Optional - A bed file containing the intervals to include in the process
+      pattern: "*.bed"
+  - model:
+      type: directory
+      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
+      pattern: "*.tar.gz"
+  - ploidy:
+      type: file
+      description: Tar gzipped directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
+      pattern: "*.tar.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - calls:
+      type: file
+      description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
+      pattern: "*.tar"
+  - model:
+      type: directory
+      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
+      pattern: "*.tar.gz"
+
+authors:
+  - "@ryanjameskennedy"
+  - "@ViktorHy"

@@ -63,4 +63,28 @@ process RTGTOOLS_VCFEVAL {
         rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.tp.vcf.gz
+    touch ${prefix}.tp.vcf.gz.tbi
+    touch ${prefix}.fn.vcf.gz
+    touch ${prefix}.fn.vcf.gz.tbi
+    touch ${prefix}.fp.vcf.gz
+    touch ${prefix}.fp.vcf.gz.tbi
+    touch ${prefix}.tp-baseline.vcf.gz
+    touch ${prefix}.tp-baseline.vcf.gz.tbi
+    touch ${prefix}.snp_roc.tsv.gz
+    touch ${prefix}.non_snp_roc.tsv.gz
+    touch ${prefix}.weighted_roc.tsv.gz
+    touch ${prefix}.summary.txt
+    touch ${prefix}.phasing.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
+    END_VERSIONS
+    """
 }

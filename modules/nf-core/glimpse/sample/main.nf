@@ -27,7 +27,7 @@ process GLIMPSE_SAMPLE {
         $args \\
         --input $input \\
         --thread $task.cpus \\
-        --output ${prefix}_sampled.${suffix}
+        --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

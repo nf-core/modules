@@ -1,0 +1,67 @@
+name: "igv_js"
+description: igv.js is an embeddable interactive genome visualization component
+keywords:
+  - igv
+  - igv.js
+  - js
+  - genome browser
+tools:
+  - "igv":
+      description: |
+        Create an embeddable interactive genome browser component.
+        Output files are expected to be present in the same directory as teh genome browser html file.
+        To visualise it, files have to be served. Check the documentation at:
+          https://github.com/igvteam/igv-webapp for an example and
+          https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements for server requirements
+      homepage: https://github.com/igvteam/igv.js
+      documentation: https://github.com/igvteam/igv.js/wiki
+      tool_dev_url: https://github.com/igvteam/igv.js
+      doi: 10.1093/bioinformatics/btac830
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - alignment:
+      type: file
+      description: Sorted BAM/CRAM file
+      pattern: "*.{bam,cram}"
+
+  - index:
+      type: file
+      description: Index of sorted BAM/CRAM file
+      pattern: "*.{bai,crai}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - browser:
+      type: file
+      description: Genome browser HTML file
+      pattern: "*.{html}"
+
+  - align_files:
+      type: file
+      description: Copy of the input sorted BAM/CRAM file
+      pattern: "*.{bam,cram}"
+
+  - index_files:
+      type: file
+      description: Copy of the input index of sorted BAM/CRAM file
+      pattern: "*.{bai,crai}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@mirpedrol"

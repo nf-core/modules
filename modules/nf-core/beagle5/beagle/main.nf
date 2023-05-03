@@ -30,15 +30,15 @@ process BEAGLE5_BEAGLE {
     def excludesamples_command = exclsamples ? "excludesamples=$exclsamples" : ""
     def excludemarkers_command = exclmarkers ? "excludemarkers=$exclmarkers" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[beagle] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    beagle -Xmx${avail_mem}g \\
+    beagle -Xmx${avail_mem}M \\
         gt=${vcf} \\
         out=${prefix} \\
         $args \\

@@ -28,16 +28,16 @@ process GATK_INDELREALIGNER {
 
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK IndelRealigner] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
     gatk3 \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         -T IndelRealigner \\
         -R ${fasta} \\
         -I ${bam} \\

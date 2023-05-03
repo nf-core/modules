@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/pangenome/odgi"
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
-      doi: "https://doi.org/10.1093/bioinformatics/btac308"
+      doi: "10.1093/bioinformatics/btac308"
       licence: "['MIT']"
 
 input:
@@ -22,8 +22,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - graphs:
       type: files
-      description: Pangenome graph files in ODGI or GFA v1.0 format.
-      pattern: "*.{og,gfa}"
+      description: Pangenome graph files in ODGI format.
+      pattern: "*.{og}"
 
 output:
   - meta:
