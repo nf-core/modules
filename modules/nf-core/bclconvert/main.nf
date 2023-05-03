@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nfcore/bclconvert:4.0.3"
+    container "docker.io/nfcore/bclconvert:4.0.3"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

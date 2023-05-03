@@ -35,7 +35,7 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
-    - path: output/star/test.Aligned.out.bam
+    - path: output/star/test.Aligned.sortedByCoord.out.bam
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -78,11 +78,12 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
-    - path: output/star/test.Aligned.out.bam
+    - path: output/star/test.Aligned.sortedByCoord.out.bam
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
+    - path: output/star/test.Signal.UniqueMultiple.str1.out.bg
 
 - name: star align test_star_alignment_paired_end_for_fusion
   command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end_for_fusion -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
