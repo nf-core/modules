@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fgbio_create_umi_consensus
 description: |
   This workflow uses the suite FGBIO to identify and remove UMI tags from FASTQ reads
@@ -40,10 +41,14 @@ input:
         If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
         https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
   - groupreadsbyumi_strategy:
-    type: string
-    description: |
-    Reguired argument: defines the UMI assignment strategy.
-    Must be chosen among: Identity, Edit, Adjacency, Paired.
+      type: string
+      description: |
+      Reguired argument: defines the UMI assignment strategy.
+      enum:
+        - Identity
+        - Edit
+        - Adjacency
+        - Paired
 output:
   - versions:
       type: file

@@ -11,7 +11,7 @@ tools:
       homepage: "https://mcmicro.org/parameters/core.html#coreograph"
       documentation: "https://mcmicro.org/troubleshooting/tuning/coreograph.html"
       tool_dev_url: "https://github.com/HMS-IDAC/UNetCoreograph"
-      doi: "https://doi.org/10.1038/s41592-021-01308-y"
+      doi: 10.1038/s41592-021-01308-y
       licence: "MIT License"
 
 input:
@@ -38,7 +38,7 @@ output:
       pattern: "*.{tif}"
 
   - masks:
-      type: files
+      type: file
       description: Binary masks for the Complete/Incomplete tissue cores
       pattern: "./masks/*.{tif}"
 

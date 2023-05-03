@@ -10,7 +10,7 @@ process SENTIEON_DEDUP {
         exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container 'nfcore/sentieon:202112.06'
+    container 'docker.io/nfcore/sentieon:202112.06'
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -36,6 +36,7 @@ process SENTIEON_DEDUP {
     def args4 = task.ext.args4 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: ".cram"   // The suffix should be either ".cram" or ".bam".
+    def metrics = task.ext.metrics ?: "${prefix}${suffix}.metrics"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def input_list = bam.collect{"-i $it"}.join(' ')
@@ -51,7 +52,7 @@ process SENTIEON_DEDUP {
     fi
 
     sentieon driver $args $input_list -r ${fasta} --algo LocusCollector $args2 --fun score_info ${prefix}.score
-    sentieon driver $args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix}.score --metrics ${prefix}.metrics ${prefix}${suffix}
+    sentieon driver $args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix}.score --metrics ${metrics} ${prefix}${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
