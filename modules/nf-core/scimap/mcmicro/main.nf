@@ -7,7 +7,7 @@ process SCIMAP_MCMICRO {
         exit 1, "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container "labsyspharm/scimap:0.22.0"
+    container "docker.io/labsyspharm/scimap:0.22.0"
 
     input:
     tuple val(meta), path(cellbyfeature)
