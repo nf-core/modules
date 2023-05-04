@@ -33,6 +33,7 @@ process BCFTOOLS_QUERY {
         $targets_file \\
         $samples_file \\
         $args \\
+        --threads ${task.cpus} \\
         $vcf
 
     cat <<-END_VERSIONS > versions.yml
