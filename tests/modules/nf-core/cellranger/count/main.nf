@@ -8,7 +8,7 @@ include { CELLRANGER_COUNT } from '../../../../../modules/nf-core/cellranger/cou
 
 workflow test_cellranger_count {
 
-    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: '123', samples: ["test_10x"] ], // meta map
+    input = [ [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
              [ file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_10x_2_fastq_gz'], checkIfExists: true)
         ]
