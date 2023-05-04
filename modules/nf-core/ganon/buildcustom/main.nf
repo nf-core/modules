@@ -40,4 +40,20 @@ process GANON_BUILDCUSTOM {
         ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
     END_VERSIONS
     """
+    
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
+    def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
+    """
+    touch ${prefix}.ibf
+    touch ${prefix}.tax
+    touch ${prefix}.info.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
+    END_VERSIONS
+    """
 }
