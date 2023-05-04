@@ -8,7 +8,7 @@ process KMCP_INDEX {
         'quay.io/biocontainers/kmcp:0.9.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(compute_output)
+    tuple val(meta), path(compute_dir)
 
     output:
     tuple val(meta), path("${prefix}")   , emit: kmcp
@@ -23,7 +23,7 @@ process KMCP_INDEX {
     """
     kmcp \\
         index \\
-        --in-dir $compute_output \\
+        --in-dir $compute_dir \\
         $args \\
         --threads $task.cpus \\
         --out-dir ${prefix}
