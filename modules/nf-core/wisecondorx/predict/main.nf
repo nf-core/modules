@@ -6,7 +6,7 @@ process WISECONDORX_PREDICT {
     conda "bioconda::wisecondorx=1.2.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.5--pyh5e36f6f_0':
-        'quay.io/biocontainers/wisecondorx:1.2.5--pyh5e36f6f_0' }"
+        'biocontainers/wisecondorx:1.2.5--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(npz)
