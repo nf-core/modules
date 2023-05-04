@@ -42,4 +42,16 @@ process HYPO {
         hypo: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.3' // WARN: See above
+    """
+    touch ${prefix}.fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hypo: $VERSION
+    END_VERSIONS
+    """
 }
