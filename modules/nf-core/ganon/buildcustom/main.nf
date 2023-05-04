@@ -1,6 +1,6 @@
 process GANON_BUILDCUSTOM {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     conda "bioconda::ganon=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,7 +23,6 @@ process GANON_BUILDCUSTOM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
     genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
