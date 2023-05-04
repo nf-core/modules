@@ -8,6 +8,7 @@ include { BCFTOOLS_QUERY            } from '../../../modules/nf-core/bcftools/qu
 include { BCFTOOLS_MERGE            } from '../../../modules/nf-core/bcftools/merge/main'
 include { BCFTOOLS_PLUGINSCATTER    } from '../../../modules/nf-core/bcftools/pluginscatter/main'
 include { BCFTOOLS_CONCAT           } from '../../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_PLUGINSPLIT      } from '../../../modules/nf-core/bcftools/pluginsplit/main'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
@@ -117,19 +118,49 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
 
-    // TABIX_TABIX(ENSEMBLVEP_VEP.out.vcf)
+    //
+    // Split the VCFs back into their original forms
+    //
 
-    // ch_vcf_tbi = ENSEMBLVEP_VEP.out.vcf.join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
+    BCFTOOLS_PLUGINSPLIT(
+        BCFTOOLS_CONCAT.out.vcf.map { it + [[]] },
+        ch_samples_list,
+        [],
+        [],
+        []
+    )
+    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
 
-    // // Gather versions of all tools used
-    // ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions)
-    // ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
+    //
+    // Index the resulting gzipped VCFs
+    //
+
+    ch_tabix_input = BCFTOOLS_PLUGINSPLIT.out.vcf
+        .transpose()
+        .map { meta, vcf ->
+            name = vcf.name.replace(".bcf", "").replace(".vcf", "").replace(".gz", "")
+            [ name, vcf ]
+        } // Re-add the original meta to each VCF
+        .join(ch_vcf_map.meta, failOnDuplicate:true, failOnMismatch:true)
+        .branch { id, vcf, meta ->
+            bgzip: vcf.extension == "gz"
+                return [ meta, vcf ]
+            unzip: true
+                return [ meta, vcf, [] ]
+        }
+
+    TABIX_TABIX(
+        ch_tabix_input.bgzip
+    )
+    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
+
+    ch_vcf_tbi = ch_tabix_input.bgzip
+        .join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
+        .mix(ch_tabix_input.unzip)
 
     emit:
-    // vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
-    // json     = ENSEMBLVEP_VEP.out.json     // channel: [ val(meta), path(json) ]
-    // tab      = ENSEMBLVEP_VEP.out.tab      // channel: [ val(meta), path(tab) ]
-    // reports  = ENSEMBLVEP_VEP.out.report   // channel: [ path(html) ]
+    vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
+    reports  = ENSEMBLVEP_VEP.out.report   // channel: [ path(html) ]
     versions = ch_versions                 // channel: [ versions.yml ]
 }
 

@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: vcf_annotate_ensemblvep
-description: Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file
+description: |
+  Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file.
+  Only VCF/BCF outputs are supported for now. Other outputs can be added later.
 keywords:
   - vcf
   - annotation
@@ -12,11 +14,15 @@ input:
   - ch_vcf:
       description: |
         vcf file to annotate
-        Structure: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)... (optionnal)] ]
+        Structure: [ val(meta), path(vcf), path(tbi) ]
   - ch_fasta:
       description: |
         Reference genome fasta file (optional)
         Structure: [ val(meta2), path(fasta) ]
+  - ch_fasta_fai:
+      description: |
+        Reference genome fasta index file (optional)
+        Structure: [ val(meta3), path(fasta_fai) ]
   - val_genome:
       type: string
       description: genome to use
@@ -34,19 +40,14 @@ input:
       description: |
         any extra files needed by plugins for ensemblvep (optional)
         Structure: [ path(file1), path(file2)... ]
+  - val_sites_per_chunk:
+      type: integer
+      description: The amount of variants per scattered VCF
 output:
   - vcf_tbi:
       description: |
         Compressed vcf file + tabix index
         Structure: [ val(meta), path(vcf), path(tbi) ]
-  - json:
-      description: |
-        json file
-        Structure: [ val(meta), path(json) ]
-  - tab:
-      description: |
-        tab file
-        Structure: [ val(meta), path(tab) ]
   - reports:
       type: file
       description: html reports
