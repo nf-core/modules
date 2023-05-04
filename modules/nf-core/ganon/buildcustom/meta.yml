@@ -34,7 +34,7 @@ input:
   - genome_size_files:
       type: file
       description: Pre-downloaded NCBI or GTDB genome size files of input sequences. See ganon docs for formats
-      pattern: {species_genome_size.txt.gz,*_metadata.tar.gz}
+      pattern: "{species_genome_size.txt.gz,*_metadata.tar.gz}"
 
 output:
   - meta:
