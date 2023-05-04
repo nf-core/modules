@@ -22,9 +22,9 @@ process GANON_BUILDCUSTOM {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
-    genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
+    def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     ganon \\
         build-custom \\
