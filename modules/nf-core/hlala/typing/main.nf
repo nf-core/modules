@@ -1,6 +1,6 @@
 process HLALA_TYPING {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
     conda "bioconda::hla-la=1.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
