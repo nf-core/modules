@@ -2,16 +2,16 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQ_ENA_PREP_ADAPTERREMOVAL } from '../../../../subworkflows/nf-core/fastq_ena_prep_adapterremoval/main.nf'
+include { FASTQ_ENA_PREP_ADAPTERREMOVAL_MD5SUM } from '../../../../subworkflows/nf-core/fastq_ena_prep_adapterremoval_md5sum/main.nf'
 
 
     input = [ [
-                [ id:'test', single_end:true, collapse:false ], // meta map
+                [ id:'test_se', single_end:true, collapse:false ], // meta map
                 [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ],
                 33
             ],
             [
-                [ id:'test', single_end:false, collapse:false ], // meta map
+                [ id:'test_pe', single_end:false, collapse:false ], // meta map
                 [
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
@@ -20,10 +20,9 @@ include { FASTQ_ENA_PREP_ADAPTERREMOVAL } from '../../../../subworkflows/nf-core
             ] ]
 
 
-workflow test_fastq_ena_prep_adapterremoval {
+workflow test_fastq_ena_prep_adapterremoval_md5sum {
 
     ch_input = Channel.fromList( input )
-        .dump(tag:'input')
 
-    FASTQ_ENA_PREP_ADAPTERREMOVAL ( ch_input, [] )
+    FASTQ_ENA_PREP_ADAPTERREMOVAL_MD5SUM ( ch_input, [] )
 }
