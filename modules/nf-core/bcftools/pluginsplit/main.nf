@@ -29,7 +29,7 @@ process BCFTOOLS_PLUGINSPLIT {
     def groups_arg  = groups  ? "--groups-file ${groups}"   : ""
     def regions_arg = regions ? "--regions-file ${regions}" : ""
     def targets_arg = targets ? "--targets-file ${targets}" : ""
-    
+
     """
     bcftools plugin split \\
         ${vcf} \\
