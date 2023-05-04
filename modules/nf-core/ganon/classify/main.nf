@@ -1,6 +1,6 @@
 process GANON_CLASSIFY {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     conda "bioconda::ganon=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -38,7 +38,7 @@ process GANON_CLASSIFY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
     END_VERSIONS
     """
 
@@ -55,7 +55,7 @@ process GANON_CLASSIFY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
     END_VERSIONS
     """
 }
