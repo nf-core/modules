@@ -1,8 +1,8 @@
 include { ADAPTERREMOVAL as ENA_PREP_ADAPTERREMOVAL } from '../../../modules/nf-core/adapterremoval/main'
-include { MD5SUM                                    } from '../../../modules/nf-core/md5sum/main'
-include { CAT_CAT                                   } from '../../../modules/nf-core/cat/cat/main'
+include { MD5SUM         as ENA_PREP_MD5SUM         } from '../../../modules/nf-core/md5sum/main'
+include { CAT_CAT        as ENA_PREP_CAT_CAT        } from '../../../modules/nf-core/cat/cat/main'
 
-workflow FASTQ_ENA_PREP_ADAPTERREMOVAL {
+workflow FASTQ_ENA_PREP_ADAPTERREMOVAL_MD5SUM {
 
     take:
     ch_reads        // channel: [ val(meta), [ fastq ], val(phred_plus) ]
@@ -22,8 +22,8 @@ workflow FASTQ_ENA_PREP_ADAPTERREMOVAL {
     }
 
     ENA_PREP_ADAPTERREMOVAL( ch_ar_input, ch_adapter_list )
-    ch_versions      = ch_versions.mix(ENA_PREP_ADAPTERREMOVAL.out.versions.first())
-    ch_multiqc_files = ch_multiqc_files.mix(ENA_PREP_ADAPTERREMOVAL.out.settings)
+    ch_versions      = ch_versions.mix( ENA_PREP_ADAPTERREMOVAL.out.versions.first() )
+    ch_multiqc_files = ch_multiqc_files.mix( ENA_PREP_ADAPTERREMOVAL.out.settings )
 
     // Keep appropriate adapter-trimmed output for each sequencing type
     ch_pe_trimmed_fastqs = ENA_PREP_ADAPTERREMOVAL.out.paired_truncated
@@ -45,23 +45,23 @@ workflow FASTQ_ENA_PREP_ADAPTERREMOVAL {
                 meta.single_end == true
         }
 
-    ch_fastqs_for_ena = ch_se_trimmed_fastqs.mix(ch_pe_trimmed_fastqs)
+    ch_fastqs_for_ena = ch_se_trimmed_fastqs.mix( ch_pe_trimmed_fastqs )
 
     // MD5SUM accepts one file per job.
     ch_fastqs_for_checksum = ch_se_trimmed_fastqs
-        .mix(ch_pe_trimmed_fastqs_split.r1)
-        .mix(ch_pe_trimmed_fastqs_split.r2)
+        .mix( ch_pe_trimmed_fastqs_split.r1 )
+        .mix( ch_pe_trimmed_fastqs_split.r2 )
 
-    MD5SUM ( ch_fastqs_for_checksum )
-    ch_versions       = ch_versions.mix(MD5SUM.out.versions.first())
+    ENA_PREP_MD5SUM ( ch_fastqs_for_checksum )
+    ch_versions       = ch_versions.mix( ENA_PREP_MD5SUM.out.versions.first() )
 
-    ch_checksums_to_cat = MD5SUM.out.checksum
+    ch_checksums_to_cat = ENA_PREP_MD5SUM.out.checksum
         .map{ [ [], it[1] ] }
         .groupTuple( by:0 )
 
-    CAT_CAT ( ch_checksums_to_cat )
-    ch_versions       = ch_versions.mix(CAT_CAT.out.versions.first())
-    ch_checksum_file  = CAT_CAT.out.file_out
+    ENA_PREP_CAT_CAT ( ch_checksums_to_cat )
+    ch_versions       = ch_versions.mix( ENA_PREP_CAT_CAT.out.versions.first() )
+    ch_checksum_file  = ENA_PREP_CAT_CAT.out.file_out
 
 
     emit:
@@ -70,4 +70,3 @@ workflow FASTQ_ENA_PREP_ADAPTERREMOVAL {
     multiqc  = ch_multiqc_files  // channel: [ val(meta), path(settings) ]
     versions = ch_versions       // channel: [ versions.yml ]
 }
-
