@@ -1,4 +1,4 @@
-process BCFTOOLS_SCATTER {
+process BCFTOOLS_PLUGINSCATTER {
     tag "$meta.id"
     label 'process_low'
 

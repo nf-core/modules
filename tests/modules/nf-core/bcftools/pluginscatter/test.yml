@@ -1,8 +1,8 @@
-- name: bcftools scatter test_bcftools_scatter_sites_per_chunk
-  command: nextflow run ./tests/modules/nf-core/bcftools/scatter -entry test_bcftools_scatter_sites_per_chunk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/scatter/nextflow.config
+- name: bcftools pluginscatter test_bcftools_pluginscatter_sites_per_chunk
+  command: nextflow run ./tests/modules/nf-core/bcftools/pluginscatter -entry test_bcftools_pluginscatter_sites_per_chunk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/pluginscatter/nextflow.config
   tags:
+    - bcftools/pluginscatter
     - bcftools
-    - bcftools/scatter
   files:
     - path: output/bcftools/test0.vcf
       md5sum: 76902851e1f21970f1058b4bb85920d0
@@ -22,21 +22,21 @@
       md5sum: 695850092383eed031ba09b67afd7633
     - path: output/bcftools/versions.yml
 
-- name: bcftools scatter test_bcftools_scatter_scatter
-  command: nextflow run ./tests/modules/nf-core/bcftools/scatter -entry test_bcftools_scatter_scatter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/scatter/nextflow.config
+- name: bcftools pluginscatter test_bcftools_pluginscatter_scatter
+  command: nextflow run ./tests/modules/nf-core/bcftools/pluginscatter -entry test_bcftools_pluginscatter_scatter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/pluginscatter/nextflow.config
   tags:
+    - bcftools/pluginscatter
     - bcftools
-    - bcftools/scatter
   files:
     - path: output/bcftools/testchr21.vcf
       md5sum: 68e3660b6d619163692edad8ba7dd179
     - path: output/bcftools/versions.yml
 
-- name: bcftools scatter test_bcftools_scatter_scatter_file
-  command: nextflow run ./tests/modules/nf-core/bcftools/scatter -entry test_bcftools_scatter_scatter_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/scatter/nextflow.config
+- name: bcftools pluginscatter test_bcftools_pluginscatter_scatter_file
+  command: nextflow run ./tests/modules/nf-core/bcftools/pluginscatter -entry test_bcftools_pluginscatter_scatter_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/pluginscatter/nextflow.config
   tags:
+    - bcftools/pluginscatter
     - bcftools
-    - bcftools/scatter
   files:
     - path: output/bcftools/testfile1.vcf
       md5sum: 68e3660b6d619163692edad8ba7dd179
