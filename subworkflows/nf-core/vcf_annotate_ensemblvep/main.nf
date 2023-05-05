@@ -23,7 +23,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     ch_versions = Channel.empty()
 
     //
-    // Prepare the input VCF channel for scattering
+    // Prepare the input VCF channel for scattering (split VCFs from custom files)
     //
 
     ch_input = ch_vcf
@@ -34,7 +34,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     //
     // Scatter the input VCFs into multiple VCFs. These VCFs contain the amount of variants
-    // specified by `val_sites_per_chunk`.
+    // specified by `val_sites_per_chunk`. The lower this value is, the more files will be created
     //
 
     BCFTOOLS_PLUGINSCATTER(
@@ -53,21 +53,25 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     ch_scatter = BCFTOOLS_PLUGINSCATTER.out.scatter
         .map { meta, vcfs ->
-            count = vcfs instanceof ArrayList ? vcfs.size() : 1
-            [ meta, vcfs instanceof ArrayList ? vcfs : [vcfs], count ] // Channel containing the list of VCFs
+            is_list = vcfs instanceof ArrayList
+            count = is_list ? vcfs.size() : 1
+            [ meta, is_list ? vcfs : [vcfs], count ]
+            // Channel containing the list of VCFs and the size of this list
         }
-        .transpose(by:1) // Transpose on the VCFs
-        .combine(ch_input.custom, by: 0)
+        .transpose(by:1) // Transpose on the VCFs => Creates an entry for each VCF in the list
+        .combine(ch_input.custom, by: 0) // Re-add the sample specific custom files
         .multiMap { meta, vcf, count, custom_files ->
+            // Define the new ID. The `_annotated` is to disambiguate the VEP output with its input
             new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
             new_meta = meta + [id:new_id]
-            vcf:    [ new_meta, vcf, custom_files ]
-            id:     [ new_meta, meta.id ]
-            counts: [ new_meta, count ]
+
+            // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs 
+            vep:    [ new_meta, vcf, custom_files ]
+            count:  [ new_meta, meta.id, count ]
         }
 
     ENSEMBLVEP_VEP(
-        ch_scatter.vcf,
+        ch_scatter.vep,
         val_genome,
         val_species,
         val_cache_version,
@@ -82,19 +86,22 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     //
 
     ch_concat_input = ENSEMBLVEP_VEP.out.vcf
-        .join(ch_scatter.id, failOnDuplicate:true, failOnMismatch:true)
-        .join(ch_scatter.counts, failOnDuplicate:true, failOnMismatch:true)
+        .join(ch_scatter.count, failOnDuplicate:true, failOnMismatch:true)
         .map { meta, vcf, id, count ->
             new_meta = meta + [id:id]
             [ groupKey(new_meta, count), vcf ]
         }
-        .groupTuple()
+        .groupTuple() // Group the VCFs which need to be concatenated
         .map { it + [[]] }
 
     BCFTOOLS_CONCAT(
         ch_concat_input
     )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
+
+    //
+    // Sort the concatenate output (bcftools concat is unable to do this on its own)
+    //
 
     BCFTOOLS_SORT(
         BCFTOOLS_CONCAT.out.vcf
@@ -107,6 +114,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     ch_tabix_input = BCFTOOLS_SORT.out.vcf
         .branch { meta, vcf ->
+            // Split the bgzipped VCFs from the unzipped VCFs (only bgzipped VCFs should be indexed)
             bgzip: vcf.extension == "gz"
             unzip: true
                 return [ meta, vcf, [] ]
