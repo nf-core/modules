@@ -5,7 +5,7 @@ process GATK_INDELREALIGNER {
     conda "bioconda::gatk=3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
-        'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
+        'biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)

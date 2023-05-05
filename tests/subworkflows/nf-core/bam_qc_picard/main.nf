@@ -19,8 +19,12 @@ workflow test_bam_qc_picard_wgs {
         [id:'genome'],
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ])
+    fasta_dict = Channel.value([
+        [id:'genome'],
+        file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    ])
 
-    BAM_QC_PICARD ( input, fasta, fasta_fai)
+    BAM_QC_PICARD ( input, fasta, fasta_fai, fasta_dict)
 }
 
 workflow test_bam_qc_picard_targetted {
@@ -41,7 +45,10 @@ workflow test_bam_qc_picard_targetted {
         [id:'genome'],
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ])
+    fasta_dict = Channel.value([
+        [id:'genome'],
+        file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    ])
 
-
-    BAM_QC_PICARD ( input, fasta, fasta_fai)
+    BAM_QC_PICARD ( input, fasta, fasta_fai, fasta_dict)
 }

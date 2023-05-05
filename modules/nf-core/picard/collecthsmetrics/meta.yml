@@ -34,12 +34,12 @@ input:
       pattern: "*.{bai,crai,sai}"
   - bait_intervals:
       type: file
-      description: An interval list file that contains the locations of the baits used.
-      pattern: "baits.interval_list"
+      description: An interval file that contains the locations of the baits used.
+      pattern: "*.{interval_list,bed,bed.gz}"
   - target_intervals:
       type: file
-      description: An interval list file that contains the locations of the targets.
-      pattern: "targets.interval_list"
+      description: An interval file that contains the locations of the targets.
+      pattern: "*.{interval_list,bed,bed.gz}"
   - meta2:
       type: map
       description: |
@@ -60,7 +60,15 @@ input:
       type: file
       description: Index of FASTA file. Only needed when fasta is supplied.
       pattern: "*.fai"
-
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
+      type: file
+      description: Sequence dictionary of FASTA file. Only needed when bed interval lists are supplied.
+      pattern: "*.dict"
 output:
   - meta:
       type: map

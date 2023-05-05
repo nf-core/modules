@@ -6,7 +6,7 @@ process TIARA_TIARA {
     conda "conda-forge::tiara=1.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiara:1.0.3' :
-        'quay.io/biocontainers/tiara:1.0.3' }"
+        'biocontainers/tiara:1.0.3' }"
 
     input:
     tuple val(meta), path(fasta)
