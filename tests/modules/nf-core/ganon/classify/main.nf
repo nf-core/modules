@@ -18,7 +18,7 @@ workflow test_ganon_classify {
     ]
 
     GANON_BUILDCUSTOM ( input_db, [], [] )
-    GANON_CLASSIFY    ( input, GANON_BUILDCUSTOM.out.db )
+    GANON_CLASSIFY    ( input, GANON_BUILDCUSTOM.out.db.map{it[1]} )
 }
 
 workflow test_ganon_classify_pe {
@@ -37,7 +37,7 @@ workflow test_ganon_classify_pe {
     ]
 
     GANON_BUILDCUSTOM ( input_db, [], [] )
-    GANON_CLASSIFY    ( input, GANON_BUILDCUSTOM.out.db )
+    GANON_CLASSIFY    ( input, GANON_BUILDCUSTOM.out.db.map{it[1]} )
 }
 
 
