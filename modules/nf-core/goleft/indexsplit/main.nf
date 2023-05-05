@@ -5,7 +5,7 @@ process GOLEFT_INDEXSPLIT {
     conda "bioconda::goleft=0.2.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1':
-        'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1' }"
+        'biocontainers/goleft:0.2.4--h9ee0642_1' }"
 
     input:
     tuple val(meta) , path(bai)
