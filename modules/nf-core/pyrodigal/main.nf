@@ -5,7 +5,7 @@ process PYRODIGAL {
     conda "bioconda::pyrodigal=2.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pyrodigal:2.1.0--py310h1425a21_0':
-        'quay.io/biocontainers/pyrodigal:2.1.0--py310h1425a21_0' }"
+        'biocontainers/pyrodigal:2.1.0--py310h1425a21_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -5,7 +5,7 @@ process TRINITY {
     conda "bioconda::trinity=2.13.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.13.2--h00214ad_1':
-        'quay.io/biocontainers/trinity:2.13.2--h00214ad_1' }"
+        'biocontainers/trinity:2.13.2--h00214ad_1' }"
 
     input:
     tuple val(meta), path(reads)

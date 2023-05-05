@@ -5,7 +5,7 @@ process SMOOTHXG {
     conda "bioconda::smoothxg=0.7.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoothxg:0.7.0--hfb1f815_0' :
-        'quay.io/biocontainers/smoothxg:0.7.0--hfb1f815_0' }"
+        'biocontainers/smoothxg:0.7.0--hfb1f815_0' }"
 
     input:
     tuple val(meta), path(gfa)
