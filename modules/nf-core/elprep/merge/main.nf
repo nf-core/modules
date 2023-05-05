@@ -5,7 +5,7 @@ process ELPREP_MERGE {
     conda "bioconda::elprep=5.1.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
-        'quay.io/biocontainers/elprep:5.1.2--he881be0_0' }"
+        'biocontainers/elprep:5.1.2--he881be0_0' }"
 
     input:
     tuple val(meta), path(bam)

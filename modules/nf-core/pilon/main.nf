@@ -5,7 +5,7 @@ process PILON {
     conda "bioconda::pilon=1.24"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pilon:1.24--hdfd78af_0':
-        'quay.io/biocontainers/pilon:1.24--hdfd78af_0' }"
+        'biocontainers/pilon:1.24--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

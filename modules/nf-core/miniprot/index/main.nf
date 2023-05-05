@@ -5,7 +5,7 @@ process MINIPROT_INDEX {
     conda "bioconda::miniprot=0.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniprot:0.5--h7132678_0':
-        'quay.io/biocontainers/miniprot:0.5--h7132678_0' }"
+        'biocontainers/miniprot:0.5--h7132678_0' }"
 
     input:
     tuple val(meta), path(fasta)

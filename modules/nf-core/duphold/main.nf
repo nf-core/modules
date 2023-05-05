@@ -5,7 +5,7 @@ process DUPHOLD {
     conda "bioconda::duphold=0.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1':
-        'quay.io/biocontainers/duphold:0.2.1--h516909a_1' }"
+        'biocontainers/duphold:0.2.1--h516909a_1' }"
 
     input:
     tuple val(meta), path(alignment_file), path(alignement_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
