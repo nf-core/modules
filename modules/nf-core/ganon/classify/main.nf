@@ -9,7 +9,7 @@ process GANON_CLASSIFY {
 
     input:
     tuple val(meta) , path(fastqs)
-    tuple val(meta2), path(db)
+    path(db)
 
     output:
     tuple val(meta), path("*.tre"), emit: tre
@@ -33,7 +33,7 @@ process GANON_CLASSIFY {
         --db-prefix \${dbprefix%%.ibf} \\
         $args \\
         --threads $task.cpus \\
-        -o ${prefix} \\
+        --output-prefix ${prefix} \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
