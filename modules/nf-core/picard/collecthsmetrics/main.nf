@@ -13,7 +13,6 @@ process PICARD_COLLECTHSMETRICS {
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
 
-
     output:
     tuple val(meta), path("*_metrics")  , emit: metrics
     path "versions.yml"                 , emit: versions
@@ -32,48 +31,34 @@ process PICARD_COLLECTHSMETRICS {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
+    def bait_interval_list = bait_intervals
+    def bait_intervallist_cmd = ""
+    if (bait_intervals =~ /.(bed|bed.gz)$/){
+        bait_interval_list = bait_intervals.replaceAll(/.(bed|bed.gz)$/, ".interval_list")
+        bait_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${bait_intervals} --OUTPUT ${bait_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+    }
+
+    def target_interval_list = target_intervals
+    def target_intervallist_cmd = ""
+    if (target_intervals =~ /.(bed|bed.gz)$/){
+        target_interval_list = target_intervals.replaceAll(/.(bed|bed.gz)$/, ".interval_list")
+        target_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${target_intervals} --OUTPUT ${target_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+    }
+
+
     """
 
-    if [[ "$bait_intervals" == *.bed || "$bait_intervals" == *.bed.gz ]]; then
-    bait_bed=$bait_intervals
-    bait_intervals=\${bait_bed%.bed*}.interval_list
-
-    picard \\
-        -Xmx${avail_mem}M \\
-        BedToIntervalList \\
-        --INPUT \$bait_bed \\
-        --OUTPUT \$bait_intervals \\
-        --SEQUENCE_DICTIONARY $dict \\
-        --TMP_DIR .
-
-    else
-        bait_intervals=$bait_intervals
-    fi
-
-    if [[ "$target_intervals" == *.bed || "$target_intervals" == *.bed.gz ]]; then
-    target_bed=$target_intervals
-    target_intervals=\${target_bed%.bed*}.interval_list
-
-    picard \\
-        -Xmx${avail_mem}M \\
-        BedToIntervalList \\
-        --INPUT \$target_bed \\
-        --OUTPUT \$target_intervals  \\
-        --SEQUENCE_DICTIONARY $dict \\
-        --TMP_DIR .
-
-    else
-        target_intervals=$target_intervals
-    fi
-
+    $bait_intervallist_cmd
+    $target_intervallist_cmd
 
     picard \\
         -Xmx${avail_mem}M \\
         CollectHsMetrics \\
         $args \\
         $reference \\
-        --BAIT_INTERVALS \$bait_intervals \\
-        --TARGET_INTERVALS \$target_intervals \\
+        --BAIT_INTERVALS $bait_interval_list \\
+        --TARGET_INTERVALS $target_interval_list \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
 
