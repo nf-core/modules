@@ -4,17 +4,14 @@
 
 include { ENSEMBLVEP_VEP            } from '../../../modules/nf-core/ensemblvep/vep/main'
 include { TABIX_TABIX               } from '../../../modules/nf-core/tabix/tabix/main'
-include { BCFTOOLS_QUERY            } from '../../../modules/nf-core/bcftools/query/main'
-include { BCFTOOLS_MERGE            } from '../../../modules/nf-core/bcftools/merge/main'
 include { BCFTOOLS_PLUGINSCATTER    } from '../../../modules/nf-core/bcftools/pluginscatter/main'
 include { BCFTOOLS_CONCAT           } from '../../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_PLUGINSPLIT      } from '../../../modules/nf-core/bcftools/pluginsplit/main'
+include { BCFTOOLS_SORT             } from '../../../modules/nf-core/bcftools/sort/main'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
-    ch_vcf                      // channel: [ val(meta), path(vcf), path(tbi) ]
+    ch_vcf                      // channel: [ val(meta), path(vcf), path(tbi), [path(file1), path(file2)...] ]
     ch_fasta                    // channel: [ val(meta2), path(fasta) ] (optional)
-    ch_fasta_fai                // channel: [ val(meta2), path(fasta_fai) ] (optional)
     val_genome                  //   value: genome to use
     val_species                 //   value: species to use
     val_cache_version           //   value: cache version to use
@@ -26,53 +23,22 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     ch_versions = Channel.empty()
 
     //
-    // Define the sample names in each VCF using bcftools query --list-samples
+    // Prepare the input VCF channel for scattering
     //
 
-    ch_vcf_map = ch_vcf
-        .multiMap { meta, vcf, tbi ->
-            vcf:   [ meta, vcf, tbi ]
-            meta:  [ meta.id, meta ]
+    ch_input = ch_vcf
+        .multiMap { meta, vcf, tbi, custom_files ->
+            vcf:    [ meta, vcf, tbi ]
+            custom: [ meta, custom_files ]
         }
 
-    BCFTOOLS_QUERY(
-        ch_vcf_map.vcf,
-        [],
-        [],
-        []
-    )
-    ch_versions = ch_versions.mix(BCFTOOLS_QUERY.out.versions.first())
-
-    ch_samples_list = BCFTOOLS_QUERY.out.txt
-        .map { meta, txt ->
-            return create_samples_file(meta, txt)
-        }
-        .collectFile(name:"samples.txt", newLine:true)
-
     //
-    // Merge the VCFs into one big VCF using bcftools merge
-    //
-
-    ch_merge_input = ch_vcf_map.vcf
-        .map { meta, vcf, tbi ->
-            [ [id:'raw'], vcf, tbi ]
-        }
-        .groupTuple() // No size needed here because this will merge all VCFs in the workflow
-
-    BCFTOOLS_MERGE(
-        ch_merge_input,
-        [],
-        ch_fasta instanceof List ? [] : ch_fasta.map { it[1] },
-        ch_fasta_fai instanceof List ? [] : ch_fasta_fai.map { it[1] }
-    )
-    ch_versions = ch_versions.mix(BCFTOOLS_MERGE.out.versions.first())
-
-    //
-    // Scatter the merged VCF into multiple smaller VCFs
+    // Scatter the input VCFs into multiple VCFs. These VCFs contain the amount of variants
+    // specified by `val_sites_per_chunk`.
     //
 
     BCFTOOLS_PLUGINSCATTER(
-        BCFTOOLS_MERGE.out.merged_variants.map { it + [[]] },
+        ch_input.vcf,
         val_sites_per_chunk,
         [],
         [],
@@ -85,14 +51,23 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     // Run the annotation with EnsemblVEP
     //
 
-    ch_vep_input = BCFTOOLS_PLUGINSCATTER.out.scatter
-        .transpose()
-        .map { meta, vcf ->
-            [ [id:vcf.simpleName], vcf, [] ]
+    ch_scatter = BCFTOOLS_PLUGINSCATTER.out.scatter
+        .map { meta, vcfs ->
+            count = vcfs instanceof ArrayList ? vcfs.size() : 1
+            [ meta, vcfs instanceof ArrayList ? vcfs : [vcfs], count ] // Channel containing the list of VCFs
+        }
+        .transpose(by:1) // Transpose on the VCFs
+        .combine(ch_input.custom, by: 0)
+        .multiMap { meta, vcf, count, custom_files ->
+            new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
+            new_meta = meta + [id:new_id]
+            vcf:    [ new_meta, vcf, custom_files ]
+            id:     [ new_meta, meta.id ]
+            counts: [ new_meta, count ]
         }
 
     ENSEMBLVEP_VEP(
-        ch_vep_input,
+        ch_scatter.vcf,
         val_genome,
         val_species,
         val_cache_version,
@@ -107,10 +82,13 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     //
 
     ch_concat_input = ENSEMBLVEP_VEP.out.vcf
-        .map { meta, vcf ->
-            [ [id:'annotated'], vcf ]
+        .join(ch_scatter.id, failOnDuplicate:true, failOnMismatch:true)
+        .join(ch_scatter.counts, failOnDuplicate:true, failOnMismatch:true)
+        .map { meta, vcf, id, count ->
+            new_meta = meta + [id:id]
+            [ groupKey(new_meta, count), vcf ]
         }
-        .groupTuple() // Again no size needed here because it will group all files in the workflow
+        .groupTuple()
         .map { it + [[]] }
 
     BCFTOOLS_CONCAT(
@@ -118,33 +96,18 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
 
-    //
-    // Split the VCFs back into their original forms
-    //
-
-    BCFTOOLS_PLUGINSPLIT(
-        BCFTOOLS_CONCAT.out.vcf.map { it + [[]] },
-        ch_samples_list,
-        [],
-        [],
-        []
+    BCFTOOLS_SORT(
+        BCFTOOLS_CONCAT.out.vcf
     )
-    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
+    ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
     //
-    // Index the resulting gzipped VCFs
+    // Index the resulting bgzipped VCFs
     //
 
-    ch_tabix_input = BCFTOOLS_PLUGINSPLIT.out.vcf
-        .transpose()
-        .map { meta, vcf ->
-            name = vcf.name.replace(".bcf", "").replace(".vcf", "").replace(".gz", "")
-            [ name, vcf ]
-        } // Re-add the original meta to each VCF
-        .join(ch_vcf_map.meta, failOnDuplicate:true, failOnMismatch:true)
-        .branch { id, vcf, meta ->
+    ch_tabix_input = BCFTOOLS_SORT.out.vcf
+        .branch { meta, vcf ->
             bgzip: vcf.extension == "gz"
-                return [ meta, vcf ]
             unzip: true
                 return [ meta, vcf, [] ]
         }
@@ -162,10 +125,4 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
     reports  = ENSEMBLVEP_VEP.out.report   // channel: [ path(html) ]
     versions = ch_versions                 // channel: [ versions.yml ]
-}
-
-def create_samples_file(meta, samples) {
-    def file_prefix = meta.id
-    def samples_list = samples.readLines().join(",")
-    return "${samples_list}\t-\t${file_prefix}"
 }

@@ -10,11 +10,8 @@ keywords:
 modules:
   - ensemblvep/vep
   - tabix/tabix
-  - bcftools/query
-  - bcftools/merge
   - bcftools/pluginscatter
   - bcftools/concat
-  - bcftools/pluginsplit
 input:
   - ch_vcf:
       description: |
@@ -24,10 +21,6 @@ input:
       description: |
         Reference genome fasta file (optional)
         Structure: [ val(meta2), path(fasta) ]
-  - ch_fasta_fai:
-      description: |
-        Reference genome fasta index file (optional)
-        Structure: [ val(meta3), path(fasta_fai) ]
   - val_genome:
       type: string
       description: genome to use

@@ -3,10 +3,8 @@
   tags:
     - bcftools
     - bcftools/concat
-    - bcftools/merge
     - bcftools/pluginscatter
-    - bcftools/pluginsplit
-    - bcftools/query
+    - bcftools/sort
     - ensemblvep
     - ensemblvep/vep
     - subworkflows
@@ -14,17 +12,106 @@
     - tabix
     - tabix/tabix
   files:
-    - path: output/bcftools/annotated.vcf.gz
-    - path: output/bcftools/raw.vcf.gz
-    - path: output/bcftools/raw0.vcf
-    - path: output/bcftools/raw1.vcf
-    - path: output/bcftools/test.txt
-      md5sum: d8e8fca2dc0f896fd7cb4cb0031ba249
-    - path: output/bcftools/test.vcf
-    - path: output/bcftools/test2.txt
-      md5sum: 126a8a51b9d1bbd07fddc65819a542c3
-    - path: output/bcftools/test2.vcf
-    - path: output/ensemblvep/raw0.summary.html
-    - path: output/ensemblvep/raw0.vcf.gz
-    - path: output/ensemblvep/raw1.summary.html
-    - path: output/ensemblvep/raw1.vcf.gz
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/custom_test1.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test0.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test1.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test0_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test0_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test1_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test1_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test0_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test0_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test1_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test1_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/tabix/custom_test.vcf.gz.tbi
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/tabix/test.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+
+- name: vcf_annotate_ensemblvep vcf_annotate_ensemblvep_large_chunks
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep -entry vcf_annotate_ensemblvep_large_chunks -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test0.vcf
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test0_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/custom_test0_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test0_annotated.summary.html
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/ensemblvep/test0_annotated.vcf.gz
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/tabix/custom_test.vcf.gz.tbi
+      contains:
+        - " # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+    - path: output/tabix/test.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
