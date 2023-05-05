@@ -5,7 +5,7 @@ process BAMALIGNCLEANER {
     conda "bioconda::bamaligncleaner=0.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/bamaligncleaner:0.2.1--pyhdfd78af_0' }"
+        'biocontainers/bamaligncleaner:0.2.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
