@@ -5,7 +5,7 @@ process AUTHENTICT_DEAM2CONT {
     conda "bioconda::authentict=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/authentict:1.0.1--py311h9f5acd7_0':
-        'quay.io/biocontainers/authentict:1.0.1--py311h9f5acd7_0' }"
+        'biocontainers/authentict:1.0.1--py311h9f5acd7_0' }"
 
     input:
     tuple val(meta), path(bam)
