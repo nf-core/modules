@@ -5,7 +5,7 @@ process ULTRA_INDEX {
     conda "bioconda::ultra_bioinformatics=0.0.4.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0':
-        'quay.io/biocontainers/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0' }"
+        'biocontainers/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0' }"
 
     input:
     path fasta

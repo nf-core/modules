@@ -5,7 +5,7 @@ process CRISPRCLEANR_NORMALIZE {
     conda "bioconda::r-crisprcleanr=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-crisprcleanr:3.0.0--r42hdfd78af_1':
-        'quay.io/biocontainers/r-crisprcleanr:3.0.0--r42hdfd78af_1' }"
+        'biocontainers/r-crisprcleanr:3.0.0--r42hdfd78af_1' }"
 
     input:
     tuple val(meta), path(count_file), path(library_file)
