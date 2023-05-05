@@ -65,7 +65,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
             new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
             new_meta = meta + [id:new_id]
 
-            // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs 
+            // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs
             vep:    [ new_meta, vcf, custom_files ]
             count:  [ new_meta, meta.id, count ]
         }
