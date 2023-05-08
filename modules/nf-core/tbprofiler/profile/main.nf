@@ -5,7 +5,7 @@ process TBPROFILER_PROFILE {
     conda "bioconda::tb-profiler=3.0.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tb-profiler:3.0.8--pypyh5e36f6f_0' :
-        'quay.io/biocontainers/tb-profiler:3.0.8--pypyh5e36f6f_0' }"
+        'biocontainers/tb-profiler:3.0.8--pypyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(reads)

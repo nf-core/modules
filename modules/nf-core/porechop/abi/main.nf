@@ -5,7 +5,7 @@ process PORECHOP_ABI {
     conda "bioconda::porechop_abi=0.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/porechop_abi:0.5.0--py310h590eda1_0':
-        'quay.io/biocontainers/porechop_abi:0.5.0--py310h590eda1_0' }"
+        'biocontainers/porechop_abi:0.5.0--py310h590eda1_0' }"
 
     input:
     tuple val(meta), path(reads)

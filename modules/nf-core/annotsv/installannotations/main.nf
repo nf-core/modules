@@ -5,7 +5,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
     conda "bioconda::annotsv=3.3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/annotsv:3.3.4--py311hdfd78af_1':
-        'quay.io/biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
+        'biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
 
     output:
     path "AnnotSV_annotations", emit: annotations
