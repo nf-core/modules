@@ -14,7 +14,7 @@ workflow test_clippy {
 
     CLIPPY ( 
         input,
-        file(params.test_data['homo_sapiens']['genome']['genome_21_gtf'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_21_gencode_gtf'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
         )
 }
