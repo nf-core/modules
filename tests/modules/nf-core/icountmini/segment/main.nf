@@ -8,7 +8,7 @@ workflow test_icountmini_segment {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['genome']['genome_21_gtf'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['genome']['genome_21_gencode_gtf'], checkIfExists: true)
     ]
 
     ICOUNTMINI_SEGMENT ( 
