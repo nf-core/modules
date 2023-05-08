@@ -11,7 +11,7 @@ process KMCP_COMPUTE {
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("${prefix}/*")           , emit: outdir
+    tuple val(meta), path("${prefix}")             , emit: outdir
     tuple val(meta), path("${prefix}/_info.txt")   , emit: info
     path "versions.yml"                            , emit: versions
 
