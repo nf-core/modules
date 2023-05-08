@@ -3,6 +3,9 @@ name: vcf_annotate_ensemblvep
 description: |
   Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file.
   Only VCF/BCF outputs are supported for now. Other outputs can be added later.
+  This subworkflow uses the scatter-gather method to better parallellize the VEP execution.
+  In essence this means that the input VCF is split into multiple smaller VCFs, which are all annotated
+  in parallel and merged back together after the annotation.
 keywords:
   - vcf
   - annotation
