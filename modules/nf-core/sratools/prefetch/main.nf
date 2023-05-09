@@ -5,7 +5,7 @@ process SRATOOLS_PREFETCH {
     conda "bioconda::sra-tools=2.11.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
-        'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
+        'biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
 
     input:
     tuple val(meta), val(id)
