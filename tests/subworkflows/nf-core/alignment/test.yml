@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core subworkflows create-test-yml 
+- name: "alignment"
+  command: nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+  tags:
+    - "subworkflows"
+    - "subworkflows/alignment"
+  files:
+    - path: "output/alignment/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/alignment/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
