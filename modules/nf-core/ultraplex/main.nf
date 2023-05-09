@@ -5,7 +5,7 @@ process ULTRAPLEX {
     conda "bioconda::ultraplex=1.2.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultraplex:1.2.5--py38h4a8c8d9_0' :
-        'quay.io/biocontainers/ultraplex:1.2.5--py38h4a8c8d9_0' }"
+        'biocontainers/ultraplex:1.2.5--py38h4a8c8d9_0' }"
 
     input:
     tuple val(meta), path(reads)
