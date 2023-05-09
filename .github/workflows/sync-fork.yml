@@ -1,10 +1,8 @@
 name: Sync Fork
 
 on:
-  push:
-    branches:
-      - master
-  workflow_dispatch: # on button click
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   merge:
