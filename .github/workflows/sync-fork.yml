@@ -7,7 +7,7 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-        steps:
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -27,3 +27,4 @@ jobs:
       - name: Push changes to forked repository
         run: |
           git push origin master
+          
