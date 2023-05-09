@@ -15,7 +15,7 @@ jobs:
         with:
           ref: master
       - name: Fetch changes from upstream
-        run: git fetch upstream
+        run: git fetch upstream https://github.com/nf-core/modules.git
       - name: Merge changes from upstream
         run: git merge upstream/master --no-edit
       - name: Push changes to fork
