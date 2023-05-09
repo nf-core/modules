@@ -7,13 +7,29 @@ on:
   workflow_dispatch: # on button click
 
 jobs:
-  sync:
-
+  merge:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: tgymnich/fork-sync@v1.8
-        with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          base: feature/extractumi
-          head: master
+      - uses: actions/checkout@v2
+      - name: Merge upstream
+        run: |
+          # "git checkout master" is unnecessary, already here by default
+          git pull --unshallow  # this option is very important, you would get
+                                # complains about unrelated histories without it.
+                                # (but actions/checkout@v2 can also be instructed
+                                # to fetch all git depth right from the start)
+
+          git remote add upstream https://github.com/nf-core/modules.git
+          git fetch upstream
+
+          # Neither forget the -b opt,
+          # the feature/extractumi ref is ambiguous at this stage
+          git checkout -b feature/extractumi origin/feature/extractumi
+          git merge --no-edit upstream/feature/extractumi
+          git push origin feature/extractumi
+
+          git checkout master
+          git merge --no-edit upstream/master
+          git push origin master
+
+          # etc
