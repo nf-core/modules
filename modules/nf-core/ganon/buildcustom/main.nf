@@ -40,6 +40,7 @@ process GANON_BUILDCUSTOM {
         ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
     END_VERSIONS
     """
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

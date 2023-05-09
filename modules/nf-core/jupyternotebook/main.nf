@@ -10,7 +10,7 @@ process JUPYTERNOTEBOOK {
     conda "conda-forge::ipykernel=6.0.3 conda-forge::jupytext=1.11.4 conda-forge::nbconvert=6.1.0 conda-forge::papermill=2.3.3 conda-forge::matplotlib=3.4.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' :
-        'quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' }"
+        'biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' }"
 
     input:
     tuple val(meta), path(notebook)
