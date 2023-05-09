@@ -10,12 +10,12 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
+      - name: Fetch changes from upstream
+        run: git fetch upstream https://github.com/nf-core/modules.git
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
           ref: master
-      - name: Fetch changes from upstream
-        run: git fetch upstream https://github.com/nf-core/modules.git
       - name: Merge changes from upstream
         run: git merge upstream/master --no-edit
       - name: Push changes to fork
