@@ -23,8 +23,8 @@ process ULTRAPLEX {
 
     script:
     def VERSION = "1.2.5" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
 
     def adapter_seq_command = ''
     if(adapter_seq) {
