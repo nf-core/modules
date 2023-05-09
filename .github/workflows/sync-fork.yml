@@ -9,16 +9,23 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    steps:
-      - name: Fetch changes from upstream
-        run: git fetch upstream https://github.com/nf-core/modules.git
-      - name: Checkout branch
+        steps:
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: master
-      - name: Merge changes from upstream
-        run: git merge upstream/master --no-edit
-      - name: Push changes to fork
-        uses: ad-m/github-push-action@master
-        with:
-          branch: master
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/nf-core/modules.git
+
+      - name: Fetch upstream changes
+        run: |
+          git fetch upstream
+
+      - name: Merge upstream master into forked master
+        run: |
+          git checkout master
+          git merge upstream/master --no-edit
+
+      - name: Push changes to forked repository
+        run: |
+          git push origin master
