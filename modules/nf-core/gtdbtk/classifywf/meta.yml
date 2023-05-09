@@ -25,11 +25,11 @@ input:
         e.g. [ id:'test', single_end:false,  assembler:'spades' ]
   - bins:
       type: file
-      description:  The binned fasta files from the assembler
+      description: The binned fasta files from the assembler
       pattern: "*.{fasta,fa}"
   - database:
-      type: The local copy of the taxonomic database used by GTDB-tk
-      description: The unzipped copy of the database
+      type: file
+      description: The local copy of the taxonomic database used by GTDB-tk (unzipped copy)
       pattern: "*"
 
 output:
