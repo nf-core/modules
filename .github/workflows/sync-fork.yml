@@ -22,12 +22,6 @@ jobs:
           git remote add upstream https://github.com/nf-core/modules.git
           git fetch upstream
 
-          # Neither forget the -b opt,
-          # the feature/extractumi ref is ambiguous at this stage
-          git checkout -b feature/extractumi origin/feature/extractumi
-          git merge --no-edit upstream/feature/extractumi
-          git push origin feature/extractumi
-
           git checkout master
           git merge --no-edit upstream/master
           git push origin master
