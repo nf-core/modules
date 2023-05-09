@@ -24,8 +24,8 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false,  assembler:'spades' ]
   - bins:
-      type: The binned fasta files from the assembler
-      description: Fasta files
+      type: file
+      description:  The binned fasta files from the assembler
       pattern: "*.{fasta,fa}"
   - database:
       type: The local copy of the taxonomic database used by GTDB-tk
