@@ -20,14 +20,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - variants:
+  - sv_vcf:
       type: file
       description: A VCF or BED file containing the structural variants to be annotated
       pattern: "*.{bed,vcf,vcf.gz}"
-  - variants_index:
+  - sv_vcf_index:
       type: file
       description: OPTIONAL - The index for gzipped VCF files
-      pattern: "*.{bed,vcf,vcf.gz}"
+      pattern: "*.tbi"
+  - candidate_small_variants:
+      type: file
+      description: OPTIONAL - A file containing candidate small variants
+      pattern: "*.{vcf,vcf.gz}"
   - meta2:
       type: map
       description: |
@@ -48,24 +52,16 @@ input:
   - meta4:
       type: map
       description: |
-        Groovy Map containing candidate small variants information
-  - candidate_genes:
+        Groovy Map containing candidate false positive SNV information
+  - false_positive_snv:
       type: file
       description: OPTIONAL - A VCF file containing small variant candidates
       pattern: "*.{vcf,vcf.gz}"
   - meta5:
       type: map
       description: |
-        Groovy Map containing candidate false positive SNV information
-  - candidate_genes:
-      type: file
-      description: OPTIONAL - A VCF file containing false positive SNVs
-      pattern: "*.{vcf,vcf.gz}"
-  - meta6:
-      type: map
-      description: |
         Groovy Map containing candidate gene transcripts information
-  - candidate_genes:
+  - gene_transcripts:
       type: file
       description: OPTIONAL - A file containing the preferred gene transcripts to be used in priority during annotation (either space-separated or tab-separated)
       pattern: "*.txt"
