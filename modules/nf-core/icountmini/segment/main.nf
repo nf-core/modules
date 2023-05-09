@@ -3,7 +3,6 @@ process ICOUNTMINI_SEGMENT {
     label "process_single"
 
     conda "bioconda::icount-mini=2.0.3"
-
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0' :
         'quay.io/biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
@@ -13,9 +12,9 @@ process ICOUNTMINI_SEGMENT {
     path fai
 
     output:
-    tuple val(meta), path("*_seg.gtf")                  ,  emit: gtf
-    tuple val(meta), path("*_regions.gtf.gz")           ,  emit: regions
-    path "versions.yml"                                 ,  emit: versions
+    tuple val(meta), path("*_seg.gtf")         ,  emit: gtf
+    tuple val(meta), path("*_regions.gtf.gz")  ,  emit: regions
+    path "versions.yml"                        ,  emit: versions
 
     when:
     task.ext.when == null || task.ext.when
