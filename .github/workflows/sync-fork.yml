@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: tgymnich/fork-sync@v1.8
         with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
           owner: llvm
           base: master
-          head: master
+          head: feature/extractumi
