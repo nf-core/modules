@@ -1,29 +1,29 @@
 name: Sync Fork
 
 on:
-  push:
-    branches:
-      - feature/extractumi
-  workflow_dispatch: # on button click
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Merge upstream
-        run: |
-          # "git checkout master" is unnecessary, already here by default
-          git pull --unshallow  # this option is very important, you would get
-                                # complains about unrelated histories without it.
-                                # (but actions/checkout@v2 can also be instructed
-                                # to fetch all git depth right from the start)
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
+      - name: Add upstream remote
+        run: |
           git remote add upstream https://github.com/nf-core/modules.git
+
+      - name: Fetch upstream changes
+        run: |
           git fetch upstream
 
+      - name: Merge upstream master into forked master
+        run: |
           git checkout master
-          git merge --no-edit upstream/master
-          git push origin master
+          git merge upstream/master --no-edit
 
-          # etc
+      - name: Push changes to forked repository
+        run: |
+          git push origin master
