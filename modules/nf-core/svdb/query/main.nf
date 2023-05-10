@@ -5,7 +5,7 @@ process SVDB_QUERY {
     conda "bioconda::svdb=2.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svdb:2.8.1--py39h5371cbf_0':
-        'quay.io/biocontainers/svdb:2.8.1--py39h5371cbf_0' }"
+        'biocontainers/svdb:2.8.1--py39h5371cbf_0' }"
 
     input:
     tuple val(meta), path(vcf)
