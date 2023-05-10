@@ -29,7 +29,7 @@ process GATK4_FILTERMUTECTCALLS {
     def orientationbias_command = orientationbias ? orientationbias.collect{"--orientation-bias-artifact-priors $it"}.join(' ') : ''
     def segmentation_command    = segmentation    ? segmentation.collect{"--tumor-segmentation $it"}.join(' ')                  : ''
     def estimate_command        = estimate        ? " --contamination-estimate ${estimate} "                                    : ''
-    def table_command           = table           ? " --contamination-table ${table} "                                          : ''
+    def table_command           = table           ? table.collect{"--contamination-table $it"}.join(' ')                        : ''
 
     def avail_mem = 3072
     if (!task.memory) {
