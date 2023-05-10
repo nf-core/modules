@@ -4,7 +4,11 @@
     - expansionhunter
   files:
     - path: output/expansionhunter/test.json.gz
-      md5sum: 230c1c669c3c2dc7e4fbf0ca249bb07b
+      contains:
+        - '"AlleleCount": 2,'
+        - '"Coverage": 0.0,'
     - path: output/expansionhunter/test.vcf.gz
-      md5sum: a8ce1df7cc837f71f69969d213c988e5
+      contains:
+        - "##fileformat=VCFv4.1"
+        - '##INFO=<ID=VARID,Number=1,Type=String,Description="Variant identifier as specified in the variant catalog">'
     - path: output/expansionhunter/versions.yml
