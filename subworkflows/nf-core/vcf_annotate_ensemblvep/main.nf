@@ -2,11 +2,11 @@
 // Run VEP to annotate VCF files
 //
 
-include { ENSEMBLVEP_VEP            } from '../../../modules/nf-core/ensemblvep/vep/main'
-include { TABIX_TABIX               } from '../../../modules/nf-core/tabix/tabix/main'
-include { BCFTOOLS_PLUGINSCATTER    } from '../../../modules/nf-core/bcftools/pluginscatter/main'
-include { BCFTOOLS_CONCAT           } from '../../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_SORT             } from '../../../modules/nf-core/bcftools/sort/main'
+include { ENSEMBLVEP_VEP         } from '../../../modules/nf-core/ensemblvep/vep/main'
+include { TABIX_TABIX            } from '../../../modules/nf-core/tabix/tabix/main'
+include { BCFTOOLS_PLUGINSCATTER } from '../../../modules/nf-core/bcftools/pluginscatter/main'
+include { BCFTOOLS_CONCAT        } from '../../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_SORT          } from '../../../modules/nf-core/bcftools/sort/main'
 
 workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
