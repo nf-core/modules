@@ -39,4 +39,17 @@ process ICOUNTMINI_SUMMARY {
         iCount-Mini: \$(iCount-Mini -v)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.summary_type.tsv
+    touch ${prefix}.summary_subtype.tsv
+    touch ${prefix}.summary_gene.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        iCount-Mini: \$(iCount-Mini -v)
+    END_VERSIONS
+    """
 }
