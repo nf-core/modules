@@ -51,7 +51,9 @@ input:
       description: The tools to use. Options => '["ensemblvep", "snpeff"]'
   - val_sites_per_chunk:
       type: integer
-      description: The amount of variants per scattered VCF
+      description: |
+        The amount of variants per scattered VCF.
+        Set this value to `null`, `[]` or `false` to disable scattering.
 output:
   - vcf_tbi:
       description: |
