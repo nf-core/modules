@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: vcf_annotate_ensemblvep
+name: vcf_annotate_ensemblvep_snpeff
 description: |
-  Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file.
+  Perform annotation with ensemblvep and/or snpeff and bgzip + tabix index the resulting VCF file.
   Only VCF/BCF outputs are supported for now. Other outputs can be added later.
   This subworkflow uses the scatter-gather method to better parallellize the VEP execution.
   In essence this means that the input VCF is split into multiple smaller VCFs, which are all annotated
@@ -10,8 +10,10 @@ keywords:
   - vcf
   - annotation
   - ensemblvep
+  - snpeff
 modules:
   - ensemblvep/vep
+  - snpeff/snpeff
   - tabix/tabix
   - bcftools/pluginscatter
   - bcftools/concat
@@ -24,23 +26,33 @@ input:
       description: |
         Reference genome fasta file (optional)
         Structure: [ val(meta2), path(fasta) ]
-  - val_genome:
+  - val_vep_genome:
       type: string
-      description: genome to use
-  - val_species:
+      description: genome to use for ensemblvep
+  - val_vep_species:
       type: string
-      description: species to use
-  - val_cache_version:
+      description: species to use for ensemblvep
+  - val_vep_cache_version:
       type: integer
-      description: cache version to use
-  - ch_cache:
+      description: cache version to use for ensemblvep
+  - ch_vep_cache:
       description: |
         the root cache folder for ensemblvep (optional)
-        Structure: [ val(meta3), path(cache) ]
-  - ch_extra_files:
+        Structure: [ path(cache) ]
+  - ch_vep_extra_files:
       description: |
         any extra files needed by plugins for ensemblvep (optional)
         Structure: [ path(file1), path(file2)... ]
+  - val_snpeff_db:
+      type: string
+      description: database to use for snpeff
+  - ch_snpeff_cache:
+      description: |
+        the root cache folder for snpeff (optional)
+        Structure: [ path(cache) ]
+  - val_tools_to_use:
+      type: list
+      description: The tools to use. Options => '["ensemblvep", "snpeff"]'
   - val_sites_per_chunk:
       type: integer
       description: The amount of variants per scattered VCF

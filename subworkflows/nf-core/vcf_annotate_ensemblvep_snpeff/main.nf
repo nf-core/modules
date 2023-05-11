@@ -1,22 +1,26 @@
 //
-// Run VEP to annotate VCF files
+// Run VEP and/or SNPEFF to annotate VCF files
 //
 
 include { ENSEMBLVEP_VEP            } from '../../../modules/nf-core/ensemblvep/vep/main'
+include { SNPEFF_SNPEFF             } from '../../../modules/nf-core/snpeff/snpeff/main'
 include { TABIX_TABIX               } from '../../../modules/nf-core/tabix/tabix/main'
 include { BCFTOOLS_PLUGINSCATTER    } from '../../../modules/nf-core/bcftools/pluginscatter/main'
 include { BCFTOOLS_CONCAT           } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT             } from '../../../modules/nf-core/bcftools/sort/main'
 
-workflow VCF_ANNOTATE_ENSEMBLVEP {
+workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     take:
     ch_vcf                      // channel: [ val(meta), path(vcf), path(tbi), [path(file1), path(file2)...] ]
     ch_fasta                    // channel: [ val(meta2), path(fasta) ] (optional)
-    val_genome                  //   value: genome to use
-    val_species                 //   value: species to use
-    val_cache_version           //   value: cache version to use
-    ch_cache                    // channel: [ path(cache) ] (optional)
-    ch_extra_files              // channel: [ path(file1), path(file2)... ] (optional)
+    val_vep_genome              //   value: genome to use
+    val_vep_species             //   value: species to use
+    val_vep_cache_version       //   value: cache version to use
+    ch_vep_cache                // channel: [ path(cache) ] (optional)
+    ch_vep_extra_files          // channel: [ path(file1), path(file2)... ] (optional)
+    val_snpeff_db               //   value: the db version to use for snpEff
+    ch_snpeff_cache             // channel: [ path(cache) ] (optional)
+    val_tools_to_use            //   value: a list of tools to use options are: ["ensemblvep", "snpeff"]
     val_sites_per_chunk         //   value: the amount of variants per scattered VCF
 
     main:
@@ -66,26 +70,47 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
             new_meta = meta + [id:new_id]
 
             // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs
-            vep:    [ new_meta, vcf, custom_files ]
+            input:  [ new_meta, vcf, custom_files ]
             count:  [ new_meta, meta.id, count ]
         }
 
-    ENSEMBLVEP_VEP(
-        ch_scatter.vep,
-        val_genome,
-        val_species,
-        val_cache_version,
-        ch_cache,
-        ch_fasta,
-        ch_extra_files
-    )
-    ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions.first())
+    if("ensemblvep" in val_tools_to_use){
+        ENSEMBLVEP_VEP(
+            ch_scatter.input,
+            val_vep_genome,
+            val_vep_species,
+            val_vep_cache_version,
+            ch_vep_cache,
+            ch_fasta,
+            ch_vep_extra_files
+        )
+        ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions.first())
+
+        ch_vep_output  = ENSEMBLVEP_VEP.out.vcf
+        ch_vep_reports = ENSEMBLVEP_VEP.out.report
+    } else {
+        ch_vep_output  = ch_scatter.input
+        ch_vep_reports = Channel.empty()
+    }
+
+    if("snpeff" in val_tools_to_use){
+        SNPEFF_SNPEFF(
+            ch_vep_output,
+            val_snpeff_db,
+            ch_snpeff_cache
+        )
+        ch_versions = ch_versions.mix(SNPEFF_SNPEFF.out.versions.first())
+
+        ch_snpeff_output = SNPEFF_SNPEFF.out.vcf
+    } else {
+        ch_snpeff_output = ch_vep_output
+    }
 
     //
     // Concatenate the VCFs back together with bcftools concat
     //
 
-    ch_concat_input = ENSEMBLVEP_VEP.out.vcf
+    ch_concat_input = ch_snpeff_output
         .join(ch_scatter.count, failOnDuplicate:true, failOnMismatch:true)
         .map { meta, vcf, id, count ->
             new_meta = meta + [id:id]
@@ -131,6 +156,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     emit:
     vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
-    reports  = ENSEMBLVEP_VEP.out.report   // channel: [ path(html) ]
+    reports  = ch_vep_reports              // channel: [ path(html) ]
     versions = ch_versions                 // channel: [ versions.yml ]
 }

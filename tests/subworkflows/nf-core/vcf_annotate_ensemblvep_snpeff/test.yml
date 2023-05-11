@@ -1,0 +1,342 @@
+- name: vcf_annotate_ensemblvep_snpeff vcf_annotate_ensemblvep_snpeff_vep
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff -entry vcf_annotate_ensemblvep_snpeff_vep -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - snpeff
+    - snpeff/snpeff
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep_snpeff
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/custom_test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/custom_test1_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test1_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test1_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test1_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/tabix/custom_test.vcf.gz.tbi
+    - path: output/tabix/test.vcf.gz.tbi
+- name: vcf_annotate_ensemblvep_snpeff vcf_annotate_ensemblvep_snpeff_snpeff
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff -entry vcf_annotate_ensemblvep_snpeff_snpeff -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - snpeff
+    - snpeff/snpeff
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep_snpeff
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test0_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test0_annotated.csv
+      md5sum: e6603f545d10eeeadb64f691486e92fa
+    - path: output/snpeff/custom_test0_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/custom_test1_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test1_annotated.csv
+      md5sum: 8014b308188e1818e2a112b8f5a3dce9
+    - path: output/snpeff/custom_test1_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/snpEff_summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/snpeff/test0_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/test0_annotated.csv
+      md5sum: 3dd1ff25fbe459d7470877339fca8702
+    - path: output/snpeff/test0_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/test1_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/test1_annotated.csv
+      md5sum: ac458aa32fbe5a5cc5a8430f5fb5496b
+    - path: output/snpeff/test1_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/tabix/custom_test.vcf.gz.tbi
+
+- name: vcf_annotate_ensemblvep_snpeff vcf_annotate_ensemblvep_snpeff_both
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff -entry vcf_annotate_ensemblvep_snpeff_both -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - snpeff
+    - snpeff/snpeff
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep_snpeff
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test1.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/custom_test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/custom_test1_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test1_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test1_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test1_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test0_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test0_annotated.csv
+      md5sum: e2eedd068a3b688e5d586764992b9d9d
+    - path: output/snpeff/custom_test0_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/custom_test1_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/custom_test1_annotated.csv
+      md5sum: bc2d760cba714cb6c7e03e53c80d3c05
+    - path: output/snpeff/custom_test1_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/snpEff_summary.html
+      md5sum: 3e0b36f669ff1af217e10762abefc4e2
+    - path: output/snpeff/test0_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/test0_annotated.csv
+      md5sum: cba9ccfad04cc500b0cb5566f6086bfa
+    - path: output/snpeff/test0_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/snpeff/test1_annotated.ann.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/snpeff/test1_annotated.csv
+      md5sum: 6eaf06087e43bdef5b6de471b2015bb5
+    - path: output/snpeff/test1_annotated.genes.txt
+      md5sum: 130536bf0237d7f3f746d32aaa32840a
+    - path: output/tabix/custom_test.vcf.gz.tbi
+    - path: output/tabix/test.vcf.gz.tbi
+- name: vcf_annotate_ensemblvep_snpeff vcf_annotate_ensemblvep_snpeff_large_chunks
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff -entry vcf_annotate_ensemblvep_snpeff_large_chunks -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - snpeff
+    - snpeff/snpeff
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep_snpeff
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/custom_test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/custom_test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test0.vcf
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/bcftools/test_concat.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/custom_test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test0_annotated.summary.vcf
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test0_annotated.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/tabix/custom_test.vcf.gz.tbi
+    - path: output/tabix/test.vcf.gz.tbi
