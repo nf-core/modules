@@ -132,3 +132,39 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
         100
     )
 }
+
+workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
+    input = Channel.of([
+        [ id:'test1' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+        []
+    ],[
+        [ id:'custom_test' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
+        [
+            file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true)
+        ]
+    ])
+
+    fasta = [
+        [id:"fasta"],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+
+    VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
+        input,
+        fasta,
+        "WBcel235",
+        "caenorhabditis_elegans",
+        "108",
+        [],
+        [],
+        [],
+        [],
+        ["ensemblvep"],
+        []
+    )
+}

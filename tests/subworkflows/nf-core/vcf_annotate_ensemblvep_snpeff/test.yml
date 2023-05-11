@@ -348,3 +348,37 @@
         - '##FILTER=<ID=PASS,Description="All filters passed">'
     - path: output/tabix/custom_test.vcf.gz.tbi
     - path: output/tabix/test.vcf.gz.tbi
+- name: vcf_annotate_ensemblvep_snpeff vcf_annotate_ensemblvep_snpeff_no_scatter
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff -entry vcf_annotate_ensemblvep_snpeff_no_scatter -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+    - bcftools/pluginscatter
+    - bcftools/sort
+    - ensemblvep
+    - ensemblvep/vep
+    - snpeff
+    - snpeff/snpeff
+    - subworkflows
+    - subworkflows/vcf_annotate_ensemblvep_snpeff
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/ensemblvep/custom_test.summary.html
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/custom_test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/ensemblvep/test1.summary.html
+      contains:
+        - "<html>"
+        - "<head>"
+    - path: output/ensemblvep/test1.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.2"
+        - '##FILTER=<ID=PASS,Description="All filters passed">'
+    - path: output/tabix/custom_test.vcf.gz.tbi
+    - path: output/tabix/test1.vcf.gz.tbi
