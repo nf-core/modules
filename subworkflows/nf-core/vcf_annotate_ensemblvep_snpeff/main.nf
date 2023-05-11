@@ -105,9 +105,15 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         )
         ch_versions = ch_versions.mix(SNPEFF_SNPEFF.out.versions.first())
 
-        ch_snpeff_output = SNPEFF_SNPEFF.out.vcf
+        ch_snpeff_output  = SNPEFF_SNPEFF.out.vcf
+        ch_snpeff_reports = SNPEFF_SNPEFF.out.report
+        ch_snpeff_html    = SNPEFF_SNPEFF.out.summary_html
+        ch_snpeff_genes   = SNPEFF_SNPEFF.out.genes_txt
     } else {
-        ch_snpeff_output = ch_vep_output
+        ch_snpeff_output  = ch_vep_output
+        ch_snpeff_reports = Channel.empty()
+        ch_snpeff_html    = Channel.empty()
+        ch_snpeff_genes   = Channel.empty()
     }
 
     //
@@ -159,7 +165,10 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         .mix(ch_tabix_input.unzip)
 
     emit:
-    vcf_tbi  = ch_vcf_tbi                  // channel: [ val(meta), path(vcf), path(tbi) ]
-    reports  = ch_vep_reports              // channel: [ path(html) ]
-    versions = ch_versions                 // channel: [ versions.yml ]
+    vcf_tbi         = ch_vcf_tbi        // channel: [ val(meta), path(vcf), path(tbi) ]
+    vep_reports     = ch_vep_reports    // channel: [ path(html) ]
+    snpeff_reports  = ch_snpeff_reports // channel: [ path(csv) ]
+    snpeff_html     = ch_snpeff_html    // channel: [ path(html) ]
+    snpeff_genes    = ch_snpeff_genes   // channel: [ path(genes) ]
+    versions        = ch_versions       // channel: [ versions.yml ]
 }
