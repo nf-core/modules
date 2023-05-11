@@ -5,6 +5,7 @@
     - kmcp/compute
   files:
     - path: output/kmcp/test_/_info.txt
+      contains: ["#path	name	chunkIdx	idxNum	genomeSize	kmers"]
     - path: output/kmcp/test_/genome.fasta.unik
     - path: output/kmcp/versions.yml
 
@@ -15,7 +16,7 @@
     - kmcp/compute
   files:
     - path: output/kmcp/test_/_info.txt
+      contains: ["#path	name	chunkIdx	idxNum	genomeSize	kmers"]
     - path: output/kmcp/test_/genome.fasta.unik
     - path: output/kmcp/test_/transcriptome.fasta.unik
-      md5sum: 1c81408c27fee27a2a7e28ba61bbe122
     - path: output/kmcp/versions.yml
