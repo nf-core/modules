@@ -18,9 +18,11 @@ workflow test_icountmini_peaks {
         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     )
 
+    crosslinks = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)
+
     bed = [
         [  id:'test' ], // meta map
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)
+        crosslinks
     ]
     gtf = ICOUNTMINI_SEGMENT.out.gtf.flatten().last()
 
@@ -29,10 +31,11 @@ workflow test_icountmini_peaks {
         gtf
     )
 
-    peaks_input = bed
-        .map{ [ it[0].id, it[0], it[1] ] }
-        .join( ICOUNTMINI_SIGXLS.out.sigxls.map{ [ it[0].id, it[0], it[1] ] } )
-        .map { [ it[1], it[2], it[4] ] }
+    peaks_input = [
+        [  id:'test' ], // meta map
+        crosslinks,
+        ICOUNTMINI_SIGXLS.out.sigxls.flatten().last()
+    ]
 
     ICOUNTMINI_PEAKS (
         peaks_input

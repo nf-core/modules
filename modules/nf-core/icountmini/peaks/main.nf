@@ -32,4 +32,14 @@ process ICOUNTMINI_PEAKS {
         iCount-Mini: \$(iCount-Mini -v)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed.gz
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        iCount-Mini: \$(iCount-Mini -v)
+    END_VERSIONS
+    """
 }
