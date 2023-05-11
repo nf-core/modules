@@ -5,7 +5,7 @@ process ANTISMASH_ANTISMASHLITE {
     conda "bioconda::antismash-lite=6.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
+        'biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?

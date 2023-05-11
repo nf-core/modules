@@ -5,7 +5,7 @@ process DESEQ2_DIFFERENTIAL {
     conda "bioconda::bioconductor-deseq2=1.34.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-deseq2:1.34.0--r41hc247a5b_3' :
-        'quay.io/biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
+        'biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)

@@ -5,7 +5,7 @@ process DAMAGEPROFILER {
     conda "bioconda::damageprofiler=1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
-        'quay.io/biocontainers/damageprofiler:1.1--hdfd78af_2' }"
+        'biocontainers/damageprofiler:1.1--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(bam)

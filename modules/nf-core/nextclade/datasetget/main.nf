@@ -5,7 +5,7 @@ process NEXTCLADE_DATASETGET {
     conda "bioconda::nextclade=2.12.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nextclade:2.12.0--h9ee0642_0' :
-        'quay.io/biocontainers/nextclade:2.12.0--h9ee0642_0' }"
+        'biocontainers/nextclade:2.12.0--h9ee0642_0' }"
 
     input:
     val dataset
