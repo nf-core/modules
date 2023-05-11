@@ -15,7 +15,7 @@ workflow test_ganon_classify {
 
     input = Channel.fromList([
         [ [ id:'test', single_end:true ], file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ],
-        [ [ id:'test', single_end:false ], [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ] ]
+        [ [ id:'test2', single_end:false ], [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ] ]
     ])
 
     GANON_BUILDCUSTOM ( input_db, [], [] )
