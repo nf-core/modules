@@ -2,7 +2,10 @@ process UMICOLLAPSE {
     tag "$meta.id"
     label "process_medium"
 
-    container 'elly1502/umicollapse:latest'
+    conda "bioconda::umicollapse=1.0.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/umicollapse=1.0.0--hdfd78af_1' :
+        'biocontainers/umicollapse=1.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -21,7 +24,7 @@ process UMICOLLAPSE {
     def VERSION = '1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    java -jar /UMICollapse/umicollapse.jar \\
+    umicollapse \\
         bam \\
         -i $bam \\
         -o ${prefix}.bam \\
@@ -29,6 +32,16 @@ process UMICOLLAPSE {
 
     mv .command.log ${prefix}_UMICollapse.log
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        umicollapse: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         umicollapse: $VERSION
