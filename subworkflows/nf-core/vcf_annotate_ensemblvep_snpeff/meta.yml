@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: vcf_annotate_ensemblvep_snpeff
 description: |
-   Perform annotation with ensemblvep and/or snpeff and bgzip + tabix index the resulting VCF file. This subworkflow uses the scatter-gather method to run VEP in parallel to increase throughput. The input VCF is split into multiple smaller VCFs of fixed size, which are annotated separately and concatenated back together to a single output file per sample. Only VCF/BCF outputs are currently supported.
+  Perform annotation with ensemblvep and/or snpeff and bgzip + tabix index the resulting VCF file. This subworkflow uses the scatter-gather method to run VEP/snpEff in parallel to increase throughput. The input VCF is split into multiple smaller VCFs of fixed size, which are annotated separately and concatenated back together to a single output file per sample. Only VCF/BCF outputs are currently supported.
 keywords:
   - vcf
   - annotation

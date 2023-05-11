@@ -57,6 +57,10 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
 
     ch_scatter = BCFTOOLS_PLUGINSCATTER.out.scatter
         .map { meta, vcfs ->
+            // This checks if multiple files were created using the scatter process
+            // If multiple files are created, a list will be made as output of the process
+            // So if the output isn't a list, there is always one file and if there is a list,
+            // the amount of files in the list gets counted by .size()
             is_list = vcfs instanceof ArrayList
             count = is_list ? vcfs.size() : 1
             [ meta, is_list ? vcfs : [vcfs], count ]
