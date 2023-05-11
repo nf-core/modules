@@ -1,0 +1,9 @@
+- name: ganon report test_ganon_classify
+  command: nextflow run ./tests/modules/nf-core/ganon/report -entry test_ganon_classify -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ganon/report/nextflow.config
+  tags:
+    - ganon
+    - ganon/report
+  files:
+    - path: output/ganon/test.tre
+      md5sum: 66c0b9ed247989682fe3bae842d37a76
+    - path: output/ganon/versions.yml
