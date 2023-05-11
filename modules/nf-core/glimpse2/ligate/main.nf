@@ -5,7 +5,7 @@ process GLIMPSE2_LIGATE {
     conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
     tuple val(meta), path(input_list), path(input_index)

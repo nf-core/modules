@@ -15,7 +15,7 @@ process GLIMPSE2_PHASE {
     conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
         tuple val(meta) , path(input), path(input_index), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)

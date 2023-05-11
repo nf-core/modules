@@ -5,12 +5,13 @@ process PICARD_COLLECTHSMETRICS {
     conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals), path(target_intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*_metrics")  , emit: metrics
@@ -30,14 +31,34 @@ process PICARD_COLLECTHSMETRICS {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
+    def bait_interval_list = bait_intervals
+    def bait_intervallist_cmd = ""
+    if (bait_intervals =~ /.(bed|bed.gz)$/){
+        bait_interval_list = bait_intervals.toString().replaceAll(/.(bed|bed.gz)$/, ".interval_list")
+        bait_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${bait_intervals} --OUTPUT ${bait_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+    }
+
+    def target_interval_list = target_intervals
+    def target_intervallist_cmd = ""
+    if (target_intervals =~ /.(bed|bed.gz)$/){
+        target_interval_list = target_intervals.toString().replaceAll(/.(bed|bed.gz)$/, ".interval_list")
+        target_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${target_intervals} --OUTPUT ${target_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+    }
+
+
     """
+
+    $bait_intervallist_cmd
+    $target_intervallist_cmd
+
     picard \\
         -Xmx${avail_mem}M \\
         CollectHsMetrics \\
         $args \\
         $reference \\
-        --BAIT_INTERVALS $bait_intervals \\
-        --TARGET_INTERVALS $target_intervals \\
+        --BAIT_INTERVALS $bait_interval_list \\
+        --TARGET_INTERVALS $target_interval_list \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
 

@@ -5,7 +5,7 @@ process ISLANDPATH {
     conda "bioconda::islandpath=1.0.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/islandpath:1.0.6--hdfd78af_0':
-        'quay.io/biocontainers/islandpath:1.0.6--hdfd78af_0' }"
+        'biocontainers/islandpath:1.0.6--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(genome)

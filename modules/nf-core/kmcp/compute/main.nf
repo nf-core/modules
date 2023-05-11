@@ -5,13 +5,13 @@ process KMCP_COMPUTE {
     conda "bioconda::kmcp=0.9.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kmcp:0.9.1--h9ee0642_0':
-        'quay.io/biocontainers/kmcp:0.9.1--h9ee0642_0' }"
+        'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("${prefix}/*")           , emit: outdir
+    tuple val(meta), path("${prefix}")             , emit: outdir
     tuple val(meta), path("${prefix}/_info.txt")   , emit: info
     path "versions.yml"                            , emit: versions
 
