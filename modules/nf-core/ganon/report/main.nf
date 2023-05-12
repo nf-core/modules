@@ -37,4 +37,17 @@ process GANON_REPORT {
         ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.tre
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
+    END_VERSIONS
+    """
 }
