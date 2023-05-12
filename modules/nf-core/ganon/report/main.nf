@@ -6,7 +6,7 @@ process GANON_REPORT {
     conda "bioconda::ganon=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ganon:1.5.1--py310h8abeb55_0':
-        'quay.io/biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
+        'biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
 
     input:
     tuple val(meta), path(rep)
