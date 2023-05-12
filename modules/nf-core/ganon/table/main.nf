@@ -1,6 +1,6 @@
-process GANON_CLASSIFY {
+process GANON_TABLE {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_single'
 
     conda "bioconda::ganon=1.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,15 +8,10 @@ process GANON_CLASSIFY {
         'biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
 
     input:
-    tuple val(meta) , path(fastqs)
-    path(db)
+    tuple val(meta), path(tre)
 
     output:
-    tuple val(meta), path("*.tre"), emit: tre
-    tuple val(meta), path("*.rep"), emit: report
-    tuple val(meta), path("*.lca"), emit: lca           , optional: true
-    tuple val(meta), path("*.all"), emit: all           , optional: true
-    tuple val(meta), path("*.unc"), emit: unclassified  , optional: true
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,16 +20,12 @@ process GANON_CLASSIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
     """
-    dbprefix=\$(ls *.ibf)
     ganon \\
-        classify \\
-        --db-prefix \${dbprefix%%.ibf} \\
-        $args \\
-        --threads $task.cpus \\
-        --output-prefix ${prefix} \\
-        $input
+        table \\
+        --input ${tre} \\
+        --output-file ${prefix}.txt \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,13 +36,9 @@ process GANON_CLASSIFY {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
+
     """
-    touch ${prefix}.tre
-    touch ${prefix}.report
-    touch ${prefix}.lca
-    touch ${prefix}.all
-    touch ${prefix}.unc
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
