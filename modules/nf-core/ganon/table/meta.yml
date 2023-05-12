@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
-name: "ganon_report"
-description: Generate a ganon report file from the output of ganon classify
+name: "ganon_table"
+description: Generate a multi-sample report file from the output of ganon report runs
 keywords:
   - ganon
   - metagenomics
@@ -10,6 +10,7 @@ keywords:
   - k-mer
   - classification
   - report
+  - table
 tools:
   - "ganon":
       description: "ganon classifies short DNA sequences against large sets of genomic reference sequences efficiently"
@@ -25,14 +26,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - rep:
+  - tre:
       type: file
-      description: Input 'repo' files from ganon classify
-      pattern: "*.rep"
-  - dbs:
-      type: file
-      description: Ganon database files from build or build-custom
-      pattern: "*.{ibf,tax}"
+      description: A list of 'tre' files from ganon report
+      pattern: "*.tre"
 
 output:
   - meta:
@@ -44,10 +41,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - tre:
+  - txt:
       type: file
-      description: Output ganon report containing taxonomic profile information. Formatting of contents depends on --output-format.
-      pattern: "*.tre"
+      description: Output ganon table containing taxonomic profile information of multiple samples. Formatting of contents depends on --output-format.
+      pattern: "*.txt"
 
 authors:
   - "@jfy133"

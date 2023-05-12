@@ -1,4 +1,3 @@
-
 process GANON_REPORT {
     tag "$meta.id"
     label 'process_single'
