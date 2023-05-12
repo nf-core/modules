@@ -5,7 +5,7 @@ process KALLISTOBUSTOOLS_COUNT {
     conda "bioconda::kb-python=0.27.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kb-python:0.27.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/kb-python:0.27.2--pyhdfd78af_0' }"
+        'biocontainers/kb-python:0.27.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)

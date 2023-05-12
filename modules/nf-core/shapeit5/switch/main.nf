@@ -5,7 +5,7 @@ process SHAPEIT5_SWITCH {
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
         tuple val(meta) , path(estimate), path(estimate_index), val(region), path(pedigree)
