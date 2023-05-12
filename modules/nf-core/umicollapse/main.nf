@@ -41,7 +41,7 @@ process UMICOLLAPSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.dedup.bam
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         umicollapse: $VERSION
