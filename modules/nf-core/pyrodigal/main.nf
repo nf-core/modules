@@ -24,9 +24,11 @@ process PYRODIGAL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pigz -cdf ${fasta} | pyrodigal \\
+    pigz -cdf ${fasta} > pigz_fasta.fna
+
+    pyrodigal \\
         $args \\
-        -i ${fasta} \\
+        -i pigz_fasta.fna \\
         -o ${prefix}.gff \\
         -d ${prefix}.fna \\
         -a ${prefix}.faa \\
