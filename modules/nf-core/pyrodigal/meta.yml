@@ -38,19 +38,19 @@ output:
   - gff:
       type: file
       description: gene annotations in gff format
-      pattern: "*.{gff}"
+      pattern: "*.{gff.gz}"
   - faa:
       type: file
       description: protein translations file
-      pattern: "*.{faa}"
+      pattern: "*.{faa.gz}"
   - fna:
       type: file
       description: nucleotide sequences file
-      pattern: "*.{fna}"
+      pattern: "*.{fna.gz}"
   - score:
       type: file
       description: all potential genes (with scores)
-      pattern: "*.{score}"
+      pattern: "*.{score.gz}"
 
 authors:
   - "@louperelo"
