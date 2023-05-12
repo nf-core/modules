@@ -5,15 +5,14 @@ process ANNOTSV_ANNOTSV {
     conda "bioconda::annotsv=3.3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/annotsv:3.3.4--py311hdfd78af_1' :
-        'quay.io/biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
+        'biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(variants), path(variants_index)
+    tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)
     tuple val(meta2), path(annotations)
     tuple val(meta3), path(candidate_genes)
-    tuple val(meta4), path(candidate_small_variants)
-    tuple val(meta5), path(false_positive_snv)
-    tuple val(meta6), path(gene_transcripts)
+    tuple val(meta4), path(false_positive_snv)
+    tuple val(meta5), path(gene_transcripts)
 
     output:
     tuple val(meta), path("*.tsv")              , emit: tsv
@@ -29,7 +28,7 @@ process ANNOTSV_ANNOTSV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def cand_genes = candidate_genes ? "-candidateGenesFile ${candidate_genes}" : ""
-    def cand_small = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
+    def small_variants = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
     def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
     def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
@@ -37,11 +36,11 @@ process ANNOTSV_ANNOTSV {
     AnnotSV \\
         -annotationsDir ${annotations} \\
         ${cand_genes} \\
-        ${cand_small} \\
+        ${small_variants} \\
         ${fp_snv} \\
         ${transcripts} \\
         -outputFile ${prefix}.tsv \\
-        -SVinputFile ${variants} \\
+        -SVinputFile ${sv_vcf} \\
         ${args}
 
     mv *_AnnotSV/* .

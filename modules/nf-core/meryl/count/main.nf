@@ -5,7 +5,7 @@ process MERYL_COUNT {
     conda "bioconda::meryl=1.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
-        'quay.io/biocontainers/meryl:1.3--h87f3376_1' }"
+        'biocontainers/meryl:1.3--h87f3376_1' }"
 
     input:
     tuple val(meta), path(reads)
