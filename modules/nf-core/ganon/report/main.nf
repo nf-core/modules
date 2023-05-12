@@ -10,7 +10,7 @@ process GANON_REPORT {
 
     input:
     tuple val(meta), path(rep)
-    path(db)
+    path db
 
     output:
     tuple val(meta), path("*.tre"), emit: tre
