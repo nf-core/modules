@@ -4,8 +4,8 @@ process UMICOLLAPSE {
 
     conda "bioconda::umicollapse=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/umicollapse=1.0.0--hdfd78af_1' :
-        'biocontainers/umicollapse=1.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/umicollapse:1.0.0--hdfd78af_1' :
+        'biocontainers/umicollapse:1.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
