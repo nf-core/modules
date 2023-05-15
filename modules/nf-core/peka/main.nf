@@ -44,4 +44,28 @@ process PEKA {
         peka: $VERSION
     END_VERSIONS
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.5mer_UTR3.pdf
+    touch ${prefix}.5mer_cluster_distribution_UTR3.tsv
+    touch ${prefix}.5mer_cluster_distribution_genome.tsv
+    touch ${prefix}.5mer_cluster_distribution_intron.tsv
+    touch ${prefix}.5mer_cluster_distribution_ncRNA.tsv
+    touch ${prefix}.5mer_cluster_distribution_whole_gene.tsv
+    touch ${prefix}.5mer_distribution_UTR3.tsv
+    touch ${prefix}.5mer_distribution_genome.tsv
+    touch ${prefix}.5mer_distribution_intron.tsv
+    touch ${prefix}.5mer_distribution_ncRNA.tsv
+    touch ${prefix}.5mer_distribution_whole_gene.tsv
+    touch ${prefix}.5mer_genome.pdf
+    touch ${prefix}.5mer_intron.pdf
+    touch ${prefix}.5mer_ncRNA.pdf
+    touch ${prefix}.5mer_whole_gene.pdf
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        peka: $VERSION
+    END_VERSIONS
+    """
 }

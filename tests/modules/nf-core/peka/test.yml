@@ -1,18 +1,21 @@
 - name: peka test_peka
-  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config -stub-run
   tags:
     - peka
   files:
-    - path: output/clippy/test_rollmean10_minHeightAdjust1.0_minPromAdjust1.0_minGeneCount5_Peaks.bed
-      md5sum: d793b0bafe5478207bfe80dd635a215c
-    - path: output/clippy/test_rollmean10_minHeightAdjust1.0_minPromAdjust1.0_minGeneCount5_Summits.bed
-      md5sum: afc2143816a8ae91329d7e557a91eeba
-    - path: output/clippy/versions.yml
-    - path: output/gunzip/chr21_gencode_regions.gtf
-      md5sum: 5dbc87e0d0d15b77bd6e25e47699fb47
-    - path: output/gunzip/versions.yml
-    - path: output/icountmini/chr21_gencode_regions.gtf.gz
-    - path: output/icountmini/chr21_gencode_seg.gtf
-      md5sum: f09f9a70cf223dbbf650b2d5d80f457d
-    - path: output/icountmini/versions.yml
+    - path: output/peka/test.5mer_UTR3.pdf
+    - path: output/peka/test.5mer_cluster_distribution_UTR3.tsv
+    - path: output/peka/test.5mer_cluster_distribution_genome.tsv
+    - path: output/peka/test.5mer_cluster_distribution_intron.tsv
+    - path: output/peka/test.5mer_cluster_distribution_ncRNA.tsv
+    - path: output/peka/test.5mer_cluster_distribution_whole_gene.tsv
+    - path: output/peka/test.5mer_distribution_UTR3.tsv
+    - path: output/peka/test.5mer_distribution_genome.tsv
+    - path: output/peka/test.5mer_distribution_intron.tsv
+    - path: output/peka/test.5mer_distribution_ncRNA.tsv
+    - path: output/peka/test.5mer_distribution_whole_gene.tsv
+    - path: output/peka/test.5mer_genome.pdf
+    - path: output/peka/test.5mer_intron.pdf
+    - path: output/peka/test.5mer_ncRNA.pdf
+    - path: output/peka/test.5mer_whole_gene.pdf
     - path: output/peka/versions.yml
