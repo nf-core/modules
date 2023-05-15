@@ -3,8 +3,8 @@
 nextflow.enable.dsl = 2
 
 include { ICOUNTMINI_SEGMENT } from '../../../../../modules/nf-core/icountmini/segment/main.nf'
-include { ICOUNTMINI_SIGXLS } from '../../../../../modules/nf-core/icountmini/sigxls/main.nf'
-include { ICOUNTMINI_PEAKS  } from '../../../../../modules/nf-core/icountmini/peaks/main.nf'
+include { ICOUNTMINI_SIGXLS  } from '../../../../../modules/nf-core/icountmini/sigxls/main.nf'
+include { ICOUNTMINI_PEAKS   } from '../../../../../modules/nf-core/icountmini/peaks/main.nf'
 
 workflow test_icountmini_peaks {
     
@@ -31,11 +31,10 @@ workflow test_icountmini_peaks {
         gtf
     )
 
-    peaks_input = [
-        [  id:'test' ], // meta map
-        crosslinks,
-        ICOUNTMINI_SIGXLS.out.sigxls.flatten().last()
-    ]
+    peaks_input = ICOUNTMINI_SIGXLS.out.sigxls
+    .map {
+        [[ id:'test' ], crosslinks, it[1]]
+    }
 
     ICOUNTMINI_PEAKS (
         peaks_input
