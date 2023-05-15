@@ -1,0 +1,48 @@
+name: "fastq_ena_prep_adapterremoval_md5sum"
+description: |
+  Trim adapters from FastQs to ENA specification, and calculate checksums.
+  ENA specifications for FastQ formatted data can be found here:
+  https://ena-docs.readthedocs.io/en/latest/submit/fileprep/reads.html#fastq-format
+keywords:
+  - adapterremoval
+  - ena
+  - ena_prep
+  - fastq
+modules:
+  - adapterremoval
+  - md5sum
+  - cat_cat
+input:
+  - ch_reads:
+      description: |
+        Structure: [ val(meta), path(fastq), val(phred_plus) ]
+        One or two FASTQ files for single or paired end data respectively.
+        `phred_plus` specifies the `--qualitybase` option of AdapterRemoval
+        for the respective FastQ files. Should be one of: [ `33`, `64` ].
+        If the meta already contains an attribute named `phred`, it will
+        be overwritten with the `phred_plus` value.
+  - adapterlist:
+      type: file
+      description: Optional text file containing list of adapters to look for for removal
+        with one adapter per line. Otherwise will look for default adapters (see
+        AdapterRemoval man page), or can be modified to remove user-specified
+        adapters via ext.args.
+output:
+  - fastq:
+      description: |
+        Structure: [ val(meta), path(fastq) ]
+        The adapter-trimmed FastQ files, ready for ENA upload.
+  - checksum:
+      description: |
+        Structure: [ path(md5) ]
+        A single file with the checksums for all the data ran through the subworkflow.
+  - multiqc:
+      description: |
+        Structure: [ val(meta), path(settings) ]
+        AdapterRemoval log files.
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@TCLamnidis"
