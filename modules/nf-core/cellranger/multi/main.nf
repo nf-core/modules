@@ -77,7 +77,7 @@ process CELLRANGER_MULTI {
     // pull CSV text from these reference panels
     // these references get appended directly to config file
     def beam_csv_text  = include_beam && beam_panel.size() > 0      ? beam_panel.text      : ''
-    def cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0    ? cmo_barcodes.text    : ''
+    def cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0    ? cmo_barcodes         : ''
     def frna_csv_text  = include_frna && frna_sampleinfo.size() > 0 ? frna_sampleinfo.text : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
@@ -158,15 +158,6 @@ process CELLRANGER_MULTI {
         $vdj_options_r1_length
         $vdj_options_r2_length
 
-        $include_beam
-        $beam_csv_text
-
-        $include_cmo
-        $cmo_csv_text
-
-        $include_frna
-        $frna_csv_text
-
         [libraries]
         fastq_id,fastqs,lanes,feature_types
         $fastq_gex
@@ -176,6 +167,13 @@ process CELLRANGER_MULTI {
         $fastq_crispr
         $fastq_cmo
     CONFIG
+
+    if [[ "$include_cmo" ]]; then echo "$include_cmo" >> $config; fi
+    if [[ "$include_cmo" ]]; then cat $cmo_barcodes >> $config; fi
+    if [[ "$include_beam" ]]; then echo "$include_beam" >> $config; fi
+    if [[ "$include_beam" ]]; then cat "$beam_csv_text" >> $config; fi
+    if [[ "$include_frna" ]]; then echo "$include_frna" >> $config; fi
+    if [[ "$include_frna" ]]; then cat "$frna_csv_text" >> $config; fi
 
     grep -v -e '^[[:space:]]*\$' $config > tmp.txt && mv tmp.txt $config # remove blank lines from config, only for aesthetics
 
