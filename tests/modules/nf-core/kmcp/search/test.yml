@@ -1,0 +1,22 @@
+- name: kmcp search test_kmcp_search
+  command: nextflow run ./tests/modules/nf-core/kmcp/search -entry test_kmcp_search -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/search/nextflow.config
+  tags:
+    - kmcp/search
+    - kmcp
+  files:
+    - path: output/kmcp/test/_info.txt
+      md5sum: 63b113927cc2f6ce197f3f4e452f8a44
+    - path: output/kmcp/test/test_1.fastq.gz.unik
+      md5sum: 79403bc6d7f6265df964c9da7186f20d
+    - path: output/kmcp/test_.gz
+      md5sum: a86c1bec1a6734836aa8647d5c811029
+    - path: output/kmcp/test_.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/kmcp/test_/R001/__db.yml
+      md5sum: 2eccfa0dc18e6c02d858e4216ea1882e
+    - path: output/kmcp/test_/R001/__name_mapping.tsv
+      md5sum: bf4bdf43a2c369dd4d57cde6c00bccee
+    - path: output/kmcp/test_/R001/_block001.uniki
+      md5sum: ce22b0e25678805756b2338a430b017f
+    - path: output/kmcp/versions.yml
