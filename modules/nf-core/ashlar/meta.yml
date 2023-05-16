@@ -1,7 +1,9 @@
 name: "ashlar"
 description: Alignment by Simultaneous Harmonization of Layer/Adjacency Registration
 keywords:
-  - image_processing, alignment, registration
+  - image_processing
+  - alignment
+  - registration
 tools:
   #
   - "ashlar":
@@ -19,7 +21,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', : args: '--flip-x' ]
   - file_in:
-      type: path
+      type: file
       description: multidimentional image data in formats from most commercial microscopes
       pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
 output:
