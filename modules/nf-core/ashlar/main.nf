@@ -5,7 +5,7 @@ process ASHLAR {
     conda "bioconda::ashlar=1.17.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ashlar:1.17.0--pyh5e36f6f_0' :
-        'quay.io/biocontainers/ashlar:1.17.0--pyh5e36f6f_0' }"
+        'labsyspharm/ashlar:1.17.0' }"
 
 
     input:
