@@ -8,8 +8,8 @@ process KMCP_SEARCH {
         'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta) , path(db)
-    tuple val(meta2), path(reads)
+    path(db)
+    tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.gz") , emit: result

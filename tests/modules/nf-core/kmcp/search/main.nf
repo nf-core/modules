@@ -15,7 +15,7 @@ workflow test_kmcp_search {
 
     KMCP_COMPUTE ( input )
     KMCP_INDEX ( KMCP_COMPUTE.out.outdir )
-    KMCP_SEARCH ( KMCP_INDEX.out.kmcp, input )
+    KMCP_SEARCH ( KMCP_INDEX.out.kmcp.map{it[1]}, input )
 }
 
 
