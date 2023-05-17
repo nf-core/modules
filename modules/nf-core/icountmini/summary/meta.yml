@@ -1,0 +1,52 @@
+---
+name: icountmini_summary
+description: Report proportion of cross-link events/sites on each region type.
+keywords:
+  - iCLIP
+  - gtf
+  - genomics
+tools:
+  - icount:
+      description: Computational pipeline for analysis of iCLIP data
+      homepage: https://icount.readthedocs.io/en/latest/
+      documentation: https://icount.readthedocs.io/en/latest/
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file of crosslinks
+  - segmentation:
+      type: file
+      description: A iCount segmentation file
+      pattern: "*.{gtf}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - summary_type:
+      type: file
+      description: Summary type output stats file
+      pattern: "*summary_type.tsv"
+  - summary_subtype:
+      type: file
+      description: Summary subtype output stats file
+      pattern: "*summary_subtype.tsv"
+  - summary_gene:
+      type: file
+      description: Summary gene output stats file
+      pattern: "*summary_gene.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@marc-jones"
+  - "@chris-cheshire"
+  - "@charlotteanne"
