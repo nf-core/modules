@@ -8,8 +8,7 @@ process ODGI_DRAW {
         'biocontainers/odgi:0.8.2--py310hc8f18ef_0' }"
 
     input:
-    tuple val(meta), path(graph)
-    path(lay)
+    tuple val(meta), path(graph), path(lay)
 
     output:
     tuple val(meta), path("*.png"), emit: png
