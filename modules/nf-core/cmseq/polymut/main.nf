@@ -6,7 +6,7 @@ process CMSEQ_POLYMUT {
     conda "bioconda::cmseq=1.0.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cmseq:1.0.4--pyhb7b1952_0' :
-        'quay.io/biocontainers/cmseq:1.0.4--pyhb7b1952_0' }"
+        'biocontainers/cmseq:1.0.4--pyhb7b1952_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(gff), path(fasta)
