@@ -3,10 +3,10 @@ process PICARD_RENAMESAMPLEINVCF {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -22,17 +22,17 @@ process PICARD_RENAMESAMPLEINVCF {
     def args = task.ext.args ?: ''
     def extended_args = args.contains("--NEW_SAMPLE_NAME") ? $args : "${args} --NEW_SAMPLE_NAME ${meta.id}"
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard RenameSampleInVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
     picard \\
         RenameSampleInVcf \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         --INPUT $vcf \\
         --OUTPUT ${prefix}_renam.vcf.gz \\
         $extended_args

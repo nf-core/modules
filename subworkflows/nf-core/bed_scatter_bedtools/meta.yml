@@ -1,0 +1,26 @@
+name: "bed_scatter_bedtools"
+description: |
+  Scatters inputted BED files by the amount specified.
+  The configuration in nextflow.config should be added to your modules.config for the subworkflow to work.
+keywords:
+  - bed
+  - scatter
+  - bedtools
+modules:
+  - bedtools/split
+input:
+  - ch_bed:
+      description: |
+        The input channel containing the BED file and an integer stating the amount of files it should be split into
+        Structure: [ val(meta), path(bed), val(scatter_count) ]
+output:
+  - scattered_beds:
+      description: |
+        One channel entry per scattered BED file (all BED files from the same source are transposed but contain the same meta)
+        Structure: [ val(meta), path(bed), val(scatter_count) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@nvnieuwk"

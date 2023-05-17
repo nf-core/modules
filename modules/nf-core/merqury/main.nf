@@ -2,7 +2,7 @@ process MERQURY {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::merqury=1.3" : null)
+    conda "bioconda::merqury=1.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
         'quay.io/biocontainers/merqury:1.3--hdfd78af_1' }"

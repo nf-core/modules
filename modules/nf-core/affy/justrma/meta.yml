@@ -1,0 +1,60 @@
+name: "affy_justrma"
+description: Read CEL files into an ExpressionSet and generate a matrix
+keywords:
+  - affy
+  - microarray
+  - expression
+  - matrix
+tools:
+  - "affy":
+      description: "Methods for Affymetrix Oligonucleotide Arrays"
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/affy.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/html/affy.html"
+      tool_dev_url: "https://github.com/Bioconductor/affy"
+      doi: "10.1093/bioinformatics/btg405"
+      licence: "['LGPL >=2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - samplesheet:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata and CEL file names
+  - celfiles_dir:
+      type: list
+      description: Path to a directory containing CEL files
+      pattern: "*.{CEL,CEL.gz}"
+  - description:
+      type: file
+      description: |
+        Optional description file in MIAME format
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - expression:
+      type: file
+      description: TSV-format intensity matrix
+      pattern: "matrix.tsv"
+  - annotation:
+      type: file
+      description: TSV-format annotation table
+      pattern: "*.annotation.tsv"
+  - rds:
+      type: file
+      description: Serialised ExpressionSet object
+      pattern: "*.rds"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"

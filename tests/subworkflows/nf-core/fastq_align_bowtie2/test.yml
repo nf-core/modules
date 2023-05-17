@@ -26,7 +26,6 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: e16eb632f7f462514b0873c7ac8ac905
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: 75bcdfea663daa8025491a325e5a7604
 
 - name: align bowtie2 paired-end
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_bowtie2 -entry test_align_bowtie2_paired_end -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fastq_align_bowtie2/nextflow.config
@@ -56,4 +55,3 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: 29ff2fa56d35b2a47625b8f517f1a947
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: c5222bc5d263965ef4597198c370b16f

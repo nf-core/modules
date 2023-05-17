@@ -4,11 +4,10 @@
     - deepvariant
   files:
     - path: output/deepvariant/test_out.g.vcf.gz
-      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+      md5sum: 0f638a32d72d68b4fab0801feaefda96
     - path: output/deepvariant/test_out.vcf.gz
-      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+      md5sum: 4c4b86a21ef77beb85d6fed80ce17c40
     - path: output/deepvariant/versions.yml
-      md5sum: 51572055ca5c07fc4001b25a9c273bf8
 
 - name: deepvariant test_deepvariant_cram_intervals
   command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_cram_intervals -c ./tests/config/nextflow.config
@@ -16,8 +15,27 @@
     - deepvariant
   files:
     - path: output/deepvariant/test_out.g.vcf.gz
-      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+      md5sum: 0f638a32d72d68b4fab0801feaefda96
     - path: output/deepvariant/test_out.vcf.gz
-      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+      md5sum: 4c4b86a21ef77beb85d6fed80ce17c40
     - path: output/deepvariant/versions.yml
-      md5sum: 7d9293db0d44423b114abc7116feb967
+
+- name: deepvariant test_deepvariant_no_fasta_gzi
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_no_fasta_gzi -c ./tests/config/nextflow.config
+  tags:
+    - deepvariant
+  exit_code: 1
+  stdout:
+    contains:
+      - "Failed to open FASTA index genome.fasta.gz.gzi: No such file or directory"
+
+- name: deepvariant test_deepvariant_fasta_gz
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_fasta_gz -c ./tests/config/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: output/deepvariant/test_out.g.vcf.gz
+      md5sum: 0f638a32d72d68b4fab0801feaefda96
+    - path: output/deepvariant/test_out.vcf.gz
+      md5sum: 4c4b86a21ef77beb85d6fed80ce17c40
+    - path: output/deepvariant/versions.yml

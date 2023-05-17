@@ -2,7 +2,7 @@ process GENOMESCOPE2 {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::genomescope2=2.0" : null)
+    conda "bioconda::genomescope2=2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genomescope2:2.0--py310r41hdfd78af_5':
         'quay.io/biocontainers/genomescope2:2.0--py310r41hdfd78af_5' }"

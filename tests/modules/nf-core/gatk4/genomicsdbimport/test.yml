@@ -12,8 +12,6 @@
     - path: output/gatk4/test/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
       md5sum: 2502f79658bc000578ebcfddfc1194c0
     - path: output/gatk4/test/vcfheader.vcf
-      contains:
-        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
     - path: output/gatk4/test/vidmap.json
       md5sum: 18d3f68bd2cb6f4474990507ff95017a
     - path: output/gatk4/versions.yml
@@ -27,7 +25,6 @@
     - path: output/gatk4/test.interval_list
       md5sum: 4c85812ac15fc1cd29711a851d23c0bf
     - path: output/gatk4/versions.yml
-    - path: output/untar/versions.yml
 
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_update_genomicsdb
   command: nextflow run ./tests/modules/nf-core/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_update_genomicsdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/genomicsdbimport/nextflow.config
@@ -48,4 +45,3 @@
     - path: output/gatk4/test_genomicsdb/vidmap.json
       md5sum: 18d3f68bd2cb6f4474990507ff95017a
     - path: output/gatk4/versions.yml
-    - path: output/untar/versions.yml

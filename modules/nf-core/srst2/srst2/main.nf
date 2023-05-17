@@ -2,7 +2,7 @@ process SRST2_SRST2 {
     tag "${meta.id}"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::srst2=0.2.0" : null)
+    conda "bioconda::srst2=0.2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/srst2%3A0.2.0--py27_2':
         'quay.io/biocontainers/srst2:0.2.0--py27_2'}"

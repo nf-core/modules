@@ -2,7 +2,7 @@ process CENTRIFUGE_CENTRIFUGE {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::centrifuge=1.0.4_beta" : null)
+    conda "bioconda::centrifuge=1.0.4_beta"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4_beta--h9a82719_6' :
         'quay.io/biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
@@ -41,7 +41,7 @@ process CENTRIFUGE_CENTRIFUGE {
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
-    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
     centrifuge \\
         -x \$db_name \\
         -p $task.cpus \\

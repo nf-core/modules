@@ -1,7 +1,9 @@
 name: "bedtools_split"
 description: Split BED files into several smaller BED files
 keywords:
-  - sort
+  - bedtools
+  - split
+  - bed
 tools:
   - "bedtools":
       description: "A powerful toolset for genome arithmetic"
@@ -18,9 +20,6 @@ input:
       type: file
       description: BED file
       pattern: "*.bed"
-  - bed:
-      type: value
-      description: The number of files to split the BED into
 
 output:
   - meta:

@@ -3,7 +3,7 @@ process PARACLU {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::paraclu=10" : null)
+    conda "bioconda::paraclu=10"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1' :
         'quay.io/biocontainers/paraclu:10--h9a82719_1' }"

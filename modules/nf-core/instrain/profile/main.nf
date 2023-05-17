@@ -2,7 +2,7 @@ process INSTRAIN_PROFILE {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::instrain=1.6.1" : null)
+    conda "bioconda::instrain=1.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/instrain:1.6.1--pyhdfd78af_0':
         'quay.io/biocontainers/instrain:1.6.1--pyhdfd78af_0' }"

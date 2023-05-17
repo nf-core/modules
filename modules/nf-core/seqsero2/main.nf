@@ -2,7 +2,7 @@ process SEQSERO2 {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
+    conda "bioconda::seqsero2=1.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
         'quay.io/biocontainers/seqsero2:1.2.1--py_0' }"

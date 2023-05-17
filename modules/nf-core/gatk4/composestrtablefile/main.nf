@@ -2,10 +2,10 @@ process GATK4_COMPOSESTRTABLEFILE {
     tag "$fasta"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     path(fasta)
@@ -26,10 +26,10 @@ process GATK4_COMPOSESTRTABLEFILE {
     if (!task.memory) {
         log.info '[GATK ComposeSTRTableFile] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" ComposeSTRTableFile \\
+    gatk --java-options "-Xmx${avail_mem}M" ComposeSTRTableFile \\
         --reference $fasta \\
         --output ${fasta.baseName}.zip \\
         --tmp-dir . \\
@@ -43,7 +43,7 @@ process GATK4_COMPOSESTRTABLEFILE {
 
     stub:
     """
-    touch test.zip
+    touch ${fasta.baseName}.zip
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -5,7 +5,14 @@
     - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
-      md5sum: 744b28bef1469aabdcfd354293ef725d
+
+- name: bcftools merge test_bcftools_merge_stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config -stub-run
+  tags:
+    - bcftools/merge
+    - bcftools
+  files:
+    - path: output/bcftools/test.vcf.gz
 
 - name: bcftools merge test_bcftools_merge_bed
   command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_bed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config
@@ -14,7 +21,14 @@
     - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
-      md5sum: 9597e71ae1706f76f00707687be43240
+
+- name: bcftools merge test_bcftools_merge_bed_stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_bed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config -stub-run
+  tags:
+    - bcftools/merge
+    - bcftools
+  files:
+    - path: output/bcftools/test.vcf.gz
 
 - name: bcftools merge test_bcftools_merge_gvcf
   command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_gvcf -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config
@@ -23,7 +37,14 @@
     - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
-      md5sum: 8aef4d860228cb651e0cb920376f5118
+
+- name: bcftools merge test_bcftools_merge_gvcf_stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_gvcf -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config -stub-run
+  tags:
+    - bcftools/merge
+    - bcftools
+  files:
+    - path: output/bcftools/test.vcf.gz
 
 - name: bcftools merge test_bcftools_merge_bcf
   command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_bcf -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config
@@ -32,4 +53,11 @@
     - bcftools
   files:
     - path: output/bcftools/test.bcf.gz
-      md5sum: 3ca1ab0d9a6ede049c6eeadf88177eb9
+
+- name: bcftools merge test_bcftools_merge_bcf_stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/merge -entry test_bcftools_merge_bcf -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/merge/nextflow.config -stub-run
+  tags:
+    - bcftools/merge
+    - bcftools
+  files:
+    - path: output/bcftools/test.bcf.gz

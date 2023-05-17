@@ -2,7 +2,7 @@ process SHOVILL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::shovill=1.1.0" : null)
+    conda "bioconda::shovill=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
         'quay.io/biocontainers/shovill:1.1.0--0' }"

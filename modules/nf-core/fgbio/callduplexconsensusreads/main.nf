@@ -2,15 +2,17 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::fgbio=2.0.2" : null)
+    conda "bioconda::fgbio=2.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
         'quay.io/biocontainers/fgbio:2.0.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
-    val(min_reads)
-    val(min_baseq)
+    // please note:
+    // --min-reads is a required argument with no default
+    // --min-input-base-quality is a required argument with no default
+    // make sure they are specified via ext.args in your config
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
@@ -43,8 +45,6 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
         CallDuplexConsensusReads \\
         --input $bam \\
         --output ${prefix}.bam \\
-        --min-reads ${min_reads} \\
-        --min-input-base-quality ${min_baseq} \\
         --threads ${task.cpus} \\
         $args
 

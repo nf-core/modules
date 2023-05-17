@@ -5,7 +5,7 @@
     - samtools/ampliconclip
   files:
     - path: output/samtools/test.bam
-      md5sum: 69e4ba713447864231f6cbbaf036c51d
+      md5sum: ef926d581ad6d01570969a70889cafd5
 
 - name: samtools ampliconclip no stats with rejects
   command: nextflow run ./tests/modules/nf-core/samtools/ampliconclip -entry test_samtools_ampliconclip_no_stats_with_rejects -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/ampliconclip/nextflow.config
@@ -14,9 +14,9 @@
     - samtools/ampliconclip
   files:
     - path: output/samtools/test.bam
-      md5sum: dd2ed9d7cc4ddc070ece2dccc577f94b
+      md5sum: 9b807852f31e2938eba6e103190782e9
     - path: output/samtools/test.cliprejects.bam
-      md5sum: 7d641f6da838f41d75eaabbd897f60bd
+      md5sum: ae55117ec2786234373ffe2d2609a11e
 
 - name: samtools ampliconclip with stats with rejects
   command: nextflow run ./tests/modules/nf-core/samtools/ampliconclip -entry test_samtools_ampliconclip_with_stats_with_rejects -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/ampliconclip/nextflow.config
@@ -25,8 +25,8 @@
     - samtools/ampliconclip
   files:
     - path: output/samtools/test.bam
-      md5sum: 6c19afc0873fba2f4e530eabf61c0735
+      md5sum: 6bf93cb4685ec3a8d11d00f48679e788
     - path: output/samtools/test.cliprejects.bam
-      md5sum: 1dfb61aa80d8e90add324ed61ed17061
+      md5sum: 643cc33efd22769c3ffe83691125ec54
     - path: output/samtools/test.clipstats.txt
       md5sum: 05ead360a98fab6a678056e326c4f1f3

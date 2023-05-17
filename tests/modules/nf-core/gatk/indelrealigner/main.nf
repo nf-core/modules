@@ -27,7 +27,7 @@ workflow test_gatk_indelrealigner {
                   file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
                 ])
 
-    ch_input_indelrealigner = ch_bams_indelrealigner.mix(ch_intervals).groupTuple(by: 0).map{ [it[0], it[1][0], it[2], it[1][1] ] }.dump(tag: "input")
+    ch_input_indelrealigner = ch_bams_indelrealigner.mix(ch_intervals).groupTuple(by: 0).map{ [it[0], it[1][0], it[2], it[1][1] ] }
 
     GATK_INDELREALIGNER ( ch_input_indelrealigner, fasta, fai, dict, [] )
 }

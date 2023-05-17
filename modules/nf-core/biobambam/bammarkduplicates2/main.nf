@@ -2,7 +2,7 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::biobambam=2.0.183" : null)
+    conda "bioconda::biobambam=2.0.183"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'quay.io/biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:

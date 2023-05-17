@@ -2,7 +2,7 @@ process AMPIR {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::r-ampir=1.1.0" : null)
+    conda "conda-forge::r-ampir=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ampir:1.1.0':
         'quay.io/biocontainers/r-ampir:1.1.0' }"

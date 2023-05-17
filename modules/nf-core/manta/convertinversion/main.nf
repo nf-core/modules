@@ -2,10 +2,10 @@ process MANTA_CONVERTINVERSION {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::manta=1.6.0 bioconda::samtools=1.15.1" : null)
+    conda "bioconda::manta=1.6.0 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:0b4be2c719f99f44df34be7b447b287bb7f86e01-0':
-        'quay.io/biocontainers/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:0b4be2c719f99f44df34be7b447b287bb7f86e01-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0':
+        'quay.io/biocontainers/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0' }"
 
     input:
     tuple val(meta), path(vcf)

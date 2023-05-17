@@ -2,7 +2,7 @@ process METAPHLAN3_METAPHLAN3 {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::metaphlan=3.0.12' : null)
+    conda "bioconda::metaphlan=3.0.12"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
         'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"

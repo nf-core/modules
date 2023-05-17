@@ -1,0 +1,47 @@
+name: "purgedups_calcuts"
+description: Calculate coverage cutoffs to determine when to purge duplicated sequence.
+keywords:
+  - coverage
+  - cutoff
+  - purge duplications
+tools:
+  - "purgedups":
+      description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
+      homepage: "https://github.com/dfguan/purge_dups"
+      documentation: "https://github.com/dfguan/purge_dups"
+      tool_dev_url: "https://github.com/dfguan/purge_dups"
+      doi: "10.1093/bioinformatics/btaa025"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - stat:
+      type: file
+      description: Histogram of coverage
+      pattern: "*.stat"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - cutoff:
+      type: file
+      description: Cutoff file
+      pattern: "*.cutoffs"
+  - log:
+      type: file
+      description: Log file
+      pattern: ".calcuts.log"
+
+authors:
+  - "@mahesh-panchal"

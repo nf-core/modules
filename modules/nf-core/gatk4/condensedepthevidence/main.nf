@@ -2,10 +2,10 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.3.0.0" : null)
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(depth_evidence), path(depth_evidence_index)
@@ -29,15 +29,15 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
         error("File name collision - Please specify a different prefix.")
     }
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK CondenseDepthEvidence] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" CondenseDepthEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M" CondenseDepthEvidence \\
         --depth-evidence ${depth_evidence} \\
         --output ${prefix}.rd.txt.gz \\
         --reference ${fasta} \\

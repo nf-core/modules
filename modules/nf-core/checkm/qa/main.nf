@@ -2,7 +2,7 @@ process CHECKM_QA {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::checkm-genome=1.2.1" : null)
+    conda "bioconda::checkm-genome=1.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.1--pyhdfd78af_0' :
         'quay.io/biocontainers/checkm-genome:1.2.1--pyhdfd78af_0' }"

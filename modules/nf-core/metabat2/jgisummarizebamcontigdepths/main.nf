@@ -2,7 +2,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::metabat2=2.15" : null)
+    conda "bioconda::metabat2=2.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabat2:2.15--h986a166_1' :
         'quay.io/biocontainers/metabat2:2.15--h986a166_1' }"

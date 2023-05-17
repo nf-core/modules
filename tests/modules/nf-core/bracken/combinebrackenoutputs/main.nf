@@ -20,6 +20,11 @@ workflow test_bracken_combinebrackenoutputs {
     KRAKEN2_KRAKEN2 ( input, ch_db, false, false )
     BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.report, ch_db )
 
-    BRACKEN_COMBINEBRACKENOUTPUTS ( BRACKEN_BRACKEN.out.reports.map{it[1]}.collect() )
+    ch_input_for_combinebrackenouputs = BRACKEN_BRACKEN.out.reports
+                                            .map{it[1]}
+                                            .collect()
+                                            .map{ [ [id: 'db'], it ] }
+
+    BRACKEN_COMBINEBRACKENOUTPUTS ( ch_input_for_combinebrackenouputs )
 }
 

@@ -2,10 +2,10 @@ process ISOSEQ3_CLUSTER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
+    conda "bioconda::isoseq3=3.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq3:3.4.0--0' :
-        'quay.io/biocontainers/isoseq3:3.4.0--0' }"
+        'https://depot.galaxyproject.org/singularity/isoseq3:3.8.1--h9ee0642_0' :
+        'quay.io/biocontainers/isoseq3:3.8.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -39,7 +39,7 @@ process ISOSEQ3_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        isoseq3: \$( isoseq3 cluster --version|sed 's/isoseq cluster //g'|sed 's/ (.*//g' )
+        isoseq3: \$( isoseq3 cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
     END_VERSIONS
     """
 }

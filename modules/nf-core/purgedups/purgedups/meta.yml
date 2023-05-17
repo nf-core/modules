@@ -1,0 +1,57 @@
+name: "purgedups_purgedups"
+description: Purge haplotigs and overlaps for an assembly
+keywords:
+  - Haplotype purging
+  - Duplication purging
+  - False duplications
+  - Assembly curation
+  - Read depth
+tools:
+  - "purgedups":
+      description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
+      homepage: "https://github.com/dfguan/purge_dups"
+      documentation: "https://github.com/dfguan/purge_dups"
+      tool_dev_url: "https://github.com/dfguan/purge_dups"
+      doi: "10.1093/bioinformatics/btaa025"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - basecov:
+      type: file
+      description: A file containing a histogram of base coverage. Obtained from PURGEDUPS_PBCSTAT
+      pattern: "*.PB.base.cov"
+  - cutoff:
+      type: file
+      description: A file containing duplication cutoff points. Obtained from PURGEDUPS_CALCUTS
+      pattern: "*.cutoffs"
+  - paf:
+      type: file
+      description: A file of assembly alignments to itself
+      pattern: "*.paf(.gz)?"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: A bed file of sequences purged of false duplications
+      pattern: "*.bed"
+  - log:
+      type: file
+      description: A log of the tool output
+      pattern: "*.log"
+
+authors:
+  - "@mahesh-panchal"

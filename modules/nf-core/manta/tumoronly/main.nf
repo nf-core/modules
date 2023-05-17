@@ -2,7 +2,7 @@ process MANTA_TUMORONLY {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
+    conda "bioconda::manta=1.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
         'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
@@ -27,7 +27,7 @@ process MANTA_TUMORONLY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
+    def options_manta = target_bed ? "--callRegions $target_bed" : ""
     """
     configManta.py \
         --tumorBam $input \

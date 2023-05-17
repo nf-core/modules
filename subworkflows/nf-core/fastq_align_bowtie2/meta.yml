@@ -18,15 +18,28 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - index:
+  - ch_index:
       type: file
       description: Bowtie2 genome index files
       pattern: "*.ebwt"
+  - save_unaligned:
+      type: boolean
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - sort_bam:
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - ch_fasta:
+      type: file
+      description: Reference fasta file
+      pattern: "*.{fasta,fa}"
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - bam:

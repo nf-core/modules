@@ -2,10 +2,10 @@ process BLAST_TBLASTN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
+    conda "bioconda::blast=2.13.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
-        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0' :
+        'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,7 +22,7 @@ process BLAST_TBLASTN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    DB=`find -L ./ -name "*.nsq" | sed 's/.nsq//'`
+    DB=`find -L ./ -name "*.nsq" | sed 's/\\.nsq\$//'`
     tblastn \\
         -num_threads $task.cpus \\
         -db \$DB \\

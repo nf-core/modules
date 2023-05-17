@@ -2,10 +2,10 @@ process PBBAM_PBMERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::pbbam=1.7.0" : null)
+    conda "bioconda::pbbam=2.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbbam:1.7.0--h058f120_1' :
-        'quay.io/biocontainers/pbbam:1.7.0--h058f120_1' }"
+        'https://depot.galaxyproject.org/singularity/pbbam:2.1.0--h3f0f298_2' :
+        'quay.io/biocontainers/pbbam:2.1.0--h3f0f298_2' }"
 
     input:
     tuple val(meta), path(bam)
@@ -29,7 +29,7 @@ process PBBAM_PBMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbbam: \$( pbmerge --version|sed 's/pbmerge //' )
+        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
     END_VERSIONS
     """
 }

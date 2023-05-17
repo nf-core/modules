@@ -2,7 +2,7 @@ process GENMAP_MAPPABILITY {
     tag "$index"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::genmap=1.3.0" : null)
+    conda "bioconda::genmap=1.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
         'quay.io/biocontainers/genmap:1.3.0--h1b792b2_1' }"

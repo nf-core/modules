@@ -12,6 +12,7 @@
       md5sum: fb9ce52193a0db3a084890bd6bbf6a64
     - path: output/gatk4/test.sr.txt.gz.tbi
       md5sum: 33b3a9ff444eb0e0fc3016239651f05f
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 collectsvevidence test_gatk4_collectsvevidence_bam
   command: nextflow run ./tests/modules/nf-core/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/collectsvevidence/nextflow.config
@@ -27,6 +28,7 @@
       md5sum: fb9ce52193a0db3a084890bd6bbf6a64
     - path: output/gatk4/test.sr.txt.gz.tbi
       md5sum: 33b3a9ff444eb0e0fc3016239651f05f
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 collectsvevidence test_gatk4_collectsvevidence_allele_count
   command: nextflow run ./tests/modules/nf-core/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_allele_count -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/collectsvevidence/nextflow.config
@@ -46,3 +48,4 @@
       md5sum: fb9ce52193a0db3a084890bd6bbf6a64
     - path: output/gatk4/test.sr.txt.gz.tbi
       md5sum: 33b3a9ff444eb0e0fc3016239651f05f
+    - path: output/gatk4/versions.yml

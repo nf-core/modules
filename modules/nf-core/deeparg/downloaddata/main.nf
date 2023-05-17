@@ -1,7 +1,7 @@
 process DEEPARG_DOWNLOADDATA {
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
+    conda "bioconda::deeparg=1.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"

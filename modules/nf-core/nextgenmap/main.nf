@@ -2,7 +2,7 @@ process NEXTGENMAP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::nextgenmap=0.5.5" : null)
+    conda "bioconda::nextgenmap=0.5.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
         'quay.io/biocontainers/nextgenmap:0.5.5--hc9558a2_4' }"

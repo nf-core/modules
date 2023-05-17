@@ -2,7 +2,7 @@ process GATK_REALIGNERTARGETCREATOR {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk=3.5" : null)
+    conda "bioconda::gatk=3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
         'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
@@ -27,16 +27,16 @@ process GATK_REALIGNERTARGETCREATOR {
     def known = known_vcf ? "-known ${known_vcf}" : ""
     if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK RealignerTargetCreator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
     gatk3 \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         -T RealignerTargetCreator \\
         -nt ${task.cpus} \\
         -I ${input} \\

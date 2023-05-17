@@ -2,7 +2,7 @@ process HMTNOTE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::hmtnote=0.7.2" : null)
+    conda "bioconda::hmtnote=0.7.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_0':
         'quay.io/biocontainers/hmtnote:0.7.2--pyhdfd78af_0' }"

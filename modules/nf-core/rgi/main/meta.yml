@@ -42,6 +42,10 @@ output:
       type: file
       description: Tab-delimited file with RGI results
       pattern: "*.{txt}"
+  - temp:
+      type: directory
+      description: Directory containing various intermediate files
+      pattern: "temp/"
   - tool_version:
       type: string
       description: The version of the tool in string format (useful for downstream tools such as hAMRronization)

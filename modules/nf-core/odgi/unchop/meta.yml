@@ -1,0 +1,44 @@
+name: "odgi_unchop"
+description: Merge unitigs into a single node preserving the node order.
+keywords:
+  - variation graph
+  - pangenome graph
+  - gfa
+  - graph unchopping
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Pangenome graph in GFA v1.0 format or in ODGI binary format
+      pattern: "*.{gfa,og}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - unchopped_graph:
+      type: file
+      description: Unchopped pangenome graph in ODGI binary format
+      pattern: "*.{og}"
+
+authors:
+  - "@subwaystation"

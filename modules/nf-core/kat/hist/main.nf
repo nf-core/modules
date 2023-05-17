@@ -2,7 +2,7 @@ process KAT_HIST {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::kat=2.4.2" : null)
+    conda "bioconda::kat=2.4.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
         'quay.io/biocontainers/kat:2.4.2--py38hfc5f9d8_2' }"

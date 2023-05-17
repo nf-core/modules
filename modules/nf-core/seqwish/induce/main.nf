@@ -2,11 +2,11 @@ process SEQWISH_INDUCE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::seqwish=0.7.6' : null)
+    conda "bioconda::seqwish=0.7.8"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqwish:0.7.6--h5b5514e_1' :
-        'quay.io/biocontainers/seqwish:0.7.6--h5b5514e_1' }"
+        'https://depot.galaxyproject.org/singularity/seqwish:0.7.8--h5b5514e_0' :
+        'quay.io/biocontainers/seqwish:0.7.8--h5b5514e_0' }"
 
     input:
     tuple val(meta), path(paf), path(fasta)

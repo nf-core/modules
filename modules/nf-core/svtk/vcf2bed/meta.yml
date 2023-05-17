@@ -1,0 +1,49 @@
+name: "svtk_vcf2bed"
+description: Converts VCFs containing structural variants to BED format
+keywords:
+  - vcf
+  - bed
+  - vcf2bed
+  - svtk
+  - structural variants
+tools:
+  - "svtk":
+      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+      documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+      tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: A VCF file created with a structural variant caller
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: The index for the VCF file
+      pattern: "*.vcf.gz.tbi"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: The created BED file
+      pattern: "*.bed"
+
+authors:
+  - "@nvnieuwk"

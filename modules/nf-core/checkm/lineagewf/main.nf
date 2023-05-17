@@ -2,13 +2,13 @@ process CHECKM_LINEAGEWF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::checkm-genome=1.2.1" : null)
+    conda "bioconda::checkm-genome=1.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.1--pyhdfd78af_0' :
         'quay.io/biocontainers/checkm-genome:1.2.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta, stageAs: "input_bins/*")
     val fasta_ext
     path db
 
@@ -36,7 +36,7 @@ process CHECKM_LINEAGEWF {
         --pplacer_threads $task.cpus \\
         -x $fasta_ext \\
         $args \\
-        . \\
+        input_bins/ \\
         $prefix
 
     cat <<-END_VERSIONS > versions.yml

@@ -2,7 +2,7 @@ process ATAQV_ATAQV {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
+    conda "bioconda::ataqv=1.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.0--py39hccc85d7_2' :
         'quay.io/biocontainers/ataqv:1.3.0--py39hccc85d7_2' }"
@@ -10,6 +10,7 @@ process ATAQV_ATAQV {
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
     val organism
+    val mito_name
     path tss_file
     path excl_regs_file
     path autosom_ref_file
@@ -24,6 +25,7 @@ process ATAQV_ATAQV {
 
     script:
     def args = task.ext.args ?: ''
+    def mito = mito_name ? "--mitochondrial-reference-name ${mito_name}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
     def tss         = tss_file         ? "--tss-file $tss_file"                         : ''
@@ -32,6 +34,7 @@ process ATAQV_ATAQV {
     """
     ataqv \\
         $args \\
+        $mito \\
         $peak \\
         $tss \\
         $excl_regs \\

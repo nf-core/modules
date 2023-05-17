@@ -18,7 +18,7 @@ tools:
       homepage: "https://pints.yulab.org/"
       documentation: "https://github.com/hyulab/PINTS/blob/main/README.md"
       tool_dev_url: "https://github.com/hyulab/PINTS"
-      doi: "https://doi.org/10.1038/s41587-022-01211-7"
+      doi: "10.1038/s41587-022-01211-7"
       licence: "['GPL']"
 
 input:
@@ -46,14 +46,21 @@ output:
       type: file
       description: Divergent TREs
       pattern: "*_divergent_peaks.bed"
+      optional: true
   - bidirectional_TREs:
       type: file
       description: Divergent TREs and convergent TREs
       pattern: "*_bidirectional_peaks.bed"
+      optional: true
   - unidirectional_TREs:
       type: file
       description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers (e-lncRNAs)
       pattern: "*_unidirectional_peaks.bed"
+      optional: true
+  - peakcalling_log:
+      type: file
+      description: Peakcalling log for debugging purposes
+      pattern: "peakcalling_*.log"
 
 authors:
   - "@Emiller88"

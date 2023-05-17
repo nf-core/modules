@@ -2,7 +2,7 @@ process TABIX_BGZIPTABIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
+    conda "bioconda::tabix=1.11"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
         'quay.io/biocontainers/tabix:1.11--hdfd78af_0' }"
@@ -34,8 +34,8 @@ process TABIX_BGZIPTABIX {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gz
-    touch ${prefix}.gz.tbi
+    touch ${prefix}.${input.getExtension()}.gz
+    touch ${prefix}.${input.getExtension()}.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

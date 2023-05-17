@@ -20,8 +20,8 @@ input:
       description: |
         CSV file containing information about samples to be demultiplexed in Illumina SampleSheet format
   - flowcell:
-      type: directory
-      description: Directory containing Illumina BCL data, sequencer output directory
+      type: file
+      description: Directory or tar archive containing Illumina BCL data, sequencer output directory
   - demultiplexer:
       type: string
       description: Which demultiplexer to use, bcl2fastq or bclconvert

@@ -2,7 +2,7 @@ process BOWTIE2_BUILD {
     tag "$fasta"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::bowtie2=2.4.4' : null)
+    conda "bioconda::bowtie2=2.4.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bowtie2:2.4.4--py39hbb4e92a_0' :
         'quay.io/biocontainers/bowtie2:2.4.4--py39hbb4e92a_0' }"
