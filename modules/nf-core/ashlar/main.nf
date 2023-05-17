@@ -2,6 +2,7 @@ process ASHLAR {
     tag '$meta.id'
     label 'process_single'
 
+    conda "bioconda::ashlar=1.17.0"
     container "quay.io/biocontainers/ashlar:1.17.0--pyh5e36f6f_0"
 
     input:
