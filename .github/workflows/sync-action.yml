@@ -10,15 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Sync master branch
-      uses: tgymnich/fork-sync@v1.8
-      with:
-        token: ${{ secrets.PERSONAL_TOKEN }}
-        base: master
-        head: master
-    - name: Sync develop branch
-      uses: tgymnich/fork-sync@v1.8
-      with:
-        token: ${{ secrets.PERSONAL_TOKEN }}
-        base: master
-        head: develop
+      - name: Sync master branch
+        uses: tgymnich/fork-sync@v1.8
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          base: master
+          head: master
+      - name: Sync develop branch
+        uses: tgymnich/fork-sync@v1.8
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          base: master
+          head: develop
