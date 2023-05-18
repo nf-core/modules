@@ -24,11 +24,11 @@ process STADENIOLIB_CRAMFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    cram_filter -n ${from}-${to} $args $incram ${prefix}_filtered.cram  
+    cram_filter -n ${from}-${to} $args $incram ${prefix}_filtered.cram
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stadeniolib: \$(cram_filter -h | head -n 1 |sed 's/^.*version //')
+        stadeniolib: 1.14.14
     END_VERSIONS
     """
 }
