@@ -15,7 +15,7 @@ process STADENIOLIB_CRAMFILTER {
 
     output:
     tuple val(meta), path("*.cram"), emit: outcram
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,14 +23,12 @@ process STADENIOLIB_CRAMFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-
-    cram_filter -n $from-$to $args $incram ${prefix}_filtered.cram
+    cram_filter -n ${from}-${to} $args $incram ${prefix}_filtered.cram  
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stadeniolib: \$(echo \$(cram_filter -h | head -n 1 |sed 's/^.*version //'))
+        stadeniolib: \$(cram_filter -h | head -n 1 |sed 's/^.*version //')
     END_VERSIONS
     """
 }
