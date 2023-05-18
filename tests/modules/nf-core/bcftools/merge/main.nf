@@ -17,9 +17,9 @@ workflow test_bcftools_merge {
 
     bed = []
     fasta = []
-    fasta_fai = []
+    fai = []
 
-    BCFTOOLS_MERGE ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE ( input, bed, fasta, fai )
 }
 
 workflow test_bcftools_merge_bed {
@@ -32,9 +32,9 @@ workflow test_bcftools_merge_bed {
 
     bed = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
     fasta = []
-    fasta_fai = []
+    fai = []
 
-    BCFTOOLS_MERGE ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE ( input, bed, fasta, fai )
 }
 
 workflow test_bcftools_merge_gvcf {
@@ -46,10 +46,13 @@ workflow test_bcftools_merge_gvcf {
             ]
 
     bed = []
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-
-    BCFTOOLS_MERGE_GVCF ( input, bed, fasta, fasta_fai )
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+    fai   = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+    BCFTOOLS_MERGE_GVCF ( input, bed, fasta, fai )
 }
 
 workflow test_bcftools_merge_bcf {
@@ -62,7 +65,7 @@ workflow test_bcftools_merge_bcf {
 
     bed = []
     fasta = []
-    fasta_fai = []
+    fai = []
 
-    BCFTOOLS_MERGE_BCF ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE_BCF ( input, bed, fasta, fai )
 }
