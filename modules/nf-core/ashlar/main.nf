@@ -3,7 +3,7 @@ process ASHLAR {
     label 'process_single'
 
     conda "bioconda::ashlar=1.17.0"
-    container "biocontainers/ashlar:1.17.0--pyh5e36f6f_0"
+    container "quay.io/biocontainers/ashlar:1.17.0--pyh5e36f6f_0"
 
     input:
     tuple val(meta), path(file_in)
