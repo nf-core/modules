@@ -22,14 +22,29 @@ input:
       type: file
       description: Interval list or BED
       pattern: "*.{interval,interval_list,bed}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: Reference FASTA
       pattern: "*.{fa,fasta}"
-  - fasta_fai:
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
       type: file
       description: Reference FASTA index
       pattern: "*.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: Reference sequence dictionary
@@ -52,3 +67,4 @@ output:
 
 authors:
   - "@nvnieuwk"
+  - "@ramprasadn"

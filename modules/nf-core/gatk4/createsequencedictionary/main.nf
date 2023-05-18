@@ -8,7 +8,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
     path "*.dict"       , emit: dict

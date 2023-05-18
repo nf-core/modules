@@ -27,9 +27,19 @@ input:
       type: file
       description: The unmaped bam file
       pattern: "*.{bam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: The reference fasta file
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: GATK sequence dictionary
@@ -44,3 +54,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@kevinmenden"
+  - "@ramprasadn"
