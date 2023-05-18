@@ -1,4 +1,4 @@
-process HMTNOTE {
+process HMTNOTE_ANNOTATE {
     tag "$meta.id"
     label 'process_low'
 
