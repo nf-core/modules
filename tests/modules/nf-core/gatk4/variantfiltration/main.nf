@@ -13,11 +13,17 @@ workflow test_gatk4_variantfiltration_vcf_input {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true)
     ]
 
-    fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fasta_index = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    fasta_dict  = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
 
-    GATK4_VARIANTFILTRATION ( input, fasta, fasta_index, fasta_dict )
+    GATK4_VARIANTFILTRATION ( input, fasta, fai, dict )
 }
 
 // Basic parameters with compressed VCF input
@@ -29,11 +35,17 @@ workflow test_gatk4_variantfiltration_gz_input {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fasta_index = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    fasta_dict  = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
 
-    GATK4_VARIANTFILTRATION ( input, fasta, fasta_index, fasta_dict )
+    GATK4_VARIANTFILTRATION ( input, fasta, fai, dict )
 }
 
 
