@@ -2,7 +2,7 @@
 process STADENIOLIB_CRAMFILTER {
     tag "$meta.id"
     label 'process_medium'
-    
+
     conda "bioconda::staden_io_lib=1.14.14"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3':
