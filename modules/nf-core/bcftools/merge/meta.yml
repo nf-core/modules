@@ -28,18 +28,28 @@ input:
       description: |
         List containing the tbi index files corresponding to the vcfs input files
         e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
-  - bed:
-      type: file
-      description: "(Optional) The bed regions to merge on"
-      pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: "(Optional) The fasta reference file (only necessary for the `--gvcf FILE` parameter)"
       pattern: "*.{fasta,fa}"
-  - fasta:
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
       type: file
       description: "(Optional) The fasta reference file index (only necessary for the `--gvcf FILE` parameter)"
       pattern: "*.fai"
+  - bed:
+      type: file
+      description: "(Optional) The bed regions to merge on"
+      pattern: "*.bed"
 output:
   - meta:
       type: map
@@ -70,3 +80,4 @@ authors:
   - "@joseespinosa"
   - "@drpatelh"
   - "@nvnieuwk"
+  - "@ramprasadn"
