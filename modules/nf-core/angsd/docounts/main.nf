@@ -27,7 +27,7 @@ process ANGSD_DOCOUNTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def minq = minqfile ? "-minQfile ${minqfile}" : ""
     """
-    readlink -f *.bam > bamlist.txt
+    ls -1 *.bam > bamlist.txt
 
     angsd \\
         -nThreads ${task.cpus} \\

@@ -10,6 +10,7 @@ process SRATOOLS_PREFETCH {
     input:
     tuple val(meta), val(id)
     path ncbi_settings
+    path certificate
 
     output:
     tuple val(meta), path(id), emit: sra
@@ -20,6 +21,7 @@ process SRATOOLS_PREFETCH {
 
     shell:
     args = task.ext.args ?: ''
+    args += certificate ? " --perm ${certificate}" : ''
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
     template 'retry_with_backoff.sh'
 }
