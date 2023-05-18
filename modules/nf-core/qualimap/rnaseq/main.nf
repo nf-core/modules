@@ -5,7 +5,7 @@ process QUALIMAP_RNASEQ {
     conda "bioconda::qualimap=2.2.2d"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1' :
-        'quay.io/biocontainers/qualimap:2.2.2d--1' }"
+        'biocontainers/qualimap:2.2.2d--1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -32,7 +32,7 @@ process QUALIMAP_RNASEQ {
     }
     """
     unset DISPLAY
-    mkdir tmp
+    mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
         --java-mem-size=$memory \\

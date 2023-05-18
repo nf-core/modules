@@ -5,7 +5,7 @@ process LIMA {
     conda "bioconda::lima=2.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lima:2.6.0--h9ee0642_0' :
-        'quay.io/biocontainers/lima:2.6.0--h9ee0642_0' }"
+        'biocontainers/lima:2.6.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(ccs)

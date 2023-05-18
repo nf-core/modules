@@ -5,7 +5,7 @@ process PRETEXTSNAPSHOT {
     conda "bioconda::pretextsnapshot=0.0.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pretextsnapshot:0.0.4--h7d875b9_0':
-        'quay.io/biocontainers/pretextsnapshot:0.0.4--h7d875b9_0' }"
+        'biocontainers/pretextsnapshot:0.0.4--h7d875b9_0' }"
 
     input:
     tuple val(meta), path(pretext_map)
