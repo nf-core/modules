@@ -13,7 +13,12 @@ workflow test_fastq_align_hisat2_single_end {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test' ],
+        [
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        ]
+    ]
     gtf = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
@@ -29,7 +34,12 @@ workflow test_fastq_align_hisat2_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test' ],
+        [
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        ]
+    ]
     gtf = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
