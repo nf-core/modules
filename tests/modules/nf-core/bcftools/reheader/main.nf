@@ -55,7 +55,7 @@ workflow test_bcftools_reheader_new_header {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
-    fai    = []
+    fai    = [[],[]]
 
     BCFTOOLS_REHEADER ( input, fai )
 }
