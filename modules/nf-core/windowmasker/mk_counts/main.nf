@@ -5,7 +5,7 @@ process WINDOWMASKER_MKCOUNTS {
     conda "bioconda::blast=2.13.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0':
-        'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
+        'biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
     tuple val(meta), path(ref)
@@ -37,7 +37,7 @@ process WINDOWMASKER_MKCOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -49,7 +49,7 @@ process WINDOWMASKER_MKCOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 }
