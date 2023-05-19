@@ -17,6 +17,7 @@ workflow test_gatk4_getpileupsummaries_separate_sites {
     fasta = [[],[]]
     fai = [[],[]]
     dict = [[],[]]
+
     GATK4_GETPILEUPSUMMARIES ( input , fasta, fai, dict, variants , variants_tbi)
 }
 
@@ -30,8 +31,15 @@ workflow test_gatk4_getpileupsummaries_separate_sites_cram {
 
     variants = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     variants_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'test' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            ]
+    fai   = [ [ id:'test' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+            ]
+    dict  = [ [ id:'test' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+            ]
+
     GATK4_GETPILEUPSUMMARIES ( input , fasta, fai, dict, variants , variants_tbi)
 }
