@@ -16,9 +16,9 @@ workflow test_bcftools_convert_gvcf {
     bed = []
 
     fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    BCFTOOLS_CONVERT_GVCF ( input, bed, fasta )
+    BCFTOOLS_CONVERT_GVCF ( input, fasta, bed )
 }
 
 workflow test_bcftools_convert_gvcf_bed {
@@ -32,9 +32,9 @@ workflow test_bcftools_convert_gvcf_bed {
     bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
 
     fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    BCFTOOLS_CONVERT_GVCF ( input, bed, fasta )
+    BCFTOOLS_CONVERT_GVCF ( input, fasta, bed )
 }
 
 workflow test_bcftools_convert_gvcf_to_bcf {
@@ -48,7 +48,7 @@ workflow test_bcftools_convert_gvcf_to_bcf {
     bed = []
 
     fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    BCFTOOLS_CONVERT_BCF ( input, bed, fasta )
+    BCFTOOLS_CONVERT_BCF ( input, fasta, bed )
 }
