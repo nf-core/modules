@@ -10,7 +10,7 @@ process HISAT2_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta2), path(index)
     path  splicesites
 
     output:
