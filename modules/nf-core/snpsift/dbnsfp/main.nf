@@ -5,7 +5,7 @@ process SNPSIFT_DBNSFP {
     conda "bioconda::snpsift=5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:5.1d--hdfd78af_0' :
-        'quay.io/biocontainers/snpsift:5.1d--hdfd78af_0' }"
+        'biocontainers/snpsift:5.1d--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
