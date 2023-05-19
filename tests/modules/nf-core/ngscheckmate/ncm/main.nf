@@ -16,9 +16,7 @@ workflow test_ngscheckmate_ncm_bam {
                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)]
 
-    fasta    = [ [id:'genome'],
-                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+    fasta    = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     inputBed = [ [ id:'test'],
                  file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
@@ -33,9 +31,7 @@ workflow test_ngscheckmate_ncm_bam {
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    fasta    = [ [id:'genome'],
-                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+    fasta    = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     inputBed = [ [ id:'test'],
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]

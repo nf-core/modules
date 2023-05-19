@@ -22,9 +22,7 @@ workflow test_bam_ngscheckmate {
         ]
     ]
 
-    fasta = [ [ id:'genome' ], // meta map
-                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-            ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     ch_input = Channel.fromList(input)
     ch_snp_bed = BEDTOOLS_MAKEWINDOWS.out.bed.map{it[1]}

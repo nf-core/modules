@@ -9,7 +9,7 @@ process NGSCHECKMATE_NCM {
     input:
     path files
     path snp_bed
-    tuple val(meta), path(fasta)
+    path fasta
 
     output:
     path "*.pdf"            , emit: pdf, optional: true

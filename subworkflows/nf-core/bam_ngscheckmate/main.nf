@@ -6,7 +6,7 @@ workflow BAM_NGSCHECKMATE {
     take:
     ch_bam              // channel: [ val(meta), bam ]
     ch_bed              // channel: [ bed ]
-    ch_fasta            // channel: [ val(meta), fasta ]
+    ch_fasta            // channel: [ fasta ]
 
     main:
 
