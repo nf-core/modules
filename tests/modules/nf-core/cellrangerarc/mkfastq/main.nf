@@ -10,7 +10,7 @@ Be ware! You do not have to split the cellranger-arc mkfastq call between ATAC a
 This totally depends on your experimental setup. Yet, the cellranger-arc datasets are split and
 thus we have to call cellranger-arc mkfastq twice.
 */
-workflow test_cellranger_arc_mkfastq_simple_atac {
+workflow test_cellrangerarc_mkfastq_simple_atac {
 
     simple_csv_atac = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-simple-1.0.0.csv",
                             checkIfExists: true)
@@ -23,7 +23,7 @@ workflow test_cellranger_arc_mkfastq_simple_atac {
 }
 
 
-workflow test_cellranger_arc_mkfastq_simple_gex {
+workflow test_cellrangerarc_mkfastq_simple_gex {
 
     simple_csv_gex = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-simple-1.0.0.csv",
                             checkIfExists: true)
@@ -35,7 +35,7 @@ workflow test_cellranger_arc_mkfastq_simple_gex {
 }
 
 
-workflow test_cellranger_arc_mkfastq_illumina_atac {
+workflow test_cellrangerarc_mkfastq_illumina_atac {
 
     samplesheet_csv_atac = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-samplesheet-1.0.0.csv",
                                 checkIfExists: true)
@@ -48,7 +48,7 @@ workflow test_cellranger_arc_mkfastq_illumina_atac {
 }
 
 
-workflow test_cellranger_arc_mkfastq_illumina_gex {
+workflow test_cellrangerarc_mkfastq_illumina_gex {
 
     samplesheet_csv_gex = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-samplesheet-1.0.0.csv",
                                 checkIfExists: true)
