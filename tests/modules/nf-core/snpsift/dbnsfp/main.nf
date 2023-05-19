@@ -8,8 +8,8 @@ workflow test_snpsift_dbnsfp {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_vcf_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz_tbi'], checkIfExists: true)
     ]
     
     input_dbs = [
@@ -24,7 +24,7 @@ workflow test_snpsift_dbnsfp {
 workflow test_snpsift_dbnsfp_uncompressed {
     input = [
         [ id:'tester', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_vcf'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'], checkIfExists: true),
         []
     ]
     
