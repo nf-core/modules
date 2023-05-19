@@ -36,13 +36,13 @@ workflow test_gatk4_printreads_cram {
     ]
 
     fasta = [ [ id:'genome' ], // meta map
-                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
             ]
     fai   = [ [ id:'genome' ], // meta map
-                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
             ]
     dict  = [ [ id:'genome' ], // meta map
-                 file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
             ]
 
     GATK4_PRINTREADS ( input, fasta, fai, dict )

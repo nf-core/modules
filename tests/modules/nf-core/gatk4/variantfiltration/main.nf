@@ -14,13 +14,13 @@ workflow test_gatk4_variantfiltration_vcf_input {
     ]
 
     fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
     fai = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
     dict = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
     ]
 
     GATK4_VARIANTFILTRATION ( input, fasta, fai, dict )
@@ -36,13 +36,13 @@ workflow test_gatk4_variantfiltration_gz_input {
     ]
 
     fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
     fai = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
     dict = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
     ]
 
     GATK4_VARIANTFILTRATION ( input, fasta, fai, dict )
