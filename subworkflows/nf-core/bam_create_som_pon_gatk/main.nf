@@ -9,9 +9,9 @@ include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/nf-core/gat
 workflow BAM_CREATE_SOM_PON_GATK {
     take:
     ch_mutect2_in       // channel: [ val(meta), path(input), path(input_index), path(interval_file) ]
-    ch_fasta            // channel: [ path(fasta) ]
-    ch_fai              // channel: [ path(fai) ]
-    ch_dict             // channel: [ path(dict) ]
+    ch_fasta            // channel: [ val(meta), path(fasta) ]
+    ch_fai              // channel: [ val(meta), path(fai) ]
+    ch_dict             // channel: [ val(meta), path(dict) ]
     val_pon_norm        // string:  name for panel of normals
     ch_gendb_intervals  // channel: [ path(interval_file) ]
 
