@@ -44,7 +44,7 @@ workflow BAM_CREATE_SOM_PON_GATK {
         .combine(ch_vcf)
         .combine(ch_index)
         .combine(ch_gendb_intervals)
-        .combine(ch_dict).map{meta, vcf, tbi, interval, dict -> [meta, vcf, tbi, interval, [], dict]}
+        .combine(ch_dict.map{ it[1] }).map{meta, vcf, tbi, interval, dict -> [meta, vcf, tbi, interval, [], dict]}
 
     GATK4_GENOMICSDBIMPORT ( ch_gendb_input, false, false, false )
     ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions.first())
