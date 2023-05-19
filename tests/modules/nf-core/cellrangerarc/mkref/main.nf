@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CELLRANGER_ARC_MKREF } from '../../../../../modules/nf-core/cellranger-arc/mkref/main.nf'
+include { CELLRANGER_ARC_MKREF } from '../../../../../modules/nf-core/cellrangerarc/mkref/main.nf'
 
 workflow test_cellranger_arc_mkref {
 

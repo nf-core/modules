@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { UNTAR          } from '../../../../../modules/nf-core/untar/main.nf'
-include { CELLRANGER_ARC_MKFASTQ } from '../../../../../modules/nf-core/cellranger-arc/mkfastq/main.nf'
+include { CELLRANGERARC_MKFASTQ } from '../../../../../modules/nf-core/cellrangerarc/mkfastq/main.nf'
 
 workflow test_cellranger_arc_mkfastq_simple {
 
@@ -17,10 +17,10 @@ workflow test_cellranger_arc_mkfastq_simple {
                             checkIfExists: true) ]
 
     UNTAR ( tiny_bcl_atac )
-    CELLRANGER_ARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv_atac)
+    CELLRANGERARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv_atac)
 
     UNTAR ( tiny_bcl_gex )
-    CELLRANGER_ARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv_gex)
+    CELLRANGERARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv_gex)
 }
 
 workflow test_cellranger_arc_mkfastq_illumina {
@@ -35,8 +35,8 @@ workflow test_cellranger_arc_mkfastq_illumina {
                                 checkIfExists: true) ]
 
     UNTAR ( tiny_bcl_atac )
-    CELLRANGER_ARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv_atac)
+    CELLRANGERARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv_atac)
 
     UNTAR ( tiny_bcl_gex )
-    CELLRANGER_ARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv_gex)
+    CELLRANGERARC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv_gex)
 }

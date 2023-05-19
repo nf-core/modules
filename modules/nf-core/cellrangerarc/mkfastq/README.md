@@ -8,17 +8,17 @@ Bcl2fastq2 and Cell Ranger Arc are commercial tools from Illumina and 10X Genomi
 
 ```bash
 ENV BCL2FASTQ2_VER=<VERSION> \
-    CELLRANGER_ARC_VER=<VERSION>
+    CELLRANGERARC_VER=<VERSION>
 ```
 
 3. Create and test the container:
 
 ```bash
-docker build . -t nfcore/cellrangermkfastq:<CELLRANGER_ARC_VERSION>
+docker build . -t nfcore/cellrangermkfastq:<CELLRANGERARC_VERSION>
 ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
 
 ```bash
-docker push nfcore/cellrangermkfastq:<CELLRANGER_ARC_VERSION>
+docker push nfcore/cellrangermkfastq:<CELLRANGERARC_VERSION>
 ```

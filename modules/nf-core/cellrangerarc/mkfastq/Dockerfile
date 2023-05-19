@@ -17,9 +17,9 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # Copy pre-downloaded bcl2fastq2 and cellranger-arc file
 ENV BCL2FASTQ2_VER=v2-20-0-linux-x86-64 \
-    cellranger-arc_ARC_VER=2.0.2
+    ARC_VER=2.0.2
 COPY bcl2fastq2-$BCL2FASTQ2_VER.zip /tmp/bcl2fastq2-$BCL2FASTQ2_VER.zip
-COPY cellranger-arc-$cellranger-arc_ARC_VER.tar.gz /opt/cellranger-arc-$cellranger-arc_ARC_VER.tar.gz
+COPY cellranger-arc-$ARC_VER.tar.gz /opt/cellranger-arc-$ARC_VER.tar.gz
 
 # Install bcl2fastq2
 RUN \
@@ -34,7 +34,7 @@ RUN \
 # Install cellranger-arc
 RUN \
     cd /opt && \
-    tar -xzvf cellranger-arc-$cellranger-arc_ARC_VER.tar.gz && \
-    export PATH=/opt/cellranger-arc-$cellranger-arc_ARC_VER:$PATH && \
-    ln -s /opt/cellranger-arc-$cellranger-arc_ARC_VER/cellranger-arc /usr/bin/cellranger-arc && \
-    rm -rf /opt/cellranger-arc-$cellranger-arc_ARC_VER.tar.gz
+    tar -xzvf cellranger-arc-$ARC_VER.tar.gz && \
+    export PATH=/opt/cellranger-arc-$ARC_VER:$PATH && \
+    ln -s /opt/cellranger-arc-$ARC_VER/cellranger-arc /usr/bin/cellranger-arc && \
+    rm -rf /opt/cellranger-arc-$ARC_VER.tar.gz

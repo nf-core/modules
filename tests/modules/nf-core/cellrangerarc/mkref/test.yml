@@ -1,0 +1,20 @@
+- name: cellrangerarc mkref test_cellranger_arc_mkref
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/mkref -entry test_cellranger_arc_mkref -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellrangerarc/mkref/nextflow.config
+  tags:
+    - cellrangerarc/mkref
+    - cellrangerarc
+  files:
+    - path: output/cellrangerarc/cellranger_arc_reference/fasta/genome.fa
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/fasta/genome.fa.fai
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/genes/genes.gtf.gz
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/reference.json
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/motifs.pfm
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/transcripts.bed
+      md5sum:
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/tss.bed
+      md5sum:

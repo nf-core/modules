@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CELLRANGER_ARC_MKGTF } from '../../../../../modules/nf-core/cellranger-arc/mkgtf/main.nf'
-include { CELLRANGER_ARC_MKREF } from '../../../../../modules/nf-core/cellranger-arc/mkref/main.nf'
-include { CELLRANGER_ARC_COUNT } from '../../../../../modules/nf-core/cellranger-arc/count/main.nf'
+include { CELLRANGER_ARC_MKGTF } from '../../../../../modules/nf-core/cellrangerarc/mkgtf/main.nf'
+include { CELLRANGER_ARC_MKREF } from '../../../../../modules/nf-core/cellrangerarc/mkref/main.nf'
+include { CELLRANGER_ARC_COUNT } from '../../../../../modules/nf-core/cellrangerarc/count/main.nf'
 
 workflow test_cellranger_arc_count {
 

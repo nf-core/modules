@@ -1,22 +1,22 @@
-- name: cellranger-arc count test_cellranger_arc_count
-  command: nextflow run ./tests/modules/nf-core/cellranger-arc/count -entry test_cellranger_arc_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellranger-arc/count/nextflow.config
+- name: cellrangerarc count test_cellranger_arc_count
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/count -entry test_cellranger_arc_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellrangerarc/count/nextflow.config
   tags:
-    - cellranger-arc/count
-    - cellranger-arc
+    - cellrangerarc/count
+    - cellrangerarc
   files:
-    - path: output/cellranger-arc/cellranger_arc_reference/fasta/genome.fa
+    - path: output/cellrangerarc/cellranger_arc_reference/fasta/genome.fa
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/fasta/genome.fa.fai
+    - path: output/cellrangerarc/cellranger_arc_reference/fasta/genome.fa.fai
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/genes/genes.gtf.gz
+    - path: output/cellrangerarc/cellranger_arc_reference/genes/genes.gtf.gz
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/reference.json
+    - path: output/cellrangerarc/cellranger_arc_reference/reference.json
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/regions/motifs.pfm
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/motifs.pfm
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/regions/transcripts.bed
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/transcripts.bed
       md5sum:
-    - path: output/cellranger-arc/cellranger_arc_reference/regions/tss.bed
+    - path: output/cellrangerarc/cellranger_arc_reference/regions/tss.bed
       md5sum:
     - path: output/cellranger/test_scARC/outs/filtered_peak_bc_matrix.h5
       md5sum:
