@@ -14,9 +14,9 @@ workflow test_gatk4_getpileupsummaries_separate_sites {
 
     variants = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     variants_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
-    fasta = []
-    fai = []
-    dict = []
+    fasta = [[],[]]
+    fai = [[],[]]
+    dict = [[],[]]
     GATK4_GETPILEUPSUMMARIES ( input , fasta, fai, dict, variants , variants_tbi)
 }
 
