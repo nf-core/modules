@@ -10,7 +10,7 @@ workflow test_samtools_stats {
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
             ]
 
-    SAMTOOLS_STATS ( input, [])
+    SAMTOOLS_STATS ( input, [[],[]])
 }
 
 workflow test_samtools_stats_cram {
