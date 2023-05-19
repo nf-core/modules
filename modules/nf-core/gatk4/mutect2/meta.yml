@@ -31,9 +31,9 @@ input:
       description: list of BAM file indexes, also able to take CRAM indexes as an input
       pattern: "*.{bam.bai/cram.crai}"
   - intervals:
-      type: File/string
+      type: file
       description: Specify region the tools is run on.
-      pattern: ".{bed,interval_list}/chrM"
+      pattern: ".{bed,interval_list}"
   - meta2:
       type: map
       description: |

@@ -11,8 +11,8 @@ process GATK4_CREATESEQUENCEDICTIONARY {
     tuple val(meta), path(fasta)
 
     output:
-    path "*.dict"       , emit: dict
-    path "versions.yml" , emit: versions
+    tuple val(meta), path('*.dict')  , emit: dict
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
