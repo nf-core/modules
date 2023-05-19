@@ -1,10 +1,9 @@
-process CELLRANGER_ARC_MKREF {
+process CELLRANGERARC_MKREF {
     tag "$reference_config"
     label 'process_medium'
 
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_ARC_MKREF module does not support Conda.
-        Please use docker or singularity containers."
+        exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use docker or singularity containers."
     }
     container "heylf/cellranger-arc:2.0.2"
 
@@ -27,11 +26,11 @@ process CELLRANGER_ARC_MKREF {
     """
     cellranger-arc \\
         mkref \\
-        --config=$reference_config
+        --config=$reference_config 2> /dev/null
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }
