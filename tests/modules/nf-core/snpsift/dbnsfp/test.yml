@@ -1,0 +1,8 @@
+- name: "snpsift dbnsfp"
+  command: nextflow run ./tests/modules/nf-core/snpsift/dbnsfp -entry test_snpsift_dbnsfp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snpsift/dbnsfp/nextflow.config
+  tags:
+    - "snpsift"
+    - "snpsift/dbnsfp"
+  files:
+    - path: "output/snpsift/test.vcf"
+    - path: "output/snpsift/versions.yml"
