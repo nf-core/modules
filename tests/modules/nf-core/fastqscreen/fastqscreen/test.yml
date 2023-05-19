@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml fastqscreen/fastqscreen
 - name: "fastqscreen fastqscreen"
   command: nextflow run ./tests/modules/nf-core/fastqscreen/fastqscreen -entry test_fastqscreen_fastqscreen -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqscreen/fastqscreen/nextflow.config
   tags:
     - "fastqscreen"
     - "fastqscreen/fastqscreen"
   files:
-    - path: "output/fastqscreen/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/fastqscreen/test_fq_screen/test_1_screen.txt"
+      md5sum: 764fde5d19df5ce380148943699164b5
     - path: "output/fastqscreen/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 3ad3f89a04d88fec5932d0887c462467
