@@ -9,8 +9,8 @@ process PICARD_SORTVCF {
 
     input:
     tuple val(meta), path(vcf)
-    path reference
-    path sequence_dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path("*_sorted.vcf.gz"), emit: vcf
@@ -22,7 +22,7 @@ process PICARD_SORTVCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seq_dict = sequence_dict ? "--SEQUENCE_DICTIONARY $sequence_dict" : ""
+    def seq_dict = dict ? "--SEQUENCE_DICTIONARY $dict" : ""
     def reference = reference ? "--REFERENCE_SEQUENCE $reference" : ""
     def avail_mem = 3072
     if (!task.memory) {

@@ -20,6 +20,24 @@ input:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - dict:
+      type: file
+      description: Reference genome dictionary file
+      pattern: "*.{dict}"
 
 output:
   - meta:
