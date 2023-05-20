@@ -19,16 +19,26 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing fasta information
+        Groovy Map containing reference information
         e.g. [ id:'test' ]
   - fasta:
       type: file
       description: fasta file
       pattern: "*.{fa,fasta}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta_fai:
       type: file
       description: index for fasta file
       pattern: "*.{fai}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - dict:
       type: file
       description: sequence dictionary file
