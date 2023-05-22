@@ -9,9 +9,9 @@ process PICARD_LIFTOVERVCF {
 
     input:
     tuple val(meta), path(input_vcf)
-    path dict
-    path chain
-    path fasta
+    tuple val(meta2), path(dict)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(chain)
 
     output:
     tuple val(meta), path("*.lifted.vcf.gz")  , emit: vcf_lifted
