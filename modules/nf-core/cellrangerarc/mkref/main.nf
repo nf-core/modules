@@ -2,10 +2,11 @@ process CELLRANGERARC_MKREF {
     tag "$reference_config"
     label 'process_medium'
 
+    container "heylf/cellranger-arc:2.0.2"
+
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use docker or singularity containers."
     }
-    container "heylf/cellranger-arc:2.0.2"
 
     input:
     path fasta
