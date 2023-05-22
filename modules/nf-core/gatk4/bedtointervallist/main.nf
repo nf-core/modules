@@ -9,7 +9,7 @@ process GATK4_BEDTOINTERVALLIST {
 
     input:
     tuple val(meta), path(bed)
-    path  dict
+    tuple val(meta2), path(dict)
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
