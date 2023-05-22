@@ -9,7 +9,7 @@ process TIDDIT_COV {
 
     input:
     tuple val(meta), path(input)
-    path  fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bed"), optional: true, emit: cov
