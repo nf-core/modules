@@ -7,16 +7,10 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 
 workflow test_cellrangerarc_mkref {
 
-    // fasta = file(params.test_data['mus_musculus']['genome']['genome_fasta'], checkIfExists: true)
-    // gtf = file(params.test_data['mus_musculus']['genome']['genome_gtf'], checkIfExists: true)
-    // motifs = file(params.test_data['mus_musculus']['genome']['genome_motif'], checkIfExists: true)
-    // reference_config = file(params.test_data['mus_musculus']['genome']['genome_config'], checkIfExists: true)
-    // reference_name = "cellrangerarc_reference"
-
-    fasta = [[], file("/home/florian/Downloads/cellranger_testdata/chr19.fa.gz", checkIfExists: true)]
-    gtf = file("/home/florian/Downloads/cellranger_testdata/chr19.filtered.gtf.gz", checkIfExists: true)
-    motifs = file("/home/florian/Downloads/cellranger_testdata/genome_motifs.txt", checkIfExists: true)
-    reference_config = file("/home/florian/Downloads/cellranger_testdata/genome_config.json", checkIfExists: true)
+    fasta = file(params.test_data['mus_musculus']['genome']['genome_19_fasta'], checkIfExists: true)
+    gtf = file(params.test_data['mus_musculus']['genome']['genome_19_gtf'], checkIfExists: true)
+    motifs = file(params.test_data['homo_sapiens']['genome']['genome_motif'], checkIfExists: true)
+    reference_config = file(params.test_data['mus_musculus']['genome']['genome_config'], checkIfExists: true)
     reference_name = "cellrangerarc_reference"
 
     UNZIP( fasta )
