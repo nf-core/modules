@@ -10,8 +10,8 @@ process GATK4_PRINTREADS {
     input:
     tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta)
-    path (fai)
-    path (dict)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("${prefix}.bam") , emit: bam,   optional: true
