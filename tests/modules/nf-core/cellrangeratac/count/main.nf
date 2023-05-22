@@ -9,9 +9,9 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 workflow test_cellrangeratac_count {
 
     input = [ [ id:'test', single_end:false, samples: ["test_scATAC"] ], // meta map
-                 [  file(params.test_data['homo_sapiens']['illumina']['test_scATAC_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_scATAC_3_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_scATAC_2_fastq_gz'], checkIfExists: true)
+                 [  file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_scATAC_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_scATAC_3_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_scATAC_2_fastq_gz'], checkIfExists: true)
         ]
     ]
 
