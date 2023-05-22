@@ -7,32 +7,36 @@ keywords:
 tools:
   - cellrangerarc:
       description: Cell Ranger Arc is a set of analysis pipelines that process Chromium Single Cell Arc data.
-      homepage: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
-      documentation: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
-      tool_dev_url: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       doi: ""
       licence: 10x Genomics EULA
 input:
   - fasta:
       type: file
-      description: fasta genome file
+      description: Reference genome FASTA file
       pattern: "*.{fasta,fa}"
   - gtf:
       type: file
-      description: gtf transcriptome file
+      description: Reference transcriptome GTF file
       pattern: "*.gtf"
   - motifs:
       type: file
-      description: motif file
+      description: Sequence motif file (e.g., from transcription factors)
       pattern: "*.txt"
   - reference_config:
-      type: config
-      description: config file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and JASPAR format motif file path
+      type: file
+      description: JSON-like file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and sequence format motif file path
       pattern: config
+  - reference_name:
+      type: val
+      description: The name to give the new reference folder
+      pattern: str
 output:
   - reference:
       type: folder
-      description: Folder called cellrangerarc_reference containing all the reference indices needed by Cell Ranger Arc
+      description: Folder called like the reference_name containing all the reference indices needed by Cell Ranger Arc
   - versions:
       type: file
       description: File containing software version

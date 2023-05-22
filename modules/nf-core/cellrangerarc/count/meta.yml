@@ -7,9 +7,9 @@ keywords:
 tools:
   - cellrangerarc:
       description: Cell Ranger ARC is a set of analysis pipelines that process Chromium Single Cell ARC data.
-      homepage: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
-      documentation: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
-      tool_dev_url: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       doi: ""
       licence: 10x Genomics EULA
 input:
@@ -23,8 +23,8 @@ input:
       description: |
         Path to a 3-column CSV file declaring FASTQ paths, sample names and library types of input ATAC and GEX FASTQs.
   - reference:
-      type: folder
-      description: Folder containing all the reference indices needed by Cell Ranger ARC
+      type: directory
+      description: Directory containing all the reference indices needed by Cell Ranger ARC
 output:
   - outs:
       type: file
@@ -35,6 +35,6 @@ output:
       description: File containing software version
       pattern: "versions.yml"
 authors:
-  - "@heylf"
   - "@ggabernet"
   - "@Emiller88"
+  - "@heylf"

@@ -15,12 +15,12 @@ tools:
 input:
   - gtf:
       type: file
-      description:
+      description: The reference GTF transcriptome file
       pattern: "*.gtf"
 output:
   - gtf:
-      type: folder
-      description: gtf transcriptome file
+      type: directory
+      description: The filtered GTF transcriptome file
       pattern: "*.filtered.gtf"
   - versions:
       type: file
