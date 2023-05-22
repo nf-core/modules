@@ -9,8 +9,8 @@ process GATK4_MERGEBAMALIGNMENT {
 
     input:
     tuple val(meta), path(aligned), path(unmapped)
-    path  fasta
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path('*.bam'), emit: bam
