@@ -21,12 +21,10 @@ process SNPSIFT_DBNSFP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def algorithms = task.ext.algorithms ? "-f ${task.ext.algorithms}": ''
     """
     SnpSift \\
         dbnsfp \\
         $args \\
-        $algorithms \\
         -db $database \\
         $vcf > ${prefix}.vcf
 
