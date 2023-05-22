@@ -27,6 +27,10 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.{bai}"
   - intervals:
       type: file
       description: Annotated targets optimized for copy number calling
@@ -38,27 +42,23 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - coverage:
+  - txt:
       type: file
       description: Intervals coverage file
       pattern: "*.txt.gz"
-  - gc_normalized_plot:
+  - png:
       type: file
       description: |
         GC-normalized intervals coverage plot.
         Generated only when GC-normalization is enabled.
       pattern: "*.png"
-  - gc_normalized_metrics:
+  - loess_qc_txt:
       type: file
       description: |
         GC-normalized intervals coverage metrics.
         Generated only when GC-normalization is enabled.
       pattern: "*_loess_qc.txt"
-  - gc_normalized_coverage:
+  - loess_txt:
       type: file
       description: |
         GC-normalized intervals coverage file.
