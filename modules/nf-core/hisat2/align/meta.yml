@@ -34,6 +34,11 @@ input:
       type: file
       description: HISAT2 genome index file
       pattern: "*.ht2"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - splicesites:
       type: file
       description: Splices sites in gtf file
@@ -60,3 +65,4 @@ output:
 
 authors:
   - "@ntoda03"
+  - "@ramprasadn"

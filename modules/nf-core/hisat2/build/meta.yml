@@ -24,10 +24,20 @@ input:
       type: file
       description: Reference fasta file
       pattern: "*.{fa,fasta,fna}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - gtf:
       type: file
       description: Reference gtf annotation file
       pattern: "*.{gtf}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - splicesites:
       type: file
       description: Splices sites in gtf file

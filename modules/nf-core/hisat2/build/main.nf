@@ -11,8 +11,8 @@ process HISAT2_BUILD {
 
     input:
     tuple val(meta), path(fasta)
-    path gtf
-    path splicesites
+    tuple val(meta2), path(gtf)
+    tuple val(meta3), path(splicesites)
 
     output:
     tuple val(meta), path("hisat2") , emit: index
