@@ -12,7 +12,7 @@ process FASTQSCREEN_BUILDFROMINDEX {
 
     output:
     path("FastQ_Screen_Genomes"), emit: database
-    path "versions.yml"           , emit: versions
+    path "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process FASTQSCREEN_BUILDFROMINDEX {
     database = [id, folder].transpose()
     copy_index = folder.collect { "cp -r ${it} $dir/${it}"}.join(" && ")
 
-    // Folder name and index (within folder) name could be different, we look for index name within bash
+    // Folder name and index (within folder) name could be different - use bash to look for index name
     config = database
         .collect { "########## ${it[0]} \nDATABASE ${it[0]} $dir/${it[1]}/${it[1] + '_to_be_replaced'}" }
         .join("\n\n")

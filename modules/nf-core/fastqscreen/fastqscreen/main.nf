@@ -13,19 +13,21 @@ process FASTQSCREEN_FASTQSCREEN {
 
     output:
     tuple val(meta), path ("*_fq_screen"), emit: fastq_screen
-    path "versions.yml"                          , emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ""
 
     """
-    fastq_screen --threads ${task.cpus} \
-        --aligner bowtie2 \
-        --conf ${genome}/fastq_screen.conf \
-        $reads \
+    fastq_screen --threads ${task.cpus} \\
+        --aligner bowtie2 \\
+        --conf ${genome}/fastq_screen.conf \\
+        $reads \\
+        $args \\
         --outdir ${prefix}_fq_screen
 
     cat <<-END_VERSIONS > versions.yml
