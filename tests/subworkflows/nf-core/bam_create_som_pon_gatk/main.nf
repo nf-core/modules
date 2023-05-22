@@ -19,9 +19,16 @@ workflow test_bam_create_som_pon_gatk {
             []
         ]
     )
-    fasta           = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true))
-    fai             = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true))
-    dict            = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true))
+    fasta = Channel.value([ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+            ])
+    fai   = Channel.value([ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+            ])
+    dict  = Channel.value([ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+            ])
+
     interval_file   = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true))
     pon_norm        = "test_panel"
 
