@@ -5,7 +5,7 @@ process CHROMAP_CHROMAP {
     conda "bioconda::chromap=0.2.4 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:5b2e433ab8b3d1ef098fc944b567fd98caa23f56-0' :
-        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:5b2e433ab8b3d1ef098fc944b567fd98caa23f56-0' }"
+        'biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:5b2e433ab8b3d1ef098fc944b567fd98caa23f56-0' }"
 
     input:
     tuple val(meta), path(reads)
