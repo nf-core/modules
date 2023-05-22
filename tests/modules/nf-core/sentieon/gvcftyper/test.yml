@@ -1,8 +1,8 @@
-- name: sentieon genotyper test_sentieon_genotyper_vcf_input
-  command: nextflow run ./tests/modules/nf-core/sentieon/genotyper -entry test_sentieon_genotyper_vcf_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/genotyper/nextflow.config
+- name: sentieon gvcftyper test_sentieon_gvcftyper_vcf_input
+  command: nextflow run ./tests/modules/nf-core/sentieon/gvcftyper -entry test_sentieon_gvcftyper_vcf_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/gvcftyper/nextflow.config
   tags:
     - sentieon
-    - sentieon/genotyper
+    - sentieon/gvcftyper
   files:
     - path: output/sentieon/test.genotyped.vcf.gz
       contains:
@@ -12,11 +12,11 @@
     - path: output/sentieon/test.genotyped.vcf.gz.tbi
     - path: output/sentieon/versions.yml
 
-- name: sentieon genotyper test_sentieon_genotyper_gz_input
-  command: nextflow run ./tests/modules/nf-core/sentieon/genotyper -entry test_sentieon_genotyper_gz_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/genotyper/nextflow.config
+- name: sentieon gvcftyper test_sentieon_gvcftyper_gz_input
+  command: nextflow run ./tests/modules/nf-core/sentieon/gvcftyper -entry test_sentieon_gvcftyper_gz_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/gvcftyper/nextflow.config
   tags:
     - sentieon
-    - sentieon/genotyper
+    - sentieon/gvcftyper
   files:
     - path: output/sentieon/test.genotyped.vcf.gz
       contains:
@@ -26,11 +26,11 @@
     - path: output/sentieon/test.genotyped.vcf.gz.tbi
     - path: output/sentieon/versions.yml
 
-- name: sentieon genotyper test_sentieon_genotyper_gz_input_dbsnp
-  command: nextflow run ./tests/modules/nf-core/sentieon/genotyper -entry test_sentieon_genotyper_gz_input_dbsnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/genotyper/nextflow.config
+- name: sentieon gvcftyper test_sentieon_gvcftyper_gz_input_dbsnp
+  command: nextflow run ./tests/modules/nf-core/sentieon/gvcftyper -entry test_sentieon_gvcftyper_gz_input_dbsnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/gvcftyper/nextflow.config
   tags:
     - sentieon
-    - sentieon/genotyper
+    - sentieon/gvcftyper
   files:
     - path: output/sentieon/test.genotyped.vcf.gz
       contains:
@@ -40,11 +40,11 @@
     - path: output/sentieon/test.genotyped.vcf.gz.tbi
     - path: output/sentieon/versions.yml
 
-- name: sentieon genotyper test_sentieon_genotyper_gz_input_intervals
-  command: nextflow run ./tests/modules/nf-core/sentieon/genotyper -entry test_sentieon_genotyper_gz_input_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/genotyper/nextflow.config
+- name: sentieon gvcftyper test_sentieon_gvcftyper_gz_input_intervals
+  command: nextflow run ./tests/modules/nf-core/sentieon/gvcftyper -entry test_sentieon_gvcftyper_gz_input_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/gvcftyper/nextflow.config
   tags:
     - sentieon
-    - sentieon/genotyper
+    - sentieon/gvcftyper
   files:
     - path: output/sentieon/test.genotyped.vcf.gz
       contains:
@@ -54,11 +54,11 @@
     - path: output/sentieon/test.genotyped.vcf.gz.tbi
     - path: output/sentieon/versions.yml
 
-- name: sentieon genotyper test_sentieon_genotyper_gz_input_dbsnp_intervals
-  command: nextflow run ./tests/modules/nf-core/sentieon/genotyper -entry test_sentieon_genotyper_gz_input_dbsnp_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/genotyper/nextflow.config
+- name: sentieon gvcftyper test_sentieon_gvcftyper_gz_input_dbsnp_intervals
+  command: nextflow run ./tests/modules/nf-core/sentieon/gvcftyper -entry test_sentieon_gvcftyper_gz_input_dbsnp_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/gvcftyper/nextflow.config
   tags:
     - sentieon
-    - sentieon/genotyper
+    - sentieon/gvcftyper
   files:
     - path: output/sentieon/test.genotyped.vcf.gz
       contains: ["AC=2;AF=1;AN=2;DB;DP=20;ExcessHet=3.0103;FS=0.000;MLEAC=2;MLEAF=1;QD=23.34;SOR=0.693"]

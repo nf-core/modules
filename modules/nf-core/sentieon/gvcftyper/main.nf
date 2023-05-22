@@ -1,4 +1,4 @@
-process SENTIEON_JOINT_GENOTYPING {
+process SENTIEON_GVCFTYPER {
     tag "$meta.id"
     label 'process_high'
     label 'sentieon'
