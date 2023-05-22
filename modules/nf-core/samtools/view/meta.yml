@@ -29,6 +29,11 @@ input:
       type: optional file
       description: BAM.BAI/BAM.CSI/CRAM.CRAI file
       pattern: "*.{.bai,.csi,.crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: optional file
       description: Reference file the CRAM was created with
