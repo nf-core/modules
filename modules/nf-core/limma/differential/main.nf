@@ -5,10 +5,11 @@ process LIMMA_DIFFERENTIAL {
     conda "bioconda::bioconductor-limma=3.54.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-limma:3.54.0--r42hc0cfd56_0' :
-        'quay.io/biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
+        'biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
 
     input:
-    tuple val(meta), path(samplesheet), path(intensities)
+    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta2), path(samplesheet), path(intensities)
 
     output:
     tuple val(meta), path("*.limma.results.tsv")          , emit: results

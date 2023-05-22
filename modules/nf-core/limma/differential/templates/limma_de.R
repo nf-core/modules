@@ -67,12 +67,15 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 opt <- list(
     count_file = '$intensities',
     sample_file = '$samplesheet',
-    contrast_variable = NULL,
-    reference_level = NULL,
-    treatment_level = NULL,
+    contrast_variable = '$contrast_variable',
+    reference_level = '$reference',
+    target_level = '$target',
     blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
+    subset_to_contrast_samples = FALSE,
+    exclude_samples_col = NULL,
+    exclude_samples_values = NULL,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
     block = NULL,                # lmFit
@@ -108,7 +111,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -182,7 +185,7 @@ if (length(missing_samples) > 0) {
     ))
 } else{
     # Save any non-count data, will gene metadata etc we might need later
-    noncount.table <-
+    nonintensities.table <-
         intensities.table[, !colnames(intensities.table) %in% rownames(sample.sheet), drop = FALSE]
     intensities.table <- intensities.table[, rownames(sample.sheet)]
 }
@@ -207,7 +210,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
 } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
-        'Please choose reference and treatment levels that are present in the',
+        'Please choose reference and target levels that are present in the',
         contrast_variable,
         'column of the sample sheet'
         )
@@ -223,6 +226,32 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
             )
         )
     }
+}
+# Optionally, subset to only the samples involved in the contrast
+
+if (opt\$subset_to_contrast_samples){
+    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    intensities.table <- intensities.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
+}
+
+# Optionally, remove samples with specified values in a given field (probably
+# don't use this as well as the above)
+
+if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+    exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
+
+    if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
+        stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
+    }
+
+    print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
+    sample_selector <- ! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values
+
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    intensities.table <- intensities.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
 }
 
 # Now specify the model. Use cell-means style so we can be explicit with the
@@ -277,7 +306,7 @@ if (! is.null(opt\$correlation)){
 fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
-contrast <- paste(paste(contrast_variable, c(opt\$treatment_level, opt\$reference_level), sep='.'), collapse='-')
+contrast <- paste(paste(contrast_variable, c(opt\$target_level, opt\$reference_level), sep='.'), collapse='-')
 contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
@@ -311,12 +340,12 @@ comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 ################################################
 ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
+prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
 prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
 output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 contrast.name <-
-    paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
+    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of

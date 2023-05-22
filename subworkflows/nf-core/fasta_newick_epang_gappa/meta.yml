@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_newick_epang_gappa"
 description: Run phylogenetic placement with a number of query sequences plus a reference alignment and phylogeny. Used in nf-core/phyloplace.
 keywords:
@@ -19,19 +20,19 @@ modules:
   - gappa/examineheattree
 input:
   - ch_pp_data:
-    type: map
-    description: |
-      Structure: [
-        meta: val(meta),
-        data: [
-          alignmethod:  'hmmer',
-          queryseqfile: path("*.faa"),
-          refseqfile:   path("*.alnfaa"),
-          refphylogeny: path("*.newick"),
-          model:        "LG",
-          taxonomy:     path("*.tsv")
+      type: map
+      description: |
+        Structure: [
+          meta: val(meta),
+          data: [
+            alignmethod:  'hmmer',
+            queryseqfile: path("*.faa"),
+            refseqfile:   path("*.alnfaa"),
+            refphylogeny: path("*.newick"),
+            model:        "LG",
+            taxonomy:     path("*.tsv")
+          ]
         ]
-      ]
   - meta:
       type: map
       description: |
