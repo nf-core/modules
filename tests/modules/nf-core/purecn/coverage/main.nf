@@ -8,10 +8,10 @@ workflow test_purecn_coverage {
 
     meta = [ id:'test' ]
     input_bam = [ meta,
-                  file("https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1.bam", checkIfExists: true),
-                  file("https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1.bam.bai", checkIfExists: true)
+                  file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bam'], checkIfExists: true),
+                  file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bai'], checkIfExists: true)
                   ]
-    input_intervals = ["https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/ex1_intervals.txt"]
+    input_intervals = file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_interval'], checkIfExists: true)
 
 
     PURECN_COVERAGE ( input_bam, input_intervals )
