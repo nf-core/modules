@@ -24,6 +24,9 @@ process SENTIEON_JOINT_GENOTYPING {
     tuple val(meta), path("*.vcf.gz.tbi"), emit: vcf_gz_tbi
     path("versions.yml")                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
