@@ -1,16 +1,15 @@
-process CELLRANGER_ARC_COUNT {
+process CELLRANGERARC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_ARC_COUNT module does not support Conda.
-        Please use docker or singularity containers."
+        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use docker or singularity containers."
     }
     container "heylf/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), path(reads)
-    path  lib_csv
+    path  lib_csv // A script to generate the lib.csv automatically you can find at nf-core/scrnaseq
     path  reference
 
     output:
@@ -25,6 +24,16 @@ process CELLRANGER_ARC_COUNT {
     def lib_csv_name = lib_csv.name
     def reference_name = reference.name
     """
+    # The following ugly three commands (mkdir, mv, awk) are required because cellranger-arc only deals with abolsute paths
+    if [ ! -d "fastqs" ]; then
+        mkdir fastqs
+    fi
+
+    mv *.fastq.gz fastqs/
+
+    # This adds the tmp/fastqs to the lib.csv
+    cat $lib_csv_name | awk '{if (\$0 !~ /^fastqs/) {print "'"\$(readlink -f fastqs)"'"\$0} else {print \$0}}' > tmp.csv && mv tmp.csv $lib_csv_name
+
     cellranger-arc \\
         count \\
         --id='${meta.id}' \\
@@ -36,7 +45,7 @@ process CELLRANGER_ARC_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 
@@ -47,7 +56,7 @@ process CELLRANGER_ARC_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }
