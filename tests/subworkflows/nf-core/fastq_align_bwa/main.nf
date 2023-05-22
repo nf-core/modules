@@ -18,7 +18,7 @@ workflow test_fastq_align_bwa_single_end {
     sort = false
 
     BWA_INDEX ( fasta )
-    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [ ] )
+    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [[],[]] )
 }
 
 workflow test_fastq_align_bwa_paired_end {
@@ -36,5 +36,5 @@ workflow test_fastq_align_bwa_paired_end {
     sort = false
 
     BWA_INDEX ( fasta )
-    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [ ] )
+    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [[],[]] )
 }
