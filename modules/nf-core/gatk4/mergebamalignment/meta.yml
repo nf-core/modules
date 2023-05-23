@@ -1,8 +1,10 @@
 name: gatk4_mergebamalignment
 description: Merge unmapped with mapped BAM files
 keywords:
+  - alignment
   - bam
   - merge
+  - mergebamalignment
 tools:
   - gatk4:
       description: |
@@ -27,9 +29,19 @@ input:
       type: file
       description: The unmaped bam file
       pattern: "*.{bam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: The reference fasta file
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: GATK sequence dictionary
@@ -44,3 +56,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@kevinmenden"
+  - "@ramprasadn"
