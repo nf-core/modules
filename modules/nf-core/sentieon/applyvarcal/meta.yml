@@ -1,50 +1,48 @@
-name: sentieon_applyvarcal # TO-DO: Fix the docs
+name: sentieon_applyvarcal
 description: |
-  Build a recalibration model to score variant quality for filtering purposes.
-  It is highly recommended to follow GATK best practices when using this module,
-  the gaussian mixture model requires a large number of samples to be used for the
-  tool to produce optimal results. For example, 30 samples for exome data. For more details see
-  https://gatk.broadinstitute.org/hc/en-us/articles/4402736812443-Which-training-sets-arguments-should-I-use-for-running-VQSR-
+  Apply a score cutoff to filter variants based on a recalibration table.
+  Sentieon's Aplyvarcal performs the second pass in a two-stage process called Variant Quality Score Recalibration (VQSR).
+  Specifically, it applies filtering to the input variants based on the recalibration table produced
+  in the previous step VarCal and a target sensitivity value.
+  https://support.sentieon.com/manual/usages/general/#applyvarcal-algorithm
 keywords:
-  - VariantRecalibrator
-  - gatk4
-  - recalibration_model
-tools:
-  - gatk4:
+  - sentieon
+  - applyvarcal
+  - varcal
+  - VQSR
+  - sentieon:
       description: |
-        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
-        with a primary focus on variant discovery and genotyping. Its powerful processing engine
-        and high-performance computing features make it capable of taking on projects of any size.
-      homepage: https://gatk.broadinstitute.org/hc/en-us
-      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
 
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test' ]
+        e.g. [ id:'test']
   - vcf:
       type: file
-      description: input vcf file containing the variants to be recalibrated
-      pattern: "*.vcf.gz"
-  - tbi:
+      description: VCF file to be recalibrated, this should be the same file as used for the first stage VariantRecalibrator.
+      pattern: "*.vcf"
+  - vcf_tbi:
       type: file
-      description: tbi file matching with -vcf
-      pattern: "*.vcf.gz.tbi"
-  - resource_vcf:
+      description: tabix index for the input vcf file.
+      pattern: "*.vcf.tbi"
+  - recal:
       type: file
-      description: all resource vcf files that are used with the corresponding '--resource' label
-      pattern: "*.vcf.gz"
-  - resource_tbi:
+      description: Recalibration file produced when the input vcf was run through VariantRecalibrator in stage 1.
+      pattern: "*.recal"
+  - recal_index:
       type: file
-      description: all resource tbi files that are used with the corresponding '--resource' label
-      pattern: "*.vcf.gz.tbi"
-  - labels:
-      type: string
-      description: necessary arguments for GATK VariantRecalibrator. Specified to directly match the resources provided. More information can be found at https://gatk
-.broadinstitute.org/hc/en-us/articles/5358906115227-VariantRecalibrator
+      description: Index file for the recalibration file.
+      pattern: ".recal.idx"
+  - tranches:
+      type: file
+      description: Tranches file produced when the input vcf was run through VariantRecalibrator in stage 1.
+      pattern: ".tranches"
   - fasta:
       type: file
       description: The reference fasta file
@@ -52,32 +50,24 @@ input:
   - fai:
       type: file
       description: Index of reference fasta file
-      pattern: "fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
+      pattern: "*.fasta.fai"
 output:
-  - recal:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - vcf:
       type: file
-      description: Output recal file used by ApplyVQSR
-      pattern: "*.recal"
-  - idx:
+      description: compressed vcf file containing the recalibrated variants.
+      pattern: "*.vcf.gz"
+  - tbi:
       type: file
-      description: Index file for the recal output file
-      pattern: "*.idx"
-  - tranches:
+      description: Index of recalibrated vcf file.
+      pattern: "*vcf.gz.tbi"
+  - versions:
       type: file
-      description: Output tranches file used by ApplyVQSR
-      pattern: "*.tranches"
-  - plots:
-      type: file
-      description: Optional output rscript file to aid in visualization of the input data and learned model.
-      pattern: "*plots.R"
-  - version:
-      type: file
-      description: File containing software versions
-      pattern: "*.versions.yml"
+      description: File containing software versions.
+      pattern: "versions.yml"
 authors:
-  - "@GCJMackenzie"
-  - "@nickhsmith"
+  - "@assp8200"
