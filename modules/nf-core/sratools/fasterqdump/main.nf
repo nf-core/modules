@@ -10,6 +10,7 @@ process SRATOOLS_FASTERQDUMP {
     input:
     tuple val(meta), path(sra)
     path ncbi_settings
+    path certificate
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
@@ -23,6 +24,7 @@ process SRATOOLS_FASTERQDUMP {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outfile = meta.single_end ? "${prefix}.fastq" : prefix
+    def key_file = certificate ? "--perm ${certificate}" : ''
     """
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
@@ -30,6 +32,7 @@ process SRATOOLS_FASTERQDUMP {
         $args \\
         --threads $task.cpus \\
         --outfile $outfile \\
+        ${key_file} \\
         ${sra.name}
 
     pigz \\
