@@ -2,7 +2,7 @@ process CELLRANGERATAC_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "registry.hub.docker.com/heylf/cellranger-atac:2.1.0"
+    container ""
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

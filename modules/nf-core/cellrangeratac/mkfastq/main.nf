@@ -2,7 +2,7 @@ process CELLRANGERATAC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "registry.hub.docker.com/heylf/cellrangeratacmkfastq:2.1.0"
+    container ""
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
