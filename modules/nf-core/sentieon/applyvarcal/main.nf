@@ -16,7 +16,6 @@ process SENTIEON_APPLYVARCAL {
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
     path  fasta
     path  fai
-    path  dict
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf

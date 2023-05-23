@@ -14,7 +14,6 @@ workflow test_sentieon_applyvarcal {
             ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
-    SENTIEON_APPLYVARCAL( input, fasta, fai, dict )
+    SENTIEON_APPLYVARCAL( input, fasta, fai )
 }
