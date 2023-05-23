@@ -38,7 +38,7 @@ process BOWTIE2_ALIGN {
     }
 
     def samtools_command = sort_bam ? 'sort' : 'view'
-    def extension = samtools_command == 'sort' ? 'bam' : 'sam'
+    def extension = args2.contains("--output-fmt") ? (args2 =~ /--output-fmt+\s+(\S+)/)[0][1].toLowerCase() : ""
 
     """
     INDEX=`find -L ./ -name "*.rev.1.bt2" | sed "s/\\.rev.1.bt2\$//"`
