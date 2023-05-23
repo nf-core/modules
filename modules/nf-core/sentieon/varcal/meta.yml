@@ -1,6 +1,8 @@
-name: sentieon_varcal # TO-DO: Fix the docs
+name: sentieon_varcal
 description: |
-  Build a recalibration model to score variant quality for filtering purposes.
+  Module for Sentieons VarCal. The VarCal algorithm calculates the Variant Quality Score Recalibration (VQSR).
+  VarCal builds a recalibration model for scoring variant quality.
+  https://support.sentieon.com/manual/usages/general/#varcal-algorithm
 keywords:
   - sentieon
   - varcal
@@ -12,7 +14,6 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-
 input:
   - meta:
       type: map
@@ -37,8 +38,7 @@ input:
       pattern: "*.vcf.gz.tbi"
   - labels:
       type: string
-      description: necessary arguments for GATK VariantRecalibrator. Specified to directly match the resources provided. More information can be found at https://gatk
-.broadinstitute.org/hc/en-us/articles/5358906115227-VariantRecalibrator
+      description: necessary arguments for Sentieon's VarCal. Specified to directly match the resources provided. More information can be found at https://support.sentieon.com/manual/usages/general/#varcal-algorithm
   - fasta:
       type: file
       description: The reference fasta file
@@ -47,10 +47,6 @@ input:
       type: file
       description: Index of reference fasta file
       pattern: "fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
 output:
   - recal:
       type: file
@@ -73,5 +69,4 @@ output:
       description: File containing software versions
       pattern: "*.versions.yml"
 authors:
-  - "@GCJMackenzie"
-  - "@nickhsmith"
+  - "@asp8200"
