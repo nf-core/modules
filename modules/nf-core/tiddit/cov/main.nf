@@ -5,11 +5,11 @@ process TIDDIT_COV {
     conda "bioconda::tiddit=3.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiddit:3.3.2--py310hc2b7f4b_0' :
-        'quay.io/biocontainers/tiddit:3.3.2--py310hc2b7f4b_0' }"
+        'biocontainers/tiddit:3.3.2--py310hc2b7f4b_0' }"
 
     input:
     tuple val(meta), path(input)
-    path  fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bed"), optional: true, emit: cov

@@ -2,7 +2,7 @@ process COREOGRAPH {
     tag "$meta.id"
     label 'process_single'
 
-    container "labsyspharm/unetcoreograph:2.2.9"
+    container "docker.io/labsyspharm/unetcoreograph:2.2.9"
 
     input:
     tuple val(meta), path(image)

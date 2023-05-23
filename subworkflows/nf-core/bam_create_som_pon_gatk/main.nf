@@ -9,9 +9,9 @@ include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/nf-core/gat
 workflow BAM_CREATE_SOM_PON_GATK {
     take:
     ch_mutect2_in       // channel: [ val(meta), path(input), path(input_index), path(interval_file) ]
-    ch_fasta            // channel: [ path(fasta) ]
-    ch_fai              // channel: [ path(fai) ]
-    ch_dict             // channel: [ path(dict) ]
+    ch_fasta            // channel: [ val(meta), path(fasta) ]
+    ch_fai              // channel: [ val(meta), path(fai) ]
+    ch_dict             // channel: [ val(meta), path(dict) ]
     val_pon_norm        // string:  name for panel of normals
     ch_gendb_intervals  // channel: [ path(interval_file) ]
 
@@ -39,12 +39,14 @@ workflow BAM_CREATE_SOM_PON_GATK {
     //
     ch_vcf          = GATK4_MUTECT2.out.vcf.collect{it[1]}.toList()
     ch_index        = GATK4_MUTECT2.out.tbi.collect{it[1]}.toList()
+    ch_dict_gendb   = ch_dict.map{meta, dict -> return dict}.toList()
 
     ch_gendb_input  = Channel.of([id:val_pon_norm])
         .combine(ch_vcf)
         .combine(ch_index)
         .combine(ch_gendb_intervals)
-        .combine(ch_dict).map{meta, vcf, tbi, interval, dict -> [meta, vcf, tbi, interval, [], dict]}
+        .combine(ch_dict_gendb)
+        .map{meta, vcf, tbi, interval, dict -> [meta, vcf, tbi, interval, [], dict]}
 
     GATK4_GENOMICSDBIMPORT ( ch_gendb_input, false, false, false )
     ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions.first())

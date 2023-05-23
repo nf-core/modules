@@ -30,6 +30,9 @@ input:
       type: file
       description: tabix index of query VCF - only needed if vcf is compressed
       pattern: "*.vcf.gz.tbi"
+  - specific_resources:
+      type: map
+      description: A list of sample specific reference files defined in toml config, must also include indices if bgzipped.
   - toml:
       type: file
       description: configuration file with reference file basenames
@@ -39,8 +42,8 @@ input:
       description: Lua file for custom annotations
       pattern: "*.lua"
   - resources:
-      type: list
-      description: List of reference files defined in toml config, must also include indices.
+      type: map
+      description: List of reference files defined in toml config, must also include indices if bgzipped.
 
 output:
   - meta:

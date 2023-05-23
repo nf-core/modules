@@ -5,13 +5,13 @@ process TRINITY {
     conda "bioconda::trinity=2.13.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trinity:2.13.2--h00214ad_1':
-        'quay.io/biocontainers/trinity:2.13.2--h00214ad_1' }"
+        'biocontainers/trinity:2.13.2--h00214ad_1' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fasta")       , emit: transcript_fasta
+    tuple val(meta), path("*.fa.gz")       , emit: transcript_fasta
     path "versions.yml"                    , emit: versions
 
     when:
@@ -31,11 +31,11 @@ process TRINITY {
     seqType_args = reads[0] ==~ /(.*fasta(.gz)?$)|(.*fa(.gz)?$)/ ? "fa" : "fq"
 
     // Define the memory requirements. Trinity needs this as an option.
-    def avail_mem = 7168
+    def avail_mem = 7
     if (!task.memory) {
         log.info '[Trinity] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        avail_mem = (task.memory.giga*0.8).intValue()
     }
 
     """
@@ -43,13 +43,13 @@ process TRINITY {
 
     Trinity \\
     --seqType ${seqType_args} \\
-    --max_memory ${avail_mem}M \\
+    --max_memory ${avail_mem}G \\
     ${reads_args} \\
     --output ${prefix}_trinity \\
     --CPU $task.cpus \\
     $args
 
-    mv ${prefix}_trinity.Trinity.fasta ${prefix}.fasta
+    gzip -cf ${prefix}_trinity.Trinity.fasta > ${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

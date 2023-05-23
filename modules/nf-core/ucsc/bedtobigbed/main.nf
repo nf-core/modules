@@ -6,7 +6,7 @@ process UCSC_BEDTOBIGBED {
     conda "bioconda::ucsc-bedtobigbed=377"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:377--ha8a8165_3' :
-        'quay.io/biocontainers/ucsc-bedtobigbed:377--ha8a8165_3' }"
+        'biocontainers/ucsc-bedtobigbed:377--ha8a8165_3' }"
 
     input:
     tuple val(meta), path(bed)
