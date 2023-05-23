@@ -2,7 +2,7 @@ process CELLRANGERARC_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    container "heylf/cellranger-arc:2.0.2"
+    container ""
 
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKGTF module does not support Conda. Please use docker or singularity containers."
