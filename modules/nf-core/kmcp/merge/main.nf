@@ -27,7 +27,8 @@ process KMCP_MERGE {
         merge \\
         $args \\
         --threads $task.cpus \\
-        --out-file ${prefix}.gz
+        --out-file ${prefix}.gz \\
+        $search_out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
