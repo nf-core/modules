@@ -28,7 +28,6 @@ process GENOMAD_ENDTOEND {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     genomad \\
         end-to-end \\
