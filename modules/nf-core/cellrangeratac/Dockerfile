@@ -2,7 +2,7 @@
 # Push to nfcore/cellrangeratac:<VER>
 
 FROM continuumio/miniconda3:4.8.2
-LABEL authors="Florian Heyl, Gisela Gabernet <gisela.gabernet@gmail.com>" \
+LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>, Florian Heyl" \
     description="Docker image containing Cell Ranger"
 # Disclaimer: this container is not provided nor supported by Illumina or 10x Genomics.
 

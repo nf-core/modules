@@ -2,7 +2,7 @@
 # Push to nfcore/cellranger-atacmkfastq:<VER>
 
 FROM continuumio/miniconda3:4.8.2
-LABEL authors="Regina Reynolds, Florian Heyl, Gisela Gabernet <gisela.gabernet@gmail.com>" \
+LABEL authors="Regina Reynolds, Gisela Gabernet <gisela.gabernet@gmail.com>, Florian Heyl" \
     description="Docker image containing bcl2fastq2 and Cell Ranger ATAC"
 # Disclaimer: this container is not provided nor supported by Illumina or 10x Genomics.
 
