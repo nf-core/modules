@@ -1,0 +1,12 @@
+- name: phispy test_phispy
+  command: nextflow run ./tests/modules/nf-core/phispy -entry test_phispy -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/phispy/nextflow.config
+  tags:
+    - phispy
+  files:
+    - path: output/phispy/test/genome.gbff.gz
+      contains: ["prophage region pp1 identified with PhiSpy v4.2.21"]
+    - path: output/phispy/test/phispy.log
+      contains: ["NZ_CP069563.1", "91", "Kept"]
+    - path: output/phispy/test/prophage_coordinates.tsv
+      contains: ["pp1", "NZ_CP069563.1", "Longest Repeat flanking phage and within 2000 bp"]
+    - path: output/phispy/versions.yml
