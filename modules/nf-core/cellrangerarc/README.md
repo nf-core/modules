@@ -7,7 +7,7 @@ Cell Ranger Arc is a commercial tool from 10X Genomics. The container provided f
 2. Edit the Dockerfile. Update the Cell Ranger Arc versions in this line:
 
 ```bash
-ENV cellrangerarc_ARC_VER=<VERSION>
+ENV CELLRANGER_ARC_VER=<VERSION>
 ```
 
 3. Create and test the container:
@@ -16,8 +16,4 @@ ENV cellrangerarc_ARC_VER=<VERSION>
 docker build . -t nfcore/cellrangerarc:<VERSION>
 ```
 
-4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
-
-```bash
-docker push nfcore/cellrangerarc:<VERSION>
-```
+4. **Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.**
