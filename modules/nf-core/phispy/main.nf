@@ -11,7 +11,7 @@ process PHISPY {
     tuple val(meta), path(gbk)
 
     output:
-    tuple val(meta), path("${prefix}/")                         , emit: results
+    tuple val(meta), path("${prefix}/")                        , emit: results
     tuple val(meta), path("${prefix}/prophage_coordinates.tsv"), emit: coordinates
     tuple val(meta), path("${prefix}/*.gb*")                   , emit: gbk
     path "versions.yml"                                        , emit: versions
