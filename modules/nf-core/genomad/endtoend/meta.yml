@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "genomad_endtoend"
+
+description: Identify mobile genetic elements present in genomic assemblies
+
+keywords:
+  - metagenomics
+  - genomad
+  - database
+  - download
+  - phage
+  - virus
+  - plasmid
+
+tools:
+  - "genomad":
+      description: "Identification of mobile genetic elements"
+      homepage: https://portal.nersc.gov/genomad/
+      documentation: https://portal.nersc.gov/genomad/
+      tool_dev_url: https://github.com/apcamargo/genomad/
+      doi: 10.1101/2023.03.05.531206
+      licence: "['Lawrence Berkeley National Labs BSD variant license']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - fasta:
+      type: file
+      description: FASTA file containing contigs/scaffolds/chromosomes
+      pattern: "*.{fasta,fna,fa}"
+
+  - db:
+      type: directory
+      description: Directory pointing to geNomad database
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - plasmid_fasta:
+      type: file
+      description: FASTA file containing predicted plasmid sequences.
+      pattern: "*_summary/*_plasmid.fna"
+
+  - plasmid_genes:
+      type: file
+      description: TSV file containing predicted plasmid genes and their annotations.
+      pattern: "*_summary/*_plasmid_genes.tsv"
+
+  - plasmid_proteins:
+      type: file
+      description: FASTA file containing predicted plasmid protein sequences.
+      pattern: "*_summary/*_plasmid_proteins.faa"
+
+  - plasmid_summary:
+      type: file
+      description: TSV file containing a summary of geNomad's plasmid predictions.
+      pattern: "*_summary/*_plasmid_summary.tsv"
+
+  - virus_fasta:
+      type: file
+      description: FASTA file containing predicted virus sequences.
+      pattern: "*_summary/*_virus.fna"
+
+  - virus_genes:
+      type: file
+      description: TSV file containing predicted virus genes and their annotations.
+      pattern: "*_summary/*_virus_genes.tsv"
+
+  - virus_proteins:
+      type: file
+      description: FASTA file containing predicted virus protein sequences.
+      pattern: "*_summary/*_virus_proteins.faa"
+
+  - virus_summary:
+      type: file
+      description: TSV file containing a summary of geNomad's virus predictions.
+      pattern: "*_summary/*_virus_summary.tsv"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
