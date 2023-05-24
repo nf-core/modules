@@ -20,7 +20,7 @@ process GENOMAD_ENDTOEND {
     tuple val(meta), path("*_summary/*_virus_genes.tsv")        , emit: virus_genes
     tuple val(meta), path("*_summary/*_virus_proteins.faa")     , emit: virus_proteins
     tuple val(meta), path("*_summary/*_virus_summary.tsv")      , emit: virus_summary
-    path "versions.yml"                                                   , emit: versions
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
