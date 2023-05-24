@@ -9,8 +9,8 @@ process EXPANSIONHUNTERDENOVO_PROFILE {
 
     input:
     tuple val(meta), path(alignment_file), path(alignment_index)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.locus.tsv")        , emit: locus_tsv
