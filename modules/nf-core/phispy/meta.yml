@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "PhiSpy"
+description: Predict prophages in bacterial genomes
+keywords:
+  - genomics
+  - virus
+  - phage
+  - prophage
+  - annotation
+  - identification
+tools:
+  - "phispy":
+      description: "Prophage finder using multiple metrics"
+      homepage: "https://github.com/linsalrob/PhiSpy/blob/master/README.md"
+      documentation: "https://github.com/linsalrob/PhiSpy/blob/master/README.md"
+      tool_dev_url: "https://github.com/linsalrob/PhiSpy/"
+      doi: "10.1093/nar/gks406"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - gbk:
+      type: file
+      description: Genome file in .gbk or .gbff format.
+      pattern: "*.{gbk,gbff}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - results:
+      type: directory
+      description: Directory containing PhiSpy result files.
+      pattern: "*/*"
+
+  - coordinates:
+      type: file
+      description: |
+        Coordinates of each prophage identified in the genome,
+        and their att sites (if found).
+      pattern: "*.{tsv}"
+
+  - gbk:
+      type: file
+      description: |
+        A duplicate GenBank record that is the same as the input record,
+        but we have inserted the prophage information, including att
+        sites into the record.
+      pattern: "*.{gbk,gbff}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jvfe"
