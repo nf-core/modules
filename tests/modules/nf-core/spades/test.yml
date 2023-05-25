@@ -4,12 +4,14 @@
     - spades
   files:
     - path: output/spades/test.assembly.gfa.gz
+      md5sum: e5eab229363a906954a07df00e2495a6
     - path: output/spades/test.contigs.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 64f6b339872b934138c6efd6baa445f4
     - path: output/spades/test.scaffolds.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 64f6b339872b934138c6efd6baa445f4
     - path: output/spades/test.spades.log
       contains: ["Terminate finished"]
+    - path: output/spades/versions.yml
 
 - name: spades test_spades_paired_end
   command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
@@ -17,10 +19,12 @@
     - spades
   files:
     - path: output/spades/test.assembly.gfa.gz
+      md5sum: c8614fb69907ae832a1359a054af240f
     - path: output/spades/test.contigs.fa.gz
-      contains: [">NODE_1"]
+      md5sum: eab5165b3cda96c235aaa1388010cb27
     - path: output/spades/test.spades.log
       contains: ["Terminate finished"]
+    - path: output/spades/versions.yml
     - path: output/spades/warnings.log
 
 - name: spades test_spades_illumina_nanopore
@@ -29,12 +33,14 @@
     - spades
   files:
     - path: output/spades/test.assembly.gfa.gz
+      md5sum: e438534f14e107f005efdd659adeba6a
     - path: output/spades/test.contigs.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 027b0e54bfd8f4bc359e751e094133ef
     - path: output/spades/test.scaffolds.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 027b0e54bfd8f4bc359e751e094133ef
     - path: output/spades/test.spades.log
       contains: ["Terminate finished"]
+    - path: output/spades/versions.yml
     - path: output/spades/warnings.log
 
 - name: spades test_spades_yml
@@ -43,12 +49,14 @@
     - spades
   files:
     - path: output/spades/test.assembly.gfa.gz
+      md5sum: 22f92cbade8f25be3ac170eaf09f4c7b
     - path: output/spades/test.contigs.fa.gz
-      contains: [">NODE_1"]
+      md5sum: bb2d294a5752a6f3a208834b8799ec98
     - path: output/spades/test.scaffolds.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 65aa6e3364925ec617fffda3e84b4cbc
     - path: output/spades/test.spades.log
       contains: ["Terminate finished"]
+    - path: output/spades/versions.yml
     - path: output/spades/warnings.log
 
 - name: spades test_spades_illumina_pacbio
@@ -57,10 +65,12 @@
     - spades
   files:
     - path: output/spades/test.assembly.gfa.gz
+      md5sum: 22f92cbade8f25be3ac170eaf09f4c7b
     - path: output/spades/test.contigs.fa.gz
-      contains: [">NODE_1"]
+      md5sum: bb2d294a5752a6f3a208834b8799ec98
     - path: output/spades/test.scaffolds.fa.gz
-      contains: [">NODE_1"]
+      md5sum: 65aa6e3364925ec617fffda3e84b4cbc
     - path: output/spades/test.spades.log
       contains: ["Terminate finished"]
+    - path: output/spades/versions.yml
     - path: output/spades/warnings.log
