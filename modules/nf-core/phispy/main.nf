@@ -30,7 +30,7 @@ process PHISPY {
         -o $prefix \\
         $gbk
 
-    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}/${prefix}.tsv
+    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
