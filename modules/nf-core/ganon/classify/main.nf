@@ -16,7 +16,7 @@ process GANON_CLASSIFY {
     tuple val(meta), path("*.rep"), emit: report
     tuple val(meta), path("*.lca"), emit: lca           , optional: true
     tuple val(meta), path("*.all"), emit: all           , optional: true
-    tuple val(meta), path("*.unc"), emit: unclassified  , optional: true
+    tuple val(meta), path("*.unc"), emit: unc           , optional: true
     path "versions.yml"           , emit: versions
 
     when:
