@@ -37,11 +37,6 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - results:
-      type: directory
-      description: Directory containing PhiSpy result files.
-      pattern: "*/*"
-
   - coordinates:
       type: file
       description: |
@@ -56,6 +51,11 @@ output:
         but we have inserted the prophage information, including att
         sites into the record.
       pattern: "*.{gbk,gbff}"
+
+  - log:
+      type: file
+      description: File containing the PhiSpy execution log
+      pattern: "*.{log}"
 
   - versions:
       type: file

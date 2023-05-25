@@ -11,10 +11,10 @@ process PHISPY {
     tuple val(meta), path(gbk)
 
     output:
-    tuple val(meta), path("${prefix}/")              , emit: results
-    tuple val(meta), path("${prefix}/${prefix}.tsv") , emit: coordinates
-    tuple val(meta), path("${prefix}/${prefix}.gb*"), emit: gbk
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("${prefix}.tsv"), emit: coordinates
+    tuple val(meta), path("${prefix}.gb*"), emit: gbk
+    tuple val(meta), path("${prefix}.log"), emit: log
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +22,11 @@ process PHISPY {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    // Extract GBK file extension, i.e. .gbff, .gbk.gz
+    def gbk_extension = gbk.getName() - gbk.getSimpleName()
+
+    if ("$gbk" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
     PhiSpy.py \\
         $args \\
@@ -30,12 +35,9 @@ process PHISPY {
         -o $prefix \\
         $gbk
 
-    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}/${prefix}.tsv
-
-    filename=$gbk
-    gbk_extension="\${filename#*.}"
-    mv ${prefix}/${prefix}_${gbk} ${prefix}/${prefix}.\${gbk_extension}
-
+    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}.tsv
+    mv ${prefix}/${prefix}_${gbk} ${prefix}${gbk_extension}
+    mv ${prefix}/${prefix}_phispy.log ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -46,9 +48,9 @@ process PHISPY {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
-    touch ${prefix}/${prefix}.tsv
-    touch ${prefix}/${prefix}.gbk
+    touch ${prefix}.tsv
+    touch ${prefix}.gbk
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
