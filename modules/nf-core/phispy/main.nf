@@ -37,4 +37,17 @@ process PHISPY {
         PhiSpy: \$(echo \$(PhiSpy.py --version 2>&1))
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    touch ${prefix}/${prefix}.tsv
+    touch ${prefix}/${prefix}.gbk
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        PhiSpy: \$(echo \$(PhiSpy.py --version 2>&1))
+    END_VERSIONS
+    """
 }
