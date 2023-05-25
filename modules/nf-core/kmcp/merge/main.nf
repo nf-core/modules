@@ -35,4 +35,16 @@ process KMCP_MERGE {
         kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
     END_VERSIONS
     """
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    gzip ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
+    END_VERSIONS
+    """
 }
