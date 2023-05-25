@@ -1,12 +1,7 @@
 name: Code Linting
 on:
-  push:
-    branches: [master]
   pull_request:
-    branches: [master]
-  merge_group:
-    types: [checks_requested]
-    branches: [master]
+    branches: [develop]
 
 # Cancel if a newer run is started
 concurrency:
