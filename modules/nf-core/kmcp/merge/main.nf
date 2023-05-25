@@ -39,7 +39,7 @@ process KMCP_MERGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    touch ${prefix}
     gzip ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
