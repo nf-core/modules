@@ -11,10 +11,18 @@ process PHISPY {
     tuple val(meta), path(gbk)
 
     output:
-    tuple val(meta), path("${prefix}.tsv"), emit: coordinates
-    tuple val(meta), path("${prefix}.gb*"), emit: gbk
-    tuple val(meta), path("${prefix}.log"), emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}.tsv")                     , emit: coordinates
+    tuple val(meta), path("${prefix}.gb*")                     , emit: gbk
+    tuple val(meta), path("${prefix}.log")                     , emit: log
+    tuple val(meta), path("${prefix}_prophage_information.tsv"), optional:true, emit: information
+    tuple val(meta), path("${prefix}_bacteria.fasta")          , optional:true, emit: bacteria_fasta
+    tuple val(meta), path("${prefix}_bacteria.gbk")            , optional:true, emit: bacteria_gbk
+    tuple val(meta), path("${prefix}_phage.fasta")             , optional:true, emit: phage_fasta
+    tuple val(meta), path("${prefix}_phage.gbk")               , optional:true, emit: phage_gbk
+    tuple val(meta), path("${prefix}_prophage.gff3")           , optional:true, emit: prophage_gff
+    tuple val(meta), path("${prefix}_prophage.tbl")            , optional:true, emit: prophage_tbl
+    tuple val(meta), path("${prefix}_prophage.tsv")            , optional:true, emit: prophage_tsv
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,12 +40,12 @@ process PHISPY {
         $args \\
         --threads $task.cpus \\
         -p $prefix \\
-        -o $prefix \\
+        -o . \\
         $gbk
 
-    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}.tsv
-    mv ${prefix}/${prefix}_${gbk} ${prefix}${gbk_extension}
-    mv ${prefix}/${prefix}_phispy.log ${prefix}.log
+    mv ${prefix}_prophage_coordinates.tsv ${prefix}.tsv
+    mv ${prefix}_${gbk} ${prefix}${gbk_extension}
+    mv ${prefix}_phispy.log ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -57,6 +57,51 @@ output:
       description: File containing the PhiSpy execution log
       pattern: "*.{log}"
 
+  - information:
+      type: file
+      description: |
+        File containing all the genes of the genome, one per line.
+        The tenth column describes how likely the gene is a phage gene.
+      pattern: "*.{tsv}"
+
+  - bacteria_fasta:
+      type: file
+      description: Genome with prophage regions masked with N.
+      pattern: "*.{fasta}"
+
+  - bacteria_gbk:
+      type: file
+      description: Genome sequences identified as bacterial.
+      pattern: "*.{gbk}"
+
+  - phage_fasta:
+      type: file
+      description: Phage sequences extracted from the genome.
+      pattern: "*.{fasta}"
+
+  - phage_gbk:
+      type: file
+      description: Phage sequences extracted from the genome.
+      pattern: "*.{gbk}"
+
+  - prophage_gff:
+      type: file
+      description: Prophage information in GFF3 format.
+      pattern: "*.{gff3}"
+
+  - prophage_tbl:
+      type: file
+      description: |
+        File containing prophage number and its location in the genome.
+      pattern: "*.{tbl}"
+
+  - prophage_tsv:
+      type: file
+      description: |
+        A file containing simpler version of the coordinates file,
+        with only prophage number, contig, start and stop.
+      pattern: "*.{tsv}"
+
   - versions:
       type: file
       description: File containing software versions
