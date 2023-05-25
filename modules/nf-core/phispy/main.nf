@@ -11,10 +11,10 @@ process PHISPY {
     tuple val(meta), path(gbk)
 
     output:
-    tuple val(meta), path("${prefix}/")                        , emit: results
-    tuple val(meta), path("${prefix}/prophage_coordinates.tsv"), emit: coordinates
-    tuple val(meta), path("${prefix}/*.gb*")                   , emit: gbk
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("${prefix}/")              , emit: results
+    tuple val(meta), path("${prefix}/${prefix}.tsv") , emit: coordinates
+    tuple val(meta), path("${prefix}/${prefix}*.gb*"), emit: gbk
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +26,11 @@ process PHISPY {
     PhiSpy.py \\
         $args \\
         --threads $task.cpus \\
+        -p $prefix \\
         -o $prefix \\
         $gbk
+
+    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}/${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
