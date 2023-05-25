@@ -9,9 +9,9 @@ process GATK4_SPLITINTERVALS {
 
     input:
     tuple val(meta), path(intervals)
-    path(fasta)
-    path(fasta_fai)
-    path(dict)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("**.interval_list"), emit: split_intervals

@@ -9,7 +9,7 @@ process GANON_REPORT {
 
     input:
     tuple val(meta), path(rep)
-    path(db)
+    path db
 
     output:
     tuple val(meta), path("*.tre"), emit: tre
@@ -25,7 +25,6 @@ process GANON_REPORT {
     """
     dbprefix=\$(find -L . -name "*.ibf" | sed 's/\\.ibf\$//')
 
-    dbprefix=\$(ls *.ibf)
     ganon \\
         report \\
         --input ${rep} \\

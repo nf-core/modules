@@ -9,7 +9,7 @@ process BCFTOOLS_REHEADER {
 
     input:
     tuple val(meta), path(vcf), path(header)
-    path fai
+    tuple val(meta2), path(fai)
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
