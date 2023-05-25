@@ -19,3 +19,12 @@
     - path: output/samtools/genome.fasta.gz.gzi
       md5sum: 7dea362b3fac8e00956a4952a3d4f474
     - path: output/samtools/versions.yml
+
+- name: samtools faidx test_samtools_faidx_fasta
+  command: nextflow run ./tests/modules/nf-core/samtools/faidx -entry test_samtools_faidx_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/faidx/nextflow.config
+  tags:
+    - samtools/faidx
+    - samtools
+  files:
+    - path: output/samtools/extract.fa
+    - path: output/samtools/versions.yml
