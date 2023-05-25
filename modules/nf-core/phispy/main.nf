@@ -13,7 +13,7 @@ process PHISPY {
     output:
     tuple val(meta), path("${prefix}/")              , emit: results
     tuple val(meta), path("${prefix}/${prefix}.tsv") , emit: coordinates
-    tuple val(meta), path("${prefix}/${prefix}*.gb*"), emit: gbk
+    tuple val(meta), path("${prefix}/${prefix}.gb*"), emit: gbk
     path "versions.yml"                              , emit: versions
 
     when:
@@ -30,7 +30,12 @@ process PHISPY {
         -o $prefix \\
         $gbk
 
-    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}.tsv
+    mv ${prefix}/${prefix}_prophage_coordinates.tsv ${prefix}/${prefix}.tsv
+
+    filename=$gbk
+    gbk_extension="\${filename#*.}"
+    mv ${prefix}/${prefix}_${gbk} ${prefix}/${prefix}.\${gbk_extension}
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
