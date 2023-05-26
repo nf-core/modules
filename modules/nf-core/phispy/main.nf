@@ -31,7 +31,7 @@ process PHISPY {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // Extract GBK file extension, i.e. .gbff, .gbk.gz
-    def gbk_extension = gbk.getName() - gbk.getSimpleName()
+    gbk_extension = gbk.getName() - gbk.getSimpleName()
 
     if ("$gbk" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
@@ -55,10 +55,22 @@ process PHISPY {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    gbk_extension = gbk.getName() - gbk.getSimpleName()
+
+    if ("$gbk" == "${prefix}${gbk_extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
     touch ${prefix}.tsv
-    touch ${prefix}.gbk
+    touch ${prefix}${gbk_extension}
     touch ${prefix}.log
+    touch ${prefix}_prophage_information.tsv
+    touch ${prefix}_bacteria.fasta
+    touch ${prefix}_bacteria.gbk
+    touch ${prefix}_phage.fasta
+    touch ${prefix}_phage.gbk
+    touch ${prefix}_prophage.gff3
+    touch ${prefix}_prophage.tbl
+    touch ${prefix}_prophage.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
