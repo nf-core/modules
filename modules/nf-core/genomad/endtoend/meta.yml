@@ -39,22 +39,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - plasmid_fasta:
-      type: file
-      description: FASTA file containing predicted plasmid sequences.
-      pattern: "*_summary/*_plasmid.fna"
-  - plasmid_genes:
-      type: file
-      description: TSV file containing predicted plasmid genes and their annotations.
-      pattern: "*_summary/*_plasmid_genes.tsv"
-  - plasmid_proteins:
-      type: file
-      description: FASTA file containing predicted plasmid protein sequences.
-      pattern: "*_summary/*_plasmid_proteins.faa"
-  - plasmid_summary:
-      type: file
-      description: TSV file containing a summary of geNomad's plasmid predictions.
-      pattern: "*_summary/*_plasmid_summary.tsv"
   - virus_fasta:
       type: file
       description: FASTA file containing predicted virus sequences.
