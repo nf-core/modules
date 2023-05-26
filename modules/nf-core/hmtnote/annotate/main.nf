@@ -2,10 +2,10 @@ process HMTNOTE_ANNOTATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::hmtnote=0.7.2"
+    conda "bioconda::hmtnote=0.7.2--pyhdfd78af_1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_0':
-        'biocontainers/hmtnote:0.7.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1':
+        'biocontainers/hmtnote:0.7.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)
