@@ -115,20 +115,7 @@ jobs:
             tags: mitohifi/findmitoreference
           - profile: "conda"
             tags: scimap/mcmicro
-          - profile: "conda"
-            tags: sentieon/applyvarcal
-          - profile: "conda"
-            tags: sentieon/bwaindex
-          - profile: "conda"
-            tags: sentieon/bwamem
-          - profile: "conda"
-            tags: sentieon/dedup
-          - profile: "conda"
-            tags: sentieon/gvcftyper
-          - profile: "conda"
-            tags: sentieon/haplotyper
-          - profile: "conda"
-            tags: sentieon/varcal
+          - tags: "sentieon/*"
           - profile: "conda"
             tags: universc
           - profile: "singularity"
@@ -143,7 +130,6 @@ jobs:
             tags: islandpath
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
     steps:
       - uses: actions/checkout@v3
 
