@@ -9,7 +9,7 @@ workflow test_samtools_faidx {
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
-    SAMTOOLS_FAIDX ( input )
+    SAMTOOLS_FAIDX ( input, [[],[]] )
 }
 
 workflow test_samtools_faidx_bgzip {
@@ -17,5 +17,15 @@ workflow test_samtools_faidx_bgzip {
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
 
-    SAMTOOLS_FAIDX ( input )
+    SAMTOOLS_FAIDX ( input, [[],[]] )
+}
+
+workflow test_samtools_faidx_fasta {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    fai   = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+
+    SAMTOOLS_FAIDX ( input, fai )
 }
