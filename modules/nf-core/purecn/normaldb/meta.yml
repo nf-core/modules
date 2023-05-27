@@ -30,11 +30,11 @@ input:
       description: Coverage files from normal samples
       pattern: "*.loess.txt.gz"
   - normal_panel:
-        type: file
-        description: |
-            Normal panel in VCF format, used to precompute mapping bias
-            for faster runtimes. Optional.
-        pattern: "*.vcf.gz"
+      type: file
+      description: |
+        Normal panel in VCF format, used to precompute mapping bias
+        for faster runtimes. Optional.
+      pattern: "*.vcf.gz"
 
 output:
   - normal_db:
