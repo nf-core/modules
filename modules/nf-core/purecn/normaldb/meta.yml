@@ -1,9 +1,14 @@
 name: "purecn_normaldb"
-description: Build a normal database for coverage normalization from all the (GC-normalized) normal coverage files
+description: Build a normal database for coverage normalization from all the (GC-normalized) normal coverage files.
+  N.B. as reported in https://www.bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/Quick.html,
+  it is advised to provide a normal panel (VCF format) to precompute mapping bias for faster runtimes.
 keywords:
   - copy number alteration calling
   - normal database
   - panel of normals
+  - hybrid capture sequencing
+  - targeted sequencing
+  - DNA sequencing
 tools:
   - "purecn":
       description: "Copy number calling and SNV classification using targeted short read sequencing"
@@ -12,12 +17,24 @@ tools:
       tool_dev_url: "https://github.com/lima1/PureCN"
       doi: "10.1186/s13029-016-0060-z"
       licence: "Artistic-2.0"
+      args_id: "$args"
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - coverage_files:
       type: file
       description: Coverage files from normal samples
       pattern: "*.loess.txt.gz"
+  - normal_panel:
+        type: file
+        description: |
+            Normal panel in VCF format, used to precompute mapping bias
+            for faster runtimes. Optional.
+        pattern: "*.vcf.gz"
 
 output:
   - normal_db:
