@@ -31,7 +31,7 @@ process PURECN_NORMALDB {
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    echo \$coverage_files | tr ' ' '\\n' > coverages.list
+    echo $coverage_files | tr ' ' '\\n' > coverages.list
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/NormalDB.R --out-dir ./ \\
         --coverage-files coverages.list \\
