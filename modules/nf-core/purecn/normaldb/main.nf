@@ -15,9 +15,10 @@ process PURECN_NORMALDB {
 
     output:
     tuple val(meta), path("normalDB*.rds")               , emit: rds
-    tuple val(meta), path("mapping_bias*.rds")           , emit: bias_rds
     tuple val(meta), path("interval_weights*.png")       , emit: png
-    tuple val(meta), path("low_coverage_targets*.png")   , emit: low_cov_png, optional: true
+    tuple val(meta), path("mapping_bias*.rds")           , emit: bias_rds,    optional: true
+    tuple val(meta), path("mapping_bias_hq_sites*.bed")  , emit: bias_bed,    optional: true
+    tuple val(meta), path("low_coverage_targets*.bed")   , emit: low_cov_bed, optional: true
     path "versions.yml"                                  , emit: versions
 
     when:
