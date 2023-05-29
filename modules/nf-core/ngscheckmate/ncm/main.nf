@@ -1,10 +1,10 @@
 process NGSCHECKMATE_NCM {
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::ngscheckmate=1.0.0" : null)
+    conda "bioconda::ngscheckmate=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_3':
-        'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3' }"
+        'biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3' }"
 
     input:
     path files
@@ -16,7 +16,7 @@ process NGSCHECKMATE_NCM {
     path "*_corr_matrix.txt", emit: corr_matrix
     path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
-    path "*.vcf"            , emit: vcfs, optional: true
+    path "*.vcf"            , emit: vcf, optional: true
     path "versions.yml"     , emit: versions
 
     when:

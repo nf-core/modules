@@ -16,10 +16,15 @@ workflow test_merquryfk_merquryfk_png {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
+    haplotigs = [
+        [ id:'test', single_end:true ], []
+    ]
+
     FASTK_FASTK ( input )
     MERQURYFK_MERQURYFK ( FASTK_FASTK.out.hist
         .join( FASTK_FASTK.out.ktab )
         .join( Channel.value( assembly ) )
+        .join( Channel.value( haplotigs ) )
     )
 }
 
@@ -34,9 +39,14 @@ workflow test_merquryfk_merquryfk_pdf {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
+    haplotigs = [
+        [ id:'test', single_end:true ], []
+    ]
+
     FASTK_FASTK ( input )
     MERQURYFK_MERQURYFK ( FASTK_FASTK.out.hist
         .join( FASTK_FASTK.out.ktab )
         .join( Channel.value( assembly ) )
+        .join( Channel.value( haplotigs ) )
     )
 }

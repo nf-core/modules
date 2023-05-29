@@ -27,7 +27,7 @@ input:
         features and samples, at a minimum an id.
         e.g. [ id:'test' ]
   - differential_results:
-      type: list
+      type: file
       description: |
         CSV or TSV-format tabular file with differential analysis outputs
   - sample:
@@ -39,7 +39,7 @@ input:
       description: |
         CSV or TSV-format feature (e.g. gene) metadata
   - assay_file:
-      type: list
+      type: file
       description: |
         CSV or TSV matrix file to use alongside differential statistics in
         interpretation. Usually a normalised form.
@@ -50,11 +50,16 @@ output:
       description: |
         Groovy Map containing contrast information
         e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
-  - volcanos:
-      type: tuple
+  - volcanos_png:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        a volcano plot built from the differential result table.
+        Meta-keyed tuple containing a PNG output for a volcano plot built from
+        the differential result table.
+  - volcanos_html:
+      type: file
+      description: |
+        Meta-keyed tuple containing an HTML output for a volcano plot built
+        from the differential result table.
   - versions:
       type: file
       description: File containing software versions

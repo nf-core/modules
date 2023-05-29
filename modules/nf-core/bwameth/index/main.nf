@@ -2,10 +2,10 @@ process BWAMETH_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::bwameth=0.2.2" : null)
+    conda "bioconda::bwameth=0.2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwameth:0.2.2--py_1' :
-        'quay.io/biocontainers/bwameth:0.2.2--py_1' }"
+        'biocontainers/bwameth:0.2.2--py_1' }"
 
     input:
     path fasta, stageAs: "bwameth/*"

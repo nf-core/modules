@@ -26,27 +26,49 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: An aligned BAM/SAM file
-      pattern: "*.{bam,sam}"
+      description: An aligned BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: Optional aligned BAM/CRAM/SAM file index
+      pattern: "*.{bai,crai,sai}"
+  - bait_intervals:
+      type: file
+      description: An interval file that contains the locations of the baits used.
+      pattern: "*.{interval_list,bed,bed.gz}"
+  - target_intervals:
+      type: file
+      description: An interval file that contains the locations of the targets.
+      pattern: "*.{interval_list,bed,bed.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: |
         A reference file to calculate dropout metrics measuring reduced representation of reads.
         Optional input.
-      pattern: "*.fasta"
+      pattern: "*.{fa,fasta,fna}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fai:
       type: file
       description: Index of FASTA file. Only needed when fasta is supplied.
       pattern: "*.fai"
-  - bait_intervals:
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
       type: file
-      description: An interval list file that contains the locations of the baits used.
-      pattern: "baits.interval_list"
-  - target_intervals:
-      type: file
-      description: An interval list file that contains the locations of the targets.
-      pattern: "targets.interval_list"
-
+      description: Sequence dictionary of FASTA file. Only needed when bed interval lists are supplied.
+      pattern: "*.dict"
 output:
   - meta:
       type: map

@@ -18,7 +18,7 @@ tools:
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
-      doi: "https://doi.org/10.1186/s13073-020-00761-2"
+      doi: "10.1186/s13073-020-00761-2"
       licence: "MIT License"
 
 input:
@@ -28,17 +28,17 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - extract:
-      type: file
-      description: extract file from Somlaier extract
+      type: file(s)
+      description: extract file(s) from Somalier extract
       pattern: "*.somalier"
-  - sample_groups:
-      type: file
-      description: optional path to expected groups of samples such as tumor normal pairs specified as comma-separated groups per line
-      pattern: "*.{txt,csv}"
   - ped:
       type: file
       description: optional path to a ped or fam file indicating the expected relationships among samples
       pattern: "*.{ped,fam}"
+  - sample_groups:
+      type: file
+      description: optional path to expected groups of samples such as tumor normal pairs specified as comma-separated groups per line
+      pattern: "*.{txt,csv}"
 
 output:
   - versions:
@@ -60,3 +60,4 @@ output:
 
 authors:
   - "@ashotmarg"
+  - "@nvnieuwk"

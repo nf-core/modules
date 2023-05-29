@@ -2,10 +2,10 @@ process BEDTOOLS_BAMTOBED {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
+    conda "bioconda::bedtools=2.30.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0' :
-        'quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0' }"
+        'biocontainers/bedtools:2.30.0--hc088bd4_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -25,7 +25,7 @@ process BEDTOOLS_BAMTOBED {
         bamtobed \\
         $args \\
         -i $bam \\
-        | bedtools sort > ${prefix}.bed
+        > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

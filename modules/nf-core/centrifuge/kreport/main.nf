@@ -2,10 +2,10 @@ process CENTRIFUGE_KREPORT {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::centrifuge=1.0.4_beta" : null)
+    conda "bioconda::centrifuge=1.0.4_beta"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4_beta--h9a82719_6':
-        'quay.io/biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
+        'biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
 
     input:
     tuple val(meta), path(report)
@@ -22,7 +22,7 @@ process CENTRIFUGE_KREPORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
     centrifuge-kreport -x \$db_name ${report} > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml

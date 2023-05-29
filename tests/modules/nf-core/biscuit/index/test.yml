@@ -1,8 +1,8 @@
 - name: biscuit index test_biscuit_index
-  command: nextflow run ./tests/modules/nf-core/biscuit/index -entry test_biscuit_index -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/index -entry test_biscuit_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/index/nextflow.config
   tags:
-    - biscuit/index
     - biscuit
+    - biscuit/index
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -20,5 +20,3 @@
       md5sum: 62eb83cd557a47b59589713d98024fc2
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
-    - path: output/biscuit/versions.yml
-      md5sum: 5c5873e482a57966db246648ffddf62f

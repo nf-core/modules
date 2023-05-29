@@ -2,10 +2,10 @@ process DSHBIO_FILTERGFF3 {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::dsh-bio=2.1" : null)
+    conda "bioconda::dsh-bio=2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
-        'quay.io/biocontainers/dsh-bio:2.1--hdfd78af_0' }"
+        'biocontainers/dsh-bio:2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff3)

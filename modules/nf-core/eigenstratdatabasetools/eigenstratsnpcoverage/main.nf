@@ -2,10 +2,10 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::eigenstratdatabasetools=1.1.0" : null)
+    conda "bioconda::eigenstratdatabasetools=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eigenstratdatabasetools:1.1.0--hdfd78af_0':
-        'quay.io/biocontainers/eigenstratdatabasetools:1.1.0--hdfd78af_0' }"
+        'biocontainers/eigenstratdatabasetools:1.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(geno), path(snp), path(ind)

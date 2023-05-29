@@ -2,10 +2,10 @@ process MEGAN_RMA2INFO {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::megan=6.21.7" : null)
+    conda "bioconda::megan=6.21.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/megan:6.21.7--h9ee0642_0':
-        'quay.io/biocontainers/megan:6.21.7--h9ee0642_0' }"
+        'biocontainers/megan:6.21.7--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(rma6)

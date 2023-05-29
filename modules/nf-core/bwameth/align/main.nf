@@ -2,10 +2,10 @@ process BWAMETH_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::bwameth=0.2.2" : null)
+    conda "bioconda::bwameth=0.2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwameth:0.2.2--py_1' :
-        'quay.io/biocontainers/bwameth:0.2.2--py_1' }"
+        'biocontainers/bwameth:0.2.2--py_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,7 +24,7 @@ process BWAMETH_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
-    INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/.bwameth.c2t//'`
+    INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/\\.bwameth.c2t\$//'`
 
     # Modify the timestamps so that bwameth doesn't complain about building the index
     # See https://github.com/nf-core/methylseq/pull/217

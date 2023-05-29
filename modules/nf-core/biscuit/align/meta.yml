@@ -14,7 +14,7 @@ tools:
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/alignment
       tool_dev_url: https://github.com/huishenlab/biscuit
-      doi: ""
+
       licence: ["MIT"]
 
 input:
@@ -29,7 +29,7 @@ input:
         List of input fastq files of size 1 and 2 for single-end and paired-end data,
         respectively.
   - index:
-      type: dir
+      type: directory
       description: Biscuit genome index directory (generated with 'biscuit index')
       pattern: "BiscuitIndex"
 
@@ -43,6 +43,10 @@ output:
       type: file
       description: Output BAM file containing read alignments
       pattern: "*.{bam}"
+  - bai:
+      type: file
+      description: Output BAM index
+      pattern: "*.{bai}"
   - versions:
       type: file
       description: File containing software versions

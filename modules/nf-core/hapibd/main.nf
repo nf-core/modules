@@ -2,10 +2,10 @@ process HAPIBD {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::hap-ibd=1.0.rev20May22.818" : null)
+    conda "bioconda::hap-ibd=1.0.rev20May22.818"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
-        'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
+        'biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -27,15 +27,15 @@ process HAPIBD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    hap-ibd -Xmx${avail_mem}g \\
+    hap-ibd -Xmx${avail_mem}M \\
         gt=${vcf} \\
         map=${map} \\
         out=${prefix} \\

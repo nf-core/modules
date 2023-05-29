@@ -2,10 +2,10 @@ process PRINSEQPLUSPLUS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::prinseq-plus-plus=1.2.3" : null)
+    conda "bioconda::prinseq-plus-plus=1.2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/prinseq-plus-plus:1.2.3--hc90279e_1':
-        'quay.io/biocontainers/prinseq-plus-plus:1.2.3--hc90279e_1' }"
+        'biocontainers/prinseq-plus-plus:1.2.3--hc90279e_1' }"
 
     input:
     tuple val(meta), path(reads)

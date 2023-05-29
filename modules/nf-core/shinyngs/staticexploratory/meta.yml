@@ -30,40 +30,64 @@ input:
       description: |
         TSV-format feature (e.g. gene) metadata
   - assay_files:
-      type: list
+      type: file
       description: |
         List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
 output:
-  - boxplots:
-      type: tuple
+  - boxplots_png:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        box plots covering input matrices.
-  - densities:
-      type: tuple
+        Meta-keyed tuple containing PNG output for box plots covering input
+        matrices.
+  - boxplots_html:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        density plots covering input matrices.
-  - pca2d:
-      type: tuple
+        Meta-keyed tuple containing HTML output for box plots covering input
+        matrices.
+  - densities_png:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        2D PCA plots covering specified input matrix (by default the last one
-        in the input list.
-  - pca3d:
-      type: tuple
+        Meta-keyed tuple containing PNG output for density plots
+        covering input matrices.
+  - densities_html:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        3D PCA plots covering specified input matrix (by default the last one
-        in the input list.
-  - mad:
-      type: tuple
+        Meta-keyed tuple containing HTML output for density plots
+        covering input matrices.
+  - pca2d_png:
+      type: file
       description: |
-        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
-        MAD correlation plots covering specified input matrix (by default the
-        last one in the input list.
+        Meta-keyed tuple containing a PNG output for 2D PCA plots covering
+        specified input matrix (by default the last one in the input list.
+  - pca2d_html:
+      type: file
+      description: |
+        Meta-keyed tuple containing an HTML output for 2D PCA plots covering
+        specified input matrix (by default the last one in the input list.
+  - pca3d_png:
+      type: file
+      description: |
+        Meta-keyed tuple containing a PNG output for 3D PCA plots covering
+        specified input matrix (by default the last one in the input list.
+  - pca3d_html:
+      type: file
+      description: |
+        Meta-keyed tuple containing an HTML output for 3D PCA plots covering
+        specified input matrix (by default the last one in the input list.
+  - mad_png:
+      type: file
+      description: |
+        Meta-keyed tuple containing a PNG output for MAD correlation plots
+        covering specified input matrix (by default the last one in the input
+        list.
+  - mad_dendro:
+      type: file
+      description: |
+        Meta-keyed tuple containing an HTML output for MAD correlation plots
+        covering specified input matrix (by default the last one in the input
+        list.
   - dendro:
-      type: tuple
+      type: file
       description: |
         Meta-keyed tuple containing a PNG, for a sample clustering
         dendrogramcovering specified input matrix (by default the last one in

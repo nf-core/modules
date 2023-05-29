@@ -1,0 +1,63 @@
+name: "vg_construct"
+description: Constructs a graph from a reference and variant calls or a multiple sequence alignment file
+keywords:
+  - vg
+  - graph
+  - construct
+  - fasta
+  - vcf
+  - structural variants
+tools:
+  - vg:
+      description: |
+        Variation graph data structures, interchange formats, alignment, genotyping,
+        and variant calling methods.
+      homepage: https://github.com/vgteam/vg
+      documentation: https://github.com/vgteam/vg/wiki
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file(s)
+      description: |
+        Either one or more VCF files containing different contigs or a multiple sequence alignment file
+      pattern: "*.{vcf.gz,fa,fasta,fna,clustal}"
+  - tbis:
+      type: file(s)
+      description: The index files for the VCF files
+      pattern: "*.tbi"
+  - insertions_fasta:
+      type: file
+      description: A FASTA file containing insertion sequences (referred to in the VCF file(s))
+      pattern: "*.{fa,fasta,fna}"
+  - fasta:
+      type: file
+      description: The reference FASTA file (cannot be used in combination with `msa`, but is required when using `vcfs`)
+      pattern: "*.{fa,fasta,fna}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - graph:
+      type: file
+      description: The constructed graph
+      pattern: "*.vg"
+
+authors:
+  - "@nvnieuwk"

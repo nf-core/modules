@@ -16,6 +16,33 @@ tools:
       licence: "['LGPL >=3']"
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information. This can be used at the
+        workflow level to pass optional parameters to the module, e.g.
+        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+        '--blocking_variable $meta.blocking'.
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
+  - reference:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the reference samples
+  - target:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the target samples
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the sample sheet
+        and matrix
   - sample:
       type: file
       description: |
@@ -23,14 +50,23 @@ input:
   - counts:
       type: file
       description: |
-        Raw TSV or CSV format expression matrix as output from the nf-core RNA-seq workflow
-  - meta:
-      type: map
+        Raw TSV or CSV format expression matrix as output from the nf-core
+        RNA-seq workflow
+  - control_genes:
+      type: file
       description: |
-        Groovy Map containing contrast information, which can be referred to in
-        calls at the pipeline level e.g. [ variable:'treatment', reference:'treated',
-        control:'saline', blocking:'' ] passed in as ext.args like: '--reference_level
-        $meta.reference --treatment_level $meta.target'
+        Text file listing control genes, one per line
+  - control_genes_meta:
+      type: file
+      description: |
+        Meta map describing control genes, e.g. [ id: 'ERCC' ]
+  - sizefactors_from_controls:
+      type: boolean
+      description: |
+        Specify if any supplied control genes should just be stripped to
+        prevent bias in conventional normalisation (default), or used to
+        generate the size factors (supplied via task.ext.args like
+        '--sizefactors_from_controls TRUE').
 
 output:
   - results:

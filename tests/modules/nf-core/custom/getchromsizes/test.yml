@@ -9,7 +9,6 @@
     - path: output/custom/genome.fasta.sizes
       md5sum: a57c401f27ae5133823fb09fb21c8a3c
     - path: output/custom/versions.yml
-      md5sum: 3e4a23a0852f4ec34296224d87446d9a
 - name: custom getchromsizes_bgzip
   command: nextflow run ./tests/modules/nf-core/custom/getchromsizes -entry test_custom_getchromsizes_bgzip -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/getchromsizes/nextflow.config
   tags:
@@ -23,4 +22,3 @@
     - path: output/custom/genome.fasta.gz.sizes
       md5sum: a57c401f27ae5133823fb09fb21c8a3c
     - path: output/custom/versions.yml
-      md5sum: 22871934dfac30a6109068fd79b2d0ba

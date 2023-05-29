@@ -3,15 +3,13 @@ description: compute average score of bigwig over bed file
 keywords:
   - gtf
   - genepred
+  - refflat
   - ucsc
   - gtftogenepred
 tools:
   - ucsc:
       description: Convert GTF files to GenePred format
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       licence: ["varies; see http://genome.ucsc.edu/license"]
 
 input:
@@ -35,6 +33,10 @@ output:
       type: file
       description: genepred file
       pattern: "*.{genepred}"
+  - refflat:
+      type: file
+      description: refflat file
+      pattern: "*.{refflat}"
   - versions:
       type: file
       description: File containing software versions
@@ -42,3 +44,4 @@ output:
 
 authors:
   - "@BarryDigby"
+  - "@anoronh4"

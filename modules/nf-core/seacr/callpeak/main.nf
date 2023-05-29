@@ -3,10 +3,10 @@ process SEACR_CALLPEAK {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::seacr=1.3 conda-forge::r-base=4.0.2 bioconda::bedtools=2.30.0" : null)
+    conda "bioconda::seacr=1.3 conda-forge::r-base=4.0.2 bioconda::bedtools=2.30.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:f4bb19b68e66de27e4c64306f951d5ff11919931-0' :
-        'quay.io/biocontainers/mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:f4bb19b68e66de27e4c64306f951d5ff11919931-0' }"
+        'biocontainers/mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:f4bb19b68e66de27e4c64306f951d5ff11919931-0' }"
 
     input:
     tuple val(meta), path(bedgraph), path(ctrlbedgraph)

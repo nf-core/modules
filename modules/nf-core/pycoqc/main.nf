@@ -2,30 +2,31 @@ process PYCOQC {
     tag "$summary"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::pycoqc=2.5.2" : null)
+    conda "bioconda::pycoqc=2.5.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pycoqc:2.5.2--py_0' :
-        'quay.io/biocontainers/pycoqc:2.5.2--py_0' }"
+        'biocontainers/pycoqc:2.5.2--py_0' }"
 
     input:
-    path summary
+    tuple val(meta), path(summary)
 
     output:
-    path "*.html"        , emit: html
-    path "*.json"        , emit: json
-    path  "versions.yml" , emit: versions
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.json"), emit: json
+    path  "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pycoQC \\
         $args \\
         -f $summary \\
-        -o pycoqc.html \\
-        -j pycoqc.json
+        -o ${prefix}.html \\
+        -j ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

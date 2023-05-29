@@ -2,10 +2,10 @@ process SEGEMEHL_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::segemehl=0.3.4" : null)
+    conda "bioconda::segemehl=0.3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
-        'quay.io/biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
+        'biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
 
     input:
     path fasta

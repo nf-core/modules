@@ -2,10 +2,10 @@ process SVTK_BAFTEST {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::svtk=0.0.20190615" : null)
+    conda "bioconda::svtk=0.0.20190615"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
-        'quay.io/biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
+        'biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
 
     input:
     tuple val(meta), path(bed), path(baf), path(baf_index), path(batch)

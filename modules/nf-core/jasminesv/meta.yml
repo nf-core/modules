@@ -1,0 +1,66 @@
+name: "jasminesv"
+description: Jointly Accurate Sv Merging with Intersample Network Edges
+keywords:
+  - jasminesv
+  - jasmine
+  - structural variants
+  - vcf
+  - bam
+tools:
+  - "jasminesv":
+      description: "Software for merging structural variants between individuals"
+      homepage: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
+      documentation: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
+      tool_dev_url: "https://github.com/mkirsche/Jasmine"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcfs:
+      type: files
+      description: |
+        The VCF files that need to be merged
+      pattern: "*.{vcf,vcf.gz}"
+  - bams:
+      type: files
+      description: Optional - The BAM files from which the VCFs were created
+      pattern: "*.bam"
+  - sample_dists:
+      type: file
+      description: Optional - A txt file containing the distance thresholds for each sample
+      pattern: "*.txt"
+  - fasta:
+      type: file
+      description: Optional - The reference FASTA file used to create the VCFs
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Optional - The index of the reference FASTA file used to create the VCFs
+      pattern: "*.fai"
+  - chr_norm:
+      type: file
+      description: Optional - A txt file containing the chromosomes and their aliases for normalization
+      pattern: "*.txt"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: The merged VCF file
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@nvnieuwk"

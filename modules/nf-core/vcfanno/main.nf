@@ -2,19 +2,20 @@ process VCFANNO {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::vcfanno=0.3.3" : null)
+    conda "bioconda::vcfanno=0.3.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
-        'quay.io/biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
+        'biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(tbi), path(specific_resources)
     path toml
-    path resource_dir
+    path lua
+    path resources
 
     output:
-    tuple val(meta), path("*_annotated.vcf"), emit: vcf
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.vcf")     , emit: vcf
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,15 +23,15 @@ process VCFANNO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def lua_cmd = lua ? "--lua ${lua}" : ""
     """
-    ln -sf $resource_dir/* \$(pwd)
-
     vcfanno \\
-        -p $task.cpus \\
-        $args \\
-        $toml \\
-        $vcf \\
-        > ${prefix}_annotated.vcf
+        -p ${task.cpus} \\
+        ${args} \\
+        ${lua_cmd} \\
+        ${toml} \\
+        ${vcf} \\
+        > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,7 +42,7 @@ process VCFANNO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_annotated.vcf
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

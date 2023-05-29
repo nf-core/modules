@@ -1,0 +1,54 @@
+name: "fqtk"
+description: Demultiplex fastq files
+keywords:
+  - demultiplex
+  - fastq
+  - rust
+tools:
+  - "fqtk":
+      description: "A toolkit for working with FASTQ files, written in Rust."
+      homepage: "https://github.com/fulcrumgenomics/fqtk"
+      documentation: "https://github.com/fulcrumgenomics/fqtk"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sample_sheet:
+      type: file
+      description: Tsv file, with two columns sample_id and barcode
+      pattern: "*.{tsv}"
+  - fastq_readstructure_pairs:
+      type: map
+      description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute path to fastq directory>],...]
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sample_fastq:
+      type: file
+      description: Demultiplexed per-sample FASTQ files
+      pattern: "output/*R*.fastq.gz"
+  - metrics:
+      type: file
+      description: |
+        Demultiplexing summary stats; sample_id, barcode templates, frac_templates, ratio_to_mean, ratio_to_best
+      pattern: "output/demux-metrics.txt"
+  - most_frequent_unmatched:
+      type: file
+      description: |
+        File containing unmatched fastq records
+      pattern: "output/unmatched*.fq.gz"
+
+authors:
+  - "Samantha White @sam-white04"

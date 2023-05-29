@@ -2,10 +2,10 @@ process VSEARCH_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::vsearch=2.21.1 bioconda::samtools=1.15.1" : null)
+    conda "bioconda::vsearch=2.21.1 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:6e91f82b987ac1c6b6a24e292a934ae41b17311d-0':
-        'quay.io/biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:6e91f82b987ac1c6b6a24e292a934ae41b17311d-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0':
+        'biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -2,10 +2,10 @@ process ARTIC_MINION {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::artic=1.2.2" : null)
+    conda "bioconda::artic=1.2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.2.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/artic:1.2.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/artic:1.2.3--pyhdfd78af_0' :
+        'biocontainers/artic:1.2.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -48,7 +48,7 @@ process ARTIC_MINION {
         model   = medaka_model_file ? "--medaka-model ./$medaka_model_file" : "--medaka-model $medaka_model_string"
     }
     def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
-    def VERSION = '1.2.2' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
+    def VERSION = '1.2.3' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     $hd5_plugin_path
 

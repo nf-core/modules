@@ -2,10 +2,10 @@ process BWA_ALN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
+    conda "bioconda::bwa=0.7.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8' :
-        'quay.io/biocontainers/bwa:0.7.17--h5bf99c6_8' }"
+        'biocontainers/bwa:0.7.17--h5bf99c6_8' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -24,7 +24,7 @@ process BWA_ALN {
 
     if (meta.single_end) {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\
@@ -40,7 +40,7 @@ process BWA_ALN {
         """
     } else {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\

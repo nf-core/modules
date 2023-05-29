@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_star"
 description: Align reads to a reference genome using bowtie2 then sort with samtools
 keywords:
@@ -13,16 +14,11 @@ modules:
   - samtools/idxstats
   - samtools/flagstat
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_reads:
-      type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
   - ch_index:
       type: directory
       description: STAR genome index
@@ -32,77 +28,77 @@ input:
       description: |
         GTF file used to set the splice junctions with the --sjdbGTFfile flag
       pattern: "*.gtf"
-  - star_ignore_sjdbgtf:
+  - val_star_ignore_sjdbgtf:
       type: boolean
       description: |
         If true the --sjdbGTFfile flag is set
-      pattern: "true or false"
-  - seq_platform:
+      pattern: "true|false"
+  - val_seq_platform:
       type: string
       description: |
         Sequencing platform to be added to the bam header using the --outSAMattrRGline flag
-  - seq_center:
+  - val_seq_center:
       type: string
       description: |
         Sequencing center to be added to the bam header using the --outSAMattrRGline flag
   - ch_fasta:
       type: file
       description: Reference genome fasta file
-      pattern: "*.{fasta,fa}"
+      pattern: "*.{fasta,fa,fna}"
 
 output:
   - orig_bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
+      description: |
+        Output BAM file containing read alignments
+        Structure: [ val(meta), path(bam) ]
   - log_final:
-      type: file
-      description: STAR final log file
-      pattern: "*Log.final.out"
+      description: |
+        STAR final log file
+        Structure: [ val(meta), path(log_final) ]
   - log_out:
-      type: file
-      description: STAR lot out file
-      pattern: "*Log.out"
+      description: |
+        STAR log out file
+        Structure: [ val(meta), path(log_out) ]
   - log_progress:
-      type: file
-      description: STAR log progress file
-      pattern: "*Log.progress.out"
+      description: |
+        STAR log progress file
+        Structure: [ val(meta), path(log_progress) ]
   - bam_sorted:
-      type: file
-      description: Sorted BAM file of read alignments (optional)
-      pattern: "*sortedByCoord.out.bam"
+      description: |
+        Sorted BAM file of read alignments (optional)
+        Structure: [ val(meta), path(bam) ]
   - bam_transcript:
-      type: file
-      description: Output BAM file of transcriptome alignment (optional)
-      pattern: "*toTranscriptome.out.bam"
+      description: |
+        Output BAM file of transcriptome alignment (optional)
+        Structure: [ val(meta), path(bam) ]
   - fastq:
-      type: file
-      description: Unmapped FastQ files (optional)
-      pattern: "*fastq.gz"
+      description: |
+        Unmapped FastQ files (optional)
+        Structure: [ val(meta), path(fastq) ]
   - tab:
-      type: file
-      description: STAR output tab file(s) (optional)
-      pattern: "*.tab"
+      description: |
+        STAR output tab file(s) (optional)
+        Structure: [ val(meta), path(tab) ]
   - stats:
-      type: file
-      description: File containing samtools stats output
-      pattern: "*.{stats}"
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
   - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        BAM file ordered by samtools
+        Structure: [ val(meta), path(bam) ]
   - bai:
-      type: file
-      description: BAM/CRAM/SAM index file
-      pattern: "*.{bai,crai,sai}"
+      description: |
+        BAI index of the ordered BAM file
+        Structure: [ val(meta), path(bai) ]
   - flagstat:
-      type: file
-      description: File containing samtools flagstat output
-      pattern: "*.{flagstat}"
+      description: |
+        File containing samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
   - idxstats:
-      type: file
-      description: File containing samtools idxstats output
-      pattern: "*.{idxstats}"
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
   - versions:
       type: file
       description: File containing software versions

@@ -2,10 +2,10 @@ process SNIPPY_CORE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::snippy=4.6.0" : null)
+    conda "bioconda::snippy=4.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
-        'quay.io/biocontainers/snippy:4.6.0--hdfd78af_1' }"
+        'biocontainers/snippy:4.6.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf), path(aligned_fa)
@@ -34,9 +34,9 @@ process SNIPPY_CORE {
 
     # Collect samples into necessary folders
     mkdir samples
-    find . -name "*.vcf" | sed 's/.vcf//' | xargs -I {} bash -c 'mkdir samples/{}'
-    find . -name "*.vcf" | sed 's/.vcf//' | xargs -I {} bash -c 'cp -L {}.vcf samples/{}/{}.vcf'
-    find . -name "*.aligned.fa" | sed 's/.aligned.fa//' | xargs -I {} bash -c 'cp -L {}.aligned.fa samples/{}/{}.aligned.fa'
+    find . -name "*.vcf" | sed 's/\\.vcf\$//' | xargs -I {} bash -c 'mkdir samples/{}'
+    find . -name "*.vcf" | sed 's/\\.vcf\$//' | xargs -I {} bash -c 'cp -L {}.vcf samples/{}/{}.vcf'
+    find . -name "*.aligned.fa" | sed 's/\\.aligned.fa\$//' | xargs -I {} bash -c 'cp -L {}.aligned.fa samples/{}/{}.aligned.fa'
 
     # Run snippy-core
     snippy-core \\

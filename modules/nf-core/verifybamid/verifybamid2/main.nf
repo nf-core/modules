@@ -2,10 +2,10 @@ process VERIFYBAMID_VERIFYBAMID2 {
     tag '${meta.id}'
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::verifybamid2=2.0.1" : null)
+    conda "bioconda::verifybamid2=2.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
-        'quay.io/biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
+        'biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

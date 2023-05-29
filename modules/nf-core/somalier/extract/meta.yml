@@ -18,7 +18,7 @@ tools:
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
-      doi: "https://doi.org/10.1186/s13073-020-00761-2"
+      doi: "10.1186/s13073-020-00761-2"
       licence: "MIT License"
 
 input:
@@ -56,10 +56,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - somalierExtract:
+  - extract:
       type: file
       description: binary output file based on extracted sites
       pattern: "*.{somalier}"
 
 authors:
   - "@ashotmarg"
+  - "@nvnieuwk"

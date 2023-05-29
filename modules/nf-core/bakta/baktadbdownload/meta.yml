@@ -1,0 +1,31 @@
+name: "bakta_baktadbdownload"
+description: Downloads BAKTA database from Zenodo
+keywords:
+  - bakta
+  - annotation
+  - fasta
+  - bacteria
+  - database
+  - download
+tools:
+  - bakta:
+      description: Rapid & standardized annotation of bacterial genomes, MAGs & plasmids
+      homepage: https://github.com/oschwengers/bakta
+      documentation: https://github.com/oschwengers/bakta
+      tool_dev_url: https://github.com/oschwengers/bakta
+      doi: "10.1099/mgen.0.000685"
+      licence: ["GPL v3"]
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: directory
+      description: BAKTA database directory
+      pattern: "db*/"
+
+authors:
+  - "@jfy133"
+  - "@jasmezz"

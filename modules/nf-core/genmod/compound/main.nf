@@ -2,10 +2,10 @@ process GENMOD_COMPOUND {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
+    conda "bioconda::genmod=3.7.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
-        'quay.io/biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
+        'biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(input_vcf)
@@ -30,7 +30,7 @@ process GENMOD_COMPOUND {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' )
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process GENMOD_COMPOUND {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' )
     END_VERSIONS
     """
 }
