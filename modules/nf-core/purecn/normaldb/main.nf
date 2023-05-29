@@ -56,8 +56,9 @@ process PURECN_NORMALDB {
     """
     touch normalDB_${prefix}_${genome}.rds
     touch mapping_bias_${prefix}_${genome}.rds
+    touch mapping_bias_hq_sites_${prefix}_${genome}.bed
     touch interval_weights_${prefix}_${genome}.png
-    touch low_coverage_targets_${prefix}_${genome}.png
+    touch low_coverage_targets_${prefix}_${genome}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
