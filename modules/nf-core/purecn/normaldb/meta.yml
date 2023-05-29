@@ -28,7 +28,7 @@ input:
   - coverage_files:
       type: file
       description: Coverage files from normal samples
-      pattern: "*.loess.txt.gz"
+      pattern: "*.txt.gz"
   - normal_panel:
       type: file
       description: |
@@ -41,20 +41,24 @@ output:
       type: file
       description: File containing the generated panel of normals
       pattern: "normalDB*.rds"
-  - mapping_bias:
-      type: file
-      description: Calculated mapping bias from the normal files
-      pattern: "mapping_bias*.rds"
   - interval_weights:
       type: file
       description: Plot of interval weights calculated from the panel of normals
       pattern: "interval_weights*.png"
+  - mapping_bias:
+      type: file
+      description: Calculated mapping bias from the normal files
+      pattern: "mapping_bias*.rds"
+  - mapping_bias_hq_sites:
+      type: file
+      description: Calculated mapping bias sites from the normal files
+      pattern: "mapping_bias_hq_sites*.bed"
   - low_coverage_targets:
       type: file
       description: |
-        Graph with possibly low coverage targets identified, only
+        BED with possibly low coverage targets identified, only
         generated if there are low coverage targets
-      pattern: "low_coverage_targets*.png"
+      pattern: "low_coverage_targets*.bed"
   - versions:
       type: file
       description: File containing software versions
