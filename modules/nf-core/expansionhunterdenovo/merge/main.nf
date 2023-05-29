@@ -9,8 +9,8 @@ process EXPANSIONHUNTERDENOVO_MERGE {
 
     input:
     tuple val(meta), path(manifest)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.multisample_profile.json"), emit: merged_profiles
