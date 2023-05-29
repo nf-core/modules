@@ -8,9 +8,8 @@ workflow test_purecn_normaldb {
 
     input  = [
         [ id:'test' ],
-        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.list', checkIfExists: true),
-        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.txt.gz', checkIfExists: true),
-        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal2.txt.gz'), checkIfExists: true)
+        [file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.txt.gz', checkIfExists: true),
+        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal2.txt.gz', checkIfExists: true)]
     ]
     genome = 'hg38'
     assay  = 'illumina'
