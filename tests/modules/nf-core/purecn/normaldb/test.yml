@@ -1,22 +1,22 @@
 - name: purecn normaldb test_purecn_normaldb
   command: nextflow run ./tests/modules/nf-core/purecn/normaldb -entry test_purecn_normaldb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/normaldb/nextflow.config
   tags:
-    - purecn
     - purecn/normaldb
+    - purecn
   files:
     - path: output/purecn/interval_weights_illumina_hg38.png
       md5sum: 631e58326cf8121abe71717a9aa99050
     - path: output/purecn/low_coverage_targets_illumina_hg38.bed
       md5sum: e408039d4572fcba5139795a512343c4
     - path: output/purecn/normalDB_illumina_hg38.rds
-      md5sum: 7f6ca35a33a02bd13690ce89a7012586
+      md5sum: bc9a82c0f101deabecc4cea7c2909fd8
     - path: output/purecn/versions.yml
 
 - name: purecn normaldb test_purecn_normaldb_normalvcf
   command: nextflow run ./tests/modules/nf-core/purecn/normaldb -entry test_purecn_normaldb_normalvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/normaldb/nextflow.config
   tags:
-    - purecn
     - purecn/normaldb
+    - purecn
   files:
     - path: output/purecn/interval_weights_illumina_hg38.png
       md5sum: 631e58326cf8121abe71717a9aa99050
@@ -27,5 +27,5 @@
     - path: output/purecn/mapping_bias_illumina_hg38.rds
       md5sum: 1d65dc6475cbc88c335a097636d9f618
     - path: output/purecn/normalDB_illumina_hg38.rds
-      md5sum: 4b24e2714c6304de4f00bb05606fa8e9
+      md5sum: 9829911cff9d545841cab77eb3bd4485
     - path: output/purecn/versions.yml
