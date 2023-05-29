@@ -34,7 +34,7 @@ process PURECN_NORMALDB {
     echo "${coverage_files.join('\n')}" > coverages.list
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/NormalDB.R --out-dir ./ \\
-        --coverage-files ${coverage_files} \\
+        --coverage-files coverages.list \\
         --genome ${genome} \\
         --assay ${assay} \\
         ${normal_vcf} \\
