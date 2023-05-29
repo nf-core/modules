@@ -50,15 +50,14 @@ process PURECN_NORMALDB {
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
-    def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
-    def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
+    def mapping_bias = args.contains("--normal-panel") ? "" : "touch mapping_bias_${prefix}_${genome}.rds"
+    def mapping_bias_hq_sites = args.contains("--normal-panel") ? "" : "touch mapping_bias_hq_sites_${prefix}_${genome}.bed"
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch normalDB_${prefix}_${genome}.rds
-    touch mapping_bias_${prefix}_${genome}.rds
-    touch mapping_bias_hq_sites_${prefix}_${genome}.bed
+    ${mapping_bias}
+    ${mapping_bias_hq_sites}
     touch interval_weights_${prefix}_${genome}.png
     touch low_coverage_targets_${prefix}_${genome}.bed
 
@@ -66,6 +65,5 @@ process PURECN_NORMALDB {
     "${task.process}":
         purecn: ${VERSION}
     END_VERSIONS
-    """
     """
 }
