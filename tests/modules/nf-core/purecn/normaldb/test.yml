@@ -1,12 +1,31 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purecn/normaldb
-- name: "purecn normaldb"
+- name: purecn normaldb test_purecn_normaldb
   command: nextflow run ./tests/modules/nf-core/purecn/normaldb -entry test_purecn_normaldb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/normaldb/nextflow.config
   tags:
-    - "purecn"
-    - "purecn/normaldb"
+    - purecn
+    - purecn/normaldb
   files:
-    - path: "output/purecn/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purecn/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/purecn/interval_weights_illumina_hg38.png
+      md5sum: 631e58326cf8121abe71717a9aa99050
+    - path: output/purecn/low_coverage_targets_illumina_hg38.bed
+      md5sum: e408039d4572fcba5139795a512343c4
+    - path: output/purecn/normalDB_illumina_hg38.rds
+      md5sum: efdd7122d4a1ce4f31a24dc888f7fe33
+    - path: output/purecn/versions.yml
+
+- name: purecn normaldb test_purecn_normaldb_normalvcf
+  command: nextflow run ./tests/modules/nf-core/purecn/normaldb -entry test_purecn_normaldb_normalvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/normaldb/nextflow.config
+  tags:
+    - purecn
+    - purecn/normaldb
+  files:
+    - path: output/purecn/interval_weights_illumina_hg38.png
+      md5sum: 631e58326cf8121abe71717a9aa99050
+    - path: output/purecn/low_coverage_targets_illumina_hg38.bed
+      md5sum: e408039d4572fcba5139795a512343c4
+    - path: output/purecn/mapping_bias_hq_sites_illumina_hg38.bed
+      md5sum: 74e96f8d8c10dd74ae4e2a60e52142f2
+    - path: output/purecn/mapping_bias_illumina_hg38.rds
+      md5sum: 1d65dc6475cbc88c335a097636d9f618
+    - path: output/purecn/normalDB_illumina_hg38.rds
+      md5sum: 749a368b7c0d88fe1765bb5e3b475936
+    - path: output/purecn/versions.yml
