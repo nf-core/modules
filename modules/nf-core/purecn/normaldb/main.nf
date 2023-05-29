@@ -9,7 +9,7 @@ process PURECN_NORMALDB {
         'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
 
     input:
-    tuple val(meta), path(coverage_files), path(normalvcf)
+    tuple val(meta), path(coverage_files), path(normal_vcf), path(normal_vcf_tbi)
     val   genome
     val   assay
 
@@ -27,17 +27,17 @@ process PURECN_NORMALDB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def normal_vcf = normalvcf ? "--normal-panel ${normalvcf.vcf}" : ""
+    def normal_panel = normal_vcf ? "--normal-panel ${normal_vcf}" : ""
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    echo "${coverage_files.join('\n')}" > coverages.list
+    echo "${coverage_files.join('\\n')}" > coverages.list
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/NormalDB.R --out-dir ./ \\
         --coverage-files coverages.list \\
         --genome ${genome} \\
         --assay ${assay} \\
-        ${normal_vcf} \\
+        ${normal_panel} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
