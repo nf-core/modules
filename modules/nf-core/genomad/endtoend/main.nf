@@ -8,7 +8,7 @@ process GENOMAD_ENDTOEND {
         'biocontainers/genomad:1.5.2--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta)         , path(fasta)
     path  genomad_db
     val   score_calibration
 
@@ -16,8 +16,8 @@ process GENOMAD_ENDTOEND {
     tuple val(meta), path("*_aggregated_classification/*_aggregated_classification.tsv")    , emit: aggregated_classification
     tuple val(meta), path("*_annotate/*_taxonomy.tsv")                                      , emit: taxonomy
     tuple val(meta), path("*_find_proviruses/*_provirus.tsv")                               , emit: provirus
-    tuple val(meta), path("*_score_calibration/*_compositions.tsv")                         , emit: compositions , optional: true
-    tuple val(meta), path("*_score_calibration/*_calibrated_aggregated_classification.tsv") , emit: calibrated_classification , optional: true
+    tuple val(meta), path("*_score_calibration/*_compositions.tsv")                         , emit: compositions                , optional: true
+    tuple val(meta), path("*_score_calibration/*_calibrated_aggregated_classification.tsv") , emit: calibrated_classification   , optional: true
     tuple val(meta), path("*_summary/*_plasmid.fna")                                        , emit: plasmid_fasta
     tuple val(meta), path("*_summary/*_plasmid_genes.tsv")                                  , emit: plasmid_genes
     tuple val(meta), path("*_summary/*_plasmid_proteins.faa")                               , emit: plasmid_proteins
