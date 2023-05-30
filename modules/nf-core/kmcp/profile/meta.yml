@@ -36,14 +36,14 @@ input:
       description: Tabular two-column file(s) mapping reference IDs to TaxIds.
       pattern: "*.{csv,tsv}"
   - mode:
-      type: value
+      type: integer
       description: Profiling mode.
-                  0-pathogen detection
-                  1-higher recall
-                  2-high recall
-                  3-default
-                  4-high precision
-                  5-higher precision
+        0-pathogen detection
+        1-higher recall
+        2-high recall
+        3-default
+        4-high precision
+        5-higher precision
 output:
   - meta:
       type: map
