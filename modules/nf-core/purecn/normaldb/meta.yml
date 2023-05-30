@@ -29,31 +29,37 @@ input:
       type: file
       description: Coverage files from normal samples
       pattern: "*.txt.gz"
-  - normal_panel:
+  - normal_vcf:
       type: file
       description: |
         Normal panel in VCF format, used to precompute mapping bias
         for faster runtimes. Optional.
       pattern: "*.vcf.gz"
+  - genome:
+      type: string
+      description: Genome build
+  - assay:
+      type: string
+      description: Assay name
 
 output:
-  - normal_db:
+  - rds:
       type: file
       description: File containing the generated panel of normals
       pattern: "normalDB*.rds"
-  - interval_weights:
+  - png:
       type: file
       description: Plot of interval weights calculated from the panel of normals
       pattern: "interval_weights*.png"
-  - mapping_bias:
+  - bias_rds:
       type: file
       description: Calculated mapping bias from the normal files
       pattern: "mapping_bias*.rds"
-  - mapping_bias_hq_sites:
+  - bias_bed:
       type: file
       description: Calculated mapping bias sites from the normal files
       pattern: "mapping_bias_hq_sites*.bed"
-  - low_coverage_targets:
+  - low_cov_bed:
       type: file
       description: |
         BED with possibly low coverage targets identified, only
