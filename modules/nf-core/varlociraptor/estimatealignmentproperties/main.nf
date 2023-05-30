@@ -1,6 +1,7 @@
 process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
     tag "$meta.id"
     label 'process_single'
+    
     conda "bioconda::varlociraptor=8.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/varlociraptor:8.1.1--hc349b7f_0':
