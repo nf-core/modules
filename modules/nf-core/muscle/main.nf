@@ -5,7 +5,7 @@ process MUSCLE {
     conda "bioconda::muscle=3.8.1551"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/muscle:3.8.1551--h7d875b9_6' :
-        'quay.io/biocontainers/muscle:3.8.1551--h7d875b9_6' }"
+        'biocontainers/muscle:3.8.1551--h7d875b9_6' }"
 
     input:
     tuple val(meta), path(fasta)

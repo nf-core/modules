@@ -10,7 +10,7 @@ process SENTIEON_BWAMEM {
         exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container 'nfcore/sentieon:202112.06'
+    container 'docker.io/nfcore/sentieon:202112.06'
 
     input:
     tuple val(meta), path(reads)
@@ -27,7 +27,6 @@ process SENTIEON_BWAMEM {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
@@ -59,6 +58,7 @@ process SENTIEON_BWAMEM {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
