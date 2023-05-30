@@ -25,7 +25,7 @@ workflow test_purecn_normaldb_normalvcf {
         [file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_normal'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['purecn_ex2_normal'], checkIfExists: true)],
         [file(params.test_data['homo_sapiens']['illumina']['purecn_normalpanel_vcf'], checkIfExists: true)],
-        [file(params.test_data['homo_sapiens']['illumina']['purecn_normalpanel_vcf_tbi'], checkIfExists: true)]
+        [file(params.test_data['homo_sapiens']['illumina']['purecn_normalpanel_tbi'], checkIfExists: true)]
     ]
     genome = 'hg38'
     assay  = 'illumina'
