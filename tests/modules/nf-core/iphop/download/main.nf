@@ -6,6 +6,6 @@ include { IPHOP_DOWNLOAD } from '../../../../../modules/nf-core/iphop/download/m
 
 workflow test_iphop_download {
 
-    IPHOP_DOWNLOAD ( 'iPHoP_db_rw_for-test' )
+    IPHOP_DOWNLOAD ( )
 
 }
