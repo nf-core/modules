@@ -30,7 +30,7 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //;' )
+        : \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
     END_VERSIONS
     """
 }
