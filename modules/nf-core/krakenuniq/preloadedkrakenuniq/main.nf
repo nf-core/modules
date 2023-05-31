@@ -5,7 +5,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     conda "bioconda::krakenuniq=1.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.2--pl5321h19e8d03_0':
-        'quay.io/biocontainers/krakenuniq:1.0.2--pl5321h19e8d03_0' }"
+        'biocontainers/krakenuniq:1.0.2--pl5321h19e8d03_0' }"
 
     input:
     tuple val(meta), path(fastqs)

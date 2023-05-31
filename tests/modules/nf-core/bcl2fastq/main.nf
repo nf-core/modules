@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { BCL2FASTQ } from '../../../../modules/nf-core/bcl2fastq/main.nf'
-include { UNTAR      } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_bcl2fastq {
     ch_flowcell = Channel.value([
@@ -17,7 +16,7 @@ workflow test_bcl2fastq {
         tar: [meta, run]
     }.set{ ch_fc_split }
 
-    ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
+    ch_flowcell_merge = ch_fc_split.samplesheet.join( ch_fc_split.tar )
 
-    BCL2FASTQ (ch_flowcell_untar)
+    BCL2FASTQ (ch_flowcell_merge)
 }

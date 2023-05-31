@@ -7,7 +7,7 @@ include { PAIRTOOLS_DEDUP } from '../../../../../modules/nf-core/pairtools/dedup
 workflow test_pairtools_dedup {
 
     input = [ [ id:'test', single_end:false ], // meta map
-                file("https://raw.githubusercontent.com/open2c/pairtools/master/tests/data/mock.4dedup.pairsam", checkIfExists: true) ]
+                file(params.test_data['generic']['pairtools']['mock_4dedup_pairsam'], checkIfExists: true) ]
 
     PAIRTOOLS_DEDUP ( input )
 }

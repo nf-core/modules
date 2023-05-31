@@ -6,7 +6,7 @@ process VCFLIB_VCFUNIQ {
     conda "bioconda::vcflib=1.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
-        'quay.io/biocontainers/vcflib:1.0.3--hecb563c_1' }"
+        'biocontainers/vcflib:1.0.3--hecb563c_1' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
