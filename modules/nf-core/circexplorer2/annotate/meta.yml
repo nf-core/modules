@@ -1,0 +1,49 @@
+name: "circexplorer2_annotate"
+description: Annotate circRNAs detected in the output from CIRCexplorer2 parse
+keywords:
+  - circrna
+  - annotate
+tools:
+  - "circexplorer2":
+      description: "Circular RNA analysis toolkits"
+      homepage: "https://github.com/YangLab/CIRCexplorer2/"
+      documentation: "https://circexplorer2.readthedocs.io/en/latest/"
+      doi: "10.1101/gr.202895.115"
+      licence: "['MIT License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - junctions:
+      type: file
+      description: Reformatted junctions file
+      pattern: "*.{junction}"
+  - fasta:
+      type: file
+      description: Genome FASTA file
+      pattern: "*.{fa,fasta}"
+  - gene_annotation:
+      type: file
+      description: Reformatted GTF file for CIRCexplorer2
+      pattern: "*.{txt}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - txt:
+      type: file
+      description: Annotated circRNA TXT file
+      pattern: "*.{txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@BarryDigby"

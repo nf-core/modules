@@ -2,10 +2,10 @@ process QUALIMAP_BAMQC {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::qualimap=2.2.2d" : null)
+    conda "bioconda::qualimap=2.2.2d"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1' :
-        'quay.io/biocontainers/qualimap:2.2.2d--1' }"
+        'biocontainers/qualimap:2.2.2d--1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -23,7 +23,7 @@ process QUALIMAP_BAMQC {
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
-    def memory     = task.memory.toGiga() + "G"
+    def memory = (task.memory.mega*0.8).intValue() + 'M'
     def regions = gff ? "--gff $gff" : ''
 
     def strandedness = 'non-strand-specific'
@@ -34,7 +34,7 @@ process QUALIMAP_BAMQC {
     }
     """
     unset DISPLAY
-    mkdir tmp
+    mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
         --java-mem-size=$memory \\

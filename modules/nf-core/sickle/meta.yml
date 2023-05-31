@@ -1,0 +1,59 @@
+name: "sickle"
+description: A windowed adaptive trimming tool for FASTQ files using quality
+keywords:
+  - fastq
+  - sliding window
+  - trimming
+tools:
+  - "sickle":
+      description: "a tool that determines clipping of reads on 3' end and 5'end based on base quality "
+      homepage: "https://github.com/najoshi/sickle"
+
+      tool_dev_url: "https://github.com/najoshi/sickle"
+      licence: "['MIT License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false]
+  - reads:
+      type: file
+      description:
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second
+        e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
+      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+  - qual_type:
+      type: string
+      description: sickle needs a base quality values, which could be either illumina, solexa or sanger
+      pattern: "illumina or solexa or sanger"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
+  - single_trimmed:
+      type: file
+      description: 5' or 3' trimmed (based on base quality) single-end fastq file
+      pattern: "*.se.trimmed.fastq.gz"
+  - paired1_trimmed:
+      type: file
+      description: 5' or 3' trimmed  (based on base quality) R1 fastq file
+      pattern: "*.pe1.trimmed.fastq.gz"
+  - paired2_trimmed:
+      type: file
+      description: 5' or 3' trimmed  (based on base quality) R2 fastq file
+      pattern: "*.pe2.trimmed.fastq.gz"
+  - log:
+      type: file
+      description: log file
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@BioInf2305"

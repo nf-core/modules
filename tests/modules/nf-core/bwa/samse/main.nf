@@ -14,7 +14,10 @@ workflow test_bwa_samse {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
         ).collect()
         .set { input }
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     BWA_INDEX ( fasta )
     BWA_ALN ( input, BWA_INDEX.out.index )

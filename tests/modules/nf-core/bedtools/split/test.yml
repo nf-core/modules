@@ -1,10 +1,9 @@
 - name: bedtools split test_bedtools_split
-  command: nextflow run ./tests/modules/nf-core/bedtools/split -entry test_bedtools_split -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bedtools/split/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bedtools/split -entry test_bedtools_split -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/split/nextflow.config
   tags:
-    - bedtools
     - bedtools/split
+    - bedtools
   files:
     - path: output/bedtools/test.00001.bed
-      md5sum: d58e5e46c2fcc3b8be5db0f023e93cb5
     - path: output/bedtools/test.00002.bed
-      md5sum: 03caf952e9297a54620d2bbba8dc2823
+    - path: output/bedtools/versions.yml

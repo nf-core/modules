@@ -1,0 +1,38 @@
+name: "mmseqs_createindex"
+description: Creates sequence index for mmseqs database
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: "['GPL v3']"
+
+input:
+  - db:
+      type: directory
+      description: |
+        Directory containing the DB to be indexed
+      pattern: "*"
+
+output:
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+      pattern: "versions.yml"
+  - db_indexed:
+      type: directory
+      description: |
+        Directory containing the DB and the generated indexes
+      pattern: "*"
+
+authors:
+  - "@JoseEspinosa"

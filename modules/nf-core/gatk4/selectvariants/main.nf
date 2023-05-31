@@ -2,13 +2,13 @@ process GATK4_SELECTVARIANTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(vcf_idx)
+    tuple val(meta), path(vcf), path(vcf_idx), path (intervals)
 
     output:
     tuple val(meta), path("*.selectvariants.vcf.gz")       , emit: vcf
@@ -21,19 +21,32 @@ process GATK4_SELECTVARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def avail_mem = 3
+    def interval = intervals ? "--intervals ${intervals}" : ""
+    def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK SelectVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.toGiga()
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}G" SelectVariants \\
+    gatk --java-options "-Xmx${avail_mem}M" SelectVariants \\
         --variant $vcf \\
         --output ${prefix}.selectvariants.vcf.gz \\
+        $interval \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.selectvariants.vcf.gz
+    touch ${prefix}.selectvariants.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

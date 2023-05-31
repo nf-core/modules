@@ -14,8 +14,8 @@ tools:
   - malt:
       description: A tool for mapping metagenomic data
       homepage: https://www.wsi.uni-tuebingen.de/lehrstuehle/algorithms-in-bioinformatics/software/malt/
-      documentation: https://software-ab.informatik.uni-tuebingen.de/download/malt/manual.pdf
-      tool_dev_url: None
+      documentation: https://software-ab.cs.uni-tuebingen.de/download/malt/manual.pdf
+
       doi: "10.1038/s41559-017-0446-6"
       licence: ["GPL v3"]
 
@@ -24,22 +24,14 @@ input:
       type: file
       description: Directory of, or list of FASTA reference files for indexing
       pattern: "*/|*.fasta"
-  - seq_type:
-      type: string
-      description: Type of input data
-      pattern: "DNA|Protein"
-  - mapping_file:
+  - gff:
       type: file
-      description: An unzipped MEGAN mapping file in .abin format (pre-2020), downloadable from https://software-ab.informatik.uni-tuebingen.de/download/megan6/old.html
-      pattern: "*.abin"
-  - mapping_type:
-      type: value
-      description: What type of accession to use for database construction.
-      pattern: "gi|ref|syn"
-  - mapping_type:
-      type: value
-      description: Which database the mapping file is derived from.
-      pattern: "eggnog|interpro2go|kegg|seed|taxonomy"
+      description: Directory of, or GFF3 files of input FASTA files
+      pattern: "*/|*.gff|*.gff3"
+  - mapping_db:
+      type: file
+      description: MEGAN .db file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html
+      pattern: "*.db"
 
 output:
   - versions:

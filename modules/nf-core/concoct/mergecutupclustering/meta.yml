@@ -1,0 +1,48 @@
+name: "concoct_mergecutupclustering"
+description: Merge consecutive parts of the original contigs original cut up by cut_up_fasta.py
+keywords:
+  - contigs
+  - fragment
+  - mags
+  - binning
+  - fasta
+  - cut
+  - cut up
+  - merge
+tools:
+  - "concoct":
+      description: "Clustering cONtigs with COverage and ComposiTion"
+      homepage: "https://concoct.readthedocs.io/en/latest/index.html"
+      documentation: "https://concoct.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/BinPro/CONCOCT"
+      doi: "10.1038/nmeth.3103"
+      licence: "['FreeBSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - clustering_csv:
+      type: file
+      description: Input cutup clustering result. Typically *_gt1000.csv from concoct
+      pattern: "*.csv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - csv:
+      type: file
+      description: Cluster assignments per contig part with concensus cluster
+      pattern: "*.csv"
+
+authors:
+  - "@jfy133"

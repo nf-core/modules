@@ -1,8 +1,8 @@
 - name: biscuit epiread test_biscuit_epiread_nosnp
-  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_nosnp -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_nosnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/epiread/nextflow.config
   tags:
-    - biscuit
     - biscuit/epiread
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -21,15 +21,13 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bed.gz
-      md5sum: dbb30b59f4ef6fdfdee38630225c0574
-    - path: output/biscuit/versions.yml
-      md5sum: 674a77ac5ca8f4b42d30e58e30c3a9af
+      md5sum: c7d1646ca37bc26962ee2ddc78d99019
 
 - name: biscuit epiread test_biscuit_epiread_snp
-  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/epiread/nextflow.config
   tags:
-    - biscuit
     - biscuit/epiread
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -48,15 +46,13 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bed.gz
-      md5sum: a29fea6ad74453ec94f8220747dab906
-    - path: output/biscuit/versions.yml
-      md5sum: f2f7c4ff3c6a135b1c8a3aff24a44d81
+      md5sum: bb5e1939b73f637c36ccd85aa9904956
 
 - name: biscuit epiread test_biscuit_epiread_snp_decompress
-  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp_decompress -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp_decompress -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/epiread/nextflow.config
   tags:
-    - biscuit
     - biscuit/epiread
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -75,6 +71,4 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bed.gz
-      md5sum: a29fea6ad74453ec94f8220747dab906
-    - path: output/biscuit/versions.yml
-      md5sum: cb0258ebf4e1a731a4310ec17c3dc442
+      md5sum: bb5e1939b73f637c36ccd85aa9904956

@@ -14,6 +14,6 @@ workflow test_ataqv_mkarv {
         []
     ]
 
-    ATAQV_ATAQV ( input, 'human', [], [], [] )
+    ATAQV_ATAQV ( input, 'human', '', [], [], [] )
     ATAQV_MKARV ( ATAQV_ATAQV.out.json.collect{ it[1]} )
 }

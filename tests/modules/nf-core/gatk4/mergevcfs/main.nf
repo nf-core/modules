@@ -11,7 +11,7 @@ workflow test_gatk4_mergevcfs {
                 file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
             ]
 
-    dict  = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    dict  = [ [id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
 
     GATK4_MERGEVCFS ( input, dict )
 }
@@ -22,7 +22,7 @@ workflow test_gatk4_mergevcfs_no_dict {
                 file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
             ]
 
-    GATK4_MERGEVCFS ( input, [] )
+    GATK4_MERGEVCFS ( input, [[id:'genome'],[]] )
 }
 
 workflow test_gatk4_mergevcfs_no_dict_stubs {
@@ -31,5 +31,5 @@ workflow test_gatk4_mergevcfs_no_dict_stubs {
                 file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
             ]
 
-    GATK4_MERGEVCFS ( input, [] )
+    GATK4_MERGEVCFS ( input, [[id:'genome'],[]] )
 }

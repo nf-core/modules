@@ -2,14 +2,14 @@ process YARA_MAPPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::yara=1.0.2 bioconda::samtools=1.15.1" : null)
+    conda "bioconda::yara=1.0.2 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0' :
-        'quay.io/biocontainers/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:de7982183b85634270540ac760c2644f16e0b6d1-0' :
+        'biocontainers/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:de7982183b85634270540ac760c2644f16e0b6d1-0' }"
 
     input:
     tuple val(meta), path(reads)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.mapped.bam"), emit: bam
@@ -22,13 +22,14 @@ process YARA_MAPPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def index_prefix = index[0].baseName.substring(0,index[0].baseName.lastIndexOf('.'))
     if (meta.single_end) {
         """
         yara_mapper \\
             $args \\
             -t $task.cpus \\
             -f bam \\
-            ${index}/yara \\
+            ${index_prefix} \\
             $reads | samtools view -@ $task.cpus -hb -F4 | samtools sort -@ $task.cpus > ${prefix}.mapped.bam
 
         samtools index -@ $task.cpus ${prefix}.mapped.bam
@@ -45,7 +46,7 @@ process YARA_MAPPER {
             $args \\
             -t $task.cpus \\
             -f bam \\
-            ${index}/yara \\
+            ${index_prefix} \\
             ${reads[0]} \\
             ${reads[1]} > output.bam
 

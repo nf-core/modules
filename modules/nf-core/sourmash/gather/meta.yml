@@ -1,0 +1,93 @@
+name: "sourmash_gather"
+description: Search a metagenome sourmash signature against one or many reference databases and return the minimum set of genomes that contain the k-mers in the metagenome.
+keywords:
+  - FracMinHash sketch
+  - signature
+  - kmer
+  - containment
+  - sourmash
+  - genomics
+  - metagenomics
+  - taxonomic classification
+  - taxonomic profiling
+tools:
+  - "sourmash":
+      description: Compute and compare FracMinHash signatures for DNA data sets.
+      homepage: https://sourmash.readthedocs.io/
+      documentation: https://sourmash.readthedocs.io/
+      tool_dev_url: https://github.com/sourmash-bio/sourmash
+      doi: "10.21105/joss.00027"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - signature:
+      type: file
+      description: File containing signatures (hash sketches) of a sample
+      pattern: "*.{sig}"
+  - db:
+      type: file
+      description: Sourmash database (a list of signatures, SBTs, or signature zip files)
+  - save_unassigned:
+      type: boolean
+      description: |
+        If true, output will contain a file that is a sourmash signature containing the unassigned hashes from the query
+  - save_matches_sig:
+      type: boolean
+      description: |
+        If true, output will contain a file that is a sourmash signature composed of the FracMinHash sketches that were matched in the database and that matched the query
+  - save_prefetch:
+      type: boolean
+      description: |
+        If true, output will contain a file with all prefetch-matched signatures from the database
+  - save_prefetch_csv:
+      type: boolean
+      description: |
+        If true, output will contain a csv file with the names of all prefetch-matched signatures
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - result:
+      type: file
+      description: |
+        Table with signatures classified as belonging to any of the genomes
+        in the sourmash database(s).
+      pattern: "*{csv.gz}"
+  - matches:
+      type: file
+      description: |
+        A signature containing FracMinHash sketches of genomes
+        in the sourmash database.
+      pattern: "*{sig.zip}"
+  - unassigned:
+      type: file
+      description: |
+        A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
+        in the sourmash database(s).
+      pattern: "*{sig.zip}"
+  - prefetch:
+      type: file
+      description: |
+        All prefetch-matched signatures from the database.
+      pattern: "*{sig.zip}"
+  - prefetchcsv:
+      type: file
+      description: |
+        The names of all prefetch-matched signatures from the database in CSV format.
+      pattern: "*{csv.gz}"
+
+authors:
+  - "@vmikk"
+  - "@taylorreiter"

@@ -10,16 +10,26 @@ tools:
       homepage: https://github.com/shahcompbio/hmmcopy_utils
       documentation: https://github.com/shahcompbio/hmmcopy_utils
       tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
-      doi: ""
+
       licence: ["GPL v3"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - bigwig:
       type: file
       description: BigWig file with the mappability score of the genome, for instance made with generateMap function.
       pattern: "*.wig"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -28,7 +38,7 @@ output:
   - wig:
       type: file
       description: wig file containing mappability of each window of the genome
-      pattern: "*.map.wig"
+      pattern: "*.wig"
 
 authors:
   - "@sppearce"

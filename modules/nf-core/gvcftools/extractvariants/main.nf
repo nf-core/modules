@@ -2,10 +2,10 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gvcftools=0.17.0" : null)
+    conda "bioconda::gvcftools=0.17.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gvcftools:0.17.0--he941832_3':
-        'quay.io/biocontainers/gvcftools:0.17.0--he941832_3' }"
+        'biocontainers/gvcftools:0.17.0--he941832_3' }"
 
     input:
     tuple val(meta), path(gvcf)

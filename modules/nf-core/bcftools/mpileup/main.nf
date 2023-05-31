@@ -2,22 +2,22 @@ process BCFTOOLS_MPILEUP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.15.1" : null)
+    conda "bioconda::bcftools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.15.1--h0ea216a_0':
-        'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
+        'biocontainers/bcftools:1.17--haef29d1_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(intervals)
     path fasta
     val save_mpileup
 
     output:
-    tuple val(meta), path("*.gz")      , emit: vcf
-    tuple val(meta), path("*.tbi")     , emit: tbi
-    tuple val(meta), path("*stats.txt"), emit: stats
-    tuple val(meta), path("*.mpileup") , emit: mpileup, optional: true
-    path  "versions.yml"               , emit: versions
+    tuple val(meta), path("*vcf.gz")     , emit: vcf
+    tuple val(meta), path("*vcf.gz.tbi") , emit: tbi
+    tuple val(meta), path("*stats.txt")  , emit: stats
+    tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
+    path  "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +28,8 @@ process BCFTOOLS_MPILEUP {
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
+    def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
+    def intervals = intervals ? "-T ${intervals}" : ""
     """
     echo "${meta.id}" > sample_name.list
 
@@ -36,10 +38,13 @@ process BCFTOOLS_MPILEUP {
         --fasta-ref $fasta \\
         $args \\
         $bam \\
+        $intervals \\
         $mpileup \\
         | bcftools call --output-type v $args2 \\
         | bcftools reheader --samples sample_name.list \\
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z $args3
+
+    $bgzip_mpileup
 
     tabix -p vcf -f ${prefix}.vcf.gz
 

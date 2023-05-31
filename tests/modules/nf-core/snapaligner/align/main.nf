@@ -12,7 +12,14 @@ workflow test_snapaligner_single {
         [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
     ]
 
-    SNAPALIGNER_INDEX ( file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),[],[],[])
+    fasta = [
+        [id:"test"],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+        [],
+        [],
+        []
+    ]
+    SNAPALIGNER_INDEX ( fasta )
     SNAPALIGNER_ALIGN ( input, SNAPALIGNER_INDEX.out.index )
 }
 
@@ -23,6 +30,13 @@ workflow test_snapaligner_paired {
         [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
     ]
 
-    SNAPALIGNER_INDEX ( file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),[],[],[])
+    fasta = [
+        [id:"test"],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+        [],
+        [],
+        []
+    ]
+    SNAPALIGNER_INDEX ( fasta )
     SNAPALIGNER_ALIGN ( input, SNAPALIGNER_INDEX.out.index )
 }

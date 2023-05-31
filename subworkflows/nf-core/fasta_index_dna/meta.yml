@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_index_dna"
+description: |
+  Generate aligner index for a reference genome.
+  Please note, this workflow requires input CHANNELS. Input values will cause errors
+keywords:
+  - fasta
+  - index
+  - bowtie2
+  - bwamem
+  - bwamem2
+  - dragmap
+  - snapaligner
+modules:
+  - bowtie2/build
+  - bwa/index
+  - bwamem2/index
+  - dragmap/hashtable
+  - snapaligner/index
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing altliftover information
+        e.g. [ id:'test' ]
+  - altliftover:
+      type: file
+      description: |
+        Sam formatted liftover file for the reference genome alt contigs
+        See: https://github.com/lh3/bwa/blob/master/README-alt.md
+        Download from: https://sourceforge.net/projects/bio-bwa/files/bwakit
+  - val_aligner:
+      type: string
+      description: Aligner to use for alignment
+      enum:
+        - bowtie2
+        - bwa
+        - bwamem2
+        - dragmap
+        - snap
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - index:
+      type: file
+      description: aligner index
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"
+  - "@ramprasadn"

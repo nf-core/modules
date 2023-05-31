@@ -3,10 +3,10 @@ process ICHORCNA_RUN {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::r-ichorcna=0.3.2" : null)
+    conda "bioconda::r-ichorcna=0.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
-        'quay.io/biocontainers/r-ichorcna:0.3.2--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--pl5321r42hdfd78af_2' :
+        'biocontainers/r-ichorcna:0.3.2--pl5321r42hdfd78af_2' }"
 
     input:
     tuple val(meta), path(wig)
@@ -18,7 +18,7 @@ process ICHORCNA_RUN {
     output:
     tuple val(meta), path("*.cna.seg")    , emit: cna_seg
     tuple val(meta), path("*.params.txt") , emit: ichorcna_params
-    path "**/*genomeWide.pdf"             , emit: genome_plot
+    path "*genomeWide.pdf"                , emit: genome_plot
     path "versions.yml"                   , emit: versions
 
     when:
@@ -31,15 +31,17 @@ process ICHORCNA_RUN {
     def centro = centromere ? "--centromere ${centromere}" : ''
     def VERSION = '0.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    runIchorCNA.R --id ${prefix} \\
+    runIchorCNA.R \\
         $args \\
         --WIG ${wig} \\
-        --id ${meta.id} \\
+        --id ${prefix} \\
         --gcWig ${gc_wig} \\
         --mapWig ${map_wig} \\
         ${pon} \\
         ${centro} \\
         --outDir .
+
+    cp */*genomeWide.pdf .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

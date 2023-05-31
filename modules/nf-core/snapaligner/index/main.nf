@@ -2,20 +2,17 @@ process SNAPALIGNER_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
+    conda "bioconda::snap-aligner=2.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.1--hd03093a_1':
-        'quay.io/biocontainers/snap-aligner:2.0.1--hd03093a_1' }"
+        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.3--hd03093a_0':
+        'biocontainers/snap-aligner:2.0.3--hd03093a_0' }"
 
     input:
-    path fasta
-    path altcontigfile
-    path nonaltcontigfile
-    path altliftoverfile
+    tuple val(meta), path(fasta), path(altcontigfile), path(nonaltcontigfile), path(altliftoverfile)
 
     output:
-    path "snap/*"            ,emit: index
-    path "versions.yml"      ,emit: versions
+    tuple val(meta), path("snap/*") ,emit: index
+    path "versions.yml"             ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when

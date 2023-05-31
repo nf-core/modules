@@ -2,10 +2,10 @@ process IQTREE {
     tag "$alignment"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
+    conda "bioconda::iqtree=2.1.4_beta"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
-        'quay.io/biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"
+        'biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"
 
     input:
     path alignment

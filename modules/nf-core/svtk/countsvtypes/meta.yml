@@ -1,0 +1,44 @@
+name: "svtk_countsvtypes"
+description: Count the instances of each SVTYPE observed in each sample in a VCF.
+keywords:
+  - svtk
+  - countsvtypes
+  - vcf
+  - structural variants
+tools:
+  - "svtk":
+      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+      documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+      tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
+      doi: "10.1038/s41586-020-2287-8"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: The VCF file containing structural variants
+      pattern: "*.vcf.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - counts:
+      type: file
+      description: A tab-delimited file containing the counts of the SV types
+      pattern: "*.tsv"
+
+authors:
+  - "@nvnieuwk"

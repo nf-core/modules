@@ -2,14 +2,15 @@ process SPADES {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::spades=3.15.4' : null)
+    conda "bioconda::spades=3.15.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spades:3.15.4--h95f258a_0' :
-        'quay.io/biocontainers/spades:3.15.4--h95f258a_0' }"
+        'https://depot.galaxyproject.org/singularity/spades:3.15.5--h95f258a_1' :
+        'biocontainers/spades:3.15.5--h95f258a_1' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
-    path  hmm
+    path yml
+    path hmm
 
     output:
     tuple val(meta), path('*.scaffolds.fa.gz')    , optional:true, emit: scaffolds
@@ -31,15 +32,14 @@ process SPADES {
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
     def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
+    def reads = yml ? "--dataset $yml" : "$illumina_reads $pacbio_reads $nanopore_reads"
     """
     spades.py \\
         $args \\
         --threads $task.cpus \\
         --memory $maxmem \\
         $custom_hmms \\
-        $illumina_reads \\
-        $pacbio_reads \\
-        $nanopore_reads \\
+        $reads \\
         -o ./
     mv spades.log ${prefix}.spades.log
 

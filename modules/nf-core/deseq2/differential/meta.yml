@@ -1,0 +1,102 @@
+name: "deseq2_differential"
+description: runs a differential expression analysis with DESeq2
+keywords:
+  - differential
+  - expression
+  - rna-seq
+  - deseq2
+
+tools:
+  - "deseq2":
+      description: "Differential gene expression analysis based on the negative binomial distribution"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
+      tool_dev_url: "https://github.com/mikelove/DESeq2"
+      doi: "10.1186/s13059-014-0550-8"
+      licence: "['LGPL >=3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information. This can be used at the
+        workflow level to pass optional parameters to the module, e.g.
+        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+        '--blocking_variable $meta.blocking'.
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
+  - reference:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the reference samples
+  - target:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the target samples
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the sample sheet
+        and matrix
+  - sample:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata
+  - counts:
+      type: file
+      description: |
+        Raw TSV or CSV format expression matrix as output from the nf-core
+        RNA-seq workflow
+  - control_genes:
+      type: file
+      description: |
+        Text file listing control genes, one per line
+  - control_genes_meta:
+      type: file
+      description: |
+        Meta map describing control genes, e.g. [ id: 'ERCC' ]
+  - sizefactors_from_controls:
+      type: boolean
+      description: |
+        Specify if any supplied control genes should just be stripped to
+        prevent bias in conventional normalisation (default), or used to
+        generate the size factors (supplied via task.ext.args like
+        '--sizefactors_from_controls TRUE').
+
+output:
+  - results:
+      type: file
+      description: TSV-format table of differential expression information as output by DESeq2
+      pattern: "deseq2.results.tsv"
+  - dispersion_plot:
+      type: file
+      description: DESeq2 dispersion plot
+      pattern: "deseq2.dispersion.png"
+  - rdata:
+      type: file
+      description: Serialised DESeq2 object
+      pattern: "dds.rld.rds"
+  - sizefactors:
+      type: file
+      description: Size factors
+      pattern: "deseq2.sizefactors.tsv"
+  - normalised_counts:
+      type: file
+      description: TSV-format counts matrix, normalised to size factors
+      pattern: "normalised_counts.tsv"
+  - variance_stabilised_counts:
+      type: file
+      description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
+      pattern: "variance_stabilised_counts.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"

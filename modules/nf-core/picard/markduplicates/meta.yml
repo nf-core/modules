@@ -24,7 +24,25 @@ input:
   - bam:
       type: file
       description: BAM file
-      pattern: "*.{bam}"
+      pattern: "*.{bam,cram,sam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
+      type: file
+      description: Reference genome fasta index
+      pattern: "*.{fai}"
 output:
   - meta:
       type: map
@@ -50,3 +68,4 @@ output:
 authors:
   - "@drpatelh"
   - "@projectoriented"
+  - "@ramprasadn"

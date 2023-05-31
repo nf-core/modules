@@ -2,10 +2,10 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
+    conda "bioconda::bismark=0.24.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.23.0--0' :
-        'quay.io/biocontainers/bismark:0.23.0--0' }"
+        'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
+        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -24,16 +24,25 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     script:
     def args = task.ext.args ?: ''
+    // Assign sensible numbers for multicore and buffer_size based on bismark docs
+    if(!args.contains('--multicore') && task.cpus >= 6){
+        args += " --multicore ${(task.cpus / 3) as int}"
+    }
+    // Only set buffer_size when there are more than 6.GB of memory available
+    if(!args.contains('--buffer_size') && task.memory?.giga > 6){
+        args += " --buffer_size ${task.memory.giga - 2}G"
+    }
+
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
+        $bam \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
         $seqtype \\
-        $args \\
-        $bam
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

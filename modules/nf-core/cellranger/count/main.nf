@@ -1,34 +1,35 @@
 process CELLRANGER_COUNT {
-    tag "$meta.gem"
+    tag "$meta.id"
     label 'process_high'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+    container "docker.io/nfcore/cellranger:7.1.0"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "nfcore/cellranger:7.0.0"
 
     input:
     tuple val(meta), path(reads)
     path  reference
 
     output:
-    tuple val(meta), path("sample-${meta.gem}/outs/*"), emit: outs
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("**/outs/**"), emit: outs
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
     """
     cellranger \\
         count \\
-        --id='sample-${meta.gem}' \\
+        --id='$prefix' \\
         --fastqs=. \\
         --transcriptome=$reference_name \\
-        --sample=$sample_arg \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
         $args
@@ -40,9 +41,10 @@ process CELLRANGER_COUNT {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "sample-${meta.gem}/outs/"
-    touch sample-${meta.gem}/outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

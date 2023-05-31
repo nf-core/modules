@@ -5,9 +5,11 @@ nextflow.enable.dsl = 2
 include { DRAGMAP_HASHTABLE } from '../../../../../modules/nf-core/dragmap/hashtable/main.nf'
 
 workflow test_dragmap_hashtable {
-    
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     DRAGMAP_HASHTABLE ( fasta )
 }
 

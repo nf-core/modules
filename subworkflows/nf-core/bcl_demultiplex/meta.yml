@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bcl_demultiplex"
+description: Demultiplex Illumina BCL data using bcl-convert or bcl2fastq
+keywords:
+  - bcl
+  - bclconvert
+  - bcl2fastq
+  - demultiplex
+  - fastq
+modules:
+  - bcl2fastq
+  - bclconvert
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'string', lane: int ]
+  - samplesheet:
+      type: file
+      description: |
+        CSV file containing information about samples to be demultiplexed in Illumina SampleSheet format
+  - flowcell:
+      type: file
+      description: Directory or tar archive containing Illumina BCL data, sequencer output directory
+  - demultiplexer:
+      type: string
+      description: Which demultiplexer to use, bcl2fastq or bclconvert
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - fastq:
+      type: file
+      description: Demultiplexed fastq files
+      pattern: "*.fastq.gz"
+  - reports:
+      type: file
+      description: Demultiplexing reports
+      pattern: "Reports/*"
+  - interop:
+      type: file
+      description: InterOp files
+      pattern: "InterOp/*"
+  - stats:
+      type: file
+      description: Demultiplexing statistics (bcl2fastq only)
+      pattern: "Stats/*"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"

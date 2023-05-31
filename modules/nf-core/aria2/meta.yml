@@ -1,0 +1,30 @@
+name: "aria2"
+description: CLI Download utility
+keywords:
+  - download
+tools:
+  - "aria2":
+      description: "aria2 is a lightweight multi-protocol & multi-source, cross platform download utility operated in command-line. It supports HTTP/HTTPS, FTP, SFTP, BitTorrent and Metalink."
+
+      tool_dev_url: "https://github.com/aria2/aria2/"
+
+      licence: "['GPL v2']"
+
+input:
+  - source_url:
+      type: url
+      description: Source URL to be downloaded
+      pattern: "{http,https}*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - downloaded_file:
+      type: file
+      description: Downloaded files from source
+      pattern: "*.*"
+
+authors:
+  - "@JoseEspinosa"

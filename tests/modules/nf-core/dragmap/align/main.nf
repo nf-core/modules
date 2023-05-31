@@ -12,7 +12,10 @@ workflow test_dragmap_align_single_end {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     DRAGMAP_HASHTABLE ( fasta )
     DRAGMAP_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, false )
@@ -25,7 +28,10 @@ workflow test_dragmap_align_single_end_sort {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     DRAGMAP_HASHTABLE ( fasta )
     DRAGMAP_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, true )
@@ -39,7 +45,10 @@ workflow test_dragmap_align_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     DRAGMAP_HASHTABLE ( fasta )
     DRAGMAP_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, false )
@@ -53,7 +62,10 @@ workflow test_dragmap_align_paired_end_sort {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     DRAGMAP_HASHTABLE ( fasta )
     DRAGMAP_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, true )

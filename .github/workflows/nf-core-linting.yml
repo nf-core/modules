@@ -7,6 +7,11 @@ on:
   pull_request:
     branches: [master]
 
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   changes:
     name: Check for changes
@@ -15,7 +20,7 @@ jobs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
         id: filter
@@ -32,14 +37,14 @@ jobs:
       matrix:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -54,9 +59,8 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-        # FIXME: Remove this when nf-core modules lint stabilizes and install stable release
-      - name: Install nf-core tools development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+      - name: Install nf-core tools
+        run: python -m pip install nf-core
 
       - name: Install Nextflow
         env:
@@ -70,7 +74,7 @@ jobs:
         # HACK
         if: startsWith( matrix.tags, 'subworkflow' ) != true
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: /usr/local/bin/nextflow
           key: ${{ runner.os }}

@@ -6,6 +6,7 @@
   files:
     - path: output/gatk4/test.rb.g.vcf.gz
     - path: output/gatk4/test.rb.g.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 reblockgvcf test_gatk4_reblockgvcf_intervals
   command: nextflow run ./tests/modules/nf-core/gatk4/reblockgvcf -entry test_gatk4_reblockgvcf_intervals -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/reblockgvcf/nextflow.config
@@ -15,6 +16,7 @@
   files:
     - path: output/gatk4/test.rb.g.vcf.gz
     - path: output/gatk4/test.rb.g.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 reblockgvcf test_gatk4_reblockgvcf_dbsnp
   command: nextflow run ./tests/modules/nf-core/gatk4/reblockgvcf -entry test_gatk4_reblockgvcf_dbsnp -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/reblockgvcf/nextflow.config
@@ -24,3 +26,4 @@
   files:
     - path: output/gatk4/test.rb.g.vcf.gz
     - path: output/gatk4/test.rb.g.vcf.gz.tbi
+    - path: output/gatk4/versions.yml

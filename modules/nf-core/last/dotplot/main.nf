@@ -2,10 +2,10 @@ process LAST_DOTPLOT {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? 'bioconda::last=1250' : null)
+    conda "bioconda::last=1418"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0' :
-        'quay.io/biocontainers/last:1250--h2e03b76_0' }"
+        'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
+        'biocontainers/last:1418--h5b5514e_0' }"
 
     input:
     tuple val(meta), path(maf)

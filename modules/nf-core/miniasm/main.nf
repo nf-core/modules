@@ -2,10 +2,10 @@ process MINIASM {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::miniasm=0.3_r179" : null)
+    conda "bioconda::miniasm=0.3_r179"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2' :
-        'quay.io/biocontainers/miniasm:0.3_r179--h5bf99c6_2' }"
+        'biocontainers/miniasm:0.3_r179--h5bf99c6_2' }"
 
     input:
     tuple val(meta), path(reads), path(paf)

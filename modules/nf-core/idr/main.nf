@@ -2,10 +2,10 @@ process IDR {
     tag "$prefix"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::idr=2.0.4.2" : null)
+    conda "bioconda::idr=2.0.4.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/idr:2.0.4.2--py39hcbe4a3b_5' :
-        'quay.io/biocontainers/idr:2.0.4.2--py39hcbe4a3b_5' }"
+        'biocontainers/idr:2.0.4.2--py39hcbe4a3b_5' }"
 
     input:
     path peaks

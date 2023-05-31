@@ -2,10 +2,10 @@ process HMMER_HMMSEARCH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
+    conda "bioconda::hmmer=3.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
-        'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+        'biocontainers/hmmer:3.3.2--h1b792b2_1' }"
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)

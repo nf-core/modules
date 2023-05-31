@@ -1,0 +1,74 @@
+name: platypus
+description: Platypus is a tool that efficiently and accurately calling genetic variants from next-generation DNA sequencing data
+keywords:
+  - variant calling
+  - dna sequencing
+tools:
+  - platypus:
+      description: Platypus is a tool designed for efficient and accurate variant-detection in high-throughput sequencing data.
+      homepage: https://www.well.ox.ac.uk/research/research-groups/lunter-group/lunter-group/platypus-a-haplotype-based-variant-caller-for-next-generation-sequence-data
+      documentation: https://www.well.ox.ac.uk/research/research-groups/lunter-group/lunter-group/platypus-documentation
+      tool_dev_url: https://github.com/andyrimmer/Platypus
+      doi: "10.1038/ng.3036"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - tumor_file:
+      type: file
+      description: Tumor or metastatic sample, BAM or CRAM file
+      pattern: "*.{bam,cram}"
+  - tummor_file_bai:
+      type: file
+      description: Index of BAMfile
+      pattern: "*.{bai,crai}"
+  - control_file:
+      type: file
+      description: Control (or blood) of matching tumor/metastatic sample, BAM or CRAM file
+      pattern: "*.{bam,cram}"
+  - control_file_bai:
+      type: file
+      description: Index of BAMfile
+      pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fa"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
+  - skipregions_file:
+      type: file
+      description: File with regions to skip, region as comma-separated list of chr:start-end, or just list of chr, or nothing
+      pattern: "*.bed|*.txt|*.tab"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - vcf:
+      type: file
+      description: Output VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of VCF file
+      pattern: "*.vcf.gz.tbi"
+  - log:
+      type: file
+      description: Log file
+      pattern: "*.log"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+
+authors:
+  - "@kubranarci"

@@ -2,10 +2,10 @@ process FILTLONG {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::filtlong=0.2.1" : null)
+    conda "bioconda::filtlong=0.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/filtlong:0.2.1--h9a82719_0' :
-        'quay.io/biocontainers/filtlong:0.2.1--h9a82719_0' }"
+        'biocontainers/filtlong:0.2.1--h9a82719_0' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)

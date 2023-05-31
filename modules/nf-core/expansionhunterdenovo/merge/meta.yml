@@ -1,0 +1,64 @@
+name: "expansionhunterdenovo_merge"
+description: Merge STR profiles into a multi-sample STR profile
+keywords:
+  - expansionhunterdenovo
+  - merge
+  - str
+tools:
+  - "expansionhunterdenovo":
+      description: "ExpansionHunter Denovo (EHdn) is a suite of tools for detecting novel expansions of short tandem repeats (STRs)."
+      homepage: "https://github.com/Illumina/ExpansionHunterDenovo"
+      documentation: "https://github.com/Illumina/ExpansionHunterDenovo/blob/master/documentation/00_Introduction.md"
+      tool_dev_url: "https://github.com/Illumina/ExpansionHunterDenovo"
+
+      licence: "['Apache License 2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - manifest:
+      type: file
+      description: |
+        A tab-delimited file containing the sample name, whether it's case or control
+        and the paths to the corresponding STR profiles.
+        See here for an example: https://github.com/Illumina/ExpansionHunterDenovo/blob/master/documentation/06_Merging_profiles.md#manifest-files
+      pattern: "*.{tsv,txt}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - merged_profiles:
+      type: file
+      description: The merged STR profiles
+      pattern: "*.multisample_profile.json"
+
+authors:
+  - "@nvnieuwk"

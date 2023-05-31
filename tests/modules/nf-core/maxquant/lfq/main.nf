@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MAXQUANT_LFQ } from '../../../../../modules/nf-core/maxquant/lfq/main.nf' addParams( options: [:] )
+include { MAXQUANT_LFQ } from '../../../../../modules/nf-core/maxquant/lfq/main.nf'
 
 workflow test_maxquant_lfq {
         

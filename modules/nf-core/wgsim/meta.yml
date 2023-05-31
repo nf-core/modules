@@ -1,0 +1,43 @@
+name: "wgsim"
+description: simulating sequence reads from a reference genome
+keywords:
+  - simulate
+  - fasta
+  - reads
+tools:
+  - "wgsim":
+      description: "simulating sequence reads from a reference genome"
+      homepage: "https://github.com/lh3/wgsim"
+      documentation: "https://github.com/lh3/wgsim"
+      tool_dev_url: "https://github.com/lh3/wgsim"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Genome fasta file
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastq:
+      type: file
+      description: Simulated FASTQ read files
+      pattern: "*.{fastq}"
+
+authors:
+  - "@priyanka-surana"

@@ -1,23 +1,44 @@
 - name: deepvariant test_deepvariant
-  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepvariant/nextflow.config
   tags:
     - deepvariant
   files:
     - path: output/deepvariant/test_out.g.vcf.gz
-      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+      md5sum: 7e618a71bfa3bbcec8ba65776b76aabf
+    - path: output/deepvariant/test_out.g.vcf.gz.tbi
+      md5sum: 37e2d8f4cca0a21113cede608f54885a
     - path: output/deepvariant/test_out.vcf.gz
-      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+      md5sum: 1d64665ff190619ef84789ebd58002a8
+    - path: output/deepvariant/test_out.vcf.gz.tbi
+      md5sum: 02a78562bc83520a51010a01fb06f217
     - path: output/deepvariant/versions.yml
-      md5sum: 51572055ca5c07fc4001b25a9c273bf8
 
 - name: deepvariant test_deepvariant_cram_intervals
-  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_cram_intervals -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_cram_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepvariant/nextflow.config
   tags:
     - deepvariant
   files:
     - path: output/deepvariant/test_out.g.vcf.gz
-      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+      md5sum: 7e618a71bfa3bbcec8ba65776b76aabf
+    - path: output/deepvariant/test_out.g.vcf.gz.tbi
+      md5sum: 37e2d8f4cca0a21113cede608f54885a
     - path: output/deepvariant/test_out.vcf.gz
-      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+      md5sum: 1d64665ff190619ef84789ebd58002a8
+    - path: output/deepvariant/test_out.vcf.gz.tbi
+      md5sum: 02a78562bc83520a51010a01fb06f217
     - path: output/deepvariant/versions.yml
-      md5sum: 7d9293db0d44423b114abc7116feb967
+
+- name: deepvariant test_deepvariant_fasta_gz
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_fasta_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepvariant/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: output/deepvariant/test_out.g.vcf.gz
+      md5sum: 7e618a71bfa3bbcec8ba65776b76aabf
+    - path: output/deepvariant/test_out.g.vcf.gz.tbi
+      md5sum: 37e2d8f4cca0a21113cede608f54885a
+    - path: output/deepvariant/test_out.vcf.gz
+      md5sum: 1d64665ff190619ef84789ebd58002a8
+    - path: output/deepvariant/test_out.vcf.gz.tbi
+      md5sum: 02a78562bc83520a51010a01fb06f217
+    - path: output/deepvariant/versions.yml

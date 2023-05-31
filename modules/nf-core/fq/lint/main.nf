@@ -2,10 +2,10 @@ process FQ_LINT {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::fq=0.9.1" : null)
+    conda "bioconda::fq=0.9.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fq:0.9.1--h9ee0642_0':
-        'quay.io/biocontainers/fq:0.9.1--h9ee0642_0' }"
+        'biocontainers/fq:0.9.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastq)

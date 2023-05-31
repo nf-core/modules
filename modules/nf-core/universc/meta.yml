@@ -1,0 +1,42 @@
+name: "universc"
+description: Module to run UniverSC an open-source pipeline to demultiplex and process single-cell RNA-Seq data
+keywords:
+  - demultiplex
+  - align
+  - single-cell
+  - scRNA-Seq
+  - count
+  - umi
+tools:
+  - "universc":
+      description: "UniverSC: a flexible cross-platform single-cell data processing pipeline"
+      homepage: "https://hub.docker.com/r/tomkellygenetics/universc"
+      documentation: "https://raw.githubusercontent.com/minoda-lab/universc/master/man/launch_universc.sh"
+      tool_dev_url: "https://github.com/minoda-lab/universc"
+      doi: "10.1101/2021.01.19.427209"
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+
+output:
+  - outs:
+      type: file
+      description: Files containing the outputs of Cell Ranger
+      pattern: "sample-${meta.id}/outs/*"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+
+authors:
+  - "@kbattenb"
+  - "@tomkellygenetics"

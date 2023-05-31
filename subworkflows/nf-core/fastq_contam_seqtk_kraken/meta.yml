@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "FASTQ_CONTAM_SEQTK_KRAKEN"
+description: Produces a contamination report from FastQ input after subsampling
+keywords:
+  - statistics
+  - fastq
+  - contamination
+modules:
+  - kraken/kraken2
+  - seqtk/sample
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively
+  - sample_size:
+      type: string
+      description: Number of reads to subsample for contamination detection.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: Kraken2 contamination report
+      pattern: "*.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@apeltzer"

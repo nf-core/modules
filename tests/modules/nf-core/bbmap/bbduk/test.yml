@@ -7,7 +7,7 @@
       contains:
         - "Input is being processed as unpaired"
     - path: output/bbmap/test.trim.fastq.gz
-      md5sum: a87d0cbd5ced7df8bf1751e4cb407482
+      md5sum: db208e90b4711e3f9fd8d0231a712774
 
 - name: bbmap bbduk test_bbmap_bbduk_paired_end
   command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
@@ -18,9 +18,9 @@
       contains:
         - "Input is being processed as paired"
     - path: output/bbmap/test.trim_1.fastq.gz
-      md5sum: a87d0cbd5ced7df8bf1751e4cb407482
+      md5sum: db208e90b4711e3f9fd8d0231a712774
     - path: output/bbmap/test.trim_2.fastq.gz
-      md5sum: 406e068fbe198f02b48e7e210cc0c69f
+      md5sum: c8bf15381c8becbfe7a03243974213fa
 
 - name: bbmap bbduk test_bbmap_bbduk_se_ref
   command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_se_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
@@ -31,7 +31,7 @@
       contains:
         - "Input is being processed as unpaired"
     - path: output/bbmap/test.trim.fastq.gz
-      md5sum: 3970e82605c7d109bb348fc94e9eecc0
+      md5sum: 709872fc2910431b1e8b7074bfe38c67
 
 - name: bbmap bbduk test_bbmap_bbduk_pe_ref
   command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_pe_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
@@ -42,6 +42,6 @@
       contains:
         - "Input is being processed as paired"
     - path: output/bbmap/test.trim_1.fastq.gz
-      md5sum: 3970e82605c7d109bb348fc94e9eecc0
+      md5sum: 709872fc2910431b1e8b7074bfe38c67
     - path: output/bbmap/test.trim_2.fastq.gz
-      md5sum: 3970e82605c7d109bb348fc94e9eecc0
+      md5sum: 709872fc2910431b1e8b7074bfe38c67

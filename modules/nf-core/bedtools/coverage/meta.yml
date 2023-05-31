@@ -1,0 +1,58 @@
+name: "bedtools_coverage"
+description: computes both the depth and breadth of coverage of features in file B on the features in file A
+keywords:
+  - bedtools
+  - coverage
+  - bam
+  - bed
+  - gff
+  - vcf
+  - histogram
+tools:
+  - "bedtools":
+      description: "A powerful toolset for genome arithmetic"
+      homepage: "https://bedtools.readthedocs.io/en/latest/index.html"
+      documentation: "https://bedtools.readthedocs.io/en/latest/content/bedtools-suite.html"
+      tool_dev_url: "https://github.com/arq5x/bedtools2"
+      doi: "10.1093/bioinformatics/btq033"
+      licence: "['GPL v2', 'MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input_A:
+      type: file
+      description: BAM/BED/GFF/VCF file
+      pattern: "*.{bam,bed,gff,vcf}"
+  - input_B:
+      type: file
+      description: One or more BAM/BED/GFF/VCF file
+      pattern: "*.{bam,bed,gff,vcf}"
+  - genome_file:
+      type: file
+      description: |
+        Optional reference genome 2 column file that defines the expected chromosome order
+        in the input files for use with the -sorted option.
+        When `genome_file` is provided, `-sorted` option is added to the command.
+      pattern: "*.{fai,txt,chromsizes}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: File containing coverage of sequence alignments
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@priyanka-surana"
