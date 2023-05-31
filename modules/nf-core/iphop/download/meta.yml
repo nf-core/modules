@@ -1,6 +1,4 @@
----
 name: "iphop_download"
-
 description: Download, extract, and check md5 of iPHoP databases
 keywords:
   - metagenomics
@@ -10,7 +8,6 @@ keywords:
   - phage
   - bacteria
   - host
-
 tools:
   - "iphop":
       description: Predict host genus from genomes of uncultivated phages.
@@ -20,13 +17,11 @@ tools:
       doi: "10.1371/journal.pbio.3002083"
       licence: "['Modified GPL v3']"
 
-input:
-
 output:
   - iphop_db:
       type: directory
       description: Directory containing downloaded and md5 checked iPHoP database
-      pattern: "iphop_db/*/"
+      pattern: "iphop_db/"
   - versions:
       type: file
       description: File containing software versions

@@ -15,9 +15,9 @@ process IPHOP_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-
     """
     mkdir -p download_dir
+    mkdir -p iphop_db
 
     iphop \\
         download \\
@@ -25,16 +25,15 @@ process IPHOP_DOWNLOAD {
         --no_prompt \\
         $args
 
+    rm download_dir/*.tar.*
+    mv download_dir/* iphop_db
+
     iphop \\
         download \\
-        --db_dir download_dir/*/ \\
+        --db_dir iphop_db \\
         --no_prompt \\
         --full_verify //
         $args
-
-    mkdir -p iphop_db
-    rm download_dir/*.tar.*
-    mv download_dir/* iphop_db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,7 +43,6 @@ process IPHOP_DOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
-
     """
     touch iphop_db/Test_db_rw/db/All_CRISPR_spacers_nr_clean.fna
     touch iphop_db/Test_db_rw/db/All_CRISPR_spacers_nr_clean.ndb
@@ -82,7 +80,6 @@ process IPHOP_DOWNLOAD {
     touch iphop_db/Test_db_rw/db_infos/gtdbtk.ar122.decorated.tree
     touch iphop_db/Test_db_rw/db_infos/gtdbtk.bac120.decorated.tree
     touch iphop_db/Test_db_rw/md5checkfile.txt
-    touch versions.yml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
