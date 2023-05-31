@@ -12,7 +12,7 @@ process SPACERANGER_COUNT {
 
 
     input:
-    tuple val(meta), path(fastq_dir), path(image), path(alignment)
+    tuple val(meta), path(reads), path(image), path(alignment)
     path(reference)
     path(probeset)
 
@@ -26,30 +26,26 @@ process SPACERANGER_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def probeset = probeset ? "--probe-set=${probeset}" : ""
+    def alignment = alignment ? "--loupe-alignment=${alignment}" : ""
     """
     spaceranger count \\
-        --id="${meta.id}" \\
+        --id="${prefix}" \\
         --sample="${meta.id}" \\
-        --fastqs="${fastq_dir}" \\
+        --fastqs=. \\
         --image="${image}" \\
         --slide="${meta.slide}" \\
         --area="${meta.area}" \\
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
+        $probeset \\
+        $alignment \\
         $args
  
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
     END_VERSIONS
     """
 }
