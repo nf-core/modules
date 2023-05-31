@@ -15,4 +15,5 @@ workflow test_iphop_predict {
     IPHOP_DOWNLOAD ( )
 
     IPHOP_PREDICT ( input, IPHOP_DOWNLOAD.out.iphop_db )
+
 }
