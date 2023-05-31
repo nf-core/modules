@@ -45,55 +45,55 @@ output:
   - aggregated_classification:
       type: file
       description: Combined classification scores for each contig/scaffold/chromosome
-      pattern: "*_aggregated_classification/*_aggregated_classification.tsv"
+      pattern: "*_aggregated_classification.tsv"
   - taxonomy:
       type: file
       description: Detailed output of geNomad's marker gene taxonomy analysis
-      pattern: "*_annotate/*_taxonomy.tsv"
+      pattern: "*_taxonomy.tsv"
   - provirus:
       type: file
       description: Detailed output of each provirus identified by geNomad's find_proviruses module
-      pattern: "*_find_proviruses/*_provirus.tsv"
+      pattern: "*_provirus.tsv"
   - compositions:
       type: file
-      description: OPTIONAL - Predicted sample composition when `score_calibration = true`
-      pattern: "*_score_calibration/*_compositions.tsv"
+      description: OPTIONAL - Predicted sample composition when `--enable-score-calibration` is used
+      pattern: "*_compositions.tsv"
   - calibrated_classification:
       type: file
-      description: OPTIONAL - Classification scores that have been adjusted based on sample composition when `score_calibration = true`
-      pattern: "*_score_calibration/*_calibrated_aggregated_classification.tsv"
+      description: OPTIONAL - Classification scores that have been adjusted based on sample composition when `--enable-score-calibration` is used`
+      pattern: "*_calibrated_aggregated_classification.tsv"
   - plasmid_fasta:
       type: file
       description: FASTA file containing predicted plasmid sequences
-      pattern: "*_summary/*_plasmid.fna"
+      pattern: "*_plasmid.fna"
   - plasmid_genes:
       type: file
       description: TSV file containing predicted plasmid genes and their annotations
-      pattern: "*_summary/*_plasmid_genes.tsv"
+      pattern: "*_plasmid_genes.tsv"
   - plasmid_proteins:
       type: file
       description: FASTA file containing predicted plasmid protein sequences
-      pattern: "*_summary/*_plasmid_proteins.faa"
+      pattern: "*_plasmid_proteins.faa"
   - plasmid_summary:
       type: file
       description: TSV file containing a summary of geNomad's plasmid predictions
-      pattern: "*_summary/*_plasmid_summary.tsv"
+      pattern: "*_plasmid_summary.tsv"
   - virus_fasta:
       type: file
       description: FASTA file containing predicted virus sequences
-      pattern: "*_summary/*_virus.fna"
+      pattern: "*_virus.fna"
   - virus_genes:
       type: file
       description: TSV file containing predicted virus genes and their annotations
-      pattern: "*_summary/*_virus_genes.tsv"
+      pattern: "*_virus_genes.tsv"
   - virus_proteins:
       type: file
       description: FASTA file containing predicted virus protein sequences
-      pattern: "*_summary/*_virus_proteins.faa"
+      pattern: "*_virus_proteins.faa"
   - virus_summary:
       type: file
       description: TSV file containing a summary of geNomad's virus predictions
-      pattern: "*_summary/*_virus_summary.tsv"
+      pattern: "*_virus_summary.tsv"
   - versions:
       type: file
       description: File containing software versions
