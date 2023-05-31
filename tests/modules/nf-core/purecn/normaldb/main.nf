@@ -8,8 +8,8 @@ workflow test_purecn_normaldb {
 
     input  = [
         [ id:'test' ],
-        [file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.txt.gz', checkIfExists: true),
-        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal2.txt.gz', checkIfExists: true)],
+        [file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_normal'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['purecn_ex2_normal'], checkIfExists: true)],
         [], []
     ]
     genome = 'hg38'
@@ -22,10 +22,10 @@ workflow test_purecn_normaldb_normalvcf {
 
     input  = [
         [ id:'test' ],
-        [file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal.txt.gz', checkIfExists: true),
-        file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/example_normal2.txt.gz', checkIfExists: true)],
-        [file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/normalpanel.vcf.gz', checkIfExists: true)],
-        [file('https://raw.githubusercontent.com/lima1/PureCN/master/inst/extdata/normalpanel.vcf.gz.tbi', checkIfExists: true)]
+        [file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_normal'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['purecn_ex2_normal'], checkIfExists: true)],
+        [file(params.test_data['homo_sapiens']['illumina']['purecn_normalpanel_vcf'], checkIfExists: true)],
+        [file(params.test_data['homo_sapiens']['illumina']['purecn_normalpanel_tbi'], checkIfExists: true)]
     ]
     genome = 'hg38'
     assay  = 'illumina'
