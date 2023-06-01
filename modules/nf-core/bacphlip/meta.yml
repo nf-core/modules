@@ -1,55 +1,50 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bacphlip"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: A bacteriophage lifestyle prediction tool
 keywords:
-  - sort
-  - example
-  - genomics
+  - phage
+  - lifestyle
+  - temperate
+  - virulent
+  - bacphlip
+  - hmmsearch
 tools:
   - "bacphlip":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A Random Forest classifier to predict bacteriophage lifestyle"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: https://github.com/adamhockenberry/bacphlip
+      documentation: https://github.com/adamhockenberry/bacphlip
+      tool_dev_url: https://github.com/adamhockenberry/bacphlip
+      doi: 10.7717/peerj.11396
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: FASTA file containing phage contigs/scaffolds/chromosomes (can be a multi-FASTA file)
+      pattern: "*.{fasta,fna,fa}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - bacphlip_results:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TSV file containing Temperate and Virulent scores for each phage sequence
+      pattern: "*.bacphlip"
+  - hmmsearch_results:
+      type: file
+      description: TSV file containing binary output indicating gene presence/absence based on hmmsearch results
+      pattern: "*.hmmsearch.tsv"
 
 authors:
   - "@CarsonJM"
