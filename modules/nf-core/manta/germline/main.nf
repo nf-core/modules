@@ -10,8 +10,8 @@ process MANTA_GERMLINE {
     input:
     //Matching the target bed with the input sample allows to parallelize the same sample run across different intervals or a single bed file
     tuple val(meta), path(input), path(index), path(target_bed), path(target_bed_tbi)
-    path fasta
-    path fasta_fai
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
