@@ -1,0 +1,9 @@
+- name: picard scatterintervalsbyns test_picard_scatterintervalsbyns
+  command: nextflow run ./tests/modules/nf-core/picard/scatterintervalsbyns -entry test_picard_scatterintervalsbyns -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/scatterintervalsbyns/nextflow.config
+  tags:
+    - picard/scatterintervalsbyns
+    - picard
+  files:
+    - path: output/picard/test.interval_list
+      md5sum: a0b6565888a21404f53911a5500f0c32
+    - path: output/picard/versions.yml
