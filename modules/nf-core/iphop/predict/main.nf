@@ -24,6 +24,7 @@ process IPHOP_PREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export PERL5LIB=/usr/local/lib/perl5/site_perl/5.22.0
     iphop \\
         predict \\
         --fa_file $fasta \\
@@ -38,7 +39,7 @@ process IPHOP_PREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v://; s/: integrating.*\$//' )
+        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v//; s/: integrating.*\$//' )
     END_VERSIONS
     """
 
@@ -54,7 +55,7 @@ process IPHOP_PREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v//; s/': integrating.*'\$//' )
+        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v//; s/: integrating.*\$//' )
     END_VERSIONS
     """
 }
