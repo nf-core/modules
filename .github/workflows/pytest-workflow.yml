@@ -122,7 +122,8 @@ jobs:
             tags: subworkflows/bcl_demultiplex
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
-
+          - profile: "conda"
+            tags: subworkflows/fasta_clean_fcs
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
