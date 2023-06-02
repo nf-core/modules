@@ -28,12 +28,14 @@ process SPACERANGER_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def probeset = probeset ? "--probe-set=${probeset}" : ""
     def alignment = alignment ? "--loupe-alignment=${alignment}" : ""
+    // --darkimage for fluorescence, --cytaimage for cytassist, ...
+    def img_type = task.ext.img_type ?: "--image"
     """
     spaceranger count \\
         --id="${prefix}" \\
         --sample="${meta.id}" \\
         --fastqs=. \\
-        --image="${image}" \\
+        ${img_type}="${image}" \\
         --slide="${meta.slide}" \\
         --area="${meta.area}" \\
         --transcriptome="${reference}" \\
