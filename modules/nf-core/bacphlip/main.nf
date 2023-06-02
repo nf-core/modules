@@ -4,10 +4,8 @@ process BACPHLIP {
 
     conda "bioconda::bacphlip=0.9.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        '/gscratch/pedslabs_hoffman/carsonjm/apptainer/bacphlip/bacphlip-0.9.6.sif':
-        '/gscratch/pedslabs_hoffman/carsonjm/apptainer/bacphlip/bacphlip-0.9.6.sif' }"
-        // 'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        // 'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0':
+        'biocontainers/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0' }"
 
     input:
     tuple val(meta), path(fasta)
