@@ -21,6 +21,7 @@ process BACPHLIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.9.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bacphlip \\
         -i $fasta \\
@@ -28,20 +29,21 @@ process BACPHLIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bacphlip: 0.9.6
+        bacphlip: $VERSION
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.9.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${fasta}.bacphlip
     touch ${fasta}.hmmsearch.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bacphlip: 0.9.6
+        bacphlip: $VERSION
     END_VERSIONS
     """
 }
