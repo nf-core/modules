@@ -2,7 +2,7 @@ process BACPHLIP {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::bacphlip=0.9.6"
+    conda "bioconda::bacphlip=0.9.6 conda-forge::numpy=1.23.5 bioconda::hmmer=3.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0':
         'biocontainers/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0' }"
