@@ -4,6 +4,8 @@ nextflow.enable.dsl = 2
 
 include { BOWTIE2_BUILD } from '../../../../../modules/nf-core/bowtie2/build/main.nf'
 include { BOWTIE2_ALIGN } from '../../../../../modules/nf-core/bowtie2/align/main.nf'
+include { BOWTIE2_ALIGN AS BOWTIE2_ALIGN_OUTFMT_SAM } from '../../../../../modules/nf-core/bowtie2/align/main.nf'
+include { BOWTIE2_ALIGN AS BOWTIE2_ALIGN_OUTFMT_CRAM } from '../../../../../modules/nf-core/bowtie2/align/main.nf'
 
 workflow test_bowtie2_align_single_end {
     input = [
@@ -21,6 +23,42 @@ workflow test_bowtie2_align_single_end {
 
     BOWTIE2_BUILD ( fasta )
     BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
+}
+
+workflow test_bowtie2_align_single_end_sam {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [ id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    save_unaligned = false
+    sort = false
+
+    BOWTIE2_BUILD ( fasta )
+    BOWTIE2_ALIGN_OUTFMT_SAM ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
+}
+
+workflow test_bowtie2_align_single_end_cram {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [ id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    save_unaligned = false
+    sort = false
+
+    BOWTIE2_BUILD ( fasta )
+    BOWTIE2_ALIGN_OUTFMT_CRAM ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
 }
 
 workflow test_bowtie2_align_single_end_sorted {
