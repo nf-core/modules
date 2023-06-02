@@ -6,24 +6,27 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_single_end_sam
-  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_sam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
   tags:
     - bowtie2/align
     - bowtie2
   files:
     - path: output/bowtie2/test.sam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
-- name: bowtie2 align test_bowtie2_align_single_end_cram
-  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
+- name: bowtie2 align test_bowtie2_align_single_end_sam2
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_sam2 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
   tags:
     - bowtie2/align
     - bowtie2
   files:
-    - path: output/bowtie2/test.cram
+    - path: output/bowtie2/test.sam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_single_end_sorted
   command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_sorted -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
@@ -33,6 +36,7 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_paired_end
   command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
@@ -42,6 +46,7 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_paired_end_sorted
   command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end_sorted -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
@@ -51,6 +56,7 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_single_end_large_index
   command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_large_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
@@ -60,6 +66,7 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_paired_end_large_index
   command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end_large_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
@@ -69,3 +76,4 @@
   files:
     - path: output/bowtie2/test.bam
     - path: output/bowtie2/test.bowtie2.log
+    - path: output/bowtie2/versions.yml
