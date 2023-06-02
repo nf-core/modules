@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CELLRANGER_MKGTF } from '../../../../../modules/nf-core/cellranger/mkgtf/main.nf'
-include { CELLRANGER_MKREF } from '../../../../../modules/nf-core/cellranger/mkref/main.nf'
-include { UNIVERSC } from '../../../../../modules/nf-core/universc/universc/main.nf'
+include { CELLRANGER_MKGTF } from '../../../../modules/nf-core/cellranger/mkgtf/main.nf'
+include { CELLRANGER_MKREF } from '../../../../modules/nf-core/cellranger/mkref/main.nf'
+include { UNIVERSC } from '../../../../modules/nf-core/universc/main.nf'
 
 workflow test_universc_10x {
 
