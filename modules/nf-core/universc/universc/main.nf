@@ -13,10 +13,8 @@ process UNIVERSC {
     path  reference
 
     output:
-    tuple val(meta), path("${meta.id}/*.mri.tgz")                     , emit: mri
-    tuple val(meta), path("${meta.id}/SC_RNA_COUNTER_CS", type: "dir"), emit: sc_rna_counter_cs
-    tuple val(meta), path("${meta.id}/journal")                       , emit: journal
-    path "versions.yml"                                               , emit: versions
+    tuple val(meta), path("${meta.id}", type: "dir"), emit: outs
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

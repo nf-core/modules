@@ -28,18 +28,10 @@ input:
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
 
 output:
-  - mri:
-      type: file
-      description: .mri.tgz file created as compressed output of Universc
-      pattern: "${meta.id}/*.mri.tgz"
-  - sc_rna_counter_cs:
+  - outs:
       type: directory
-      description: sc_rna_counter_cs folder created as output of Universc
-      pattern: "${meta.id}/sc_rna_counter_cs"
-  - journal:
-      type: file
-      description: Journal file created by Universc
-      pattern: "${meta.id}/journal"
+      description: Output of Universc
+      pattern: "${meta.id}/*.mri.tgz"
   - versions:
       type: file
       description: File containing software version
