@@ -5,7 +5,7 @@ process GFASTATS {
     conda "bioconda::gfastats=1.3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfastats:1.3.5--hd03093a_0':
-        'quay.io/biocontainers/gfastats:1.3.5--hd03093a_0' }"
+        'biocontainers/gfastats:1.3.5--hd03093a_0' }"
 
     input:
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]

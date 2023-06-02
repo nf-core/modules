@@ -5,7 +5,7 @@ process SHAPEIT5_PHASECOMMON {
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
         tuple val(meta) , path(input), path(input_index), path(pedigree), val(region)

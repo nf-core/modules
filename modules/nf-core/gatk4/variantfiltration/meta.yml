@@ -3,6 +3,7 @@ description: Filter variants
 keywords:
   - vcf
   - filter
+  - variantfiltration
 tools:
   - gatk4:
       description: |
@@ -27,14 +28,29 @@ input:
       type: list
       description: List of VCF file indexes
       pattern: "*.{idx,tbi}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: Fasta file of reference genome
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fai:
       type: file
       description: Index of fasta file
       pattern: "*.fasta.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: Sequence dictionary of fastea file
@@ -54,3 +70,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@kevinmenden"
+  - "@ramprasadn"
