@@ -6,13 +6,13 @@ Space Ranger is a commercial tool by 10X Genomics. The container provided for th
 
 2. Edit the Dockerfile: update the Cell Ranger version in this line:
 
-    ```bash
-    ENV SPACERANGER_VER <VERSION>
-    ```
+   ```bash
+   ENV SPACERANGER_VER <VERSION>
+   ```
 
 3. Create the container:
 
-    ```bash
-    docker build . -t nfcore/spaceranger:<VERSION>
-    docker push nfcore/spaceranger:<VERSION>
-    ```
+   ```bash
+   docker build . -t nfcore/spaceranger:<VERSION>
+   docker push nfcore/spaceranger:<VERSION>
+   ```
