@@ -24,7 +24,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: FASTA file containing phage contigs/scaffolds/chromosomes (can be a multi-FASTA file)
+      description: FASTA file containing phage contigs/scaffolds/chromosomes (if it is a multi-FASTA file be sure to add the `--multi_fasta` argument)
       pattern: "*.{fasta,fna,fa}"
 
 output:
