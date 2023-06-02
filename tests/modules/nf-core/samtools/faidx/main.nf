@@ -29,3 +29,21 @@ workflow test_samtools_faidx_fasta {
 
     SAMTOOLS_FAIDX ( input, fai )
 }
+
+workflow test_samtools_faidx_stub_fasta {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    fai   = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+
+    SAMTOOLS_FAIDX ( input, fai )
+}
+
+workflow test_samtools_faidx_stub_fai {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+
+    SAMTOOLS_FAIDX ( input, [[],[]] )
+}
