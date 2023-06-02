@@ -3,13 +3,13 @@ LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>,Edmund Miller <edmund
     description="Docker image containing Space Ranger"
 # Disclaimer: this container is not provided nor supported by 10x Genomics.
 
-# Install procps and clean apt cache
+# Install procps and curl and clean apt cache
 RUN apt-get update --allow-releaseinfo-change \
-    && apt-get install -y procps \
+    && apt-get install -y procps curl \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Copy pre-downloaded spaceranger file
-ENV SPACERANGER_VER 2.0.1 
+ENV SPACERANGER_VER 2.1.0
 COPY spaceranger-$SPACERANGER_VER.tar.gz /opt/spaceranger-$SPACERANGER_VER.tar.gz
 
 # Install spaceranger
