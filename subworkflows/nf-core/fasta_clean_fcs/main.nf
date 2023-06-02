@@ -11,10 +11,10 @@ workflow FASTA_CLEAN_FCS {
     ch_versions = Channel.empty()
 
     FCS_FCSADAPTOR ( ch_fasta )
-    ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.versions.first())
+    ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.versions)
 
     FCS_FCSGX ( FCS_FCSADAPTOR.out.cleaned_assembly, database )
-    ch_versions = ch_versions.mix(FCS_FCSGX.out.versions.first())
+    ch_versions = ch_versions.mix(FCS_FCSGX.out.versions)
 
     emit:
     fcsadaptor_cleaned_assembly = FCS_FCSADAPTOR.out.cleaned_assembly       // channel: [ val(meta), [ cleaned_assembly ] ]
