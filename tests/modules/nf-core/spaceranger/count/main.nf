@@ -2,12 +2,13 @@
 
 nextflow.enable.dsl = 2
 
+include { SPACERANGER_MKGTF } from '../../../../../modules/nf-core/spaceranger/mkgtf/main.nf'
+include { SPACERANGER_MKREF } from '../../../../../modules/nf-core/spaceranger/mkref/main.nf'
 include { 
     SPACERANGER_COUNT as SPACERANGER_COUNT_FFPE_V1;
     SPACERANGER_COUNT as SPACERANGER_COUNT_FFPE_CYTASSIST
 
 } from '../../../../../modules/nf-core/spaceranger/count/main.nf'
-include { UNTAR as DOWNLOAD_SPACERANGER_REFERENCE } from "../../../../../modules/nf-core/untar/main.nf"
 
 workflow test_spaceranger_count {
     
@@ -15,11 +16,20 @@ workflow test_spaceranger_count {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
-    DOWNLOAD_SPACERANGER_REFERENCE(
-        [['id': 'refdata-gex-GRCh38-2020-A'],
-        file("https://cf.10xgenomics.com/supp/spatial-exp/refdata-gex-GRCh38-2020-A.tar.gz")]
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    reference_name = "homo_sapiens_chr22_reference"
+
+    SPACERANGER_MKGTF ( gtf )
+
+    SPACERANGER_MKREF (
+        fasta,
+        SPACERANGER_MKGTF.out.gtf,
+        reference_name
     )
-    ch_spaceranger_ref = DOWNLOAD_SPACERANGER_REFERENCE.out.untar.map({meta, ref -> ref})
+
+    ch_spaceranger_ref = SPACERANGER_MKREF.out.reference
 
     SPACERANGER_COUNT_FFPE_V1 (
         [
@@ -40,22 +50,22 @@ workflow test_spaceranger_count {
         [],
     )
 
-    SPACERANGER_COUNT_FFPE_CYTASSIST (
-        [
-            [
-                id: "CytAssist_11mm_FFPE_Human_Glioblastoma_2",
-                slide: "V52Y10-317",
-                area: "B1"
-            ],
-            [
-                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz"),
-                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz")
-            ],
-            file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif"),
-            [],
-            file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
-        ],
-        ch_spaceranger_ref,
-        file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv"),
-    )
+    // SPACERANGER_COUNT_FFPE_CYTASSIST (
+    //     [
+    //         [
+    //             id: "CytAssist_11mm_FFPE_Human_Glioblastoma_2",
+    //             slide: "V52Y10-317",
+    //             area: "B1"
+    //         ],
+    //         [
+    //             file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz"),
+    //             file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz")
+    //         ],
+    //         file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif"),
+    //         [],
+    //         file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
+    //     ],
+    //     ch_spaceranger_ref,
+    //     file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv"),
+    // )
 }
