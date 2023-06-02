@@ -12,7 +12,7 @@ process SPACERANGER_COUNT {
 
 
     input:
-    tuple val(meta), path(reads), path(image), path(alignment)
+    tuple val(meta), path(reads), path(image), path(alignment), path(slidefile)
     path(reference)
     path(probeset)
 
@@ -26,8 +26,9 @@ process SPACERANGER_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def probeset = probeset ? "--probe-set=${probeset}" : ""
-    def alignment = alignment ? "--loupe-alignment=${alignment}" : ""
+    def probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
+    def alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
+    def slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
     // --darkimage for fluorescence, --cytaimage for cytassist, ...
     def img_type = task.ext.img_type ?: "--image"
     """
@@ -43,6 +44,7 @@ process SPACERANGER_COUNT {
         --localmem=${task.memory.toGiga()} \\
         $probeset \\
         $alignment \\
+        $slidefile \\
         $args
  
     cat <<-END_VERSIONS > versions.yml
