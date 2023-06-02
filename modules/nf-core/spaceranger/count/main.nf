@@ -3,7 +3,7 @@ process SPACERANGER_COUNT {
     label 'process_high'
 
     // TODO push to nf-core docker
-    container "ghcr.io/grst/spaceranger:2.0.1"
+    container "ghcr.io/grst/spaceranger:2.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -17,7 +17,7 @@ process SPACERANGER_COUNT {
     path(probeset)
 
     output:
-    tuple val(meta), path("**/outs/**", emit: outs
+    tuple val(meta), path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
