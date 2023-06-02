@@ -28,10 +28,18 @@ input:
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
 
 output:
-  - outs:
+  - mri:
       type: file
-      description: Files containing the outputs of Cell Ranger
-      pattern: "sample-${meta.id}/outs/*"
+      description: .mri.tgz file created as compressed output of Universc
+      pattern: "${meta.id}/*.mri.tgz"
+  - sc_rna_counter_cs:
+      type: directory
+      description: sc_rna_counter_cs folder created as output of Universc
+      pattern: "${meta.id}/sc_rna_counter_cs"
+  - journal:
+      type: file
+      description: Journal file created by Universc
+      pattern: "${meta.id}/journal"
   - versions:
       type: file
       description: File containing software version
@@ -40,3 +48,4 @@ output:
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
+  - "@adamrtalbot"
