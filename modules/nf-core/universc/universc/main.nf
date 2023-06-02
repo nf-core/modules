@@ -32,8 +32,6 @@ process UNIVERSC {
         $args \\
         --id ${meta.id} \\
         --read1 ${reads[0]} --read2 ${reads[1]} \\
-        ${technology_cmd} \\
-        ${chemistry_cmd} \\
         --reference ${reference_name} \\
         --jobmode local \\
         --localcores ${task.cpus} \\
