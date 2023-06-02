@@ -46,7 +46,7 @@ process SPACERANGER_COUNT {
         $alignment \\
         $slidefile \\
         $args
- 
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
