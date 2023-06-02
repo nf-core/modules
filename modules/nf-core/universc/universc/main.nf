@@ -27,11 +27,6 @@ process UNIVERSC {
     if ( reads instanceof Path || reads.size() != 2 ) {
         error "UNIVERSC module only supports paired end reads"
     }
-    /*
-    def input_reads    = "--read1 ${reads[0]} --read2 ${reads[1]}"
-    */
-    def technology_cmd = meta.technology ? "--technology ${meta.technology}" : ""
-    def chemistry_cmd  = meta.chemistry  ? "--chemistry ${meta.chemistry}"   : ""
     """
     universc \\
         $args \\
