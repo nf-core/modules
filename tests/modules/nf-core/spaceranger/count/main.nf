@@ -50,22 +50,22 @@ workflow test_spaceranger_count {
         [],
     )
 
-    // SPACERANGER_COUNT_FFPE_CYTASSIST (
-    //     [
-    //         [
-    //             id: "CytAssist_11mm_FFPE_Human_Glioblastoma_2",
-    //             slide: "V52Y10-317",
-    //             area: "B1"
-    //         ],
-    //         [
-    //             file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz"),
-    //             file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz")
-    //         ],
-    //         file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif"),
-    //         [],
-    //         file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
-    //     ],
-    //     ch_spaceranger_ref,
-    //     file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv"),
-    // )
+    SPACERANGER_COUNT_FFPE_CYTASSIST (
+        [
+            [
+                id: "CytAssist_11mm_FFPE_Human_Glioblastoma_2",
+                slide: "V52Y10-317",
+                area: "B1"
+            ],
+            [
+                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz"),
+                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz")
+            ],
+            file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif"),
+            [],
+            file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
+        ],
+        ch_spaceranger_ref,
+        file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv"),
+    )
 }
