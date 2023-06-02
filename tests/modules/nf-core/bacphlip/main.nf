@@ -8,7 +8,7 @@ workflow test_bacphlip {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+        file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     BACPHLIP ( input )
