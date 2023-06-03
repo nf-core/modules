@@ -4,7 +4,7 @@ process FCS_FCSGX {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.2.3/fcs-gx.0.2.3.sif':
-        'ncbi/fcs-gx:0.2.3' }"
+        'docker.io/ncbi/fcs-gx:0.2.3' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
