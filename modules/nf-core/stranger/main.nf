@@ -9,7 +9,7 @@ process STRANGER {
 
     input:
     tuple val(meta), path(vcf)
-    path variant_catalog
+    tuple val(meta2), path(variant_catalog)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf

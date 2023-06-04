@@ -9,8 +9,8 @@ process GATK4_SHIFTFASTA {
 
     input:
     tuple val(meta), path(fasta)
-    path (fasta_fai)
-    path (dict)
+    tuple val(meta2), path(fasta_fai)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path("*_shift.fasta")       , emit: shift_fa
