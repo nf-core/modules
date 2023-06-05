@@ -1,0 +1,55 @@
+name: "metabuli_classify"
+## TODO nf-core: Add a description of the module and list keywords
+description: Classify FASTA files against a metabuli database
+keywords:
+  - metabuli
+  - metagenomics
+  - profiling
+  - taxonomy
+  - k-mer
+  - classify
+  - classification
+tools:
+  - "metabuli":
+      description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli#readme"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "https://doi.org/10.1101/2023.05.31.543018"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+    - fastas:
+      type: file
+      description: single or paired FASTA files, optionally gzipped
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+    - db:
+      type: file
+      description: Metabuli databse file from build or custom made.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - classification:
+      type: file
+      description: Overview reads and their classification
+      pattern: "*_classifications.tsv"
+  - report:
+      type: file
+      description: Proportions of reads assigned to each taxon
+      pattern: "*_report.tsv"
+
+authors:
+  - "@TheOafidian"
