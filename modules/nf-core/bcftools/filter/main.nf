@@ -11,8 +11,8 @@ process BCFTOOLS_FILTER {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.gz"), emit: vcf
-    path  "versions.yml"         , emit: versions
+    tuple val(meta), path("*.${extension}"), emit: vcf
+    path  "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process BCFTOOLS_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+    extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
@@ -45,7 +45,7 @@ process BCFTOOLS_FILTER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+    extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
