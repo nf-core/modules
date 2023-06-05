@@ -1,0 +1,55 @@
+name: "happy_prepy"
+description: Pre.py is a preprocessing tool made to preprocess VCF files for Hap.py
+keywords:
+  - happy
+  - benchmark
+  - haplotype
+tools:
+  - "happy":
+      description: "Haplotype VCF comparison tools"
+      homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
+      documentation: "https://github.com/Illumina/hap.py"
+      tool_dev_url: "https://github.com/Illumina/hap.py"
+
+      licence: "['BSD-2-clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF file to preprocess
+      pattern: "*.{vcf,vcf.gz}"
+  - bed:
+      type: file
+      description: BED file
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: FASTA file of the reference genome
+      pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: A preprocessed VCF file
+      pattern: "*.vcf.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@nvnieuwk"

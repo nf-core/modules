@@ -1,0 +1,49 @@
+name: "genmod_models"
+description: annotate models of inheritance
+keywords:
+  - models
+  - genmod
+tools:
+  - "genmod":
+      description: "Annotate genetic inheritance models in variant files"
+      homepage: "https://github.com/Clinical-Genomics/genmod"
+      documentation: "https://github.com/Clinical-Genomics/genmod"
+      tool_dev_url: "https://github.com/moonso"
+
+      licence: "['MIT']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input_vcf:
+      type: file
+      description: vcf file
+      pattern: "*.{vcf}"
+  - reduced_penetrance:
+      type: file
+      description: file with gene ids that have reduced penetrance
+      pattern: "*.{tsv}"
+  - family_file:
+      type: file
+      description: ped file
+      pattern: "*.{ped}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Output VCF file
+      pattern: "*.{vcf}"
+
+authors:
+  - "@ramprasadn"

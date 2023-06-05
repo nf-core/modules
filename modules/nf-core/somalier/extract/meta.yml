@@ -1,0 +1,66 @@
+name: "somalier_extract"
+description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+keywords:
+  - relatedness
+  - QC
+  - bam
+  - cram
+  - vcf
+  - gvcf
+  - ancestry
+  - identity
+  - kinship
+  - informative sites
+  - family
+tools:
+  - "somalier":
+      description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
+      homepage: "https://github.com/brentp/somalier"
+      documentation: "https://github.com/brentp/somalier/blob/master/README.md"
+      tool_dev_url: "https://github.com/brentp/somalier"
+      doi: "10.1186/s13073-020-00761-2"
+      licence: "MIT License"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
+  - input_index:
+      type: file
+      description: index file of the input data, e.g., bam.bai, cram.crai
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.{fasta,fna,fas,fa}"
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.fai"
+  - sites:
+      type: file
+      description: sites file in VCF format which can be taken from https://github.com/brentp/somalier
+      pattern: "*.vcf.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - extract:
+      type: file
+      description: binary output file based on extracted sites
+      pattern: "*.{somalier}"
+
+authors:
+  - "@ashotmarg"
+  - "@nvnieuwk"

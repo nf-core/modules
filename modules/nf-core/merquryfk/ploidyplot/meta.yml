@@ -1,0 +1,67 @@
+name: "merquryfk_ploidyplot"
+description: An improved version of Smudgeplot using FastK
+keywords:
+  - kmer
+  - smudgeplot
+  - ploidy
+tools:
+  - "merquryfk":
+      description: "FastK based version of Merqury"
+      homepage: "https://github.com/thegenemyers/MERQURY.FK"
+
+      tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
+
+      licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastk_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk_ktab:
+      type: file
+      description: ktab files from the program FastK
+      pattern: "*.ktab*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - filled_ploidy_plot_png:
+      type: file
+      description: A filled ploidy plot in PNG format
+      pattern: "*.fi.png"
+  - filled_ploidy_plot_pdf:
+      type: file
+      description: A filled ploidy plot in PDF format
+      pattern: "*.fi.pdf"
+  - line_ploidy_plot_png:
+      type: file
+      description: A line ploidy plot in PNG format
+      pattern: "*.ln.png"
+  - line_ploidy_plot_pdf:
+      type: file
+      description: A lin4 ploidy plot in PDF format
+      pattern: "*.ln.pdf"
+  - stacked_ploidy_plot_png:
+      type: file
+      description: A stacked ploidy plot in PNG format
+      pattern: "*.st.png"
+  - stacked_ploidy_plot_pdf:
+      type: file
+      description: A stacked ploidy plot in PDF format
+      pattern: "*.st.pdf"
+
+authors:
+  - "@mahesh-panchal"

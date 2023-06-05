@@ -1,0 +1,41 @@
+name: "meryl_histogram"
+description: A genomic k-mer counter (and sequence utility) with nice features.
+keywords:
+  - k-mer
+  - histogram
+tools:
+  - "meryl":
+      description: "A genomic k-mer counter (and sequence utility) with nice features. "
+      homepage: "https://github.com/marbl/meryl"
+      documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
+      tool_dev_url: "https://github.com/marbl/meryl"
+
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meryl_dbs:
+      type: directory
+      description: Meryl k-mer database
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hist:
+      type: file
+      description: Histogram of k-mers
+      pattern: "*.hist"
+
+authors:
+  - "@mahesh-panchal"

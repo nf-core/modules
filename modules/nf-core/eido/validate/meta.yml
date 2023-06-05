@@ -1,0 +1,41 @@
+name: "eido_validate"
+description: Validate samplesheet or PEP config against a schema
+keywords:
+  - eido
+  - validate
+  - schema
+  - format
+  - pep
+tools:
+  - "validate":
+      description: "Validate samplesheet or PEP config against a schema."
+      homepage: "http://eido.databio.org/en/latest/"
+      documentation: "http://eido.databio.org/en/latest/"
+      doi: "10.1093/gigascience/giab077"
+      licence: "BSD-2-Clause"
+
+input:
+  - samplesheet:
+      type: file
+      description: Samplesheet or PEP file to be validated
+      pattern: "*.{yaml,yml,csv}"
+  - schema:
+      type: file
+      description: Schema that the samplesheet will be validated against
+      pattern: "*.{yaml,yml}"
+  - pep_input_base_dir:
+      type: file
+      description: Optional path to the directory where files specified in a PEP config file are stored. Any paths specified in the config will need to be relative to this base directory.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - log:
+      type: file
+      description: File containing validation log.
+      pattern: "*.log"
+
+authors:
+  - "@rafalstepien"

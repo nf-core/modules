@@ -1,0 +1,39 @@
+name: "eido_convert"
+description: Convert any PEP project or Nextflow samplesheet to any format
+keywords:
+  - eido
+  - convert
+  - PEP
+  - format
+  - samplesheet
+tools:
+  - "eido":
+      description: "Convert any PEP project or Nextflow samplesheet to any format"
+      homepage: "http://eido.databio.org/en/latest/"
+      documentation: "http://eido.databio.org/en/latest/"
+      doi: "10.1093/gigascience/giab077"
+      licence: "BSD-2-Clause"
+
+input:
+  - samplesheet:
+      type: file
+      description: Nextflow samplesheet or PEP project
+      pattern: "*.{yaml,yml,csv}"
+  - format:
+      type: string
+      description: Extension of an output file
+  - pep_input_base_dir:
+      type: file
+      description: Optional path to the directory where files specified in a PEP config file are stored. Any paths specified in the config will need to be relative to this base directory.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - samplesheet_converted:
+      type: file
+      description: PEP project or samplesheet converted to csv file
+
+authors:
+  - "@rafalstepien"

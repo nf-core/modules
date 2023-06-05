@@ -1,0 +1,88 @@
+name: "gatk4_collectsvevidence"
+description: Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
+keywords:
+  - gatk4
+  - collectsvevidence
+  - structural variants
+  - metrics
+tools:
+  - "gatk4":
+      description: "Genome Analysis Toolkit (GATK4)"
+      homepage: "https://gatk.broadinstitute.org/hc/en-us"
+
+      tool_dev_url: "https://github.com/broadinstitute/gatk"
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: "['BSD-3-clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - input_index:
+      type: file
+      description: Index of the BAM/CRAM/SAM file
+      pattern: "*.{bai,crai,sai}"
+  - site_depth_vcf:
+      type: file
+      description: Optional - input VCF of SNPs marking loci for site depths, needed for the site depths output
+      pattern: "*.vcf.gz"
+  - site_depth_vcf_index:
+      type: file
+      description: Optional - index of the VCF file, needed for the site depths output
+      pattern: "*.tbi"
+  - fasta:
+      type: file
+      description: Optional - reference FASTA file needed when the input is a CRAM file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Optional - index of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: Optional - sequence dictionary of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.dict"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - split_read_evidence:
+      type: file
+      description: Output file for split read evidence
+      pattern: "*.sr.txt.gz"
+  - split_read_evidence_index:
+      type: file
+      description: Index of the output file for split read evidence
+      pattern: "*.sr.txt.gz.tbi"
+  - paired_end_evidence:
+      type: file
+      description: Output file for paired end evidence
+      pattern: "*.pe.txt.gz"
+  - paired_end_evidence_index:
+      type: file
+      description: Index of the output file for paired end evidence
+      pattern: "*.pe.txt.gz.tbi"
+  - site_depths:
+      type: file
+      description: Output file for site depths
+      pattern: "*.sd.txt.gz"
+  - site_depths_index:
+      type: file
+      description: Index of the output file for site depths
+      pattern: "*.sd.txt.gz.tbi"
+
+authors:
+  - "@nvnieuwk"

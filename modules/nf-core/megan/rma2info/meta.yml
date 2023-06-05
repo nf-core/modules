@@ -1,0 +1,51 @@
+name: "megan_rma2info"
+description: Analyses an RMA file and exports information in text format
+keywords:
+  - megan
+  - rma6
+  - classification
+  - conversion
+tools:
+  - "megan":
+      description: "A tool for studying the taxonomic content of a set of DNA reads"
+      homepage: "https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/megan6/"
+      documentation: "https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html"
+      tool_dev_url: "https://github.com/husonlab/megan-ce"
+      doi: "10.1371/journal.pcbi.1004957"
+      licence: "['GPL >=3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - rma6:
+      type: file
+      description: RMA6 file from MEGAN or MALT
+      pattern: "*.rma6"
+  - megan_summary:
+      type: boolean
+      description: Specify whether to generate an MEGAN summary file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Compressed text file
+      pattern: "*.txt.gz"
+  - megan_summary:
+      type: file
+      description: Optionally generated MEGAN summary file
+      pattern: "*.megan"
+
+authors:
+  - "@jfy133"

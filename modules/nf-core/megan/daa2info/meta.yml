@@ -1,0 +1,52 @@
+name: "megan_daa2info"
+description: Analyses a DAA file and exports information in text format
+keywords:
+  - megan
+  - diamond
+  - daa
+  - classification
+  - conversion
+tools:
+  - "megan":
+      description: "A tool for studying the taxonomic content of a set of DNA reads"
+      homepage: "https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/megan6/"
+      documentation: "https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html"
+      tool_dev_url: "https://github.com/husonlab/megan-ce"
+      doi: "10.1371/journal.pcbi.1004957"
+      licence: "['GPL >=3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - daa:
+      type: file
+      description: DAA file from DIAMOND
+      pattern: "*.daa"
+  - megan_summary:
+      type: boolean
+      description: Specify whether to generate a MEGAN summary file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt_gz:
+      type: file
+      description: Compressed text file
+      pattern: "*.txt.gz"
+  - megan:
+      type: file
+      description: Optionally generated MEGAN summary file
+      pattern: "*.megan"
+
+authors:
+  - "@jfy133"

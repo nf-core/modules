@@ -1,0 +1,60 @@
+name: "fastk_merge"
+description: A tool to merge FastK histograms
+keywords:
+  - merge
+  - k-mer
+  - histogram
+  - fastk
+tools:
+  - fastk:
+      description: "A fast K-mer counter for high-fidelity shotgun datasets"
+      homepage: "https://github.com/thegenemyers/FASTK"
+
+      tool_dev_url: "https://github.com/thegenemyers/FASTK"
+
+      licence: "https://github.com/thegenemyers/FASTK/blob/master/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastk_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk_ktab:
+      type: file
+      description: Histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
+  - fastk_prof:
+      type: file
+      description: Histogram profile files from the program FastK (option -p)
+      pattern: "*.{prof,pidx}*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastk_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk_ktab:
+      type: file
+      description: Histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
+  - fastk_prof:
+      type: file
+      description: Histogram profile files from the program FastK (option -p)
+      pattern: "*.{prof,pidx}*"
+
+authors:
+  - "@mahesh-panchal"

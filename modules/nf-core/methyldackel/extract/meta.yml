@@ -1,0 +1,62 @@
+name: methyldackel_extract
+description: Extracts per-base methylation metrics from alignments
+keywords:
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - consensus
+  - bedGraph
+  - bam
+  - cram
+tools:
+  - methyldackel:
+      description: |
+        Methylation caller from MethylDackel, a (mostly) universal methylation extractor
+        for methyl-seq experiments.
+      homepage: https://github.com/dpryan79/MethylDackel
+      documentation: https://github.com/dpryan79/MethylDackel/blob/master/README.md
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Input genome fasta file
+      pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.fai"
+  - bam:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - bai:
+      type: file
+      description: BAM/CRAM index file
+      pattern: "*.{bai,crai}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bedgraph:
+      type: file
+      description: bedGraph file, containing per-base methylation metrics
+      pattern: "*.bedGraph"
+  - methylkit:
+      type: file
+      description: methylKit file, containing per-base methylation metrics
+      pattern: "*.methylKit"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@phue"

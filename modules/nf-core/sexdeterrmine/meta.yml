@@ -1,0 +1,48 @@
+name: "sexdeterrmine"
+description: Calculate the relative coverage on the Gonosomes vs Autosomes from the output of samtools depth, with error bars.
+keywords:
+  - sex determination
+  - genetic sex
+  - relative coverage
+  - ancient dna
+tools:
+  - "sexdeterrmine":
+      description: "A python script carry out calculate the relative coverage of X and Y chromosomes, and their associated error bars, out of capture data."
+      homepage: "https://github.com/TCLamnidis/Sex.DetERRmine"
+      documentation: "https://github.com/TCLamnidis/Sex.DetERRmine/README.md"
+      tool_dev_url: "https://github.com/TCLamnidis/Sex.DetERRmine"
+      doi: "10.1038/s41467-018-07483-5"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - depth:
+      type: file
+      description: Output from samtools depth (with header)
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: JSON formatted table of relative coverages on the X and Y, with associated error bars.
+      pattern: "*.json"
+  - tsv:
+      type: file
+      description: TSV table of relative coverages on the X and Y, with associated error bars.
+      pattern: "*.tsv"
+
+authors:
+  - "@TCLamnidis"

@@ -1,0 +1,74 @@
+name: delly_call
+description: Call structural variants
+keywords:
+  - genome
+  - structural
+  - variants
+  - bcf
+
+tools:
+  - delly:
+      description: Structural variant discovery by integrated paired-end and split-read analysis
+      homepage: https://github.com/dellytools/delly
+      documentation: https://github.com/dellytools/delly/blob/master/README.md
+
+      doi: "10.1093/bioinformatics/bts378"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate marked
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: Index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - vcf:
+      type: file
+      description: A BCF/VCF file to genotype with Delly. If this is supplied, the variant calling will be skipped
+      pattern: "*.{vcf.gz,bcf}"
+  - vcf_index:
+      type: file
+      description: The index of the BCF/VCF file
+      pattern: "*.{tbi,csi}"
+  - exclude_bed:
+      type: file
+      description: An optional bed file containing regions to exclude from the called VCF
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: Index of reference fasta file to identify split-reads
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bcf:
+      type: file
+      description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf" in ext.suffix to define the output type
+      pattern: "*.{bcf,vcf.gz}"
+  - csi:
+      type: file
+      description: A generated csi index that matches the bcf output (not generated for vcf files)
+      pattern: "*.{bcf.csi}"
+
+authors:
+  - "@projectoriented"
+  - "@nvnieuwk"

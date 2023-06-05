@@ -1,0 +1,43 @@
+name: krakentools_combinekreports
+description: Takes a Kraken report file and prints out a krona-compatible TEXT file
+keywords:
+  - kraken
+  - krakentools
+  - metagenomics
+  - table
+  - combining
+  - merging
+tools:
+  - krakentools:
+      description: KrakenTools is a suite of scripts to be used for post-analysis of Kraken/KrakenUniq/Kraken2/Bracken results. Please cite the relevant paper if using KrakenTools with any of the listed programs.
+      homepage: https://github.com/jenniferlu717/KrakenTools
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - kreports:
+      type: file
+      description: List of kraken-style report files
+      pattern: "*.{txt,kreport}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Combined kreport file of all input files
+      pattern: "*.txt"
+
+authors:
+  - "@jfy133"

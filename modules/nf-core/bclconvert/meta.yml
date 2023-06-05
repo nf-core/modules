@@ -1,0 +1,63 @@
+name: "bclconvert"
+description: Demultiplex Illumina BCL files
+keywords:
+  - demultiplex
+  - illumina
+  - fastq
+tools:
+  - "bclconvert":
+      description: "Demultiplex Illumina BCL files"
+      homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl-convert.html"
+      documentation: "https://support-docs.illumina.com/SW/BCL_Convert/Content/SW/FrontPages/BCL_Convert.htm"
+      licence: "ILLUMINA"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - samplesheet:
+      type: file
+      description: "Input samplesheet"
+      pattern: "*.{csv}"
+  - run_dir:
+      type: file
+      description: |
+        Input run directory containing RunInfo.xml and BCL data
+        Could be a directory or a tar of the directory
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastq:
+      type: file
+      description: Demultiplexed sample FASTQ files
+      pattern: "**_S*_L00?_R?_00?.fastq.gz"
+  - fastq_idx:
+      type: file
+      description: Optional demultiplexed index FASTQ files
+      pattern: "**_S*_L00?_I?_00?.fastq.gz"
+  - undetermined:
+      type: file
+      description: Optional undetermined sample FASTQ files
+      pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
+  - undetermined_idx:
+      type: file
+      description: Optional undetermined index FASTQ files
+      pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
+  - reports:
+      type: file
+      description: Demultiplexing Reports
+      pattern: "Reports/*.{csv,xml}"
+  - logs:
+      type: file
+      description: Log files
+      pattern: "Logs/*.{log,txt}"
+  - interop:
+      type: file
+      description: Interop files
+      pattern: "*.{bin}"
+authors:
+  - "@matthdsm"

@@ -1,0 +1,46 @@
+name: gfaffix
+description: Collapse walk-preserving shared affixes in variation graphs in GFA format
+keywords:
+  - gfa
+  - graph
+  - pangenome
+  - variation graph
+tools:
+  - gfaffix:
+      description: |
+        GFAffix identifies walk-preserving shared affixes in variation graphs and
+        collapses them into a non-redundant graph structure.
+      homepage: https://github.com/marschall-lab/GFAffix
+      documentation: https://github.com/marschall-lab/GFAffix
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gfa:
+      type: file
+      description: Variation graph in GFA format
+      pattern: "*.{gfa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gfa:
+      type: file
+      description: Non-redundant variation graph in GFA 1.0 format
+      pattern: "*.{gfa}"
+  - affixes:
+      type: file
+      description: Shared affixes in tab-separated values (TSV) text format
+      pattern: "*.{txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@heuermh"

@@ -1,0 +1,42 @@
+name: "khmer_uniquekmers"
+description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more
+keywords:
+  - khmer
+  - k-mer
+  - effective genome size
+
+tools:
+  - "khmer":
+      description: khmer k-mer counting library
+      homepage: https://github.com/dib-lab/khmer
+      documentation: https://khmer.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/dib-lab/khmer
+      doi: "10.12688/f1000research.6924.1"
+      licence: ["BSD License"]
+
+input:
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fasta}"
+  - kmer_size:
+      type: value
+      description: k-mer size to use
+      pattern: "[0-9]+"
+
+output:
+  - report:
+      type: file
+      description: Text file containing unique-kmers.py execution report
+      pattern: "report.txt"
+  - kmers:
+      type: file
+      description: Text file containing number of kmers
+      pattern: "kmers.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@JoseEspinosa"

@@ -1,0 +1,116 @@
+name: "happy_happy"
+description: Hap.py is a tool to compare diploid genotypes at haplotype level. Rather than comparing VCF records row by row, hap.py will generate and match alternate sequences in a superlocus. A superlocus is a small region of the genome (sized between 1 and around 1000 bp) that contains one or more variants.
+keywords:
+  - happy
+  - benchmark
+  - haplotype
+  - validation
+tools:
+  - "happy":
+      description: "Haplotype VCF comparison tools"
+      homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
+      documentation: "https://github.com/Illumina/hap.py"
+      tool_dev_url: "https://github.com/Illumina/hap.py"
+
+      licence: "['BSD-2-clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - query_vcf:
+      type: file
+      description: VCF/GVCF file to query
+      pattern: "*.{gvcf,vcf}.gz"
+  - truth_vcf:
+      type: file
+      description: gold standard VCF file
+      pattern: "*.{gvcf,vcf}.gz"
+  - regions_bed:
+      type: file
+      description: Sparse regions to restrict the analysis to
+      pattern: "*.bed"
+  - targets_bed:
+      type: file
+      description: Dense regions to restrict the analysis to
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: FASTA file of the reference genome
+      pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA
+      pattern: "*.fai"
+  - false_positives_bed:
+      type: file
+      description: False positive / confident call regions. Calls outside these regions will be labelled as UNK.
+      pattern: "*.{bed,bed.gz}"
+  - stratification_tsv:
+      type: file
+      description: Stratification file list in TSV format
+      pattern: "*.tsv"
+  - stratification_beds:
+      type: file(s)
+      description: One or more BED files used for stratification (these should be referenced in the stratification TSV)
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - summary_csv:
+      type: file
+      description: A CSV file containing the summary of the benchmarking
+      pattern: "*.summary.csv"
+  - roc_all_csv:
+      type: file
+      description: A CSV file containing ROC values for all variants
+      pattern: "*.roc.all.csv.gz"
+  - roc_indel_locations_csv:
+      type: file
+      description: A CSV file containing ROC values for all indels
+      pattern: "*.roc.Locations.INDEL.csv.gz"
+  - roc_indel_locations_pass_csv:
+      type: file
+      description: A CSV file containing ROC values for all indels that passed all filters
+      pattern: "*.roc.Locations.INDEL.PASS.csv.gz"
+  - roc_snp_locations_csv:
+      type: file
+      description: A CSV file containing ROC values for all SNPs
+      pattern: "*.roc.Locations.SNP.csv.gz"
+  - roc_snp_locations_pass_csv:
+      type: file
+      description: A CSV file containing ROC values for all SNPs that passed all filters
+      pattern: "*.roc.Locations.SNP.PASS.csv.gz"
+  - extended_csv:
+      type: file
+      description: A CSV file containing extended info of the benchmarking
+      pattern: "*.extended.csv"
+  - json:
+      type: file
+      description: A JSON file containing the run info
+      pattern: "*.runinfo.json"
+  - runinfo:
+      type: file
+      description: A JSON file containing the benchmarking metrics
+      pattern: "*.metrics.json.gz"
+  - vcf:
+      type: file
+      description: An annotated VCF
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: The index of the annotated VCF
+      pattern: "*.tbi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@nvnieuwk"

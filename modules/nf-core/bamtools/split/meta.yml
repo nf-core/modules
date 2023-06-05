@@ -1,0 +1,46 @@
+name: bamtools_split
+description: BamTools provides both a programmer's API and an end-user's toolkit for handling BAM files.
+keywords:
+  - bamtools
+  - bamtools/split
+  - bam
+  - split
+  - chunk
+tools:
+  - bamtools:
+      description: C++ API & command-line toolkit for working with BAM data
+      homepage: http://github.com/pezmaster31/bamtools
+      documentation: https://github.com/pezmaster31/bamtools/wiki
+      tool_dev_url: http://github.com/pezmaster31/bamtools
+
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: A list of one or more BAM files to merge and then split
+      pattern: "*.bam"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Several Bam files
+      pattern: "*.bam"
+
+authors:
+  - "@sguizard"
+  - "@matthdsm"

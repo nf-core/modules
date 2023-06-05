@@ -1,0 +1,51 @@
+name: "goat_taxonsearch"
+description: Query metadata for any taxon across the tree of life.
+keywords:
+  - public datasets
+  - ncbi
+  - genomes on a tree
+tools:
+  - goat:
+      description: |
+        goat-cli is a command line interface to query the
+        Genomes on a Tree Open API.
+      homepage: https://github.com/genomehubs/goat-cli
+      documentation: https://github.com/genomehubs/goat-cli/wiki
+      tool_dev_url: https://genomehubs.github.io/goat-cli/goat_cli/
+
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - taxon:
+      type: val
+      description: |
+        The taxon to search. An NCBI taxon ID, or the name of a taxon at any rank.
+  - taxa_file:
+      type: file
+      description: |
+        A file of NCBI taxonomy ID's (tips) and/or binomial names. Each line
+        should contain a single entry.File size is limited to 500 entries.
+      pattern: "*.txt"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - taxonsearch:
+      type: file
+      description: TSV file containing search results.
+      pattern: "*.tsv"
+
+authors:
+  - "@alxndrdiaz"

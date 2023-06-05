@@ -1,0 +1,118 @@
+name: artic_minion
+description: |
+  Run the alignment/variant-call/consensus logic of the artic pipeline
+keywords:
+  - artic
+  - aggregate
+  - demultiplexed reads
+tools:
+  - artic:
+      description: ARTIC pipeline - a bioinformatics pipeline for working with virus sequencing data sequenced with nanopore
+      homepage: https://artic.readthedocs.io/en/latest/
+      documentation: https://artic.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/artic-network/fieldbioinformatics
+
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: FastQ file containing reads
+      pattern: "*.{fastq.gz}"
+  - fast5_dir:
+      type: directory
+      description: Directory containing MinION FAST5 files
+      pattern: "*"
+  - sequencing_summary:
+      type: file
+      description: Path to Guppy sequencing summary
+      pattern: "*.{txt}"
+  - primer_scheme_fasta:
+      type: file
+      description: |
+        Sequence of the reference genome used in the scheme in FASTA format
+      pattern: "*.{reference.fasta}"
+  - primer_scheme_bed:
+      type: file
+      description: |
+        bed files containing coordinates of each primer in the scheme,
+        relative to the reference genome
+      pattern: "*.{scheme.bed}"
+  - medaka_model_file:
+      type: file
+      description: |
+        Medaka model file to use (if option --medaka is set)
+      pattern: "*.hdf5"
+  - medaka_model_string:
+      type: value
+      description: |
+        Medaka model string to use (if option --medaka is set)
+      pattern: "*"
+  - scheme:
+      type: value
+      description: Name of the primer scheme
+  - scheme_version:
+      type: value
+      description: Version of the primer scheme
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - results:
+      type: file
+      description: Aggregated FastQ files
+      pattern: "*.fastq.gz"
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{sorted.bam}"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.{sorted.bai}"
+  - bam_trimmed:
+      type: file
+      description: BAM file with the primers left on
+      pattern: "*.{trimmed.rg.sorted.bam}"
+  - bai_trimmed:
+      type: file
+      description: BAM index file of bam_trimmed
+      pattern: "*.{sorted.bai}"
+  - bam_primertrimmed:
+      type: file
+      description: BAM containing reads after primer-binding site trimming
+      pattern: "*.{trimmed.rg.sorted.bam}"
+  - bai_primertrimmed:
+      type: file
+      description: BAM index file of bam_primertrimmed
+      pattern: "*.{primertrimmed.rg.sorted.bam.bai}"
+  - fasta:
+      type: file
+      description: FAST file with consensus sequence
+      pattern: "*.{consensus.fasta}"
+  - vcf:
+      type: file
+      description: VCF file containing detected variants passing quality filter
+      pattern: "*.{pass.vcf.gz}"
+  - tbi:
+      type: file
+      description: VCF index
+      pattern: "*.{pass.vcf.gz.tbi}"
+  - json:
+      type: file
+      description: JSON file for MultiQC
+      pattern: "*.json"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"

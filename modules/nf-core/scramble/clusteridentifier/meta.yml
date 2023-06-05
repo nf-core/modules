@@ -1,0 +1,51 @@
+name: "scramble_clusteridentifier"
+description: The cluster_identifier tool of Scramble identifies soft clipped clusters
+keywords:
+  - bam
+  - cram
+  - soft-clipped clusters
+tools:
+  - "scramble":
+      description: "Soft Clipped Read Alignment Mapper"
+      homepage: "https://github.com/GeneDx/scramble"
+      documentation: "https://github.com/GeneDx/scramble"
+      tool_dev_url: "https://github.com/GeneDx/scramble"
+
+      licence: "['CC']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: Index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: The reference FASTA file (mandatory when using CRAM files)
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - clusters:
+      type: file
+      description: Tab-delimited file containing the soft-clipped clusters
+      pattern: "*.clusters.txt"
+
+authors:
+  - "@nvnieuwk"

@@ -1,0 +1,43 @@
+name: "pretextmap"
+description: converts sam/bam/cram/pairs into genome contact map
+keywords:
+  - contact
+  - bam
+  - map
+tools:
+  - "pretextmap":
+      description: "Paired REad TEXTure Mapper. Converts SAM formatted read pairs into genome contact maps."
+      homepage: "https://github.com/wtsi-hpag/PretextMap"
+      documentation: "https://github.com/wtsi-hpag/PretextMap/blob/master/README.md"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM/SAM file or pairs formatted reads file
+      pattern: "*.{bam,cram,sam,pairs.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - pretext:
+      type: file
+      description: pretext map
+      pattern: "*.pretext"
+
+authors:
+  - "@marrip"
+  - "@getrudeln"

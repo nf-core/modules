@@ -1,0 +1,43 @@
+name: "meryl_count"
+description: A genomic k-mer counter (and sequence utility) with nice features.
+keywords:
+  - k-mer
+  - count
+tools:
+  - "meryl":
+      description: "A genomic k-mer counter (and sequence utility) with nice features. "
+      homepage: "https://github.com/marbl/meryl"
+      documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
+      tool_dev_url: "https://github.com/marbl/meryl"
+
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - meryl_db:
+      type: directory
+      description: A Meryl k-mer database
+      pattern: "*.meryldb"
+
+authors:
+  - "@mahesh-panchal"

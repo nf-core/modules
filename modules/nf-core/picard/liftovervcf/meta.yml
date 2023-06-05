@@ -1,0 +1,72 @@
+name: picard_liftovervcf
+description: Lifts over a VCF file from one reference build to another.
+keywords:
+  - vcf
+  - picard
+  - liftovervcf
+tools:
+  - picard:
+      description: Move annotations from one assembly to another
+      homepage: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
+      tool_dev_url: https://github.com/broadinstitute/picard
+
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input_vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf,vcf.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - dict:
+      type: file
+      description: dictionary for fasta file
+      pattern: "*.{dict}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - chain:
+      type: file
+      description: The liftover chain file
+
+output:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf_lifted:
+      type: file
+      description: VCF file containing successfully lifted variants
+      pattern: "*.{lifted.vcf.gz}"
+  - vcf_unlifted:
+      type: file
+      description: VCF file containing unsuccessfully lifted variants
+      pattern: "*.{unlifted.vcf.gz}"
+
+authors:
+  - "@lucpen"
+  - "@ramprasadn"

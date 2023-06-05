@@ -1,8 +1,0 @@
-- name: pairtools select test_pairtools_select
-  command: nextflow run ./tests/modules/pairtools/select -entry test_pairtools_select -c ./tests/config/nextflow.config -c ./tests/modules/pairtools/select/nextflow.config
-  tags:
-    - pairtools/select
-    - pairtools
-  files:
-    - path: output/pairtools/test.selected.pairs.gz
-    - path: output/pairtools/test.unselected.pairs.gz

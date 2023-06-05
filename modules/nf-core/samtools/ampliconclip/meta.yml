@@ -1,0 +1,64 @@
+name: samtools_ampliconclip
+description: Clips read alignments where they match BED file defined regions
+keywords:
+  - amplicon
+  - clipping
+  - ampliconclip
+  - samtools
+tools:
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bed:
+      type: file
+      description: BED file of regions to be removed (e.g. amplicon primers)
+      pattern: "*.{bed}"
+  - save_cliprejects:
+      type: value
+      description: Save filtered reads to a file
+  - save_clipstats:
+      type: value
+      description: Save clipping stats to a file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Clipped reads BAM file
+      pattern: "*.{bam}"
+  - stats:
+      type: file
+      description: Clipping statistics text file
+      pattern: "*.{clipstats.txt}"
+  - rejects_bam:
+      type: file
+      description: Filtered reads BAM file
+      pattern: "*.{cliprejects.bam}"
+
+authors:
+  - "@bjohnnyd"

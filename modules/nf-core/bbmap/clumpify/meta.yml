@@ -1,0 +1,48 @@
+name: bbmap_clumpify
+description: Create 30% Smaller, Faster Gzipped Fastq Files. And remove duplicates
+keywords:
+  - clumping fastqs
+  - smaller fastqs
+  - deduping
+  - fastq
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/clumpify-guide/
+      documentation: https://www.biostars.org/p/225338/
+
+      licence: ["UC-LBL license (see package)"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The reordered/clumped (and if necessary deduped) fastq reads
+      pattern: "*.clumped.fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - log:
+      type: file
+      description: Clumpify log file
+      pattern: "*clumpify.log"
+
+authors:
+  - "@tamuanand"

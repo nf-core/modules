@@ -1,0 +1,62 @@
+name: "fcs_fcsadaptor"
+description: Run NCBI's FCS adaptor on assembled genomes
+keywords:
+  - assembly
+  - genomics
+  - quality control
+  - contamination
+  - NCBI
+tools:
+  - "fcs":
+      description: |
+        The Foreign Contamination Screening (FCS) tool rapidly detects contaminants from foreign
+        organisms in genome assemblies to prepare your data for submission. Therefore, the
+        submission process to NCBI is faster and fewer contaminated genomes are submitted.
+        This reduces errors in analyses and conclusions, not just for the original data submitter
+        but for all subsequent users of the assembly.
+      homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
+      documentation: "https://github.com/ncbi/fcs/wiki/FCS-adaptor"
+      tool_dev_url: "https://github.com/ncbi/fcs"
+
+      licence: "United States Government Work"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - assembly:
+      type: file
+      description: assembly fasta file
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - cleaned_assembly:
+      type: file
+      description: Cleaned assembly in fasta format
+      pattern: "*.{cleaned_sequences.fa.gz}"
+  - adaptor_report:
+      type: file
+      description: Report of identified adaptors
+      pattern: "*.{fcs_adaptor_report.txt}"
+  - log:
+      type: file
+      description: Log file
+      pattern: "*.{fcs_adaptor.log}"
+  - pipeline_args:
+      type: file
+      description: Run arguments
+      pattern: "*.{pipeline_args.yaml}"
+  - skipped_trims:
+      type: file
+      description: Skipped trim information
+      pattern: "*.{skipped_trims.jsonl}"
+authors:
+  - "@d4straub"

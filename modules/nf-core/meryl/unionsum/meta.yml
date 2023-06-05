@@ -1,0 +1,41 @@
+name: "meryl_unionsum"
+description: A genomic k-mer counter (and sequence utility) with nice features.
+keywords:
+  - k-mer
+  - unionsum
+tools:
+  - "meryl":
+      description: "A genomic k-mer counter (and sequence utility) with nice features. "
+      homepage: "https://github.com/marbl/meryl"
+      documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
+      tool_dev_url: "https://github.com/marbl/meryl"
+
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meryl_dbs:
+      type: directory
+      description: Meryl k-mer databases
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - meryl_db:
+      type: directory
+      description: A Meryl k-mer database that is the union sum of the input databases
+      pattern: "*.unionsum.meryldb"
+
+authors:
+  - "@mahesh-panchal"

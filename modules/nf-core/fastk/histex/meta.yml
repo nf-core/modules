@@ -1,0 +1,42 @@
+name: "fastk_histex"
+description: A fast K-mer counter for high-fidelity shotgun datasets
+keywords:
+  - k-mer
+  - histogram
+tools:
+  - "fastk":
+      description: "A fast K-mer counter for high-fidelity shotgun datasets"
+      homepage: "https://github.com/thegenemyers/FASTK"
+
+      tool_dev_url: "https://github.com/thegenemyers/FASTK"
+
+      licence: "https://github.com/thegenemyers/FASTK/blob/master/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - histogram:
+      type: file
+      description: A FastK histogram file
+      pattern: "*.hist"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hist:
+      type: file
+      description: A formatted histogram file
+      pattern: "*.hist"
+
+authors:
+  - "@mahesh-panchal"

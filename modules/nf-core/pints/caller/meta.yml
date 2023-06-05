@@ -1,0 +1,66 @@
+name: "pints_caller"
+description: Main caller script for peak calling
+keywords:
+  - peak-calling
+  - CoPRO
+  - GRO-cap
+  - PRO-cap
+  - CAGE
+  - NETCAGE
+  - RAMPAGE
+  - csRNA-seq
+  - STRIPE-seq
+  - PRO-seq
+  - GRO-seq
+tools:
+  - "pints":
+      description: "Peak Identifier for Nascent Transcripts Starts (PINTS)"
+      homepage: "https://pints.yulab.org/"
+      documentation: "https://github.com/hyulab/PINTS/blob/main/README.md"
+      tool_dev_url: "https://github.com/hyulab/PINTS"
+      doi: "10.1038/s41587-022-01211-7"
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bams:
+      type: file
+      description: BAM/ file
+      pattern: "*.{bam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - divergent_TREs:
+      type: file
+      description: Divergent TREs
+      pattern: "*_divergent_peaks.bed"
+      optional: true
+  - bidirectional_TREs:
+      type: file
+      description: Divergent TREs and convergent TREs
+      pattern: "*_bidirectional_peaks.bed"
+      optional: true
+  - unidirectional_TREs:
+      type: file
+      description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers (e-lncRNAs)
+      pattern: "*_unidirectional_peaks.bed"
+      optional: true
+  - peakcalling_log:
+      type: file
+      description: Peakcalling log for debugging purposes
+      pattern: "peakcalling_*.log"
+
+authors:
+  - "@Emiller88"

@@ -1,0 +1,51 @@
+name: sratools_fasterqdump
+description: Extract sequencing reads in FASTQ format from a given NCBI Sequence Read Archive (SRA).
+keywords:
+  - sequencing
+  - FASTQ
+  - dump
+tools:
+  - sratools:
+      description: SRA Toolkit and SDK from NCBI
+      homepage: https://github.com/ncbi/sra-tools
+      documentation: https://github.com/ncbi/sra-tools/wiki
+      tool_dev_url: https://github.com/ncbi/sra-tools
+      licence: ["Public Domain"]
+
+input:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sra:
+      type: directory
+      description: Directory containing ETL data for the given SRA.
+      pattern: "*/*.sra"
+  - ncbi_settings:
+      type: file
+      description: >
+        An NCBI user settings file.
+      pattern: "*.mkfg"
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the sra-toolkit
+      pattern: "*.cart"
+output:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Extracted FASTQ file or files if the sequencing reads are paired-end.
+      pattern: "*.fastq.gz"
+
+authors:
+  - "@Midnighter"

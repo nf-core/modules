@@ -1,0 +1,63 @@
+name: "bcl2fastq"
+description: Demultiplex Illumina BCL files
+keywords:
+  - demultiplex
+  - illumina
+  - fastq
+tools:
+  - "bcl2fastq":
+      description: "Demultiplex Illumina BCL files"
+      homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software"
+      documentation: "https://support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf"
+      licence: "ILLUMINA"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - samplesheet:
+      type: file
+      description: "Input samplesheet"
+      pattern: "*.{csv}"
+  - run_dir:
+      type: file
+      description: |
+        Input run directory containing RunInfo.xml and BCL data
+        Could be a directory or a tar of the directory
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastq:
+      type: file
+      description: Demultiplexed sample FASTQ files
+      pattern: "**_S*_L00?_R?_00?.fastq.gz"
+  - fastq_idx:
+      type: file
+      description: Optional demultiplexed index FASTQ files
+      pattern: "**_S*_L00?_I?_00?.fastq.gz"
+  - undetermined:
+      type: file
+      description: Optional undetermined sample FASTQ files
+      pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
+  - undetermined_idx:
+      type: file
+      description: Optional undetermined index FASTQ files
+      pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
+  - reports:
+      type: file
+      description: Demultiplexing Reports
+      pattern: "Reports/*"
+  - stats:
+      type: file
+      description: Statistics files
+      pattern: "Stats/*"
+  - interop:
+      type: file
+      description: Interop files
+      pattern: "*.{bin}"
+authors:
+  - "@matthdsm"

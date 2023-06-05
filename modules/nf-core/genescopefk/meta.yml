@@ -1,0 +1,63 @@
+name: "genescopefk"
+description: A derivative of GenomeScope2.0 modified to work with FastK
+keywords:
+  - k-mer
+  - genome profile
+  - histogram
+tools:
+  - "genescopefk":
+      description: "A derivative of GenomeScope2.0 modified to work with FastK"
+      homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
+
+      tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
+
+      licence: "https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastk_histex_histogram:
+      type: file
+      description: A histogram formatted for GeneScope using the -G parameter from Fastk Histex
+      pattern: "*.hist"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - linear_plot:
+      type: file
+      description: A GeneScope linear plot in PNG format
+      pattern: "*_linear_plot.png"
+  - transformed_linear_plot:
+      type: file
+      description: A GeneScope transformed linear plot in PNG format
+      pattern: "*_transformed_linear_plot.png"
+  - log_plot:
+      type: file
+      description: A GeneScope log plot in PNG format
+      pattern: "*_log_plot.png"
+  - transformed_log_plot:
+      type: file
+      description: A GeneScope transformed log plot in PNG format
+      pattern: "*_transformed_log_plot.png"
+  - model:
+      type: file
+      description: GeneScope model fit summary
+      pattern: "*_model.txt"
+  - summary:
+      type: file
+      description: GeneScope histogram summary
+      pattern: "*_summary.txt"
+
+authors:
+  - "@mahesh-panchal"

@@ -1,0 +1,54 @@
+name: "motus_merge"
+description: Taxonomic meta-omics profiling using universal marker genes
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - taxonomic profiling
+  - merging
+  - merge
+  - otu table
+tools:
+  - "motus":
+      description: "Marker gene-based OTU (mOTU) profiling"
+      homepage: "https://motu-tool.org/"
+      documentation: "https://github.com/motu-tool/mOTUs/wiki"
+      tool_dev_url: "https://github.com/motu-tool/mOTUs"
+      doi: "10.1186/s40168-022-01410-z"
+      licence: "['GPL v3']"
+
+input:
+  - input:
+      type: file
+      description: |
+        List of output files (more than one) from motus profile,
+        or a single directory containing motus output files.
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
+        pattern: "db_mOTU/"
+  - profile_version_yml:
+      type: file
+      description: |
+        A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
+        this itself without having the motus database present and configured with the tool
+        so here we take it from what is already reported by the upstream module.
+      pattern: "versions.yml"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: OTU table in txt format, if BIOM format not requested
+      pattern: "*.txt"
+  - biom:
+      type: file
+      description: OTU table in biom format, if BIOM format requested
+      pattern: "*.biom"
+
+authors:
+  - "@jfy133"

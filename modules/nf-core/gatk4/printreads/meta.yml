@@ -1,0 +1,86 @@
+name: "gatk4_printreads"
+description: Print reads in the SAM/BAM/CRAM file
+keywords:
+  - gatk4
+  - bam
+  - cram
+  - sam
+  - printreads
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - index:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bai,crai,sai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: reference fasta file
+      pattern: "*.{fa,fasta}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
+      type: file
+      description: reference fasta index file
+      pattern: "*.{fai}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - dict:
+      type: file
+      description: reference fasta dictionary file
+      pattern: "*.{dict}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.{bam}"
+  - cram:
+      type: file
+      description: Sorted CRAM file
+      pattern: "*.{cram}"
+  - sam:
+      type: file
+      description: Sorted SAM file
+      pattern: "*.{sam}"
+
+authors:
+  - "@ramprasadn"

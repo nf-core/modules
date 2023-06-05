@@ -1,0 +1,44 @@
+name: bandage_image
+description: Render an assembly graph in GFA 1.0 format to PNG and SVG image formats
+keywords:
+  - gfa
+  - graph
+  - assembly
+  - visualisation
+tools:
+  - bandage:
+      description: |
+        Bandage - a Bioinformatics Application for Navigating De novo Assembly Graphs Easily
+      homepage: https://github.com/rrwick/Bandage
+      documentation: https://github.com/rrwick/Bandage
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gfa:
+      type: file
+      description: Assembly graph in GFA 1.0 format
+      pattern: "*.gfa"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - png:
+      type: file
+      description: Bandage image in PNG format
+      pattern: "*.png"
+  - svg:
+      type: file
+      description: Bandage image in SVG format
+      pattern: "*.svg"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@heuermh"

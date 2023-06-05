@@ -1,0 +1,67 @@
+name: "gecco_run"
+description: GECCO is a fast and scalable method for identifying putative novel Biosynthetic Gene Clusters (BGCs) in genomic and metagenomic data using Conditional Random Fields (CRFs).
+keywords:
+  - bgc
+  - detection
+  - metagenomics
+  - contigs
+tools:
+  - "gecco":
+      description: "Biosynthetic Gene Cluster prediction with Conditional Random Fields."
+      homepage: "https://gecco.embl.de"
+      documentation: "https://gecco.embl.de"
+      tool_dev_url: "https://github.com/zellerlab/GECCO"
+      doi: "10.1101/2021.05.03.442509"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: A genomic file containing one or more sequences as input. Input type is any supported by Biopython (fasta, gbk, etc.)
+      pattern: "*"
+  - hmm:
+      type: file
+      description: Alternative HMM file(s) to use in HMMER format
+      pattern: "*.hmm"
+  - model_dir:
+      type: directory
+      description: Path to an alternative CRF (Conditional Random Fields) module to use
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - genes:
+      type: file
+      description: TSV file containing detected/predicted genes with BGC probability scores. Will not be generated if no hits are found.
+      pattern: "*.genes.tsv"
+  - features:
+      type: file
+      description: TSV file containing identified domains
+      pattern: "*.features.tsv"
+  - clusters:
+      type: file
+      description: TSV file containing coordinates of predicted clusters and BGC types.  Will not be generated if no hits are found.
+      pattern: "*.clusters.tsv"
+  - gbk:
+      type: file
+      description: Per cluster GenBank file (if found) containing sequence with annotations. Will not be generated if no hits are found.
+      pattern: "*.gbk"
+  - json:
+      type: file
+      description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied. Will not be generated if no hits are found.
+      pattern: "*.gbk"
+
+authors:
+  - "@jfy133"

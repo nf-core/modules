@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_bwaaln_samtools"
+description: Align FASTQ files against reference genome with the bwa aln short-read aligner producing a sorted and indexed BAM files
+keywords:
+  - bwa
+  - aln
+  - fasta
+  - bwa
+  - align
+  - map
+modules:
+  - bwa/aln
+  - bwa/sampe
+  - bwa/samse
+  - samtools/index
+input:
+  - ch_reads:
+      description: |
+        Structure: [ val(meta), path(fastq) ]
+        One or two FASTQ files for single or paired end data respectively.
+  - ch_index:
+      description: |
+        Structure: [ val(meta), path(index) ]
+        A directory containing bwa aln reference indices as from `bwa index`
+        Contains files ending in extensions such as .amb, .ann, .bwt etc.
+
+output:
+  - bam:
+      description: |
+        Structure: [ val(meta), path(bam) ]
+        Sorted BAM/CRAM/SAM file
+  - bai:
+      description: |
+        Structure: [ val(meta), path(bai) ]
+        BAM/CRAM/SAM samtools index file
+  - csi:
+      description: |
+        Structure: [ val(meta), path(csi) ]
+        BAM/CRAM/SAM samtools index file for larger references
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@jfy133"

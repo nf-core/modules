@@ -1,0 +1,45 @@
+name: paraclu
+description: Paraclu finds clusters in data attached to sequences.
+keywords:
+  - sort
+tools:
+  - paraclu:
+      description: Paraclu finds clusters in data attached to sequences.
+      homepage: https://gitlab.com/mcfrith/paraclu
+      documentation: https://gitlab.com/mcfrith/paraclu
+      tool_dev_url: https://gitlab.com/mcfrith/paraclu
+
+      licence: ["GPL v3-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file
+      pattern: "*.bed"
+  - min_cluster:
+      type: integer
+      description: Minimum size of cluster
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: clustered BED file
+      pattern: "*.bed"
+
+authors:
+  - "@mashehu"

@@ -1,0 +1,75 @@
+name: "merquryfk_katcomp"
+description: A reimplemenation of Kat Comp to work with FastK databases
+keywords:
+  - fastk
+  - k-mer
+  - compare
+tools:
+  - "merquryfk":
+      description: "FastK based version of Merqury"
+      homepage: "https://github.com/thegenemyers/MERQURY.FK"
+
+      tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
+
+      licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastk1_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk1_ktab:
+      type: file
+      description: Histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
+  - fastk2_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk2_ktab:
+      type: file
+      description: Histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - filled_png:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in filled PNG format.
+      pattern: "*.fi.png"
+  - line_png:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in line PNG format.
+      pattern: "*.ln.png"
+  - stacked_png:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in stacked PNG format.
+      pattern: "*.st.png"
+  - filled_pdf:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in filled PDF format.
+      pattern: "*.fi.pdf"
+  - line_pdf:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in line PDF format.
+      pattern: "*.ln.pdf"
+  - stacked_pdf:
+      type: file
+      description: Comparison of Kmers between sample 1 and 2 in stacked PDF format.
+      pattern: "*.st.pdf"
+
+authors:
+  - "@mahesh-panchal"

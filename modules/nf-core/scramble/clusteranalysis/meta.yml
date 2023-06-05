@@ -1,0 +1,58 @@
+name: "scramble_clusteranalysis"
+description: The Cluster Analysis tool of Scramble analyses and interprets the soft-clipped clusters found by `cluster_identifier`
+keywords:
+  - soft-clipped clusters
+  - scramble
+tools:
+  - "scramble":
+      description: "Soft Clipped Read Alignment Mapper"
+      homepage: "https://github.com/GeneDx/scramble"
+      documentation: "https://github.com/GeneDx/scramble"
+      tool_dev_url: "https://github.com/GeneDx/scramble"
+
+      licence: "['CC']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - clusters:
+      type: file
+      description: Tab-delimited text file containing soft-clipped clusters. Has to be generated using scramble/clusteridentifier
+      pattern: "*clusters.txt"
+  - fasta:
+      type: file
+      description: Optional fasta reference file. This file is needed to create a VCF file and to evaluate predicted deletions.
+      pattern: "*.{fasta,fa}"
+  - mei_ref:
+      type: file
+      description: Optional fasta file containing the MEI reference. This file should only be supplied in special occasions where the default isn't correct
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - meis_tab:
+      type: file
+      description: Tab-delimited text file containing MEI calls
+      pattern: "*_MEIs.txt"
+  - dels_tab:
+      type: file
+      description: Tab-delimited text file containing predicted deletions
+      pattern: "*_PredictedDeletions.txt"
+  - vcf:
+      type: file
+      description: A VCF file containing the MEI calls and/or the predicted deletions (depending on the given arguments)
+      pattern: "*.vcf"
+
+authors:
+  - "@nvnieuwk"

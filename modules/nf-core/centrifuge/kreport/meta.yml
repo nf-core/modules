@@ -1,0 +1,41 @@
+name: "centrifuge_kreport"
+description: Creates Kraken-style reports from centrifuge out files
+keywords:
+  - metagenomics
+tools:
+  - centrifuge:
+      description: Centrifuge is a classifier for metagenomic sequences.
+      homepage: https://ccb.jhu.edu/software/centrifuge/
+      documentation: https://ccb.jhu.edu/software/centrifuge/manual.shtml
+      doi: 10.1101/gr.210641.116
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: File containing the centrifuge classification report
+      pattern: "*.{txt}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - kreport:
+      type: file
+      description: |
+        File containing kraken-style report from centrifuge
+        out files.
+      pattern: "*.{txt}"
+authors:
+  - "@sofstam"
+  - "@jfy133"

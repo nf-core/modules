@@ -1,8 +1,0 @@
-- name: motus profile test_motus_profile_single_end
-  command: nextflow run tests/modules/motus/profile -entry test_motus_profile_single_end -c tests/config/nextflow.config
-  tags:
-    - motus
-    - motus/profile
-  files:
-    - path: output/motus/test.out
-      contains: ["#consensus_taxonomy\ttest"]

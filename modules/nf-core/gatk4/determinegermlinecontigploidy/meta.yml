@@ -1,0 +1,71 @@
+name: "gatk4_determinegermlinecontigploidy"
+description: Determines the baseline contig ploidy for germline samples given counts data
+keywords:
+  - gatk4
+  - determinegermlinecontigploidy
+  - counts
+  - copy number
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - counts:
+      type: file
+      description: One or more count TSV files created with gatk/collectreadcounts
+      pattern: "*.tsv"
+  - bed:
+      type: file
+      description: Optional - A bed file containing the intervals to include in the process
+      pattern: "*.bed"
+  - exclude_beds:
+      type: file
+      description: Optional - One or more bed files containing intervals to exclude from the process
+      pattern: "*.bed"
+  - contig_ploidy_table:
+      type: file
+      description: The contig ploidy priors table
+      pattern: "*.tsv"
+  - ploidy_model:
+      type: directory
+      description: |
+        Optional - A folder containing the ploidy model.
+        When a model is supplied to tool will run in CASE mode.
+        The folder can be tar-zipped.
+      pattern: "*(.tar.gz)?"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - calls:
+      type: directory
+      description: A folder containing the calls from the input files
+      pattern: "*.tar.gz"
+  - model:
+      type: directory
+      description: |
+        A folder containing the model from the input files.
+        This will only be created in COHORT mode (when no model is supplied to the process).
+      pattern: "*.tar.gz"
+
+authors:
+  - "@nvnieuwk"

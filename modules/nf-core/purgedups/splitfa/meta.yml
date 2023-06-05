@@ -1,0 +1,42 @@
+name: "purgedups_splitfa"
+description: Split fasta file by 'N's to aid in self alignment for duplicate purging
+keywords:
+  - split assembly
+  - duplicate purging
+tools:
+  - "purgedups":
+      description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
+      homepage: "https://github.com/dfguan/purge_dups"
+      documentation: "https://github.com/dfguan/purge_dups"
+      tool_dev_url: "https://github.com/dfguan/purge_dups"
+      doi: "10.1093/bioinformatics/btaa025"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - assembly:
+      type: file
+      description: Draft assembly file
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - split_fasta:
+      type: file
+      description: Fasta split by N's
+      pattern: "*.fasta.gz"
+
+authors:
+  - "@mahesh-panchal"

@@ -1,0 +1,80 @@
+name: "bcftools_convert"
+description: Converts certain output formats to VCF
+keywords:
+  - bcftools
+  - convert
+  - vcf
+  - gvcf
+tools:
+  - "bcftools":
+      description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
+      homepage: "https://samtools.github.io/bcftools/bcftools.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html#convert"
+      tool_dev_url: "https://github.com/samtools/bcftools"
+      doi: "10.1093/gigascience/giab008"
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: |
+        The input format. Each format needs a seperate parameter to be specified in the `args`:
+        - GEN/SAMPLE file: `--gensample2vcf`
+        - gVCF file: `--gvcf2vcf`
+        - HAP/SAMPLE file: `--hapsample2vcf`
+        - HAP/LEGEND/SAMPLE file: `--haplegendsample2vcf`
+        - TSV file: `--tsv2vcf`
+      pattern: "*.{gen,sample,g.vcf,hap,legend}{.gz,}"
+  - input_index:
+      type: file
+      description: (Optional) The index for the input files, if needed
+      pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: (Optional) The reference fasta, only needed for gVCF conversion
+      pattern: "*.{fa,fasta}"
+  - bed:
+      type: file
+      description: (Optional) The BED file containing the regions for the VCF file
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf_gz:
+      type: file
+      description: VCF merged output file (bgzipped) => when `--output-type z` is used
+      pattern: "*.vcf.gz"
+  - vcf:
+      type: file
+      description: VCF merged output file => when `--output-type v` is used
+      pattern: "*.vcf"
+  - bcf_gz:
+      type: file
+      description: BCF merged output file (bgzipped) => when `--output-type b` is used
+      pattern: "*.bcf.gz"
+  - bcf:
+      type: file
+      description: BCF merged output file => when `--output-type u` is used
+      pattern: "*.bcf"
+
+authors:
+  - "@nvnieuwk"
+  - "@ramprasadn"

@@ -1,0 +1,67 @@
+name: "genomescope2"
+description: Estimate genome heterozygosity, repeat content, and size from sequencing reads using a kmer-based statistical approach
+keywords:
+  - "genome size"
+  - "genome heterozygosity"
+  - "repeat content"
+tools:
+  - "genomescope2":
+      description: "Reference-free profiling of polyploid genomes"
+      homepage: "http://qb.cshl.edu/genomescope/genomescope2.0/"
+      documentation: "https://github.com/tbenavi1/genomescope2.0/blob/master/README.md"
+      tool_dev_url: "https://github.com/tbenavi1/genomescope2.0"
+      doi: "10.1038/s41467-020-14998-3"
+      licence: "['Apache License, Version 2.0 (Apache-2.0)']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - histogram:
+      type: file
+      description: A K-mer histogram file
+      pattern: "*.hist"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - linear_plot_png:
+      type: file
+      description: A genomescope2 linear plot in PNG format
+      pattern: "*_linear_plot.png"
+  - linear_plot_png:
+      type: file
+      description: A genomescope2 linear plot in PNG format
+      pattern: "*_linear_plot.png"
+  - transformed_linear_plot_png:
+      type: file
+      description: A genomescope2 transformed linear plot in PNG format
+      pattern: "*_transformed_linear_plot.png"
+  - log_plot_png:
+      type: file
+      description: A genomescope2 log plot in PNG format
+      pattern: "*_log_plot.png"
+  - transformed_log_plot_png:
+      type: file
+      description: A genomescope2 transformed log plot in PNG format
+      pattern: "*_transformed_log_plot.png"
+  - model:
+      type: file
+      description: Genomescope2 model fit summary
+      pattern: "*_model.txt"
+  - summary:
+      type: file
+      description: Genomescope2 histogram summary
+      pattern: "*_summary.txt"
+
+authors:
+  - "@mahesh-panchal"

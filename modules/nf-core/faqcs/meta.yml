@@ -1,0 +1,88 @@
+name: faqcs
+description: Perform adapter and quality trimming on sequencing reads with reporting
+keywords:
+  - trimming
+  - quality control
+  - fastq
+  - faqcs
+tools:
+  - faqcs:
+      description: |
+        FaQCs combines several features of currently available applications into a single, user-friendly process, and includes additional unique capabilities such as filtering the PhiX control sequences, conversion of FASTQ formats, and multi-threading. The original data and trimmed summaries are reported within a variety of graphics and reports, providing a simple way to do data quality control and assurance.
+      homepage: https://github.com/LANL-Bioinformatics/FaQCs
+      documentation: https://github.com/LANL-Bioinformatics/FaQCs
+      tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
+      doi: "10.1186/s12859-014-0366-2"
+      licence: ["GPLv3 License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Metadata about the specific run.
+        I guess this can be used if you are running many different images in a single nextflow pass?
+        I have no clue.
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - image:
+      type: image
+      description: |
+        Obtained from cellpose documentation: Inputs
+        You can use tiffs or PNGs or JPEGs. We use the image loader from scikit-image.
+        Single plane images can read into data as nY x nX x channels or channels x nY x nX.
+        Then the channels settings will take care of reshaping the input appropriately for the network.
+        Note the model also rescales the input for each channel so that 0 = 1st percentile of image values and 1 = 99th percentile.
+  - image_metadata:
+      type: csv
+      description: |
+        This file will let Cellpose know which channels to use for segmentation.
+        The default will be channel 0.
+  - Model_to_use:
+      type: string
+      description: |
+        This will define which model to use.
+        The default will be nuclear.
+        All models from the model zoo should be usable, the exact string has to be passed.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*trimmed.fastq.gz"
+  - reads_fail:
+      type: file
+      description: Reads that failed the preprocessing (Optional with --discard args setting)
+      pattern: "*discard.fastq.gz"
+  - reads_unpaired:
+      type: file
+      description: Reads without matching mates in paired-end files (Optional)
+      pattern: "*trimmed.unpaired.fastq.gz"
+  - stats:
+      type: file
+      description: trimming/qc text stats file
+      pattern: "*.stats.txt"
+  - txt:
+      type: file
+      description: trimming/qc text txt files from --debug option
+      pattern: "*.txt"
+  - statspdf:
+      type: file
+      description: trimming/qc pdf report file
+      pattern: "*_qc_report.pdf"
+  - log:
+      type: file
+      description: fastq log file
+      pattern: "*.log"
+authors:
+  - "@mjcipriano"
+  - "@sateeshperi"
+  - "@hseabolt"

@@ -1,0 +1,45 @@
+name: "vcflib_vcfbreakmulti"
+description: If multiple alleles are specified in a single record, break the record into several lines preserving allele-specific INFO fields
+keywords:
+  - vcflib
+  - vcflib/vcfbreakmulti
+tools:
+  - "vcflib":
+      description: "Command-line tools for manipulating VCF files"
+      homepage: https://github.com/vcflib/vcflib
+      documentation: https://github.com/vcflib/vcflib#USAGE
+      doi: "10.1101/2021.05.21.445151"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.{.vcf.gz,vcf}"
+  - tbi:
+      type: file
+      description: Index of VCF file
+      pattern: "*.vcf.gz.tbi"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@lucpen"

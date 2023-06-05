@@ -1,0 +1,50 @@
+name: "emboss_seqret"
+description: Reads in one or more sequences, converts, filters, or transforms them and writes them out again
+keywords:
+  - emboss
+  - gff
+  - embl
+  - genbank
+  - fasta
+  - convert
+  - swissprot
+tools:
+  - "emboss":
+      description: "The European Molecular Biology Open Software Suite"
+      homepage: "https://www.ebi.ac.uk/Tools/sfc/emboss_seqret/"
+      documentation: "https://emboss.bioinformatics.nl/cgi-bin/emboss/help/seqret"
+      tool_dev_url: "http://emboss.open-bio.org/"
+      doi: "10.1016/s0168-9525(00)02024-2 "
+      licence: ["GPL"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sequence:
+      type: file
+      description: Input sequence query
+      pattern: "*.{gff,em,gb,refseq,pir,swiss,sw,txt}"
+  - out_ext:
+      type: string
+      description: File extension of the output file. Unless otherwise set by a flag in `ext.args`, the extension dictates the output file format.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - outseq:
+      type: file
+      description: Converted sequence file
+      pattern: "*"
+
+authors:
+  - "@MillironX"

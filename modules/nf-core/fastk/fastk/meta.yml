@@ -1,0 +1,52 @@
+name: "fastk_fastk"
+description: A fast K-mer counter for high-fidelity shotgun datasets
+keywords:
+  - k-mer
+  - count
+  - histogram
+tools:
+  - "fastk":
+      description: "A fast K-mer counter for high-fidelity shotgun datasets"
+      homepage: "https://github.com/thegenemyers/FASTK"
+
+      tool_dev_url: "https://github.com/thegenemyers/FASTK"
+
+      licence: "https://github.com/thegenemyers/FASTK/blob/master/LICENSE"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hist:
+      type: file
+      description: Histogram of k-mers
+      pattern: "*.hist"
+  - ktab:
+      type: file
+      description: A sorted table of all canonical k‑mers along with their counts.
+      pattern: "*.ktab"
+  - prof:
+      type: file
+      description: A k‑mer count profile of each sequence in the input data set.
+      pattern: "*.prof"
+
+authors:
+  - "@mahesh-panchal"

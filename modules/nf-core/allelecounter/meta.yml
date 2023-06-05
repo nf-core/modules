@@ -1,0 +1,55 @@
+name: allelecounter
+
+description: Generates a count of coverage of alleles
+keywords:
+  - allele
+  - count
+tools:
+  - allelecounter:
+      description: Takes a file of locations and a [cr|b]am file and generates a count of coverage of each allele at that location (given any filter settings)
+      homepage: https://github.com/cancerit/alleleCount
+      documentation: https://github.com/cancerit/alleleCount
+      tool_dev_url: https://github.com/cancerit/alleleCount
+
+      licence: A-GPL 3.0
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - input_index:
+      type: file
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai,sai}"
+  - loci:
+      type: file
+      description: loci file <CHR><tab><POS1>
+      pattern: "*.{tsv}"
+  - fasta:
+      type: file
+      description: Input genome fasta file. Required when passing CRAM files.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - alleleCount:
+      type: file
+      description: Allele count file
+      pattern: "*.{alleleCount}"
+
+authors:
+  - "@fullama"
+  - "@fbdtemme"

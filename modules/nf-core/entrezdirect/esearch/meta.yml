@@ -1,0 +1,55 @@
+name: "entrezdirect_esearch"
+description: Searches a term in a public NCBI database
+keywords:
+  - public datasets
+  - entrez
+  - search
+  - ncbi
+  - database
+tools:
+  - entrezdirect:
+      description: |
+        Entrez Direct (EDirect) is a method for accessing the NCBI's set of
+        interconnected databases (publication, sequence, structure, gene,
+        variation, expression, etc.) from a UNIX terminal window. Functions
+        take search terms from command line arguments. Individual operations
+        are combined to build multi-step queries. Record retrieval and
+        formatting normally complete the process.
+      homepage: https://www.ncbi.nlm.nih.gov/books/NBK179288/
+      documentation: https://www.ncbi.nlm.nih.gov/books/NBK25501/
+      tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
+      doi: 10.1016/S0076-6879(96)66012-1
+      licence: ["PUBLIC DOMAIN"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - database:
+      type: value
+      description: Value must be a valid Entrez database name.
+  - term:
+      type: value
+      description: |
+        Entrez text query. All special characters must be URL encoded.
+        Spaces may be replaced by '+' signs.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - result_xml:
+      type: file
+      description: Query result text in XML format
+      pattern: "*.xml"
+
+authors:
+  - "@alxndrdiaz"

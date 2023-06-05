@@ -1,0 +1,54 @@
+name: "concoct_extractfastabins"
+description: Creates a FASTA file for each new cluster assigned by CONCOCT
+keywords:
+  - contigs
+  - fragment
+  - mags
+  - binning
+  - fasta
+  - cut
+  - cut up
+  - bins
+  - merge
+
+tools:
+  - "concoct":
+      description: "Clustering cONtigs with COverage and ComposiTion"
+      homepage: "https://concoct.readthedocs.io/en/latest/index.html"
+      documentation: "https://concoct.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/BinPro/CONCOCT"
+      doi: "10.1038/nmeth.3103"
+      licence: "['FreeBSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - original_fasta:
+      type: file
+      description: Original input FASTA file to CONOCT cut_up_fasta
+      pattern: "*.{fasta,fna,fa,fas}"
+  - csv:
+      type: boolean
+      description: Output table of merge_cutup_clustering with new cluster assignments
+      pattern: ".csv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: FASTA files containing CONCOCT predicted bin clusters, named numerically by CONCOCT cluster ID in a directory called `fasta_bins`
+      pattern: "*.fa.gz"
+
+authors:
+  - "@jfy133"

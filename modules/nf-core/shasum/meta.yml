@@ -1,0 +1,41 @@
+name: "shasum"
+description: Print SHA256 (256-bit) checksums.
+keywords:
+  - checksum
+  - sha256
+  - 256 bit
+tools:
+  - "md5sum":
+      description: Create an SHA256 (256-bit) checksum.
+      homepage: "https://www.gnu.org"
+      documentation: "https://linux.die.net/man/1/shasum"
+      licence: GPLv3+
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - file:
+      type: file
+      description: Any file
+      pattern: "*.*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - checksum:
+      type: file
+      description: File containing checksum
+      pattern: "*.sha256"
+
+authors:
+  - "@matthdsm"

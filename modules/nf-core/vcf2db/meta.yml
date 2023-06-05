@@ -1,0 +1,47 @@
+name: "vcf2db"
+description: A tool to create a Gemini-compatible DB file from an annotated VCF
+keywords:
+  - vcf2db
+  - vcf
+  - gemini
+tools:
+  - "vcf2db":
+      description: "Create a gemini-compatible database from a VCF"
+      homepage: "https://github.com/quinlan-lab/vcf2db"
+      documentation: "https://github.com/quinlan-lab/vcf2db"
+      tool_dev_url: "https://github.com/quinlan-lab/vcf2db"
+
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.vcf.gz"
+  - ped:
+      type: file
+      description: PED file
+      pattern: "*.ped"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: Gemini-compatible database file
+      pattern: "*.db"
+
+authors:
+  - "@nvnieuwk"
