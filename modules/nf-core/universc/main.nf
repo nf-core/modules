@@ -7,16 +7,6 @@ process UNIVERSC {
         exit 1, "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     container "docker.io/nfcore/universc:1.2.5.1"
-    if (workflow.containerEngine == 'docker'){
-        containerOptions = "--privileged"
-    }
-    if ( workflow.containerEngine == 'podman'){
-        containerOptions = "--runtime crun --userns=keep-id --systemd=always"
-    }
-    if (workflow.containerEngine == 'singularity'){
-        containerOptions = "-B /var/tmp --writable-tmpfs"
-        params.singularity_autoMounts = true
-    }
 
     input:
     tuple val(meta), path(reads)
@@ -31,10 +21,10 @@ process UNIVERSC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
+    def args           = task.ext.args ?: ''
+    def sample_arg     = meta.samples.unique().join(",")
     def reference_name = reference.name
-    def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
+    def input_reads    = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
     universc \\
         --id 'sample-${meta.id}' \\
@@ -47,12 +37,7 @@ process UNIVERSC {
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
         --per-cell-data \\
-        $args 1> _log 2> _err
-
-    # save log files
-    echo !! > sample-${meta.id}/outs/_invocation
-    cp _log sample-${meta.id}/outs/_log
-    cp _err sample-${meta.id}/outs/_err
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -60,7 +45,6 @@ process UNIVERSC {
         universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g' ))
     END_VERSIONS
     """
-
 
     stub:
     """
