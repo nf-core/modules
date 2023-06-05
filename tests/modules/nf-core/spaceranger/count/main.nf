@@ -39,10 +39,10 @@ workflow test_spaceranger_count {
                 area: "D1"
             ],
             [
-                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_fastq_1_gz']),
-                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_fastq_2_gz'])
+                file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_1_gz']),
+                file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_2_gz'])
             ],
-            file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_image']),
+            file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_image']),
             [],
             file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V10L13/V10L13-020.gpr')
         ],
@@ -58,14 +58,14 @@ workflow test_spaceranger_count {
                 area: "B1"
             ],
             [
-                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_fastq_1_gz']),
-                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_fastq_2_gz'])
+                file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_1_gz']),
+                file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_2_gz'])
             ],
-            file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_image']),
+            file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_image']),
             [],
             file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
         ],
         ch_spaceranger_ref,
-        file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_probeset']),
+        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_probeset']),
     )
 }
