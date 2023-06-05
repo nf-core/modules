@@ -4,14 +4,14 @@ nextflow.enable.dsl = 2
 
 include { SPACERANGER_MKGTF } from '../../../../../modules/nf-core/spaceranger/mkgtf/main.nf'
 include { SPACERANGER_MKREF } from '../../../../../modules/nf-core/spaceranger/mkref/main.nf'
-include { 
+include {
     SPACERANGER_COUNT as SPACERANGER_COUNT_FFPE_V1;
     SPACERANGER_COUNT as SPACERANGER_COUNT_FFPE_CYTASSIST
 
 } from '../../../../../modules/nf-core/spaceranger/count/main.nf'
 
 workflow test_spaceranger_count {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
@@ -39,10 +39,10 @@ workflow test_spaceranger_count {
                 area: "D1"
             ],
             [
-                file("./tests/modules/nf-core/spaceranger/count/testdata/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R1_001.fastq.gz"),
-                file("./tests/modules/nf-core/spaceranger/count/testdata/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R2_001.fastq.gz")
+                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_fastq_1_gz']),
+                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_fastq_2_gz'])
             ],
-            file("./tests/modules/nf-core/spaceranger/count/testdata/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_image.jpg"),
+            file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_v1_image']),
             [],
             file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V10L13/V10L13-020.gpr')
         ],
@@ -58,14 +58,14 @@ workflow test_spaceranger_count {
                 area: "B1"
             ],
             [
-                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz"),
-                file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz")
+                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_fastq_1_gz']),
+                file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_fastq_2_gz'])
             ],
-            file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif"),
+            file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_image']),
             [],
             file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr')
         ],
         ch_spaceranger_ref,
-        file("tests/modules/nf-core/spaceranger/count/testdata/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv"),
+        file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_ffpe_cytassist_probeset']),
     )
 }
