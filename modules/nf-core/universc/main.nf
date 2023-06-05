@@ -14,7 +14,7 @@ process UNIVERSC {
 
 
     output:
-    tuple val(meta), path("sample-${meta.id}/outs/*"), emit: outs
+    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
     path "versions.yml"                              , emit: versions
 
     when:
@@ -23,21 +23,16 @@ process UNIVERSC {
     script:
     def args           = task.ext.args ?: ''
     def sample_arg     = meta.samples.unique().join(",")
-    def reference_name = reference.name
     def input_reads    = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
     universc \\
-        --id 'sample-${meta.id}' \\
+        --id '${meta.id}' \\
         ${input_reads} \\
-        --technology '${meta.technology}' \\
-        --chemistry '${meta.chemistry}' \\
-        --reference ${reference_name} \\
-        --description ${sample_arg} \\
+        --reference ${reference} \\
+        $args
         --jobmode "local" \\
         --localcores ${task.cpus} \\
-        --localmem ${task.memory.toGiga()} \\
-        --per-cell-data \\
-        $args
+        --localmem ${task.memory.toGiga()}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
