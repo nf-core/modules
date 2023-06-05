@@ -1,5 +1,4 @@
 name: "metabuli_classify"
-## TODO nf-core: Add a description of the module and list keywords
 description: Classify FASTA files against a metabuli database
 keywords:
   - metabuli
@@ -15,7 +14,7 @@ tools:
       homepage: "https://github.com/steineggerlab/Metabuli"
       documentation: "https://github.com/steineggerlab/Metabuli#readme"
       tool_dev_url: "https://github.com/steineggerlab/Metabuli"
-      doi: "https://doi.org/10.1101/2023.05.31.543018"
+      doi: "10.1101/2023.05.31.543018"
       licence: "['GPL v3']"
 
 input:
@@ -24,13 +23,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-    - fastas:
+  - fastas:
       type: file
-      description: single or paired FASTA files, optionally gzipped
-      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
-    - db:
+      description: single or paired FASTA files
+      pattern: "*.{fa,fasta,fna}"
+  - db:
       type: file
-      description: Metabuli databse file from build or custom made.
+      description: Metabuli database file, prebuild or custom made.
 
 output:
   - meta:
