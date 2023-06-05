@@ -52,4 +52,16 @@ process SPACERANGER_COUNT {
         spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
+    END_VERSIONS
+    """
 }
