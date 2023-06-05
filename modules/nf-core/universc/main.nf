@@ -13,7 +13,7 @@ process UNIVERSC {
     path  reference
 
     output:
-    tuple val(meta), path("${meta.id}", type: "dir"), emit: outs
+    tuple val(meta), path("${meta.id}/outs/", type: "dir"), emit: outs
     path "versions.yml"                             , emit: versions
 
     when:
@@ -22,7 +22,6 @@ process UNIVERSC {
     script:
     def args           = task.ext.args ?: ''
     def sample_arg     = meta.samples.unique().join(",")
-    def reference_name = reference.name
     // Older versions of this module supported a single read but Universc does not
     if ( reads instanceof Path || reads.size() != 2 ) {
         error "UNIVERSC module only supports paired end reads"
@@ -32,11 +31,10 @@ process UNIVERSC {
         $args \\
         --id ${meta.id} \\
         --read1 ${reads[0]} --read2 ${reads[1]} \\
-        --reference ${reference_name} \\
+        --reference ${reference} \\
         --jobmode local \\
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
