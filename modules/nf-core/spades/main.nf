@@ -28,7 +28,7 @@ process SPADES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def maxmem = task.memory.toGiga()
-    def illumina_reads = illumina ? ( meta.single_end ? "--s 1 $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
+    def illumina_reads = illumina ? ( meta.single_end ? "-1 $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
     def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
