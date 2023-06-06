@@ -26,10 +26,13 @@ process SPACERANGER_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Add flags for optional inputs on demand.
     def probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
     def alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
     def slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
+    // Choose the appropriate flag depending on the input type, e.g.
     // --darkimage for fluorescence, --cytaimage for cytassist, ...
+    // Defaults to `--image` for brightfield microscopy.
     def img_type = task.ext.img_type ?: "--image"
     """
     spaceranger count \\
