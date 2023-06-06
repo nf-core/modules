@@ -6,7 +6,7 @@ process HLALA_PREPAREGRAPH {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
-        'quay.io/biocontainers/hla-la:1.0.3--hd03093a_0' }"
+        'biocontainers/hla-la:1.0.3--hd03093a_0' }"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

@@ -67,6 +67,8 @@ jobs:
           - profile: "conda"
             tags: cellranger/mkvdjref
           - profile: "conda"
+            tags: cellranger/multi
+          - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
             tags: coreograph
@@ -119,13 +121,19 @@ jobs:
           - profile: "conda"
             tags: scimap/mcmicro
           - profile: "conda"
+            tags: sentieon/applyvarcal
+          - profile: "conda"
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
             tags: sentieon/dedup
           - profile: "conda"
+            tags: sentieon/gvcftyper
+          - profile: "conda"
             tags: sentieon/haplotyper
+          - profile: "conda"
+            tags: sentieon/varcal
           - profile: "conda"
             tags: universc
           - profile: "singularity"
@@ -135,8 +143,13 @@ jobs:
           - profile: "conda"
             tags: subworkflows/bcl_demultiplex
           - profile: "conda"
+            tags: subworkflows/vcf_annotate_ensemblvep_snpeff
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
-
+          - profile: "conda"
+            tags: subworkflows/fasta_clean_fcs
+          - profile: "conda"
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}

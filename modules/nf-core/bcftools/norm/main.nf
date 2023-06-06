@@ -5,11 +5,11 @@ process BCFTOOLS_NORM {
     conda "bioconda::bcftools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'quay.io/biocontainers/bcftools:1.17--haef29d1_0' }"
+        'biocontainers/bcftools:1.17--haef29d1_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}")  , emit: vcf

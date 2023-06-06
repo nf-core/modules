@@ -5,7 +5,7 @@ process GAPPA_EXAMINEASSIGN {
     conda "bioconda::gappa=0.8.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
+        'biocontainers/gappa:0.8.0--h9a82719_0' }"
 
     input:
     tuple val(meta), path(jplace), path(taxonomy)
