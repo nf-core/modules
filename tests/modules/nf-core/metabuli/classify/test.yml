@@ -1,13 +1,28 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml metabuli/classify
-- name: "metabuli classify"
-  command: nextflow run ./tests/modules/nf-core/metabuli/classify -entry test_metabuli_classify -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/classify/nextflow.config
+- name: metabuli classify test_metabuli_classify_se
+  command: nextflow run ./tests/modules/nf-core/metabuli/classify -entry test_metabuli_classify_se -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/classify/nextflow.config
   tags:
-    - "metabuli"
-    - "metabuli/classify"
+    - metabuli/classify
+    - metabuli
   files:
-    - path: "output/metabuli/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/metabuli/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/metabuli/test_se_out/test_se_classifications.tsv
+      contains:
+        - "2697049"
+    - path: output/metabuli/test_se_out/test_se_report.tsv
+      md5sum: 21efd0f1c3c9b988e43e9f6c7add67ef
+    - path: output/metabuli/versions.yml
+
+- name: metabuli classify test_metabuli_classify_pe
+  command: nextflow run ./tests/modules/nf-core/metabuli/classify -entry test_metabuli_classify_pe -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/classify/nextflow.config
+  tags:
+    - metabuli/classify
+    - metabuli
+  files:
+    - path: output/metabuli/test_pe2_out/test_pe2_classifications.tsv
+      md5sum: 5c47d641e35afc8b57955b5110da72f9
+    - path: output/metabuli/test_pe2_out/test_pe2_report.tsv
+      md5sum: 3bfc704ed233bd85b8a7cca89c0b121e
+    - path: output/metabuli/test_pe_out/test_pe_classifications.tsv
+      md5sum: 5c47d641e35afc8b57955b5110da72f9
+    - path: output/metabuli/test_pe_out/test_pe_report.tsv
+      md5sum: 3bfc704ed233bd85b8a7cca89c0b121e
+    - path: output/metabuli/versions.yml

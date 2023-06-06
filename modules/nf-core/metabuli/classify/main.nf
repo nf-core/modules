@@ -22,7 +22,7 @@ process METABULI_CLASSIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "--seq-mode 1 ${fastas.baseName}" : "${fastas.each{file -> file.baseName}}"
+    def input = meta.single_end ? "--seq-mode 1 ${fastas.baseName}" : "${fastas[0].baseName} ${fastas[1].baseName}"
     """
     gunzip *.gz
     metabuli \\
@@ -36,7 +36,7 @@ process METABULI_CLASSIFY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(echo \$(metabuli 2>&1) | grep Version | sed 's/^metabuli Version: //';))
+        metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
     END_VERSIONS
     """
 }
