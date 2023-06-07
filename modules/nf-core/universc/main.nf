@@ -43,7 +43,6 @@ process UNIVERSC {
     END_VERSIONS
     """
 
-
     stub:
     """
     mkdir -p "${meta.id}/"
