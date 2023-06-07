@@ -22,9 +22,19 @@ process METABULI_CLASSIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "--seq-mode 1 ${fastas.baseName}" : "${fastas[0].baseName} ${fastas[1].baseName}"
+    def is_compressed = meta.single_end ? fastas.getName().endsWith(".gz") : fastas[0].getName().endsWith(".gz")
+    def input = meta.single_end ? "--seq-mode 1 ${fastas}" : "${fastas[0]} ${fastas[1]}"
+    if (is_compressed && meta.single_end) {
+      input = "--seq-mode 1 ${fastas.baseName}"
+    } else if (is_compressed) {
+      input =  "${fastas[0].baseName} ${fastas[1].baseName}"
+    }
+    
     """
-    gunzip *.gz
+    if [ "$is_compressed" == "true" ]; then
+    gzip -d *.gz
+    fi
+
     metabuli \\
         classify \\
         $args \\
