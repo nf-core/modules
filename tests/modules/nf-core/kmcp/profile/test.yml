@@ -1,0 +1,10 @@
+- name: kmcp profile test_kmcp_profile
+  command: nextflow run ./tests/modules/nf-core/kmcp/profile -entry test_kmcp_profile -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/profile/nextflow.config
+  tags:
+    - kmcp
+    - kmcp/profile
+  files:
+    - path: output/untar/kmcp_profile/kmcp_profile.tar.gz
+    - path: output/untar/kmcp_profile/names.dmp
+    - path: output/untar/kmcp_profile/nodes.dmp
+    - path: output/untar/versions.yml
