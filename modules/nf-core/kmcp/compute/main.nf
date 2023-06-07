@@ -41,7 +41,8 @@ process KMCP_COMPUTE {
     def input = sequences.isDirectory()? "--in-dir ${sequences}" : "${sequences}"
     """
     mkdir ${prefix}
-    touch ${prefix}/_info.txt
+    cd ${prefix}
+    touch _info.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
