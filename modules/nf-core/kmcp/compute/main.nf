@@ -38,6 +38,7 @@ process KMCP_COMPUTE {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def input = sequences.isDirectory()? "--in-dir ${sequences}" : "${sequences}"
     """
     mkdir ${prefix}
     touch ${prefix}_info.txt
