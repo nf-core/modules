@@ -9,7 +9,7 @@ workflow test_iphop_predict {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("https://bitbucket.org/srouxjgi/iphop/raw/d27b6bbdcd39a6a1cb8407c44ccbcc800d2b4f78/test/test_input_phages.fna")
+        file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     IPHOP_DOWNLOAD ( )

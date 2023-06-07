@@ -1,22 +1,22 @@
 - name: iphop predict test_iphop_predict
-  command: nextflow run ./tests/modules/nf-core/iphop/predict -entry test_iphop_predict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/iphop/predict/nextflow.config -with-trace
+  command: nextflow run ./tests/modules/nf-core/iphop/predict -entry test_iphop_predict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/iphop/predict/nextflow.config
   tags:
-    - iphop/predict
     - iphop
+    - iphop/predict
   files:
     - path: output/iphop/Detailed_output_by_tool.csv
-      md5sum: 70c85777f255588ef1bbea546045c53a
+      md5sum: e5f74c5cf5031df6b120c65e5129c12f
     - path: output/iphop/Host_prediction_to_genome_m90.csv
-      md5sum: e9801872bfb7fffe49503fe87e9cc97c
+      md5sum: aae8e86ad50f31e08875c45ecb790309
     - path: output/iphop/Host_prediction_to_genus_m90.csv
-      md5sum: c9a51712bf13ad5ed85886128917cb8d
+      md5sum: 8d09a650826b8065013b0440190dfac9
     - path: output/iphop/versions.yml
 
 - name: iphop predict test_iphop_predict_stub
   command: nextflow run ./tests/modules/nf-core/iphop/predict -entry test_iphop_predict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/iphop/predict/nextflow.config -stub-run
   tags:
-    - iphop/predict
     - iphop
+    - iphop/predict
   files:
     - path: output/iphop/Detailed_output_by_tool.csv
     - path: output/iphop/Host_prediction_to_genome_m90.csv
