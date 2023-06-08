@@ -1,0 +1,9 @@
+- name: seqkit grep test_seqkit_grep
+  command: nextflow run ./tests/modules/nf-core/seqkit/grep -entry test_seqkit_grep -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/seqkit/grep/nextflow.config
+  tags:
+    - seqkit
+    - seqkit/grep
+  files:
+    - path: output/seqkit/test.fa.gz
+      md5sum: d2c774388d0cffb4663a2c4b5b6dd5df
+    - path: output/seqkit/versions.yml
