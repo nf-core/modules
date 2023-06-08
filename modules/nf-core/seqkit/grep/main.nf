@@ -24,14 +24,14 @@ process SEQKIT_GREP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
     def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
-    def pattern_file = ${pattern} ? "-f ${pattern}" : ""
-    
+    def pattern_file = pattern ? "-f ${pattern}" : ""
+
     """
     seqkit \\
         grep \\
         $args \\
         --threads $task.cpus \\
-        ${file_pattern} \\
+        ${pattern_file} \\
         ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
 
@@ -41,7 +41,7 @@ process SEQKIT_GREP {
     END_VERSIONS
     """
 
-    stub: 
+    stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
@@ -49,7 +49,7 @@ process SEQKIT_GREP {
 
     """
     touch ${prefix}.${suffix}.gz
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqkit: \$( seqkit version | sed 's/seqkit v//' )

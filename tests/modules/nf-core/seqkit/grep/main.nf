@@ -19,13 +19,13 @@ workflow test_seqkit_grep_file {
     SEQKIT_GREP_FILE ( sequence, pattern )
 }
 
-workflow test_seqkit_grep_file_string {
+workflow test_seqkit_grep_string {
 
     sequence = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_fasta_gz'], checkIfExists: true)
     ]
-    
+
     pattern = []
 
     SEQKIT_GREP_STRING ( sequence, pattern)
