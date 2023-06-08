@@ -4,8 +4,8 @@ process MMSEQS_DATABASES {
 
     conda "bioconda::mmseqs2=14.7e284"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https:/depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
-        'biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
+        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
+        'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
 
     input:
     val database
