@@ -23,9 +23,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - sequences:
-      type:
-        - file
-        - directory
+      type: file
       description: fasta file, or a directory containing FASTA files
       pattern: "**/*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
 

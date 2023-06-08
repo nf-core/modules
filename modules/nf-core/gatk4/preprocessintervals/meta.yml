@@ -20,31 +20,55 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - exclude_intervals:
-      type: file
-      description: Interval file (bed or interval_list) with the genomic regions to be excluded from the analysis (optional)
-      pattern: "*.{bed,interval_list}"
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fai:
       type: file
       description: Index of reference fasta file
       pattern: "*.fasta.fai"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - dict:
       type: file
       description: GATK sequence dictionary
       pattern: "*.dict"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - intervals:
+      type: file
+      description: Interval file (bed or interval_list) with the genomic regions to be included from the analysis (optional)
+      pattern: "*.{bed,interval_list}"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - exclude_intervals:
+      type: file
+      description: Interval file (bed or interval_list) with the genomic regions to be excluded from the analysis (optional)
+      pattern: "*.{bed,interval_list}"
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
@@ -57,3 +81,4 @@ output:
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"
+  - "@ramprasadn"

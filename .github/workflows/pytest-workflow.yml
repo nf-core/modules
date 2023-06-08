@@ -65,6 +65,12 @@ jobs:
           - profile: "conda"
             tags: cellranger/mkref
           - profile: "conda"
+            tags: cellranger/mkvdjref
+          - profile: "conda"
+            tags: cellranger/multi
+          - profile: "conda"
+            tags: cellranger/vdj
+          - profile: "conda"
             tags: coreograph
           - profile: "conda"
             tags: deepcell/mesmer
@@ -83,9 +89,17 @@ jobs:
           - profile: "conda"
             tags: fcs/fcsgx
           - profile: "conda"
+            tags: gatk4/baserecalibratorspark
+          - profile: "conda"
             tags: gatk4/cnnscorevariants
           - profile: "conda"
             tags: gatk4/determinegermlinecontigploidy
+          - profile: "conda"
+            tags: gatk4/germlinecnvcaller
+          - profile: "conda"
+            tags: gatk4/markduplicatesspark
+          - profile: "conda"
+            tags: gatk4/postprocessgermlinecnvcalls
           - profile: "conda"
             tags: genescopefk
           - profile: "conda"
@@ -107,22 +121,35 @@ jobs:
           - profile: "conda"
             tags: scimap/mcmicro
           - profile: "conda"
+            tags: sentieon/applyvarcal
+          - profile: "conda"
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
             tags: sentieon/dedup
           - profile: "conda"
+            tags: sentieon/gvcftyper
+          - profile: "conda"
             tags: sentieon/haplotyper
+          - profile: "conda"
+            tags: sentieon/varcal
           - profile: "conda"
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "singularity"
+            tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
             tags: subworkflows/bcl_demultiplex
           - profile: "conda"
+            tags: subworkflows/vcf_annotate_ensemblvep_snpeff
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
-
+          - profile: "conda"
+            tags: subworkflows/fasta_clean_fcs
+          - profile: "conda"
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -203,11 +230,19 @@ jobs:
           sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
+      - name: Setting global variables
+        uses: actions/github-script@v6
+        id: parsed
+        with:
+          script: |
+            return '${{ matrix.tags }}'.toLowerCase().replaceAll(/\//g, '-').trim('-').trim('"')
+          result-encoding: string
+
       - name: Upload logs on failure
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.profile }}
+          name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out

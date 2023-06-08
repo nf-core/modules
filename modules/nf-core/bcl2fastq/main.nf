@@ -2,7 +2,7 @@ process BCL2FASTQ {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nfcore/bcl2fastq:2.20.0.422"
+    container "nf-core/bcl2fastq:2.20.0.422"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

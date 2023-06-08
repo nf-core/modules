@@ -7,7 +7,7 @@ process BASICPY {
         exit 1, "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
 
-    container "yfukai/basicpy-docker-mcmicro:0.2.1"
+    container "docker.io/yfukai/basicpy-docker-mcmicro:0.2.1"
 
     input:
     tuple val(meta), path(image)

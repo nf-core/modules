@@ -13,9 +13,15 @@ workflow test_gatk4_createsomaticpanelofnormals {
     input = Channel.of([ id:'test'])
               .combine(UNTAR.out.untar.map{ it[1] })
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+    fai   = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+    dict  = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+            ]
 
-    GATK4_CREATESOMATICPANELOFNORMALS ( input, fasta, fastaidx, dict )
+    GATK4_CREATESOMATICPANELOFNORMALS ( input, fasta, fai, dict )
 }
