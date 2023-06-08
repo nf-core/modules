@@ -23,23 +23,17 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - pattern:
-      type: file
-      description: >
-        pattern file (one record per line)
-      pattern: "*.{txt,tsv}"
-
-  - meta2:
-      type: map
-      description: >
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-
-  - reference:
+  - sequence:
       type: file
       description: >
         Fasta or fastq file containing sequences to be filtered
       pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
+  
+  - pattern:
+      type: file
+      description: >
+        pattern file (one record per line). If no pattern is given, a string can be specificied within the args using '-p pattern_string' 
+      pattern: "*.{txt,tsv}"
 
 output:
   - meta:
@@ -53,7 +47,7 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - fasta:
+  - filter:
       type: file
       description: >
         Fasta or fastq file containing the filtered sequences

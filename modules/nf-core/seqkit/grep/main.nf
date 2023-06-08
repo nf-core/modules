@@ -9,11 +9,11 @@ process SEQKIT_GREP {
         'biocontainers/seqkit:2.4.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(pattern)
-    tuple val(meta2), path(reference)
+    tuple val(meta), path(sequence)
+    path pattern
 
     output:
-    tuple val(meta), path("*.{fa,fq}.gz")  , emit: fasta
+    tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
     path "versions.yml"                    , emit: versions
 
     when:
@@ -23,17 +23,33 @@ process SEQKIT_GREP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    def suffix = task.ext.suffix ?: "${reference}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
-
+    def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+    def pattern_file = ${pattern} ? "-f ${pattern}" : ""
+    
     """
     seqkit \\
         grep \\
         $args \\
         --threads $task.cpus \\
-        -f ${pattern} \\
-        ${reference} \\
+        ${file_pattern} \\
+        ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+    END_VERSIONS
+    """
+
+    stub: 
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
+    def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+
+    """
+    touch ${prefix}.${suffix}.gz
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqkit: \$( seqkit version | sed 's/seqkit v//' )
