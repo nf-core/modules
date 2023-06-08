@@ -13,6 +13,7 @@ process UMITOOLS_DEDUP {
 
     output:
     tuple val(meta), path("*.bam")             , emit: bam
+    tuple val(meta), path("*.log")             , emit: log
     tuple val(meta), path("*edit_distance.tsv"), optional:true, emit: tsv_edit_distance
     tuple val(meta), path("*per_umi.tsv")      , optional:true, emit: tsv_per_umi
     tuple val(meta), path("*per_position.tsv") , optional:true, emit: tsv_umi_per_position
@@ -33,6 +34,7 @@ process UMITOOLS_DEDUP {
         dedup \\
         -I $bam \\
         -S ${prefix}.bam \\
+        -L ${prefix}.log \\
         $stats \\
         $paired \\
         $args
