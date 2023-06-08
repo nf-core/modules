@@ -8,7 +8,7 @@ process UMITOOLS_DEDUP {
         'biocontainers/umi_tools:1.1.4--py38hbff2b2d_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam, stageAs: 'input/*'), path(bai, stageAs: 'input/*')
     val get_output_stats
 
     output:
