@@ -35,8 +35,12 @@ process SAMTOOLS_FAIDX {
     """
 
     stub:
+    def match = (task.ext.args =~ /-o(?:utput)?\s(.*)\s?/).findAll()
+    def fastacmd = match[0] ? "touch ${match[0][1]}" : ''
     """
+    ${fastacmd}
     touch ${fasta}.fai
+
     cat <<-END_VERSIONS > versions.yml
 
     "${task.process}":
