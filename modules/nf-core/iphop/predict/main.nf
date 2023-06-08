@@ -2,10 +2,10 @@ process IPHOP_PREDICT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::iphop=1.3.1"
+    conda "bioconda::iphop=1.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iphop:1.3.1--pyhdfd78af_0':
-        'biocontainers/iphop:1.3.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0':
+        'biocontainers/iphop:1.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
