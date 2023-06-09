@@ -55,9 +55,9 @@ workflow test_gatk4_svannotate_fasta {
 
     GATK4_SVANNOTATE (
         MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by:0).map({ meta, vcf, tbi -> [ meta, vcf, tbi, [] ]}),
-        fasta,
-        fasta_fai,
-        dict
+        fasta.map{ meta, fasta -> [fasta] },
+        fasta_fai.map{ meta, fasta_fai -> [fasta_fai] },
+        dict.map{ meta, dict -> [dict] }
     )
 }
 
