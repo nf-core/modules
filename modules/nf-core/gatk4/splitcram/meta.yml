@@ -2,16 +2,17 @@ name: "gatk4_splitcram"
 description: Splits CRAM files efficiently by taking advantage of their container based structure
 keywords:
   - gatk4
-  - cram
-  - split
+  - splitcram
 tools:
-  - gatk4:
-      description: Genome Analysis Toolkit (GATK4)
+  - "gatk4":
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
-      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: "10.1158/1538-7445.AM2017-3590"
-      licence: ["BSD-3-clause"]
+      documentation: https://github.com/broadinstitute/gatk
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
