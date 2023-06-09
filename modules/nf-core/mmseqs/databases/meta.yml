@@ -1,12 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_databases"
-## TODO nf-core: Add a description of the module and list keywords
 description: Download an mmseqs-formatted database
 keywords:
-  - sort
-  - example
-  - genomics
+  - database
+  - indexing
+  - clustering
+  - searching
 tools:
   - "mmseqs":
       description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
@@ -17,7 +17,6 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  #
   - database:
       type: string
       description: Database available through the mmseqs2 databases interface - see https://github.com/soedinglab/MMseqs2/wiki#downloading-databases for details
@@ -30,7 +29,6 @@ output:
   - database:
       type: directory
       description: Directory containing processed mmseqs database
-      pattern: "mmseqs_database/"
 
 authors:
   - "@prototaxites"
