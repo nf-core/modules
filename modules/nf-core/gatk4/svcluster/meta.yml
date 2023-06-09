@@ -4,7 +4,7 @@ keywords:
   - gatk4
   - svcluster
   - vcf
-  - structural variants
+  - structural_variants
 tools:
   - "gatk4":
       description: |
@@ -23,11 +23,11 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: file
       description: One or more VCF files created with a structural variant caller
       pattern: "*.vcf.gz"
   - indices:
-      type: files
+      type: file
       description: Index files for the VCFs
       pattern: "*.vcf.gz.tbi"
   - ploidy_table:
