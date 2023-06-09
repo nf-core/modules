@@ -41,8 +41,8 @@ workflow test_gatk4_svcluster {
     GATK4_SVCLUSTER (
         svcluster_input,
         ploidy,
-        fasta,
-        fasta_fai,
-        dict
+        fasta.map{ meta, fasta -> [fasta] },
+        fasta_fai.map{ meta, fasta_fai -> [fasta_fai] },
+        dict.map{ meta, dict -> [dict] }
     )
 }
