@@ -19,7 +19,7 @@ process MMSEQS_DATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: 'mmseqs_database`
+    prefix = task.ext.prefix ?: 'mmseqs_database'
     """
     mkdir ${prefix}/
 
