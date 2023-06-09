@@ -11,7 +11,7 @@ process MMSEQS_DATABASES {
     val database
 
     output:
-    path "mmseqs_database/" , emit: database
+    path "${prefix}/" , emit: database
     path "versions.yml"     , emit: versions
 
     when:
@@ -19,12 +19,13 @@ process MMSEQS_DATABASES {
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: 'mmseqs_database`
     """
-    mkdir mmseqs_database/
+    mkdir ${prefix}/
 
     mmseqs databases \\
         ${database} \\
-        mmseqs_database/database \\
+        ${prefix}/database \\
         tmp/ \\
         --threads ${task.cpus} \\
         --compressed 1 \\
@@ -37,20 +38,21 @@ process MMSEQS_DATABASES {
     """
 
     stub:
+    prefix = task.ext.prefix ?: 'mmseqs_database'
     """
-    mkdir mmseqs_database/
+    mkdir ${prefix}/
 
-    touch mmseqs_database/database
-    touch mmseqs_database/database.dbtype
-    touch mmseqs_database/database_h
-    touch mmseqs_database/database_h.dbtype
-    touch mmseqs_database/database_h.index
-    touch mmseqs_database/database.index
-    touch mmseqs_database/database.lookup
-    touch mmseqs_database/database_mapping
-    touch mmseqs_database/database.source
-    touch mmseqs_database/database_taxonomy
-    touch mmseqs_database/database.version
+    touch ${prefix}/database
+    touch ${prefix}/database.dbtype
+    touch ${prefix}/database_h
+    touch ${prefix}/database_h.dbtype
+    touch ${prefix}/database_h.index
+    touch ${prefix}/database.index
+    touch ${prefix}/database.lookup
+    touch ${prefix}/database_mapping
+    touch ${prefix}/database.source
+    touch ${prefix}/database_taxonomy
+    touch ${prefix}/database.version
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
