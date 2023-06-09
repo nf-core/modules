@@ -21,7 +21,7 @@
     - path: output/kmcp/test_/transcriptome.fasta.unik
     - path: output/kmcp/versions.yml
 
-- name: kmcp compute test_kmcp_compute_stub
+- name: kmcp compute test_kmcp_compute stub
   command: nextflow run ./tests/modules/nf-core/kmcp/compute -entry test_kmcp_compute -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/compute/nextflow.config -stub-run
   tags:
     - kmcp
