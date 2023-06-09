@@ -42,7 +42,7 @@ process KMCP_COMPUTE {
     """
     mkdir ${prefix}
     cd ${prefix}
-    touch "_info.txt"
+    touch "_info.txt" \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
