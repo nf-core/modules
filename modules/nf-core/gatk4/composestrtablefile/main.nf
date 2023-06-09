@@ -22,7 +22,7 @@ process GATK4_COMPOSESTRTABLEFILE {
     script:
     def args = task.ext.args ?: ''
 
-    def avail_mem = 6
+    def avail_mem = 6144
     if (!task.memory) {
         log.info '[GATK ComposeSTRTableFile] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
     } else {
