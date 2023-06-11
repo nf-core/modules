@@ -1,0 +1,48 @@
+name: "metabuli_build"
+description: Build a database needed to use the metabuli classification tool
+keywords:
+  - metabuli
+  - metagenomics
+  - profiling
+  - taxonomy
+  - database
+tools:
+  - "metabuli":
+      description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli#readme"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "10.1101/2023.05.31.543018"
+      licence: "['GPL v3']"
+
+input:
+  - genomes:
+      type: file
+      description: Genome files that serve as entries in the database
+      pattern: "*.{fa,fasta,fna}"
+  - acc2taxid:
+      type: file
+      description: |
+        Accession number to taxid file. 
+        A four column tsv with the following header: 
+        accession, accession.revision, taxid, gi.
+  - db:
+      type: directory
+      description: |
+        Output folder name for the database. 
+        If the taxonomy-path optional parameter is not set to a directory 
+        containing names.dmp and nodes.dmp, this directory needs 
+        to contain a folder named taxonomy containing those two files.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: Compressed metabuli database
+      pattern: "*.tar.gz"
+
+authors:
+  - "@TheOafidian"
