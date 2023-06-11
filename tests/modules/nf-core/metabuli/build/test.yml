@@ -1,0 +1,8 @@
+- name: metabuli build test_metabuli_build
+  command: nextflow run ./tests/modules/nf-core/metabuli/build -entry test_metabuli_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/build/nextflow.config
+  tags:
+    - metabuli
+    - metabuli/build
+  files:
+    - path: output/metabuli/metabuli_db.tar.gz
+    - path: output/metabuli/versions.yml

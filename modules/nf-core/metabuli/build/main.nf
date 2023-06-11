@@ -1,7 +1,7 @@
 
 process METABULI_BUILD {
     tag 'build'
-    label 'process_single'
+    label 'process_medium'
 
     conda "bioconda::metabuli=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,6 +23,7 @@ process METABULI_BUILD {
     script:
     def args = task.ext.args ?: ''
     def args_lib = task.ext.args_lib ?: ''
+    def skip_lib = params.skip_lib ?: false 
     """
     ls $genomes > fastas.txt
     metabuli \\
@@ -32,7 +33,7 @@ process METABULI_BUILD {
         $db
         $args_lib
 
-    ls $db/library > lib.txt
+    ls $db/library/* > lib.txt
     metabuli \\
         build \\
         --threads $task.cpus \\
@@ -40,10 +41,10 @@ process METABULI_BUILD {
         lib.txt \\
         $acc2taxid \\
         $args
-    
-    mkdir metabuli_db
-    mv $db/!(*y) metabuli_db
-    tar -czf "${db}.tar.gz" metabuli_db
+        
+    rm -r $db/library
+    tar -czf metabuli_db.tar.gz $db
+    rm -r $db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

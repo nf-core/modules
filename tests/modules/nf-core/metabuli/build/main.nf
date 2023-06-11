@@ -30,6 +30,7 @@ process CREATE_TAXONOMY_FOLDER{
     """
     mkdir -p db/taxonomy
     mv *.dmp db/taxonomy
+    touch db/taxonomy/merged.dmp
     """
 
 }
@@ -38,8 +39,8 @@ workflow test_metabuli_build {
     
     genome = file("${params.test_data_base}/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
     dmp_files = [
-        file("${params.test_data_base}/data/genomics/sarscov2/metagenome/names.dmp"),
-        file("${params.test_data_base}/data/genomics/sarscov2/metagenome/nodes.dmp")
+        file("${params.test_data_metabuli}/data/genomics/sarscov2/metagenome/names.dmp"),
+        file("${params.test_data_metabuli}/data/genomics/sarscov2/metagenome/nodes.dmp")
     ]
     acc2taxid = BUILD_ACC2TAXID(genome)
     tax = CREATE_TAXONOMY_FOLDER(dmp_files) 
