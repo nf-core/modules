@@ -50,16 +50,4 @@ process KMCP_PROFILE {
         kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
     END_VERSIONS
     """
-    stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.profile
-    gzip ${prefix}.profile
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kmcp: \$(echo \$(kmcp version 2>&1) | sed -n 1p | sed 's/^.*kmcp v//')
-    END_VERSIONS
-    """
 }
