@@ -39,6 +39,7 @@ process METAEUK_EASYPREDICT {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fas
     touch ${prefix}.codon.fas
