@@ -25,7 +25,11 @@ process GATK4_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+
+    // If the extension is CRAM, then change it to BAM
+    prefix_bam = prefix.getExtension != 'cram' ?: "${prefix.getBasename()}.bam"
+
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
@@ -41,15 +45,17 @@ process GATK4_MARKDUPLICATES {
     """
     gatk --java-options "-Xmx${avail_mem}M" MarkDuplicates \\
         $input_list \\
-        --OUTPUT ${prefix} \\
+        --OUTPUT ${prefix_bam} \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         ${reference} \\
         $args
 
-    if  [[ ${prefix} == *.cram ]]&&[[ -f ${prefix}.bai ]]; then
+    # If cram files are wished as output, the run samtools for conversion
+    if [[ ${prefix} == *.cram ]]; then
         samtools view -Ch -T ${fasta} -o ${prefix} ${prefix}.bam
-        rm ${prefix}.bam
+        rm ${prefix_bam}
+        rm ${prefix_bam}.bai
         samtools index ${prefix}
     fi
 
