@@ -5,12 +5,10 @@ process SENTIEON_GVCFTYPER {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container 'nf-core/sentieon:202112.06'
+    conda "bioconda::sentieon=202112.07"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sentieon:202112.07--h43eeafb_2':
+        'biocontainers/sentieon:202112.07--h43eeafb_2' }"
 
     input:
     tuple val(meta), path(gvcfs), path(tbis), path(intervals)
