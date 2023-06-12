@@ -12,7 +12,7 @@ process SPACERANGER_COUNT {
 
 
     input:
-    tuple val(meta), path(reads), path(image), path(alignment), path(slidefile)
+    tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
     path(reference)
     path(probeset)
 
@@ -30,21 +30,21 @@ process SPACERANGER_COUNT {
     def probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
     def alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
     def slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
-    // Choose the appropriate flag depending on the input type, e.g.
-    // --darkimage for fluorescence, --cytaimage for cytassist, ...
-    // Defaults to `--image` for brightfield microscopy.
-    def img_type = task.ext.img_type ?: "--image"
+    def image = image ? "--image=\"${image}\"" : ""
+    def cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
+    def darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
+    def colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
     """
     spaceranger count \\
         --id="${prefix}" \\
         --sample="${meta.id}" \\
         --fastqs=. \\
-        ${img_type}="${image}" \\
         --slide="${meta.slide}" \\
         --area="${meta.area}" \\
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
+        $image $cytaimage $darkimage $colorizedimage \\
         $probeset \\
         $alignment \\
         $slidefile \\

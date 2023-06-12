@@ -38,6 +38,9 @@ workflow test_spaceranger_count {
                 file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_2_gz'])
             ],
             file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_image']),
+            [], // cytaimage
+            [], // darkimage
+            [], // colorizedimage
             [], // Manual alignment (default: automatic alignment)
             []  // Slide specification (per default download automatically)
         ],
@@ -56,7 +59,10 @@ workflow test_spaceranger_count {
                 file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_1_gz']),
                 file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_2_gz'])
             ],
+            [], // image
             file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_image']),
+            [], // darkimage
+            [], // colorizedimage
             [], // Manual alignment (default: automatic alignment)
             file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr') // Manual specification of slide info
         ],
