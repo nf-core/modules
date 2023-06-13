@@ -28,7 +28,7 @@ process GATK4_MARKDUPLICATES {
     prefix = task.ext.prefix ?: "${meta.id}.bam"
 
     // If the extension is CRAM, then change it to BAM
-    prefix_bam = prefix.getExtension() != 'cram' ?: "${prefix.getBasename()}.bam"
+    prefix_bam = prefix.tokenize('.')[-1] != 'cram' ?: "${prefix.getBasename()}.bam"
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
