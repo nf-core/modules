@@ -44,7 +44,6 @@ process KMCP_PROFILE {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.profile
-    tar cvzf kmcp_profile.tar.gz ${prefix}.profile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
