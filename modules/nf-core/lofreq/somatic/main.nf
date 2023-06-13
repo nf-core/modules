@@ -1,6 +1,6 @@
 process LOFREQ_SOMATIC {
     tag "$meta.id"
-    label 'process_high'
+    label "process_high"
 
     conda "bioconda::lofreq=2.1.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -20,7 +20,7 @@ process LOFREQ_SOMATIC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def options_target_bed = target_bed ? "-l ${target_bed}" : ""
     """
