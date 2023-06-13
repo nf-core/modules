@@ -28,7 +28,7 @@ process GATK4_MARKDUPLICATES {
     prefix = task.ext.prefix ?: "${meta.id}.bam"
 
     // If the extension is CRAM, then change it to BAM
-    prefix_bam = prefix.tokenize('.')[-1] != 'cram' ?: "${prefix.getBasename()}.bam"
+    prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
@@ -53,9 +53,8 @@ process GATK4_MARKDUPLICATES {
 
     # If cram files are wished as output, the run samtools for conversion
     if [[ ${prefix} == *.cram ]]; then
-        samtools view -Ch -T ${fasta} -o ${prefix} ${prefix}.bam
+        samtools view -Ch -T ${fasta} -o ${prefix} ${prefix_bam}
         rm ${prefix_bam}
-        rm ${prefix_bam}.bai
         samtools index ${prefix}
     fi
 
