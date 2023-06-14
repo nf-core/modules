@@ -3,7 +3,7 @@ process SPACERANGER_MKGTF {
     label 'process_low'
 
     // TODO push to nf-core docker
-    container "ghcr.io/grst/spaceranger:2.1.0"
+    container "docker.io/nfcore/spaceranger:2.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
