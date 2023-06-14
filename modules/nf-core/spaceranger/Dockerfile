@@ -10,12 +10,12 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # Copy pre-downloaded spaceranger file
 ENV SPACERANGER_VER 2.1.0
-COPY spaceranger-$SPACERANGER_VER.tar.gz /opt/spaceranger-$SPACERANGER_VER.tar.gz
+COPY spaceranger-$SPACERANGER_VER.tar /opt/spaceranger-$SPACERANGER_VER.tar
 
 # Install spaceranger
 RUN \
     cd /opt && \
-    tar -xzvf spaceranger-$SPACERANGER_VER.tar.gz && \
+    tar -xvf spaceranger-$SPACERANGER_VER.tar && \
     export PATH=/opt/spaceranger-$SPACERANGER_VER:$PATH && \
     ln -s /opt/spaceranger-$SPACERANGER_VER/spaceranger /usr/bin/spaceranger && \
-    rm -rf /opt/spaceranger-$SPACERANGER_VER.tar.gz
+    rm -rf /opt/spaceranger-$SPACERANGER_VER.tar
