@@ -34,7 +34,6 @@ process GATK4_SVCLUSTER {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-
     """
     gatk --java-options "-Xmx${avail_mem}M" SVCluster \\
         --output ${prefix}.vcf.gz \\

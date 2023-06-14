@@ -1,6 +1,7 @@
 process MANTA_CONVERTINVERSION {
     tag "$meta.id"
     label 'process_low'
+    label 'error_retry'
 
     conda "bioconda::manta=1.6.0 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
