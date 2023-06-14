@@ -25,7 +25,7 @@ process UPD {
     upd \\
         --vcf $vcf \\
         $args \\
-        --vep \\
+        --af-tag AF \\
         regions --out ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
