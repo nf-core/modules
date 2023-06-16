@@ -11,12 +11,12 @@ tools:
       homepage: "https://github.com/DiltheyLab/HLA-LA"
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
-      doi: "https://doi.org/10.1093/bioinformatics/btz235"
+      doi: "10.1093/bioinformatics/btz235"
       licence: "['GPL']"
 
 input:
   - graph:
-      type: path
+      type: directory
       description: PRG graph directory
 
 output:
@@ -25,7 +25,7 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - folder:
-      type: path
+      type: directory
       description: Directory containing indexed graph
 
 authors:
