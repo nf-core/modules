@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_PREPROCESS {
+process VARLOCIRAPTOR_CALLVARIANTS {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,14 +8,13 @@ process VARLOCIRAPTOR_PREPROCESS {
         'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(candidates), path(alignment_json)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta), path(vcf)
+    path (scenario)
 
     output:
     tuple val(meta), path("*.bcf.gz"), emit: bcf_gz, optional: true
     tuple val(meta), path("*.vcf.gz"), emit: vcf_gz, optional: true
-    path "versions.yml"              , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,15 +22,13 @@ process VARLOCIRAPTOR_PREPROCESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.vcf.gz"
-    def alignment_properties_json = alignment_json ? "--alignment-properties ${alignment_json}" : ""
+    def scenario_command = scenario ? "generic --scenario $scenario" : "tumor-normal"
     """
-    varlociraptor preprocess variants \\
-        $fasta \\
-        $alignment_properties_json \\
-        --bam $bam \\
-        --candidates $candidates \\
-        ${args} \\
-        > ${prefix}
+    varlociraptor call variants \\
+        --output ${prefix} \\
+        ${scenario_command} \\
+        $args \\
+        $vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

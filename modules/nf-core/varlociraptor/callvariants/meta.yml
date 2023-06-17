@@ -1,9 +1,9 @@
-name: "varlociraptor_preprocess"
-description: Obtains per-sample observations for the actual calling process with varlociraptor calls
+name: "varlociraptor_callvariants"
+description: Call variants for a given scenario specified with the varlociraptor calling grammar, preprocessed by varlociraptor preprocessing
 keywords:
   - observations
   - variants
-  - preprocessing
+  - calling
 tools:
   - "varlociraptor":
       description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
@@ -14,41 +14,18 @@ tools:
       licence: "['GPL v3']"
 
 input:
+  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+
+  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - candidates:
-      type: file
-      description: Sorted BCF/VCF file
-      pattern: "*.{bcf,vcf,vcf.gz}"
-  - alignment_json:
-      type: file
-      description: File containing alignment properties obtained with varlociraptor/estimatealignmentproperties
-      pattern: "*.json"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Reference fasta file
-      pattern: "*.{fasta}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference index information
-        e.g. [ id:'test', single_end:false ]
-  - fai:
-      type: file
-      description: Index for reference fasta file (must be with samtools index)
-      pattern: "*.{fai}"
 
 output:
   - meta:
