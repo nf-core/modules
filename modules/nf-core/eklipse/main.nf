@@ -24,7 +24,7 @@ process EKLIPSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def ref_gb = ref_gb ? "$ref_gb" : "/usr/local/bin/data/NC_012920.1.gb"
-    def EKLIPSE_VERSION = "1.8" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = "1.8" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "$bam\t${prefix}" > infile.txt
     eKLIPse.py \\
@@ -36,13 +36,13 @@ process EKLIPSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eklipse: $EKLIPSE_VERSION
+        eklipse: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def EKLIPSE_VERSION = "1.8"
+    def VERSION = "1.8"
     """
     touch eKLIPse_deletions.csv
     touch eKLIPse_genes.csv
@@ -50,7 +50,7 @@ process EKLIPSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eklipse: $EKLIPSE_VERSION
+        eklipse: $VERSION
     END_VERSIONS
     """
 }
