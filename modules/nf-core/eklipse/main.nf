@@ -13,7 +13,8 @@ process EKLIPSE {
     path ref_gb
 
     output:
-    tuple val(meta), path("*deletions.csv"), path("*genes.csv"), emit: csv
+    tuple val(meta), path("*deletions.csv") , emit: deletions
+    tuple val(meta), path("*genes.csv")     , emit: genes
     tuple val(meta), path("*.png")                             , emit: circos
     path "versions.yml"                                        , emit: versions
 
