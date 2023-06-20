@@ -10,7 +10,7 @@ process CELLRANGER_COUNT {
     }
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: "???/*")
     path  reference
 
     output:
@@ -24,21 +24,7 @@ process CELLRANGER_COUNT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
-    """
-    cellranger \\
-        count \\
-        --id='$prefix' \\
-        --fastqs=. \\
-        --transcriptome=$reference_name \\
-        --localcores=$task.cpus \\
-        --localmem=${task.memory.toGiga()} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
-    """
+    template: "cellranger_count.py"
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
