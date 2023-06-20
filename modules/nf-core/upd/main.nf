@@ -25,7 +25,7 @@ process UPD {
     upd \\
         --vcf $vcf \\
         $args \\
-        regions --out ${prefix}.bed
+        --out ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
