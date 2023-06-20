@@ -2,7 +2,7 @@ process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:7.1.0"
+    container "nfcore/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -24,7 +24,7 @@ process CELLRANGER_COUNT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
-    template: "cellranger_count.py"
+    template "cellranger_count.py"
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
