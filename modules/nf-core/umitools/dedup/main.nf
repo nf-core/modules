@@ -45,4 +45,18 @@ process UMITOOLS_DEDUP {
         umitools: \$(umi_tools --version 2>&1 | sed 's/^.*UMI-tools version://; s/ *\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.log
+    touch ${prefix}_edit_distance.tsv
+    touch ${prefix}_per_umi.tsv
+    touch ${prefix}_per_position.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        umitools: \$(umi_tools --version 2>&1 | sed 's/^.*UMI-tools version://; s/ *\$//')
+    END_VERSIONS
+    """
 }
