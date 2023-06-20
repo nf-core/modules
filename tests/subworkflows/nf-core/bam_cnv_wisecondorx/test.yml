@@ -1,12 +1,16 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core subworkflows create-test-yml
-- name: ""
-  command: nextflow run ./tests/subworkflows/nf-core/ -entry test_ -c ./tests/config/nextflow.config
+- name: "bam_cnv_wisecondorx test_bam_cnv_wisecondorx"
+  command: nextflow run ./tests/subworkflows/nf-core/bam_cnv_wisecondorx -entry test_bam_cnv_wisecondorx -c ./tests/config/nextflow.config -stub
   tags:
-    - "subworkflows"
-    - "subworkflows/"
+    - wisecondorx
+    - wisecondorx/convert
+    - wisecondorx/predict
+    - subworkflows
+    - subworkflows/bam_cnv_wisecondorx
   files:
-    - path: "output//test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output//versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: "output/wisecondorx/test_aberrations.bed"
+    - path: "output/wisecondorx/test_bins.bed"
+    - path: "output/wisecondorx/test_chr_statistics.txt"
+    - path: "output/wisecondorx/test_segments.bed"
+    - path: "output/wisecondorx/chr22.png"
+    - path: "output/wisecondorx/chr1.png"
+    - path: "output/wisecondorx/genome_wide.png"

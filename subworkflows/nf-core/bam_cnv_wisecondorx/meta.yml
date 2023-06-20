@@ -1,46 +1,65 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: ""
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+name: bam_cnv_wisecondorx
+description: A subworkflow for calling CNVs using WisecondorX
 keywords:
-  - sort
+  - cnv
   - bam
-  - sam
+  - bed
   - cram
-## TODO nf-core: Add a list of the modules used in the subworkflow
+  - plots
+  - genomics
+
 modules:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the variables used as input, including their types and descriptions
+  - wisecondorx/convert
+  - wisecondorx/predict
+
 input:
-  - meta:
-      type: map
+  - ch_bam:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-## TODO nf-core: List all of the variables used as output, including their types and descriptions
+        An input channel containing BAM/CRAM files and their indices
+        Structure: [ val(meta), path(bam), path(bai) ]
+  - ch_fasta:
+      description: |
+        A channel containing the reference FASTA file
+        Structure: [ val(meta2), path(fasta) ]
+  - ch_fai:
+      description: |
+        A channel containing the index of the reference FASTA file
+        Structure: [ val(meta3), path(fai) ]
+  - ch_ref:
+      description: |
+        A channel containing WisecondorX reference created with `WisecondorX newref`
+        Structure: [ val(meta4), path(reference) ]
+  - ch_blacklist:
+      description: |
+        An optional channel containing a BED file with regions to mask from the analyis
+        Structure: [ val(meta5), path(blacklist) ]
+
 output:
-  - meta:
-      type: map
+  - aberrations_bed:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: BAM/CRAM/SAM samtools index
-      pattern: "*.{bai,crai,sai}"
-  - csi:
-      type: file
-      description: CSI samtools index
-      pattern: "*.csi"
+        A channel containing the BED files with CNV aberrations
+        Structure: [ val(meta), path(bed) ]
+  - bins_bed:
+      description: |
+        A channel containing the BED files with the used bins
+        Structure: [ val(meta), path(bed) ]
+  - segments_bed:
+      description: |
+        A channel containing the segment BED files
+        Structure: [ val(meta), path(bed) ]
+  - chr_statistics:
+      description: |
+        A channel containing TXT files with chromosome statistics
+        Structure: [ val(meta), path(txt) ]
+  - chr_plots:
+      description: |
+        A channel containing lists of chromosome plots
+        Structure: [ val(meta), [ path(png), path(png), ... ] ]
+  - genome_plot:
+      description: |
+        A channel containing the plots of the whole genomes
+        Structure: [ val(meta), path(png) ]
   - versions:
       type: file
       description: File containing software versions

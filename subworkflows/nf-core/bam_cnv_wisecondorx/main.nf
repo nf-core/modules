@@ -1,7 +1,7 @@
 include { WISECONDORX_CONVERT } from '../../../modules/nf-core/wisecondorx/convert/main'
 include { WISECONDORX_PREDICT } from '../../../modules/nf-core/wisecondorx/predict/main'
 
-workflow  {
+workflow BAM_CNV_WISECONDORX {
 
     take:
     ch_bam          // channel: [ val(meta), path(bam), path(bai) ]
@@ -26,14 +26,16 @@ workflow  {
         ch_ref,
         ch_blacklist
     )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    ch_versions = ch_versions.mix(WISECONDORX_PREDICT.out.versions.first())
 
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    aberrations_bed = WISECONDORX_PREDICT.out.aberrations_bed   // channel: [ val(meta), path(bed) ]
+    bins_bed        = WISECONDORX_PREDICT.out.bins_bed          // channel: [ val(meta), path(bed) ]
+    segments_bed    = WISECONDORX_PREDICT.out.segments_bed      // channel: [ val(meta), path(bed) ]
+    chr_statistics  = WISECONDORX_PREDICT.out.chr_statistics    // channel: [ val(meta), path(txt) ]
+    chr_plots       = WISECONDORX_PREDICT.out.chr_plots         // channel: [ val(meta), [ path(png), path(png), ... ] ]
+    genome_plot     = WISECONDORX_PREDICT.out.genome_plot       // channel: [ val(meta), path(png) ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions        = ch_versions                               // channel: path(versions.yml)
 }
 
