@@ -10,7 +10,7 @@ process CELLRANGER_COUNT {
     }
 
     input:
-    tuple val(meta), path(reads, stageAs: "???/*")
+    tuple val(meta), path(reads, stageAs: "fastq_???/*")
     path  reference
 
     output:
@@ -21,9 +21,8 @@ process CELLRANGER_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference_name = reference.name
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     template "cellranger_count.py"
 
     stub:

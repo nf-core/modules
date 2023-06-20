@@ -3,7 +3,6 @@ from subprocess import run
 from pathlib import Path
 from textwrap import dedent
 import shlex
-import yaml
 
 
 def chunk_iter(seq, size):
@@ -13,8 +12,12 @@ def chunk_iter(seq, size):
 
 sample_id = "${meta.id}"
 
-# get fastqs, ordered by path. Since we require fastq files in the input channel to be ordered such
-# that a R1/R2 pair of files follows each other, ordering will get us a sequence of [R1, R2, R1, R2, ...]
+# get fastqs, ordered by path. Files are staged into
+#   - "fastq_001/{original_name.fastq.gz}"
+#   - "fastq_002/{oritinal_name.fastq.gz}"
+#   - ...
+# Since we require fastq files in the input channel to be ordered such that a R1/R2 pair
+# of files follows each other, ordering will get us a sequence of [R1, R2, R1, R2, ...]
 fastqs = sorted(Path(".").glob("fastq_*/*"))
 assert len(fastqs) % 2 == 0
 
@@ -43,8 +46,8 @@ run(
     [
         "cellranger", "count",
         "--id", "${prefix}",
-        "--fastqs", fastq_all,
-        "--transcriptome", "${reference_name}",
+        "--fastqs", str(fastq_all),
+        "--transcriptome", "${reference.name}",
         "--localcores", "${task.cpus}",
         "--localmem", "${task.memory.toGiga()}",
         *shlex.split("""${args}""")
@@ -63,5 +66,5 @@ version = run(
 
 # alas, no `pyyaml` pre-installed in the cellranger container
 with open("versions.yml", "w") as f:
-    f.write("${task.process}:\n")
-    f.write(f'  cellranger: "{version}"\n')
+    f.write('"${task.process}":\\n')
+    f.write(f'  cellranger: "{version}"\\n')
