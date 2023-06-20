@@ -36,7 +36,7 @@ process EKLIPSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eKLIPse: $EKLIPSE_VERSION
+        eklipse: $EKLIPSE_VERSION
     END_VERSIONS
     """
 
@@ -50,7 +50,7 @@ process EKLIPSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eKLIPse: $EKLIPSE_VERSION
+        eklipse: $EKLIPSE_VERSION
     END_VERSIONS
     """
 }
