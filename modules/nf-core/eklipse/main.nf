@@ -3,6 +3,7 @@ process EKLIPSE {
     tag "$meta.id"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "bioconda::eklipse=1.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eklipse:1.8--hdfd78af_1':
