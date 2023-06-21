@@ -8,11 +8,10 @@ include { ZERO_UUID } from './zero_uuid.nf'
 
 workflow test_ashlar_1_file {
 
-    input_list =  [ [ [ id:'test_all' ],
-               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ] ]
-    input_channel = Channel.fromList(input_list)
+    input_list =  [ [ id:'test_all' ],
+               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ]
 
-    ASHLAR ( input_channel )
+    ASHLAR ( input_list )
 
     ZERO_UUID ( ASHLAR.out[0], "8390123" )
 
@@ -20,13 +19,12 @@ workflow test_ashlar_1_file {
 
 workflow test_ashlar_all_files {
 
-    input_list =  [ [ [ id:'test_all' ],
+    input_list =  [ [ id:'test_all' ],
                [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true),
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
-                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ] ]
-    input_channel = Channel.fromList(input_list)
+                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ]
 
-    ASHLAR ( input_channel )
+    ASHLAR ( input_list )
 
     ZERO_UUID ( ASHLAR.out[0], "25169643" )
 
