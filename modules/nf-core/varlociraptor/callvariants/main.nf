@@ -8,13 +8,14 @@ process VARLOCIRAPTOR_CALLVARIANTS {
         'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(tumor_vcf)
+    tuple val(meta), path(normal_vcf)
     path (scenario)
 
     output:
     tuple val(meta), path("*.bcf.gz"), emit: bcf_gz, optional: true
     tuple val(meta), path("*.vcf.gz"), emit: vcf_gz, optional: true
-    path "versions.yml"           , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +23,12 @@ process VARLOCIRAPTOR_CALLVARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.vcf.gz"
-    def scenario_command = scenario ? "generic --scenario $scenario" : "tumor-normal"
+    def scenario_command = scenario ? "generic --scenario $scenario" : "tumor-normal --tumor ${tumor_vcf} --normal ${normal_vcf}"
     """
     varlociraptor call variants \\
         --output ${prefix} \\
         ${scenario_command} \\
-        $args \\
-        $vcf
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
