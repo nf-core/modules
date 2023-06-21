@@ -10,8 +10,6 @@ tools:
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/4.0.1/Documentation/"
-      tool_dev_url: ""
-      doi: ""
       licence: "custom"
 
 input:
@@ -68,7 +66,7 @@ output:
       description: index corresponding to sorted BAM file
       pattern: "*.bai"
   - qc_metrics:
-      type: dir
+      type: directory
       description: (optional) optional directory of qc metrics
       pattern: "qc_metrics"
   - bqsr_table:

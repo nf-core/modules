@@ -10,7 +10,7 @@ tools:
       homepage: "https://github.com/broadinstitute/pilon/wiki"
       documentation: "https://github.com/broadinstitute/pilon/wiki/Requirements-&-Usage"
       tool_dev_url: "https://github.com/broadinstitute/pilon"
-      doi: "https://doi.org/10.1371/journal.pone.0112963"
+      doi: "10.1371/journal.pone.0112963"
       licence: "['GPL v2']"
 
 input:
@@ -32,9 +32,9 @@ input:
       description: BAI file (BAM index) of BAM reads aligned to the input genome
       pattern: "*.{bai}"
   - pilon_mode:
-      type: value
+      type: string
       description: Indicates the type of bam file used (frags for paired-end sequencing of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp, jumps for paired sequencing data of larger insert size, such as Illumina mate pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing reads, bam will automatically classify the BAM as one of the three types above (version 1.17 and higher).
-      pattern: ["frags", "jumps", "unpaired", "bam"]
+      enum: ["frags", "jumps", "unpaired", "bam"]
 
 output:
   - meta:
