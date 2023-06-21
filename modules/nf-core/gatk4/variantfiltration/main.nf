@@ -9,9 +9,9 @@ process GATK4_VARIANTFILTRATION {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path  fasta
-    path  fai
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf

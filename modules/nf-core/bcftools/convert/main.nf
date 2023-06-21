@@ -9,8 +9,8 @@ process BCFTOOLS_CONVERT {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path bed
-    path fasta
+    tuple val(meta2), path(fasta)
+    path(bed)
 
     output:
     tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
