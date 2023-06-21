@@ -18,12 +18,12 @@ process ASHLAR {
     task.ext.when == null || task.ext.when
 
     script:
-    def args_conf = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
 
     """
     ashlar \\
         $file_in \\
-        $args_conf
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
