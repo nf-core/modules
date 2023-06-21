@@ -51,4 +51,13 @@ process METABULI_BUILD {
         metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch metabuli_db.tar.gz
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
+    END_VERSIONS
+    """
 }

@@ -1,8 +1,17 @@
 - name: metabuli build test_metabuli_build
-  command: nextflow run ./tests/modules/nf-core/metabuli/build -entry test_metabuli_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/build/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/metabuli/build -entry test_metabuli_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metabuli/build/nextflow.config -stub-run
   tags:
-    - metabuli
     - metabuli/build
+    - metabuli
   files:
+    - path: output/build/acc2taxid
+      md5sum: 4ae5ac3b865cb7bf301c3cc72153a7a8
+    - path: output/create/db/taxonomy/merged.dmp
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/create/db/taxonomy/names.dmp
+      md5sum: 1cacf8dba5defe61c7b31dc4342801a0
+    - path: output/create/db/taxonomy/nodes.dmp
+      md5sum: a41041a713e9fb2be5eac4723a421385
     - path: output/metabuli/metabuli_db.tar.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/metabuli/versions.yml
