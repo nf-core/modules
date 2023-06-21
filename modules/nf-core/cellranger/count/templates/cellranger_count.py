@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from subprocess import run
 from pathlib import Path
 from textwrap import dedent
