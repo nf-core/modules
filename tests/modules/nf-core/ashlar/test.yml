@@ -7,7 +7,7 @@
       md5sum: 796fa3687d4ff1389567c22eafb1e4cf
     - path: output/ashlar/versions.yml
 
-- name: ashlar test_ashlar_all_files
+- name: Sh
   command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_all_files -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
   tags:
     - ashlar
