@@ -11,8 +11,8 @@ process ASHLAR {
     tuple val(meta), path(file_in)
 
     output:
-    tuple val(meta), path("*.tif")      ,   emit: ashlar_tif
-    path "versions.yml"                 ,   emit: versions
+    tuple val(meta), path("*.ome.tif")      ,   emit: tif
+    path "versions.yml"                     ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
