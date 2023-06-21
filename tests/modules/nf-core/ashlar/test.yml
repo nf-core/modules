@@ -15,3 +15,12 @@
     - path: output/ashlar/ashlar_output.ome.tif
       md5sum: 576bc81fa8d678547e87d25c403ed3a4
     - path: output/ashlar/versions.yml
+
+- name: ashlar test_ashlar_all_files_tile_size
+  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_all_files_tile_size -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  tags:
+    - ashlar
+  files:
+    - path: output/ashlar/ashlar_output.ome.tif
+      md5sum: fb34bb112d0c95698afa76095e12085f
+    - path: output/ashlar/versions.yml
