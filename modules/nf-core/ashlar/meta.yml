@@ -5,7 +5,6 @@ keywords:
   - alignment
   - registration
 tools:
-  #
   - "ashlar":
       description: "Alignment by Simultaneous Harmonization of Layer/Adjacency Registration"
       homepage: "https://labsyspharm.github.io/ashlar/"
@@ -14,24 +13,22 @@ tools:
       licence: ["MIT"]
 
 input:
-  #
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', : args: '--flip-x' ]
+        e.g. [ id:'test' ]
   - file_in:
       type: file
-      description: multidimentional image data in formats from most commercial microscopes
+      description: Overlapping tile image data in formats from most commercial microscopes
       pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
 output:
-  #
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', : args: '--flip-x' ]
-  - file_out:
+        e.g. [ id:'test' ]
+  - tif:
       type: file
       description: pyramidal OME-TIFF
       pattern: "*.ome.tif"
