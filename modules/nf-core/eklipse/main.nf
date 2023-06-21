@@ -16,8 +16,8 @@ process EKLIPSE {
     output:
     tuple val(meta), path("*deletions.csv") , emit: deletions
     tuple val(meta), path("*genes.csv")     , emit: genes
-    tuple val(meta), path("*.png")                             , emit: circos
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("*.png")          , emit: circos
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

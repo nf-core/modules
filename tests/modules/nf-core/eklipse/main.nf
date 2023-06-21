@@ -8,8 +8,9 @@ workflow test_eklipse {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        '/usr/local/bin/data/test_illumina.bam'
+        file(params.test_data['homo_sapiens']['illumina']['test_illumina_mt_bam'], checkIfExists: true)
     ]
-
-    EKLIPSE ( input, [] )
+    ref_gb = [ file(params.test_data['homo_sapiens']['genome']['genome_mt_gb'], checkIfExists: true) ]
+   
+    EKLIPSE ( input, ref_gb )
 }
