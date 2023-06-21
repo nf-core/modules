@@ -19,13 +19,11 @@ process ASHLAR {
 
     script:
     def args_conf = task.ext.args ?: ''
-    def args_meta = meta.args ?: ''
 
     """
     ashlar \\
         $file_in \\
-        $args_conf \\
-        $args_meta
+        $args_conf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

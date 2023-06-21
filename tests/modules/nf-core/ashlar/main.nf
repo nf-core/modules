@@ -8,7 +8,7 @@ include { ZERO_UUID } from './zero_uuid.nf'
 
 workflow test_ashlar_1_file {
 
-    input_list =  [ [ [ id:'test_all', args: '' ],
+    input_list =  [ [ [ id:'test_all' ],
                [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ] ]
     input_channel = Channel.fromList(input_list)
 
@@ -20,7 +20,7 @@ workflow test_ashlar_1_file {
 
 workflow test_ashlar_all_files {
 
-    input_list =  [ [ [ id:'test_all', args: '' ],
+    input_list =  [ [ [ id:'test_all' ],
                [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true),
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ] ]
@@ -29,19 +29,5 @@ workflow test_ashlar_all_files {
     ASHLAR ( input_channel )
 
     ZERO_UUID ( ASHLAR.out[0], "25169643" )
-
-}
-
-workflow test_ashlar_all_files_tile_size {
-
-    input_list =  [ [ [ id:'test_all', args: '--tile-size 512' ],
-               [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true),
-                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
-                file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ] ]
-    input_channel = Channel.fromList(input_list)
-
-    ASHLAR ( input_channel )
-
-    ZERO_UUID ( ASHLAR.out[0], "12586923" )
 
 }
