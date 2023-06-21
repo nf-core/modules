@@ -8,7 +8,7 @@ process SALMON_QUANT {
         'biocontainers/salmon:1.10.1--h7e5ed60_0' }"
 
     input:
-    tuple val(meta), path(reads, stageAs: "input*/*")
+    tuple val(meta), path(reads)
     path  index
     path  gtf
     path  transcript_fasta
