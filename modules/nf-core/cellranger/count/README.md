@@ -1,12 +1,12 @@
-# Automatically renaming files for cellranger
+# Automatically renaming files for Cellranger
 
-See also https://github.com/nf-core/scrnaseq/issues/241
+See also https://github.com/nf-core/scrnaseq/issues/241 and the [Cellranger documentation](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/fastq-input).
 
 ## Motivation
 
-Cellranger (and also spaceranger, and probably other 10x pipelines) rely on the following input
+Cellranger (and also Spaceranger, and probably other 10x pipelines) rely on the following input
 
-- `--fastqs`, to point to a directory with fastq files that are named according to `{sample_name}_S{i}_L00{i}_{R1,R2}_001.fastq.gz`.
+- `--fastqs`, to point to a directory with fastq files that are named according to `{sample_name}_S{i}_L00{j}_{R1,R2}_001.fastq.gz`.
 - `--sample`, with a sample name (that is the prefix of all associated fastq files)
 
 In the easiest case, `--fastqs` points to a directory that contains all fastqs of a single sample that already follow the naming conventions. However, it's not always easy:
@@ -18,11 +18,11 @@ In the easiest case, `--fastqs` points to a directory that contains all fastqs o
     - In this case, we need to specify multiple input folders. Cellranger allows passing a _list of directories_ e.g. `--fastqs=/path/dir1,path/dir2`
     - Staging all _files_ in these folders into a single directory using nextflow doesn't do the job, as there may be duplicate file names across the different folders.
 3.  the raw sequencing data may have been downloaded from a sequence database and doesn't follow the naming convention anymore.
-    - In that case we need to rename the filese to follow the bcl2fastq naming convention.
+    - In that case we need to rename the files to follow the bcl2fastq naming convention.
 
 ## Solution
 
-Rename files automatically to match the `{sample_name}_S{i}_L00{i}_{R1,R2}_001.fastq.gz` pattern. We assume that
+Rename files automatically to match the `{sample_name}_S{i}_L00{j}_{R1,R2}_001.fastq.gz` pattern. We assume that
 files in the input channel are ordered according to `file1 R1, file1 R2, file2 R1, file2 R2, ...`.
 If the files are explicitly listed in a samplesheet, we have this order anyway. If the files follow any sensible naming
 convention, this order can be achieved by sorting by filename.
@@ -39,11 +39,11 @@ to identical md5sums of the output files.
 ```
 curl https://s3-us-west-2.amazonaws.com/10x.files/samples/cell-exp/6.1.2/10k_PBMC_3p_nextgem_Chromium_X_intron/10k_PBMC_3p_nextgem_Chromium_X_intron_fastqs.tar | tar -xv
 INPUT_DIR=10k_PBMC_3p_nextgem_Chromium_X_fastqs
-# remove index filese
+# remove index files
 rm $INPUT_DIR/*_I{1,2}_*.fastq.gz
 ```
 
-2. Simulate scenario that filese were on multiple flow cells
+2. Simulate scenario where files were generated using multiple flow cells:
 
 ```
 MFC=fastq_multiflowcell
@@ -53,7 +53,7 @@ for i in $(seq 4) ; do ; mv $MFC/*L00$i* $MFC/fc$i ; done
 for i in $(seq 4) ; do ; rename L00$i L001 $MFC/fc$i/*; done
 ```
 
-3. Simulate scenario that sample was multiplexed
+3. Simulate scenario where sample was multiplexed:
 
 ```
 MPX=fastq_multiplexed
@@ -62,7 +62,7 @@ for f in $INPUT_DIR/*.fastq.gz; do ; ln $f $MPX; done
 for i in $(seq 4) ; do ; rename S1_L00$i S${i}_L001 $MPX/* ; done
 ```
 
-4. Concat files
+4. Concatenate files
 
 ```
 mkdir fastq_cat
