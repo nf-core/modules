@@ -39,8 +39,8 @@ workflow test_metabuli_build {
     
     genome = file("${params.test_data_base}/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
     dmp_files = [
-        file("${params.test_data_base}/delete_me/metabuli/names.dmp"),
-        file("${params.test_data_base}/delete_me/metabuli/nodes.dmp")
+        file("${params.test_data_base}/data/delete_me/metabuli/names.dmp"),
+        file("${params.test_data_base}/data/delete_me/metabuli/nodes.dmp")
     ]
     acc2taxid = BUILD_ACC2TAXID(genome)
     tax = CREATE_TAXONOMY_FOLDER(dmp_files) 
