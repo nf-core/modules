@@ -37,7 +37,7 @@ process BCFTOOLS_MERGE {
         $regions \\
         --threads $task.cpus \\
         --output ${prefix}.${extension} \\
-        $vcfs 
+        $vcfs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
