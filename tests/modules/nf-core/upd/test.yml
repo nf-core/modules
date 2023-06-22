@@ -1,0 +1,17 @@
+- name: "upd"
+  command: nextflow run ./tests/modules/nf-core/upd -entry test_upd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/upd/nextflow.config
+  tags:
+    - "upd"
+  files:
+    - path: "output/upd/test.bed"
+      md5sum: 5523e4e70b4685ea40cb3874870ef92e
+    - path: "output/upd/versions.yml"
+      md5sum: 5f283e3801d2b84aefa9802fd7707c5a
+
+- name: "upd stub"
+  command: nextflow run ./tests/modules/nf-core/upd -entry test_upd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/upd/nextflow.config -stub-run
+  tags:
+    - "upd"
+  files:
+    - path: "output/upd/test.bed"
+    - path: "output/upd/versions.yml"
