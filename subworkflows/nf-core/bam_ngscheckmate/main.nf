@@ -1,10 +1,10 @@
 include { BCFTOOLS_MPILEUP     } from '../../../modules/nf-core/bcftools/mpileup/main'
-include { NGSCHECKMATE_NCM } from '../../../modules/nf-core/ngscheckmate/ncm/main.nf'
+include { NGSCHECKMATE_NCM } from '../../../modules/nf-core/ngscheckmate/ncm/main'
 
 workflow BAM_NGSCHECKMATE {
 
     take:
-    ch_bam              // channel: [ val(meta), bam ]
+    ch_input            // channel: [ val(meta), bam/cram ]
     ch_bed              // channel: [ bed ]
     ch_fasta            // channel: [ fasta ]
 
@@ -12,9 +12,9 @@ workflow BAM_NGSCHECKMATE {
 
     ch_versions = Channel.empty()
 
-    ch_bam_bed  = ch_bam.combine(ch_bed)
+    ch_input_bed = ch_input.combine(ch_bed)
 
-    BCFTOOLS_MPILEUP (ch_bam_bed, ch_fasta.collect(), false)
+    BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
     ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions)
 
     BCFTOOLS_MPILEUP

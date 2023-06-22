@@ -23,7 +23,8 @@ process GANON_REPORT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    dbprefix=\$(ls *.ibf)
+    dbprefix=\$(find -L . -name '*.ibf' | sed 's/\\.ibf\$//')
+
     ganon \\
         report \\
         --input ${rep} \\
