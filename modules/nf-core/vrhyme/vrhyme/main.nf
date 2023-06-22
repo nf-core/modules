@@ -8,7 +8,7 @@ process VRHYME_VRHYME {
         'biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
     tuple val(meta), path(fasta)
 
     output:
@@ -26,7 +26,7 @@ process VRHYME_VRHYME {
     """
     vRhyme \\
         -i $fasta \\
-        -b $bam \\
+        -b $reads \\
         -o vRhyme \\
         -t $task.cpus \\
         $args
