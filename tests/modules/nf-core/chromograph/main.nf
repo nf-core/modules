@@ -8,7 +8,7 @@ workflow test_chromograph {
 
     sites = [
         [ id:'test', single_end:false ], // meta map
-        file("/home/ramprasad.neethiraj/nextflow/test-datasets/data/genomics/homo_sapiens/genome/updsites.bed", checkIfExists: true)
+        file(params.test_data['homo_sapiens']['genome']['updsites_bed'], checkIfExists: true)
     ]
 
     CHROMOGRAPH ( [[],[]], [[],[]], [[],[]], [[],[]], [[],[]], [[],[]], sites )
