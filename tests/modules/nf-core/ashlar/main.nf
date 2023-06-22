@@ -13,7 +13,7 @@ workflow test_ashlar_1_file {
     input_list =  [ [ id:'test_all' ],
                [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ]
 
-    ASHLAR ( input_list )
+    ASHLAR ( input_list, [], [] )
 
     ZERO_UUID ( ASHLAR.out[0], "8390123" )
 
@@ -26,7 +26,7 @@ workflow test_ashlar_all_files {
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ]
 
-    ASHLAR ( input_list )
+    ASHLAR ( input_list, [], [] )
 
     ZERO_UUID ( ASHLAR.out[0], "25169643" )
 
@@ -39,7 +39,7 @@ workflow test_ashlar_all_files_tile_size {
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle2'], checkIfExists: true),
                 file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle3'], checkIfExists: true)] ]
 
-    ASHLAR_TILE ( input_list )
+    ASHLAR_TILE ( input_list, [], [] )
 
     ZERO_UUID ( ASHLAR_TILE.out[0], "12586923" )
 
