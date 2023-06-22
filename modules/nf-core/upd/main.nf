@@ -25,11 +25,23 @@ process UPD {
     upd \\
         --vcf $vcf \\
         $args \\
-        regions --out ${prefix}.bed
+        --out ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         upd: \$( upd --version 2>&1 | sed 's/upd, version //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        upd: \$( upd --version 2>&1 | sed 's/upd, version //' )
+    END_VERSIONS
+    """
+
 }
