@@ -52,7 +52,7 @@ process BCFTOOLS_MERGE {
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+                    "vcf"
     """
     touch ${prefix}.${extension}
 
