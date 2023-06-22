@@ -11,7 +11,7 @@ process ASHLAR {
     tuple val(meta), path(file_in)
 
     output:
-    tuple val(meta), path("*.ome.tif")      ,   emit: tif
+    tuple val(meta), path("*.ome.tif"), emit: tif
     path "versions.yml"                , emit: versions
 
     when:
