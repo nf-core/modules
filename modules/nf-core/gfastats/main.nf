@@ -51,4 +51,16 @@ process GFASTATS {
         gfastats: \$( gfastats -v | sed '1!d;s/.*v//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.${out_fmt}.gz
+    touch ${prefix}.assembly_summary
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gfastats: \$( gfastats -v | sed '1!d;s/.*v//' )
+    END_VERSIONS
+    """
 }

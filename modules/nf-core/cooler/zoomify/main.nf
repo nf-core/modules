@@ -32,4 +32,15 @@ process COOLER_ZOOMIFY {
         cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.mcool
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
 }
