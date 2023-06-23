@@ -17,27 +17,38 @@ workflow FASTQ_ALIGN_BWAALN {
 
     ch_versions = Channel.empty()
 
-    // Ensure multiple references and read combinations are correctly associated throughout the subworkflow
+    // Ensure when multiple references are provide, that reference/read combinations
+    // are correctly associated throughout the subworkflow by copying the sample
+    // specific metadata to the index on each combination
+
     ch_prepped_input = ch_reads
                         .combine(ch_index)
                         .map{
                             meta, reads, meta_index, index ->
 
-                            def key_read_ref = [ meta.id.join(meta_index.id, "_")]
+                                def key_read_ref = meta.id + "_" + meta_index.id
+                                def id_index = meta_index.id
 
-                            [ meta + [key_read_ref: key_read_ref], reads, meta_index + [key_read_ref: key_read_ref], index  ]
+                            [ meta + [key_read_ref: key_read_ref] + [id_index: id_index], reads, meta_index + [key_read_ref: key_read_ref]  + [id_index: id_index], index  ]
                         }
-                        .branch {
+
+    ch_preppedinput_for_bwaaln = ch_prepped_input
+                        .multiMap {
                             meta, reads, meta_index, index ->
-                            reads: [ meta      , reads ]
-                            index: [ meta_index, index ]
+                                reads: [ meta, reads ]
+                                index: [ meta, index ]
                         }
 
-    // Alignment and conversion to bAM
-    BWA_ALN ( ch_prepped_input.reads, ch_prepped_input.index )
+    // Set as independent channel to allow repeated joining but _with_ sample specific metadata
+    // to ensure right reference goes with right sample
+    ch_reads_newid = ch_prepped_input.map{ meta, reads, meta_index, index -> [ meta, reads ] }
+    ch_index_newid = ch_prepped_input.map{ meta, reads, meta_index, index -> [ meta, index ] }
+
+    // Alignment and conversion to bam
+    BWA_ALN ( ch_preppedinput_for_bwaaln.reads, ch_preppedinput_for_bwaaln.index )
     ch_versions = ch_versions.mix( BWA_ALN.out.versions.first() )
 
-    ch_sai_for_bam = ch_prepped_input
+    ch_sai_for_bam = ch_reads_newid
                         .join ( BWA_ALN.out.sai )
                         .branch {
                             meta, reads, sai ->
@@ -45,43 +56,47 @@ workflow FASTQ_ALIGN_BWAALN {
                                 se: meta.single_end
                         }
 
-    // ch_sai_for_bam_pe =  ch_sai_for_bam.pe
-    //                         .combine{
-    //                             ch_prepped_input.index
-    //                         }
-    //                         .dump(tag: "hello")
-    //                         .mulimap {
-    //                             meta, reads, meta_index, index ->
-    //                                 reads: [ meta      , reads ]
-    //                                 index: [ meta_index, index ]
-    //                         }
+    // Split as PE/SE have different SAI -> BAM commands
+    ch_sai_for_bam_pe =  ch_sai_for_bam.pe
+                            .join ( ch_index_newid )
+                            .multiMap {
+                                meta, reads, sai, index ->
+                                    reads: [ meta, reads, sai ]
+                                    index: [ meta, index      ]
+                            }
 
-    // ch_sai_for_bam_se =  ch_sai_for_bam.se
-    //                         .combine{
-    //                             ch_prepped_input.index
-    //                         }
-    //                         .mulimap {
-    //                             meta, reads, meta_index, index ->
-    //                                 reads: [ meta      , reads ]
-    //                                 index: [ meta_index, index ]
-    //                         }
+    ch_sai_for_bam_se =  ch_sai_for_bam.se
+                            .join ( ch_index_newid )
+                            .multiMap {
+                                meta, reads, sai, index ->
+                                    reads: [ meta, reads, sai ]
+                                    index: [ meta, index      ]
+                            }
 
-    // BWA_SAMPE ( ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index )
-    // ch_versions = ch_versions.mix( BWA_SAMPE.out.versions.first() )
 
-    // BWA_SAMSE ( ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index )
-    // ch_versions = ch_versions.mix( BWA_SAMSE.out.versions.first() )
+    BWA_SAMPE ( ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index )
+    ch_versions = ch_versions.mix( BWA_SAMPE.out.versions.first() )
 
-    // ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
+    BWA_SAMSE ( ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index )
+    ch_versions = ch_versions.mix( BWA_SAMSE.out.versions.first() )
 
-    // SAMTOOLS_INDEX ( ch_bam_for_index )
-    // ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
+
+    SAMTOOLS_INDEX ( ch_bam_for_index )
+    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+
+    // Remove superfluous internal maps to minimise clutter as much as possible
+    ch_bam_for_emit = ch_bam_for_index.map{ meta, bam -> [meta - meta.subMap('key_read_ref'), bam] }
+    ch_bai_for_emit = SAMTOOLS_INDEX.out.bai.map{ meta, bai -> [meta - meta.subMap('key_read_ref'), bai] }
+    ch_csi_for_emit = SAMTOOLS_INDEX.out.csi.map{ meta, csi -> [meta - meta.subMap('key_read_ref'), csi] }
 
     emit:
-    // bam      = ch_bam_for_index.dump(tag: "bam")           // channel: [ val(meta), path(bam) ]
-    // bai      = SAMTOOLS_INDEX.out.bai.dump(tag: "bai")     // channel: [ val(meta), path(bai) ]
-    // csi      = SAMTOOLS_INDEX.out.csi.dump(tag: "csi")     // channel: [ val(meta), path(csi) ]
+    // Note: output channels will contain meta with additional 'id_index' meta
+    // value to allow association of BAM file with the meta.id of input indicies
+    bam      = ch_bam_for_emit     // channel: [ val(meta), path(bam) ]
+    bai      = ch_bai_for_emit     // channel: [ val(meta), path(bai) ]
+    csi      = ch_csi_for_emit     // channel: [ val(meta), path(csi) ]
 
-    versions = ch_versions                // channel: [ path(versions.yml) ]
+    versions = ch_versions         // channel: [ path(versions.yml) ]
 }
 
