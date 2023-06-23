@@ -22,7 +22,7 @@ process ASHLAR {
     script:
     def args = task.ext.args ?: ''
     def dfp = opt_dfp? "--dfp $opt_dfp": ""
-    def ffp = opt_ffp? "--dfp $opt_ffp": ""
+    def ffp = opt_ffp? "--ffp $opt_ffp": ""
 
     """
     ashlar \\
