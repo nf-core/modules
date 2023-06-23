@@ -12,8 +12,8 @@ process CDHIT_CDHITEST {
 
     output:
     tuple val(meta), path("*.{fa,fq}")    ,emit: fasta
-    tuple val(meta), path("*.clstr")            ,emit: clusters
-    path "versions.yml"                         ,emit: versions
+    tuple val(meta), path("*.clstr")      ,emit: clusters
+    path "versions.yml"                   ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
