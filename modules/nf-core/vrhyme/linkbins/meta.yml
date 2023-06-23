@@ -1,11 +1,11 @@
-name: "vrhyme_vrhyme"
-description: Binning virus genomes from metagenomes
+name: "vrhyme_linkbins"
+description: Linking bins output by vRhyme to create one sequences per bin
 keywords:
-  - binning
   - bin
-  - phage
-  - virus
+  - binning
+  - link
   - vrhyme
+  - linkbins
 tools:
   - "vrhyme":
       description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
@@ -13,7 +13,7 @@ tools:
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
-      licence: "['GPL v3', 'GPL v3 license']"
+      licence: "['GPL v3 license', 'GPL v3']"
 
 input:
   - meta:
@@ -21,14 +21,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Preprocessed FASTQ file containing sample reads
-      pattern: "*.{fastq}"
-  - fasta:
-      type: file
-      description: Contigs/scaffolds identified as viral
-      pattern: "*.{fna,fasta,fa}"
+  - bins:
+      type: directory
+      description: Directory file containing bin FASTA files output by vRhyme (each bin having multiple sequences)
 
 output:
   - meta:
@@ -40,18 +35,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bins:
-      type: directory
-      description: Directory containing bin FASTA files
-      pattern: "**/vRhyme_best_bins_fasta/"
-  - membership:
+  - linked_bins:
       type: file
-      description: TSV file describing the contig/scaffold membership of each bin
-      pattern: "**/vRhyme_best_bins.*.membership.tsv"
-  - summary:
-      type: file
-      description: TSV file summarizing the attributes of each bin
-      pattern: "**/vRhyme_best_bins.*.summary.tsv"
+      description: FASTA file containing bins linked by N's into one sequence
+      pattern: "*_linked_bins.fasta}"
 
 authors:
   - "@CarsonJM"

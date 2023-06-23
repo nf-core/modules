@@ -2,10 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { VRHYME_VRHYME } from '../../../../../modules/nf-core/vrhyme/vrhyme/main.nf'
-include { GUNZIP } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { GUNZIP            } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { VRHYME_VRHYME     } from '../../../../../modules/nf-core/vrhyme/vrhyme/main.nf'
+include { VRHYME_LINKBINS   } from '../../../../../modules/nf-core/vrhyme/linkbins/main.nf'
 
-workflow test_vrhyme_vrhyme {
+workflow test_vrhyme_linkbins {
 
     reads = [
         [ id:'test', single_end:false ], // meta map
@@ -21,6 +22,6 @@ workflow test_vrhyme_vrhyme {
     ]
 
     GUNZIP ( fasta )
-
     VRHYME_VRHYME ( reads , GUNZIP.out.gunzip )
+    VRHYME_LINKBINS ( VRHYME_VRHYME.out.bins )
 }
