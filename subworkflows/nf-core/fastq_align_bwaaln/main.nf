@@ -82,6 +82,7 @@ workflow FASTQ_ALIGN_BWAALN {
 
     ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
 
+    // Index all
     SAMTOOLS_INDEX ( ch_bam_for_index )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
