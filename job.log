@@ -1,0 +1,966 @@
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [fabulous_williams] DSL2 - revision: c670cb286f
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+
+[-        ] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_INDEX (chr14_chr16.fasta)'
+
+Caused by:
+  Process requirement exceeds available CPUs -- req: 2; avail: 1
+
+Command executed:
+
+  mkdir bwamem2
+  bwa-mem2 \
+      index \
+       \
+      chr14_chr16.fasta -p bwamem2/chr14_chr16.fasta
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_INDEX":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+  END_VERSIONS
+
+Command exit status:
+  -
+
+Command output:
+  (empty)
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/c5/54d947c0ef3f3055f3fc8d98e02ae1
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+[c5/54d947] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1, failed: 1
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_INDEX (chr14_chr16.fasta)'
+
+Caused by:
+  Process requirement exceeds available CPUs -- req: 2; avail: 1
+
+Command executed:
+
+  mkdir bwamem2
+  bwa-mem2 \
+      index \
+       \
+      chr14_chr16.fasta -p bwamem2/chr14_chr16.fasta
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_INDEX":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+  END_VERSIONS
+
+Command exit status:
+  -
+
+Command output:
+  (empty)
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/c5/54d947c0ef3f3055f3fc8d98e02ae1
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@ji18>
+Subject: Job 63691987: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Exited
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Fri Jun 23 11:11:23 2023
+Job was executed on host(s) <ji18>, in queue <general>, as user <buehlere> in cluster <juno> at Fri Jun 23 11:11:31 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Fri Jun 23 11:11:31 2023
+Terminated at Fri Jun 23 11:11:48 2023
+Results reported at Fri Jun 23 11:11:48 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   13.37 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2.00 GB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                22
+    Run time :                                   18 sec.
+    Turnaround time :                            25 sec.
+
+The output (if any) is above this job summary.
+
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [cheesy_nobel] DSL2 - revision: c670cb286f
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+
+executor >  local (1)
+[f6/0fd5f4] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+executor >  local (1)
+[f6/0fd5f4] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+executor >  local (1)
+[f6/0fd5f4] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+Completed at: 23-Jun-2023 11:41:42
+Duration    : 1m 7s
+CPU hours   : (a few seconds)
+Succeeded   : 1
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@ji18>
+Subject: Job 63696285: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Done
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Fri Jun 23 11:36:38 2023
+Job was executed on host(s) <4*ji18>, in queue <general>, as user <buehlere> in cluster <juno> at Fri Jun 23 11:40:29 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Fri Jun 23 11:40:29 2023
+Terminated at Fri Jun 23 11:41:42 2023
+Results reported at Fri Jun 23 11:41:42 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   87.38 sec.
+    Max Memory :                                 5 GB
+    Average Memory :                             2.70 GB
+    Total Requested Memory :                     64.00 GB
+    Delta Memory :                               59.00 GB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                52
+    Run time :                                   74 sec.
+    Turnaround time :                            304 sec.
+
+The output (if any) is above this job summary.
+
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [tiny_cuvier] DSL2 - revision: c670cb286f
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[20/ec89a5] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (2)
+[20/ec89a5] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[ef/d26d7a] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+
+executor >  local (2)
+[20/ec89a5] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[ef/d26d7a] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/ef/d26d7acfc71e82a1528ab5ac483bb7
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+
+
+executor >  local (2)
+[20/ec89a5] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[ef/d26d7a] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1, failed: 1 ✘
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/ef/d26d7acfc71e82a1528ab5ac483bb7
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@ji10>
+Subject: Job 63697932: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Exited
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Fri Jun 23 11:59:26 2023
+Job was executed on host(s) <4*ji10>, in queue <general>, as user <buehlere> in cluster <juno> at Fri Jun 23 11:59:55 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Fri Jun 23 11:59:55 2023
+Terminated at Fri Jun 23 12:01:08 2023
+Results reported at Fri Jun 23 12:01:08 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   80.36 sec.
+    Max Memory :                                 5 GB
+    Average Memory :                             2.53 GB
+    Total Requested Memory :                     64.00 GB
+    Delta Memory :                               59.00 GB
+    Max Swap :                                   -
+    Max Processes :                              15
+    Max Threads :                                56
+    Run time :                                   73 sec.
+    Turnaround time :                            102 sec.
+
+The output (if any) is above this job summary.
+
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [mighty_einstein] DSL2 - revision: 32a183b133
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[18/8294fe] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (2)
+[18/8294fe] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[3b/ffcb53] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+
+executor >  local (2)
+[18/8294fe] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[3b/ffcb53] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/3b/ffcb53d4f3900b1dc66f3f928c494c
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+executor >  local (2)
+[18/8294fe] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[3b/ffcb53] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1, failed: 1 ✘
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/3b/ffcb53d4f3900b1dc66f3f928c494c
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@ji06>
+Subject: Job 63698793: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Exited
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Fri Jun 23 12:20:58 2023
+Job was executed on host(s) <4*ji06>, in queue <general>, as user <buehlere> in cluster <juno> at Fri Jun 23 12:43:00 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Fri Jun 23 12:43:00 2023
+Terminated at Fri Jun 23 12:45:33 2023
+Results reported at Fri Jun 23 12:45:33 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   168.82 sec.
+    Max Memory :                                 5 GB
+    Average Memory :                             3.25 GB
+    Total Requested Memory :                     64.00 GB
+    Delta Memory :                               59.00 GB
+    Max Swap :                                   -
+    Max Processes :                              11
+    Max Threads :                                53
+    Run time :                                   154 sec.
+    Turnaround time :                            1475 sec.
+
+The output (if any) is above this job summary.
+
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [stoic_cray] DSL2 - revision: c670cb286f
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+[-        ] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[a5/4e4b66] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[a5/4e4b66] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[-        ] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+
+executor >  local (2)
+[a5/4e4b66] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[00/cf8375] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+
+
+executor >  local (2)
+[a5/4e4b66] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[00/cf8375] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx2", simd = .avx2
+  Launching executable "/usr/local/bin/bwa-mem2.avx2"
+  -----------------------------
+  Executing in AVX2 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/00/cf83757a96e7df35d4cd16fea43728
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+executor >  local (2)
+[a5/4e4b66] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[00/cf8375] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1, failed: 1 ✘
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx2", simd = .avx2
+  Launching executable "/usr/local/bin/bwa-mem2.avx2"
+  -----------------------------
+  Executing in AVX2 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/00/cf83757a96e7df35d4cd16fea43728
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@jx02>
+Subject: Job 63700528: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Exited
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Fri Jun 23 12:54:31 2023
+Job was executed on host(s) <4*jx02>, in queue <general>, as user <buehlere> in cluster <juno> at Fri Jun 23 14:34:32 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Fri Jun 23 14:34:32 2023
+Terminated at Fri Jun 23 14:36:04 2023
+Results reported at Fri Jun 23 14:36:04 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   101.89 sec.
+    Max Memory :                                 5 GB
+    Average Memory :                             2.83 GB
+    Total Requested Memory :                     128.00 GB
+    Delta Memory :                               123.00 GB
+    Max Swap :                                   -
+    Max Processes :                              15
+    Max Threads :                                54
+    Run time :                                   93 sec.
+    Turnaround time :                            6093 sec.
+
+The output (if any) is above this job summary.
+
+N E X T F L O W  ~  version 22.10.7
+Launching `./tests/subworkflows/nf-core/alignment/main.nf` [golden_bohr] DSL2 - revision: c670cb286f
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (1)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:BW... -
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+WARN: The operator `first` is useless when applied to a value channel which returns a single value by definition
+
+executor >  local (2)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[c7/14b617] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+
+
+executor >  local (2)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[c7/14b617] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+
+
+executor >  local (2)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[c7/14b617] process > test_alignment:ALIGNMENT:BW... [  0%] 0 of 1
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/c7/14b6179bcf2981a10c4ccf6bba373f
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+
+
+executor >  local (2)
+[f6/8d3e9a] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1 ✔
+[c7/14b617] process > test_alignment:ALIGNMENT:BW... [100%] 1 of 1, failed: 1 ✘
+[-        ] process > test_alignment:ALIGNMENT:PI... -
+Error executing process > 'test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)'
+
+Caused by:
+  Process `test_alignment:ALIGNMENT:BWAMEM2_MEM (gene)` terminated with an error exit status (1)
+
+Command executed:
+
+  INDEX=`find -L ./ -name "*.amb" | sed 's/\.amb$//'`
+  
+  bwa-mem2 \
+      mem \
+       \
+      -t 2 \
+      $INDEX \
+      merged_fastq_1.fastp.fastq.gz merged_fastq_2.fastp.fastq.gz \
+      | samtools sort  -@ 2 -o gene.bam -
+  
+  cat <<-END_VERSIONS > versions.yml
+  "test_alignment:ALIGNMENT:BWAMEM2_MEM":
+      bwamem2: $(echo $(bwa-mem2 version 2>&1) | sed 's/.* //')
+      samtools: $(echo $(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*$//')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /opt/local/singularity/3.7.1/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Looking to launch executable "/usr/local/bin/bwa-mem2.avx512bw", simd = .avx512bw
+  Launching executable "/usr/local/bin/bwa-mem2.avx512bw"
+  -----------------------------
+  Executing in AVX512 mode!!
+  -----------------------------
+  * SA compression enabled with xfactor: 8
+  * Ref file: ./bwamem2/chr14_chr16.fasta
+  * Entering FMI_search
+  * Index file found. Loading index from ./bwamem2/chr14_chr16.fasta.bwt.2bit.64
+  * Reference seq len for bi-index = 395408587
+  * sentinel-index: 167076880
+  * Count:
+  0,	1
+  1,	111008059
+  2,	197704294
+  3,	284400529
+  4,	395408587
+  
+  * Reading other elements of the index from files ./bwamem2/chr14_chr16.fasta
+  * Index prefix: ./bwamem2/chr14_chr16.fasta
+  * Read 0 ALT contigs
+  * Done reading Index!!
+  * Reading reference genome..
+  * Binary seq file = ./bwamem2/chr14_chr16.fasta.0123
+  * Reference genome size: 395408586 bp
+  * Done reading reference genome !!
+  
+  [E::main_mem] fail to open file `merged_fastq_1.fastp.fastq.gz'.
+  samtools sort: failed to read header from "-"
+
+Work dir:
+  /juno/work/bergerm1/bergerlab/buehlere/modules/work/c7/14b6179bcf2981a10c4ccf6bba373f
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@je07>
+Subject: Job 63974372: <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> in cluster <juno> Exited
+
+Job <nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config> was submitted from host <juno> by user <buehlere> in cluster <juno> at Mon Jun 26 13:29:25 2023
+Job was executed on host(s) <4*je07>, in queue <general>, as user <buehlere> in cluster <juno> at Mon Jun 26 13:29:25 2023
+</home/buehlere> was used as the home directory.
+</work/bergerm1/bergerlab/buehlere/modules> was used as the working directory.
+Started at Mon Jun 26 13:29:25 2023
+Terminated at Mon Jun 26 13:31:04 2023
+Results reported at Mon Jun 26 13:31:04 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   110.46 sec.
+    Max Memory :                                 5 GB
+    Average Memory :                             2.60 GB
+    Total Requested Memory :                     128.00 GB
+    Delta Memory :                               123.00 GB
+    Max Swap :                                   -
+    Max Processes :                              15
+    Max Threads :                                54
+    Run time :                                   100 sec.
+    Turnaround time :                            99 sec.
+
+The output (if any) is above this job summary.
+
