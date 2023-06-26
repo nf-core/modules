@@ -50,8 +50,8 @@ workflow test_ashlar_1_file_dfp_ffp {
     input_list =  [ [ id:'test_all' ],
                [file(params.test_data['imaging']['ome-tiff']['cycif_tonsil_cycle1'], checkIfExists: true)] ]
 
-    ASHLAR ( input_list, file('./cycif-tonsil-small-dfp.tif', checkIfExists: true),
-                         file('./cycif-tonsil-small-ffp.tif', checkIfExists: true) )
+    ASHLAR ( input_list, [file('./cycif-tonsil-small-dfp.tif', checkIfExists: true)],
+                         [file('./cycif-tonsil-small-ffp.tif', checkIfExists: true)] )
 
     ZERO_UUID ( ASHLAR.out[0], "8390123" )
 

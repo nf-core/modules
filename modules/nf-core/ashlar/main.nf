@@ -23,8 +23,20 @@ process ASHLAR {
     def args = task.ext.args ?: ''
     def dfp = opt_dfp? "--dfp $opt_dfp": ""
     def ffp = opt_ffp? "--ffp $opt_ffp": ""
+    def dfp_validated = !(opt_dfp instanceof List) || ((opt_dfp instanceof List) && (opt_dfp.isEmpty() || opt_dfp.size() == 1)) ? true : false
+    def ffp_validated = !(opt_ffp instanceof List) || ((opt_ffp instanceof List) && (opt_ffp.isEmpty() || opt_ffp.size() == 1)) ? true : false
 
     """
+    if [ "$dfp_validated" = "false" ]; then
+        echo "Error: please input only zero or one dfp files"
+        exit 1
+    fi
+
+    if [ "$ffp_validated" = "false" ]; then
+        echo "Error: please input only zero or one ffp files"
+        exit 1
+    fi
+
     ashlar \\
         $file \\
         $args \\
