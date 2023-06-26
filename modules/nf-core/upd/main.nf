@@ -25,7 +25,7 @@ process UPD {
     upd \\
         --vcf $vcf \\
         $args \\
-        --out ${prefix}.bed
+        | sort -k 1,1 -k 2,2n >${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
