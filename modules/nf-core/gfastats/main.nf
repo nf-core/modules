@@ -2,10 +2,10 @@ process GFASTATS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gfastats=1.3.5"
+    conda "bioconda::gfastats=1.3.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfastats:1.3.5--hd03093a_0':
-        'biocontainers/gfastats:1.3.5--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/gfastats:1.3.6--hdcf5f25_3':
+        'biocontainers/gfastats:1.3.6--hdcf5f25_3' }"
 
     input:
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
