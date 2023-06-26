@@ -21,6 +21,5 @@ workflow test_vrhyme_vrhyme {
     ]
 
     GUNZIP ( fasta )
-
     VRHYME_VRHYME ( reads , GUNZIP.out.gunzip )
 }
