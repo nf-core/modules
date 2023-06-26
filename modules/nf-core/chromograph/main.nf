@@ -9,12 +9,12 @@ process CHROMOGRAPH {
 
     input:
     tuple val(meta), path(autozyg)
-    tuple val(meta), path(coverage)
-    tuple val(meta), path(exome)
-    tuple val(meta), path(fracsnp)
-    tuple val(meta), path(ideogram)
-    tuple val(meta), path(regions)
-    tuple val(meta), path(sites)
+    tuple val(meta2), path(coverage)
+    tuple val(meta3), path(exome)
+    tuple val(meta4), path(fracsnp)
+    tuple val(meta5), path(ideogram)
+    tuple val(meta6), path(regions)
+    tuple val(meta7), path(sites)
 
     output:
     tuple val(meta), path("${prefix}"), emit: plots
@@ -25,14 +25,29 @@ process CHROMOGRAPH {
 
     script:
     def args           = task.ext.args   ?: ''
-    prefix             = task.ext.prefix ?: "${meta.id}"
-    def autozyg_param  = autozyg   ? "--autozyg ${autozyg}"   : ''
-    def coverage_param = coverage  ? "--coverage ${coverage}" : ''
-    def exome_param    = exome     ? "--exom ${exome}"        : ''
-    def fracsnp_param  = fracsnp   ? "--fracsnp ${fracsnp}"   : ''
-    def ideogram_param = ideogram  ? "--ideogram ${ideogram}" : ''
-    def regions_param  = regions   ? "--regions ${regions}"   : ''
-    def sites_param    = sites     ? "--sites ${sites}"       : ''
+    def autozyg_param  = autozyg         ? "--autozyg ${autozyg}"   : ''
+    def coverage_param = coverage        ? "--coverage ${coverage}" : ''
+    def exome_param    = exome           ? "--exom ${exome}"        : ''
+    def fracsnp_param  = fracsnp         ? "--fracsnp ${fracsnp}"   : ''
+    def ideogram_param = ideogram        ? "--ideogram ${ideogram}" : ''
+    def regions_param  = regions         ? "--regions ${regions}"   : ''
+    def sites_param    = sites           ? "--sites ${sites}"       : ''
+
+    if (autozyg) {
+        prefix         = task.ext.prefix ?: "${meta.id}"
+    } else if (coverage) {
+        prefix         = task.ext.prefix ?: "${meta2.id}"
+    } else if (exome) {
+        prefix         = task.ext.prefix ?: "${meta3.id}"
+    } else if (fracsnp) {
+        prefix         = task.ext.prefix ?: "${meta4.id}"
+    } else if (ideogram) {
+        prefix         = task.ext.prefix ?: "${meta5.id}"
+    } else if (regions) {
+        prefix         = task.ext.prefix ?: "${meta6.id}"
+    } else {
+        prefix         = task.ext.prefix ?: "${meta7.id}"
+    }
     """
     chromograph \\
         $args \\
@@ -52,8 +67,23 @@ process CHROMOGRAPH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args               = task.ext.args   ?: ''
+
+    if (autozyg) {
+        prefix             = task.ext.prefix ?: "${meta.id}"
+    } else if (coverage) {
+        prefix             = task.ext.prefix ?: "${meta2.id}"
+    } else if (exome) {
+        prefix             = task.ext.prefix ?: "${meta3.id}"
+    } else if (fracsnp) {
+        prefix             = task.ext.prefix ?: "${meta4.id}"
+    } else if (ideogram) {
+        prefix             = task.ext.prefix ?: "${meta5.id}"
+    } else if (regions) {
+        prefix             = task.ext.prefix ?: "${meta6.id}"
+    } else {
+        prefix             = task.ext.prefix ?: "${meta7.id}"
+    }
     """
     mkdir ${prefix}
 
