@@ -2,10 +2,10 @@ process BEDTOOLS_UNIONBEDG {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bedtools=2.30.0"
+    conda "bioconda::bedtools=2.31.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h7d7f7ad_2':
-        'biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.0--hf5e1c6e_2' :
+        'biocontainers/bedtools:2.31.0--hf5e1c6e_2' }"
 
     input:
     tuple val(meta), path(bedgraph)
