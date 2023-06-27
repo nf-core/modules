@@ -15,5 +15,5 @@ workflow test_alignment {
         file('test_nucleo/reference/')
     ]
     fastqs = ch_fastq = Channel.fromList(fastqs)
-    ALIGNMENT ( fastqs, reference, 2)
+    ALIGNMENT ( fastqs, reference, 1)
 }

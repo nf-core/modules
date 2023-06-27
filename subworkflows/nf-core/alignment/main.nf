@@ -22,30 +22,34 @@ workflow ALIGNMENT {
     versions = Channel.empty()
 
     // TODO nf-core: substitute modules here for the modules of your subworkflow
-    if(bwa == 1) {
-        BWA_MEM ( fastqs, reference, true ).bam.map {
-            meta, bam ->
-                new_id = 'aligned_bam'
-                [[id: new_id], bam ]
-        }.set {aligned_bam}
-        versions = versions.mix(BWA_MEM.out.versions.first())
-    } 
-    if(bwa == 2) {
-        // Index Reference fasta
-        fasta_file = reference[1].list().find{it=~/.fasta$/}
-        fasta_path = [
-        [id:'reference_fasta'], file(reference[1].resolve(fasta_file))
-        ]
-        BWAMEM2_INDEX (fasta_path)
-        versions = versions.mix(BWAMEM2_INDEX.out.versions.first())
-
-        // BWA MEM2 
-        BWAMEM2_MEM ( fastqs, BWAMEM2_INDEX.out.index, true ).bam.map {
-            meta, bam ->
-                new_id = 'aligned_bam'
-                [[id: new_id], bam ]
-        }.set {aligned_bam}
-        versions = versions.mix(BWAMEM2_MEM.out.versions.first())
+    switch(bwa){
+        case 1: 
+            BWA_MEM ( fastqs, reference, true ).bam.map {
+                meta, bam ->
+                    new_id = 'aligned_bam'
+                    [[id: new_id], bam ]
+            }.set {aligned_bam}
+            versions = versions.mix(BWA_MEM.out.versions.first()) 
+            break
+        case 2: 
+            // Index Reference fasta
+            fasta_file = reference[1].list().find{it=~/.fasta$/}
+            fasta_path = [
+            [id:'reference_fasta'], file(reference[1].resolve(fasta_file))
+            ]
+            BWAMEM2_INDEX (fasta_path)
+            versions = versions.mix(BWAMEM2_INDEX.out.versions.first())
+            break 
+            // BWA MEM2 
+            BWAMEM2_MEM ( fastqs, BWAMEM2_INDEX.out.index, true ).bam.map {
+                meta, bam ->
+                    new_id = 'aligned_bam'
+                    [[id: new_id], bam ]
+            }.set {aligned_bam}
+            versions = versions.mix(BWAMEM2_MEM.out.versions.first())
+            break
+        default:
+            throw new Exception("The argument bwa must be either 1 or 2, not ${bwa}.")
     }
 
 
