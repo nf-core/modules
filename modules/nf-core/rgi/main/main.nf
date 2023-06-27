@@ -13,7 +13,7 @@ process RGI_MAIN {
     output:
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt") , emit: tsv
-    tuple val(meta), path("temp/")  , emit: tmp
+    tuple val(meta), path("temp/") , emit: tmp
     env VER                        , emit: tool_version
     env DBVER                      , emit: db_version
     path "versions.yml"            , emit: versions
