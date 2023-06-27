@@ -2,10 +2,10 @@ process RGI_MAIN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::rgi=5.2.1"
+    conda "bioconda::rgi=6.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:5.2.1--pyha8f3691_2':
-        'biocontainers/rgi:5.2.1--pyha8f3691_2' }"
+        'https://depot.galaxyproject.org/singularity/rgi:6.0.2--pyha8f3691_0':
+        'biocontainers/rgi:6.0.2--pyha8f3691_0' }"
 
     input:
     tuple val(meta), path(fasta)
