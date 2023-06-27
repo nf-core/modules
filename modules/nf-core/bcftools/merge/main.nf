@@ -27,16 +27,17 @@ process BCFTOOLS_MERGE {
     def regions = bed ? "--regions-file $bed" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+                    "vcf"
 
     """
     bcftools merge \\
+        $args \\
         $regions \\
         --threads $task.cpus \\
         --output ${prefix}.${extension} \\
-        $args \\
-        *.vcf.gz
+        $vcfs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -49,8 +50,9 @@ process BCFTOOLS_MERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+                    "vcf"
     """
     touch ${prefix}.${extension}
 
