@@ -11,9 +11,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     }
 
     input:
-    tuple val(meta), path(ploidy, stageAs:'ploidy')
+    tuple val(meta), path(ploidy)
     tuple val(meta2), path(model)
-    tuple val(meta2), path(calls)
+    tuple val(meta3), path(calls)
 
     output:
     tuple val(meta), path("*_genotyped_intervals.vcf.gz") , emit: intervals, optional: true

@@ -13,7 +13,7 @@ process GATK4_GERMLINECNVCALLER {
     input:
     tuple val(meta), path(tsv), path(intervals)
     tuple val(meta2), path(model)
-    tuple val(meta2), path(ploidy)
+    tuple val(meta3), path(ploidy)
 
     output:
     tuple val(meta), path("*-cnv-calls/*-calls"), emit: calls, optional: true

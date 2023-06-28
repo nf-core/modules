@@ -10,8 +10,8 @@ process GATK4_COLLECTREADCOUNTS {
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
-    tuple val(meta2), path(dict)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*.hdf5"), optional: true, emit: hdf5
