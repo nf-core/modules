@@ -21,10 +21,13 @@ process ASHLAR {
 
     script:
     def args = task.ext.args ?: ''
-    def dfp = opt_dfp? "--dfp $opt_dfp": ""
-    def ffp = opt_ffp? "--ffp $opt_ffp": ""
-    def dfp_validated = !(opt_dfp instanceof List) || ((opt_dfp instanceof List) && (opt_dfp.isEmpty() || opt_dfp.size() == 1)) ? true : false
-    def ffp_validated = !(opt_ffp instanceof List) || ((opt_ffp instanceof List) && (opt_ffp.isEmpty() || opt_ffp.size() == 1)) ? true : false
+    def dfp = opt_dfp ? "--dfp $opt_dfp" : ""
+    def ffp = opt_ffp ? "--ffp $opt_ffp" : ""
+    def num_files = file instanceof List ? file.size() : 1
+    def opt_dfp_size = opt_dfp instanceof List ? opt_dfp.size() : 1
+    def opt_ffp_size = opt_ffp instanceof List ? opt_ffp.size() : 1
+    def dfp_validated = (opt_dfp_size == 0 || opt_dfp_size == 1 || opt_dfp_size == num_files) ? true : false
+    def ffp_validated = (opt_ffp_size == 0 || opt_ffp_size == 1 || opt_ffp_size == num_files) ? true : false
 
     """
     if [ "$dfp_validated" = "false" ]; then
