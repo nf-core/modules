@@ -13,8 +13,9 @@ process GEM2_GEM2BEDMAPPABILITY {
     tuple val(meta2), path(index)
 
     output:
-    tuple val(meta), path("*.bg"), emit: bedgraph
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*.bg")   , emit: bedgraph
+    tuple val(meta), path("*.sizes"), emit: sizes
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
