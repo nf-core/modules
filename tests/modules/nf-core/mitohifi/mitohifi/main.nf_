@@ -1,0 +1,16 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+include { MITOHIFI_MITOHIFI } from '../../../../../modules/nf-core/mitohifi/mitohifi/main.nf'
+
+workflow test_mitohifi_mitohifi {
+    
+    species = "'Deilephila porcellus'"
+
+    data = [[id:"ilDeiPorc1"],[],"/lustre/scratch124/tol/projects/darwin/users/kk16/development/nextflow/dev/nf-core-mitohifi/test-datasets/data/genomics/eukaryotes/deilephila_porcellus/ilDeiPorc1.contigs.fa"]
+    ref_gb = "/lustre/scratch124/tol/projects/darwin/users/kk16/development/nextflow/dev/nf-core-mitohifi/test-datasets/data/genomics/eukaryotes/deilephila_porcellus/MW539688.1.gb"
+    ref_fa = "/lustre/scratch124/tol/projects/darwin/users/kk16/development/nextflow/dev/nf-core-mitohifi/test-datasets/data/genomics/eukaryotes/deilephila_porcellus/MW539688.1.fasta"
+    code = 5
+    MITOHIFI_MITOHIFI ( data, ref_gb, ref_fa, code )
+}
