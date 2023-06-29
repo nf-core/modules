@@ -27,7 +27,8 @@ process CELLRANGERARC_MKREF {
     """
     cellranger-arc \\
         mkref \\
-        --config=$reference_config 2> /dev/null
+        --config=$reference_config \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
