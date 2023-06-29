@@ -19,13 +19,22 @@ process MINIPROT_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-
     """
     miniprot \\
         -t $task.cpus \\
         -d ${fasta.baseName}.mpi \\
         $args \\
         $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        miniprot: \$(miniprot --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${fasta.baseName}.mpi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

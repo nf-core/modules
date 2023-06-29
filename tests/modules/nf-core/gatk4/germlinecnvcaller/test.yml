@@ -1,25 +1,9 @@
-- name: gatk4 germlinecnvcaller test_gatk4_germlinecnvcaller_case
-  command: nextflow run ./tests/modules/nf-core/gatk4/germlinecnvcaller -entry test_gatk4_germlinecnvcaller_case -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/germlinecnvcaller/nextflow.config
+- name: gatk4 germlinecnvcaller test_gatk4_germlinecnvcaller
+  command: nextflow run ./tests/modules/nf-core/gatk4/germlinecnvcaller -entry test_gatk4_germlinecnvcaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/germlinecnvcaller/nextflow.config
   tags:
     - gatk4/germlinecnvcaller
     - gatk4
   files:
-    - path: output/gatk4/test-cnv-calls.tar.gz
-    - path: output/gatk4/test1.tsv
-      md5sum: 0ac78200288de9fc0aa122cc3f9a4fd0
-    - path: output/gatk4/test2.tsv
-      md5sum: e746609b0791cd119eac1695c54623b7
-    - path: output/gatk4/versions.yml
-
-- name: gatk4 germlinecnvcaller test_gatk4_germlinecnvcaller_cohort
-  command: nextflow run ./tests/modules/nf-core/gatk4/germlinecnvcaller -entry test_gatk4_germlinecnvcaller_cohort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/germlinecnvcaller/nextflow.config
-  tags:
-    - gatk4/germlinecnvcaller
-    - gatk4
-  files:
-    - path: output/gatk4/test-cnv-model.tar.gz
-    - path: output/gatk4/test1.tsv
-      md5sum: 0ac78200288de9fc0aa122cc3f9a4fd0
-    - path: output/gatk4/test2.tsv
-      md5sum: e746609b0791cd119eac1695c54623b7
+    - path: output/gatk4/test-cnv-calls
+    - path: output/gatk4/test-cnv-model
     - path: output/gatk4/versions.yml

@@ -36,4 +36,16 @@ process MINIPROT_ALIGN {
         miniprot: \$(miniprot --version 2>&1)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--gff") ? "gff" : "paf"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        miniprot: \$(miniprot --version 2>&1)
+    END_VERSIONS
+    """
 }
