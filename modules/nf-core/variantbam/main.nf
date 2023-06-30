@@ -3,10 +3,10 @@ process VARIANTBAM {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::variantbam=1.4.4a" : null)
+    conda "bioconda::variantbam=1.4.4a"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5' :
-        'quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5' }"
+        'biocontainers/variantbam:1.4.4a--h7d7f7ad_5' }"
 
     input:
     tuple val(meta), path(bam)

@@ -2,10 +2,10 @@ process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ampcombi=0.1.7" : null)
+    conda "bioconda::ampcombi=0.1.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ampcombi:0.1.7--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
+        'biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(amp_input)
@@ -33,12 +33,11 @@ process AMPCOMBI {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}'" : "--amp_results $amp_input/"
     def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
     """
     ampcombi \\
         $args \\
-        ${fileoption} \\
+        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
         --sample_list ${prefix} \\
         --log True \\
         --threads ${task.cpus} \\

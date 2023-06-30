@@ -2,14 +2,14 @@ process STRANGER {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::stranger=0.8.1" : null)
+    conda "bioconda::stranger=0.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stranger:0.8.1--pyh5e36f6f_0':
-        'quay.io/biocontainers/stranger:0.8.1--pyh5e36f6f_0' }"
+        'biocontainers/stranger:0.8.1--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(vcf)
-    path variant_catalog
+    tuple val(meta2), path(variant_catalog)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf

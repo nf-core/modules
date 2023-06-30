@@ -2,10 +2,10 @@ process PLINK_VCF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
+    conda "bioconda::plink=1.90b6.21"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
+        'biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
     tuple val(meta), path(vcf)

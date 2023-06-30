@@ -1,0 +1,15 @@
+- name: metaeuk easypredict test_metaeuk_easypredict
+  command: nextflow run ./tests/modules/nf-core/metaeuk/easypredict -entry test_metaeuk_easypredict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaeuk/easypredict/nextflow.config
+  tags:
+    - metaeuk/easypredict
+    - metaeuk
+  files:
+    - path: output/metaeuk/test.codon.fas
+      md5sum: 6eed1f7651d7ba82171cb02014884e5f
+    - path: output/metaeuk/test.fas
+      md5sum: 99e9062723af0b474c21de91a4f5dab0
+    - path: output/metaeuk/test.gff
+      md5sum: be171e6f1e1e546909ad540ff0a9ffe4
+    - path: output/metaeuk/test.headersMap.tsv
+      md5sum: b3628c76d7385d326bd8a7931d974cff
+    - path: output/metaeuk/versions.yml

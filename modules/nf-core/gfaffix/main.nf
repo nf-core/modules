@@ -2,11 +2,11 @@ process GFAFFIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? 'bioconda::gfaffix=0.1.4' : null)
+    conda "bioconda::gfaffix=0.1.4"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfaffix:0.1.4--hec16e2b_0' :
-        'quay.io/biocontainers/gfaffix:0.1.4--hec16e2b_0' }"
+        'biocontainers/gfaffix:0.1.4--hec16e2b_0' }"
 
     input:
     tuple val(meta), path(gfa)

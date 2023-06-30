@@ -3,10 +3,10 @@ process AMPLIFY_PREDICT {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::amplify=1.0.3" : null)
+    conda "bioconda::amplify=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/amplify:1.0.3--py36hdfd78af_0':
-        'quay.io/biocontainers/amplify:1.0.3--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/amplify:1.1.0--hdfd78af_0':
+        'biocontainers/amplify:1.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(faa)
@@ -23,7 +23,6 @@ process AMPLIFY_PREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     AMPlify \\
         $args \\
@@ -35,7 +34,7 @@ process AMPLIFY_PREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        AMPlify: $VERSION
+        AMPlify: \$(AMPlify --help | grep 'AMPlify v' | sed -e "s/^.*AMPlify v//")
     END_VERSIONS
     """
 }

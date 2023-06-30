@@ -1,8 +1,8 @@
 - name: cellranger count test_cellranger_count
-  command: nextflow run ./tests/modules/nf-core/cellranger/count -entry test_cellranger_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellranger/count/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cellranger/count -entry test_cellranger_count -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellranger/count/nextflow.config
   tags:
-    - cellranger/count
     - cellranger
+    - cellranger/count
   files:
     - path: output/cellranger/genome.filtered.gtf
       md5sum: a8b8a7b5039e05d3a9cf9151ea138b5b
@@ -13,7 +13,7 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/genes/genes.gtf.gz
       md5sum: d1e05cd46684fa26d852b6bc9f05e31f
     - path: output/cellranger/homo_sapiens_chr22_reference/reference.json
-      md5sum: 8405fd7f527a944eafb9c2909045840b
+      md5sum: ec937ee57f457360ca4969051876c79a
     - path: output/cellranger/homo_sapiens_chr22_reference/star/Genome
       md5sum: 897cec2d191945335f8b320438bd9135
     - path: output/cellranger/homo_sapiens_chr22_reference/star/SA
@@ -35,31 +35,36 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/star/geneInfo.tab
       md5sum: 02a8f4575bdfcd4a42b4d8d07f2e9369
     - path: output/cellranger/homo_sapiens_chr22_reference/star/genomeParameters.txt
+      contains:
+        - "2.7.1a"
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbInfo.txt
       md5sum: 1082ab459363b3f2f7aabcef0979c1ed
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbList.out.tab
     - path: output/cellranger/homo_sapiens_chr22_reference/star/transcriptInfo.tab
       md5sum: cedcb5f4e7d97bc548cd5daa022e092c
-    - path: output/cellranger/sample-123/outs/filtered_feature_bc_matrix.h5
-      md5sum: f8b6b7cc8248151a98c46d4ebec450c6
-    - path: output/cellranger/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
-    - path: output/cellranger/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
-    - path: output/cellranger/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
-    - path: output/cellranger/sample-123/outs/metrics_summary.csv
-      md5sum: 707df0f101d479d93f412ca74f9c4131
-    - path: output/cellranger/sample-123/outs/molecule_info.h5
-      md5sum: a13bd7425f441c8d0eac8ffc50082996
-    - path: output/cellranger/sample-123/outs/possorted_genome_bam.bam
-      md5sum: 15441da9cfceea0bb48c8b66b1b860df
-    - path: output/cellranger/sample-123/outs/possorted_genome_bam.bam.bai
-      md5sum: 7c3d49c77016a09535aff61a027f750c
-    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix.h5
-      md5sum: a5290f3e300a4070f3d68a0c2e215f54
-    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
-      md5sum: 5cc39ef0c7ac85f2b758b164aabf9157
-    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
+    - path: output/cellranger/test_10x/outs/filtered_feature_bc_matrix.h5
+      md5sum: cd440a402b661dc307356057d0dd3348
+    - path: output/cellranger/test_10x/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    - path: output/cellranger/test_10x/outs/filtered_feature_bc_matrix/features.tsv.gz
+    - path: output/cellranger/test_10x/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    - path: output/cellranger/test_10x/outs/metrics_summary.csv
+      md5sum: c295fe3ccbb6ce118482964ca9c748d4
+    - path: output/cellranger/test_10x/outs/molecule_info.h5
+      md5sum: b6bb6307f16a58fab3a00fb575084e1c
+    - path: output/cellranger/test_10x/outs/possorted_genome_bam.bam
+      md5sum: 32fe604968326d98e8c0c36ce3c5ee8d
+    - path: output/cellranger/test_10x/outs/possorted_genome_bam.bam.bai
+      md5sum: e37e792ca1b528e64cd57f7d70dae3ed
+    - path: output/cellranger/test_10x/outs/raw_feature_bc_matrix.h5
+      md5sum: 8521dbdf077e029ae35e682d746eb79d
+    - path: output/cellranger/test_10x/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+      md5sum: e36061d7bb6c6310dc6c2625979424d8
+    - path: output/cellranger/test_10x/outs/raw_feature_bc_matrix/features.tsv.gz
       md5sum: 07d497c7ce3e22f374af7b2cf9b97d72
-    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
-      md5sum: bdce94a51f16e22d40301724080b76ee
-    - path: output/cellranger/sample-123/outs/web_summary.html
+    - path: output/cellranger/test_10x/outs/raw_feature_bc_matrix/matrix.mtx.gz
+      md5sum: 5f0a9e0d5358875030b49eb09afa729c
+    - path: output/cellranger/test_10x/outs/web_summary.html
+      contains:
+        - "test_10x"
+    - path: output/cellranger/versions.yml

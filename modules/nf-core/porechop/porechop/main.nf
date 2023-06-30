@@ -2,10 +2,10 @@ process PORECHOP_PORECHOP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::porechop=0.2.4" : null)
+    conda "bioconda::porechop=0.2.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
-        'quay.io/biocontainers/porechop:0.2.4--py39h7cff6ad_2' }"
+        'biocontainers/porechop:0.2.4--py39h7cff6ad_2' }"
 
     input:
     tuple val(meta), path(reads)

@@ -2,10 +2,12 @@ process CELLRANGER_MKREF {
     tag "$fasta"
     label 'process_high'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+    container "nf-core/cellranger:7.1.0"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "nfcore/cellranger:7.0.0"
 
     input:
     path fasta
@@ -26,7 +28,8 @@ process CELLRANGER_MKREF {
         mkref \\
         --genome=$reference_name \\
         --fasta=$fasta \\
-        --genes=$gtf
+        --genes=$gtf \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

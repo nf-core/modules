@@ -3,10 +3,10 @@ process UCSC_BEDGRAPHTOBIGWIG {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::ucsc-bedgraphtobigwig=377" : null)
+    conda "bioconda::ucsc-bedgraphtobigwig=377"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:377--h446ed27_1' :
-        'quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h446ed27_1' }"
+        'biocontainers/ucsc-bedgraphtobigwig:377--h446ed27_1' }"
 
     input:
     tuple val(meta), path(bedgraph)
@@ -28,6 +28,18 @@ process UCSC_BEDGRAPHTOBIGWIG {
         $bedgraph \\
         $sizes \\
         ${prefix}.bigWig
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ucsc: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.bigWig
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

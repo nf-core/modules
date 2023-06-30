@@ -2,10 +2,10 @@ process AMPIR {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::r-ampir=1.1.0" : null)
+    conda "conda-forge::r-ampir=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ampir:1.1.0':
-        'quay.io/biocontainers/r-ampir:1.1.0' }"
+        'biocontainers/r-ampir:1.1.0' }"
 
     input:
     tuple val(meta), path(faa)
@@ -24,14 +24,13 @@ process AMPIR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    min_length = ("${min_length}" == "[]") ? "": " min_len = as.integer(${min_length})," // Fall back to AMPir default value if none specified
     if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     #!/usr/bin/env Rscript
     library(ampir)
 
     input_seqs <- read_faa('${faa}')
-    prediction <- predict_amps(input_seqs,${min_length} model = '${model}')
+    prediction <- predict_amps(input_seqs,${min_length},model = '${model}')
     prediction <- prediction[which(prediction\$prob_AMP >= as.numeric(${min_probability})), ]
     output_seqs <- input_seqs[row.names(prediction), ]
     write.table(prediction, file = "${prefix}.tsv", row.names = FALSE, sep = "\t", quote = FALSE, dec = '.')

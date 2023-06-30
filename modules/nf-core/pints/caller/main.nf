@@ -2,10 +2,10 @@ process PINTS_CALLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda    (params.enable_conda ? "bioconda::pypints=1.1.8" : null)
+    conda "bioconda::pypints=1.1.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pypints:1.1.8--pyh7cba7a3_0' :
-        'quay.io/biocontainers/pypints:1.1.8--pyh7cba7a3_0' }"
+        'biocontainers/pypints:1.1.8--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bams)

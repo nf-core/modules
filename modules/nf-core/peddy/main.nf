@@ -2,10 +2,10 @@ process PEDDY {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::peddy=0.4.8" : null)
+    conda "bioconda::peddy=0.4.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
-        'quay.io/biocontainers/peddy:0.4.8--pyh5e36f6f_0' }"
+        'biocontainers/peddy:0.4.8--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
@@ -27,6 +27,7 @@ process PEDDY {
     """
     peddy \\
         $args \\
+        --prefix $prefix \\
         --plot \\
         -p $task.cpus \\
         $vcf \\
@@ -39,14 +40,14 @@ process PEDDY {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    filename=\$(basename $vcf)
-    touch \$filename.ped_check.csv
-    touch \$filename.vs.html
-    touch \$filename.het_check.csv
-    touch \$filename.sex_check.csv
-    touch \$filename.peddy.ped
-    touch \$filename.html
+    touch ${prefix}.ped_check.csv
+    touch ${prefix}.vs.html
+    touch ${prefix}.het_check.csv
+    touch ${prefix}.sex_check.csv
+    touch ${prefix}.peddy.ped
+    touch ${prefix}.html
 
     touch versions.yml
     """

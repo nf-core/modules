@@ -2,16 +2,17 @@ process TABIX_BGZIPTABIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
+    conda "bioconda::tabix=1.11"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'quay.io/biocontainers/tabix:1.11--hdfd78af_0' }"
+        'biocontainers/tabix:1.11--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.gz"), path("*.tbi"), emit: gz_tbi
+    tuple val(meta), path("*.gz"), path("*.tbi"), optional: true, emit: gz_tbi
+    tuple val(meta), path("*.gz"), path("*.csi"), optional: true, emit: gz_csi
     path  "versions.yml" ,                        emit: versions
 
     when:
@@ -34,8 +35,9 @@ process TABIX_BGZIPTABIX {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gz
-    touch ${prefix}.gz.tbi
+    touch ${prefix}.${input.getExtension()}.gz
+    touch ${prefix}.${input.getExtension()}.gz.tbi
+    touch ${prefix}.${input.getExtension()}.gz.csi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

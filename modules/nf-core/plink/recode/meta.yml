@@ -1,0 +1,141 @@
+name: "plink_recode"
+description: Recodes plink bfiles into a new text fileset applying different modifiers
+keywords:
+  - recode
+tools:
+  - "plink":
+      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
+      homepage: "https://www.cog-genomics.org/plink"
+      documentation: "https://www.cog-genomics.org/plink/1.9/data#recode"
+      tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
+
+      licence: "['GPL']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: PLINK binary biallelic genotype table file
+      pattern: "*.{bed}"
+  - bim:
+      type: file
+      description: PLINK extended MAP file
+      pattern: "*.{bim}"
+  - fam:
+      type: file
+      description: PLINK sample information file
+      pattern: "*.{fam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - ped:
+      type: file
+      description: PLINK/MERLIN/Haploview text pedigree + genotype table file. Produced by the default "--recode" or by "--recode 12".
+      pattern: "*.{ped}"
+  - map:
+      type: file
+      description: PLINK text fileset variant information file. Produced by the default "--recode" or by "--recode 12".
+      pattern: "*.{map}"
+  - txt:
+      type: file
+      description: Text file. Produced by "--recode 23". Can only be used in a file with only one sample.
+      pattern: "*.{txt}"
+  - raw:
+      type: file
+      description: Additive + dominant component file. Produced by "--recode AD" or "--recode A".
+      pattern: "*.{raw}"
+  - traw:
+      type: file
+      description: Variant-major additive component file. Produced by "--recode A-transpose".
+      pattern: "*.{traw}"
+  - beagle-dat:
+      type: file
+      description: Single BEAGLE unphased genotype file. Produced by "--recode beagle" in 'beagle-nomap' mode.
+      pattern: "*.{beagle.dat}"
+  - chr-dat:
+      type: file
+      description: BEAGLE unphased genotype and variant information files. Produced by "--recode beagle".
+      pattern: "*.{*.chr-*.dat}"
+  - chr-map:
+      type: file
+      description: BEAGLE variant information files. Produced by "--recode beagle".
+      pattern: "*.{*chr-*.map}"
+  - geno:
+      type: file
+      description: BIMBAM genotype file. Produced by "--recode bimbam".
+      pattern: "*.{recode.geno.txt}"
+  - pheno:
+      type: file
+      description: BIMBAM phenotype file. Produced by "--recode bimbam".
+      pattern: "*.{recode.pheno.txt}"
+  - pos:
+      type: file
+      description: BIMBAM variant position file. Produced by "--recode bimbam".
+      pattern: "*.{recode.pos.txt}"
+  - phase:
+      type: file
+      description: fastPHASE format. Produced by "--recode fastphase".
+      pattern: "*.{recode.phase.inp}"
+  - info:
+      type: file
+      description: Haploview map file. Produced by "--recode HV".
+      pattern: "*.{info}"
+  - lgen:
+      type: file
+      description: PLINK long-format genotype file. Produced by "--recode lgen".
+      pattern: "*.{lgen}"
+  - list:
+      type: file
+      description: Genotype list file. Produced by "--recode list".
+      pattern: "*.{list}"
+  - gen:
+      type: file
+      description: Oxford genotype file format. Produced by "--recode oxford".
+      pattern: "*.{gen}"
+  - genz:
+      type: file
+      description: Compressed Oxford genotype file format. Produced by "--recode oxford gen-gz".
+      pattern: "*.{genz}"
+  - sample:
+      type: file
+      description: Oxford sample information file. Produced by "--recode oxford".
+      pattern: "*.{sample}"
+  - rlist:
+      type: file
+      description: Rare genotype list file. Produced by "--recode rlist".
+      pattern: "*.{rlist}"
+  - strctin:
+      type: file
+      description: Structure-format file. Produced by "--recode structure".
+      pattern: "*.{strct_in}"
+  - tped:
+      type: file
+      description: Transposed text PED file. Produced by "--recode transpose".
+      pattern: "*.{tped}"
+  - tfam:
+      type: file
+      description: Transposed text FAM file. Produced by "--recode transpose".
+      pattern: "*.{tfam}"
+  - vcf:
+      type: file
+      description: Variant calling file (VCF). Produced by "--recode vcf".
+      pattern: "*.{vcf}"
+  - vcfgz:
+      type: file
+      description: Compressed variant calling file (VCF). Produced by "--recode vcf bgz".
+      pattern: "*.{vcf.gz}"
+
+authors:
+  - "@atrigila"

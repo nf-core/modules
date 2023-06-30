@@ -2,10 +2,10 @@ process AMRFINDERPLUS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
+    conda "bioconda::ncbi-amrfinderplus=3.10.42"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.30--h6e70893_0':
-        'quay.io/biocontainers/ncbi-amrfinderplus:3.10.30--h6e70893_0' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.42--h6e70893_0':
+        'biocontainers/ncbi-amrfinderplus:3.10.42--h6e70893_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -2,10 +2,10 @@ process MINIA {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::minia=3.2.6" : null)
+    conda "bioconda::minia=3.2.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0' :
-        'quay.io/biocontainers/minia:3.2.6--h9a82719_0' }"
+        'biocontainers/minia:3.2.6--h9a82719_0' }"
 
     input:
     tuple val(meta), path(reads)

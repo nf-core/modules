@@ -2,10 +2,10 @@ process MACS2_CALLPEAK {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
+    conda "bioconda::macs2=2.2.7.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
-        'quay.io/biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"
+        'biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)

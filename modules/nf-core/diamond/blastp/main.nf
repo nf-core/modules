@@ -2,10 +2,10 @@ process DIAMOND_BLASTP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::diamond=2.0.15" : null)
+    conda "bioconda::diamond=2.0.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/diamond:2.0.15--hb97b32f_0' :
-        'quay.io/biocontainers/diamond:2.0.15--hb97b32f_0' }"
+        'biocontainers/diamond:2.0.15--hb97b32f_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -45,7 +45,7 @@ process DIAMOND_BLASTP {
             break
     }
     """
-    DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
+    DB=`find -L ./ -name "*.dmnd" | sed 's/\\.dmnd\$//'`
 
     diamond \\
         blastp \\

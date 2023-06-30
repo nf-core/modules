@@ -2,10 +2,10 @@ process CONCOCT_MERGECUTUPCLUSTERING {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::concoct=1.1.0" : null)
+    conda "bioconda::concoct=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py38h7be5676_2':
-        'quay.io/biocontainers/concoct:1.1.0--py38h7be5676_2' }"
+        'biocontainers/concoct:1.1.0--py38h7be5676_2' }"
 
     input:
     tuple val(meta), path(clustering_csv)

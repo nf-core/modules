@@ -2,10 +2,10 @@ process COOLER_CLOAD {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
+    conda "bioconda::cooler=0.9.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0' :
-        'quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
+        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(pairs), path(index), val(cool_bin)
@@ -30,6 +30,17 @@ process COOLER_CLOAD {
         ${chromsizes}:${cool_bin} \\
         $pairs \\
         ${prefix}.cool
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.cool
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

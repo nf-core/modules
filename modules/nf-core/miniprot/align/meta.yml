@@ -1,0 +1,53 @@
+name: miniprot_align
+description: A versatile pairwise aligner for genomic and spliced nucleotide sequences
+keywords:
+  - align
+  - fasta
+  - protein
+  - genome
+  - paf
+  - gff
+tools:
+  - miniprot:
+      description: |
+        A versatile pairwise aligner for genomic and protein sequences.
+      homepage: https://github.com/lh3/miniprot
+      documentation: https://github.com/lh3/miniprot
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pep:
+      type: file
+      description: a fasta file contains one or multiple protein sequences
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+  - ref:
+      type: file
+      description: Reference database in FASTA format or miniprot index format.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - paf:
+      type: file
+      description: Alignment in PAF format
+      pattern: "*.paf"
+  - gff:
+      type: file
+      description: Alignment in gff format
+      pattern: "*.gff"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@yumisims"
+  - "@muffato"

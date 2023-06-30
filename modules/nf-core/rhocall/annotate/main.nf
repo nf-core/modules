@@ -2,14 +2,14 @@ process RHOCALL_ANNOTATE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::rhocall=0.5.1" : null)
+    conda "bioconda::rhocall=0.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
-        'quay.io/biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
+        'biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    tuple val(meta), path(roh)
+    tuple val(meta2), path(roh)
     path bed
 
     output:

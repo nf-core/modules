@@ -2,15 +2,15 @@ process EXPANSIONHUNTERDENOVO_MERGE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::expansionhunterdenovo=0.9.0" : null)
+    conda "bioconda::expansionhunterdenovo=0.9.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunterdenovo:0.9.0--hdc99072_3':
-        'quay.io/biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
+        'biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
 
     input:
     tuple val(meta), path(manifest)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.multisample_profile.json"), emit: merged_profiles

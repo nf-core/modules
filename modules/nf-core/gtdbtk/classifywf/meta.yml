@@ -3,6 +3,11 @@ description: GTDB-Tk is a software toolkit for assigning objective taxonomic cla
 keywords:
   - GTDB taxonomy
   - taxonomic classification
+  - metagenomics
+  - classification
+  - genome taxonomy database
+  - bacteria
+  - archaea
 tools:
   - gtdbtk:
       description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
@@ -19,12 +24,12 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false,  assembler:'spades' ]
   - bins:
-      type: The binned fasta files from the assembler
-      description: Fasta files
+      type: file
+      description: The binned fasta files from the assembler
       pattern: "*.{fasta,fa}"
   - database:
-      type: The local copy of the taxonomic database used by GTDB-tk
-      description: The unzipped copy of the database
+      type: file
+      description: The local copy of the taxonomic database used by GTDB-tk (unzipped copy)
       pattern: "*"
 
 output:

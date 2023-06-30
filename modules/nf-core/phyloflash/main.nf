@@ -2,10 +2,10 @@ process PHYLOFLASH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::phyloflash=3.4" : null)
+    conda "bioconda::phyloflash=3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phyloflash:3.4--hdfd78af_1' :
-        'quay.io/biocontainers/phyloflash:3.4--hdfd78af_1' }"
+        'biocontainers/phyloflash:3.4--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads)

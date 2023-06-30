@@ -2,10 +2,10 @@ process BIOHANSEL {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::bio_hansel=2.6.1" : null)
+    conda "bioconda::bio_hansel=2.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bio_hansel:2.6.1--py_0':
-        'quay.io/biocontainers/bio_hansel:2.6.1--py_0' }"
+        'biocontainers/bio_hansel:2.6.1--py_0' }"
 
     input:
     tuple val(meta), path(seqs)

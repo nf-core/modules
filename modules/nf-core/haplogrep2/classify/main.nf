@@ -2,10 +2,10 @@ process HAPLOGREP2_CLASSIFY {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::haplogrep=2.4.0" : null)
+    conda "bioconda::haplogrep=2.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/haplogrep:2.4.0--hdfd78af_0':
-        'quay.io/biocontainers/haplogrep:2.4.0--hdfd78af_0' }"
+        'biocontainers/haplogrep:2.4.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(inputfile)

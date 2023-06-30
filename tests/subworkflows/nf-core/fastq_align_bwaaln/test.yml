@@ -1,0 +1,66 @@
+- name: fastq_align_bwaaln test_fastq_align_bwaaln_singleend
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_align_bwaaln -entry test_fastq_align_bwaaln_singleend -c ./tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa/aln
+    - bwa/sampe
+    - bwa/samse
+    - samtools
+    - samtools/index
+    - subworkflows
+    - subworkflows/fastq_align_bwaaln
+  files:
+    - path: output/bwa/test.bam
+      md5sum: 5cf3882480b7a7be0d7256be19807850
+    - path: output/bwa/test.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: output/samtools/test.bam.bai
+      md5sum: 0006931d17e40a4b8896ff1438bbbdcb
+
+- name: fastq_align_bwaaln test_fastq_align_bwaaln_paired_end
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_align_bwaaln -entry test_fastq_align_bwaaln_paired_end -c ./tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa/aln
+    - bwa/sampe
+    - bwa/samse
+    - samtools
+    - samtools/index
+    - subworkflows
+    - subworkflows/fastq_align_bwaaln
+  files:
+    - path: output/bwa/test.1.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: output/bwa/test.2.sai
+      md5sum: b4f185d9b4cb256dd5c377070a536124
+    - path: output/bwa/test.bam
+      md5sum: a72985b0bf6a02c65d1ac415f1081c6e
+    - path: output/samtools/test.bam.bai
+      md5sum: ef100143d24336c57b66ac9a462e6373
+
+- name: fastq_align_bwaaln test_fastq_align_bwaaln_both
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_align_bwaaln -entry test_fastq_align_bwaaln_both -c ./tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa/aln
+    - bwa/sampe
+    - bwa/samse
+    - samtools
+    - samtools/index
+    - subworkflows
+    - subworkflows/fastq_align_bwaaln
+  files:
+    - path: output/bwa/test.1.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: output/bwa/test.2.sai
+      md5sum: b4f185d9b4cb256dd5c377070a536124
+    - path: output/bwa/test.bam
+      md5sum: a72985b0bf6a02c65d1ac415f1081c6e
+    - path: output/bwa/test2.bam
+      md5sum: 84bac6c61a24b671fce06b841ee8cdcf
+    - path: output/bwa/test2.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: output/samtools/test.bam.bai
+      md5sum: ef100143d24336c57b66ac9a462e6373
+    - path: output/samtools/test2.bam.bai
+      md5sum: 0006931d17e40a4b8896ff1438bbbdcb

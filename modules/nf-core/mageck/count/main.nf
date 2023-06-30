@@ -2,10 +2,10 @@ process MAGECK_COUNT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::mageck=0.5.9" : null)
+    conda "bioconda::mageck=0.5.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mageck:0.5.9--py37h6bb024c_0':
-        'quay.io/biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
+        'biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
 
     input:
     tuple val(meta), path(inputfile)

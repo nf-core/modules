@@ -1,0 +1,71 @@
+name: "shapeit5_switch"
+description: Program to compute switch error rate and genotyping error rate given simulated or trio data.
+keywords:
+  - error
+  - phasing
+tools:
+  - "shapeit5":
+      description: "Fast and accurate method for estimation of haplotypes (phasing)"
+      homepage: "https://odelaneau.github.io/shapeit5/"
+      documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
+      tool_dev_url: "https://github.com/odelaneau/shapeit5"
+      doi: "10.1101/2022.10.19.512867 "
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - estimate:
+      type: file
+      description: Imputed data.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - estimate_index:
+      type: file
+      description: Index file of the freq VCF/BCF file.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - region:
+      type: string
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - pedigree:
+      type: file
+      description: |
+        Pedigree information in the following format: offspring father mother.
+      pattern: "*.{txt, tsv}"
+  - truth:
+      type: file
+      description: Validation dataset called at the same positions as the imputed file.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - truth_index:
+      type: file
+      description: Index file of the truth VCF/BCF file.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - freq:
+      type: file
+      description: File containing allele frequencies at each site.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - freq_index:
+      type: file
+      description: Index file of the freq VCF/BCF file.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - errors:
+      type: file
+      description: Estimates errors from the phased file.
+      pattern: "*.txt.gz"
+
+authors:
+  - "@LouisLeNezet"

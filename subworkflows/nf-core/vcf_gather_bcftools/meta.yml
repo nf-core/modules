@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_gather_bcftools"
+description: |
+  Concatenate several VCF files using bcftools concat.
+  Especially works well with the scatter subworkflows in nf-core.
+  An additional option can be given to sort the concatenated VCF.
+keywords:
+  - concat
+  - vcf
+  - gather
+  - sort
+  - bcftools
+modules:
+  - bcftools/sort
+  - bcftools/concat
+  - tabix/tabix
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
+        e.g. [ id:'test.001', common_meta:'test' ]
+  - ch_vcfs:
+      type: file(s)
+      description: |
+        VCF files and their indices that should be concatenated
+        Structure: [ meta, vcf, tbi ]
+  - ch_scatter_output:
+      type: file and integer
+      description: |
+        The output created from a scatter subworkflow (contains a BED file and scatter_count).
+        The BED file isn't actually used in the pipeline so can remain empty if you manually set this input channel
+        Structure: [ meta, bed, scatter_count ]
+  - common_meta:
+      type: string
+      description: |
+        OPTIONAL:
+        The string of the common meta to use as the new 'id'.
+        Please make sure all VCFs that need to be concatenated have the same value in the
+        the meta field specified. (and that only the ID is different between these files)
+  - sort:
+      type: boolean
+      description: |
+        Whether or not to sort the output VCF,
+        this can be useful if this subworkflow isn't used in a scatter/gather workflow
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - vcf:
+      type: file
+      description: |
+        The concatenated (and possible sorted) VCF file
+        Structure: [ meta, vcf ]
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: |
+        The indices of the output VCFs
+        Structure: [ meta, tbi ]
+      pattern: "*.vcf.gz.tbi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@nvnieuwk"
