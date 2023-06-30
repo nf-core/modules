@@ -13,25 +13,24 @@ process UNIVERSC {
     tuple val(meta), path(reads)
     path  reference
 
+
     output:
-    tuple val(meta), path("${meta.id}/outs/", type: "dir"), emit: outs
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("sample-${meta.id}/outs/*"), emit: outs
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def sample_arg     = meta.samples.unique().join(",")
-    // Older versions of this module supported a single read but Universc does not
-    if ( reads instanceof Path || reads.size() != 2 ) {
-        error "UNIVERSC module only supports paired end reads"
-    }
+    def args = task.ext.args ?: ''
+    def sample_arg = meta.samples.unique().join(",")
+    def reference_name = reference.name
+    def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
     universc \\
         $args \\
         --id ${meta.id} \\
-        --read1 ${reads[0]} --read2 ${reads[1]} \\
+        ${input_reads} \\
         --reference ${reference} \\
         --jobmode local \\
         --localcores ${task.cpus} \\
