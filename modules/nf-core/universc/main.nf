@@ -24,17 +24,20 @@ process UNIVERSC {
     script:
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
-    def reference_name = reference.name
-    def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
+    if ( reads instanceof Path || reads.size() != 2 ) {
+        error "UNIVERSC module only supports 2 paired end read files. Input: ${reads}"
+    }
     """
     universc \\
-        $args \\
         --id ${meta.id} \\
-        ${input_reads} \\
+        --read1 ${reads[0]} --read2 ${reads[1]} \\
         --reference ${reference} \\
-        --jobmode local \\
+        --jobmode "local" \\
         --localcores ${task.cpus} \\
-        --localmem ${task.memory.toGiga()}
+        --localmem ${task.memory.toGiga()} \\
+        $args
+
+    echo !! > sample-${meta.id}/outs/_invocation
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
