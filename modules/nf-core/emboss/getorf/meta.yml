@@ -1,0 +1,50 @@
+name: "emboss_getorf"
+description: Predicts and writes Open Reading Frames (ORFs) from input sequence
+keywords:
+  - emboss
+  - embl
+  - gff
+  - fasta
+  - orf
+  - sequence
+  - codon
+tools:
+  - "emboss":
+      description: "The European Molecular Biology Open Software Suite"
+      homepage: "https://www.bioinformatics.nl/cgi-bin/emboss/getorf"
+      documentation: "https://www.bioinformatics.nl/cgi-bin/emboss/help/getorf"
+      tool_dev_url: "https://github.com/kimrutherford/EMBOSS/blob/master/emboss/getorf.c"
+      doi: "10.1016/s0168-9525(00)02024-2"
+      licence: "['GPL']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sequence:
+      type: file
+      description: Input sequence query
+      pattern: "*.{gff,em,gb,refseq,pir,swiss,sw,txt,fasta}"
+##TODO what about zipped files?
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - outseq:
+      type: file
+      description: Converted sequence file
+      pattern: "*"
+
+authors:
+  - "@timslittle"
