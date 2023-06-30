@@ -31,7 +31,6 @@ rule hello_world:
                 file
             ]}
         .set{ snakefile }
-    snakefile.view()
 
     SNAKEMAKE ( input, snakefile)
 }

@@ -14,7 +14,7 @@ process SNAKEMAKE {
     tuple val(meta2), path(snakemake)
 
     output:
-    tuple val(meta), path("**[.snakemake]")                        , emit: outputs
+    tuple val(meta), path("**[!.snakemake]"), optional: true       , emit: outputs
     tuple val(meta), path(".snakemake", type: 'dir', hidden: true), emit: snakemake_dir
     path "versions.yml"                                           , emit: versions
 
@@ -22,11 +22,13 @@ process SNAKEMAKE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def cores  = task.cpus ? "--cores ${task.cpus}" : "--cores all"
     """
     snakemake \\
         $args \\
+        $cores \\
         --snakefile $snakemake
 
     cat <<-END_VERSIONS > versions.yml
@@ -36,11 +38,14 @@ process SNAKEMAKE {
     """
 
     stub:
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def cores  = task.cpus ? "--cores ${task.cpus}" : "--cores all"
     """
     snakemake \\
         $args \\
         --snakefile $snakemake \\
-        --cores ${task.cores} \\
+        $cores \\
         --dry-run
 
     cat <<-END_VERSIONS > versions.yml

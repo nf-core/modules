@@ -4,7 +4,14 @@
     - snakemake
   files:
     - path: output/snakemake/.snakemake/
-    - path: output/snakemake/.snakemake/
     - path: output/snakemake/hello.txt
       md5sum: e59ff97941044f85df5297e1c302d260
+    - path: output/snakemake/versions.yml
+
+- name: snakemake test_snakemake_stub
+  command: nextflow run ./tests/modules/nf-core/snakemake -entry test_snakemake -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snakemake/nextflow.config -stub
+  tags:
+    - snakemake
+  files:
+    - path: output/snakemake/.snakemake/
     - path: output/snakemake/versions.yml
