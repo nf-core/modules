@@ -1,6 +1,6 @@
 process GENMAP_INDEX {
-    tag "$fasta"
-    label 'process_high'
+    tag "$meta.id"
+    label 'process_low'
 
     conda "bioconda::genmap=1.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,22 +8,37 @@ process GENMAP_INDEX {
         'biocontainers/genmap:1.3.0--h1b792b2_1' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "genmap"       , emit: index
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("${prefix}") , emit: index
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "$meta.id"
+
     """
     genmap \\
         index \\
-        -F $fasta \\
-        -I genmap
+        --fasta-file ${fasta} \\
+        --index ${prefix} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "$meta.id"
+
+    """
+    touch ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
