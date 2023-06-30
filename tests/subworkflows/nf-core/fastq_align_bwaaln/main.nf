@@ -68,8 +68,8 @@ workflow test_fastq_align_bwa_multiref {
     )
 
     fasta = Channel.fromList( [
-        [ [id: 'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ],
-        [ [id: 'test2'], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+        [ [id: 'reftest'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ],
+        [ [id: 'reftest2'], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
     ] )
 
     BWA_INDEX ( fasta )
