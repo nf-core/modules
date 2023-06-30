@@ -11,7 +11,7 @@ process EMBOSS_CONS {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.")   , emit: consensu
+    tuple val(meta), path("*.fa") , emit: consensus
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,17 +20,27 @@ process EMBOSS_CONS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def name = (args =~ "name") ? '' : "-name $prefix"
+    def name = (args =~ "name") ? '' : "-name ${prefix}_consensus"
     """
     cons \\
         ${args} \\
         ${name} \\
         -sequence $fasta \\
-        -outseq ${prefix} \\
+        -outseq ${prefix}.fa \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(cons --version 2>&1) | sed 'EMBOSS://' ))
+        emboss: \$(echo \$(cons -version 2>&1) | sed 's/EMBOSS://')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.fa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        emboss: \$(echo \$(cons -version 2>&1) | sed 's/EMBOSS://')
     END_VERSIONS
     """
 }

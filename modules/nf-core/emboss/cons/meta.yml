@@ -1,55 +1,47 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "emboss_cons"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: cons calculates a consensus sequence from a multiple sequence alignment. To obtain the consensus, the sequence weights and a scoring matrix are used to calculate a score for each amino acid residue or nucleotide at each position in the alignment.
 keywords:
-  - sort
-  - example
-  - genomics
+  - emboss
+  - consensus
+  - fasta
+  - multiple sequence alignment
+  - MSA
 tools:
   - "emboss":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "The European Molecular Biology Open Software Suite"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['GPL']"
+      homepage: "https://www.ebi.ac.uk/Tools/sfc/emboss_seqret/"
+      documentation: "https://emboss.bioinformatics.nl/cgi-bin/emboss/help/seqret"
+      tool_dev_url: "http://emboss.open-bio.org/"
+      doi: "10.1016/s0168-9525(00)02024-2 "
+      licence: ["GPL"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Multiple sequence alignment (unzipped)
+      pattern: "*.{fasta,fa,fas,fsa,seq,mpfa,aln,clustal,clw,msf,phy,phylip,stockholm,sto,msf,afa,afa,a}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
+  - consensus:
+      type: file
+      description: Consensus sequence calculated from multiple sequence alignment
+      pattern: "*.fa"
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@Joon-Klaps"
