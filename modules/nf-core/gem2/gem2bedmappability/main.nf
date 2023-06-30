@@ -42,6 +42,7 @@ process GEM2_GEM2BEDMAPPABILITY {
 
     """
     touch ${prefix}.bg
+    touch ${prefix}.sizes
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
