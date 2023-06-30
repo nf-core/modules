@@ -25,36 +25,17 @@ input:
       type: file
       description: File containing identified variants in a gff-like format
       pattern: "*.variants.tsv"
-
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - depths:
       type: file
       description: File containing depth of the variants
       pattern: "*.depth.tsv"
-
   - repeats:
       type: integer
       description: Number of bootstrap repeats to perform
-
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - barcodes:
       type: file
       description: File containing lineage defining barcodes
       pattern: "*barcodes.csv"
-
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - lineages_meta:
       type: file
       description: File containing lineage metadata that correspond to barcodes
