@@ -52,13 +52,14 @@ workflow test_gatk4_germlinecnvcaller {
             .groupTuple()
             .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
             .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
-            .map({ meta, counts, meta2, calls, meta3, bed -> [ meta, counts, bed, calls ]})
+            .map{ meta, counts, meta2, calls, meta3, bed -> [ meta, counts, bed, calls, [] ]}
 
-    GATK4_GERMLINECNVCALLER_COHORT ( gcnvc_cohort_input, [[],[]] )
+    GATK4_GERMLINECNVCALLER_COHORT ( gcnvc_cohort_input )
 
-    gcnvc_case_input = GATK4_COLLECTREADCOUNTS.out.tsv
+    gcnvc_case_input = GATK4_COLLECTREADCOUNTS.out.tsv.first()
             .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
-            .map({ meta, counts, meta2, calls -> [ [id:'test'], counts, [], calls ]})
-    GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input, GATK4_GERMLINECNVCALLER_COHORT.out.model )
+            .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
+            .map{ meta, counts, meta2, calls, meta3, model -> [ [id:'test'], counts, [], calls, model ]}
+    GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input )
 
 }
