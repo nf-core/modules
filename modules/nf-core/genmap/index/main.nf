@@ -1,6 +1,6 @@
 process GENMAP_INDEX {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     conda "bioconda::genmap=1.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
