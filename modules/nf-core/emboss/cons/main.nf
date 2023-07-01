@@ -20,11 +20,11 @@ process EMBOSS_CONS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def name = (args =~ "name") ? '' : "-name ${prefix}_consensus"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     cons \\
         ${args} \\
-        ${name} \\
+        -name ${prefix} \\
         -sequence $fasta \\
         -outseq ${prefix}.fa \\
 
@@ -35,6 +35,8 @@ process EMBOSS_CONS {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "$meta.id"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.fa
 
