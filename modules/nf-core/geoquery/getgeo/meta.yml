@@ -1,0 +1,47 @@
+name: "geoquery_getgeo"
+description: Retrieves GEO data from the Gene Expression Omnibus (GEO)
+keywords:
+  - geo
+  - expression
+  - rna-seq
+
+tools:
+  - "geoquery":
+      description: "R package for querying the GEO database"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/geoquery.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/geoquery/inst/doc/geoquery.html"
+      tool_dev_url: "https://github.com/Bioconductor/geoquery"
+      doi: "10.1038/nmeth.f.309"
+      licence: "LGPL-3.0"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing metadata about the GEO dataset, minimally 'id'.
+  - querygse:
+      type: string
+      description: |
+        GSE identifier to pass to getGEO()
+
+output:
+  - rds:
+      type: file
+      description: R object containing GEO data
+      pattern: "*.rds"
+  - expression:
+      type: file
+      description: TSV-format expression matrix
+      pattern: "*matrix.tsv"
+  - annotation:
+      type: file
+      description: TSV-format annotation file
+      pattern: "*annotation.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@azedinez"
+  - "@pinin4fjords"
