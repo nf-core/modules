@@ -5,7 +5,7 @@ process GEOQUERY_GETGEO {
     conda "bioconda::bioconductor-geoquery=2.66.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-geoquery:2.66.0--r42hdfd78af_0' :
-        'quay.io/biocontainers/bioconductor-geoquery:2.66.0--r42hdfd78af_0' }"
+        'biocontainers/bioconductor-geoquery:2.66.0--r42hdfd78af_0' }"
 
     input:
     tuple val(meta), val(querygse)
