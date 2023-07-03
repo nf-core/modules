@@ -39,7 +39,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h2a80c09_1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.tab
 
