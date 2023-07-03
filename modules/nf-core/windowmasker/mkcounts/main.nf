@@ -2,7 +2,7 @@ process WINDOWMASKER_MKCOUNTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::blast=2.14.0=h7d5a4b4_1"
+    conda "bioconda::blast=2.14.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.14.0--h7d5a4b4_1':
         'biocontainers/blast:2.14.0--h7d5a4b4_1' }"
