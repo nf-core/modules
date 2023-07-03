@@ -2,7 +2,7 @@ process UCSC_GTFTOGENEPRED {
     tag '${meta.id}'
     label 'process_low'
 
-    conda "bioconda::ucsc-gtftogenepred=447=h954228d_0"
+    conda "bioconda::ucsc-gtftogenepred=447"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:447--h954228d_0':
         'biocontainers/ucsc-gtftogenepred:447--h954228d_0' }"
@@ -22,7 +22,7 @@ process UCSC_GTFTOGENEPRED {
     def args = task.ext.args ?: ''
     def gen_refflat = args.contains("-genePredExt") && args.contains("-geneNameAsName2") ? "true" : "false"
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h954228d_0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gtfToGenePred \\
         $args \\
@@ -41,7 +41,7 @@ process UCSC_GTFTOGENEPRED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h954228d_0'
+    def VERSION = '447'
     """
     touch ${prefix}.genepred
     touch ${prefix}.refflat

@@ -3,7 +3,7 @@ process UCSC_WIGTOBIGWIG {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-wigtobigwig=447=h2a80c09_1"
+    conda "bioconda::ucsc-wigtobigwig=447"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-wigtobigwig:447--h2a80c09_1' :
         'biocontainers/ucsc-wigtobigwig:447--h2a80c09_1' }"
@@ -22,7 +22,7 @@ process UCSC_WIGTOBIGWIG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h2a80c09_1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     wigToBigWig \\
         $args \\
@@ -38,7 +38,7 @@ process UCSC_WIGTOBIGWIG {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h2a80c09_1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bw
 

@@ -3,7 +3,7 @@ process UCSC_BEDTOBIGBED {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-bedtobigbed=447=h954228d_0"
+    conda "bioconda::ucsc-bedtobigbed=447"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:447--h954228d_0' :
         'biocontainers/ucsc-bedtobigbed:447--h954228d_0' }"
@@ -24,7 +24,7 @@ process UCSC_BEDTOBIGBED {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def as_option = autosql ? "-as=${autosql}" : ""
-    def VERSION = '447=h954228d_0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedToBigBed \\
         $bed \\
@@ -41,7 +41,7 @@ process UCSC_BEDTOBIGBED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447=h954228d_0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bigBed
 
