@@ -1,21 +1,20 @@
-- name: peka test_peka
-  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config -stub-run
+- name: peka test_peka_stub
+  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka_stub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config -stub-run
   tags:
     - peka
   files:
-    - path: output/peka/test.5mer_UTR3.pdf
-    - path: output/peka/test.5mer_cluster_distribution_UTR3.tsv
-    - path: output/peka/test.5mer_cluster_distribution_genome.tsv
-    - path: output/peka/test.5mer_cluster_distribution_intron.tsv
-    - path: output/peka/test.5mer_cluster_distribution_ncRNA.tsv
-    - path: output/peka/test.5mer_cluster_distribution_whole_gene.tsv
-    - path: output/peka/test.5mer_distribution_UTR3.tsv
-    - path: output/peka/test.5mer_distribution_genome.tsv
-    - path: output/peka/test.5mer_distribution_intron.tsv
-    - path: output/peka/test.5mer_distribution_ncRNA.tsv
-    - path: output/peka/test.5mer_distribution_whole_gene.tsv
-    - path: output/peka/test.5mer_genome.pdf
-    - path: output/peka/test.5mer_intron.pdf
-    - path: output/peka/test.5mer_ncRNA.pdf
-    - path: output/peka/test.5mer_whole_gene.pdf
-    - path: output/peka/versions.yml
+    - path: output/peka/test_4mer_cluster_distribution_genome.tsv
+    - path: output/peka/test_4mer_distribution_genome.tsv
+    - path: output/peka/test_4mer_genome.pdf
+
+- name: peka test_peka
+  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config
+  tags:
+    - peka
+  files:
+    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_cluster_distribution_genome.tsv
+      md5sum: b2ecb84fea756236e3026b2ea405f9a4
+    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_distribution_genome.tsv
+      md5sum: cb9807f6fff68ccaaf20fc0f9cfce008
+    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_genome.pdf
+      md5sum: 62ee044e173495803ae5784ba353bebb
