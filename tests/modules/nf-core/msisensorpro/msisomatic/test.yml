@@ -1,7 +1,7 @@
-- name: msisensorpro msi_somatic test_msisensorpro_msi
-  command: nextflow run ./tests/modules/nf-core/msisensorpro/msi_somatic -entry test_msisensorpro_msi -c ./tests/config/nextflow.config
+- name: msisensorpro msisomatic test_msisensorpro_msi
+  command: nextflow run ./tests/modules/nf-core/msisensorpro/msisomatic -entry test_msisensorpro_msi -c ./tests/config/nextflow.config
   tags:
-    - msisensorpro/msi_somatic
+    - msisensorpro/msisomatic
     - msisensorpro
   files:
     - path: output/msisensorpro/test
