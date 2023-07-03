@@ -6,6 +6,9 @@
   files:
     - path: output/ucsc/test.bigBed
       md5sum: 3c2400aab8f7a3ac333905c7484d9a24
+    - path: output/ucsc/versions.yml
+      md5sum: 659abeb6bd2f7dcb77be94bc262c877f
+
 - name: ucsc bedtobigbed autosql
   command: nextflow run ./tests/modules/nf-core/ucsc/bedtobigbed -entry test_ucsc_bedtobigbed_autosql -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ucsc/bedtobigbed/nextflow.config
   tags:
@@ -14,3 +17,5 @@
   files:
     - path: output/ucsc/test.bigBed
       md5sum: 6dc69a14b95bcceee98e9e6b3c3def09
+    - path: output/ucsc/versions.yml
+      md5sum: 90d6d2cd94392f987af2894e83284af2
