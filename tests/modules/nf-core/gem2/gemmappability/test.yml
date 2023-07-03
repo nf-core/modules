@@ -1,0 +1,9 @@
+- name: gem2 gemmappability test_gem2_gemmappability
+  command: nextflow run ./tests/modules/nf-core/gem2/gemmappability -entry test_gem2_gemmappability -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gem2/gemmappability/nextflow.config
+  tags:
+    - gem2
+    - gem2/gemmappability
+  files:
+    - path: output/gem2/test.mappability
+      md5sum: 8380b048fec0e8c4f104f49d2bf784c4
+    - path: output/gem2/versions.yml
