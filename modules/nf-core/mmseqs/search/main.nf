@@ -21,7 +21,7 @@ process MMSEQS_SEARCH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("$query_db" == "${prefix}" || "$target_db" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
@@ -37,6 +37,7 @@ process MMSEQS_SEARCH {
         ${prefix}/search \\
         tmp1 \\
         --threads ${task.cpus} \\
+        --compressed 1 \\
         $args
 
 
