@@ -1,6 +1,7 @@
 - name: ucsc liftover test_ucsc_liftover
   command: nextflow run ./tests/modules/nf-core/ucsc/liftover -entry test_ucsc_liftover -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ucsc/liftover/nextflow.config
   tags:
+    - bed
     - ucsc
     - ucsc/liftover
   files:
@@ -8,4 +9,4 @@
       md5sum: fd5878470257a8a0edeaa8b9374bd520
     - path: output/ucsc/test.unlifted.bed
       md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/ucsc/versions.yml
+    - path: outpus/ucsc/versions.yml
