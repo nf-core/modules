@@ -11,9 +11,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     }
 
     input:
-    tuple val(meta), path(ploidy)
-    tuple val(meta2), path(model)
-    tuple val(meta3), path(calls)
+    tuple val(meta), path(calls), path(model), path(ploidy)
 
     output:
     tuple val(meta), path("*_genotyped_intervals.vcf.gz") , emit: intervals, optional: true
@@ -27,9 +25,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ploidy_command = ploidy ? "--contig-ploidy-calls ${ploidy}"  : ""
-    def model_command  = model  ? "--model-shard-path ${model}"      : ""
-    def calls_command  = calls  ? "--calls-shard-path ${calls}"      : ""
+    def calls_command  = calls   ? calls.collect{"--calls-shard-path $it"}.join(' ')  : ""
+    def model_command  = model   ? model.collect{"--model-shard-path $it"}.join(' ')  : ""
+    def ploidy_command = ploidy  ? "--contig-ploidy-calls ${ploidy}"                  : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -39,9 +37,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" PostprocessGermlineCNVCalls \\
-        $ploidy_command \\
-        $model_command \\
         $calls_command \\
+        $model_command \\
+        $ploidy_command \\
         --output-genotyped-intervals ${prefix}_genotyped_intervals.vcf.gz \\
         --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
         --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
