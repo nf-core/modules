@@ -1,12 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_search"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
-  - example
-  - genomics
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+  - mmseqs2
 tools:
   - "mmseqs":
       ## TODO nf-core: Add a description and other details for the software below
@@ -25,7 +27,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
@@ -40,7 +42,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
