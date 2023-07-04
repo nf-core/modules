@@ -13,7 +13,7 @@ process MMSEQS_SEARCH {
     tuple val(meta2), path(target_db)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: search_db
+    tuple val(meta), path("${prefix}") , emit: search_db
     path "versions.yml"                , emit: versions
 
     when:
@@ -38,7 +38,7 @@ process MMSEQS_SEARCH {
         tmp1 \\
         $args \\
         --threads ${task.cpus} \\
-        --compressed 1 \\
+        --compressed 1
 
 
     cat <<-END_VERSIONS > versions.yml
