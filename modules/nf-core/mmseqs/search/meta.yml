@@ -27,15 +27,14 @@ input:
   - query_db:
       type: directory
       description: an MMseqs2 database with query data
-
-  - meta2:
-    type: map
-    description: |
-      Groovy Map containing sample information
-      e.g. `[ id:'test', single_end:false ]`
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
   - target_db:
-    type: directory
-    description: an MMseqs2 database with target data, e.g. uniref90
+      type: directory
+      description: an MMseqs2 database with target data, e.g. uniref90
 
 output:
   - meta:
