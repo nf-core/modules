@@ -1,0 +1,23 @@
+- name: mmseqs createdb test_mmseqs_createdb
+  command: nextflow run ./tests/modules/nf-core/mmseqs/createdb -entry test_mmseqs_createdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/createdb/nextflow.config
+  tags:
+    - mmseqs
+    - mmseqs/createdb
+  files:
+    - path: output/mmseqs/test/seq
+      md5sum: 7c3c2c5926cf8fa82e66b9628f680256
+    - path: output/mmseqs/test/seq.dbtype
+      md5sum: c8ed20c23ba91f4577f84c940c86c7db
+    - path: output/mmseqs/test/seq.index
+      md5sum: 5b2fd8abd0ad3fee24738af7082e6a6e
+    - path: output/mmseqs/test/seq.lookup
+      md5sum: 32f88756dbcb6aaf7b239b0d61730f1b
+    - path: output/mmseqs/test/seq.source
+      md5sum: 9ada5b3ea6e1a7e16c4418eb98ae8d9d
+    - path: output/mmseqs/test/seq_h
+      md5sum: 8c29f5ed94d83d7115e9c8a883ce358d
+    - path: output/mmseqs/test/seq_h.dbtype
+      md5sum: 8895d3d8e9322aedbf45249dfb3ddb0a
+    - path: output/mmseqs/test/seq_h.index
+      md5sum: 87c7c8c6d16018ebfaa6f408391a5ae2
+    - path: output/mmseqs/versions.yml
