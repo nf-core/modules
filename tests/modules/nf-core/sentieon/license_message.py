@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+#########################################
+# Author: [DonFreed](https://github.com/DonFreed)
+# File: license_message.py
+# Source: https://github.com/DonFreed/docker-actions-test/blob/main/.github/scripts/license_message.py
+# Source+commit: https://github.com/DonFreed/docker-actions-test/blob/aa1051a9f53b3a1e801953748d062cad74dca9a9/.github/scripts/license_message.py
+# Download Date: 2023-07-04, commit: aa1051a
+# This source code is licensed under the BSD 2-Clause license
+#########################################
+
 """
 Functions for generating and sending license messages
 """
