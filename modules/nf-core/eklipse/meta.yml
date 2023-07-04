@@ -28,6 +28,10 @@ input:
       type: file
       description: MT BAM/SAM file
       pattern: "*.{bam,sam}"
+  - bai:
+      type: file
+      description: MT BAM/SAM index file
+      pattern: "*.{bai,sai}"
   - ref_gb:
       type: file
       description: mtDNA reference genome in Genbank format, optional if empty NC_012920.1.gb will be used
