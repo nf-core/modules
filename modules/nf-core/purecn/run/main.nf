@@ -9,24 +9,16 @@ process PURECN_RUN {
         'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    path tumor_coverage
-    path normal_coverage
+    tuple val(meta), path(intervals), path(coverage), path(vcf)
     path normal_db
-    path intervals
-    path mapping_bias
-    path blacklist
     val genome
-    val segmentation_function
-    val model_type
-    val seed_val
 
     output:
     tuple val(meta), path("*.csv")                             , emit: csv
     tuple val(meta), path("*_variants.csv")                    , emit: variants_csv
     tuple val(meta), path("*.pdf")                             , emit: pdf
     tuple val(meta), path("*.rds")                             , emit: rds
-    tuple val(meta), path("*_amplification_pvalues.csv")       , emit: csv
+    tuple val(meta), path("*_amplification_pvalues.csv")       , emit: amplification_pvalues_csv
     tuple val(meta), path("*_chromosomes.pdf")                 , emit: chr_pdf
     tuple val(meta), path("*_dnacopy.seg")                     , emit: seg
     tuple val(meta), path("*_genes.csv")                       , emit: genes_csv
@@ -56,28 +48,21 @@ process PURECN_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def normal_cov = normal_coverage ? "--fun-segmentation ${normal_coverage}" : ""
-    def segmentation = segmentation_function ? "--fun-segmentation ${segmentation_function}" : ""
-    def map_bias = mapping_bias ? "--mapping-bias-file ${mapping_bias}" : ""
-    def model = model_type ? "--model ${model_type}" : ""
-    def blacklist = snp_blacklist ? "--snp-blacklist ${snp_blacklist}" : ""
-    def seed = seed_val ? "--seed ${seed_val}" : ""
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
-    Rscript "\$library_path"PureCN.R \\
+    Rscript "\$library_path"/PureCN/extdata/PureCN.R \\
         --out ./ \\
-        --tumor ${tumor_coverage} \\
-        --normal ${normal_cov} \\
+        --tumor ${coverage} \\
         --sampleid ${prefix} \\
         --vcf ${vcf} \\
         --normaldb ${normal_db} \\
         --intervals ${intervals} \\
         --genome ${genome} \\
+        --parallel \\
+        --cores ${task.cpus} \\
         --stats-file ${prefix}_stats.txt \\
-        ${segmentation} \\
-        ${map_bias} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -87,11 +72,37 @@ process PURECN_RUN {
     """
 
     stub:
-
-    //TODO add STUB
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-
+    touch ${prefix}.csv
+    touch ${prefix}_variants.csv
+    touch ${prefix}.pdf
+    touch ${prefix}.rds
+    touch ${prefix}_amplification_pvalues.csv
+    touch ${prefix}_chromosomes.pdf
+    touch ${prefix}_dnacopy.seg
+    touch ${prefix}_genes.csv
+    touch ${prefix}_local_optima.pdf
+    touch ${prefix}.log
+    touch ${prefix}_loh.vcf
+    touch ${prefix}_loh.vcf.gz
+    touch ${prefix}_loh.vcf.gz.tbi
+    touch ${prefix}_loh.csv
+    touch ${prefix}_loh-effects-stats.csv
+    touch ${prefix}_loh-effects-stats.genes.txt
+    touch ${prefix}_loh-effects-stats.html
+    touch ${prefix}_loh-effects.vcf.gz
+    touch ${prefix}_loh-effects.vcf.gz.tbi
+    touch ${prefix}-purecn-lohsummary.yaml
+    touch ${prefix}_loh-effects.csv
+    touch ${prefix}_segmentation.pdf
+    touch ${prefix}-sort_coverage_loess.png
+    touch ${prefix}-sort_coverage_loess_qc.txt
+    touch ${prefix}-sort_coverage_loess.txt.gz
+    touch ${prefix}-sort_coverage.txt.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purecn: ${VERSION}
