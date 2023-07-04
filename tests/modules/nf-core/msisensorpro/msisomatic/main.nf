@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MSISENSORPRO_MSI_SOMATIC } from '../../../../../modules/nf-core/msisensorpro/msi_somatic/main.nf'
+include { MSISENSORPRO_MSISOMATIC } from '../../../../../modules/nf-core/msisensorpro/msisomatic/main.nf'
 include { MSISENSORPRO_SCAN } from '../../../../../modules/nf-core/msisensorpro/scan/main.nf'
 
 workflow test_msisensorpro_msi {
@@ -27,7 +27,7 @@ workflow test_msisensorpro_msi {
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
 
     MSISENSORPRO_SCAN.out.list.map{meta, list -> [list]}.set{list}
-    MSISENSORPRO_MSI_SOMATIC(input, fasta, list)
+    MSISENSORPRO_MSISOMATIC(input, fasta, list)
 
 
 }
