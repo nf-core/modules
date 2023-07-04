@@ -9,11 +9,11 @@ process MMSEQS_SEARCH {
         'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
 
     input:
-    tuple val(meta), path(query_db)
-    tuple val(meta2), path(target_db)
+    tuple val(meta), path(db_query)
+    tuple val(meta2), path(db_target)
 
     output:
-    tuple val(meta), path("${prefix}") , emit: search_db
+    tuple val(meta), path("${prefix}") , emit: db_search
     path "versions.yml"                , emit: versions
 
     when:
@@ -23,17 +23,17 @@ process MMSEQS_SEARCH {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("$query_db" == "${prefix}" || "$target_db" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
+    if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p ${prefix}
 
-    QUERY_DB_PATH_NAME=\$(find -L "$query_db/" -name "*.dbtype" | sed 's/\\.dbtype\$//' | head -n 1 )
-    TARGET_DB_PATH_NAME=\$(find -L "$target_db/" -name "*.dbtype" | sed 's/\\.dbtype\$//'| head -n 1 )
+    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -name "*.dbtype" | sed 's/\\.dbtype\$//' | head -n 1 )
+    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -name "*.dbtype" | sed 's/\\.dbtype\$//'| head -n 1 )
 
     mmseqs \\
         search \\
-        \$QUERY_DB_PATH_NAME \\
-        \$TARGET_DB_PATH_NAME \\
+        \$DB_QUERY_PATH_NAME \\
+        \$DB_TARGET_PATH_NAME \\
         ${prefix}/search \\
         tmp1 \\
         --threads ${task.cpus} \\
@@ -50,7 +50,7 @@ process MMSEQS_SEARCH {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$query_db" == "${prefix}" || "$target_db" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
+    if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p $prefix
     touch ${prefix}/search.{0..9}
