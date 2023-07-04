@@ -3,10 +3,10 @@ process UCSC_BEDGRAPHTOBIGWIG {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-bedgraphtobigwig=377"
+    conda "bioconda::ucsc-bedgraphtobigwig=445"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:377--h446ed27_1' :
-        'biocontainers/ucsc-bedgraphtobigwig:377--h446ed27_1' }"
+        'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:445--h954228d_0' :
+        'biocontainers/ucsc-bedgraphtobigwig:445--h954228d_0' }"
 
     input:
     tuple val(meta), path(bedgraph)
@@ -22,7 +22,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '445' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedGraphToBigWig \\
         $bedgraph \\
@@ -37,7 +37,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '445' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bigWig
 

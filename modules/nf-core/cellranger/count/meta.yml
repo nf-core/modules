@@ -21,9 +21,17 @@ input:
   - reads:
       type: file
       description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-      pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
+        List of input FastQ files. The order of the input files MUST be ["sample1 R1", "sample1 R2", "sample2, R1",
+        "sample2, R2", ...]. This can usually be achieved by sorting the input files by file name.
+
+        Background: 10x data is always paired-end with R1 containing cell barcode and UMI
+        and R2 containing the actual read sequence. Cell Ranger requires files to adhere to the following file-name
+        convention: `${Sample_Name}_S1_L00${Lane_Number}_${R1,R2}_001.fastq.gz`. This module automatically
+        renames files to match this convention based on the order of input files to avoid various
+        issues (see https://github.com/nf-core/scrnaseq/issues/241). To avoid mistakes, the module
+        throws an error if a pair of R1 and R2 fastq files does not have the same filename except for the "_R1"/"_R2" part.
+        Renaming the files does not affect the results (see README.md for detailed tests).
+      pattern: "*{R1,R2}*.fastq.gz"
   - reference:
       type: directory
       description: Folder containing all the reference indices needed by Cell Ranger
