@@ -39,7 +39,7 @@ process PNEUMOCAT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.xml
+    touch ${prefix}.results.xml
     touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
