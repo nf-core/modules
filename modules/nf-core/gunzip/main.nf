@@ -21,10 +21,11 @@ process GUNZIP {
     def args = task.ext.args ?: ''
     gunzip = archive.toString() - '.gz'
     """
-    gunzip \\
-        -f \\
+    gzip \\
+        -cd \\
         $args \\
-        $archive
+        $archive \\
+        > $gunzip
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
