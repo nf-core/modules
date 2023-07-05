@@ -11,8 +11,8 @@ process MMSEQS_CREATEDB {
     tuple val(meta), path(sequence)
 
     output:
-    tuple val(meta), path("${prefix}/") , emit: db
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}/"), emit: db
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process MMSEQS_CREATEDB {
     mmseqs \\
         createdb \\
         ${sequence} \\
-        ${prefix}/seq \\
+        ${prefix}/${prefix} \\
         $args \\
         --compressed 1
 
@@ -40,14 +40,14 @@ process MMSEQS_CREATEDB {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}/seq
-    touch ${prefix}/seq.dbtype
-    touch ${prefix}/seq.index
-    touch ${prefix}/seq.lookup
-    touch ${prefix}/seq.source
-    touch ${prefix}/seq_h
-    touch ${prefix}/seq_h.dbtype
-    touch ${prefix}/seq_h.index
+    touch ${prefix}/${prefix}
+    touch ${prefix}/${prefix}.dbtype
+    touch ${prefix}/${prefix}.index
+    touch ${prefix}/${prefix}.lookup
+    touch ${prefix}/${prefix}.source
+    touch ${prefix}/${prefix}_h
+    touch ${prefix}/${prefix}_h.dbtype
+    touch ${prefix}/${prefix}_h.index
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
