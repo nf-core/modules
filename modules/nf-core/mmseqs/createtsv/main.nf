@@ -5,8 +5,8 @@ process MMSEQS_CREATETSV {
 
     conda "bioconda::mmseqs2=14.7e284"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
+        'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
 
     input:
     tuple val(meta), path(db_result)
