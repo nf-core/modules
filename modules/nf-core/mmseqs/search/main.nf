@@ -13,8 +13,8 @@ process MMSEQS_SEARCH {
     tuple val(meta2), path(db_target)
 
     output:
-    tuple val(meta), path("${prefix}") , emit: db_search
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${prefix}"), emit: db_search
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
