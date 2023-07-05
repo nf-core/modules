@@ -39,9 +39,9 @@ process MMSEQS_SEARCH {
         \$DB_TARGET_PATH_NAME \\
         ${prefix}/${prefix} \\
         tmp1 \\
+        $args \\
         --threads ${task.cpus} \\
-        --compressed 1 \\
-        $args
+        --compressed 1
 
 
     cat <<-END_VERSIONS > versions.yml
