@@ -1,5 +1,5 @@
 - name: "chromograph"
-  command: nextflow run ./tests/modules/nf-core/chromograph -entry test_chromograph -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromograph/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chromograph -entry test_chromograph_sites -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromograph/nextflow.config
   tags:
     - "chromograph"
   files:
@@ -7,7 +7,7 @@
     - path: "output/chromograph/versions.yml"
 
 - name: "chromograph stub"
-  command: nextflow run ./tests/modules/nf-core/chromograph -entry test_chromograph -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromograph/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/chromograph -entry test_chromograph_regions -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromograph/nextflow.config -stub-run
   tags:
     - "chromograph"
   files:
