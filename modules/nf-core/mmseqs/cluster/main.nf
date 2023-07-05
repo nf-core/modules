@@ -11,7 +11,7 @@ process MMSEQS_CLUSTER {
     tuple val(meta), path(db_input)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: cluster
+    tuple val(meta), path("${prefix}/"), emit: db_cluster
     path "versions.yml"                , emit: versions
 
     when:
@@ -24,12 +24,12 @@ process MMSEQS_CLUSTER {
 
     """
     mkdir -p ${prefix}
-    DB_INPUT_PATH_NAME=\$(find -L "$db_input/" -name "*.dbtype" | sed 's/\\.dbtype\$//' | head -n 1 )
+    DB_INPUT_PATH_NAME=\$(find -L "$db_input/" -maxdepth 1 -name "*.dbtype" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         cluster \\
         \$DB_INPUT_PATH_NAME \\
-        ${prefix}/clust \\
+        ${prefix}/${prefix} \\
         tmp1 \\
         --threads ${task.cpus} \\
         --compressed 1 \\
@@ -37,7 +37,7 @@ process MMSEQS_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
     END_VERSIONS
     """
 
@@ -45,13 +45,13 @@ process MMSEQS_CLUSTER {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}/clust.{0..9}
-    touch ${prefix}/clust.dbtype
-    touch ${prefix}/clust.index
+    touch ${prefix}/${prefix}.{0..9}
+    touch ${prefix}/${prefix}.dbtype
+    touch ${prefix}/${prefix}.index
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: /')
+        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
     END_VERSIONS
     """
 }

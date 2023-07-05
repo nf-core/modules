@@ -1,12 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /cluster
-- name: "mmseqs cluster"
+- name: mmseqs cluster test_mmseqs_cluster
   command: nextflow run ./tests/modules/nf-core/mmseqs/cluster -entry test_mmseqs_cluster -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/cluster/nextflow.config
   tags:
-    - "mmseqs"
-    - "mmseqs/cluster"
+    - mmseqs/cluster
+    - mmseqs
   files:
-    - path: "output/mmseqs/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/mmseqs/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/mmseqs/test_output_cluster/test_output_cluster.0
+    - path: output/mmseqs/test_output_cluster/test_output_cluster.1
+    - path: output/mmseqs/test_output_cluster/test_output_cluster.dbtype
+    - path: output/mmseqs/test_output_cluster/test_output_cluster.index
+    - path: output/mmseqs/versions.yml
