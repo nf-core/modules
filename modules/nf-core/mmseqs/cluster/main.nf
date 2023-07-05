@@ -33,9 +33,9 @@ process MMSEQS_CLUSTER {
         \$DB_INPUT_PATH_NAME \\
         ${prefix}/${prefix} \\
         tmp1 \\
+        $args \\
         --threads ${task.cpus} \\
-        --compressed 1 \\
-        $args
+        --compressed 1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
