@@ -59,12 +59,17 @@ workflow test_gatk4_postprocessgermlinecnvcalls {
     GATK4_GERMLINECNVCALLER_COHORT ( gcnvc_cohort_input )
 
     gcnvc_case_input = GATK4_COLLECTREADCOUNTS.out.tsv
+            .first()
             .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
             .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
             .map({ meta, counts, meta2, calls, meta3, model -> [ [id:'test'], counts, [], calls, model ]})
     GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input )
 
-    GATK4_POSTPROCESSGERMLINECNVCALLS ( GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls,
-        GATK4_GERMLINECNVCALLER_COHORT.out.model,
-        GATK4_GERMLINECNVCALLER_CASE.out.calls )
+    GATK4_GERMLINECNVCALLER_CASE.out.calls
+        .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
+        .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
+        .map({ meta, calls, meta2, model, meta3, ploidy -> [ [id:'test'], calls, model, ploidy ]})
+        .set {postproc_in}
+
+    GATK4_POSTPROCESSGERMLINECNVCALLS ( postproc_in )
 }
