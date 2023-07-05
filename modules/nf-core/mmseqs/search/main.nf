@@ -34,7 +34,7 @@ process MMSEQS_SEARCH {
         search \\
         \$DB_QUERY_PATH_NAME \\
         \$DB_TARGET_PATH_NAME \\
-        ${prefix}/search \\
+        ${prefix}/${prefix} \\
         tmp1 \\
         --threads ${task.cpus} \\
         --compressed 1 \\
@@ -53,9 +53,9 @@ process MMSEQS_SEARCH {
     if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p $prefix
-    touch ${prefix}/search.{0..9}
-    touch ${prefix}/search.dbtype
-    touch ${prefix}/search.index
+    touch ${prefix}/${prefix}.{0..9}
+    touch ${prefix}/${prefix}.dbtype
+    touch ${prefix}/${prefix}.index
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
