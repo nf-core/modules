@@ -4,12 +4,33 @@ nextflow.enable.dsl = 2
 
 include { PURECN_RUN } from '../../../../../modules/nf-core/purecn/run/main.nf'
 
+process STUB_PURECN_RUN {
+    output:
+    path("*interval_file.txt")    , emit: intervals
+    path("*coverage.txt")         , emit: coverage
+    path("*.vcf.gz")              , emit: vcf
+    path("*normal_db.rds")        , emit: normal_db
+
+    stub:
+    """
+    touch interval_file.txt
+    touch coverage.txt
+    touch test.vcf.gz
+    touch normal_db.rds
+    """
+}
+
 workflow test_purecn_run {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test'],
+        STUB_PURECN_RUN.out.intervals,
+        STUB_PURECN_RUN.out.coverage,
+        STUB_PURECN_RUN.out.vcf
     ]
 
-    PURECN_RUN ( input )
+    normal_db = STUB_PURECN_RUN.out.normal_db
+    genome = "hg38"
+
+    PURECN_RUN ( input, normal_db, genome )
 }
