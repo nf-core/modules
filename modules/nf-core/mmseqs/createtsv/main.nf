@@ -23,6 +23,7 @@ process MMSEQS_CREATETSV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    db_target = db_target ?: "${db_query}" // optional argument db_target as in many cases, it's the same as db_query
     """
 
     DB_RESULT_PATH_NAME=\$(find -L "$db_result/" -maxdepth 1 -name "*.dbtype" | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
