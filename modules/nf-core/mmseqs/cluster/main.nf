@@ -19,12 +19,13 @@ process MMSEQS_CLUSTER {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: "*.dbtype"
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("$db_input" == "${prefix}") error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
 
     """
     mkdir -p ${prefix}
-    DB_INPUT_PATH_NAME=\$(find -L "$db_input/" -maxdepth 1 -name "*.dbtype" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_INPUT_PATH_NAME=\$(find -L "$db_input/" -maxdepth 1 -name "$args2" | sed 's/\\.\\[^.\\]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         cluster \\
