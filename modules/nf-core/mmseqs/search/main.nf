@@ -27,8 +27,9 @@ process MMSEQS_SEARCH {
     """
     mkdir -p ${prefix}
 
-    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -name "*.dbtype" | sed 's/\\.dbtype\$//' | head -n 1 )
-    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -name "*.dbtype" | sed 's/\\.dbtype\$//'| head -n 1 )
+    # Extract basename of DB
+    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -name "*.dbtype" | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' | head -n 1 )
+    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -name "*.dbtype" | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D'| head -n 1 )
 
     mmseqs \\
         search \\
