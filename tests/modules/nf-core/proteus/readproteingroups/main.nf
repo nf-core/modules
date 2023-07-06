@@ -7,22 +7,16 @@ include { PROTEUS_READPROTEINGROUPS } from '../../../../../modules/nf-core/prote
 workflow test_proteus_readproteingroups {
 
     input = [
-        [ id:'test' ], // meta map
-        //file(params.test_data['proteomics']['maxquant']['samplesheet'], checkIfExists: true),    // samplesheet
-        //file(params.test_data['proteomics']['maxquant']['proteingroups'], checkIfExists: true)  // intensities
-        
-    file('./delete_me/MaxQuant_samplesheet.tsv', checkIfExists: true),
-    file('./delete_me/MaxQuant_proteinGroups.txt', checkIfExists: true)
-    
+        [ id:'test' ],                                                                              // meta map
+        file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true),    // samplesheet
+        file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)   // intensities
     ]
-    //ch_contrasts_file = Channel.fromPath(file(params.test_data['proteomics']['maxquant']['contrasts'], checkIfExists: true))    
-    ch_contrasts_file = Channel.fromPath(file('./delete_me/MaxQuant_contrasts.csv', checkIfExists: true))
+    ch_contrasts_file = Channel.fromPath(file(params.test_data['proteomics']['maxquant']['mq_contrasts'], checkIfExists: true))    
     ch_contrasts = ch_contrasts_file
-        .map{it[1]}
-        .splitCsv ( header:true, sep:',' )
+        .splitCsv(header:true, sep:',')
         .map{
             tuple(
-                [ id:'test' ],  // meta map
+                it,             // meta map
                 it.variable     // contrast variable
             )
         }
@@ -31,4 +25,5 @@ workflow test_proteus_readproteingroups {
         input,
         ch_contrasts
     )
+
 }

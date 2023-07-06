@@ -1,13 +1,35 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml proteus/readproteingroups
 - name: "proteus readproteingroups"
   command: nextflow run ./tests/modules/nf-core/proteus/readproteingroups -entry test_proteus_readproteingroups -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/proteus/readproteingroups/nextflow.config
   tags:
     - "proteus"
     - "proteus/readproteingroups"
   files:
-    - path: "output/proteus/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/proteus/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_dendrogram.png                                                                                                                          
+      md5sum: 4ee2412a9dbf2bdd04b31cafe00bf21c                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_distributions.png                                                                                                                       
+      md5sum: 7890d6a74b1c53488d2a4e1b82962bab                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_mean_variance_relationship.png                                                                                                          
+      md5sum: cf6e7aa57eb06d82ed2f3b1266c80dd3                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_proteingroups.rds                                                                                                                       
+      md5sum: 95af23d7f0188893a4d4a44d1ec0e0e6                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_proteingroups_tab.tsv                                                                                                                   
+      md5sum: 07290a3ccd10019fb4e147f805b3e279                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_dendrogram.png                                                                                                                       
+      md5sum: 91077ed85fae31b147827b15577cff5c                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_distributions.png                                                                                                                    
+      md5sum: e748dd103566d83982747b20e35a5f65                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_mean_variance_relationship.png                                                                                                       
+      md5sum: 0d26aaad2b889170fde11a5154a64e10                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_proteingroups.rds                                                                                                                    
+      md5sum: 041b91217c069bd248f5fc6da43e1f8b                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_proteingroups_tab.tsv                                                                                                                
+      md5sum: 590dd593bb00617254964da4adfcffd9                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.raw_distributions.png                                                                                                                                              
+      md5sum: ddd1f05ce32f0d8df75f8a5f7af7c1da                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.raw_proteingroups.rds                                                                                                                                              
+      md5sum: 80f144644ed82bdd1131c1f9f0efbdaf                                                                                                                                                                 
+    - path: output/proteus/Celltype.proteus.raw_proteingroups_tab.tsv                                                                                                                                          
+      md5sum: a0943baaa48ea76bdb8c80a580dc9953                                                                                                                                                                 
+    - path: output/proteus/R_sessionInfo.log                                                                                                                                                                   
+      md5sum: 76d0fac8bc3b7794bc874ab3c2c741f2                                                                                                                                                                 
+    - path: output/proteus/versions.yml

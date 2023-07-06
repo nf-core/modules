@@ -57,18 +57,21 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 #'
 #' @param dataframe A data frame
 #' @param columns Which columns to round (assumes all of them by default)
-#' @param digits How many decimal places to round to?
+#' @param digits How many decimal places to round to? If -1, will return the unchanged input df
 #'
 #' @return output Data frame
-# TODO check if this is necessary
-round_dataframe_columns <- function(df, columns = NULL, digits = 8) {
+round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
+    if (digits == -1) {
+        return(df)                              # if -1, return df without rounding
+    }
+    
+    df <- data.frame(df, check.names = FALSE)   # make data.frame from vector as otherwise, the format will get messed up
     if (is.null(columns)) {
         columns <- colnames(df)
     }
-
-    df[,columns] <- format(
+    df[,columns] <- round(
         data.frame(df[, columns], check.names = FALSE),
-        nsmall = digits
+        digits = digits
     )
 
     # Convert columns back to numeric
@@ -102,7 +105,8 @@ opt <- list(
     normfuns = 'normalizeMedian',
     plotSampleDistributions_method = 'violin',
     plotMV_loess = T,
-    palette_name = 'Set1'
+    palette_name = 'Set1',
+    round_digits = -1
 )
 opt_types <- lapply(opt, class)
 
@@ -185,6 +189,7 @@ sample.sheet\$sample <- sample.sheet[[opt\$sample_id_col]]
 sample.sheet\$condition <- sample.sheet[[opt\$contrast_variable]]
 
 # Add prefix for proteinGroups measurement columns to the sample IDs from the sampesheet
+
 measure.cols <- setNames(paste0(opt\$measure_col_prefix, sample.sheet[[opt\$sample_id_col]]), sample.sheet[[opt\$sample_id_col]])
 
 # Check that all samples specified in the input sheet are present in the intensities table
@@ -199,25 +204,6 @@ if (length(missing_columns) > 0) {
         'column in intensities table. The following columns are missing:',
         paste(missing_columns, collapse = ', ')
     ))
-}
-
-################################################
-################################################
-## CHECK AND FORMAT NORMFUN AND FILTERFUN     ##
-################################################
-################################################
-
-valid_normfuns <- c("normalizeMedian", "normalizeQuantiles")
-normfuns <- opt\$normfuns
-
-# Check validity of normfun(s)
-invalid_normfuns <- normfuns[!(normfuns %in% valid_normfuns)]
-if (length(invalid_normfuns)>0) {
-    stop(paste0("Invalid normfuns argument(s): ",
-        paste(invalid_normfuns, collapse=", "),
-        ". Valid normfuns are: ",
-        paste(valid_normfuns, collapse=", "),
-        "."))
 }
 
 ################################################
@@ -238,16 +224,25 @@ proteinGroups <- readProteinGroups(
     data.cols=proteinColumns
 )
 
+# Define valid normalization functions
+
+valid_normfuns <- list("normalizeMedian", "normalizeQuantiles")
+
 # Generate plots for all requested normalizations; also, save normalized protein groups for limma
 
-for (normfun in normfuns) {
+for (normfun in unlist(strsplit(opt\$normfuns, ","))) {
+    if (! (normfun %in% valid_normfuns)) {
+        stop(paste0("Invalid normfuns argument: ", normfun,
+        ". Valid normfuns are: ", paste(valid_normfuns, collapse=", "), "."))
+    }
+
     proteinGroups.normalized <- normalizeData(proteinGroups, norm.fun = eval(parse(text=normfun))) # Proteus also accepts other norm.funs, e.g. from limma
 
     # Apply log2 and remove NAs as these will otherwise mess with some of the following modules
 
     proteinGroups.normalized\$tab <- na.omit(log2(proteinGroups.normalized\$tab))
     
-    png(paste0(output_prefix, '.proteus.', normfun, '_normalised_distributions.png'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+    png(paste(output_prefix, 'proteus', normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
     print(
         plotSampleDistributions(proteinGroups.normalized, title=paste0("Sample distributions after applying\n", normfun), fill="condition", method=opt\$plotSampleDistributions_method)
          + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
@@ -255,7 +250,7 @@ for (normfun in normfuns) {
         )
     dev.off()
     
-    png(paste0(output_prefix, '.proteus.', normfun, '_normalised_mean_variance_relationship.png'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+    png(paste(output_prefix, 'proteus', normfun, 'normalized_mean_variance_relationship.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
     print(
         plotMV(proteinGroups.normalized, with.loess=opt\$plotMV_loess) 
          + ggtitle(paste0("Sample mean variance relationship after applying\n", normfun))
@@ -264,7 +259,7 @@ for (normfun in normfuns) {
         )
     dev.off()
 
-    png(paste0(output_prefix, '.proteus.', normfun, '_normalised_dendrogram.png'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
+    png(paste(output_prefix, 'proteus', normfun, 'normalized_dendrogram.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
     print(
         plotClustering(proteinGroups.normalized)
          + ggtitle(paste0("Sample clustering after applying\n", normfun))
@@ -274,19 +269,19 @@ for (normfun in normfuns) {
     
     # R object for other processes to use
     
-    saveRDS(proteinGroups.normalized, file = paste0(output_prefix, '.proteus.', normfun, 'normalised_proteingroups.rds'))
+    saveRDS(proteinGroups.normalized, file = paste(output_prefix, 'proteus', normfun, 'normalized_proteingroups.rds', sep='.'))
 
     # Write normalized intensities matrix
     
     out_df <- data.frame(
-        proteinGroups.normalized\$tab,
+        round_dataframe_columns(proteinGroups.normalized\$tab, digits=opt\$round_digits),
         check.names = FALSE
     )
-    out_df[[opt\$protein_id_col]] <- rownames(proteinGroups.normalized\$tab) # proteus saves the IDs as rownames; make column from those
+    out_df[[opt\$protein_id_col]] <- rownames(proteinGroups.normalized\$tab) # proteus saves the IDs as rownames; save these to a separate column
     out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
     write.table(
         out_df,
-        file = paste(output_prefix, 'proteus', normfun, 'normalised_proteingroups_tab', 'tsv', sep = '.'),
+        file = paste(output_prefix, 'proteus', normfun, 'normalized_proteingroups_tab', 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -300,7 +295,7 @@ proteinGroups\$tab <- na.omit(log2(proteinGroups\$tab))
 
 # Generate raw distribution plot
 
-png(paste0(output_prefix, '.proteus.raw_distributions.png'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+png(paste(output_prefix, 'proteus.raw_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
 print(
     plotSampleDistributions(proteinGroups, title="Raw sample distributions", fill="condition", method=opt\$plotSampleDistributions_method)
         + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
@@ -310,15 +305,15 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(proteinGroups, file = paste0(output_prefix, '.proteus.raw_proteingroups.rds'))
+saveRDS(proteinGroups, file = paste(output_prefix, 'proteus.raw_proteingroups.rds', sep = '.'))
 
 # Write raw intensities matrix
 
 out_df <- data.frame(
-        proteinGroups\$tab,
+        round_dataframe_columns(proteinGroups\$tab, digits=opt\$round_digits),
         check.names = FALSE
     )
-out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; make column from those
+out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; save these to a separate column
 out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
 
 
@@ -355,11 +350,12 @@ writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    bioconductor-limma:', limma.version),
+        paste('    r-proteus-bartongroup:', proteus.version),
         paste('    r-plotly:', plotly.version),
-        paste('    r-proteus-bartongroup:', proteus.version)
+        paste('    bioconductor-limma:', limma.version)
     ),
 'versions.yml')
+
 ################################################
 ################################################
 ################################################

@@ -1,7 +1,6 @@
 name: "proteus_readproteingroups"
 description: reads a maxQuant proteinGroups file with Proteus
 keywords:
-  - intensities
   - proteomics
   - proteus
 tools:
@@ -17,8 +16,7 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated',
-        control:'saline', blocking:'' ]
+        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
   - samplesheet:
       type: file
       description: |
