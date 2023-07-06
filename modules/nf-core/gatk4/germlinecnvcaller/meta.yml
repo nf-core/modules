@@ -21,16 +21,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - tsv:
       type: file
       description: One or more count TSV files created with gatk/collectreadcounts
@@ -45,7 +35,7 @@ input:
       pattern: "*-cnv-model/*-model"
   - ploidy:
       type: file
-      description: directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
+      description: Directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
       pattern: "*-calls"
 
 output:
