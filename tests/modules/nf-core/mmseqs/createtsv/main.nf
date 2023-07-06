@@ -12,9 +12,9 @@ workflow test_mmseqs_createtsv {
 
     input_file = file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true)
 
-    ch_query = UNTAR_QUERY ([[ id:'test_query', single_end:true ],input_file] ).untar
-    ch_target = UNTAR_TARGET( [[ id:'test_target', single_end:true ],input_file] ).untar
-    ch_result = UNTAR_RESULT( [[ id:'test_result', single_end:true ],input_file] ).untar
+    ch_query = UNTAR_QUERY ([[ id:'test_query', single_end:true ], input_file] ).untar
+    ch_target = UNTAR_TARGET( [[ id:'test_target', single_end:true ], input_file] ).untar
+    ch_result = UNTAR_RESULT( [[ id:'test_result', single_end:true ], input_file] ).untar
 
     MMSEQS_CREATETSV (ch_result, ch_query, ch_target  )
 }
