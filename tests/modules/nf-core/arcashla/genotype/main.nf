@@ -13,8 +13,8 @@ workflow test_arcashla_genotype {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        [file("/Users/students/Documents/hiwi/hlatyping/dev_tests/test_dir/test_out/arcashla/NA12878.mini.extracted.1.fq.gz", checkIfExists: true),
-        file("/Users/students/Documents/hiwi/hlatyping/dev_tests/test_dir/test_out/arcashla/NA12878.mini.extracted.2.fq.gz", checkIfExists: true)]
+        [file("/home-link/kymmp01/hiwi/test_out/out/NA12878.mini.extracted.1.fq.gz", checkIfExists: true),
+        file("/home-link/kymmp01/hiwi/test_out/out/NA12878.mini.extracted.2.fq.gz", checkIfExists: true)]
     ]
 
     ARCASHLA_GENOTYPE ( input )
