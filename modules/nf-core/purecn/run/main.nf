@@ -33,7 +33,7 @@ process PURECN_RUN {
     tuple val(meta), path("*_loh-effects-stats.html")          , emit: loh_effects_html
     tuple val(meta), path("*_loh-effects.vcf.gz")              , emit: loh_effects_vcf
     tuple val(meta), path("*_loh-effects.vcf.gz.tbi")          , emit: loh_effects_tbi
-    tuple val(meta), path("*_purecn-lohsummary.yaml")          , emit: loh_summary_yaml
+    tuple val(meta), path("*_loh-summary.yaml")                , emit: loh_summary_yaml
     tuple val(meta), path("*_loh-effects.csv")                 , emit: loh_effects_csv
     tuple val(meta), path("*_segmentation.pdf")                , emit: segmentation_pdf
     tuple val(meta), path("*_sort_coverage_loess.png")         , emit: sort_coverage_loess_png
@@ -96,7 +96,7 @@ process PURECN_RUN {
     touch ${prefix}_loh-effects-stats.html
     touch ${prefix}_loh-effects.vcf.gz
     touch ${prefix}_loh-effects.vcf.gz.tbi
-    touch ${prefix}_purecn-lohsummary.yaml
+    touch ${prefix}_loh-summary.yaml
     touch ${prefix}_loh-effects.csv
     touch ${prefix}_segmentation.pdf
     touch ${prefix}_sort_coverage_loess.png
