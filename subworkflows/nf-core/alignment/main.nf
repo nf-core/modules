@@ -16,17 +16,17 @@ workflow ALIGNMENT {
 
     versions = Channel.empty()
 
-    // switch statement to determine which bwa to use, this is a passed parameter 
+    // switch statement to determine which bwa to use, this is a passed parameter
     switch(bwa){
-        case 1: 
+        case 1:
             BWA_MEM ( fastqs, reference, true ).bam.map {
                 meta, bam ->
                     new_id = 'aligned_bam'
                     [[id: new_id], bam ]
             }.set {aligned_bam}
-            versions = versions.mix(BWA_MEM.out.versions.first()) 
+            versions = versions.mix(BWA_MEM.out.versions.first())
             break
-        case 2: 
+        case 2:
             // Index Reference fasta
             fasta_file = reference[1].list().find{it=~/.fasta$/}
             fasta_path = [
@@ -34,8 +34,8 @@ workflow ALIGNMENT {
             ]
             BWAMEM2_INDEX (fasta_path)
             versions = versions.mix(BWAMEM2_INDEX.out.versions.first())
-            break 
-            // BWA MEM2 
+            break
+            // BWA MEM2
             BWAMEM2_MEM ( fastqs, BWAMEM2_INDEX.out.index, true ).bam.map {
                 meta, bam ->
                     new_id = 'aligned_bam'
@@ -54,7 +54,7 @@ workflow ALIGNMENT {
             [[id: new_id], bam ]
     }.set {grouped_bam}
     versions = versions.mix(PICARD_ADDORREPLACEREADGROUPS.out.versions.first())
-    
+
     // final output
     emit:
 
