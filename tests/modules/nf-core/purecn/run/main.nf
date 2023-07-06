@@ -6,10 +6,10 @@ include { PURECN_RUN } from '../../../../../modules/nf-core/purecn/run/main.nf'
 
 process STUB_PURECN_RUN {
     output:
-    path("*interval_file.txt")    , emit: intervals
-    path("*coverage.txt")         , emit: coverage
-    path("*.vcf.gz")              , emit: vcf
-    path("*normal_db.rds")        , emit: normal_db
+    path("*.txt")                , emit: intervals
+    path("*.txt")                , emit: coverage
+    path("*.vcf.gz")             , emit: vcf
+    path("*.rds")                , emit: normal_db
 
     stub:
     """
@@ -21,15 +21,17 @@ process STUB_PURECN_RUN {
 }
 
 workflow test_purecn_run {
-    
+
+    STUB_PURECN_RUN()
+
     input = [
         [ id:'test'],
-        STUB_PURECN_RUN.out.intervals,
-        STUB_PURECN_RUN.out.coverage,
-        STUB_PURECN_RUN.out.vcf
+        file("interval_file.txt"),
+        file("coverage.txt"),
+        file("test.vcf.gz")
     ]
 
-    normal_db = STUB_PURECN_RUN.out.normal_db
+    normal_db = file("normal_db.rds")
     genome = "hg38"
 
     PURECN_RUN ( input, normal_db, genome )
