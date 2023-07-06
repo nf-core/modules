@@ -24,7 +24,7 @@ process SAMTOOLS_CRAMSIZE {
     samtools \\
         cram-size \\
         $args \\
-        -o ${cram.baseName}.size \\
+        -o ${prefix}.size \\
         $cram
 
     cat <<-END_VERSIONS > versions.yml
