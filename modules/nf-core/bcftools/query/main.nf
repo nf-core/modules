@@ -34,7 +34,7 @@ process BCFTOOLS_QUERY {
         $samples_file \\
         $args \\
         $vcf \\
-        > ${prefix}.txt
+        > ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
