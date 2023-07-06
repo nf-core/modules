@@ -33,13 +33,13 @@ process PURECN_RUN {
     tuple val(meta), path("*_loh-effects-stats.html")          , emit: loh_effects_html
     tuple val(meta), path("*_loh-effects.vcf.gz")              , emit: loh_effects_vcf
     tuple val(meta), path("*_loh-effects.vcf.gz.tbi")          , emit: loh_effects_tbi
-    tuple val(meta), path("*-purecn-lohsummary.yaml")          , emit: loh_summary_yaml
+    tuple val(meta), path("*_purecn-lohsummary.yaml")          , emit: loh_summary_yaml
     tuple val(meta), path("*_loh-effects.csv")                 , emit: loh_effects_csv
     tuple val(meta), path("*_segmentation.pdf")                , emit: segmentation_pdf
-    tuple val(meta), path("*-sort_coverage_loess.png")         , emit: sort_coverage_loess_png
-    tuple val(meta), path("*-sort_coverage_loess_qc.txt")      , emit: sort_coverage_loess_qc_txt
-    tuple val(meta), path("*-sort_coverage_loess.txt.gz")      , emit: sort_coverage_loess_txt_gz
-    tuple val(meta), path("*-sort_coverage.txt.gz")            , emit: sort_coverage_txt_gz
+    tuple val(meta), path("*_sort_coverage_loess.png")         , emit: sort_coverage_loess_png
+    tuple val(meta), path("*_sort_coverage_loess_qc.txt")      , emit: sort_coverage_loess_qc_txt
+    tuple val(meta), path("*_sort_coverage_loess.txt.gz")      , emit: sort_coverage_loess_txt_gz
+    tuple val(meta), path("*_sort_coverage.txt.gz")            , emit: sort_coverage_txt_gz
     path "versions.yml"                                        , emit: versions
 
     when:
@@ -96,13 +96,13 @@ process PURECN_RUN {
     touch ${prefix}_loh-effects-stats.html
     touch ${prefix}_loh-effects.vcf.gz
     touch ${prefix}_loh-effects.vcf.gz.tbi
-    touch ${prefix}-purecn-lohsummary.yaml
+    touch ${prefix}_purecn-lohsummary.yaml
     touch ${prefix}_loh-effects.csv
     touch ${prefix}_segmentation.pdf
-    touch ${prefix}-sort_coverage_loess.png
-    touch ${prefix}-sort_coverage_loess_qc.txt
-    touch ${prefix}-sort_coverage_loess.txt.gz
-    touch ${prefix}-sort_coverage.txt.gz
+    touch ${prefix}_sort_coverage_loess.png
+    touch ${prefix}_sort_coverage_loess_qc.txt
+    touch ${prefix}_sort_coverage_loess.txt.gz
+    touch ${prefix}_sort_coverage.txt.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purecn: ${VERSION}
