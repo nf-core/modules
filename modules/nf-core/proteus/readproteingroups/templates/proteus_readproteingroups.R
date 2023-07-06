@@ -64,7 +64,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
     if (digits == -1) {
         return(df)                              # if -1, return df without rounding
     }
-    
+
     df <- data.frame(df, check.names = FALSE)   # make data.frame from vector as otherwise, the format will get messed up
     if (is.null(columns)) {
         columns <- colnames(df)
@@ -241,38 +241,38 @@ for (normfun in unlist(strsplit(opt\$normfuns, ","))) {
     # Apply log2 and remove NAs as these will otherwise mess with some of the following modules
 
     proteinGroups.normalized\$tab <- na.omit(log2(proteinGroups.normalized\$tab))
-    
-    png(paste(output_prefix, 'proteus', normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+
+    png(paste(output_prefix, 'proteus', normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
     print(
         plotSampleDistributions(proteinGroups.normalized, title=paste0("Sample distributions after applying\n", normfun), fill="condition", method=opt\$plotSampleDistributions_method)
-         + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
-         + theme(plot.title = element_text(size = 12)) 
+            + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
+            + theme(plot.title = element_text(size = 12))
         )
     dev.off()
-    
-    png(paste(output_prefix, 'proteus', normfun, 'normalized_mean_variance_relationship.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+
+    png(paste(output_prefix, 'proteus', normfun, 'normalized_mean_variance_relationship.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
     print(
-        plotMV(proteinGroups.normalized, with.loess=opt\$plotMV_loess) 
-         + ggtitle(paste0("Sample mean variance relationship after applying\n", normfun))
-         + scale_fill_distiller(palette=opt\$palette_name)
-         + theme(plot.title = element_text(size = 12)) 
+        plotMV(proteinGroups.normalized, with.loess=opt\$plotMV_loess)
+            + ggtitle(paste0("Sample mean variance relationship after applying\n", normfun))
+            + scale_fill_distiller(palette=opt\$palette_name)
+            + theme(plot.title = element_text(size = 12))
         )
     dev.off()
 
     png(paste(output_prefix, 'proteus', normfun, 'normalized_dendrogram.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
     print(
         plotClustering(proteinGroups.normalized)
-         + ggtitle(paste0("Sample clustering after applying\n", normfun))
-         + theme(plot.title = element_text(size = 12))
+            + ggtitle(paste0("Sample clustering after applying\n", normfun))
+            + theme(plot.title = element_text(size = 12))
         )
     dev.off()
-    
+
     # R object for other processes to use
-    
+
     saveRDS(proteinGroups.normalized, file = paste(output_prefix, 'proteus', normfun, 'normalized_proteingroups.rds', sep='.'))
 
     # Write normalized intensities matrix
-    
+
     out_df <- data.frame(
         round_dataframe_columns(proteinGroups.normalized\$tab, digits=opt\$round_digits),
         check.names = FALSE
@@ -295,11 +295,11 @@ proteinGroups\$tab <- na.omit(log2(proteinGroups\$tab))
 
 # Generate raw distribution plot
 
-png(paste(output_prefix, 'proteus.raw_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8) 
+png(paste(output_prefix, 'proteus.raw_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
 print(
     plotSampleDistributions(proteinGroups, title="Raw sample distributions", fill="condition", method=opt\$plotSampleDistributions_method)
         + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
-        + theme(plot.title = element_text(size = 12)) 
+        + theme(plot.title = element_text(size = 12))
     )
 dev.off()
 
