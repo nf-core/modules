@@ -1,12 +1,33 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purecn/run
-- name: "purecn run"
-  command: nextflow run ./tests/modules/nf-core/purecn/run -entry test_purecn_run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/run/nextflow.config
+- name: purecn run
+  command: nextflow run ./tests/modules/nf-core/purecn/run -entry test_purecn_run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/run/nextflow.config -stub-run
   tags:
-    - "purecn"
-    - "purecn/run"
+    - purecn
+    - purecn/run
   files:
-    - path: "output/purecn/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purecn/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/purecn/test.csv
+    - path: output/purecn/test_variants.csv
+    - path: output/purecn/test.pdf
+    - path: output/purecn/test.rds
+    - path: output/purecn/test_amplification_pvalues.csv
+    - path: output/purecn/test_chromosomes.pdf
+    - path: output/purecn/test_dnacopy.seg
+    - path: output/purecn/test_genes.csv
+    - path: output/purecn/test_local_optima.pdf
+    - path: output/purecn/test.log
+    - path: output/purecn/test_loh.vcf
+    - path: output/purecn/test_loh.vcf.gz
+    - path: output/purecn/test_loh.vcf.gz.tbi
+    - path: output/purecn/test_loh.csv
+    - path: output/purecn/test_loh-effects-stats.csv
+    - path: output/purecn/test_loh-effects-stats.genes.txt
+    - path: output/purecn/test_loh-effects-stats.html
+    - path: output/purecn/test_loh-effects.vcf.gz
+    - path: output/purecn/test_loh-effects.vcf.gz.tbi
+    - path: output/purecn/test_lohsummary.yaml
+    - path: output/purecn/test_loh-effects.csv
+    - path: output/purecn/test_segmentation.pdf
+    - path: output/purecn/test_sort_coverage_loess.png
+    - path: output/purecn/test_sort_coverage_loess_qc.txt
+    - path: output/purecn/test_sort_coverage_loess.txt.gz
+    - path: output/purecn/test_sort_coverage.txt.gz
+    - path: output/purecn/versions.yml
