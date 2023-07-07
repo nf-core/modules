@@ -32,10 +32,9 @@ input:
       type: directory
       description: Requisite graph files for HaploCart. Please see https://github.com/grenaud/vgan for instructions on how to download them.
 
-  - reads2:
-      type: file
-      description: Optional second FASTQ file for non-interleaved paired-end reads
-      pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
+  - is_interleaved:
+      type: boolean
+      description: Specified when specifying interleaved paired-end fastq
 
 output:
   - meta:
