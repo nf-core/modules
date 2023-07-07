@@ -31,7 +31,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
                             [ meta + [key_read_ref: key_read_ref] + [id_index: id_index], reads, meta_index + [key_read_ref: key_read_ref]  + [id_index: id_index], index  ]
                         }
-                        .dump(tag: "CH_PREPPEDINPUT")
 
     ch_preppedinput_for_bwaaln = ch_prepped_input
                         .multiMap {
@@ -76,10 +75,10 @@ workflow FASTQ_ALIGN_BWAALN {
                             }
 
 
-    BWA_SAMPE ( ch_sai_for_bam_pe.reads.dump(tag: "CH_PREPPEDINPUT_SAMPE"), ch_sai_for_bam_pe.index )
+    BWA_SAMPE ( ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index )
     ch_versions = ch_versions.mix( BWA_SAMPE.out.versions.first() )
 
-    BWA_SAMSE ( ch_sai_for_bam_se.reads.dump(tag: "CH_PREPPEDINPUT_SAMSE"), ch_sai_for_bam_se.index )
+    BWA_SAMSE ( ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index )
     ch_versions = ch_versions.mix( BWA_SAMSE.out.versions.first() )
 
     ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
