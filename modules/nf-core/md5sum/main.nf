@@ -8,7 +8,7 @@ process MD5SUM {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), file(files)
 
     output:
     tuple val(meta), path("*.md5"), emit: checksum
@@ -22,10 +22,16 @@ process MD5SUM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    IFS=\$(echo -en "\n\b")
+    for FILE in $files 
+    do
+
     md5sum \\
         $args \\
-        ${file} \\
-        > ${file}.md5
+        \${FILE} \\
+        > "\${FILE}.md5"
+    
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

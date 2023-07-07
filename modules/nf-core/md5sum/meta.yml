@@ -1,12 +1,12 @@
 name: "md5sum"
-description: Create an MD5 (128-bit) checksum
+description: Create MD5 (128-bit) checksums
 keywords:
   - checksum
   - MD5
   - 128 bit
 tools:
   - "md5sum":
-      description: Create an MD5 (128-bit) checksum
+      description: Create MD5 (128-bit) checksums for each file
       homepage: "https://www.gnu.org"
       documentation: "https://man7.org/linux/man-pages/man1/md5sum.1.html"
       licence: GPLv3+
@@ -17,9 +17,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - file:
+  - files:
       type: file
-      description: Any file
+      description: Any number of files. One md5sum file will be generated for each.
       pattern: "*.*"
 
 output:
