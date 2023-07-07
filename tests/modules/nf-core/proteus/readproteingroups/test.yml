@@ -1,0 +1,25 @@
+- name: "proteus readproteingroups"
+  command: nextflow run ./tests/modules/nf-core/proteus/readproteingroups -entry test_proteus_readproteingroups -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/proteus/readproteingroups/nextflow.config
+  tags:
+    - "proteus"
+    - "proteus/readproteingroups"
+  files:
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_dendrogram.png
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_distributions.png
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_mean_variance_relationship.png
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_proteingroups.rds
+    - path: output/proteus/Celltype.proteus.normalizeMedian.normalized_proteingroups_tab.tsv
+      md5sum: 07290a3ccd10019fb4e147f805b3e279
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_dendrogram.png
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_distributions.png
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_mean_variance_relationship.png
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_proteingroups.rds
+    - path: output/proteus/Celltype.proteus.normalizeQuantiles.normalized_proteingroups_tab.tsv
+      md5sum: 590dd593bb00617254964da4adfcffd9
+    - path: output/proteus/Celltype.proteus.raw_distributions.png
+    - path: output/proteus/Celltype.proteus.raw_proteingroups.rds
+    - path: output/proteus/Celltype.proteus.raw_proteingroups_tab.tsv
+      md5sum: a0943baaa48ea76bdb8c80a580dc9953
+    - path: output/proteus/R_sessionInfo.log
+      contains: ["proteus_0.2.16", "plotly_4.10.2", "ggplot2_3.4.2", "limma_3.54.0 "]
+    - path: output/proteus/versions.yml

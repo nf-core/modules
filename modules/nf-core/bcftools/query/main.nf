@@ -14,8 +14,8 @@ process BCFTOOLS_QUERY {
     path samples
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.${suffix}"), emit: output
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,6 +23,7 @@ process BCFTOOLS_QUERY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "txt"
     def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file =  samples ? "--samples-file ${samples}" : ""
@@ -33,7 +34,8 @@ process BCFTOOLS_QUERY {
         $targets_file \\
         $samples_file \\
         $args \\
-        $vcf
+        $vcf \\
+        > ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,8 +45,9 @@ process BCFTOOLS_QUERY {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "txt"
     """
-    touch ${prefix}.txt \\
+    touch ${prefix}.${suffix} \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
