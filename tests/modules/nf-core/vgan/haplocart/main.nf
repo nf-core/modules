@@ -36,7 +36,7 @@ workflow test_vgan_haplocart_single_end {
     ch_vg_db = file("/Users/andrades/vgan/hcfiles")
 
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+              [ file("/Users/andrades/vgan/fastq/single/LTN001.A0101.MT1.1_S0_L008_R1_001.fastq_L8.se.truncated.gz") ]
             ]
 
     VGAN_HAPLOCART(input, ch_vg_db, [])
@@ -49,8 +49,8 @@ workflow test_vgan_haplocart_paired_end_separate {
 
 
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+              [ file("/Users/andrades/vgan/fastq/paired/HTN003.A0201.MT1.1_S0_L001_R1_001.fastq.gz"),
+                file("/Users/andrades/vgan/fastq/paired/HTN003.A0201.MT1.1_S0_L001_R2_001.fastq.gz") ]
             ]
 
     VGAN_HAPLOCART(input, ch_vg_db, [])
@@ -62,7 +62,7 @@ workflow test_vgan_haplocart_paired_end_interleaved {
     ch_vg_db = file("/Users/andrades/vgan/hcfiles")
 
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+              [ file("/Users/andrades/vgan/fastq/interleaved/HTN003.A0201.MT1.1_interleaved.fq.gz") ]
             ]
 
     interleaved =  true
