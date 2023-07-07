@@ -2,7 +2,7 @@ process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
-    container "docker.io/nfcore/cellranger:7.1.0"
+    container "nf-core/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

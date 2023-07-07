@@ -18,7 +18,7 @@ workflow test_align_star_single_end {
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [ ] )
+    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [[],[]] )
 }
 
 workflow test_align_star_paired_end {
@@ -36,6 +36,6 @@ workflow test_align_star_paired_end {
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [ ] )
+    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [[],[]] )
 }
 

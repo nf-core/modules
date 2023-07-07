@@ -9,7 +9,7 @@ process RHOCALL_ANNOTATE {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    tuple val(meta), path(roh)
+    tuple val(meta2), path(roh)
     path bed
 
     output:
