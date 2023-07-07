@@ -17,6 +17,11 @@ workflow FASTQ_ALIGN_BWAALN {
 
     ch_versions = Channel.empty()
 
+    // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
+    // to ensure that you do not overwrite multiple BAM files from one sample mapped
+    // against multiple references. This meta map is added by the subworkflow but can be removed
+    // after if necessary.
+
     // Ensure when multiple references are provide, that reference/read combinations
     // are correctly associated throughout the subworkflow by copying the sample
     // specific metadata to the index on each combination
