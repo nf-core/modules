@@ -8,7 +8,9 @@ workflow test_gatk4_bedtointervallist {
     input = [ [ id:'test' ], // meta map
               [ file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) ]
             ]
-    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    dict = [ [ id:'dict' ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+            ]
 
     GATK4_BEDTOINTERVALLIST ( input, dict )
 }

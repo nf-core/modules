@@ -5,7 +5,7 @@ process SMNCOPYNUMBERCALLER {
     conda "bioconda::smncopynumbercaller=1.1.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
-        'quay.io/biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
+        'biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -19,12 +19,12 @@ process SMNCOPYNUMBERCALLER {
     task.ext.when == null || task.ext.when
 
     script:
-    manifest_text = bam.join("\n")
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    echo "$manifest_text" >manifest.txt
+    echo $bam | tr ' ' '
+    ' > manifest.txt
     smn_caller.py \\
         $args \\
         --manifest manifest.txt \\
@@ -39,6 +39,8 @@ process SMNCOPYNUMBERCALLER {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "1.1.2"
     """
     mkdir out
     touch out/${prefix}.tsv

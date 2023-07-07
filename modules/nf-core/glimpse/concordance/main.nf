@@ -5,7 +5,7 @@ process GLIMPSE_CONCORDANCE {
     conda "bioconda::glimpse-bio=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
     tuple val(meta), val(region), path(freq), path(truth), path(estimate)
@@ -14,9 +14,12 @@ process GLIMPSE_CONCORDANCE {
     val(bins)
 
     output:
-    tuple val(meta), path("*.error.*.txt.gz")  , emit: errors
-    tuple val(meta), path("*.rsquare.*.txt.gz"), emit: rsquare
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.error.cal.txt.gz")  , emit: errors_cal
+    tuple val(meta), path("*.error.grp.txt.gz")  , emit: errors_grp
+    tuple val(meta), path("*.error.spl.txt.gz")  , emit: errors_spl
+    tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
+    tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

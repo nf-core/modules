@@ -1,5 +1,5 @@
 name: "shapeit5_phasecommon"
-description: write your description here
+description: Tool to phase common sites, typically SNP array data, or the first step of WES/WGS data.
 keywords:
   - phasing
   - haplotype
@@ -29,17 +29,17 @@ input:
       type: file
       description: Index file of the input VCF/BCF file containing genotype likelihoods.
       pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+  - pedigree:
+      type: file
+      description: |
+        Pedigree information in the following format: offspring father mother.
+      pattern: "*.{txt, tsv}"
   - region:
       type: string
       description: |
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
         For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - pedigree:
-      type: file
-      description: |
-        Pedigree information in the following format: offspring father mother.
-      pattern: "*.{txt, tsv}"
   - reference:
       type: file
       description: Reference panel of haplotypes in VCF/BCF format.

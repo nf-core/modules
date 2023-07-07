@@ -1,0 +1,85 @@
+name: "paragraph_multigrmpy"
+description: Genotype structural variants using paragraph and grmpy
+keywords:
+  - vcf
+  - json
+  - structural variants
+  - graphs
+  - genotyping
+tools:
+  - "paragraph":
+      description: "Graph realignment tools for structural variants"
+      homepage: "https://github.com/Illumina/paragraph"
+      documentation: "https://github.com/Illumina/paragraph"
+      tool_dev_url: "https://github.com/Illumina/paragraph"
+      doi: "10.1101/635011"
+      licence: "['Apache License 2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - variants:
+      type: file
+      description: A VCF or JSON file containing called structural variants
+      pattern: "*.{vcf,json}"
+  - variants_index:
+      type: file
+      description: The index for the VCF file
+      pattern: "*.tbi"
+  - reads:
+      type: file
+      description: BAM or CRAM file(s) to genotype against. These should be specified inside the `manifest`
+      pattern: "*.{bam,cram}"
+  - reads_index:
+      type: file
+      description: The index/indices for the BAM/CRAM file(s)
+      pattern: "*.{bai,crai}"
+  - manifest:
+      type: file
+      description: |
+        A tab separated file containing information on the BAM/CRAM files.
+        This information can be generated using paragraph/idxdepth.
+        More information can be found here: https://github.com/Illumina/paragraph#sample-manifest
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for the FASTA file
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: The reference FASTA file used to generate the VCF and BAM/CRAM files
+      pattern: "*.{fa,fasta,fna}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information for the FASTA index file
+        e.g. [ id:'test', single_end:false ]
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: The genotyped VCF file in BGZIP format
+      pattern: "*.vcf.gz"
+  - json:
+      type: file
+      description: The genotyped JSON file in GZIP format
+      pattern: "*.json.gz"
+
+authors:
+  - "@nvnieuwk"

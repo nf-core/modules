@@ -2,10 +2,10 @@ process GATK4_ANNOTATEINTERVALS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.3.0.0"
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(intervals)
@@ -32,15 +32,15 @@ process GATK4_ANNOTATEINTERVALS {
     def mappability_track = mappable_regions ? "--mappability-track ${mappable_regions}" : ""
     def segmental_duplication_tracks = segmental_duplication_regions ? "--segmental-duplication-track ${segmental_duplication_regions}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK AnnotateIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" AnnotateIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M" AnnotateIntervals \\
         ${inputs} \\
         --reference ${fasta} \\
         --output ${prefix}.tsv \\

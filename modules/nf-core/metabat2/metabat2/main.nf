@@ -5,7 +5,7 @@ process METABAT2_METABAT2 {
     conda "bioconda::metabat2=2.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabat2:2.15--h986a166_1' :
-        'quay.io/biocontainers/metabat2:2.15--h986a166_1' }"
+        'biocontainers/metabat2:2.15--h986a166_1' }"
 
     input:
     tuple val(meta), path(fasta), path(depth)
@@ -40,7 +40,7 @@ process METABAT2_METABAT2 {
     mv metabat2/${prefix} ${prefix}.tsv
     mv metabat2 bins
 
-    gzip ${prefix}.tsv
+    gzip -n ${prefix}.tsv
     find ./bins/ -name "*.fa" -type f | xargs -t -n 1 bgzip -@ ${task.cpus}
     find ./bins/ -name "*[lowDepth,tooShort,unbinned].fa.gz" -type f -exec mv {} . \\;
 

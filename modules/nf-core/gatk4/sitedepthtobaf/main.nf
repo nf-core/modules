@@ -2,10 +2,10 @@ process GATK4_SITEDEPTHTOBAF {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.3.0.0"
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(site_depths), path(site_depths_indices)
@@ -29,15 +29,15 @@ process GATK4_SITEDEPTHTOBAF {
     def site_depth_input = site_depths.collect({"--site-depth ${it}"}).join(" ")
     def reference = fasta ? "--reference ${fasta}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK SiteDepthtoBAF] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" SiteDepthtoBAF \\
+    gatk --java-options "-Xmx${avail_mem}M" SiteDepthtoBAF \\
         --baf-evidence-output ${prefix}.baf.txt.gz \\
         --baf-sites-vcf ${vcf} \\
         ${site_depth_input} \\

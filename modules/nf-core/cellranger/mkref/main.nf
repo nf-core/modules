@@ -2,7 +2,7 @@ process CELLRANGER_MKREF {
     tag "$fasta"
     label 'process_high'
 
-    container "nfcore/cellranger:7.0.0"
+    container "nf-core/cellranger:7.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -28,7 +28,8 @@ process CELLRANGER_MKREF {
         mkref \\
         --genome=$reference_name \\
         --fasta=$fasta \\
-        --genes=$gtf
+        --genes=$gtf \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
