@@ -42,8 +42,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: BAM/CRAM/FASTQ/FASTQ.GZ file
-      pattern: "*.{bam,cram,fastq,fastq.gz}"
+      description: Sequencing reads in FASTQ or BAM (unmapped/mapped) related formats (mandatory)
+      pattern: "*.{bam,cram,fastq,fastq.gz,fq,fq.gz}"
   - meta2:
       type: map
       description: |
@@ -89,8 +89,8 @@ output:
       pattern: "versions.yml"
   - bam:
       type: file
-      description: BAM file
-      pattern: "*.{bam}"
+      description: Output BAM/SAM file containing read alignments
+      pattern: "*.bam"
 
 authors:
   - "@jch-13"
