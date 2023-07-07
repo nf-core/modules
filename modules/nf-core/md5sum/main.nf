@@ -23,14 +23,14 @@ process MD5SUM {
 
     """
     IFS=\$(echo -en "\n\b")
-    for FILE in $files 
+    for FILE in $files
     do
 
     md5sum \\
         $args \\
         \${FILE} \\
         > "\${FILE}.md5"
-    
+
     done
 
     cat <<-END_VERSIONS > versions.yml
