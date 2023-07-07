@@ -26,8 +26,25 @@ input:
       type: file
       description: |
         proteinGroups TXT file with protein intensities information from maxQuant; check here for specifications: https://rdrr.io/github/bartongroup/Proteus/man/readProteinGroups.html
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
 
 output:
+  - dendro_plot:
+      type: file
+      description: |
+        PNG file; dendrogram of the normalized samples hierarchically clustered by their intensities
+  - mean_var_plot:
+      type: file
+      description: |
+        PNG file; plot of the log-intensity variance vs log-intensity mean of each condition in the normalized samples
   - raw_dist_plot:
       type: file
       description: |
@@ -36,14 +53,6 @@ output:
       type: file
       description: |
         PNG file; plot of the intensity/ratio distributions of the normalized samples
-  - mean_var_plot:
-      type: file
-      description: |
-        PNG file; plot of the log-intensity variance vs log-intensity mean of each condition in the normalized samples
-  - dendro_plot:
-      type: file
-      description: |
-        PNG file; dendrogram of the normalized samples hierarchically clustered by their intensities
   - raw_rdata:
       type: file
       description: |
