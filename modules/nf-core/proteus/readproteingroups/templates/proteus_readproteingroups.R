@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+# Written by Oskar Wacker (https://github.com/WackerO) in
+# collaboration with Stefan Czemmel (https://github.com/qbicStefanC)
+# Script template by Jonathan Manning (https://github.com/pinin4fjords)
+
 ################################################
 ################################################
 ## Functions                                  ##
