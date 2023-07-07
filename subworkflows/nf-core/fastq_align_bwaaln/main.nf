@@ -17,7 +17,7 @@ workflow FASTQ_ALIGN_BWAALN {
 
     ch_versions = Channel.empty()
 
-    // Ensure when multiple references are provide, that reference/read combinations
+    // Ensure when multiple references are provided, that reference/read combinations
     // are correctly associated throughout the subworkflow by copying the sample
     // specific metadata to the index on each combination
 
@@ -26,12 +26,15 @@ workflow FASTQ_ALIGN_BWAALN {
                         .map{
                             meta, reads, meta_index, index ->
 
+                                // Create a combined id that includes the ids of the reads and the index used.
+                                // Also keep the id of the index with a new name to avoid name collisions.
                                 def key_read_ref = meta.id + "_" + meta_index.id
                                 def id_index = meta_index.id
 
                             [ meta + [key_read_ref: key_read_ref] + [id_index: id_index], reads, meta_index + [key_read_ref: key_read_ref]  + [id_index: id_index], index  ]
                         }
 
+    // Drop the index_meta, as the id of the index is now kept within the read meta.
     ch_preppedinput_for_bwaaln = ch_prepped_input
                         .multiMap {
                             meta, reads, meta_index, index ->
