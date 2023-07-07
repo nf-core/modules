@@ -13,9 +13,12 @@ process ARCASHLA_GENOTYPE {
     tuple val(meta), path(fq)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.json"), emit: genotype
-    // TODO nf-core: List additional required output channels/values here
+    //tuple val(meta), path("${meta.id}/*")                     , emit: results
+    // tuple val(meta), path("${meta.id}/NA12878.genes.json")        , emit: genes
+    // tuple val(meta), path("${meta.id}/*.genotype.json")     , emit: genotype
+    // tuple val(meta), path("${meta.id}/*.genotype.log")      , emit: genotype_log
+    // tuple val(meta), path("${meta.id}/*.alignment.p")       , emit: aligment
+
     path "versions.yml"           , emit: versions
 
     when:
@@ -33,11 +36,11 @@ process ARCASHLA_GENOTYPE {
 
     arcasHLA reference --version 3.24.0
 
-    arcasHLA \\
-        genotype \\
-        $args \\
-        -t $task.cpus \\
-        -o ${prefix} \\
+    arcasHLA \
+        genotype \
+        $args \
+        -t $task.cpus \
+        -o ${prefix} \
         $fq
 
     cat <<-END_VERSIONS > versions.yml
