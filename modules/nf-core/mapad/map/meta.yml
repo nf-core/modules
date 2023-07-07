@@ -51,7 +51,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - index:
       type: file
-      description: mapAD genome index files
+      description: mapAD genome index files (mandatory)
       pattern: Directory containing mapAD index files *.{tbw,tle,toc,tos,tpi,trt,tsa}
   - mismatch_parameter:
       type: float
@@ -60,7 +60,6 @@ input:
   - double_stranded_library:
       type: boolean
       description: Library preparation method
-      pattern: "true or false"
   - five_prime_overhang:
       type: float
       description: 5'-overhang length parameter
