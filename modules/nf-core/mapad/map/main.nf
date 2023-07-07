@@ -8,7 +8,7 @@ process MAPAD_MAP {
         'biocontainers/mapad:0.42.1--hc9368f3_2' }"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta) , path(reads) // Supports only single-end or merged paired-end data
     tuple val(meta2), path(index)
     val mismatch_parameter
     val double_stranded_library

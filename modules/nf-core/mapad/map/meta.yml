@@ -42,7 +42,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: Sequencing reads in FASTQ or BAM (unmapped/mapped) related formats (mandatory)
+      description: |
+        Sequencing reads in FASTQ or BAM (unmapped/mapped) related formats. Supports only single-end or merged paired-end data (mandatory)
       pattern: "*.{bam,cram,fastq,fastq.gz,fq,fq.gz}"
   - meta2:
       type: map
