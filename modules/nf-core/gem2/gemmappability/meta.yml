@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "gem2_gemmappability"
+description: Define the mappability of a reference
+keywords:
+  - mappability
+  - gem
+  - index
+  - reference
+tools:
+  - "gem2":
+      description: "GEM2 is a high-performance mapping tool. It also provide a unique tool to evaluate mappability."
+      homepage: "https://paoloribeca.science/gem"
+      licence: "['Custom']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - index:
+      type: file
+      description: The index created with gem-indexer from the reference FASTA
+      pattern: "*.gem"
+  - read_length:
+      type: integer
+      description: The read length to define the mappability of
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - map:
+      type: file
+      description: The resulting mappability file
+      pattern: "*.mappability"
+
+authors:
+  - "@nvnieuwk"

@@ -18,6 +18,9 @@ input:
       description: |
         Structure: [ val(meta), path(fastq) ]
         One or two FASTQ files for single or paired end data respectively.
+        Note: the subworkflow adds a new meta ID `meta.id_index` that _must_
+        be used in `prefix` to ensure unique file names. See the associated
+        nextflow.config file.
   - ch_index:
       description: |
         Structure: [ val(meta), path(index) ]
@@ -29,6 +32,9 @@ output:
       description: |
         Structure: [ val(meta), path(bam) ]
         Sorted BAM/CRAM/SAM file
+        Note: the subworkflow adds a new meta ID `meta.id_index` that _must_
+        be used in `prefix` to ensure unique file names. See the associated
+        nextflow.config file.
   - bai:
       description: |
         Structure: [ val(meta), path(bai) ]
