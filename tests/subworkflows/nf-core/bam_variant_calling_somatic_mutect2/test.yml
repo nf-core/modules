@@ -1,14 +1,17 @@
-- name: bam_tumor_normal_somatic_variant_calling_gatk
-  command: nextflow run ./tests/subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk -entry test_bam_tumor_normal_somatic_variant_calling_gatk -c tests/config/nextflow.config
+- name: bam_variant_calling_somatic_mutect2
+  command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_somatic_mutect2 -entry test_bam_variant_calling_somatic_mutect2 -c tests/config/nextflow.config
   tags:
     - subworkflows
-    - subworkflows/bam_tumor_normal_somatic_variant_calling_gatk
+    - subworkflows/bam_variant_calling_somatic_mutect2
     # Modules
-    - gatk4/mutect2
-    - gatk4/learnreadorientationmodel
-    - gatk4/getpileupsummaries
     - gatk4/calculatecontamination
     - gatk4/filtermutectcalls
+    - gatk4/gatherpileupsummaries
+    - gatk4/getpileupsummaries
+    - gatk4/learnreadorientationmodel
+    - gatk4/mergemutectstats
+    - gatk4/mergevcfs
+    - gatk4/mutect2
   files:
     # gatk4 mutect2
     - path: ./output/mutect2/test.vcf.gz
