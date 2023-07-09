@@ -26,6 +26,7 @@ workflow test_bam_variant_calling_tumor_only_mutect2 {
     panel_of_normals      = Channel.value(file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'],     checkIfExists: true))
     panel_of_normals_tbi  = Channel.value(file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true))
     interval_file         = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'],              checkIfExists: true))
+    joint_mutect2 = false
 
-    BAM_VARIANT_CALLING_TUMOR_ONLY_MUTECT2 ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
+    BAM_VARIANT_CALLING_TUMOR_ONLY_MUTECT2 ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file, joint_mutect2 )
 }
