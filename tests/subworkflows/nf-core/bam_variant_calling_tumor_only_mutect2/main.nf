@@ -8,8 +8,7 @@ workflow test_bam_variant_calling_tumor_only_mutect2 {
     input = Channel.of([
         [ id:'test2' ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'],     checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-        []
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
     ])
 
     dict  = Channel.value([[ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_dict'],                     checkIfExists: true)])
@@ -17,7 +16,7 @@ workflow test_bam_variant_calling_tumor_only_mutect2 {
     fasta = Channel.value([[ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'],                    checkIfExists: true)])
     germline_resource     = Channel.value(file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'],              checkIfExists: true))
     germline_resource_tbi = Channel.value(file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'],          checkIfExists: true))
-    interval_file         = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'],              checkIfExists: true))
+    interval_file         = Channel.value([[], 0])
     panel_of_normals      = Channel.value(file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'],     checkIfExists: true))
     panel_of_normals_tbi  = Channel.value(file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true))
     joint_mutect2 = false
