@@ -6,7 +6,7 @@ include { BAM_VARIANT_CALLING_SOMATIC_MUTECT2 } from '../../../../subworkflows/n
 
 workflow test_bam_variant_calling_somatic_mutect2 {
     input = Channel.of([
-        [ id:'test', normal_id:'test1', tumor_id:'test2'], // meta map
+        [id:'test2_vs_test1', normal_id:'test1', tumor_id:'test2'], // meta map
         [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
         [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)]
     ])
