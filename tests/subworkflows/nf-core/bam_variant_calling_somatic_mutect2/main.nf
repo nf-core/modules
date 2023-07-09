@@ -12,15 +12,9 @@ workflow test_bam_variant_calling_somatic_mutect2 {
         []
     ])
 
-    fasta = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    ]
-    fai = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    ]
-    dict = [ [ id:'genome' ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    ]
+    dict  = Channel.value([[ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_dict'],                     checkIfExists: true)])
+    fai   = Channel.value([[ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'],                checkIfExists: true)])
+    fasta = Channel.value([[ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'],                    checkIfExists: true)])
     germline_resource     = Channel.value(file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'],              checkIfExists: true))
     germline_resource_tbi = Channel.value(file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'],          checkIfExists: true))
     panel_of_normals      = Channel.value(file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'],     checkIfExists: true))
