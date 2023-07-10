@@ -10,7 +10,7 @@ process SENTIEON_BWAMEM {
         exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container 'nfcore/sentieon:202112.06'
+    container 'nf-core/sentieon:202112.06'
 
     input:
     tuple val(meta), path(reads)
@@ -27,18 +27,25 @@ process SENTIEON_BWAMEM {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
+    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
-    if [ \${SENTIEON_LICENSE_BASE64:-"unset"} != "unset" ]; then
-        echo "Initializing SENTIEON_LICENSE env variable"
-        if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then # Sentieon License server
-            export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        else  # Localhost license file
-            export SENTIEON_LICENSE=\$(mktemp)
-            echo -e "\$LICENSE_ENCODED" | base64 -d > \$SENTIEON_LICENSE
-        fi
+    if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
+        export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+    else  # Localhost license file
+        # The license file is stored as a nextflow variable like, for instance, this:
+        # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
+        export SENTIEON_LICENSE=\$(mktemp)
+        echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
+    fi
+
+    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
+        # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
+        export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
+        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
+        echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
@@ -50,8 +57,18 @@ process SENTIEON_BWAMEM {
         $reads \\
         | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
 
-    touch foo.bam
-    touch foo.bam.bai
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
+        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

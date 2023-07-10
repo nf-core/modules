@@ -5,7 +5,7 @@ process DEEPBGC_PIPELINE {
     conda "bioconda::deepbgc=0.1.30"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
-        'quay.io/biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
+        'biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
 
     input:
     tuple val(meta), path(genome)

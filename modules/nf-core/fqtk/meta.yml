@@ -3,12 +3,12 @@ description: Demultiplex fastq files
 keywords:
   - demultiplex
   - fastq
+  - rust
 tools:
   - "fqtk":
       description: "A toolkit for working with FASTQ files, written in Rust."
       homepage: "https://github.com/fulcrumgenomics/fqtk"
       documentation: "https://github.com/fulcrumgenomics/fqtk"
-      tool_dev_url: "None"
       licence: "['MIT']"
 
 input:
@@ -22,7 +22,7 @@ input:
       description: Tsv file, with two columns sample_id and barcode
       pattern: "*.{tsv}"
   - fastq_readstructure_pairs:
-      type: list
+      type: map
       description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute path to fastq directory>],...]
 
 output:
@@ -45,10 +45,10 @@ output:
         Demultiplexing summary stats; sample_id, barcode templates, frac_templates, ratio_to_mean, ratio_to_best
       pattern: "output/demux-metrics.txt"
   - most_frequent_unmatched:
-    type: file
-    description: |
-      File containing unmatched fastq records
-    pattern: "output/unmatched*.fq.gz"
+      type: file
+      description: |
+        File containing unmatched fastq records
+      pattern: "output/unmatched*.fq.gz"
 
 authors:
   - "Samantha White @sam-white04"
