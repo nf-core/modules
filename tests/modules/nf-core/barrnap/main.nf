@@ -8,7 +8,7 @@ workflow test_barrnap {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
     ]
 
     BARRNAP ( input )

@@ -8,7 +8,7 @@ process BARRNAP {
         'biocontainers/barrnap:0.9--hdfd78af_4' }"
 
     input:
-    tuple val(meta), path(reads), val(dbname)
+    tuple val(meta), path(fasta), val(dbname)
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
@@ -21,13 +21,17 @@ process BARRNAP {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     db         = dbname ? "${dbname}" : 'bac'
+    input    = fasta =~ /\.gz$/ ? fasta.name.take(fasta.name.lastIndexOf('.')) : fasta
+    gunzip   = fasta =~ /\.gz$/ ? "gunzip -c ${fasta} > ${input}" : ""
 
     """
+    $gunzip
+
     barrnap \\
         $args \\
          --threads $task.cpus \\
         --kingdom $db \\
-        $reads 
+        $input \\
         > rrna_${db}.gff
 
 

@@ -1,12 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml 
-- name: "barrnap"
+- name: barrnap test_barrnap
   command: nextflow run ./tests/modules/nf-core/barrnap -entry test_barrnap -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/barrnap/nextflow.config
   tags:
-    - "barrnap"
+    - barrnap
   files:
-    - path: "output/barrnap/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/barrnap/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/barrnap/rrna_bac.gff
+      md5sum: df19e1b84ba6f691d20c72b397c88abf
+    - path: output/barrnap/versions.yml
