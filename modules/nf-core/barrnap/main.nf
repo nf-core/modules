@@ -29,16 +29,16 @@ process BARRNAP {
 
     barrnap \\
         $args \\
-         --threads $task.cpus \\
+        --threads $task.cpus \\
         --kingdom $db \\
         $input \\
         > rrna_${db}.gff
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         : \$(echo \$(barrnap --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
     END_VERSIONS
+
     """
 
     stub:
