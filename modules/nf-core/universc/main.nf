@@ -6,7 +6,7 @@ process UNIVERSC {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    container "nfcore/universc:1.2.5.1"
+    container "nf-core/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
         containerOptions = "--privileged"
     }

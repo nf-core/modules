@@ -1,0 +1,55 @@
+name: "authentict_deam2cont"
+description: Use deamination patterns to estimate contamination in single-stranded libraries
+keywords:
+  - authentict
+  - ancientDNA
+  - single-stranded
+  - deamination
+  - contamination
+  - damage
+tools:
+  - "authentict":
+      description: "Estimates present-day DNA contamination in ancient DNA single-stranded libraries."
+      homepage: "https://github.com/StephanePeyregne/AuthentiCT"
+      documentation: "https://github.com/StephanePeyregne/AuthentiCT"
+      tool_dev_url: "https://github.com/StephanePeyregne/AuthentiCT"
+      doi: "10.1186/s13059-020-02123-y"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file (Mandatory)
+      pattern: "*.{bam,cram,sam}"
+  - config:
+      type: file
+      description: Optional AuthentiCT configuration text file
+      pattern: "*"
+  - positions:
+      type: file
+      description: Optional text file with positions that sequences should overlap
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Maximum likelihood estimates with associated standard errors
+      pattern: "*.txt"
+
+authors:
+  - "@scarlhoff"
+  - "@StephanePeyregne"

@@ -2,7 +2,7 @@ process BASES2FASTQ {
     tag "$meta.id"
     label 'process_high'
 
-    container "elembio/bases2fastq:1.1.0"
+    container "nf-core/bases2fastq:1.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

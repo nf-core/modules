@@ -36,3 +36,15 @@ workflow test_bbmap_bbnorm_interleaved {
 
     BBMAP_BBNORM ( input )
 }
+
+ workflow test_bbmap_bbnorm_multiple_input {
+     input = [
+        [id:'test', single_end:true ],
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+
+    BBMAP_BBNORM ( input )
+}

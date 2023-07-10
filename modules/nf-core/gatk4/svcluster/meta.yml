@@ -4,15 +4,17 @@ keywords:
   - gatk4
   - svcluster
   - vcf
-  - structural variants
+  - structural_variants
 tools:
-  - gatk4:
-      description: Genome Analysis Toolkit (GATK4)
+  - "gatk4":
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
-      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: "10.1158/1538-7445.AM2017-3590"
-      licence: ["BSD-3-clause"]
+      documentation: https://github.com/broadinstitute/gatk
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
@@ -21,11 +23,11 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: file
       description: One or more VCF files created with a structural variant caller
       pattern: "*.vcf.gz"
   - indices:
-      type: files
+      type: file
       description: Index files for the VCFs
       pattern: "*.vcf.gz.tbi"
   - ploidy_table:

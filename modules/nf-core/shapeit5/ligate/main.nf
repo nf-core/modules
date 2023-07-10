@@ -5,7 +5,7 @@ process SHAPEIT5_LIGATE {
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
     tuple val(meta), path(input_list), path (input_list_index)
@@ -22,7 +22,7 @@ process SHAPEIT5_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' | sort > all_files.txt
+    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
 
     SHAPEIT5_ligate \\
         $args \\

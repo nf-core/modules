@@ -15,7 +15,7 @@ process GLIMPSE2_SPLITREFERENCE {
     conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
         tuple val(meta) , path(reference), path(reference_index), val(input_region), val(output_region)
@@ -31,7 +31,7 @@ process GLIMPSE2_SPLITREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
     def map_command = map ? "--map $map" : ""
 
     """

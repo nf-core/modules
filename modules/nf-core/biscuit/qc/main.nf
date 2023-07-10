@@ -5,7 +5,7 @@ process BISCUIT_QC {
     conda "bioconda::biscuit=1.1.0.20220707"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
-        'quay.io/biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
+        'biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
 
     input:
     tuple val(meta), path(bam)
