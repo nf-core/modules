@@ -1,0 +1,184 @@
+- name: .. phidepiper instrain compare test_instrain_compare
+  command: nextflow run ./tests/modules/nf-core/../phidepiper/instrain/compare -entry test_instrain_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/../phidepiper/instrain/compare/nextflow.config
+  tags:
+    - ../phidepiper/instrain
+    - ../phidepiper/instrain/compare
+    - ../phidepiper
+    - ..
+  files:
+    - path: output/instrain/test.IS_compare/log/log.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_comparisonsTable.tsv
+      md5sum: b1427ae29f02ac97f33db944e68de9d4
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data_keys.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
+      md5sum: 7ed4894afbc4f1abd8692c4a65003a27
+    - path: output/instrain/test.IS_compare/raw_data/DSTdb.pickle
+      md5sum: 88bb88c6572d0a1d5ff26c14bdffb963
+    - path: output/instrain/test.IS_compare/raw_data/PMdb.pickle
+      md5sum: 60e649452be7c33304a1d08ac89859cd
+    - path: output/instrain/test.IS_compare/raw_data/_README.txt
+      md5sum: 2e194f67009f9fc5d92d93eba1e15fdd
+    - path: output/instrain/test.IS_compare/raw_data/attributes.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test.IS_compare/raw_data/comparisonsTable.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test.IS_compare/raw_data/scaffold2length.json
+      md5sum: 9adfc9252b9966d9d39343c2c524bc49
+    - path: output/instrain/test1.IS/figures/test1.IS_CoverageAndBreadth_vs_readMismatch.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/figures/test1.IS_MajorAllele_frequency_plot.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/figures/test1.IS_ReadFiltering_plot.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/figures/test1.IS_ScaffoldInspection_plot.pdf
+      md5sum: e11044c3a6f4af6323baea88ff8b50e6
+    - path: output/instrain/test1.IS/figures/test1.IS_genomeWide_microdiveristy_metrics.pdf
+      md5sum: e11044c3a6f4af6323baea88ff8b50e6
+    - path: output/instrain/test1.IS/figures/test1.IS_readANI_distribution.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/log/log.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/output/test1.IS_SNVs.tsv
+      md5sum: 3899edc98d9661117e956cb981d84d87
+    - path: output/instrain/test1.IS/output/test1.IS_genome_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/output/test1.IS_linkage.tsv
+      md5sum: 68b329da9893e34099c7d8ad5cb9c940
+    - path: output/instrain/test1.IS/output/test1.IS_mapping_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/output/test1.IS_scaffold_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/Rdic.json
+      md5sum: a4db43658404e199f100bb2f9bba0da6
+    - path: output/instrain/test1.IS/raw_data/_README.txt
+      md5sum: 2e194f67009f9fc5d92d93eba1e15fdd
+    - path: output/instrain/test1.IS/raw_data/attributes.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/bin2length.json
+      md5sum: 24aab8b599de79b4a9d30796a96c0268
+    - path: output/instrain/test1.IS/raw_data/clonT.hd5
+      md5sum: a4d38dadea4cdeca4ce40d98a7e16709
+    - path: output/instrain/test1.IS/raw_data/clonTR.hd5
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/covT.hd5
+      md5sum: 8992fe4f0eb2a9d7c049e4afd165e568
+    - path: output/instrain/test1.IS/raw_data/cumulative_scaffold_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/cumulative_snv_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/genome_level_info.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/mapping_info.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/raw_linkage_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/raw_snp_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test1.IS/raw_data/scaffold2bin.json
+      md5sum: 50ea1ef45bd0794f3bc77ebfa6a26db2
+    - path: output/instrain/test1.IS/raw_data/scaffold2length.json
+      md5sum: 9adfc9252b9966d9d39343c2c524bc49
+    - path: output/instrain/test1.IS/raw_data/scaffold_2_mm_2_read_2_snvs.pickle
+      md5sum: 5c4d3e46bd10fba5bd6878e0a7a02783
+    - path: output/instrain/test1.IS/raw_data/scaffold_list.txt
+      md5sum: 5ae68a67b70976ee95342a7451cb5af1
+    - path: output/instrain/test2.IS/figures/test2.IS_CoverageAndBreadth_vs_readMismatch.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/figures/test2.IS_MajorAllele_frequency_plot.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/figures/test2.IS_ReadFiltering_plot.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/figures/test2.IS_ScaffoldInspection_plot.pdf
+      md5sum: e11044c3a6f4af6323baea88ff8b50e6
+    - path: output/instrain/test2.IS/figures/test2.IS_genomeWide_microdiveristy_metrics.pdf
+      md5sum: e11044c3a6f4af6323baea88ff8b50e6
+    - path: output/instrain/test2.IS/figures/test2.IS_readANI_distribution.pdf
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/log/log.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/output/test2.IS_SNVs.tsv
+      md5sum: 244ef0cb7beaab78fb1f3dd9341213ba
+    - path: output/instrain/test2.IS/output/test2.IS_genome_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/output/test2.IS_linkage.tsv
+      md5sum: 68b329da9893e34099c7d8ad5cb9c940
+    - path: output/instrain/test2.IS/output/test2.IS_mapping_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/output/test2.IS_scaffold_info.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/Rdic.json
+      md5sum: f563d4959fd82de380d6e410292b1aa0
+    - path: output/instrain/test2.IS/raw_data/_README.txt
+      md5sum: 2e194f67009f9fc5d92d93eba1e15fdd
+    - path: output/instrain/test2.IS/raw_data/attributes.tsv
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/bin2length.json
+      md5sum: 24aab8b599de79b4a9d30796a96c0268
+    - path: output/instrain/test2.IS/raw_data/clonT.hd5
+      md5sum: d74b3518ad458ecedcbabe3b55a7539e
+    - path: output/instrain/test2.IS/raw_data/clonTR.hd5
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/covT.hd5
+      md5sum: 5aa75a7665b874c22e38722045e2daff
+    - path: output/instrain/test2.IS/raw_data/cumulative_scaffold_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/cumulative_snv_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/genome_level_info.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/mapping_info.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/raw_linkage_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/raw_snp_table.csv.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/instrain/test2.IS/raw_data/scaffold2bin.json
+      md5sum: 50ea1ef45bd0794f3bc77ebfa6a26db2
+    - path: output/instrain/test2.IS/raw_data/scaffold2length.json
+      md5sum: 9adfc9252b9966d9d39343c2c524bc49
+    - path: output/instrain/test2.IS/raw_data/scaffold_2_mm_2_read_2_snvs.pickle
+      md5sum: 5c4d3e46bd10fba5bd6878e0a7a02783
+    - path: output/instrain/test2.IS/raw_data/scaffold_list.txt
+      md5sum: 5ae68a67b70976ee95342a7451cb5af1
+    - path: output/instrain/versions.yml
