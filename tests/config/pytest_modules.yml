@@ -190,6 +190,10 @@ bandage/image:
   - modules/nf-core/bandage/image/**
   - tests/modules/nf-core/bandage/image/**
 
+barrnap:
+  - modules/nf-core/barrnap/**
+  - tests/modules/nf-core/barrnap/**
+
 bases2fastq:
   - modules/nf-core/untar/**
   - modules/nf-core/bases2fastq/**
@@ -3092,6 +3096,10 @@ subworkflows/align_bowtie2:
   - subworkflows/nf-core/align_bowtie2/**
   - tests/subworkflows/nf-core/align_bowtie2/**
 
+subworkflows/bam_create_som_pon_gatk:
+  - subworkflows/nf-core/bam_create_som_pon_gatk/**
+  - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
+
 subworkflows/bam_dedup_stats_samtools_umitools:
   - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
   - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
@@ -3199,10 +3207,6 @@ subworkflows/fastq_fastqc_umitools_trimgalore:
 subworkflows/fastq_subsample_fq_salmon:
   - subworkflows/nf-core/fastq_subsample_fq_salmon/**
   - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
-
-subworkflows/bam_create_som_pon_gatk:
-  - subworkflows/nf-core/bam_create_som_pon_gatk/**
-  - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
 
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
