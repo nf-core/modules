@@ -1,9 +1,7 @@
 - name: test_plasflow
   command: nextflow run ./tests/modules/nf-core/plasflow -entry test_plasflow -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/plasflow/nextflow.config
   tags:
-    - metagenome
-    - chromosome
-    - plasmid
+    - plasflow
   files:
     - path: output/plasflow/test.tsv
       md5sum: a7c0ee75bca40f7ae5000a120d3f2099
@@ -15,5 +13,5 @@
         - Fasta file containing plasmid sequences
     - path: output/plasflow/test_unclassified.fasta.gz
       contains:
-        - Fasta file containing unclassified sequences
+        - asta file containing unclassified sequences
     - path: output/plasflow/versions.yml
