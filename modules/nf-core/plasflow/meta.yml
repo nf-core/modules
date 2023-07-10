@@ -1,0 +1,59 @@
+name: "plasflow"
+description: Uses PlasFlow for prediction of plasmid sequences in metagenomic contigs.
+keywords:
+  - plasmid
+  - chromosomes
+  - metagenomes
+  - contigs
+tools:
+  - "PlasFlow":
+      description: |
+        PlasFlow is a set of scripts used for prediction of plasmid sequences in metagenomic contigs. 
+        It relies on the neural network models trained on full genome and plasmid sequences and is able 
+        to differentiate between plasmids and chromosomes with accuracy reaching 96%. It outperforms 
+        other available solutions for plasmids recovery from metagenomes and incorporates the thresholding 
+        which allows for exclusion of incertain predictions.
+      homepage: https://github.com/smaegol/PlasFlow
+      documentation: https://github.com/smaegol/PlasFlow
+      tool_dev_url: https://github.com/smaegol/PlasFlow
+      doi: 10.1093/nar/gkx1321
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - assembly:
+      type: file
+      description: fasta file
+      pattern: "*.{gz,fasta,fa,fna}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - tsv:
+      type: file
+      description: file containing classified sequences
+      pattern: "*.tsv"
+  - chromosomes:
+      type: file
+      description: Fasta file containing chromosome sequences
+      pattern: "*_chromosomes.fasta.gz"
+  - plasmids:
+      type: file
+      description: Fasta file containing plasmid sequences
+      pattern: "*_plasmids.fasta.gz"
+  - unclassified:
+      type: file
+      description: Fasta file containing unclassified sequences
+      pattern: "*_unclassified.fasta.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@limrp"
