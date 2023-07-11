@@ -15,7 +15,6 @@ process INSTRAIN_COMPARE {
     path stb_file
 
     output:
-    
     tuple val(meta), path("*.IS_compare")    , emit: compare
     path "versions.yml"                     , emit: versions
 
