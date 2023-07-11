@@ -14,19 +14,27 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - normal_vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: Sorted VCF/BCF file (list)
+      pattern: "*.{bcf,vcf,vcf.gz}"
+  - tumor_vcf:
+      type: file
+      description: Sorted VCF/BCF file (optional)
+      pattern: "*.{bcf,bcf.gz,vcf,vcf.gz}"
+  - scenario:
+      type: file
+      description: Yaml file containing scenario information (optional)
+      pattern: "*.{yml,yaml}"
+  - scenario_sample:
+      type: string
+      description: (List of) sample name(s) to be processed as named in the scenario yml (optional)
+      pattern: "*.{bcf,vcf,vcf.gz}"
 output:
   - meta:
       type: map
@@ -45,6 +53,14 @@ output:
       type: file
       description: BCF file containing sample observations
       pattern: "*.bcf.gz"
+  - vcf:
+      type: file
+      description: VCF file containing sample observations
+      pattern: "*.vcf"
+  - bcf:
+      type: file
+      description: BCF file containing sample observations
+      pattern: "*.bcf"
 
 authors:
   - "@FriederikeHanssen"

@@ -1,11 +1,35 @@
-- name: "varlociraptor calls"
-  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
+- name: varlociraptor callvariants test_varlociraptor_callvariants_scenario_singlesample
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants_scenario_singlesample -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
   tags:
-    - "varlociraptor"
-    - "varlociraptor/callvariants"
+    - varlociraptor/callvariants
+    - varlociraptor
   files:
-    - path: "output/varlociraptor/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/varlociraptor/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/varlociraptor/test_normal.alignment-properties.json
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/varlociraptor/test_normal.vcf.gz
+      md5sum: a091dfd1192e774490e68d72f9db3976
+    - path: output/varlociraptor/test_normal_called.vcf.gz
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/varlociraptor/versions.yml
 
+- name: varlociraptor callvariants test_varlociraptor_callvariants_tumor_normal
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants_tumor_normal -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
+  tags:
+    - varlociraptor/callvariants
+    - varlociraptor
+  files:
+    - path: output/varlociraptor/test_normal.alignment-properties.json
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/varlociraptor/test_normal.vcf.gz
+      md5sum: d5a543484daebc9b32b320ed45921e7e
+    - path: output/varlociraptor/test_normal_called.vcf.gz
+      md5sum: c1a586c5b28b32f06a3f2f19c2eefcd3
+    - path: output/varlociraptor/test_tumor.alignment-properties.json
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/varlociraptor/test_tumor.vcf.gz
+      md5sum: 338202061231d567ad323f7aac36a87b
+    - path: output/varlociraptor/versions.yml

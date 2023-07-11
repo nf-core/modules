@@ -15,6 +15,8 @@ process VARLOCIRAPTOR_PREPROCESS {
     output:
     tuple val(meta), path("*.bcf.gz"), emit: bcf_gz, optional: true
     tuple val(meta), path("*.vcf.gz"), emit: vcf_gz, optional: true
+    tuple val(meta), path("*.bcf")   , emit: bcf   , optional: true
+    tuple val(meta), path("*.vcf")   , emit: vcf   , optional: true
     path "versions.yml"              , emit: versions
 
     when:
