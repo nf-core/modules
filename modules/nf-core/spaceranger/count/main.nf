@@ -2,7 +2,6 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    // TODO push to nf-core docker
     container "docker.io/nfcore/spaceranger:2.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
