@@ -12,10 +12,10 @@ process SIMPLEAF_QUANT {
     // Input reads are expected to come as: [ meta, [ pair1_read1, pair1_read2, pair2_read1, pair2_read2 ] ]
     // Input array for a sample is created in the same order reads appear in samplesheet as pairs from replicates are appended to array.
     //
-    tuple val(meta), path(reads)
+    tuple val(meta), val(chemistry), path(reads)
     path index
+    val resolution
     path txp2gene
-    val chemistry
     path whitelist
 
     output:
@@ -30,20 +30,15 @@ process SIMPLEAF_QUANT {
     def args_list = args.tokenize()
     def prefix    = task.ext.prefix ?: "${meta.id}"
 
-    //
-    // check if users are using one of the mutually excludable parameters:
-    //    e.g -k,--knee | -e,--expect-cells | -f, --forced-cells
-    //
-    if (args_list.any { it in ['-k', '--knee', '-e', '--expect-cells', '-f', '--forced-cells']} || meta.expected_cells) {
-        unfiltered_command = ""
-        save_whitelist     = ""
-    } else {
-        unfiltered_command = "-u whitelist.uncompressed.txt"
-        save_whitelist     = "mv whitelist.uncompressed.txt ${prefix}_alevin_results/"
+    unfiltered_command = ""
+    if (whitelist) {
+        unfiltered_command = "-u <(gzip -dcf ${whitelist})"
     }
 
-    // expected cells
-    def expect_cells = meta.expected_cells ? "--expect-cells $meta.expected_cells" : ''
+    t2g_command = ""
+    if (txp2gene) {
+        t2g_command = "-m $txp2gene"
+    }
 
     // separate forward from reverse pairs
     def (forward, reverse) = reads.collate(2).transpose()
@@ -55,20 +50,18 @@ process SIMPLEAF_QUANT {
     simpleaf set-paths
 
     # run simpleaf quant
-    gzip -dcf $whitelist > whitelist.uncompressed.txt
     simpleaf quant \\
         -1 ${forward.join( "," )} \\
         -2 ${reverse.join( "," )} \\
         -i ${index} \\
-        -o ${prefix}_alevin_results \\
-        -m $txp2gene \\
-        -t $task.cpus \\
         -c $chemistry \\
-        $expect_cells \\
+        -r $resolution \\
+        -o ${prefix}_alevin_results \\
+        -t $task.cpus \\
+        $t2g_command \\
         $unfiltered_command \\
         $args
 
-    $save_whitelist
     [[ ! -f ${prefix}_alevin_results/af_quant/all_freq.bin ]] && cp ${prefix}_alevin_results/af_quant/permit_freq.bin ${prefix}_alevin_results/af_quant/all_freq.bin
 
     cat <<-END_VERSIONS > versions.yml

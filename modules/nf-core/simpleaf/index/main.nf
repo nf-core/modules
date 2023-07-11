@@ -1,5 +1,5 @@
 process SIMPLEAF_INDEX {
-    tag "$transcript_gtf"
+    tag "$genome_fasta $transcript_fasta"
     label 'process_high'
 
     conda "bioconda::simpleaf=0.14.1"
@@ -9,12 +9,12 @@ process SIMPLEAF_INDEX {
 
     input:
     path genome_fasta
+    path genome_gtf
     path transcript_fasta
-    path transcript_gtf
 
     output:
     path "salmon/index"              , emit: index
-    path "salmon/ref/t2g_3col.tsv" , emit: transcript_tsv
+    path "salmon/ref/t2g_3col.tsv"   , emit: transcript_tsv, optional: true
     path "salmon"                    , emit: salmon
     path "versions.yml"              , emit: versions
 
@@ -23,7 +23,7 @@ process SIMPLEAF_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def seq_inputs = (params.transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $transcript_gtf"
+    def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
     """
     # export required var
     export ALEVIN_FRY_HOME=.
@@ -35,7 +35,6 @@ process SIMPLEAF_INDEX {
     simpleaf \\
         index \\
         --threads $task.cpus \\
-        --fasta $genome_fasta \\
         $seq_inputs \\
         $args \\
         -o salmon
