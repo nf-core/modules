@@ -36,4 +36,16 @@ process YAHS {
         yahs: \$(yahs --version 2>&1)
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${prefix}_scaffold_final.fa
+    touch ${prefix}_scaffolds_final.agp
+    touch ${prefix}.bin
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        yahs: \$(yahs --version 2>&1)
+    END_VERSIONS
+    """
 }
