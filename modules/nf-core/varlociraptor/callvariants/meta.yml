@@ -1,9 +1,9 @@
-name: "varlociraptor_preprocess"
-description: Obtains per-sample observations for the actual calling process with varlociraptor calls
+name: "varlociraptor_callvariants"
+description: Call variants for a given scenario specified with the varlociraptor calling grammar, preprocessed by varlociraptor preprocessing
 keywords:
   - observations
   - variants
-  - preprocessing
+  - calling
 tools:
   - "varlociraptor":
       description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
@@ -19,37 +19,22 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - normal_vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - candidates:
-      type: file
-      description: Sorted BCF/VCF file
+      description: Sorted VCF/BCF file (list)
       pattern: "*.{bcf,vcf,vcf.gz}"
-  - alignment_json:
+  - tumor_vcf:
       type: file
-      description: File containing alignment properties obtained with varlociraptor/estimatealignmentproperties
-      pattern: "*.json"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
+      description: Sorted VCF/BCF file (optional)
+      pattern: "*.{bcf,bcf.gz,vcf,vcf.gz}"
+  - scenario:
       type: file
-      description: Reference fasta file
-      pattern: "*.{fasta}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference index information
-        e.g. [ id:'test', single_end:false ]
-  - fai:
-      type: file
-      description: Index for reference fasta file (must be with samtools index)
-      pattern: "*.{fai}"
-
+      description: Yaml file containing scenario information (optional)
+      pattern: "*.{yml,yaml}"
+  - scenario_sample:
+      type: string
+      description: (List of) sample name(s) to be processed as named in the scenario yml (optional)
+      pattern: "*.{bcf,vcf,vcf.gz}"
 output:
   - meta:
       type: map
