@@ -14,8 +14,8 @@ process SIMPLEAF_QUANT {
     //
     tuple val(meta), val(chemistry), path(reads)
     path index
-    val resolution
     path txp2gene
+    val resolution
     path whitelist
 
     output:
@@ -33,11 +33,6 @@ process SIMPLEAF_QUANT {
     unfiltered_command = ""
     if (whitelist) {
         unfiltered_command = "-u <(gzip -dcf ${whitelist})"
-    }
-
-    t2g_command = ""
-    if (txp2gene) {
-        t2g_command = "-m $txp2gene"
     }
 
     // separate forward from reverse pairs
@@ -58,7 +53,7 @@ process SIMPLEAF_QUANT {
         -r $resolution \\
         -o ${prefix}_alevin_results \\
         -t $task.cpus \\
-        $t2g_command \\
+        -m $txp2gene \\
         $unfiltered_command \\
         $args
 

@@ -28,36 +28,9 @@ workflow test_simpleaf_quant {
     SIMPLEAF_QUANT ( 
         input,
         SIMPLEAF_INDEX.out.index,
-        'cr-like',
         SIMPLEAF_INDEX.out.transcript_tsv,
-        []
-    )
-}
-
-workflow test_simpleaf_quant_nogtf {
-    
-    transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
-
-    SIMPLEAF_INDEX (
-        [],
-        [], 
-        transcriptome_fasta,
-    )
-
-    input = [ 
-        [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
-        '10xv3', // Chemistry
-        [ 
-            file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
-        ]
-    ]
-
-    SIMPLEAF_QUANT ( 
-        input,
-        SIMPLEAF_INDEX.out.index,
         'cr-like',
-        [],
         []
     )
 }
+
