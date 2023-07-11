@@ -1,55 +1,54 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "instrain_compare"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Strain-level comparisons across multiple inStrain profiles
 keywords:
-  - sort
-  - example
-  - genomics
+  - instrain
+  - compare
+  - align
+  - diversity
+  - coverage
 tools:
   - "instrain":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Calculation of strain-level metrics"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: https://github.com/MrOlm/instrain
+      documentation: https://instrain.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/MrOlm/instrain
+      doi: 10.1038/s41587-020-00797-0
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - profiles:
+      type: directory
+      description: InStrain profile folders
+      pattern: "*.IS/"
+  - bams:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Path to .bam files that were profiled
+      pattern: "*.{bam,sam}"
+  - stb_file:
+      type: file
+      description: Path to .stb (scaffold to bin) file that was profiled
+      pattern: "*.stb"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - compare:
+      type: directory
+      description: inStrain compare folders
+      pattern: "*.IS_compare/"
 
 authors:
   - "@margotl9"
+  - "@CarsonJM"
