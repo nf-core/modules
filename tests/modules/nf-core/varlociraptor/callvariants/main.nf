@@ -42,7 +42,7 @@ workflow test_varlociraptor_callvariants_scenario_singlesample {
     VARLOCIRAPTOR_CALLVARIANTS ( VARLOCIRAPTOR_PREPROCESS_NORMAL.out.vcf_gz.map{meta1, vcf -> [meta1, vcf, []]}, scenario, "normal" )
 }
 
-workflow test_varlociraptor_callvariants_scenario_multisample{
+workflow test_varlociraptor_callvariants_scenario_multisample {
 
     bam_normal = [
         [ id:'test_normal', single_end:false ], // meta map
