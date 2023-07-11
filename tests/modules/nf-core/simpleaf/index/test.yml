@@ -1,5 +1,5 @@
-- name: simpleaf index test_simpleaf_index
-  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/simpleaf/index/nextflow.config
+- name: simpleaf index test_simpleaf_index_expanded
+  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_expanded -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/simpleaf/index/nextflow.config
   tags:
     - simpleaf
     - simpleaf/index
@@ -7,8 +7,6 @@
     - path: output/simpleaf/salmon/index/complete_ref_lens.bin
       md5sum: 83d53fa7048affe5dfba4ba38f84fd5c
     - path: output/simpleaf/salmon/index/ctable.bin
-      contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/simpleaf/salmon/index/ctg_offsets.bin
       md5sum: c37313b499eb0dc580d962b82ac63f9e
     - path: output/simpleaf/salmon/index/duplicate_clusters.tsv
@@ -18,45 +16,89 @@
     - path: output/simpleaf/salmon/index/mphf.bin
       md5sum: c7ae1b883f0987fedc8bb61e139136a7
     - path: output/simpleaf/salmon/index/pos.bin
-      contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/simpleaf/salmon/index/pre_indexing.log
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - 'done building index'
     - path: output/simpleaf/salmon/index/rank.bin
       md5sum: 3b5c31ce5d3423b15687c59220d8ef3f
     - path: output/simpleaf/salmon/index/refAccumLengths.bin
       md5sum: ba84af8bcdfe540fb66a59d623f7dfde
     - path: output/simpleaf/salmon/index/ref_indexing.log
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - 'ntHll estimated 54920 distinct k-mers, setting filter size to 2^20'
     - path: output/simpleaf/salmon/index/reflengths.bin
       md5sum: 83d53fa7048affe5dfba4ba38f84fd5c
     - path: output/simpleaf/salmon/index/refseq.bin
       md5sum: 64dc6c4822b648c2f36c7934ea9eeeed
     - path: output/simpleaf/salmon/index/seq.bin
-      contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
     - path: output/simpleaf/salmon/index/simpleaf_index.json
-      md5sum: 4c53c973a7fbfa003e3e0301a15d6013
+      contains:
+        - 'salmon index -k 31'
     - path: output/simpleaf/salmon/index/t2g_3col.tsv
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - 'ENSG00000100181'
     - path: output/simpleaf/salmon/index/versionInfo.json
       md5sum: f06db51ed32dec928fe518075deb4f2e
     - path: output/simpleaf/salmon/index_info.json
-      md5sum: d4ddc9d5814588ef1f809788f36c10cc
+      contains:
+        - 'bin/alevin-fry'
     - path: output/simpleaf/salmon/ref/gene_id_to_name.tsv
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - "ENSG00000287285\tAP000547.4"
     - path: output/simpleaf/salmon/ref/roers_make-ref.json
       md5sum: 3031a0cdf5170a7333cc5d2701216a09
     - path: output/simpleaf/salmon/ref/roers_ref.fa
       md5sum: b75f577627e23bd7708e2c0276a5299b
     - path: output/simpleaf/salmon/ref/t2g_3col.tsv
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - 'ENST00000400593'
     - path: output/simpleaf/salmon/simpleaf_index_log.json
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - 'salmon index -k 31'
+    - path: output/simpleaf/versions.yml
+
+- name: simpleaf index test_simpleaf_index_direct
+  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_direct -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/simpleaf/index/nextflow.config
+  tags:
+    - simpleaf
+    - simpleaf/index
+  files:
+    - path: output/simpleaf/salmon/index/complete_ref_lens.bin
+      md5sum: 75e3592b2ea434eeadb0ca19d684c206
+    - path: output/simpleaf/salmon/index/ctable.bin
+    - path: output/simpleaf/salmon/index/ctg_offsets.bin
+      md5sum: 3d2ad5b4f1aea940a1d3864b9db19fa0
+    - path: output/simpleaf/salmon/index/duplicate_clusters.tsv
+      md5sum: c96ca031de4888558eec24fd13bd1c9b
+    - path: output/simpleaf/salmon/index/info.json
+      md5sum: 37c2394912126fd0c06a9f8ec8b0adbc
+    - path: output/simpleaf/salmon/index/mphf.bin
+      md5sum: 48234131012798a528048d48881c1ce2
+    - path: output/simpleaf/salmon/index/pos.bin
+    - path: output/simpleaf/salmon/index/pre_indexing.log
+      contains:
+        - 'done building index'
+    - path: output/simpleaf/salmon/index/rank.bin
+      md5sum: f6e3fc0a3faf4a6e52d31524ddab4c81
+    - path: output/simpleaf/salmon/index/refAccumLengths.bin
+      md5sum: d6698204613dfa65fd5d9e426e696745
+    - path: output/simpleaf/salmon/index/ref_indexing.log
+      contains:
+        - 'mphf size = 0.00533295 MB'
+    - path: output/simpleaf/salmon/index/reflengths.bin
+      md5sum: 75e3592b2ea434eeadb0ca19d684c206
+    - path: output/simpleaf/salmon/index/refseq.bin
+      md5sum: 3d2a23204c63c73bf324ade407a86849
+    - path: output/simpleaf/salmon/index/seq.bin
+    - path: output/simpleaf/salmon/index/simpleaf_index.json
+      contains:
+        - 'salmon index -k 31'
+    - path: output/simpleaf/salmon/index/versionInfo.json
+      md5sum: f06db51ed32dec928fe518075deb4f2e
+    - path: output/simpleaf/salmon/index_info.json
+      contains:
+        - 'bin/alevin-fry'
+    - path: output/simpleaf/salmon/simpleaf_index_log.json
+      contains:
+        - 'salmon index -k 31 '
     - path: output/simpleaf/versions.yml
