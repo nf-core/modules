@@ -4,7 +4,7 @@ process SIMPLEAF_INDEX {
 
     conda "bioconda::simpleaf=0.14.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.14.1--h4ac6f70_0':       
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.14.1--h4ac6f70_0':
         'biocontainers/simpleaf:0.14.1--h4ac6f70_0' }"
 
     input:
