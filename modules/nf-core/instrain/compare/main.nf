@@ -1,4 +1,3 @@
-
 process INSTRAIN_COMPARE {
     tag "$meta.id"
     label 'process_high'
