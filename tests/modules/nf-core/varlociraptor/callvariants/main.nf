@@ -6,7 +6,6 @@ include { VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES as VARLOCIRAPTOR_ESTIMATEALI
 include { VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES as VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR  } from '../../../../../modules/nf-core/varlociraptor/estimatealignmentproperties/main.nf'
 include { VARLOCIRAPTOR_PREPROCESS                  as VARLOCIRAPTOR_PREPROCESS_NORMAL                  } from '../../../../../modules/nf-core/varlociraptor/preprocess/main.nf'
 include { VARLOCIRAPTOR_PREPROCESS                  as VARLOCIRAPTOR_PREPROCESS_TUMOR                   } from '../../../../../modules/nf-core/varlociraptor/preprocess/main.nf'
-
 include { VARLOCIRAPTOR_CALLVARIANTS                                                                    } from '../../../../../modules/nf-core/varlociraptor/callvariants/main.nf'
 
 workflow test_varlociraptor_callvariants_scenario_singlesample {
