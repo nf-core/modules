@@ -10,7 +10,6 @@ process INSTRAIN_COMPARE {
         'biocontainers/instrain:1.6.1--pyhdfd78af_0' }"
 
     input:
-
     tuple val(meta), path(profiles)
     tuple val(meta), path(bams)
     path stb_file
