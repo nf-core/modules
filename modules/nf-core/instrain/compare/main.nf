@@ -27,8 +27,6 @@ process INSTRAIN_COMPARE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def stb_args = stb_file ? "-s ${stb_file}": ''
-
-
     """
     inStrain \\
         compare \\
