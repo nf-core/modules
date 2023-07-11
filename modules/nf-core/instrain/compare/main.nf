@@ -10,11 +10,10 @@ process INSTRAIN_COMPARE {
     input:
     tuple val(meta), path(profiles)
     tuple val(meta), path(bams)
-    tuple val(meta), path(stb_file)
-
+    path stb_file
 
     output:
-    tuple val(meta), path("IS_compare/")    , emit: compare
+    tuple val(meta), path("*.IS_compare")   , emit: compare
     path "versions.yml"                     , emit: versions
 
     when:
@@ -23,18 +22,33 @@ process INSTRAIN_COMPARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def stb_args = stb_file ? "-s ${stb_file}": ''
     """
     inStrain \\
         compare \\
-        --input $profiles \\
-        --output ${prefix}.IS_compare \\
+        -i $profiles \\
+        -o ${prefix}.IS_compare \\
         --processes $task.cpus \\
-        --stb $stb_file \\
+        --bams $bams \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        instrain: \$(echo \$(inStrain profile --version 2>&1) | awk 'NF{ print \$NF }')
+        instrain: \$(echo \$(inStrain compare --version 2>&1) | awk 'NF{ print \$NF }')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def stb_args = stb_file ? "-s ${stb_file}": ''
+    """
+    mkdir -p ${prefix}.IS_compare/output
+    touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_info.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        instrain: \$(echo \$(inStrain compare --version 2>&1) | awk 'NF{ print \$NF }')
     END_VERSIONS
     """
 }

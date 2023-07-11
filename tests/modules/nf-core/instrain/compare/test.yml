@@ -1,13 +1,18 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /compare
-- name: "instrain compare"
+- name: instrain compare test_instrain_compare
   command: nextflow run ./tests/modules/nf-core/instrain/compare -entry test_instrain_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/instrain/compare/nextflow.config
   tags:
-    - "instrain"
-    - "instrain/compare"
+    - instrain/compare
+    - instrain
   files:
-    - path: "output/instrain/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/instrain/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
+      md5sum: 7ed4894afbc4f1abd8692c4a65003a27
+    - path: output/instrain/versions.yml
+
+- name: instrain compare test_instrain_compare_stub
+  command: nextflow run ./tests/modules/nf-core/instrain/compare -entry test_instrain_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/instrain/compare/nextflow.config -stub-run
+  tags:
+    - instrain/compare
+    - instrain
+  files:
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
+    - path: output/instrain/versions.yml
