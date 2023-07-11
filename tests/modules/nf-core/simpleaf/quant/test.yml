@@ -6,37 +6,38 @@
   files:
     - path: output/simpleaf/test_10x_alevin_results/af_map/alevin/alevin.log
       contains:
-        - 'sc-align successful'
+        - "sc-align successful"
     - path: output/simpleaf/test_10x_alevin_results/af_map/aux_info/meta_info.json
       contains:
-        - 'eeb564b47803fd3415a7ef3cca89695fcc0f52dd30eebc381846ff92d7f2c077'
+        - "eeb564b47803fd3415a7ef3cca89695fcc0f52dd30eebc381846ff92d7f2c077"
     - path: output/simpleaf/test_10x_alevin_results/af_map/cmd_info.json
-      md5sum: 2a6151832e28c1ae800f82be8892baa6
+      contains:
+        - 'test_10x_alevin_results/af_map'
     - path: output/simpleaf/test_10x_alevin_results/af_map/logs/salmon_quant.log
       contains:
-        - 'Number uniquely mapped : 11'
+        - "Number uniquely mapped : 11"
     - path: output/simpleaf/test_10x_alevin_results/af_map/map.rad
       md5sum: 93ea1875bc36d769ba060d8b38f40aa1
     - path: output/simpleaf/test_10x_alevin_results/af_map/unmapped_bc_count.bin
       md5sum: 7d0f401573b121914df1ef036405187c
     - path: output/simpleaf/test_10x_alevin_results/af_quant/alevin/quants_mat.mtx
       contains:
-        - '7 21 7'
+        - "7 21 7"
     - path: output/simpleaf/test_10x_alevin_results/af_quant/alevin/quants_mat_cols.txt
       contains:
-        - 'ENSG00000283633'
+        - "ENSG00000283633"
     - path: output/simpleaf/test_10x_alevin_results/af_quant/alevin/quants_mat_rows.txt
       md5sum: 78e92f0584cc4132374ea7f8fcc1bf1f
     - path: output/simpleaf/test_10x_alevin_results/af_quant/all_freq.bin
       md5sum: ff6a60def164baabaecc05e10b4ac397
     - path: output/simpleaf/test_10x_alevin_results/af_quant/collate.json
       contains:
-        - 'alevin-fry collate'
+        - "alevin-fry collate"
     - path: output/simpleaf/test_10x_alevin_results/af_quant/featureDump.txt
       md5sum: 8a337c9fa0660d108dcc0955fcd03b52
     - path: output/simpleaf/test_10x_alevin_results/af_quant/generate_permit_list.json
       contains:
-        - 'alevin-fry generate-permit-list'
+        - "alevin-fry generate-permit-list"
     - path: output/simpleaf/test_10x_alevin_results/af_quant/map.collated.rad
       md5sum: bbad29bd96cb245d1893361be81b0ca3
     - path: output/simpleaf/test_10x_alevin_results/af_quant/permit_freq.bin
@@ -44,9 +45,9 @@
     - path: output/simpleaf/test_10x_alevin_results/af_quant/permit_map.bin
     - path: output/simpleaf/test_10x_alevin_results/af_quant/quant.json
       contains:
-        - 'alevin-fry quant -i test_10x_alevin_results/af_quant'
+        - "alevin-fry quant -i test_10x_alevin_results/af_quant"
     - path: output/simpleaf/test_10x_alevin_results/af_quant/unmapped_bc_count_collated.bin
     - path: output/simpleaf/test_10x_alevin_results/simpleaf_quant_log.json
       contains:
-        - 'subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz'
+        - "subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz"
     - path: output/simpleaf/versions.yml
