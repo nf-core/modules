@@ -1,8 +1,9 @@
-- name: "pairtools split"
+- name: pairtools split test_pairtools_split
   command: nextflow run ./tests/modules/nf-core/pairtools/split -entry test_pairtools_split -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pairtools/split/nextflow.config
   tags:
     - "pairtools"
     - "pairtools/split"
   files:
-    - path: "output/pairtools/test.pairs"
+    - path: "output/pairtools/test.split.pairs.gz"
+    - path: "output/pairtools/test_pairtools.bam"
     - path: "output/pairtools/versions.yml"
