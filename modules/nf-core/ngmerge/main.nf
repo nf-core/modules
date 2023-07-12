@@ -28,7 +28,7 @@ process NGMERGE {
         -o ${prefix}.merged.fq.gz \\
         -z \\
         -n $task.cpus \\
-        $args 
+        $args
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,7 +42,7 @@ process NGMERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.merged.fq.gz 
+    touch ${prefix}.merged.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
