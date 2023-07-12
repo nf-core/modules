@@ -1,6 +1,6 @@
 process PURECLIP {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "bioconda::pureclip=1.3.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,11 +8,15 @@ process PURECLIP {
         'biocontainers/pureclip:1.3.1--0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(ipbam), path(controlbam)
+    tuple val(meta), path(ipbai), path(controlbai)
+    path genome_fasta
+    val input_control
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${crosslinks_output_name}"), emit: crosslinks
+    tuple val(meta), path("${peaks_output_name}")     , emit: peaks
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,18 +24,29 @@ process PURECLIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
+    peaks_output_name      = "${prefix}_pureclip_peaks.bed"
+
+    if (input_control) {
+        control_bam   = "-ibam $controlbam"
+        control_bai   = "-ibai $controlbai"
+    }
+
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    pureclip \
+        -i $bam \
+        -bai $bai \
+        -g $genome_fasta \
+        -nt ${task.cpus} \
+        -o $crosslinks_output_name \
+        -or $peaks_output_name \
+        ${control_bam} \
+        ${control_bai} \
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//' ))
     END_VERSIONS
     """
 
@@ -40,11 +55,12 @@ process PURECLIP {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.bam
+    touch ${prefix}_pureclip_crosslinks.bed
+    touch ${prefix}_pureclip_peaks.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
