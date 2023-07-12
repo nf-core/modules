@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "mapad_map"
+description: Map short-reads to an indexed reference genome
+keywords:
+  - mapad
+  - ancient dna
+  - adna
+  - damage
+  - deamination
+  - miscoding lesions
+  - c to t
+  - palaeogenomics
+  - archaeogenomics
+  - palaeogenetics
+  - archaeogenetics
+  - short-read
+  - align
+  - aligner
+  - alignment
+  - map
+  - mapper
+  - mapping
+  - reference
+  - fasta
+  - fastq
+  - bam
+  - cram
+tools:
+  - "mapad":
+      description: "An aDNA aware short-read mapper"
+      homepage: "https://github.com/mpieva/mapAD"
+      documentation: "https://github.com/mpieva/mapAD"
+      tool_dev_url: "https://github.com/mpieva/mapAD"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        Sequencing reads in FASTQ or BAM (unmapped/mapped) related formats. Supports only single-end or merged paired-end data (mandatory)
+      pattern: "*.{bam,cram,fastq,fastq.gz,fq,fq.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test', single_end:false ]
+  - index:
+      type: file
+      description: mapAD genome index files (mandatory)
+      pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
+  - mismatch_parameter:
+      type: float
+      description: |
+        Minimum probability of the number of mismatches under `-D` base error rate
+  - double_stranded_library:
+      type: boolean
+      description: Library preparation method - specify if double stranded else it's assumed single stranded
+  - five_prime_overhang:
+      type: float
+      description: 5'-overhang length parameter
+  - three_prime_overhang:
+      type: float
+      description: 3'-overhang length parameter
+  - deam_rate_double_stranded:
+      type: float
+      description: Deamination rate in double-stranded stem of a read
+  - deam_rate_single_stranded:
+      type: float
+      description: Deamination rate in single-stranded ends of a read
+  - indel_rate:
+      type: float
+      description: Expected rate of indels between reads and reference
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Output BAM/SAM file containing read alignments
+      pattern: "*.bam"
+
+authors:
+  - "@jch-13"

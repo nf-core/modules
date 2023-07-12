@@ -15,6 +15,8 @@ process VARLOCIRAPTOR_PREPROCESS {
     output:
     tuple val(meta), path("*.bcf.gz"), emit: bcf_gz, optional: true
     tuple val(meta), path("*.vcf.gz"), emit: vcf_gz, optional: true
+    tuple val(meta), path("*.bcf")   , emit: bcf   , optional: true
+    tuple val(meta), path("*.vcf")   , emit: vcf   , optional: true
     path "versions.yml"              , emit: versions
 
     when:
@@ -22,7 +24,7 @@ process VARLOCIRAPTOR_PREPROCESS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.vcf.gz"
     def alignment_properties_json = alignment_json ? "--alignment-properties ${alignment_json}" : ""
     """
     varlociraptor preprocess variants \\
@@ -31,7 +33,7 @@ process VARLOCIRAPTOR_PREPROCESS {
         --bam $bam \\
         --candidates $candidates \\
         ${args} \\
-        > ${prefix}.vcf.gz
+        > ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

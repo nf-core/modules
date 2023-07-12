@@ -1,0 +1,52 @@
+- name: varlociraptor callvariants test_varlociraptor_callvariants_scenario_singlesample
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants_scenario_singlesample -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
+  tags:
+    - varlociraptor/callvariants
+    - varlociraptor
+  files:
+    - path: output/varlociraptor/test_normal.alignment-properties.json
+      contains:
+        - '"mean": 124.89494470774092,'
+    - path: output/varlociraptor/test_normal.vcf.gz
+      md5sum: a091dfd1192e774490e68d72f9db3976
+    - path: output/varlociraptor/test_normal_called.vcf.gz
+    - path: output/varlociraptor/versions.yml
+
+- name: varlociraptor callvariants test_varlociraptor_callvariants_scenario_multisample
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants_scenario_multisample -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
+  tags:
+    - varlociraptor/callvariants
+    - varlociraptor
+  files:
+    - path: output/varlociraptor/test_normal.alignment-properties.json
+      contains:
+        - '"mean": 124.89494470774092,'
+    - path: output/varlociraptor/test_normal.vcf.gz
+      md5sum: a091dfd1192e774490e68d72f9db3976
+    - path: output/varlociraptor/test_normal_called.vcf.gz
+    - path: output/varlociraptor/test_tumor.alignment-properties.json
+      contains:
+        - '"mean": 126.49488752556238,'
+    - path: output/varlociraptor/test_tumor.vcf.gz
+      md5sum: e84afe39f48e9bd197ae9952e15adb92
+    - path: output/varlociraptor/versions.yml
+
+- name: varlociraptor callvariants test_varlociraptor_callvariants_tumor_normal
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/callvariants -entry test_varlociraptor_callvariants_tumor_normal -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/callvariants/nextflow.config
+  tags:
+    - varlociraptor/callvariants
+    - varlociraptor
+  files:
+    - path: output/varlociraptor/test_normal.alignment-properties.json
+      contains:
+        - '"mean": 351.71182796866435,'
+    - path: output/varlociraptor/test_normal.vcf.gz
+      md5sum: d5a543484daebc9b32b320ed45921e7e
+    - path: output/varlociraptor/test_normal_called.vcf.gz
+      md5sum: c1a586c5b28b32f06a3f2f19c2eefcd3
+    - path: output/varlociraptor/test_tumor.alignment-properties.json
+      contains:
+        - '"mean": 351.2137723747417,'
+    - path: output/varlociraptor/test_tumor.vcf.gz
+      md5sum: 338202061231d567ad323f7aac36a87b
+    - path: output/varlociraptor/versions.yml
