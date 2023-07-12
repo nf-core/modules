@@ -49,7 +49,7 @@ process PURECLIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pureclip: \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//; s/: version: //; s/ Seq.*//' ))
+        pureclip: \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//; s/version: //; s/ Seq.*//' ))
     END_VERSIONS
     """
 
@@ -63,7 +63,7 @@ process PURECLIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pureclip: \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//; s/: version: //; s/ Seq.*//' ))
+        pureclip: \$(echo \$(pureclip --version 2>&1) | sed 's/^.*pureclip //; s/Using.*\$//; s/version: //; s/ Seq.*//' ))
     END_VERSIONS
     """
 }
