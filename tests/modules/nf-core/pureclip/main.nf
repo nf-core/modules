@@ -13,7 +13,8 @@ workflow test_pureclip_no_ctrl {
               [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ],
               [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true) ]] //dummy file
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'test', single_end:false ],
+              [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]]
 
     PURECLIP (
         input_bam,
@@ -32,12 +33,13 @@ workflow test_pureclip_input_ctrl {
               [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ],
               [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true) ]]
 
-    genome = [file( params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
+    fasta = [ [ id:'test', single_end:false ],
+              [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]]
 
     PURECLIP (
         input_bam,
         input_bai,
-        genome,
+        fasta,
         true
         )
 }

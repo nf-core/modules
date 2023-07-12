@@ -21,6 +21,12 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
 
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
+
   - ipbam:
       type: file
       description: Sorted BAM/CRAM/SAM file
