@@ -1,40 +1,39 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "ngmerge"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+
+description: Merging paired-end reads and removing sequencing adapters.
 keywords:
   - sort
-  - example
-  - genomics
+  - reads merging
+  - merge mate pairs
 tools:
   - "ngmerge":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Merging paired-end reads and removing sequencing adapters."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/jsh58/NGmerge"
+      documentation: "https://github.com/jsh58/NGmerge"
+      tool_dev_url: "https://github.com/jsh58/NGmerge"
+      doi: "10.1186/s12859-018-2579-2"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
   
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads1:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fastq file paired end read 1
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - reads2:
+      type: file
+      description: fastq file paired end read 2
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -45,11 +44,12 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - merged_reads:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fastq file paired end read 2
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
 
 authors:
   - "@charlotteanne"
+  - "@jsh58"
