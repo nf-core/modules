@@ -1,5 +1,5 @@
 process MMSEQS_DATABASES {
-    tag '$database'
+    tag "${database}"
     label 'process_medium'
 
     conda "bioconda::mmseqs2=14.7e284"

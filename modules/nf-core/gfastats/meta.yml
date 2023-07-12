@@ -3,6 +3,8 @@ description: |
   A single fast and exhaustive tool for summary statistics and simultaneous *fa*
   (fasta, fastq, gfa [.gz]) genome assembly file manipulation.
 keywords:
+  - gfastats
+  - fasta
   - genome assembly
   - genome summary
   - genome manipulation
@@ -30,7 +32,7 @@ input:
       type: string
       description: Output format (fasta, fastq, gfa)
   - genome_size:
-      type: number
+      type: integer
       description: estimated genome size (bp) for NG* statistics (optional).
   - target:
       type: string
