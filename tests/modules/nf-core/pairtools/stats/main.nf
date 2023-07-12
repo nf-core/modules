@@ -7,7 +7,7 @@ include { PAIRTOOLS_STATS } from '../../../../../modules/nf-core/pairtools/stats
 workflow test_pairtools_stats {
     
     input = [ [ id:'test', single_end:false ], // meta map
-                file(params.test_data['generic']['pairtools']['mock_4dedup_pairsam'], checkIfExists: true) ]
+              file(params.test_data['generic']['pairtools']['mock_pairsam'], checkIfExists: true) ]
 
     PAIRTOOLS_STATS ( input )
 }
