@@ -11,8 +11,8 @@ process NGMERGE {
     tuple val(meta), path(reads1), path(reads2)
 
     output:
-    tuple val(meta), path("*.bam"), emit: merged_reads
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.merged.fq.gz"), emit: merged_reads
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
