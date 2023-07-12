@@ -1,9 +1,10 @@
 - name: icountmini metagene test_icountmini_metagene
   command: nextflow run ./tests/modules/nf-core/icountmini/metagene -entry test_icountmini_metagene -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/icountmini/metagene/nextflow.config
   tags:
-    - icountmini/metagene
     - icountmini
+    - icountmini/metagene
   files:
-    - path: output/icountmini/metagene_clippy/clippy_plot_data.tsv
+      md5sum: f09f9a70cf223dbbf650b2d5d80f457d
+    - path: output/icountmini/metagene_test/test_plot_data.tsv
       md5sum: 63032c9e159e81f617e30bcb1c3c8509
     - path: output/icountmini/versions.yml
