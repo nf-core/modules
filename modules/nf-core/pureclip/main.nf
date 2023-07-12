@@ -32,7 +32,7 @@ process PURECLIP {
         control_bai   = "-ibai $controlbai"
     } else {
         control_bam   = ""
-        control_bai   = "" 
+        control_bai   = ""
     }
 
     """
