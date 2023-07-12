@@ -1,0 +1,7 @@
+- name: ngmerge test_ngmerge
+  command: nextflow run ./tests/modules/nf-core/ngmerge -entry test_ngmerge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngmerge/nextflow.config
+  tags:
+    - ngmerge
+  files:
+    - path: output/ngmerge/test.merged.fq.gz
+    - path: output/ngmerge/versions.yml
