@@ -1,13 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /insulation
 - name: "cooltools insulation"
   command: nextflow run ./tests/modules/nf-core/cooltools/insulation -entry test_cooltools_insulation -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooltools/insulation/nextflow.config
   tags:
     - "cooltools"
     - "cooltools/insulation"
   files:
-    - path: "output/cooltools/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/cooltools/test_insulation.tsv"
     - path: "output/cooltools/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
