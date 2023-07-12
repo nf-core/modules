@@ -16,7 +16,7 @@ process PURECLIP {
     output:
     tuple val(meta), path("${crosslinks_output_name}"), emit: crosslinks
     tuple val(meta), path("${peaks_output_name}")     , emit: peaks
-    path "versions.yml"                                  , emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,15 +27,18 @@ process PURECLIP {
     crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
     peaks_output_name      = "${prefix}_pureclip_peaks.bed"
 
-    if (input_control) {
+    if(input_control){
         control_bam   = "-ibam $controlbam"
         control_bai   = "-ibai $controlbai"
+    } else {
+        control_bam   = ""
+        control_bai   = "" 
     }
 
     """
     pureclip \
-        -i $bam \
-        -bai $bai \
+        -i $ipbam \
+        -bai $ipbai \
         -g $genome_fasta \
         -nt ${task.cpus} \
         -o $crosslinks_output_name \

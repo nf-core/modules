@@ -1,12 +1,21 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml 
-- name: "pureclip"
-  command: nextflow run ./tests/modules/nf-core/pureclip -entry test_pureclip -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pureclip/nextflow.config
+- name: pureclip test_pureclip_no_ctrl
+  command: nextflow run ./tests/modules/nf-core/pureclip -entry test_pureclip_no_ctrl -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pureclip/nextflow.config
   tags:
-    - "pureclip"
+    - pureclip
   files:
-    - path: "output/pureclip/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/pureclip/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/pureclip/test_pureclip_crosslinks.bed
+      md5sum: c13c98e4d205025a3a824fbf36aaeef5
+    - path: output/pureclip/test_pureclip_peaks.bed
+      md5sum: 5fa8033fbe5901ac68a5b11e47aa22c6
+    - path: output/pureclip/versions.yml
+
+- name: pureclip test_pureclip_input_ctrl
+  command: nextflow run ./tests/modules/nf-core/pureclip -entry test_pureclip_input_ctrl -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pureclip/nextflow.config
+  tags:
+    - pureclip
+  files:
+    - path: output/pureclip/test_pureclip_crosslinks.bed
+      md5sum: 511696bc8fab569c562f1cbc8ff01c45
+    - path: output/pureclip/test_pureclip_peaks.bed
+      md5sum: 927987b0ab82b08255caa4b5d143729b
+    - path: output/pureclip/versions.yml
