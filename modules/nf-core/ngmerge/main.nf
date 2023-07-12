@@ -33,7 +33,7 @@ process NGMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge //; s/Using.*\$//' ))
+        : \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge, version //; s/ Copyright.*//' ))
     END_VERSIONS
     """
 
