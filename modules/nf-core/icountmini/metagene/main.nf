@@ -12,8 +12,8 @@ process ICOUNTMINI_METAGENE {
     path segmentation
 
     output:
-    tuple val(meta), path("metagene*"), emit: tsv
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("metagene_*/*plot_data.tsv"), emit: tsv
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +23,10 @@ process ICOUNTMINI_METAGENE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mv $bed ${prefix}.bed
+
     iCount-Mini metagene \\
-        $bed \\
+        ${prefix}.bed \\
         $segmentation \\
         $args
 
@@ -37,7 +39,7 @@ process ICOUNTMINI_METAGENE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.metagene.tsv
+    touch metagene_${prefix}/${prefix}_plot_data.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         iCount-Mini: \$(iCount-Mini -v)
