@@ -7,7 +7,7 @@ process MASH_SKETCH {
         'biocontainers/mash:2.3--he348c14_1' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.msh")        , emit: mash
@@ -26,7 +26,7 @@ process MASH_SKETCH {
         $args \\
         -p $task.cpus \\
         -o ${prefix} \\
-        -r $reads \\
+        $fasta \\
         2> ${prefix}.mash_stats
 
     cat <<-END_VERSIONS > versions.yml

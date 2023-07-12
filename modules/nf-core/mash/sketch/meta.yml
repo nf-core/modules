@@ -17,9 +17,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - fasta:
       type: file
-      description: List of input paired-end FastQ files
+      description: Input fasta file
 
 output:
   - meta:
