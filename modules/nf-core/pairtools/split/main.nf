@@ -26,10 +26,10 @@ process PAIRTOOLS_SPLIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pairtools split \
-      --nproc-in ${task.cpus} --nproc-out ${task.cpus} \
-      --output-pairs ${prefix}.split.pairs.gz \
-      ${args} \
-      ${pairs}
+        --nproc-in ${task.cpus} --nproc-out ${task.cpus} \
+        --output-pairs ${prefix}.split.pairs.gz \
+        ${args} \
+        ${pairs}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
