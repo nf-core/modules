@@ -15,7 +15,6 @@ process PAIRTOOLS_SPLIT {
     output:
     tuple val(meta), path("*.split.pairs.gz"), emit:pairs
     tuple val(meta), path("*.bam"), optional:true, emit:bam
-    tuple val(meta), path("*.txt"), optional: true, emit:stats
     path("versions.yml"), emit:versions
 
     when:
