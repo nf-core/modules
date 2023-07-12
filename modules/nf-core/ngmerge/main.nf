@@ -12,6 +12,8 @@ process NGMERGE {
 
     output:
     tuple val(meta), path("*.merged.fq.gz"), emit: merged_reads
+    tuple val(meta), path("*_1.fastq.gz")  , emit: unstitched_read1
+    tuple val(meta), path("*_2.fastq.gz")  , emit: unstitched_read2
     path "versions.yml"                    , emit: versions
 
     when:
@@ -26,6 +28,7 @@ process NGMERGE {
         -1 $reads1 \\
         -2 $reads2 \\
         -o ${prefix}.merged.fq.gz \\
+        -f ${prefix} \\
         -z \\
         -n $task.cpus \\
         $args
