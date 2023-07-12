@@ -1,0 +1,12 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+include { PAIRTOOLS_MERGE } from '../../../../../modules/nf-core/pairtools/merge/main.nf'
+
+workflow test_pairtools_merge {
+    
+    input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+
+    PAIRTOOLS_MERGE ( input )
+}
