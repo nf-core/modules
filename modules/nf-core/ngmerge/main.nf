@@ -8,10 +8,12 @@ process NGMERGE {
         'biocontainers/ngmerge:0.3--ha92aebf_1' }"
 
     input:
-    tuple val(meta), path(reads1), path(reads2)
+    tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.merged.fq.gz"), emit: merged_reads
+    tuple val(meta), path("*_1.fastq.gz")  , emit: unstitched_read1
+    tuple val(meta), path("*_2.fastq.gz")  , emit: unstitched_read2
     path "versions.yml"                    , emit: versions
 
     when:
@@ -23,9 +25,10 @@ process NGMERGE {
 
     """
     NGmerge \\
-        -1 $reads1 \\
-        -2 $reads2 \\
+        -1 ${reads[0]} \\
+        -2 ${reads[1]} \\
         -o ${prefix}.merged.fq.gz \\
+        -f ${prefix}_unstitched \\
         -z \\
         -n $task.cpus \\
         $args
