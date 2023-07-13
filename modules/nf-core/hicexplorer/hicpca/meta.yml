@@ -1,10 +1,11 @@
 name: "hicexplorer_hicpca"
 description: Computes PCA eigenvectors for a Hi-C matrix.
 keywords:
-  - sort
+  - eigenvectors
+  - PCA
+  - hicPCA
 tools:
   - "hicexplorer":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Set of programs to process, analyze and visualize Hi-C and capture Hi-C data"
       homepage: "https://hicexplorer.readthedocs.io"
       documentation: "https://hicexplorer.readthedocs.io"
@@ -23,18 +24,15 @@ input:
       description: HiCExplorer matrix in h5 format
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', bin:50000 ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  # all outputs files
   - results:
       type: file
       description: Outputs of hicPCA
