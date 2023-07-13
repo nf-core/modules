@@ -23,9 +23,17 @@ input:
       description: |
         List of input FastQ files for paired-end data.
         Reads should be grouped by pairs.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing index information
   - index:
       type: directory
       description: Folder containing the index files
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing txp2gene information
   - txp2gene:
       type: file
       description: |
@@ -41,17 +49,26 @@ input:
         if your chemistry is not pre-registered.  For example, instead of
         "10xv2", you could use "1{b[16]u[10]x:}2{r:}", or instead of "10xv3",
         you could use "1{b[16]u[12]x:}2{r:}".
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing whitelist information
   - whitelist:
       type: file
       description: |
         Whitelist file containing valid cell barcodes. Optional.
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - alevin_results:
       type: directory
       description: |
         Folder containing the Alevin results for a specific sample
-      pattern: "*_alevin_results"
+      pattern: "*"
   - versions:
       type: file
       description: File containing software versions

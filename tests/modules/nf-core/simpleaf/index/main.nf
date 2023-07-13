@@ -9,7 +9,7 @@ workflow test_simpleaf_index_expanded {
     genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
-    meta = [ 'id': 'human'] 
+    meta = [ 'id': 'human_genome'] 
 
     SIMPLEAF_INDEX ( 
         [ meta, genome_fasta ],
@@ -21,7 +21,7 @@ workflow test_simpleaf_index_expanded {
 workflow test_simpleaf_index_direct {
 
     transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
-    meta = [ 'id': 'human'] 
+    meta = [ 'id': 'human_transcriptome'] 
 
     SIMPLEAF_INDEX (
         [[],[]],

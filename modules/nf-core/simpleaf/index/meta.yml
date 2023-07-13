@@ -14,20 +14,36 @@ tools:
       homepage: https://github.com/COMBINE-lab/simpleaf
       licence: ["BSD-3-Clause"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on genome_fasta
   - genome_fasta:
       type: file
       description: |
         FASTA file containing the genome sequence
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information on genome_gtf
+  - genome_gtf:
+      type: file
+      description: |
+        GTF file containing transcript annotations. Optional if transcript FASTA file is provided.
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information on transcript_fasta
   - transcript_fasta:
       type: file
       description: |
         FASTA file containing the transcript sequences. Optional if transcript GTF file is provided.
-  - transcript_gtf:
-      type: file
-      description: |
-        GTF file containing transcript annotations. Optional if transcript FASTA file is provided.
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on genome_fasta or transcript_fasta (whichever was used)
   - index:
       type: directory
       description: |
