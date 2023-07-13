@@ -5,9 +5,9 @@
     - instrain/compare
   files:
     - path: output/instrain/test.IS_compare/output/test.IS_compare_comparisonsTable.tsv
-      content: "chr22	test.paired_end.sorted.bam	test2.paired_end.sorted.bam	0.9516129032258064	944	0.0235994100147496	40001	0	0	1.0	1.0"
+      contains: ["chr22	test.paired_end.sorted.bam	test2.paired_end.sorted.bam	0.9516129032258064	944	0.0235994100147496	40001	0	0	1.0	1.0"]
     - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data.tsv
-      content: "1	0	1981	119	0	0	24"
+      contains: ["1	0	1981	119	0	0	24"]
     - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data_keys.tsv
       md5sum: b3543dad7b753b89292bbe01e00d346b
     - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
