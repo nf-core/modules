@@ -11,10 +11,10 @@ process HICEXPLORER_HICPCA {
     tuple val(meta), path(matrix)
 
     output:
-    tuple val(meta), path("${prefix}_*")              , emit:results
-    tuple val(meta), path("${prefix}_pca1.$format")   , emit:pca1
-    tuple val(meta), path("${prefix}_pca2.$format")   , emit:pca2
-    path("versions.yml")                              , emit:versions
+    tuple val(meta), path("${prefix}_*")           , emit:results
+    tuple val(meta), path("${prefix}_pca1.$format"), emit:pca1
+    tuple val(meta), path("${prefix}_pca2.$format"), emit:pca2
+    path("versions.yml")                           , emit:versions
 
     when:
     task.ext.when == null || task.ext.when
