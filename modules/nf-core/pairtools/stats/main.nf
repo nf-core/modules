@@ -11,7 +11,7 @@ process PAIRTOOLS_STATS {
     tuple val(meta), path(pairs)
 
     output:
-    tuple val(meta), path("*.stats.tsv")   , emit: stat
+    tuple val(meta), path("*.stats.tsv")   , emit: stats
     path "versions.yml"                    , emit: versions
 
     when:
