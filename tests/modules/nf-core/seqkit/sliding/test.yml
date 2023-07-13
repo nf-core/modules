@@ -1,0 +1,10 @@
+- name: seqkit sliding test_seqkit_sliding
+  command: nextflow run ./tests/modules/nf-core/seqkit/sliding -entry test_seqkit_sliding -c ./tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit/sliding
+    - windows
+  files:
+    - path: output/seqkit/test.fasta
+      md5sum: d5e112b55c37bef1f16f28ba16b323dd
+    - path: output/seqkit/versions.yml
