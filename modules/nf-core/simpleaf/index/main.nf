@@ -46,4 +46,18 @@ process SIMPLEAF_INDEX {
         salmon: \$(salmon --version | sed -e "s/salmon //g")
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
+    """
+    mkdir -p ${prefix}/index
+    touch "${prefix}/ref/t2g_3col.tsv"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+    END_VERSIONS
+    """
 }
