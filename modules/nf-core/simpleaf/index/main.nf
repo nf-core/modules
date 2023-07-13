@@ -24,7 +24,7 @@ process SIMPLEAF_INDEX {
     script:
     def args = task.ext.args ?: ''
     def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
-    
+
     // Output meta needs to correspond to the input used
     meta = (transcript_fasta) ? meta3 : meta
     prefix = task.ext.prefix ?: "${meta.id}"
