@@ -8,14 +8,14 @@ process SIMPLEAF_INDEX {
         'biocontainers/simpleaf:0.14.1--h4ac6f70_0' }"
 
     input:
-    path genome_fasta
-    path genome_gtf
+    tuple val(meta), path(genome_fasta)
+    tuple val(meta2), path(genome_gtf)
     path transcript_fasta
 
     output:
-    path "salmon/index"              , emit: index
-    path "salmon/ref/t2g_3col.tsv"   , emit: transcript_tsv, optional: true
-    path "salmon"                    , emit: salmon
+    tuple val(meta), path("salmon/index")              , emit: index
+    tuple val(meta), path("salmon/ref/t2g_3col.tsv")   , emit: transcript_tsv, optional: true
+    tuple val(meta), path("salmon")                    , emit: salmon
     path "versions.yml"              , emit: versions
 
     when:
@@ -37,7 +37,7 @@ process SIMPLEAF_INDEX {
         --threads $task.cpus \\
         $seq_inputs \\
         $args \\
-        -o salmon
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

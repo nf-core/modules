@@ -13,13 +13,13 @@ process SIMPLEAF_QUANT {
     // Input array for a sample is created in the same order reads appear in samplesheet as pairs from replicates are appended to array.
     //
     tuple val(meta), val(chemistry), path(reads)
-    path index
+    tuple val(meta), path(index)
     path txp2gene
     val resolution
     path whitelist
 
     output:
-    tuple val(meta), path("*_alevin_results"), emit: alevin_results
+    tuple val(meta), path("${prefix}"), emit: results
     path  "versions.yml"                     , emit: versions
 
     when:
@@ -28,7 +28,7 @@ process SIMPLEAF_QUANT {
     script:
     def args      = task.ext.args ?: ''
     def args_list = args.tokenize()
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: "${meta.id}"
 
     unfiltered_command = ""
     if (whitelist) {
@@ -51,7 +51,7 @@ process SIMPLEAF_QUANT {
         -i ${index} \\
         -c $chemistry \\
         -r $resolution \\
-        -o ${prefix}_alevin_results \\
+        -o ${prefix} \\
         -t $task.cpus \\
         -m $txp2gene \\
         $unfiltered_command \\
