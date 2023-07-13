@@ -1,9 +1,19 @@
-- name: bcftools concat test_bcftools_concat_tbi
-  command: nextflow run ./tests/modules/nf-core/bcftools/concat -entry test_bcftools_concat_tbi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/concat/nextflow.config
+- name: bcftools concat test_bcftools_concat
+  command: nextflow run ./tests/modules/nf-core/bcftools/concat -entry test_bcftools_concat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/concat/nextflow.config
   tags:
     - bcftools
     - bcftools/concat
   files:
     - path: output/bcftools/test.vcf.gz
       md5sum: 4bcd0afd89f56c5d433f6b6abc44d0a6
+    - path: output/bcftools/versions.yml
+
+- name: bcftools concat test_bcftools_concat_bed
+  command: nextflow run ./tests/modules/nf-core/bcftools/concat -entry test_bcftools_concat_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/concat/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/concat
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: 094920f3d5aac3d273c94f93a0e76fd1
     - path: output/bcftools/versions.yml
