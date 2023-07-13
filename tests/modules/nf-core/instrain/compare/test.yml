@@ -1,9 +1,15 @@
 - name: instrain compare test_instrain_compare
   command: nextflow run ./tests/modules/nf-core/instrain/compare -entry test_instrain_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/instrain/compare/nextflow.config
   tags:
-    - instrain/compare
     - instrain
+    - instrain/compare
   files:
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_comparisonsTable.tsv
+      md5sum: 42d8a14037b8f6a9553f67fe2de3d23c
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data.tsv
+      md5sum: 25b735817b967719db54e76051a15ede
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data_keys.tsv
+      md5sum: b3543dad7b753b89292bbe01e00d346b
     - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
       md5sum: 7ed4894afbc4f1abd8692c4a65003a27
     - path: output/instrain/versions.yml
@@ -11,8 +17,11 @@
 - name: instrain compare test_instrain_compare_stub
   command: nextflow run ./tests/modules/nf-core/instrain/compare -entry test_instrain_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/instrain/compare/nextflow.config -stub-run
   tags:
-    - instrain/compare
     - instrain
+    - instrain/compare
   files:
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_comparisonsTable.tsv
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data.tsv
+    - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_data_keys.tsv
     - path: output/instrain/test.IS_compare/output/test.IS_compare_pooled_SNV_info.tsv
     - path: output/instrain/versions.yml

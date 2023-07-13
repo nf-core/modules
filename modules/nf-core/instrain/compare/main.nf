@@ -45,6 +45,9 @@ process INSTRAIN_COMPARE {
     """
     mkdir -p ${prefix}.IS_compare/output
     touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_info.tsv
+    touch ${prefix}.IS_compare/output/${prefix}.IS_compare_comparisonsTable.tsv
+    touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_data.tsv
+    touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_data_keys.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
