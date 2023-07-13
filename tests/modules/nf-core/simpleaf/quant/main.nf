@@ -10,10 +10,12 @@ workflow test_simpleaf_quant {
     genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
-    SIMPLEAF_INDEX (
-        genome_fasta,
-        gtf,
-        []
+    meta = [ 'id': 'human'] 
+
+    SIMPLEAF_INDEX ( 
+        [ meta, genome_fasta ],
+        [ meta, gtf ],
+        [[],[]]
     )
 
     input = [ 
@@ -30,7 +32,7 @@ workflow test_simpleaf_quant {
         SIMPLEAF_INDEX.out.index,
         SIMPLEAF_INDEX.out.transcript_tsv,
         'cr-like',
-        []
+        [[],[]]
     )
 }
 

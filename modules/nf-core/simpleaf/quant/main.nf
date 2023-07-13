@@ -13,14 +13,14 @@ process SIMPLEAF_QUANT {
     // Input array for a sample is created in the same order reads appear in samplesheet as pairs from replicates are appended to array.
     //
     tuple val(meta), val(chemistry), path(reads)
-    tuple val(meta), path(index)
-    path txp2gene
+    tuple val(meta2), path(index)
+    tuple val(meta3), path(txp2gene)
     val resolution
-    path whitelist
+    tuple val(meta4), path(whitelist)
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"                     , emit: versions
+    path  "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,7 +57,7 @@ process SIMPLEAF_QUANT {
         $unfiltered_command \\
         $args
 
-    [[ ! -f ${prefix}_alevin_results/af_quant/all_freq.bin ]] && cp ${prefix}_alevin_results/af_quant/permit_freq.bin ${prefix}_alevin_results/af_quant/all_freq.bin
+    [[ ! -f ${prefix}/af_quant/all_freq.bin ]] && cp ${prefix}/af_quant/permit_freq.bin ${prefix}/af_quant/all_freq.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
