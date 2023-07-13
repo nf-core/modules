@@ -10,12 +10,12 @@ process SIMPLEAF_INDEX {
     input:
     tuple val(meta), path(genome_fasta)
     tuple val(meta2), path(genome_gtf)
-    path transcript_fasta
+    tuple val(meta3), path(transcript_fasta)
 
     output:
-    tuple val(meta), path("salmon/index")              , emit: index
-    tuple val(meta), path("salmon/ref/t2g_3col.tsv")   , emit: transcript_tsv, optional: true
-    tuple val(meta), path("salmon")                    , emit: salmon
+    tuple val(meta), path("${prefix}/index")              , emit: index
+    tuple val(meta), path("${prefix}/ref/t2g_3col.tsv")   , emit: transcript_tsv, optional: true
+    tuple val(meta), path("${prefix}")                    , emit: salmon
     path "versions.yml"              , emit: versions
 
     when:
@@ -23,6 +23,7 @@ process SIMPLEAF_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
     def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
     """
     # export required var
