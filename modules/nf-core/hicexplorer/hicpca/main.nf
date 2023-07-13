@@ -21,10 +21,10 @@ process HICEXPLORER_HICPCA {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    args = args.tokenize()
-    def idx = args.findIndexOf{ it == '--format' | it == '-f' }
-    format = 'bigwig'
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    args     = args.tokenize()
+    def idx  = args.findIndexOf{ it == '--format' | it == '-f' }
+    format   = 'bigwig'
     if (idx>=0) {
         format = args[idx+1]
         args.remove(idx+1)
