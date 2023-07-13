@@ -19,7 +19,7 @@ process BCFTOOLS_CONCAT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: '--output-type z'
+    def args = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def regions = bed ? "--regions-file ${bed} --allow-overlaps" : '' // --allow-overlaps is required for bcftools concat to work with bed files
 
@@ -43,6 +43,7 @@ process BCFTOOLS_CONCAT {
     """
 
     stub:
+    def args = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
