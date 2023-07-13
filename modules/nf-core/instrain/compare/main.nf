@@ -9,7 +9,7 @@ process INSTRAIN_COMPARE {
 
     input:
     tuple val(meta), path(profiles)
-    tuple val(meta), path(bams)
+    tuple val(meta2), path(bams)
     path stb_file
 
     output:
