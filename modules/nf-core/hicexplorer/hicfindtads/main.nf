@@ -5,7 +5,7 @@ process HICEXPLORER_HICFINDTADS {
     conda "bioconda::hicexplorer=3.7.2 numpy=1.23.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1':
-        'quay.io/biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
+        'biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -22,6 +22,7 @@ process HICEXPLORER_HICFINDTADS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${resolution}"
+    ## add defaults for required parameters.
     def bin_size = meta.bin? meta.bin.toInteger() : resolution
     def mDepth = [bin_size * 3, bin_size * 10]
     def mDepthArg = ['--minDepth', '--maxDepth']
