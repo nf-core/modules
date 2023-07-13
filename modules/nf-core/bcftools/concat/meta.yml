@@ -21,15 +21,20 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: list
       description: |
         List containing 2 or more vcf files
         e.g. [ 'file1.vcf', 'file2.vcf' ]
-  - tbi:
-      type: files
+  - tbis:
+      type: list
       description: |
         List containing 2 or more index files (optional)
         e.g. [ 'file1.tbi', 'file2.tbi' ]
+  - tbis:
+      type: file
+      description: |
+        A BED file containing the regions to be concatenated (optional)
+
 output:
   - meta:
       type: map
@@ -39,7 +44,7 @@ output:
   - vcf:
       type: file
       description: VCF concatenated output file
-      pattern: "*.{vcf.gz}"
+      pattern: "*.{vcf.gz,vcf,bcf,bcf.gz}"
   - versions:
       type: file
       description: File containing software versions

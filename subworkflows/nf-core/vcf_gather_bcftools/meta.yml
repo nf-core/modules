@@ -15,52 +15,40 @@ modules:
   - bcftools/concat
   - tabix/tabix
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
-        e.g. [ id:'test.001', common_meta:'test' ]
   - ch_vcfs:
-      type: file(s)
       description: |
         VCF files and their indices that should be concatenated
-        Structure: [ meta, vcf, tbi ]
-  - ch_scatter_output:
-      type: file and integer
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+  - ch_scatter_count:
       description: |
-        The output created from a scatter subworkflow (contains a BED file and scatter_count).
-        The BED file isn't actually used in the pipeline so can remain empty if you manually set this input channel
-        Structure: [ meta, bed, scatter_count ]
-  - common_meta:
+        A channel containing the scatter count for each input sample
+        Structure: [ val(meta), val(gather_count) ]
+  - ch_bed:
+      type: file(s)
+      description: |
+        The BED file to be used by bcftools concat
+        Structure: [ path(bed) ]
+  - val_common_meta:
       type: string
       description: |
         OPTIONAL:
         The string of the common meta to use as the new 'id'.
         Please make sure all VCFs that need to be concatenated have the same value in the
         the meta field specified. (and that only the ID is different between these files)
-  - sort:
+  - val_sort:
       type: boolean
       description: |
         Whether or not to sort the output VCF,
         this can be useful if this subworkflow isn't used in a scatter/gather workflow
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - vcf:
-      type: file
       description: |
         The concatenated (and possible sorted) VCF file
-        Structure: [ meta, vcf ]
-      pattern: "*.vcf.gz"
+        Structure: [ val(meta), path(vcf) ]
   - tbi:
-      type: file
       description: |
         The indices of the output VCFs
-        Structure: [ meta, tbi ]
-      pattern: "*.vcf.gz.tbi"
+        Structure: [ val(meta), path(tbi) ]
   - versions:
       type: file
       description: File containing software versions

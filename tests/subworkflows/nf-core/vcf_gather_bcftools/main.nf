@@ -19,12 +19,10 @@ workflow test_vcf_gather_bcftools {
 
     scatter = Channel.of([
         [id:'test_1', sample:'test'],
-        [],
         2
     ],
     [
         [id:'test_2', sample:'test'],
-        [],
         2
     ])
 
@@ -32,6 +30,7 @@ workflow test_vcf_gather_bcftools {
     VCF_GATHER_BCFTOOLS (
         input,
         scatter,
+        [],
         'sample',
         true
     )
@@ -52,19 +51,20 @@ workflow test_vcf_gather_bcftools_no_meta {
 
     scatter = Channel.of([
         [id:'test'],
-        [],
         2
     ],
     [
         [id:'test'],
-        [],
         2
     ])
+
+    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
 
 
     VCF_GATHER_BCFTOOLS (
         input,
         scatter,
+        bed,
         [],
         true
     )
