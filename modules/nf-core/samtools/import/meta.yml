@@ -40,10 +40,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - sam:
+      type: file
+      description: SAM file
+      pattern: "*.sam"
   - bam:
       type: file
-      description: Unaligned BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Unaligned BAM file
+      pattern: "*.bam"
+  - cram:
+      type: file
+      description: Unaligned CRAM file
+      pattern: "*.cram"
 
 authors:
   - "@matthdsm"
