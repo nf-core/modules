@@ -42,28 +42,28 @@ workflow BAM_VARIANT_CALLING_TUMOR_ONLY_MUTECT2 {
 
     // Figuring out if there is one or more vcf(s) from the same sample
     vcf_branch = GATK4_MUTECT2.out.vcf.branch{
-        // Use meta.num_intervals to asses number of intervals
+        // Use meta.num_intervals to assess number of intervals
         intervals:    it[0].num_intervals > 1
         no_intervals: it[0].num_intervals <= 1
     }
 
     // Figuring out if there is one or more tbi(s) from the same sample
     tbi_branch = GATK4_MUTECT2.out.tbi.branch{
-        // Use meta.num_intervals to asses number of intervals
+        // Use meta.num_intervals to assess number of intervals
         intervals:    it[0].num_intervals > 1
         no_intervals: it[0].num_intervals <= 1
     }
 
     // Figuring out if there is one or more stats(s) from the same sample
     stats_branch = GATK4_MUTECT2.out.stats.branch{
-        // Use meta.num_intervals to asses number of intervals
+        // Use meta.num_intervals to assess number of intervals
         intervals:    it[0].num_intervals > 1
         no_intervals: it[0].num_intervals <= 1
     }
 
     // Figuring out if there is one or more f1r2(s) from the same sample
     f1r2_branch = GATK4_MUTECT2.out.f1r2.branch{
-        // Use meta.num_intervals to asses number of intervals
+        // Use meta.num_intervals to assess number of intervals
         intervals:    it[0].num_intervals > 1
         no_intervals: it[0].num_intervals <= 1
     }
