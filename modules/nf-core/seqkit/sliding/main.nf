@@ -21,7 +21,7 @@ process SEQKIT_SLIDING {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fastq"
-    if (fastx.endsWith('.fasta') || fastx.endsWith('.fa') || fastx.endsWith('.fas') || fastx.endsWith('.fna') ) {
+    if ("$fastx" ==~ /.+\.fasta$|.+\.fa$|.+\.fas$|.+\.fna$/) {
         extension = "fasta"
     }
     """
