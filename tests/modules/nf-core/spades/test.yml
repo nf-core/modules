@@ -10,7 +10,8 @@
     - path: output/spades/test.scaffolds.fa.gz
       md5sum: 64f6b339872b934138c6efd6baa445f4
     - path: output/spades/test.spades.log
-      contains: ["Terminate finished"]
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/spades/versions.yml
 
 - name: spades test_spades_paired_end
@@ -23,9 +24,12 @@
     - path: output/spades/test.contigs.fa.gz
       md5sum: eab5165b3cda96c235aaa1388010cb27
     - path: output/spades/test.spades.log
-      contains: ["Terminate finished"]
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/spades/versions.yml
     - path: output/spades/warnings.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
 
 - name: spades test_spades_illumina_nanopore
   command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_illumina_nanopore -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
@@ -39,9 +43,12 @@
     - path: output/spades/test.scaffolds.fa.gz
       md5sum: 027b0e54bfd8f4bc359e751e094133ef
     - path: output/spades/test.spades.log
-      contains: ["Terminate finished"]
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/spades/versions.yml
     - path: output/spades/warnings.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
 
 - name: spades test_spades_yml
   command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_yml -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
@@ -55,9 +62,12 @@
     - path: output/spades/test.scaffolds.fa.gz
       md5sum: 65aa6e3364925ec617fffda3e84b4cbc
     - path: output/spades/test.spades.log
-      contains: ["Terminate finished"]
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/spades/versions.yml
     - path: output/spades/warnings.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
 
 - name: spades test_spades_illumina_pacbio
   command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_illumina_pacbio -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
@@ -71,6 +81,9 @@
     - path: output/spades/test.scaffolds.fa.gz
       md5sum: 65aa6e3364925ec617fffda3e84b4cbc
     - path: output/spades/test.spades.log
-      contains: ["Terminate finished"]
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/spades/versions.yml
     - path: output/spades/warnings.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '

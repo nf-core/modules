@@ -11,6 +11,7 @@ process SPADES {
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
     path yml
     path hmm
+    val(is_interleaved)
 
     output:
     tuple val(meta), path('*.scaffolds.fa.gz')    , optional:true, emit: scaffolds
@@ -28,7 +29,8 @@ process SPADES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def maxmem = task.memory.toGiga()
-    def illumina_reads = illumina ? ( meta.single_end ? "-1 $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
+    def interleaved = is_interleaved ? "-12" : "-s"
+    def illumina_reads = illumina ? ( meta.single_end ? "$interleaved $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
     def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
