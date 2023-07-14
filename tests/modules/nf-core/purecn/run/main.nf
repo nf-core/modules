@@ -8,14 +8,12 @@ process STUB_PURECN_RUN {
     output:
     path("*.txt")                , emit: intervals
     path("*.txt")                , emit: coverage
-    path("*.vcf.gz")             , emit: vcf
     path("*.rds")                , emit: normal_db
 
     stub:
     """
     touch interval_file.txt
     touch coverage.txt
-    touch test.vcf.gz
     touch normal_db.rds
     """
 }
@@ -27,8 +25,7 @@ workflow test_purecn_run {
     input = [
         [ id:'test'],
         file("interval_file.txt"),
-        file("coverage.txt"),
-        file("test.vcf.gz")
+        file("coverage.txt")
     ]
 
     normal_db = file("normal_db.rds")

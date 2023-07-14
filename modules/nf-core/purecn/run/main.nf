@@ -9,7 +9,7 @@ process PURECN_RUN {
         'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
 
     input:
-    tuple val(meta), path(intervals), path(coverage), path(vcf)
+    tuple val(meta), path(intervals), path(coverage)
     path normal_db
     val genome
 
@@ -56,7 +56,6 @@ process PURECN_RUN {
         --out ./ \\
         --tumor ${coverage} \\
         --sampleid ${prefix} \\
-        --vcf ${vcf} \\
         --normaldb ${normal_db} \\
         --intervals ${intervals} \\
         --genome ${genome} \\
