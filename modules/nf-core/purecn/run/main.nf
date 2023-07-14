@@ -19,7 +19,7 @@ process PURECN_RUN {
     tuple val(meta), path("*_dnacopy.seg")                     , emit: seg
     tuple val(meta), path("*_genes.csv")                       , emit: genes_csv                   , optional: true
     tuple val(meta), path("*_amplification_pvalues.csv")       , emit: amplification_pvalues_csv   , optional: true
-    tuple val(meta), path("*.vcf.gz")                          , emit: vcf.gz                      , optional: true
+    tuple val(meta), path("*.vcf.gz")                          , emit: vcf_gz                      , optional: true
     tuple val(meta), path("*_variants.csv")                    , emit: variants_csv                , optional: true
     tuple val(meta), path("*_loh.csv")                         , emit: loh_csv                     , optional: true
     tuple val(meta), path("*_chromosomes.pdf")                 , emit: chr_pdf                     , optional: true
