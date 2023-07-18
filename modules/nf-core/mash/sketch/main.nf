@@ -7,7 +7,7 @@ process MASH_SKETCH {
         'biocontainers/mash:2.3--he348c14_1' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(input_seq)
 
     output:
     tuple val(meta), path("*.msh")        , emit: mash
