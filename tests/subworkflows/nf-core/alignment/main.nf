@@ -22,7 +22,7 @@ workflow test_alignment {
     ]
     reference = [
         [id:'reference'], 
-        file('test_nucleo/reference/')
+        file('test_nucleo/reference/chr14_chr16.fasta')
     ]
     fastqs = ch_fastq = Channel.fromList(fastqs)
 
