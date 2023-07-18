@@ -22,7 +22,7 @@ process MASH_SKETCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_arg = read_sketch : '-r' : ''
+    def read_arg = read_sketch : '-r' ? ''
     def multi_fasta_arg = multi_fasta_sketch : '-i' ? ''
     """
     mash \\
@@ -44,9 +44,10 @@ process MASH_SKETCH {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_arg = read_sketch : '-r' : ''
+    def read_arg = read_sketch : '-r' ? ''
     def multi_fasta_arg = multi_fasta_sketch : '-i' ? ''
     """
+    touch ${prefix}.mash
     touch ${prefix}.mash_stats
 
     cat <<-END_VERSIONS > versions.yml
