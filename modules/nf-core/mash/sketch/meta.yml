@@ -19,9 +19,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fasta:
+  - input:
       type: file
-      description: Input fasta file
+      description: Input FASTA/FASTQ file that will be sketched
+  - read_sketch:
+      type: boolean
+      description: Boolean value specifying if input file is read fastq file
+  - multi_fasta_sketch:
+      type: boolean
+      description: Boolean value specifying if input file is a multi-fasta file
 
 output:
   - meta:
