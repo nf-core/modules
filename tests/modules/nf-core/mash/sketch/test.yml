@@ -1,11 +1,45 @@
 - name: mash sketch test_mash_sketch
   command: nextflow run ./tests/modules/nf-core/mash/sketch -entry test_mash_sketch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mash/sketch/nextflow.config
   tags:
-    - mash
     - mash/sketch
+    - mash
   files:
     - path: output/mash/test.mash_stats
       md5sum: b18e615700a027151b7433cc9ed13a8c
     - path: output/mash/test.msh
       md5sum: 54b25fdc963d4e4cad6c7efad1aacd00
+    - path: output/mash/versions.yml
+
+- name: mash sketch test_mash_sketch_reads
+  command: nextflow run ./tests/modules/nf-core/mash/sketch -entry test_mash_sketch_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mash/sketch/nextflow.config
+  tags:
+    - mash/sketch
+    - mash
+  files:
+    - path: output/mash/test.mash_stats
+      md5sum: 1c010b100bbf3e031d32addb07f88b3a
+    - path: output/mash/test.msh
+      md5sum: fe4db8a20a9ad86afa868775a1e49cc7
+    - path: output/mash/versions.yml
+
+- name: mash sketch test_mash_sketch_multi_fasta
+  command: nextflow run ./tests/modules/nf-core/mash/sketch -entry test_mash_sketch_multi_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mash/sketch/nextflow.config
+  tags:
+    - mash/sketch
+    - mash
+  files:
+    - path: output/mash/test.mash_stats
+      md5sum: b18e615700a027151b7433cc9ed13a8c
+    - path: output/mash/test.msh
+      md5sum: bf7fef58780b281f83de955c68755650
+    - path: output/mash/versions.yml
+
+- name: mash sketch test_mash_sketch_stub
+  command: nextflow run ./tests/modules/nf-core/mash/sketch -entry test_mash_sketch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mash/sketch/nextflow.config -stub-run
+  tags:
+    - mash/sketch
+    - mash
+  files:
+    - path: output/mash/test.mash_stats
+    - path: output/mash/test.msh
     - path: output/mash/versions.yml
