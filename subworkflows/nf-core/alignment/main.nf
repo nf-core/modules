@@ -19,12 +19,11 @@ workflow ALIGNMENT {
 
     // switch statement to determine which bwa to use, this is a passed parameter
     switch(bwa){
-        
         case 1:
             // INDEX
             BWA_INDEX ( reference )
             versions = versions.mix(BWA_INDEX.out.versions.first())
-            // MEM 
+            // MEM
             BWA_MEM ( fastqs, BWA_INDEX.out.index, true ).bam.map {
                 meta, bam ->
                     new_id = 'aligned_bam'
