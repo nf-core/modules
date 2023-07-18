@@ -2,6 +2,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/alignment -entry test_alignment -c ./tests/config/nextflow.config
   tags:
     - bwa
+    - bwa/index
     - bwa/mem
     - bwamem2
     - bwamem2/index
@@ -11,7 +12,17 @@
     - subworkflows
     - subworkflows/alignment
   files:
+    - path: output/bwa/bwa/chr14_chr16.amb
+      md5sum: 00fb74627e074db6238dcd9bc08dc48a
+    - path: output/bwa/bwa/chr14_chr16.ann
+      md5sum: d8825e2fcb3cd372cd61ededfe283025
+    - path: output/bwa/bwa/chr14_chr16.bwt
+      md5sum: 45637ec2c011d0f73cac6c470c5b5d2b
+    - path: output/bwa/bwa/chr14_chr16.pac
+      md5sum: 46f856371d59e859295497c967478d31
+    - path: output/bwa/bwa/chr14_chr16.sa
+      md5sum: 466dbbbce2fb9528e760477ccdc2ea5b
     - path: output/bwa/gene.bam
-      md5sum: b5bb60341f7835e0feed6061b0b6401e
+      md5sum: d7c5943b79704d8ed7f432786738f25d
     - path: output/picard/aligned_bam.bam
-      md5sum: 8e6ca997d7b2fb59ed04492627327d42
+      md5sum: 89acecb9fcb99f9182a417215489ea50
