@@ -2,10 +2,10 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.16.1"
+    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvkit:0.9.10--pyhdfd78af_0' :
-        'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
+        'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
 
     input:
     tuple val(meta), path(tumor), path(normal)
