@@ -2,10 +2,10 @@ process COOLER_BALANCE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::cooler=0.8.11"
+    conda "bioconda::cooler=0.9.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0':
-        'biocontainers/cooler:0.8.11--pyh3252c3a_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
+        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)
