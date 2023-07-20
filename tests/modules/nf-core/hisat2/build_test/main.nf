@@ -23,7 +23,6 @@ workflow test_hisat2_build_fasta_only {
     gtf   = [ [id:'genome'],
               file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
             ]
-    HISAT2_EXTRACTSPLICESITES ( gtf )
     HISAT2_BUILD ( fasta, [[],[]], [[],[]] )
 }
 

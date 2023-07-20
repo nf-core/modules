@@ -1,8 +1,8 @@
 - name: hisat2 build test_hisat2_build
   command: nextflow run ./tests/modules/nf-core/hisat2/build -entry test_hisat2_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hisat2/build/nextflow.config
   tags:
-    - hisat2
     - hisat2/build
+    - hisat2
   files:
     - path: output/hisat2/hisat2/genome.1.ht2
       md5sum: 8f8a9b1b43511fbc679454cc6f93d203
@@ -25,8 +25,8 @@
 - name: hisat2 build test_hisat2_build_fasta_only
   command: nextflow run ./tests/modules/nf-core/hisat2/build -entry test_hisat2_build_fasta_only -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hisat2/build/nextflow.config
   tags:
-    - hisat2
     - hisat2/build
+    - hisat2
   files:
     - path: output/hisat2/hisat2/genome.1.ht2
       md5sum: a27e7c15adba2d3d6be7d3537792a7a5
@@ -49,8 +49,8 @@
 - name: hisat2 build test_hisat2_build_fasta_ss_only
   command: nextflow run ./tests/modules/nf-core/hisat2/build -entry test_hisat2_build_fasta_ss_only -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hisat2/build/nextflow.config
   tags:
-    - hisat2
     - hisat2/build
+    - hisat2
   files:
     - path: output/hisat2/hisat2/genome.1.ht2
       md5sum: 8f8a9b1b43511fbc679454cc6f93d203
