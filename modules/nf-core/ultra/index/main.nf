@@ -2,10 +2,10 @@ process ULTRA_INDEX {
     tag "$gtf"
     label 'process_low'
 
-    conda "bioconda::ultra_bioinformatics=0.0.4.2"
+    conda "bioconda::ultra_bioinformatics=0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0':
-        'biocontainers/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1':
+        'biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"
 
     input:
     path fasta
