@@ -43,7 +43,7 @@ process HISAT2_ALIGN {
             -x \$INDEX \\
             -U $reads \\
             $strandedness \\
-            --known-splicesite-infile $splicesites \\
+            $ss \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads $task.cpus \\
             $seq_center \\
@@ -66,7 +66,7 @@ process HISAT2_ALIGN {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             $strandedness \\
-            --known-splicesite-infile $splicesites \\
+            $ss \\
             --summary-file ${prefix}.hisat2.summary.log \\
             --threads $task.cpus \\
             $seq_center \\

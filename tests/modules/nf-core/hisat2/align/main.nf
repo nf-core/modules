@@ -10,14 +10,14 @@ workflow test_hisat2_align_single_end {
     input = [
         [ id:'test', single_end:true ], // meta map
         [
-            file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
     fasta = [ [id:'genome'],
-            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
             ]
     gtf   = [ [id:'test'],
-            file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+            file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
             ]
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
@@ -29,15 +29,15 @@ workflow test_hisat2_align_paired_end {
     input = [
         [ id:'test', single_end:false ], // meta map
         [
-            file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
     fasta = [ [id:'genome'],
-            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
             ]
     gtf   = [ [id:'test'],
-            file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+            file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
             ]
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
@@ -49,16 +49,32 @@ workflow test_hisat2_align_single_end_no_ss {
     input = [
         [ id:'test', single_end:true ], // meta map
         [
-            file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
     fasta = [ [id:'genome'],
-            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-            ]
-    gtf   = [ [id:'test'],
-            file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
             ]
 
-    HISAT2_BUILD ( fasta, [[],[]], [[],[]] )
-    HISAT2_ALIGN ( input, HISAT2_BUILD.out.index, [[],[]] )
+    HISAT2_BUILD ( fasta, [[:],[]], [[:],[]] )
+    HISAT2_ALIGN ( input, HISAT2_BUILD.out.index, [[:],[]] )
+}
+
+workflow test_hisat2_align_paired_end_no_ss {
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [ [id:'genome'],
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+    gtf   = [ [id:'test'],
+            file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+            ]
+
+    HISAT2_BUILD ( fasta, [[:],[]], [[:],[]])
+    HISAT2_ALIGN ( input, HISAT2_BUILD.out.index, [[:],[]] )
 }
