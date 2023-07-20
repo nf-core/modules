@@ -1,0 +1,80 @@
+name: nf-core linting develop
+# This workflow is triggered on pushes and PRs to the repository.
+# It runs the `nf-core lint` tests to ensure that the module code meets the nf-core guidelines
+on:
+  pull_request:
+    branches: [develop]
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Check for changes
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose matched filters as job 'modules' output variable
+      modules: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: "tests/config/pytest_modules.yml"
+
+  lint:
+    runs-on: ubuntu-20.04
+    name: ${{ matrix.tags }}
+    needs: changes
+    if: needs.changes.outputs.modules != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install nf-core tools
+        run: python -m pip install nf-core
+
+      - name: Install Nextflow
+        env:
+          CAPSULE_LOG: none
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      - name: Lint ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
+        # HACK
+        if: startsWith( matrix.tags, 'subworkflow' ) != true
+
+      - uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/nextflow
+          key: ${{ runner.os }}
+          restore-keys: |
+            ${{ runner.os }}
