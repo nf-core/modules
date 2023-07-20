@@ -1,0 +1,50 @@
+name: "stadeniolib_cramfilter"
+description: Advanced sequence file format conversions
+keywords:
+  - cram
+  - filter
+  - block
+tools:
+  - "cram_filter":
+      description: "Staden Package 'io_lib' (sometimes referred to as libstaden-read by distributions).This contains code for reading and writing a variety of Bioinformatics / DNA Sequence formats.Cram_filter is a tool belong to 'io_lib', which to slice-n-dice cram files at the container/block level, for efficient production of a subset without needing to uncompress and recompress."
+      homepage: "https://github.com/jkbonfield/io_lib"
+      documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
+      tool_dev_url: "https://github.com/jkbonfield/io_lib"
+      licence: "['BSD']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - incram:
+      type: file
+      description: CRAM file
+      pattern: "*.cram"
+  - cramIdx:
+      type: file
+      description: CRAM index file
+      pattern: "*.crai"
+  - from:
+      type: integer
+      description: container starts number
+  - to:
+      type: integer
+      description: container ends number
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - outcram:
+      type: file
+      description: sliced cram file
+      pattern: "*.cram"
+
+authors:
+  - "@yumisims"

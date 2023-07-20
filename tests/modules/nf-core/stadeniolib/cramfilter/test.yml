@@ -1,0 +1,9 @@
+- name: "stadeniolib cramfilter"
+  command: nextflow run ./tests/modules/nf-core/stadeniolib/cramfilter -entry test_stadeniolib_cramfilter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stadeniolib/cramfilter/nextflow.config
+  tags:
+    - "stadeniolib"
+    - "stadeniolib/cramfilter"
+  files:
+    - path: "output/stadeniolib/test_filtered.cram"
+      md5sum: c2a6b275e6d81232b305184cef70233c
+    - path: "output/stadeniolib/versions.yml"
