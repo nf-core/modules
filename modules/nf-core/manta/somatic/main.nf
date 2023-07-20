@@ -1,6 +1,7 @@
 process MANTA_SOMATIC {
     tag "$meta.id"
     label 'process_medium'
+    label 'error_retry'
 
     conda "bioconda::manta=1.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -36,8 +37,9 @@ process MANTA_SOMATIC {
         --tumorBam $input_tumor \
         --normalBam $input_normal \
         --reference $fasta \
+        --runDir manta \
         $options_manta \
-        --runDir manta
+        $args
 
     python manta/runWorkflow.py -m local -j $task.cpus
 
