@@ -17,16 +17,16 @@ vep_species = "caenorhabditis_elegans"
 vep_cache_input = Channel.of([[id:"${vep_cache_version}_${vep_genome}"], vep_genome, vep_species, vep_cache_version])
 
 workflow test_ensemblvep_vep_fasta_json {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -36,35 +36,35 @@ workflow test_ensemblvep_vep_fasta_json {
 }
 
 workflow test_ensemblvep_vep_fasta_tab {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
     vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_VEP_TAB ( input, vep_genome, vep_species, vep_cache_version, vep_cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta_vcf {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -74,16 +74,16 @@ workflow test_ensemblvep_vep_fasta_vcf {
 }
 
 workflow test_ensemblvep_vep_fasta_vcf_bgzip {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -93,16 +93,16 @@ workflow test_ensemblvep_vep_fasta_vcf_bgzip {
 }
 
 workflow test_ensemblvep_vep_fasta_vcf_gzip {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -112,16 +112,16 @@ workflow test_ensemblvep_vep_fasta_vcf_gzip {
 }
 
 workflow test_ensemblvep_vep_fasta {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -131,11 +131,11 @@ workflow test_ensemblvep_vep_fasta {
 }
 
 workflow test_ensemblvep_vep_no_fasta {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
         []
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -145,17 +145,17 @@ workflow test_ensemblvep_vep_no_fasta {
 }
 
 workflow test_ensemblvep_vep_fasta_custom {
-    input = [
+    input = Channel.of([
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
             [ file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true),
-            file(params.test_data['sarscov2']['illumina']['test3_vcf'], checkIfExists: true)]
+            file(params.test_data['sarscov2']['illumina']['test3_vcf'], checkIfExists: true)])
     ]
 
-    fasta = [
-        [ id: 'fasta' ],
+    fasta = Channel.value([
+        [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
