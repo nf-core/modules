@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main.nf'
+include { ENSEMBLVEP_DOWNLOAD            } from '../../../../../modules/nf-core/ensemblvep/download/main.nf'
 
 workflow vcf_annotate_ensemblvep_snpeff_vep {
     input = Channel.of([
@@ -20,16 +21,22 @@ workflow vcf_annotate_ensemblvep_snpeff_vep {
         ]
     ])
 
+    input_vep_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_vep_cache)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         [[],[]],
         "WBcel235",
         "caenorhabditis_elegans",
-        "108",
+        "110",
         [],
         [],
         [],
-        [],
+        vep_cache,
         ["ensemblvep"],
         5
     )
@@ -82,16 +89,22 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
         ]
     ])
 
+    input_vep_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_vep_cache)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         [[],[]],
         "WBcel235",
         "caenorhabditis_elegans",
-        "108",
+        "110",
         [],
         [],
         "WBcel235.99",
-        [],
+        vep_cache,
         ["snpeff", "ensemblvep"],
         5
     )
@@ -118,16 +131,22 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
+    input_vep_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_vep_cache)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         fasta,
         "WBcel235",
         "caenorhabditis_elegans",
-        "108",
+        "110",
         [],
         [],
         [],
-        [],
+        vep_cache,
         ["ensemblvep"],
         100
     )
@@ -154,16 +173,22 @@ workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
+    input_vep_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_vep_cache)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         fasta,
         "WBcel235",
         "caenorhabditis_elegans",
-        "108",
+        "110",
         [],
         [],
         [],
-        [],
+        vep_cache,
         ["ensemblvep"],
         []
     )
