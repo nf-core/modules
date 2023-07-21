@@ -35,7 +35,7 @@ workflow vcf_annotate_ensemblvep_snpeff_vep {
         [[],[]],
         vep_genome,
         vep_species,
-        vep_cache_version
+        vep_cache_version,
         vep_cache,
         [],
         [],
@@ -101,12 +101,12 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
         [[],[]],
         vep_genome,
         vep_species,
-        vep_cache_version
+        vep_cache_version,
         vep_cache,
         [],
         "WBcel235.99",
         [],
-        ["snpeff", "ensemblvep"],
+        ["ensemblvep", "snpeff"],
         5
     )
 }
@@ -127,10 +127,10 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
         ]
     ])
 
-    fasta = [
+    fasta = Channel.value([
         [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -141,7 +141,7 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
         fasta,
         vep_genome,
         vep_species,
-        vep_cache_version
+        vep_cache_version,
         vep_cache,
         [],
         [],
@@ -167,10 +167,10 @@ workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
         ]
     ])
 
-    fasta = [
+    fasta = Channel.value([
         [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
@@ -181,7 +181,7 @@ workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
         fasta,
         vep_genome,
         vep_species,
-        vep_cache_version
+        vep_cache_version,
         vep_cache,
         [],
         [],
