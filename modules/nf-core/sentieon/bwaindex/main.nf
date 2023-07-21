@@ -8,7 +8,7 @@ process SENTIEON_BWAINDEX {
         exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container 'nfcore/sentieon:202112.06'
+    container 'nf-core/sentieon:202112.06'
 
     input:
     tuple val(meta), path(fasta)

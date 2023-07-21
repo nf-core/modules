@@ -1,0 +1,83 @@
+---
+name: "pureclip"
+description: PureCLIP is a tool to detect protein-RNA interaction footprints from single-nucleotide CLIP-seq data, such as iCLIP and eCLIP.
+keywords:
+  - iCLIP
+  - eCLIP
+  - CLIP
+tools:
+  - "pureclip":
+      description: "PureCLIP is a tool to detect protein-RNA interaction footprints from single-nucleotide CLIP-seq data, such as iCLIP and eCLIP."
+      homepage: "https://github.com/skrakau/PureCLIP"
+      documentation: "https://pureclip.readthedocs.io/en/latest/GettingStarted/index.html"
+      tool_dev_url: "https://github.com/skrakau/PureCLIP"
+      doi: "10.1186/s13059-017-1364-2"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
+
+  - ipbam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+  - controlbam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+  - ipbai:
+      type: file
+      description: BAM index
+      pattern: "*.{bai}"
+
+  - controlbai:
+      type: file
+      description: BAM index
+      pattern: "*.{bai}"
+
+  - input_control:
+      type: boolean
+      description: Whether to run PureCLIP with an input control
+
+  - genome_fasta:
+      type: file
+      description: FASTA file of reference genome
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - crosslinks:
+      type: file
+      description: Bed file of crosslinks
+      pattern: "*.{bed}"
+
+  - peaks:
+      type: file
+      description: Bed file of peaks
+      pattern: "*.{bed}"
+
+authors:
+  - "@charlotteanne"
+  - "@marcjones"

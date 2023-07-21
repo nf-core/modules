@@ -5,7 +5,7 @@ process ARRIBA {
     conda "bioconda::arriba=2.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arriba:2.3.0--haa8aa89_0' :
-        'quay.io/biocontainers/arriba:2.3.0--haa8aa89_0' }"
+        'biocontainers/arriba:2.3.0--haa8aa89_0' }"
 
     input:
     tuple val(meta), path(bam)

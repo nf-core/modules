@@ -34,14 +34,19 @@ input:
       type: file
       description: (Optional) The index for the input files, if needed
       pattern: "*.bed"
-  - bed:
-      type: file
-      description: (Optional) The BED file containing the regions for the VCF file
-      pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: (Optional) The reference fasta, only needed for gVCF conversion
       pattern: "*.{fa,fasta}"
+  - bed:
+      type: file
+      description: (Optional) The BED file containing the regions for the VCF file
+      pattern: "*.bed"
 
 output:
   - meta:
@@ -72,3 +77,4 @@ output:
 
 authors:
   - "@nvnieuwk"
+  - "@ramprasadn"
