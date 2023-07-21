@@ -1,0 +1,14 @@
+- name: topas gencons test_topas_gencons
+  command: nextflow run ./tests/modules/nf-core/topas/gencons -entry test_topas_gencons -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/topas/gencons/nextflow.config
+  tags:
+    - topas/gencons
+    - topas
+  files:
+    - path: output/topas/test.fasta.ccf
+      md5sum: ed5d5767d014d76d5ba904017d937cd5
+    - path: output/topas/test.fasta.gz
+      md5sum: 1f219a39d28eed85be8a48cb167d5879
+    - path: output/topas/test.fasta.log
+      contains:
+        - 'Use -? for help'
+    - path: output/topas/versions.yml
