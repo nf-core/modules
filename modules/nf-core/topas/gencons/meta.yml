@@ -1,0 +1,62 @@
+name: "topas_gencons"
+description: Create fasta consensus with TOPAS toolkit
+keywords:
+  - consensus
+  - fasta
+  - ancient DNA
+tools:
+  - "topas":
+      description: "This toolkit allows the efficient manipulation of sequence data in various ways. It is organized into modules: The FASTA processing modules, the FASTQ processing modules, the GFF processing modules and the VCF processing modules."
+      homepage: "https://github.com/subwaystation/TOPAS"
+      documentation: "https://github.com/subwaystation/TOPAS/wiki/Overview-Modules"
+      tool_dev_url: "https://github.com/subwaystation/TOPAS"
+      doi: "10.1038/s41598-017-17723-1"
+      licence: "['CC-BY']"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - vcf:
+      type: file
+      description: compressed vcf file containing the called snps
+      pattern: "*.vcf.gz"
+
+  - reference:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - fasta:
+      type: file
+      description: Gzip consensus fasta file
+      pattern: "*.fasta.gz"
+
+  - ccf:
+      type: file
+      description: Statistics file containing information about the consensus calls in the fasta file
+      pattern: "*.ccf"
+
+  - log:
+      type: file
+      description: Log file
+      pattern: "*.log"
+
+authors:
+  - "@aidaanva"
