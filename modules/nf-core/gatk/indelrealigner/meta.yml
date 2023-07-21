@@ -31,18 +31,38 @@ input:
       type: file
       description: Intervals file created by gatk3 RealignerTargetCreator
       pattern: "*.{intervals,list}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Reference file used to generate BAM file
       pattern: ".{fasta,fa,fna}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - fai:
       type: file
       description: Index of reference file used to generate BAM file
       pattern: ".fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - dict:
       type: file
       description: GATK dict file for reference
       pattern: ".dict"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing file meta-information for known_vcf.
+        e.g. [ id:'test', single_end:false ]
   - known_vcf:
       type: file
       description: Optional input VCF file(s) with known indels
