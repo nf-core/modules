@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main.nf'
-include { ENSEMBLVEP_DOWNLOAD            } from '../../../../../modules/nf-core/ensemblvep/download/main.nf'
+include { ENSEMBLVEP_DOWNLOAD            } from '../../../../modules/nf-core/ensemblvep/download/main.nf'
 
 workflow vcf_annotate_ensemblvep_snpeff_vep {
     input = Channel.of([

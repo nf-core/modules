@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { VCF_ANNOTATE_ENSEMBLVEP as VCF_ANNOTATE_ENSEMBLVEP_DEFAULT } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep/main.nf'
 include { VCF_ANNOTATE_ENSEMBLVEP as VCF_ANNOTATE_ENSEMBLVEP_CUSTOM  } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep/main.nf'
-include { ENSEMBLVEP_DOWNLOAD                                        } from '../../../../../modules/nf-core/ensemblvep/download/main.nf'
+include { ENSEMBLVEP_DOWNLOAD                                        } from '../../../../modules/nf-core/ensemblvep/download/main.nf'
 
 workflow vcf_annotate_ensemblvep {
     input = Channel.of([
