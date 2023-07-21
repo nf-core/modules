@@ -9,6 +9,7 @@ include { ENSEMBLVEP_VEP as ENSEMBLVEP_VEP_VCF       } from '../../../../../modu
 include { ENSEMBLVEP_VEP as ENSEMBLVEP_VEP_VCF_BGZIP } from '../../../../../modules/nf-core/ensemblvep/vep/main.nf'
 include { ENSEMBLVEP_VEP as ENSEMBLVEP_VEP_VCF_GZIP  } from '../../../../../modules/nf-core/ensemblvep/vep/main.nf'
 include { ENSEMBLVEP_VEP as ENSEMBLVEP_VEP_CUSTOM    } from '../../../../../modules/nf-core/ensemblvep/vep/main.nf'
+include { ENSEMBLVEP_DOWNLOAD                        } from '../../../../../modules/nf-core/ensemblvep/download/main.nf'
 
 workflow test_ensemblvep_vep_fasta_json {
     input = [
@@ -22,7 +23,13 @@ workflow test_ensemblvep_vep_fasta_json {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_JSON ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_JSON ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta_tab {
@@ -32,12 +39,18 @@ workflow test_ensemblvep_vep_fasta_tab {
         []
     ]
 
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
     fasta = [
         [ id: 'fasta' ],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_TAB ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    ENSEMBLVEP_VEP_TAB ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta_vcf {
@@ -52,7 +65,13 @@ workflow test_ensemblvep_vep_fasta_vcf {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_VCF ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_VCF ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta_vcf_bgzip {
@@ -67,7 +86,13 @@ workflow test_ensemblvep_vep_fasta_vcf_bgzip {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_VCF_BGZIP ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_VCF_BGZIP ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta_vcf_gzip {
@@ -82,7 +107,13 @@ workflow test_ensemblvep_vep_fasta_vcf_gzip {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_VCF_GZIP ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_VCF_GZIP ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_fasta {
@@ -97,7 +128,13 @@ workflow test_ensemblvep_vep_fasta {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
 
 workflow test_ensemblvep_vep_no_fasta {
@@ -107,7 +144,13 @@ workflow test_ensemblvep_vep_no_fasta {
         []
     ]
 
-    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "108", [], [[], []], [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_DEFAULT ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, [[], []], [] )
 }
 
 workflow test_ensemblvep_vep_fasta_custom {
@@ -123,5 +166,11 @@ workflow test_ensemblvep_vep_fasta_custom {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP_VEP_VCF_BGZIP ( input, "WBcel235", "caenorhabditis_elegans", "108", [], fasta, [] )
+    input_cache = [[id:"test"], "WBcel235", "caenorhabditis_elegans", "110"]
+
+    ENSEMBLVEP_DOWNLOAD(input_cache)
+
+    cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+
+    ENSEMBLVEP_VEP_VCF_BGZIP ( input, "WBcel235", "caenorhabditis_elegans", "110", cache, fasta, [] )
 }
