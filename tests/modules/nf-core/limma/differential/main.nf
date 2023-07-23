@@ -31,7 +31,7 @@ workflow test_limma_differential {
     ch_intensities = ch_samplesheet
         .join(AFFY_JUSTRMA.out.expression)
 
-    ch_contrasts = Channel.of(['variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+    ch_contrasts = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
         .map{
             tuple(it, it.variable, it.reference, it.target)
         }
