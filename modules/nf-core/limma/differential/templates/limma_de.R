@@ -65,7 +65,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 # Set defaults and classes
 
 opt <- list(
-    output_prefix = '$task.ext.prefix',
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
     count_file = '$intensities',
     sample_file = '$samplesheet',
     contrast_variable = '$contrast_variable',

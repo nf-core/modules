@@ -22,6 +22,5 @@ process LIMMA_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     template 'limma_de.R'
 }
