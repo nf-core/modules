@@ -93,7 +93,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 # Set defaults and classes
 
 opt <- list(
-    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file = '$counts',
     sample_file = '$samplesheet',
     contrast_variable = '$contrast_variable',
