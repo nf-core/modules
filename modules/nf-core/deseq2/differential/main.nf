@@ -27,5 +27,6 @@ process DESEQ2_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     template 'deseq_de.R'
 }
