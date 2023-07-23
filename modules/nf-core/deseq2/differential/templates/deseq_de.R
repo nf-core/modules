@@ -93,6 +93,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 # Set defaults and classes
 
 opt <- list(
+    output_prefix = '$task.ext.prefix',
     count_file = '$counts',
     sample_file = '$samplesheet',
     contrast_variable = '$contrast_variable',
@@ -143,7 +144,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -369,10 +370,6 @@ if (opt\$shrink_lfc){
 ################################################
 ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
-prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
-
 contrast.name <-
     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
@@ -386,7 +383,7 @@ write.table(
         round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
         check.names = FALSE
     ),
-    file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -396,7 +393,7 @@ write.table(
 # Dispersion plot
 
 png(
-    file = paste(output_prefix, 'deseq2.dispersion.png', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
     width = 600,
     height = 600
 )
@@ -405,7 +402,7 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
+saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
@@ -417,7 +414,7 @@ sf_df = data.frame(
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -432,7 +429,7 @@ write.table(
         counts(dds, normalized = TRUE),
         check.names = FALSE
     ),
-    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -458,7 +455,7 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
             ),
             check.names = FALSE
         ),
-        file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
+        file = paste(opt\$output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -472,7 +469,7 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
 print(sessionInfo())
 sink()
 
