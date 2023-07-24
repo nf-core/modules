@@ -2,10 +2,10 @@ process AFFY_JUSTRMA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bioconductor-affy=1.76.0"
+    conda "bioconda::bioconductor-affy=1.78.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.76.0--r42hc0cfd56_2':
-        'biocontainers/bioconductor-affy:1.76.0--r42hc0cfd56_2' }"
+        'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.78.0--r43ha9d7317_0':
+        'biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(celfiles_dir)
