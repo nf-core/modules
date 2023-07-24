@@ -1,5 +1,5 @@
 - name: ashlar test_ashlar_1_file
-  command: nextflow run ./tests/modules/nf-core/ashlar -entry test_ashlar_1_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ashlar/nextflow.config
+  command: nextflow run -entry test_ashlar_1_file -plugins nf-validation tests/modules/nf-core/ashlar/main.nf -c tests/config/nextflow.config --input /home/pollen/github/modules/tests/modules/nf-core/ashlar/test_sheet_url.csv
   tags:
     - ashlar
   files:
