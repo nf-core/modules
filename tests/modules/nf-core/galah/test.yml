@@ -1,0 +1,8 @@
+- name: galah test_galah
+  command: nextflow run ./tests/modules/nf-core/galah -entry test_galah -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/galah/nextflow.config
+  tags:
+    - galah
+  files:
+    - path: output/galah/test-dereplicated_bins.tsv
+      md5sum: d2f8a621bfa5794467f4fdd759e2bce7
+    - path: output/galah/versions.yml
