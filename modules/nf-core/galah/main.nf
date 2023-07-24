@@ -37,7 +37,7 @@ process GALAH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(galah --version | sed 's/galah //')
+        galah: \$(galah --version | sed 's/galah //')
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process GALAH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(galah --version | sed 's/galah //')
+        galah: \$(galah --version | sed 's/galah //')
     END_VERSIONS
     """
 }
