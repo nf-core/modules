@@ -7,3 +7,12 @@
     - path: output/samtools/test.flagstat
       md5sum: 4f7ffd1e6a5e85524d443209ac97d783
     - path: output/samtools/versions.yml
+
+- name: samtools faidx test_samtools_flagstat_stub
+  command: nextflow run ./tests/modules/nf-core/samtools/flagstat -entry test_samtools_flagstat_stub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/flagstat/nextflow.config -stub
+  tags:
+    - samtools/flagstat
+    - samtools
+  files:
+    - path: output/samtools/test.flagstat
+    - path: output/samtools/versions.yml
