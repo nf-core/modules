@@ -24,7 +24,7 @@ process GALAH {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def qc_input = qc_table ? ((qc_format == "checkm") ? "--checkm-tab-table ${qc_table}" : "--genome-info ${qc_table}") : ""
-    if( qc_table && !(qc_format in ["checkm", "genome_info"]) ) error "Invalid qc_format supplied!"
+    if( qc_table && !(qc_format in ["checkm", "genome_info"]) ) error "Invalid qc_format supplied! qc_format should be either 'checkm' or 'genome_info'."
     """
     mkdir ${prefix}-dereplicated
 
