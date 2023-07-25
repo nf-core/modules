@@ -13,7 +13,7 @@ tools:
       homepage: "https://github.com/wwood/galah"
       documentation: "https://github.com/wwood/galah"
       tool_dev_url: "https://github.com/wwood/galah"
-      doi: "10.1111/XXXX"
+      doi: "10.1111/NODOI"
       licence: "['GPL v3']"
 
 input:
@@ -26,21 +26,20 @@ input:
       type: file
       description: A list of fasta-formatted genomes for dereplication
       pattern: "*.{fa,fna,fa.gz, etc}"
-  - checkm_tab_table:
+  - qc_table:
       type: file
       description: |
-        (optional) (CheckM)[https://nf-co.re/modules/checkm_lineagewf] summary TSV containing information on the completeness and contamination of the input genomes.
-        Conflicts with genome_info.
-      pattern: "*.tsv"
-  - genome_info:
-      type: file
-      description: |
-        (optional) CSV file with the header genome,completeness,contamination.
-        `genome` is the name of the genome file, minus the file extension, and `completeness` and
-        `contamination` are the completeness and contamination of each genome in percentages (0-100).
-        Alternative to checkm_tab_table if genome QC scores come from another source (e.g. BUSCO).
-        Conflicts with checkm_tab_table.
-      pattern: "*.csv"
+        (optional) Either a (CheckM)[https://nf-co.re/modules/checkm_lineagewf] summary TSV containing
+        information on the completeness and contamination of the input genomes (13 columns),
+        or a 3-column csv with the header `genome,completeness,contamination`.
+        In both cases the first column should contain the names of the input genome files,
+        minus the last file extension
+        (i.e. if the genome is gzipped, the genome name should retain the .fasta extension).
+      pattern: "*.{csv,tsv}"
+  - qc_format:
+      type: string
+      description: Defines the type if input table in `qc_table`, if specified.
+      pattern: "checkm|genome_info"
 
 output:
   - meta:

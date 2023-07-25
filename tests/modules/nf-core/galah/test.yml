@@ -3,6 +3,29 @@
   tags:
     - galah
   files:
+    - path: output/galah/test-dereplicated/GCA_002688505.1_ASM268850v1_genomic.fna.gz
+      md5sum: 0747c48f6693a4fb03c7164c2f472326
+    - path: output/galah/test-dereplicated/GCF_004296495.1_ASM429649v1_genomic.fna.gz
+      md5sum: a8e9bac598df938f25e09418ff7214dd
     - path: output/galah/test-dereplicated_bins.tsv
       md5sum: d2f8a621bfa5794467f4fdd759e2bce7
     - path: output/galah/versions.yml
+
+- name: galah test_galah_genomeinfo
+  command: nextflow run ./tests/modules/nf-core/galah -entry test_galah_genomeinfo -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/galah/nextflow.config
+  tags:
+    - galah
+  files:
+    - path: output/bioawk/genomeinfo.gz
+      md5sum: 7c7c29f7d08468cb67dfb5635aa144db
+    - path: output/bioawk/versions.yml
+    - path: output/galah/test-dereplicated/GCA_002688505.1_ASM268850v1_genomic.fna.gz
+      md5sum: 0747c48f6693a4fb03c7164c2f472326
+    - path: output/galah/test-dereplicated/GCF_004296495.1_ASM429649v1_genomic.fna.gz
+      md5sum: a8e9bac598df938f25e09418ff7214dd
+    - path: output/galah/test-dereplicated_bins.tsv
+      md5sum: d2f8a621bfa5794467f4fdd759e2bce7
+    - path: output/galah/versions.yml
+    - path: output/gunzip/genomeinfo
+      md5sum: f73b9131ab91ddb754725b94e5085955
+    - path: output/gunzip/versions.yml

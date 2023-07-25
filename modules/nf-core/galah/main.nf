@@ -2,15 +2,15 @@ process GALAH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::galah=0.3.1 bioconda::dashing=0.4.0"
+    conda "bioconda::galah=0.3.1 bioconda::dashing=0.4.0 bioconda::fastani=1.31"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/galah:0.3.1--hec16e2b_1':
         'biocontainers/galah:0.3.1--hec16e2b_1' }"
 
     input:
     tuple val(meta), path(bins)
-    path(checkm_tab_table)
-    path(genome_info)
+    path(qc_table)
+    val(qc_format)
 
     output:
     tuple val(meta), path("*.tsv")                    , emit: tsv
@@ -23,8 +23,8 @@ process GALAH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def qc_input = checkm_tab_table ? "--checkm-tab-table ${checkm_tab_table}" : (genome_info ? "--genome-info ${genome_info}" : "")
-    if (checkm_tab_table && genome_info) { error "genome_info table and checkm_tab_table both provided: please provide one or the other." }
+    def qc_input = qc_table ? ((qc_format == "checkm") ? "--checkm-tab-table ${qc_table}" : "--genome-info ${qc_table}") : ""
+    if( qc_table && !(qc_format in ["checkm", "genome_info"]) ) error "Invalid qc_format supplied!"
     """
     mkdir ${prefix}-dereplicated
 
