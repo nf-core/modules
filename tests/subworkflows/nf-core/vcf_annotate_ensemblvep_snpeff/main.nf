@@ -28,7 +28,7 @@ workflow vcf_annotate_ensemblvep_snpeff_vep {
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
-    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
@@ -94,7 +94,7 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
-    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
@@ -134,7 +134,7 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
-    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
@@ -174,7 +174,7 @@ workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
 
-    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
