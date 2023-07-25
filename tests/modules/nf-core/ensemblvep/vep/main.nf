@@ -149,8 +149,8 @@ workflow test_ensemblvep_vep_fasta_custom {
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
             [ file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true),
-            file(params.test_data['sarscov2']['illumina']['test3_vcf'], checkIfExists: true)])
-    ]
+            file(params.test_data['sarscov2']['illumina']['test3_vcf'], checkIfExists: true)]
+    ])
 
     fasta = Channel.value([
         [id:"fasta"],
