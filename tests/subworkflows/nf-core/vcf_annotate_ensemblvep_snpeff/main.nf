@@ -3,8 +3,12 @@
 nextflow.enable.dsl = 2
 
 include { ENSEMBLVEP_DOWNLOAD            } from '../../../../modules/nf-core/ensemblvep/download/main'
+include { SNPEFF_DOWNLOAD                } from '../../../../modules/nf-core/snpeff/download/main'
 include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main'
 
+snpeff_cache_version = "110"
+snpeff_genome = "WBcel235"
+snpeff_cache_input = Channel.of([[id:"${snpeff_genome}.${snpeff_cache_version}"], snpeff_genome, snpeff_cache_version])
 vep_cache_version = "110"
 vep_genome = "WBcel235"
 vep_species = "caenorhabditis_elegans"
@@ -61,6 +65,10 @@ workflow vcf_annotate_ensemblvep_snpeff_snpeff {
         ]
     ])
 
+    SNPEFF_DOWNLOAD(snpeff_cache_input)
+
+    snpeff_cache = SNPEFF_DOWNLOAD.out.cache.first()
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         [[],[]],
@@ -69,8 +77,8 @@ workflow vcf_annotate_ensemblvep_snpeff_snpeff {
         [],
         [],
         [],
-        "WBcel235.99",
-        [],
+        "${snpeff_genome}.${snpeff_cache_version}",
+        snpeff_cache,
         ["snpeff"],
         5
     )
@@ -93,7 +101,9 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
     ])
 
     ENSEMBLVEP_DOWNLOAD(vep_cache_input)
+    SNPEFF_DOWNLOAD(snpeff_cache_input)
 
+    snpeff_cache = SNPEFF_DOWNLOAD.out.cache.first()
     vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
@@ -104,8 +114,8 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
         vep_cache_version,
         vep_cache,
         [],
-        "WBcel235.99",
-        [],
+        "${snpeff_genome}.${snpeff_cache_version}",
+        snpeff_cache,
         ["ensemblvep", "snpeff"],
         5
     )
