@@ -6,7 +6,7 @@ include { ENSEMBLVEP_DOWNLOAD            } from '../../../../modules/nf-core/ens
 include { SNPEFF_DOWNLOAD                } from '../../../../modules/nf-core/snpeff/download/main'
 include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main'
 
-snpeff_cache_version = "110"
+snpeff_cache_version = "105"
 snpeff_genome = "WBcel235"
 snpeff_cache_input = Channel.of([[id:"${snpeff_genome}.${snpeff_cache_version}"], snpeff_genome, snpeff_cache_version])
 vep_cache_version = "110"
