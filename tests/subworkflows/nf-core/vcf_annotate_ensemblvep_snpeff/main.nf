@@ -2,7 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main.nf'
+include { ENSEMBLVEP_DOWNLOAD            } from '../../../../modules/nf-core/ensemblvep/download/main'
+include { VCF_ANNOTATE_ENSEMBLVEP_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/main'
+
+vep_cache_version = "110"
+vep_genome = "WBcel235"
+vep_species = "caenorhabditis_elegans"
+vep_cache_input = Channel.of([[id:"${vep_cache_version}_${vep_genome}"], vep_genome, vep_species, vep_cache_version])
 
 workflow vcf_annotate_ensemblvep_snpeff_vep {
     input = Channel.of([
@@ -20,13 +26,17 @@ workflow vcf_annotate_ensemblvep_snpeff_vep {
         ]
     ])
 
+    ENSEMBLVEP_DOWNLOAD(vep_cache_input)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         [[],[]],
-        "WBcel235",
-        "caenorhabditis_elegans",
-        "108",
-        [],
+        vep_genome,
+        vep_species,
+        vep_cache_version,
+        vep_cache,
         [],
         [],
         [],
@@ -82,17 +92,21 @@ workflow vcf_annotate_ensemblvep_snpeff_both {
         ]
     ])
 
+    ENSEMBLVEP_DOWNLOAD(vep_cache_input)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
+
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         [[],[]],
-        "WBcel235",
-        "caenorhabditis_elegans",
-        "108",
-        [],
+        vep_genome,
+        vep_species,
+        vep_cache_version,
+        vep_cache,
         [],
         "WBcel235.99",
         [],
-        ["snpeff", "ensemblvep"],
+        ["ensemblvep", "snpeff"],
         5
     )
 }
@@ -113,18 +127,22 @@ workflow vcf_annotate_ensemblvep_snpeff_large_chunks {
         ]
     ])
 
-    fasta = [
+    fasta = Channel.value([
         [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
+
+    ENSEMBLVEP_DOWNLOAD(vep_cache_input)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         fasta,
-        "WBcel235",
-        "caenorhabditis_elegans",
-        "108",
-        [],
+        vep_genome,
+        vep_species,
+        vep_cache_version,
+        vep_cache,
         [],
         [],
         [],
@@ -149,18 +167,22 @@ workflow vcf_annotate_ensemblvep_snpeff_no_scatter {
         ]
     ])
 
-    fasta = [
+    fasta = Channel.value([
         [id:"fasta"],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    ]
+    ])
+
+    ENSEMBLVEP_DOWNLOAD(vep_cache_input)
+
+    vep_cache = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }.first()
 
     VCF_ANNOTATE_ENSEMBLVEP_SNPEFF (
         input,
         fasta,
-        "WBcel235",
-        "caenorhabditis_elegans",
-        "108",
-        [],
+        vep_genome,
+        vep_species,
+        vep_cache_version,
+        vep_cache,
         [],
         [],
         [],
