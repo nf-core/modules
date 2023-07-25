@@ -14,7 +14,7 @@ process GALAH {
 
     output:
     tuple val(meta), path("*.tsv")                    , emit: tsv
-    tuple val(meta), path("${prefix}-dereplicated/*") , emit: dereplicated_bins, optional: true
+    tuple val(meta), path("${prefix}-dereplicated/*") , emit: dereplicated_bins
     path "versions.yml"                               , emit: versions
 
     when:
@@ -33,7 +33,7 @@ process GALAH {
         --genome-fasta-files ${bins} \\
         ${qc_input} \\
         --output-cluster-definition ${prefix}-dereplicated_bins.tsv \\
-        ${args}
+        --output-representative-fasta-directory ${prefix}-dereplicated
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
