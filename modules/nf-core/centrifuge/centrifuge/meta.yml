@@ -48,6 +48,11 @@ output:
       description: |
         File containing classification results
       pattern: "*.{results.txt}"
+  - sam:
+      type: file
+      description: |
+        Optional output file containing read alignments (SAM format )or a table of per-read hit information (TAB)s
+      pattern: "*.{sam,tab}"
   - fastq_unmapped:
       type: file
       description: Unmapped fastq files

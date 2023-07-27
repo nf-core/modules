@@ -16,7 +16,7 @@ process CENTRIFUGE_CENTRIFUGE {
     output:
     tuple val(meta), path('*report.txt')                 , emit: report
     tuple val(meta), path('*results.txt')                , emit: results
-    tuple val(meta), path('*.sam')                       , optional: true, emit: sam
+    tuple val(meta), path('*.{sam,tab}')                 , optional: true, emit: sam
     tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz')   , optional: true, emit: fastq_mapped
     tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz') , optional: true, emit: fastq_unmapped
     path "versions.yml"                                  , emit: versions
