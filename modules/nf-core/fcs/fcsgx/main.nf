@@ -57,5 +57,4 @@ process FCS_FCSGX {
         FCS-GX: $FCSGX_VERSION
     END_VERSIONS
     """
-    
 }
