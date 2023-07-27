@@ -12,7 +12,6 @@ process CENTRIFUGE_CENTRIFUGE {
     path db
     val save_unaligned
     val save_aligned
-    val sam_format
 
     output:
     tuple val(meta), path('*report.txt')                 , emit: report
@@ -38,7 +37,6 @@ process CENTRIFUGE_CENTRIFUGE {
         unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
         aligned = save_aligned ? "--al-conc-gz ${prefix}.mapped.fastq.gz" : ''
     }
-    def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
     db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
@@ -51,7 +49,6 @@ process CENTRIFUGE_CENTRIFUGE {
         $unaligned \\
         $aligned \\
         $sam_output \\
-        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
