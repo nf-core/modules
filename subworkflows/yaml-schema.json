@@ -21,7 +21,7 @@
         },
         "components": {
             "type": "array",
-            "description": "Modules used in the subworkflow",
+            "description": "Modules and subworkflows used in the subworkflow",
             "items": {
                 "type": "string"
             }
@@ -109,5 +109,5 @@
             }
         }
     },
-    "required": ["name", "description", "keywords", "authors", "output", "modules"]
+    "required": ["name", "description", "keywords", "authors", "output", "components"]
 }
