@@ -2,10 +2,10 @@
 // Run GATK mutect2, genomicsdbimport and createsomaticpanelofnormals
 //
 
-include { GATK4_CREATESOMATICPANELOFNORMALS } from '../modules/nf-core/gatk4/createsomaticpanelofnormals/main'
-include { GATK4_GENOMICSDBIMPORT            } from '../modules/nf-core/gatk4/genomicsdbimport/main'
-include { GATK4_MERGEVCFS                   } from '../modules/nf-core/gatk4/mergevcfs/main'
-include { GATK4_MUTECT2                     } from '../modules/nf-core/gatk4/mutect2/main'
+include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/nf-core/gatk4/createsomaticpanelofnormals/main'
+include { GATK4_GENOMICSDBIMPORT            } from '../../../modules/nf-core/gatk4/genomicsdbimport/main'
+include { GATK4_MERGEVCFS                   } from '../../../modules/nf-core/gatk4/mergevcfs/main'
+include { GATK4_MUTECT2                     } from '../../../modules/nf-core/gatk4/mutect2/main'
 
 workflow BAM_CREATE_SOM_PON_GATK {
     take:
