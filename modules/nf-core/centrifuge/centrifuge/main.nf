@@ -47,7 +47,8 @@ process CENTRIFUGE_CENTRIFUGE {
         --report-file ${prefix}.report.txt \\
         -S ${prefix}.results.txt \\
         $unaligned \\
-        $aligned
+        $aligned \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
