@@ -54,7 +54,7 @@ workflow BAM_CREATE_SOM_PON_GATK {
     vcf_joint = vcf.map{ meta, vcf -> [[id: 'joint'], vcf]}.groupTuple()
     tbi_joint = tbi.map{ meta, tbi -> [[id: 'joint'], tbi]}.groupTuple()
 
-    ch_genomicsdb_input = vcf_joint.join(tbi_joint).combine(intervals_test).map{ meta, vcf, tbi, intervals -> [meta, vcf, tbi, intervals, [], [] ]}
+    ch_genomicsdb_input = vcf_joint.join(tbi_joint).combine(ch_intervals).map{ meta, vcf, tbi, intervals -> [meta, vcf, tbi, intervals, [], [] ]}
 
     GATK4_GENOMICSDBIMPORT(ch_genomicsdb_input, [], [], [])
     GATK4_CREATESOMATICPANELOFNORMALS(GATK4_GENOMICSDBIMPORT.out.genomicsdb, ch_fasta, ch_fai, ch_dict)
