@@ -2,10 +2,10 @@ process GALAH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::galah=0.3.1 bioconda::dashing=0.4.0 bioconda::fastani=1.31"
+    conda "bioconda::galah=0.3.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/galah:0.3.1--hec16e2b_1':
-        'biocontainers/galah:0.3.1--hec16e2b_1' }"
+        'https://depot.galaxyproject.org/singularity/galah%3A0.3.1--h031d066_3':
+        'biocontainers/galah:0.3.1--h031d066_3' }"
 
     input:
     tuple val(meta), path(bins)
