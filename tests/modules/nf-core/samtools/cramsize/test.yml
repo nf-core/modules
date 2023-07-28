@@ -1,7 +1,7 @@
 - name: samtools cramsize test_samtools_cramsize
   command: nextflow run ./tests/modules/nf-core/samtools/cramsize -entry test_samtools_cramsize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/cramsize/nextflow.config
   tags:
-    - samtools/cramsize.
+    - samtools/cramsize
   files:
     - path: output/samtools/test.size
       md5sum: aff113286a3368bcb9c5b708bdf5f777
