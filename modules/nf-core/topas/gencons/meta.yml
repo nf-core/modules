@@ -1,5 +1,5 @@
 name: "topas_gencons"
-description: Create fasta consensus with TOPAS toolkit
+description: Create fasta consensus with TOPAS toolkit with options to penalize substitutions for typical DNA damage present in ancient DNA
 keywords:
   - consensus
   - fasta
@@ -22,13 +22,27 @@ input:
 
   - vcf:
       type: file
-      description: compressed vcf file containing the called snps
+      description: Gzipped compressed vcf file generated with GATK UnifiedGenotyper containing the called snps
+      pattern: "*.vcf.gz"
+
+  - vcf_indels:
+      type: file
+      description: Optional gzipped compressed vcf file generated with GATK UnifiedGenotyper containing the called indels
       pattern: "*.vcf.gz"
 
   - reference:
       type: file
       description: Fasta file of reference genome
       pattern: "*.fasta"
+
+  - fai:
+      type: file
+      description: Optional index for the fasta file of reference genome
+      pattern: "*.fai"
+
+  - vcf_output:
+      type: boolean
+      description: Boolean value to indicate if a compressed vcf file with the consensus calls included as SNPs should be produced
 
 output:
   - meta:
@@ -46,6 +60,11 @@ output:
       type: file
       description: Gzipped consensus fasta file with bases under threshold replaced with Ns
       pattern: "*.fasta.gz"
+
+  - vcf:
+      type: file
+      description: Gzipped vcf file with updated calls for the SNPs used in the consensus generation and for bases under threshold replaced with Ns
+      pattern: "*.vcf.gz"
 
   - ccf:
       type: file

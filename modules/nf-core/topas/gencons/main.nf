@@ -9,13 +9,17 @@ process TOPAS_GENCONS {
 
     input:
     tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf_indels)
     tuple val(meta), path(reference)
+    tuple val(meta), path(fai)
+    val(vcf_output)
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.ccf")     ,      emit: ccf
-    tuple val(meta), path("*.log")     ,      emit: log
-    path "versions.yml"                ,      emit: versions
+    tuple val(meta), path("*.vcf.gz")  , emit: vcf     , optional: true
+    tuple val(meta), path("*.ccf")     , emit: ccf
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,6 +27,9 @@ process TOPAS_GENCONS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def optionalvcfindels = vcf_indels ? "-indels ${vcf_indels}" : ''
+    def optionalfai = fai ? "-fai ${fai}" : ''
+    def vcfoutput = vcf_output ? "-vcf_out ${prefix}.vcf" : ""
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -32,9 +39,15 @@ process TOPAS_GENCONS {
         $args \\
         -o ${prefix}.fasta \\
         -snps $vcf \\
+        $optionalvcfindels \\
+        $vcfoutput \\
         -ref $reference
 
-    gzip ${prefix}.fasta
+    gzip -n ${prefix}.fasta
+
+    if [[ -f ${prefix}.vcf ]];then
+        gzip -n ${prefix}.vcf
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
