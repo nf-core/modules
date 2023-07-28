@@ -13,9 +13,9 @@ process TOPAS_GENCONS {
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.ccf"),      emit: ccf
-    tuple val(meta), path("*.log"),      emit: log
-    path "versions.yml"           ,      emit: versions
+    tuple val(meta), path("*.ccf")     ,      emit: ccf
+    tuple val(meta), path("*.log")     ,      emit: log
+    path "versions.yml"                ,      emit: versions
 
     when:
     task.ext.when == null || task.ext.when
