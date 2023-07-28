@@ -1,5 +1,5 @@
-name: pytest-workflow
-run-name: pytest-workflow
+name: pytest
+run-name: pytest
 on:
   push:
     branches: [master]
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   changes:
-    name: check-for-changes
+    name: check-changes
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
@@ -29,9 +29,9 @@ jobs:
         with:
           filters: "tests/config/pytest_modules.yml"
 
-  pytest_workflow:
+  pytest:
     runs-on: ubuntu-20.04
-    name: pytest-workflow
+    name: pytest
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:

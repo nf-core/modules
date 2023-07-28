@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   changes:
-    name: check-for-changes
+    name: check-changes
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
@@ -29,7 +29,7 @@ jobs:
         with:
           filters: "tests/config/nftest_modules.yml"
 
-  nf_test:
+  nf-test:
     runs-on: ubuntu-20.04
     name: nf-test
     needs: changes
