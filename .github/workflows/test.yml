@@ -116,7 +116,7 @@ jobs:
   pytest:
     runs-on: ubuntu-20.04
     name: pytest
-    needs: [changes, Prettier, EditorConfig, nf_core_lint]
+    needs: [pytest-changes, Prettier, EditorConfig, nf-core-lint]
     if: needs.changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
