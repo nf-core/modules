@@ -20,6 +20,8 @@ nextflow_process {
             }
         }
 
+        // Fake stuff
+
         then {
             assert process.success
             assert process.out.html.get(0).get(1) ==~ ".*/test_fastqc.html"
