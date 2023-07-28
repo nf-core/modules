@@ -349,7 +349,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/pytest_modules.yml"
+          filters: "tests/config/nftest_modules.yml"
 
   nf-test:
     runs-on: ubuntu-20.04
