@@ -30,7 +30,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
-    name: nf-core-lint
+    name: lint
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
