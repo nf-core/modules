@@ -25,7 +25,6 @@ process TOPAS_GENCONS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-
     """
 
     topas \\
