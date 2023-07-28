@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 name: nf-core-lint
 run-name: nf-core-lint
+=======
+name: nf-core linting
+run-name: nf-core linting
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
 # This workflow is triggered on pushes and PRs to the repository.
 # It runs the `nf-core lint` tests to ensure that the module code meets the nf-core guidelines
 on:
@@ -15,7 +20,11 @@ concurrency:
 
 jobs:
   changes:
+<<<<<<< HEAD
     name: check-changes
+=======
+    name: check-for-changes
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
@@ -30,7 +39,11 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
+<<<<<<< HEAD
     name: lint
+=======
+    name: nf-core-lint
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:

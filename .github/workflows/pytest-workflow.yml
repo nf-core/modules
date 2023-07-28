@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 name: pytest
 run-name: pytest
+=======
+name: pytest-workflow
+run-name: pytest-workflow
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
 on:
   push:
     branches: [master]
@@ -16,7 +21,11 @@ concurrency:
 
 jobs:
   changes:
+<<<<<<< HEAD
     name: check-changes
+=======
+    name: check-for-changes
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
@@ -29,9 +38,15 @@ jobs:
         with:
           filters: "tests/config/pytest_modules.yml"
 
+<<<<<<< HEAD
   pytest:
     runs-on: ubuntu-20.04
     name: pytest
+=======
+  pytest_workflow:
+    runs-on: ubuntu-20.04
+    name: pytest-workflow
+>>>>>>> 568afbcc2 (Rename and tidy all GHA workflows for branch protection)
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
