@@ -1,10 +1,11 @@
-name: Fix linting from a comment
+name: fix-linting
+run-name: fix linting (automated)
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  deploy:
+  fix_linting:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
