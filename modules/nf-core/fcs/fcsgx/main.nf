@@ -48,6 +48,7 @@ process FCS_FCSGX {
     def FCSGX_VERSION = '0.4.0'
 
     """
+    mkdir -p out
     touch out/${prefix}.fcs_gx_report.txt
     touch out/${prefix}.taxonomy.rpt
 
