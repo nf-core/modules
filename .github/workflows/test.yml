@@ -354,7 +354,7 @@ jobs:
   nf-test:
     runs-on: ubuntu-20.04
     name: nf-test
-    needs: [nf-test-changes, Prettier, EditorConfig, nf_core_lint]
+    needs: [nf-test-changes, Prettier, EditorConfig, nf-core-lint]
     if: needs.nf-test-changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
