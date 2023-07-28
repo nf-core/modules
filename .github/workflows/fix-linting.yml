@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  fix_linting:
+  fix-linting:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
