@@ -28,6 +28,8 @@ process SAMTOOLS_INDEX {
         $args \\
         $input
 
+    # Fake stuff
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
