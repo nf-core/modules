@@ -1,0 +1,13 @@
+name: summary
+on:
+  pull_request:
+jobs:
+  enforce-all-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: read
+    steps:
+      - name: GitHub Checks
+        uses: poseidon/wait-for-status-checks@v0.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
