@@ -1,4 +1,5 @@
 name: nf-test
+run-name: nf-test
 on:
   push:
     branches: [master]
@@ -15,7 +16,7 @@ concurrency:
 
 jobs:
   changes:
-    name: Check for changes
+    name: check-changes
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
@@ -28,10 +29,9 @@ jobs:
         with:
           filters: "tests/config/nftest_modules.yml"
 
-  test:
+  nf-test:
     runs-on: ubuntu-20.04
-
-    name: ${{ matrix.tags }} ${{ matrix.profile }}
+    name: nf-test
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
