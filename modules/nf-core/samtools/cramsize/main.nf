@@ -42,5 +42,5 @@ process SAMTOOLS_CRAMSIZE {
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
-    """ 
+    """
 }
