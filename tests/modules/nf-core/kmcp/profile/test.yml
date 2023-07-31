@@ -1,11 +1,11 @@
 - name: kmcp profile test_kmcp_profile
   command: nextflow run ./tests/modules/nf-core/kmcp/profile -entry test_kmcp_profile -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/profile/nextflow.config
   tags:
-    - kmcp/profile
     - kmcp
+    - kmcp/profile
   files:
     - path: output/kmcp/test.profile
-    - path: output/untar/versions.yml
+    - path: output/kmcp/versions.yml
 
 - name: kmcp profile test_kmcp_profile stub_run
   command: nextflow run ./tests/modules/nf-core/kmcp/profile -entry test_kmcp_profile -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kmcp/profile/nextflow.config -stub-run
@@ -14,4 +14,4 @@
     - kmcp
   files:
     - path: output/kmcp/test.profile
-    - path: output/untar/versions.yml
+    - path: output/kmcp/versions.yml
