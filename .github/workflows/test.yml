@@ -520,6 +520,3 @@ jobs:
         run: |
           echo "toJSON(needs) = ${{ toJSON(needs) }}"
           echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
-          echo "!contains(needs.*.result, 'skipped') = ${{ !contains(needs.*.result, 'skipped') }}"
-          echo "contains(needs.*.result, 'failure') = ${{ contains(needs.*.result, 'failure') }}"
-          echo "!contains(needs.*.result, 'success') = ${{ !contains(needs.*.result, 'success') }}"
