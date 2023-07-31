@@ -26,6 +26,19 @@ process FASTQC {
     def rename_to = old_new_pairs*.join(' ').join(' ')
     def renamed_files = old_new_pairs.collect{ old_name, new_name -> new_name }.join(' ')
     """
+    printf "%s %s\\n" $rename_to | while read old_name new_name; do
+        [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
+    done
+
+    fastqc \\
+        $args \\
+        --threads $task.cpus \\
+        $renamed_files
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
+    END_VERSIONS
     """
 
     stub:
