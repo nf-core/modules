@@ -23,18 +23,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - db:
+      type: directory
+      description: Database directory containing taxdump files and taxid file
   - search_results:
       type: file
       description: Gzipped file output from kmcp search module
       pattern: "*.gz"
-  - taxdump:
-      type: directory
-      description: Directory of NCBI taxonomy dump files - names.dmp, nodes.dmp
-      pattern: "*"
-  - taxid:
-      type: file
-      description: Tabular two-column file(s) mapping reference IDs to TaxIds.
-      pattern: "*.{csv,tsv}"
   - mode:
       type: integer
       description: Profiling mode.
