@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SNAKEMAKE"
     script "modules/nf-core/snakemake/main.nf"
     process "SNAKEMAKE"
+    tag "snakemake"
 
     test("Should run without failures") {
 
