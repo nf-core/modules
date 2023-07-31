@@ -2,7 +2,7 @@ process KMCP_INDEX {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kmcp=0.9.1"
+    conda "bioconda::kmcp=0.9.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kmcp:0.9.3--h9ee0642_0':
         'quay.io/biocontainers/kmcp:0.9.3--h9ee0642_0' }"
