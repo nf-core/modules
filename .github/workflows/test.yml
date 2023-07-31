@@ -504,3 +504,15 @@ jobs:
         with:
           path: >-
             test.tap
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [Prettier, EditorConfig, nf-core-lint, pytest, nf-test]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
