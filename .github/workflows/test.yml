@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: pytest
     needs: [pytest-changes]
-    if: needs.changes.outputs.modules != '[]'
+    if: needs.pytest-changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
@@ -521,5 +521,5 @@ jobs:
           echo "toJSON(needs) = ${{ toJSON(needs) }}"
           echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
           echo "!contains(needs.*.result, 'skipped') = ${{ !contains(needs.*.result, 'skipped') }}"
-          echo "!contains(needs.*.result, 'failure') = ${{ !contains(needs.*.result, 'failure') }}"
-          echo "!contains(needs.*.result, 'success') = ${{ !contains(needs.*.result, 'sucess') }}"
+          echo "contains(needs.*.result, 'failure') = ${{ contains(needs.*.result, 'failure') }}"
+          echo "!contains(needs.*.result, 'success') = ${{ !contains(needs.*.result, 'success') }}"
