@@ -45,7 +45,6 @@ jobs:
   pytest-changes:
     name: pytest-changes
     runs-on: ubuntu-latest
-    needs: [Prettier, EditorConfig]
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -60,7 +59,7 @@ jobs:
   nf-core-lint:
     runs-on: ubuntu-20.04
     name: nf-core-lint
-    needs: pytest-changes
+    needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
@@ -116,7 +115,7 @@ jobs:
   pytest:
     runs-on: ubuntu-20.04
     name: pytest
-    needs: [pytest-changes, Prettier, EditorConfig, nf-core-lint]
+    needs: [pytest-changes]
     if: needs.changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
@@ -339,7 +338,6 @@ jobs:
   nf-test-changes:
     name: nf-test-changes
     runs-on: ubuntu-latest
-    needs: [Prettier, EditorConfig]
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -354,7 +352,7 @@ jobs:
   nf-test:
     runs-on: ubuntu-20.04
     name: nf-test
-    needs: [nf-test-changes, Prettier, EditorConfig, nf-core-lint]
+    needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
