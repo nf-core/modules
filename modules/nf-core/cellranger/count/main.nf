@@ -25,6 +25,10 @@ process CELLRANGER_COUNT {
     template "cellranger_count.py"
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
