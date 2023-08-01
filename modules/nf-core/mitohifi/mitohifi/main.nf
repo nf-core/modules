@@ -41,8 +41,8 @@ process MITOHIFI_MITOHIFI {
     script:
     def args = task.ext.args ?: ''
     def run_type = reads ? "-r ${reads}" :
-                   contigs ? "-c ${contigs}" :
-                   exit("Reads or contigs must be specified")
+                    contigs ? "-c ${contigs}" :
+                    exit("Reads or contigs must be specified")
     """
     mitohifi.py ${run_type} -f ${ref_fa} -g ${ref_gb} -o ${mito_code} -t $task.cpus ${args}
     cat <<-END_VERSIONS > versions.yml
