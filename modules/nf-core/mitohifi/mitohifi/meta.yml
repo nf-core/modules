@@ -58,7 +58,7 @@ output:
       pattern: "*all_potential_contigs.fa"
   - contigs_annotations:
       type: file
-      description: Graphical representation of annotated genes and tRNAs 
+      description: Graphical representation of annotated genes and tRNAs
       pattern: "*contigs_annotations.png"
   - contigs_circularization:
       type: directory
@@ -66,13 +66,13 @@ output:
       pattern: "*contigs_circularization"
   - contigs_filtering:
       type: directory
-      description: Contains files with initial blast matches 
+      description: Contains files with initial blast matches
       pattern: "*contigs_filtering"
   - coverage_mapping:
       type: directory
       description: Contains statistics on coverage mapping
       pattern: "*coverage_mapping"
-  - coverage_plot: 
+  - coverage_plot:
       type: file
       description: Read coverage plot for mitochondrial contigs
       pattern: "*coverage_plot.png"
@@ -90,7 +90,7 @@ output:
       pattern: "*final_mitogenome.coverage.png"
   - potential_contigs:
       type: directory
-      description: Files with sequences and annotations of the potential contigs 
+      description: Files with sequences and annotations of the potential contigs
       pattern: "*potential_contigs"
   - reads_mapping_and_assembly:
       type: directory
