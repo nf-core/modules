@@ -33,10 +33,7 @@ process MEGAHIT {
             $args \\
             --out-prefix $prefix
 
-        pigz \\
-            --no-name \\
-            -p $task.cpus \\
-            $args2 \\
+        gzip \\
             megahit_out/*.fa \\
             megahit_out/intermediate_contigs/*.fa
 
@@ -54,10 +51,7 @@ process MEGAHIT {
             $args \\
             --out-prefix $prefix
 
-        pigz \\
-            --no-name \\
-            -p $task.cpus \\
-            $args2 \\
+        gzip \\
             megahit_out/*.fa \\
             megahit_out/intermediate_contigs/*.fa
 
