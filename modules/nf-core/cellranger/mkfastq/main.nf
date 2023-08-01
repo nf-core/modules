@@ -4,11 +4,6 @@ process CELLRANGER_MKFASTQ {
 
     container "docker.io/nfcore/cellrangermkfastq:7.1.0"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     path bcl
     path csv
@@ -21,6 +16,10 @@ process CELLRANGER_MKFASTQ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
