@@ -41,7 +41,7 @@ process KMCP_SEARCH {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}
-    gzip ${prefix}
+    gzip ${prefix} > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
