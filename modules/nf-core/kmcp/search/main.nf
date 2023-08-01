@@ -40,8 +40,7 @@ process KMCP_SEARCH {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}
-    gzip -c "${prefix}" > "${prefix}.gz"
+    touch ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
