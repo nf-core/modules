@@ -21,7 +21,6 @@ process FAMSA_GUIDETREE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     famsa -gt_export \\
         $args \\
@@ -38,7 +37,6 @@ process FAMSA_GUIDETREE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
- 
     """
     touch ${prefix}.dnd
 
