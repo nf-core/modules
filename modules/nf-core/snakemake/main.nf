@@ -11,7 +11,7 @@ process SNAKEMAKE {
 
     input:
     tuple val(meta), path(inputs)
-    tuple val(meta2), path(snakemake)
+    tuple val(meta2), path(snakefile)
 
     output:
     tuple val(meta), path("**[!.snakemake]"), optional: true      , emit: outputs
@@ -29,7 +29,7 @@ process SNAKEMAKE {
     snakemake \\
         $args \\
         $cores \\
-        --snakefile $snakemake
+        --snakefile $snakefile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
