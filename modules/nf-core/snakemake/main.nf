@@ -44,7 +44,7 @@ process SNAKEMAKE {
     """
     snakemake \\
         $args \\
-        --snakefile $snakemake \\
+        --snakefile $snakefile \\
         $cores \\
         --dry-run
 
