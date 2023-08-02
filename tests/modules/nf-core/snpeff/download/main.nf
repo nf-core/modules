@@ -4,8 +4,10 @@ nextflow.enable.dsl = 2
 
 include { SNPEFF_DOWNLOAD } from '../../../../../modules/nf-core/snpeff/download/main.nf'
 
-workflow test_snpeff_download {
-    input = [ [ id:'test' ], "WBcel235", "105"]
+snpeff_cache_version = "105"
+snpeff_genome = "WBcel235"
+snpeff_cache_input = Channel.of([[id:"${snpeff_genome}.${snpeff_cache_version}"], snpeff_genome, snpeff_cache_version])
 
-    SNPEFF_DOWNLOAD ( input )
+workflow test_snpeff_download {
+    SNPEFF_DOWNLOAD(snpeff_cache_input)
 }
