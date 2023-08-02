@@ -5,7 +5,7 @@ process MEGAHIT {
     conda "bioconda::megahit=1.2.9 conda-forge::pigz=2.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/megahit:1.2.9--h5b5514e_2' :
-        'quay.io/biocontainers/megahit:1.2.9--h5b5514e_3' }"
+        'biocontainers/megahit:1.2.9--h5b5514e_3' }"
 
     input:
     tuple val(meta), path(reads)
