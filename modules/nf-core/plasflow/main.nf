@@ -2,7 +2,7 @@ process PLASFLOW {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "'pkgs/main'::python=3.5 bioconda::plasflow=1.1.0" // conda-forge::tensorflow=1.5.0
+    conda "conda-forge::python=3.5 bioconda::plasflow=1.1.0" // conda-forge::tensorflow=1.5.0
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plasflow:1.1.0--py35_0':
         'biocontainers/plasflow:1.1.0--py35_0' }"
