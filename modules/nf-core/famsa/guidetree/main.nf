@@ -26,11 +26,11 @@ process FAMSA_GUIDETREE {
         $args \\
         -t ${task.cpus} \\
         ${fasta} \\
-        ${prefix}.dnd &> "version.txt"
+        ${prefix}.dnd 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        famsa: \$( cat version.txt | head -n 2 | tail -n 1 | sed 's/ version //g' )
+        famsa: \$( famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //g' )
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process FAMSA_GUIDETREE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        famsa: \$( cat version.txt | head -n 2 | tail -n 1 | sed 's/ version //g' )
+        famsa: \$( famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //g' )
     END_VERSIONS
     """
 }
