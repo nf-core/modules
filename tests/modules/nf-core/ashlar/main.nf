@@ -17,7 +17,7 @@ workflow test_ashlar_1_file {
 
     ASHLAR ( input_list, [], [] )
 
-    ZERO_UUID ( ASHLAR.out[0], "8390123" )
+    ZERO_UUID ( ASHLAR.out.tif, "8390123" )
 
 }
 
@@ -36,7 +36,7 @@ workflow test_ashlar_all_files {
 
     ASHLAR ( input_list, [], [] )
 
-    ZERO_UUID ( ASHLAR.out[0], "25169643" )
+    ZERO_UUID ( ASHLAR.out.tif, "25169643" )
 
 }
 
@@ -55,7 +55,7 @@ workflow test_ashlar_all_files_tile_size {
 
     ASHLAR_TILE ( input_list, [], [] )
 
-    ZERO_UUID ( ASHLAR_TILE.out[0], "12586923" )
+    ZERO_UUID ( ASHLAR_TILE.out.tif, "12586923" )
 
 }
 
@@ -79,7 +79,7 @@ workflow test_ashlar_all_files_dfp_ffp {
                                                ['ome-tiff']
                                                ['cycif_tonsil_ffp'], checkIfExists: true)] )
 
-    ZERO_UUID ( ASHLAR.out[0], "25169643" )
+    ZERO_UUID ( ASHLAR.out.tif, "25169643" )
 
 }
 
@@ -97,7 +97,7 @@ workflow test_ashlar_1_file_dfp_ffp {
                                                ['ome-tiff']
                                                ['cycif_tonsil_ffp'], checkIfExists: true)] )
 
-    ZERO_UUID ( ASHLAR.out[0], "8390123" )
+    ZERO_UUID ( ASHLAR.out.tif, "8390123" )
 
 }
 
