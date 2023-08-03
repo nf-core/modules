@@ -29,16 +29,9 @@ process ASHLAR {
     def dfp_validated = (opt_dfp_size == 0 || opt_dfp_size == 1 || opt_dfp_size == num_files) ? true : false
     def ffp_validated = (opt_ffp_size == 0 || opt_ffp_size == 1 || opt_ffp_size == num_files) ? true : false
 
+    if ( !dfp_validated ) { error "Please input only zero or one dfp files" }
+    if ( !ffp_validated ) { error "Please input only zero or one ffp files" }
     """
-    if [ "$dfp_validated" = "false" ]; then
-        echo "Error: please input only zero or one dfp files"
-        exit 1
-    fi
-
-    if [ "$ffp_validated" = "false" ]; then
-        echo "Error: please input only zero or one ffp files"
-        exit 1
-    fi
 
     ashlar \\
         $file \\
