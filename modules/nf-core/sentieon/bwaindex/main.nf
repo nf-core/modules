@@ -3,11 +3,6 @@ process SENTIEON_BWAINDEX {
     label 'process_high'
     label 'sentieon'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     container 'nf-core/sentieon:202112.06'
 
     input:
@@ -21,6 +16,10 @@ process SENTIEON_BWAINDEX {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     """
     mkdir bwa
@@ -39,6 +38,10 @@ process SENTIEON_BWAINDEX {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
     mkdir bwa
 
