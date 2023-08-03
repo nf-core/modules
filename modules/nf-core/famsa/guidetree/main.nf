@@ -26,7 +26,7 @@ process FAMSA_GUIDETREE {
         $args \\
         -t ${task.cpus} \\
         ${fasta} \\
-        ${prefix}.dnd 
+        ${prefix}.dnd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
