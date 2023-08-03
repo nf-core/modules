@@ -6,7 +6,23 @@ include { ASHLAR } from '../../../../modules/nf-core/ashlar/main.nf'
 include { ASHLAR as ASHLAR_TILE } from '../../../../modules/nf-core/ashlar/main.nf'
 
 // we zero out the UUID of output tiff images with ZERO_UUID so we get a consistent md5sum
-include { ZERO_UUID } from './zero_uuid.nf'
+process ZERO_UUID {
+
+    input:
+    val(file_in)
+    val(offset)
+
+    when:
+    file_in != "versions.yml"
+
+    script:
+    def file_path = file_in[1]
+
+    """
+    echo -n "00000000-0000-0000-0000-000000000000" | dd of=$file_path bs=1 seek=$offset conv=notrunc
+    """
+
+}
 
 workflow test_ashlar_1_file {
 
