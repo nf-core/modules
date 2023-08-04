@@ -8,9 +8,7 @@ process GALAH {
         'biocontainers/galah:0.3.1--h031d066_3' }"
 
     input:
-    tuple val(meta), path(bins)
-    path(qc_table)
-    val(qc_format)
+    tuple val(meta), path(bins), path(qc_table), val(qc_format)
 
     output:
     tuple val(meta), path("*.tsv")                    , emit: tsv
