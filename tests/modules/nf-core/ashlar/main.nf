@@ -9,9 +9,11 @@ include { ASHLAR as ASHLAR_TILE } from '../../../../modules/nf-core/ashlar/main.
 process ZERO_UUID {
 
     input:
-    val(meta), path(tif)
+    tuple val(meta), path(tif)
     val(offset)
-
+    
+    output:
+    tuple val(meta), path(tif), includeInputs: true, emit: parsed_tif
     when:
     tif != "versions.yml"
 
