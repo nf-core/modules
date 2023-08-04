@@ -9,17 +9,16 @@ include { ASHLAR as ASHLAR_TILE } from '../../../../modules/nf-core/ashlar/main.
 process ZERO_UUID {
 
     input:
-    val(file_in)
+    val(meta), path(tif)
     val(offset)
 
     when:
-    file_in != "versions.yml"
+    tif != "versions.yml"
 
     script:
-    def file_path = file_in[1]
 
     """
-    echo -n "00000000-0000-0000-0000-000000000000" | dd of=$file_path bs=1 seek=$offset conv=notrunc
+    echo -n "00000000-0000-0000-0000-000000000000" | dd of=$tif bs=1 seek=$offset conv=notrunc
     """
 
 }
