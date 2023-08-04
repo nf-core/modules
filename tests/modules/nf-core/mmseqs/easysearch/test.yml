@@ -1,0 +1,25 @@
+- name: mmseqs easysearch test_mmseqs_easysearch
+  command: nextflow run ./tests/modules/nf-core/mmseqs/easysearch -entry test_mmseqs_easysearch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/easysearch/nextflow.config
+  tags:
+    - mmseqs
+    - mmseqs/easysearch
+  files:
+    - path: output/mmseqs/test_query.tsv
+      md5sum: 98a6e138ad41ed04366808799fd6a4b8
+    - path: output/mmseqs/test_target/test_target
+      md5sum: 7c3c2c5926cf8fa82e66b9628f680256
+    - path: output/mmseqs/test_target/test_target.dbtype
+      md5sum: c8ed20c23ba91f4577f84c940c86c7db
+    - path: output/mmseqs/test_target/test_target.index
+      md5sum: 5b2fd8abd0ad3fee24738af7082e6a6e
+    - path: output/mmseqs/test_target/test_target.lookup
+      md5sum: 32f88756dbcb6aaf7b239b0d61730f1b
+    - path: output/mmseqs/test_target/test_target.source
+      md5sum: 79f78b56ea7c871d7e982bd864ac7882
+    - path: output/mmseqs/test_target/test_target_h
+      md5sum: 8c29f5ed94d83d7115e9c8a883ce358d
+    - path: output/mmseqs/test_target/test_target_h.dbtype
+      md5sum: 8895d3d8e9322aedbf45249dfb3ddb0a
+    - path: output/mmseqs/test_target/test_target_h.index
+      md5sum: 87c7c8c6d16018ebfaa6f408391a5ae2
+    - path: output/mmseqs/versions.yml
