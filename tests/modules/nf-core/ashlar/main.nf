@@ -11,11 +11,9 @@ process ZERO_UUID {
     input:
     tuple val(meta), path(tif)
     val(offset)
-    
+
     output:
-    tuple val(meta), path(tif), includeInputs: true, emit: parsed_tif
-    when:
-    tif != "versions.yml"
+    tuple val(meta), path(tif), emit: parsed_tif
 
     script:
 
