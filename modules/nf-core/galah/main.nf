@@ -21,7 +21,7 @@ process GALAH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def qc_args = (qc_format == "checkm") ? "--checkm-tab-table ${qc_table}" : "--genome-info ${qc_table}")
+    def qc_args = (qc_format == "checkm") ? "--checkm-tab-table ${qc_table}" : "--genome-info ${qc_table}"
     def qc_input = qc_table ? qc_args : ""
     def valid_qc_format = qc_format in ["checkm", "genome_info"]
     if( qc_table && !valid_qc_format ) {
