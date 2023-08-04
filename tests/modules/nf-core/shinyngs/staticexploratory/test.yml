@@ -11,6 +11,19 @@
     - path: output/shinyngs/treatment/png/pca3d.png
     - path: output/shinyngs/treatment/png/sample_dendrogram.png
 
+- name: shinyngs staticexploratory test_shinyngs_staticexploratory_specify_log
+  command: nextflow run ./tests/modules/nf-core/shinyngs/staticexploratory -entry test_shinyngs_staticexploratory_specify_log -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticexploratory/nextflow.config
+  tags:
+    - shinyngs/staticexploratory
+    - shinyngs
+  files:
+    - path: output/shinyngs/treatment/png/boxplot.png
+    - path: output/shinyngs/treatment/png/density.png
+    - path: output/shinyngs/treatment/png/mad_correlation.png
+    - path: output/shinyngs/treatment/png/pca2d.png
+    - path: output/shinyngs/treatment/png/pca3d.png
+    - path: output/shinyngs/treatment/png/sample_dendrogram.png
+
 - name: shinyngs staticexploratory test_shinyngs_staticexploratory_html
   command: nextflow run ./tests/modules/nf-core/shinyngs/staticexploratory -entry test_shinyngs_staticexploratory_html -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticexploratory/nextflow.config
   tags:
