@@ -29,7 +29,7 @@ process FAMSA_ALIGN {
         $args \\
         -t ${task.cpus} \\
         ${fasta} \\
-        ${prefix}.aln 
+        ${prefix}.aln
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
