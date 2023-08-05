@@ -1,0 +1,9 @@
+- name: seqkit fq2fa test_seqkit_fq2fa
+  command: nextflow run ./tests/modules/nf-core/seqkit/fq2fa -entry test_seqkit_fq2fa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/seqkit/fq2fa/nextflow.config
+  tags:
+    - seqkit
+    - seqkit/fq2fa
+  files:
+    - path: output/seqkit/test.fa.gz
+      md5sum: 34cfc73cf1c6f4fc289992ca5827ed85
+    - path: output/seqkit/versions.yml

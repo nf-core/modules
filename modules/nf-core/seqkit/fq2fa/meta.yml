@@ -1,0 +1,44 @@
+name: "seqkit_fq2fa"
+description: Convert FASTQ to FASTA format
+keywords:
+  - fastq
+  - fasta
+  - convert
+tools:
+  - "seqkit":
+      description: "Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen."
+      homepage: "https://github.com/shenwei356/seqkit"
+      documentation: "https://bioinf.shenwei.me/seqkit/"
+      doi: "10.1371/journal.pone.0163962"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - fastq:
+      type: file
+      description: Sequence file in fastq format
+      pattern: "*.{fastq,fq}.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Sequence file in fasta format
+      pattern: "*.{fasta,fa}.gz"
+
+authors:
+  - "@d-jch"
