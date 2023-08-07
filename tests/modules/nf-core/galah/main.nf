@@ -9,20 +9,16 @@ workflow test_galah {
     input = [
         [ id:'test' ], // meta map
         [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
+        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
+        [], 
+        []
     ]
 
-    GALAH ( input, [], [] )
+    GALAH ( input )
 
 }
 
 workflow test_galah_genomeinfo {
-
-    input = [
-        [ id:'test' ], // meta map
-        [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
-    ]
 
     genomeinfo = [
         [ id: 'genomeinfo' ],
@@ -36,6 +32,16 @@ workflow test_galah_genomeinfo {
     ch_genomeinfo = GUNZIP.out.gunzip
         .map { meta, tsv -> [tsv] }
 
-    GALAH ( input, ch_genomeinfo, "genome_info")
+    input = [
+        [ id:'test' ], // meta map
+        [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
+        ch_genomeinfo,
+        "genome_info"
+    ]
+
+
+
+    GALAH ( input )
 
 }
