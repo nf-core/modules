@@ -10,7 +10,7 @@ workflow test_galah {
         [ id:'test' ], // meta map
         [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
         file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
-        [], 
+        [],
         []
     ]
 
@@ -22,21 +22,23 @@ workflow test_galah_genomeinfo {
 
     genomeinfo = Channel.fromPath("https://raw.githubusercontent.com/nf-core/test-datasets/magmap/testdata/checkm.lineage_wf.qa_2.tsv", checkIfExists: true)
         .map { file ->
-            [ [id: "genomeinfo], file ]
+            [ [id: "genomeinfo"], file ]
     }
 
     BIOAWK_GENOMEINFO(genomeinfo)
 
     GUNZIP(BIOAWK_GENOMEINFO.out.output)
-    
+
     ch_genomeinfo = GUNZIP.out.gunzip
         .map { meta, tsv -> [tsv] }
 
-    input = [
-        [ id:'test' ], // meta map
-        [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
-    ]
+    input = Channel.of(
+        [
+            [ id:'test' ], // meta map
+            [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+            file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
+        ]
+        )
     .combine(ch_genomeinfo)
     .map {meta, bins, qc ->
             [ meta, bins, qc, "genome_info" ]
