@@ -44,8 +44,8 @@ input:
   - exons:
       type: file
       description: |
-        Tab-delimited file with exons for indel frameshifts (chr,beg,end; 1-based, inclusive, bgzip compressed).
-        e.g. 'file.tsv.gz'
+        Tab-delimited file with exons for indel frameshifts (chr,beg,end; 1-based, inclusive, optionally bgzip compressed).
+        e.g. 'exons.tsv.gz'
   - fasta:
       type: file
       description: |
@@ -69,3 +69,4 @@ authors:
   - "@joseespinosa"
   - "@drpatelh"
   - "@SusiJo"
+  - "@TCLamnidis"
