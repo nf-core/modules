@@ -21,6 +21,7 @@ process MMSEQS_EASYSEARCH {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: "*.dbtype"
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
