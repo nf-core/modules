@@ -48,6 +48,7 @@ process MMSEQS_EASYSEARCH {
 
     stub:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: "*.dbtype"
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ${prefix}.tsv
