@@ -31,12 +31,12 @@ input:
       pattern: "*.bed"
   - model:
       type: directory
-      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
-      pattern: "*.tar.gz"
+      description: Optional - directory containing the model produced by germlinecnvcaller cohort mode
+      pattern: "*-cnv-model/*-model"
   - ploidy:
       type: file
-      description: Tar gzipped directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
-      pattern: "*.tar.gz"
+      description: Directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
+      pattern: "*-calls"
 
 output:
   - meta:
@@ -51,11 +51,11 @@ output:
   - calls:
       type: file
       description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
-      pattern: "*.tar"
+      pattern: "*-cnv-calls/*-calls"
   - model:
       type: directory
       description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
-      pattern: "*.tar.gz"
+      pattern: "*-cnv-model/*-model"
 
 authors:
   - "@ryanjameskennedy"
