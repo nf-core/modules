@@ -27,7 +27,7 @@ process MMSEQS_EASYSEARCH {
     mkdir -p ${prefix}
 
     # Extract files with specified args based suffix | remove suffix | isolate longest common substring of files
-    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "*.dbtype" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args2" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         easy-search \\
