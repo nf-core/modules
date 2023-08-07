@@ -9,7 +9,7 @@ process MMSEQS_EASYSEARCH {
         'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
 
     input:
-    tuple val(meta),  path(fasta)
+    tuple val(meta) , path(fasta)
     tuple val(meta2), path(db_target)
 
     output:
