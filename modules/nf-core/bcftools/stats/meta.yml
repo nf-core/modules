@@ -41,6 +41,16 @@ input:
       description: |
         Optional, file of sample names to be included or excluded.
         e.g. 'file.tsv'
+  - exons:
+      type: file
+      description: |
+        Tab-delimited file with exons for indel frameshifts (chr,beg,end; 1-based, inclusive, bgzip compressed).
+        e.g. 'file.tsv.gz'
+  - fasta:
+      type: file
+      description: |
+        Faidx indexed reference sequence file to determine INDEL context.
+        e.g. 'reference.fa'
 output:
   - meta:
       type: map
