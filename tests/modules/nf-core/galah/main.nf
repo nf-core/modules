@@ -35,12 +35,12 @@ workflow test_galah_genomeinfo {
     input = [
         [ id:'test' ], // meta map
         [file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
-        ch_genomeinfo,
-        "genome_info"
+        file("https://github.com/nf-core/test-datasets/raw/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
     ]
-
-
+    .combine(ch_genomeinfo)
+    .map {meta, bins, qc ->
+            [ meta, bins, qc, "genome_info" ]
+    }
 
     GALAH ( input )
 
