@@ -20,10 +20,10 @@ workflow test_galah {
 
 workflow test_galah_genomeinfo {
 
-    genomeinfo = [
-        [ id: 'genomeinfo' ],
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/magmap/testdata/checkm.lineage_wf.qa_2.tsv", checkIfExists: true)
-    ]
+    genomeinfo = Channel.fromPath("https://raw.githubusercontent.com/nf-core/test-datasets/magmap/testdata/checkm.lineage_wf.qa_2.tsv", checkIfExists: true)
+        .map { file ->
+            [ [id: "genomeinfo], file ]
+    }
 
     BIOAWK_GENOMEINFO(genomeinfo)
 
