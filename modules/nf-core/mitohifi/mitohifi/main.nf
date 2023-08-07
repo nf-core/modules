@@ -2,10 +2,6 @@ process MITOHIFI_MITOHIFI {
     tag "$meta.id"
     label 'process_high'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
-    }
 
     // Docker image available at the project github repository
     container 'ghcr.io/marcelauliano/mitohifi:master'
@@ -39,6 +35,11 @@ process MITOHIFI_MITOHIFI {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
+    }
+
     def args = task.ext.args ?: ''
     def run_type = reads ? "-r ${reads}" :
                     contigs ? "-c ${contigs}" :
