@@ -50,7 +50,7 @@ workflow test_bcftools_stats_exons {
     regions   = [ [], [] ]
     targets   = [ [], [] ]
     samples   = [ [], [] ]
-    exons     = [ [id: "exon_test"], file("/Users/lamnidis/Software/github/TCLamnidis/test-datasets/data/delete_me/bcftools/stats/exons.tsv.gz") ]
+    exons     = [ [id: "exon_test"], file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/bcftools/stats/exons.tsv.gz") ]
     reference = [ [], [] ]
 
     BCFTOOLS_STATS ( input, regions, targets, samples, exons, reference)
