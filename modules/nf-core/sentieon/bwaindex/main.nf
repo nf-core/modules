@@ -21,13 +21,14 @@ process SENTIEON_BWAINDEX {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
     """
     mkdir bwa
 
     sentieon \\
         bwa index \\
         $args \\
-        -p bwa/${fasta.baseName} \\
+        -p $prefix \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
