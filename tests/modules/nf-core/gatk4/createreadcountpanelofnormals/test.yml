@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml /createreadcountpanelofnormals
+- name: "gatk4 createreadcountpanelofnormals"
+  command: nextflow run ./tests/modules/nf-core/gatk4/createreadcountpanelofnormals -entry test_gatk4_createreadcountpanelofnormals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/createreadcountpanelofnormals/nextflow.config
+  tags:
+    - "gatk4"
+    - "gatk4/createreadcountpanelofnormals"
+  files:
+    - path: "output/gatk4/test.hdf5"
+    - path: "output/gatk4/versions.yml"
