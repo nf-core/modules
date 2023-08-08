@@ -23,11 +23,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - treatment_bam:
       type: file
-      description: Coordinate sorted BAM/SAM file from treatment sample
+      description: Coordinate sorted BAM/SAM file from treatment sample or list of BAM/SAM files from biological replicates
       pattern: "*.{bam,sam}"
   - control_bam:
       type: file
-      description: Coordinate sorted BAM/SAM file from control sample
+      description: Coordinate sorted BAM/SAM file from control sample or list of BAM/SAM files from controls
       pattern: "*.{bam,sam}"
   - blacklist_bed:
       type: file
@@ -77,3 +77,4 @@ output:
       pattern: "*.{version.txt}"
 authors:
   - "@JoseEspinosa"
+  - "@samuelruizperez"
