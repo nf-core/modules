@@ -30,6 +30,7 @@ process GATK4_CREATEREADCOUNTPANELOFNORMALS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}M" CreateReadCountPanelOfNormals \\
+        ${args} \\
         ${input_list} \\
         --output ${prefix}.hdf5
 
