@@ -31,6 +31,8 @@ process GATK4_DENOISEREADCOUNTS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}M" DenoiseReadCounts \\
+        ${args} \\
+        --tmp-dir . \\
         --input ${counts} \\
         --count-panel-of-normals ${pon} \\
         --standardized-copy-ratios ${prefix}_standardizedCR.tsv \\
