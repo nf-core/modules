@@ -65,6 +65,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 # Set defaults and classes
 
 opt <- list(
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file = '$intensities',
     sample_file = '$samplesheet',
     contrast_variable = '$contrast_variable',
@@ -111,7 +112,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -340,10 +341,6 @@ comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 ################################################
 ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
-prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
-
 contrast.name <-
     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
@@ -356,7 +353,7 @@ write.table(
         probe_id = rownames(comp.results),
         comp.results
     ),
-    file = paste(output_prefix, 'limma.results.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'limma.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -366,7 +363,7 @@ write.table(
 # Dispersion plot
 
 png(
-    file = paste(output_prefix, 'limma.mean_difference.png', sep = '.'),
+    file = paste(opt\$output_prefix, 'limma.mean_difference.png', sep = '.'),
     width = 600,
     height = 600
 )
@@ -375,7 +372,7 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(fit2, file = paste(output_prefix, 'MArrayLM.limma.rds', sep = '.'))
+saveRDS(fit2, file = paste(opt\$output_prefix, 'MArrayLM.limma.rds', sep = '.'))
 
 ################################################
 ################################################
@@ -383,7 +380,7 @@ saveRDS(fit2, file = paste(output_prefix, 'MArrayLM.limma.rds', sep = '.'))
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
 print(sessionInfo())
 sink()
 
