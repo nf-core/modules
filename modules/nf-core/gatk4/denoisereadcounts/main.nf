@@ -13,8 +13,8 @@ process GATK4_DENOISEREADCOUNTS {
 
     output:
     tuple val(meta), path("*_standardizedCR.tsv"), emit: standardized
-    tuple val(meta), path("*_denoisedCR.tsv"),     emit: denoised
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_denoisedCR.tsv")    , emit: denoised
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
