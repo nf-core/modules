@@ -10,7 +10,7 @@ process SENTIEON_APPLYVARCAL {
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
