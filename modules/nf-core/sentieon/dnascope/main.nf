@@ -75,6 +75,10 @@ process SENTIEON_DNASCOPE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
+    }    
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
