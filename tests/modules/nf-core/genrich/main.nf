@@ -6,11 +6,12 @@ include { GENRICH } from '../../../../modules/nf-core/genrich/main.nf'
 include { GENRICH as GENRICH_CTRL    } from '../../../../modules/nf-core/genrich/main.nf'
 include { GENRICH as GENRICH_ALL     } from '../../../../modules/nf-core/genrich/main.nf'
 include { GENRICH as GENRICH_ATACSEQ } from '../../../../modules/nf-core/genrich/main.nf'
+include { GENRICH as GENRICH_LIST } from '../../../../modules/nf-core/genrich/main.nf'
 
 workflow test_genrich {
     input     = [ [ id:'test', single_end:false ], // meta map
-                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ]]
-    control   = [ ]
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
+                  [ ]]
     blacklist = [ ]
 
     save_pvalues    = false
@@ -18,13 +19,13 @@ workflow test_genrich {
     save_bed        = false
     save_duplicates = false
 
-    GENRICH ( input, control, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+    GENRICH ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
 }
 
 workflow test_genrich_ctrl {
     input     = [ [ id:'test', single_end:false ], // meta map
-                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ]]
-    control   = [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true) ]
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
+                  [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true) ]]
     blacklist = [ ]
 
     save_pvalues    = false
@@ -32,13 +33,13 @@ workflow test_genrich_ctrl {
     save_bed        = false
     save_duplicates = false
 
-    GENRICH_CTRL ( input, control, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+    GENRICH_CTRL ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
 }
 
 workflow test_genrich_all_outputs {
     input     = [ [ id:'test', single_end:false ], // meta map
-                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ]]
-    control   = [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true) ]
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
+                  [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true) ]]
     blacklist = [ ]
 
     save_pvalues    = true
@@ -46,13 +47,13 @@ workflow test_genrich_all_outputs {
     save_bed        = true
     save_duplicates = true
 
-    GENRICH_ALL ( input, control, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+    GENRICH_ALL ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
 }
 
 workflow test_genrich_blacklist {
     input     = [ [ id:'test', single_end:false ], // meta map
-                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ]]
-    control   = [ ]
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
+                  [ ]]
     blacklist = [ file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
 
     save_pvalues    = false
@@ -60,13 +61,13 @@ workflow test_genrich_blacklist {
     save_bed        = false
     save_duplicates = false
 
-    GENRICH ( input, control, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+    GENRICH ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
 }
 
 workflow test_genrich_atacseq {
     input     = [ [ id:'test', single_end:false ], // meta map
-                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ]]
-    control   = [ ]
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
+                  [ ]]
     blacklist = [ ]
 
     save_pvalues    = false
@@ -74,6 +75,21 @@ workflow test_genrich_atacseq {
     save_bed        = false
     save_duplicates = false
 
-    GENRICH_ATACSEQ ( input, control, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+    GENRICH_ATACSEQ ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
+}
+
+workflow test_genrich_list {
+    input     = [ [ id:'test', single_end:false ], // meta map
+                  [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
+                    file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)],
+                  [ ]]
+    blacklist = [ file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+
+    save_pvalues    = false
+    save_pileup     = false
+    save_bed        = false
+    save_duplicates = false
+
+    GENRICH_LIST ( input, blacklist, save_pvalues, save_pileup, save_bed, save_duplicates )
 }
 
