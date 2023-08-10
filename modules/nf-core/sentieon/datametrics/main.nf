@@ -1,6 +1,6 @@
 process SENTIEON_DATAMETRICS {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
     label 'sentieon'
 
     secret 'SENTIEON_LICENSE_BASE64'
