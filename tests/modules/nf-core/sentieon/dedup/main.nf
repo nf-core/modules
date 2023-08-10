@@ -16,7 +16,7 @@ workflow test_dedup_mark_duplicate_reads {
         file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true)
     ]
 
-    SENTIEON_DEDUP_MARK ( bam_ch, fasta_file, fasta_fai_file )
+    SENTIEON_DEDUP_MARK ( bam_ch, [[:], fasta_file], [[:], fasta_fai_file] )
 }
 
 workflow test_dedup_remove_duplicate_reads {
@@ -30,5 +30,5 @@ workflow test_dedup_remove_duplicate_reads {
         file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true)
     ]
 
-    SENTIEON_DEDUP_REMOVE ( bam_ch, fasta_file, fasta_fai_file )
+    SENTIEON_DEDUP_MARK ( bam_ch, [[:], fasta_file], [[:], fasta_fai_file] )
 }
