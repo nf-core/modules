@@ -82,3 +82,44 @@ workflow test_bwa_mem_paired_end_sort {
     BWA_INDEX ( fasta )
     BWA_MEM ( input, BWA_INDEX.out.index, true )
 }
+
+
+//
+// Test with stub pairedend
+//
+workflow test_bwa_mem_paired_end_stub {
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+
+    BWA_INDEX ( fasta )
+    BWA_MEM ( input, BWA_INDEX.out.index, false )
+}
+
+
+//
+// Test with single-end data stub
+//
+workflow test_bwa_mem_single_end_stub {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+
+    BWA_INDEX ( fasta )
+    BWA_MEM ( input, BWA_INDEX.out.index, false )
+}

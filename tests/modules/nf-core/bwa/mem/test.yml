@@ -69,3 +69,19 @@
       md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
     - path: ./output/bwa/bwa/genome.sa
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+
+- name: bwa mem paired-end stub
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_paired_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config -stub
+  tags:
+    - bwa
+    - bwa/mem
+  files:
+    - path: ./output/bwa/test.bam
+
+- name: bwa mem single-end stub
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_single_end_stub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config -stub
+  tags:
+    - bwa
+    - bwa/mem
+  files:
+    - path: ./output/bwa/test.bam
