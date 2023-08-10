@@ -90,8 +90,8 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools
-        run: python -m pip install nf-core
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Install Nextflow
         env:
@@ -184,6 +184,8 @@ jobs:
             tags: gatk4/postprocessgermlinecnvcalls
           - profile: "conda"
             tags: genescopefk
+          - profile: "conda"
+            tags: hlala/preparegraph
           - profile: "conda"
             tags: ilastik/multicut
           - profile: "conda"
