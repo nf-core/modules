@@ -19,7 +19,6 @@ process SENTIEON_DNASCOPE {
     output:
     tuple val(meta), path("*.vcf.gz")                      , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")                  , emit: index
-    tuple val(meta), path("*.vcf.gz"), path("*.vcf.gz.tbi"), emit: vcf_index
     path "versions.yml"                                    , emit: versions
 
     when:
