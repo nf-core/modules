@@ -1,6 +1,6 @@
-process SENTIEON_APPLYVARCAL {
+process SENTIEON_READWRITER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
     label 'sentieon'
 
     secret 'SENTIEON_LICENSE_BASE64'
@@ -8,14 +8,15 @@ process SENTIEON_APPLYVARCAL {
     container 'nf-core/sentieon:202112.06'
 
     input:
-    tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
+    tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.${format}"),                     emit: output
+    tuple val(meta), path("*.${index}") ,                     emit: index
+    tuple val(meta), path("*.${format}"), path("*.${index}"), emit: output_index
+    path  "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +26,15 @@ process SENTIEON_APPLYVARCAL {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args            = task.ext.args   ?: ''
+    def args2           = task.ext.args2  ?: ''
+    def input_str       = input.sort().collect{"-i $it"}.join(' ')
+    def reference       = fasta ? "-r $fasta" : ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    format              = input.extension == "bam" ? "bam"     : "cram"
+    index               = format          == "bam" ? "bam.bai" : "cram.crai"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
-
     """
     if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
@@ -47,12 +52,29 @@ process SENTIEON_APPLYVARCAL {
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
-    sentieon driver -r ${fasta}  --algo ApplyVarCal \\
-        -v $vcf \\
-        --recal $recal \\
-        --tranches_file $tranches \\
+    sentieon \\
+        driver \\
+        -t $task.cpus \\
+        $reference \\
         $args \\
-        ${prefix}.vcf.gz
+        $input_str \\
+        --algo ReadWriter \\
+        $args2 \\
+        ${prefix}.${format}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    format = input.extension == "bam" ? "bam"     : "cram"
+    index  = format          == "bam" ? "bam.bai" : "cram.crai"
+    """
+    touch ${prefix}.${format}
+    touch ${prefix}.${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
