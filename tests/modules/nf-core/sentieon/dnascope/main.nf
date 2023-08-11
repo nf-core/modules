@@ -17,5 +17,5 @@ workflow test_dnascope {
 
     ml_model = file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.0.model", checkIfExists: true)
 
-    SENTIEON_DNASCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], ml_model )
+    SENTIEON_DNASCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], [[:],ml_model] )
 }
