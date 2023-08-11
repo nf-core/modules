@@ -14,7 +14,7 @@ process SENTIEON_DNASCOPE {
     tuple val(meta4), path(dbsnp)
     tuple val(meta5), path(dbsnp_tbi)
     tuple val(meta6), path(call_interval)
-    path ml_model
+    tuple val(meta7), path(ml_model)
 
     output:
     tuple val(meta), path("*.vcf.gz")                      , emit: vcf
