@@ -8,11 +8,11 @@ include { CLUSTALO_ALIGN     } from '../../../../../modules/nf-core/clustalo/ali
 workflow test_clustalo_align {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
     ]
-
-    CLUSTALO_ALIGN ( input )
+    
+    CLUSTALO_ALIGN ( input, [[:],[]] )
 }
 
 
