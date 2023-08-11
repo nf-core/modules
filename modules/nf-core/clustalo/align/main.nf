@@ -28,7 +28,7 @@ process CLUSTALO_ALIGN {
         -i ${fasta} \\
         --threads=${task.cpus} \\
         $args \\
-        -o ${prefix}.aln 
+        -o ${prefix}.aln
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
