@@ -90,8 +90,8 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools
-        run: python -m pip install nf-core
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Install Nextflow
         env:
@@ -185,6 +185,8 @@ jobs:
           - profile: "conda"
             tags: genescopefk
           - profile: "conda"
+            tags: hlala/preparegraph
+          - profile: "conda"
             tags: ilastik/multicut
           - profile: "conda"
             tags: ilastik/pixelclassification
@@ -201,6 +203,10 @@ jobs:
           - profile: "conda"
             tags: mitohifi/findmitoreference
           - profile: "conda"
+            tags: parabricks/applybqsr
+          - profile: "conda"
+            tags: parabricks/fq2bam
+          - profile: "conda"
             tags: scimap/mcmicro
           - profile: "conda"
             tags: sentieon/applyvarcal
@@ -209,11 +215,17 @@ jobs:
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
+            tags: sentieon/datametrics
+          - profile: "conda"
             tags: sentieon/dedup
+          - profile: "conda"
+            tags: sentieon/dnascope
           - profile: "conda"
             tags: sentieon/gvcftyper
           - profile: "conda"
             tags: sentieon/haplotyper
+          - profile: "conda"
+            tags: sentieon/readwriter
           - profile: "conda"
             tags: sentieon/varcal
           - profile: "conda"

@@ -1,0 +1,9 @@
+- name: sentieon test_dnascope
+  command: nextflow run ./tests/modules/nf-core/sentieon/dnascope -entry test_dnascope -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnascope/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/dnascope
+  files:
+    - path: ./output/sentieon/test.vcf.gz
+    - path: ./output/sentieon/test.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml
