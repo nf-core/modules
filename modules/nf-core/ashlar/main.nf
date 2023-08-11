@@ -21,6 +21,7 @@ process ASHLAR {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def dfp = opt_dfp ? "--dfp $opt_dfp" : ""
     def ffp = opt_ffp ? "--ffp $opt_ffp" : ""
     def num_files = images instanceof List ? images.size() : 1
@@ -35,10 +36,13 @@ process ASHLAR {
     """
 
     ashlar \\
+        -o ${prefix}.ome.tif \\
         $images \\
         $args \\
         $dfp \\
         $ffp
+
+    sed -i 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/UUID="urn:uuid:00000000-0000-0000-0000-000000000000"/g' ${prefix}.ome.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
