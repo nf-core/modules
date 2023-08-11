@@ -16,7 +16,7 @@ workflow test_dnamodelapply {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
 
-    ml_model = [[:], file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.0.model", checkIfExists: true)]
+    ml_model = [[:], file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists: true)]
 
     SENTIEON_DNASCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], ml_model )
 
