@@ -1,4 +1,3 @@
-
 process CLUSTALO_GUIDETREE {
     tag "$meta.id"
     label 'process_medium'
