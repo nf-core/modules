@@ -42,7 +42,7 @@ process ASHLAR {
         $dfp \\
         $ffp
 
-    sed -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/UUID="urn:uuid:00000000-0000-0000-0000-000000000000"/g' ${prefix}.uuid.ome.tif > ${prefix}.ome.tif
+    sed -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.uuid.ome.tif > ${prefix}.ome.tif
     rm ${prefix}.uuid.ome.tif
 
     cat <<-END_VERSIONS > versions.yml
