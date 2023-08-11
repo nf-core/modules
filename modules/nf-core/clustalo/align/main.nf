@@ -22,7 +22,6 @@ process CLUSTALO_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def options_tree = tree ? "--guidetree-in=$tree" : ""
     """
     clustalo \\
         -i ${fasta} \\
