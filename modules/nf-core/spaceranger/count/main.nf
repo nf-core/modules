@@ -4,12 +4,6 @@ process SPACERANGER_COUNT {
 
     container "docker.io/nfcore/spaceranger:2.1.0"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-
     input:
     tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
     path(reference)
@@ -23,6 +17,10 @@ process SPACERANGER_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Add flags for optional inputs on demand.
@@ -56,6 +54,10 @@ process SPACERANGER_COUNT {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
