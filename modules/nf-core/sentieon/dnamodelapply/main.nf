@@ -11,7 +11,7 @@ process SENTIEON_DNAMODELAPPLY {
     tuple val(meta), path(vcf), path(idx)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    path ml_model
+    tuple val(meta4), path(ml_model)
 
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf

@@ -22,13 +22,18 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+        Groovy Map containing reference information
+        e.g. `[ id:'test' ]`
   - meta3:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+        Groovy Map containing reference information
+        e.g. `[ id:'test' ]`
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'test' ]`
   - vcf:
       type: file
       description: INPUT VCF file
@@ -45,6 +50,10 @@ input:
       type: file
       description: Index of the genome fasta file
       pattern: "*.fai"
+  - ml_model:
+      type: file
+      description: machine learning model file
+      pattern: "*.model"
 
 output:
   - meta:
