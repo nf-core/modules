@@ -11,11 +11,11 @@ process METABAT2_METABAT2 {
     tuple val(meta), path(fasta), path(depth)
 
     output:
-    tuple val(meta), path("metabat2/*.tooShort.fa.gz")                    , optional:true, emit: tooshort
-    tuple val(meta), path("metabat2/*.lowDepth.fa.gz")                    , optional:true, emit: lowdepth
-    tuple val(meta), path("metabat2/*.unbinned.fa.gz")                    , optional:true, emit: unbinned
-    tuple val(meta), path("metabat2/*.tsv.gz")                            , optional:true, emit: membership
-    tuple val(meta), path("metabat2/*[!lowDepth|tooShort|unbinned].fa.gz"), optional:true, emit: fasta
+    tuple val(meta), path("*.tooShort.fa.gz")                    , optional:true, emit: tooshort
+    tuple val(meta), path("*.lowDepth.fa.gz")                    , optional:true, emit: lowdepth
+    tuple val(meta), path("*.unbinned.fa.gz")                    , optional:true, emit: unbinned
+    tuple val(meta), path("*.tsv.gz")                            , optional:true, emit: membership
+    tuple val(meta), path("*[!lowDepth|tooShort|unbinned].fa.gz"), optional:true, emit: fasta
     path "versions.yml"                                                                  , emit: versions
 
     when:
@@ -35,10 +35,10 @@ process METABAT2_METABAT2 {
         $depth_file \\
         -t $task.cpus \\
         --saveCls \\
-        -o metabat2/${prefix}
+        -o ${prefix}
 
-    gzip -cn metabat2/${prefix} > metabat2/${prefix}.tsv.gz
-    find ./metabat2/ -name "*.fa" -type f | xargs -t -n 1 bgzip -@ ${task.cpus}
+    gzip -cn ${prefix} > ${prefix}.tsv.gz
+    find . -name "*.fa" -type f | xargs -t -n 1 bgzip -@ ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
