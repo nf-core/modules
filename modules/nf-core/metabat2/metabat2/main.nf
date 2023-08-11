@@ -11,12 +11,12 @@ process METABAT2_METABAT2 {
     tuple val(meta), path(fasta), path(depth)
 
     output:
-    tuple val(meta), path("metabat2/*.tooShort.fa.gz"), optional:true, emit: tooshort
-    tuple val(meta), path("metabat2/*.lowDepth.fa.gz"), optional:true, emit: lowdepth
-    tuple val(meta), path("metabat2/*.unbinned.fa.gz"), optional:true, emit: unbinned
-    tuple val(meta), path("metabat2/*.tsv.gz")        , optional:true, emit: membership
-    tuple val(meta), path("metabat2/*[!lowDepth|tooShort|unbinned].fa.gz")         , optional:true, emit: fasta
-    path "versions.yml"                                              , emit: versions
+    tuple val(meta), path("metabat2/*.tooShort.fa.gz")                    , optional:true, emit: tooshort
+    tuple val(meta), path("metabat2/*.lowDepth.fa.gz")                    , optional:true, emit: lowdepth
+    tuple val(meta), path("metabat2/*.unbinned.fa.gz")                    , optional:true, emit: unbinned
+    tuple val(meta), path("metabat2/*.tsv.gz")                            , optional:true, emit: membership
+    tuple val(meta), path("metabat2/*[!lowDepth|tooShort|unbinned].fa.gz"), optional:true, emit: fasta
+    path "versions.yml"                                                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
