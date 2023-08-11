@@ -1,4 +1,3 @@
-
 process CLUSTALO_ALIGN {
     tag "$meta.id"
     label 'process_medium'
