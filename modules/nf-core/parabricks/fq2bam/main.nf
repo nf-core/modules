@@ -4,6 +4,11 @@ process PARABRICKS_FQ2BAM {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
 
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful. 
+    */
     stageInMode "copy"
 
     input:
@@ -37,15 +42,6 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    # index and fasta need to be in the same dir as regular files (not symlinks)
-    #   and have the same base name for pbrun to function
-    #   here we copy the index into the staging dir of fasta
-    # FASTA_PATH=`readlink -f $fasta`
-    # cp \$INDEX.amb \$FASTA_PATH.amb
-    # cp \$INDEX.ann \$FASTA_PATH.ann
-    # cp \$INDEX.bwt \$FASTA_PATH.bwt
-    # cp \$INDEX.pac \$FASTA_PATH.pac
-    # cp \$INDEX.sa \$FASTA_PATH.sa
 
     pbrun \\
         fq2bam \\
