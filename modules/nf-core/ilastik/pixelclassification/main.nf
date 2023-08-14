@@ -33,8 +33,6 @@ process ILASTIK_PIXELCLASSIFICATION {
         $args \\
         $input_img
 
-    # Fake stuff
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ilastik: \$(/opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version)
