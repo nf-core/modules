@@ -359,6 +359,7 @@ jobs:
             /home/runner/pytest_workflow_*/*/work
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
+            ${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
