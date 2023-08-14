@@ -36,14 +36,13 @@ process ASHLAR {
     """
 
     ashlar \\
-        -o ${prefix}.uuid.ome.tif \\
+        -o ${prefix}.ome.tif \\
         $images \\
         $args \\
         $dfp \\
         $ffp
 
-    sed -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.uuid.ome.tif > ${prefix}.ome.tif
-    rm ${prefix}.uuid.ome.tif
+    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
