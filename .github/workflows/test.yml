@@ -16,6 +16,8 @@ concurrency:
 env:
   NXF_WORK: ${RUNNER_TEMP}/work
   NXF_HOME: ${RUNNER_TEMP}/home
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
 
 jobs:
   prettier:
@@ -255,6 +257,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -292,6 +295,12 @@ jobs:
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.7.1
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
@@ -359,6 +368,7 @@ jobs:
             !${{ env.NXF_HOME }}
             !${{ github.workspace }}/*/*/work/conda
             !${{ github.workspace }}/*/*/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
