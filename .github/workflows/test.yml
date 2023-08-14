@@ -297,8 +297,8 @@ jobs:
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
         run: |
-          mkdir -p NXF_SINGULARITY_CACHEDIR
-          mkdir -p NXF_SINGULARITY_LIBRARYDIR
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
