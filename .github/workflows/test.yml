@@ -16,7 +16,8 @@ concurrency:
 env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
-  NXF_WORK: ${{ runner.temp }}
+  NXF_WORK: ${{ runner.temp }}/work
+  NXF_ASSETS: ${{ runner.temp }}/.nextflow
 
 jobs:
   prettier:
