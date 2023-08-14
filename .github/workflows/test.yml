@@ -16,8 +16,6 @@ concurrency:
 env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
-  NXF_WORK: ${RUNNER_TEMP}/work
-  NXF_ASSETS: ${RUNNER_TEMP}/.nextflow
 
 jobs:
   prettier:
@@ -257,6 +255,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
