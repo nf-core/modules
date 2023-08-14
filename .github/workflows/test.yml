@@ -13,6 +13,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NXF_WORK: ${RUNNER_TEMP}/work
+  NXF_HOME: ${RUNNER_TEMP}/home
+
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -316,10 +320,15 @@ jobs:
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
+      - name: Create working dirs
+        run: |
+          mkdir -p $NXF_WORK
+          mkdir -p $NXF_HOME
+
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=$RUNNER_TEMP PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
@@ -477,6 +486,12 @@ jobs:
         with:
           singularity-version: 3.7.1
 
+      - name: Create Singularity cache directory
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
       - name: Set up miniconda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
@@ -503,6 +518,11 @@ jobs:
           SENTIEON_AUTH_DATA=$(python tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
+
+      - name: Create working dirs
+        run: |
+          mkdir -p $NXF_WORK
+          mkdir -p $NXF_HOME
 
       # Test the module
       - name: Run nf-test
