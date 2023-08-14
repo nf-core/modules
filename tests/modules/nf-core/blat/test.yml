@@ -1,0 +1,11 @@
+- name: blat test_blat
+  command: nextflow run ./tests/modules/nf-core/blat -entry test_blat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/blat/nextflow.config
+  tags:
+    - blat
+  files:
+    - path: output/blat/test.psl
+      md5sum: 0a52c2a143477395b4fcfb1d9470435b
+    - path: output/blat/versions.yml
+    - path: output/seqtk/test.seqtk-seq.fastq.gz
+      md5sum: a4980f0ff7d98209260b8751d6bfedf3
+    - path: output/seqtk/versions.yml

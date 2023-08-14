@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "blat"
+description: Queries a sequence subject
+keywords:
+  - blat
+  - sequence
+  - search
+tools:
+  - "blat":
+      description: "BLAT is a bioinformatics software tool which performs rapid mRNA/DNA and cross-species protein alignments."
+      homepage: "https://kentinformatics.com/"
+      documentation: "https://kentinformatics.com/documentation"
+      doi: "10.1101/gr.229202"
+      licence: "['Free for academic, nonprofit and personal use']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - query:
+      type: file
+      description: Sequence file
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,nib,2bit}"
+
+  - subject:
+      type: file
+      description: Sequence file
+      pattern: "*.{fa,nib,2bit}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - psl:
+      type: file
+      description: Search results
+      pattern: "*.{psl}"
+
+authors:
+  - "@d-jch"
