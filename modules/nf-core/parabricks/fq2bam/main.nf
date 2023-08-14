@@ -45,6 +45,8 @@ process PARABRICKS_FQ2BAM {
     cp \$INDEX.pac \$FASTA_PATH.pac
     cp \$INDEX.sa \$FASTA_PATH.sa
 
+    # Fake stuff
+
     pbrun \\
         fq2bam \\
         --ref $fasta \\
