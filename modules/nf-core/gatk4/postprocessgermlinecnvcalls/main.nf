@@ -43,6 +43,8 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
         --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
 
+    # Fake stuff
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')

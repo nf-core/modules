@@ -32,6 +32,8 @@ process CELLPOSE {
     $model_command \
     $args
 
+    # fake stuff
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cellpose: $VERSION
