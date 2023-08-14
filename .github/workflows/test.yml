@@ -294,6 +294,12 @@ jobs:
         with:
           singularity-version: 3.7.1
 
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p NXF_SINGULARITY_CACHEDIR
+          mkdir -p NXF_SINGULARITY_LIBRARYDIR
+
       - name: Set up miniconda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
