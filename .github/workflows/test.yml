@@ -337,7 +337,7 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=/tmp PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=$HOME PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
@@ -360,15 +360,13 @@ jobs:
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
-            /tmp/*/*/.nextflow.log
-            /tmp/*/*/log.out
-            /tmp/*/*/log.err
-            /tmp/*/*/work
+            ${{ env.HOME }}/pytest_workflow_*/*/.nextflow.log
+            ${{ env.HOME }}/pytest_workflow_*/*/log.out
+            ${{ env.HOME }}/pytest_workflow_*/*/log.err
             ${{ env.NXF_WORK }}
-            !${{ env.NXF_HOME }}
-            !${{ env.PYTEST_TMP }}/*/*/work/conda
-            !${{ env.PYTEST_TMP }}/*/*/work/singularity
-            !${{ env.PYTEST_TMP }}/.singularity
+            !${{ env.RUNNER_TEMP}}/work/conda
+            !${{ env.RUNNER_TEMP}}/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
