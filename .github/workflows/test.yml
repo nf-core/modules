@@ -337,14 +337,14 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=${GITHUB_WORKSPACE} PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=/tmp =PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always ${GITHUB_WORKSPACE}/*/*/log.{out,err}
+          batcat --decorations=always --color=always ${PYTEST_TMP}/*/*/log.{out,err}
 
       - name: Setting global variables
         uses: actions/github-script@v6
@@ -360,15 +360,15 @@ jobs:
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
-            ${{ github.workspace }}/*/*/.nextflow.log
-            ${{ github.workspace }}/*/*/log.out
-            ${{ github.workspace }}/*/*/log.err
-            ${{ github.workspace }}/*/*/work
+            /tmp/*/*/.nextflow.log
+            /tmp/*/*/log.out
+            /tmp/*/*/log.err
+            /tmp/*/*/work
             ${{ env.NXF_WORK }}
             !${{ env.NXF_HOME }}
-            !${{ github.workspace }}/*/*/work/conda
-            !${{ github.workspace }}/*/*/work/singularity
-            !${{ github.workspace }}/.singularity
+            !${{ env.PYTEST_TMP }}/*/*/work/conda
+            !${{ env.PYTEST_TMP }}/*/*/work/singularity
+            !${{ env.PYTEST_TMP }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
