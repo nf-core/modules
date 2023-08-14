@@ -337,14 +337,14 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=${GITHUB_WORKSPACE} PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always ${RUNNER_TEMP}/*/*/log.{out,err}
+          batcat --decorations=always --color=always ${GITHUB_WORKSPACE}/*/*/log.{out,err}
 
       - name: Setting global variables
         uses: actions/github-script@v6
