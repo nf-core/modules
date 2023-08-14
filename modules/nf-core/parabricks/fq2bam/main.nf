@@ -57,6 +57,8 @@ process PARABRICKS_FQ2BAM {
         --num-gpus $task.accelerator.request \\
         $args
 
+    # Fake stuff
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
