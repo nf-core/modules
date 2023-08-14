@@ -355,6 +355,8 @@ jobs:
             ${{ github.workspace }}/*/*/log.out
             ${{ github.workspace }}/*/*/log.err
             ${{ github.workspace }}/*/*/work
+            ${{ env.NXF_WORK }}
+            !${{ env.NXF_HOME }}
             !${{ github.workspace }}/*/*/work/conda
             !${{ github.workspace }}/*/*/work/singularity
 
