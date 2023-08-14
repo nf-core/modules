@@ -335,7 +335,7 @@ jobs:
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
+          batcat --decorations=always --color=always ${{ github.workspace }}/*/*/log.{out,err}
 
       - name: Setting global variables
         uses: actions/github-script@v6
@@ -351,12 +351,12 @@ jobs:
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
-            /home/runner/pytest_workflow_*/*/.nextflow.log
-            /home/runner/pytest_workflow_*/*/log.out
-            /home/runner/pytest_workflow_*/*/log.err
-            /home/runner/pytest_workflow_*/*/work
-            !/home/runner/pytest_workflow_*/*/work/conda
-            !/home/runner/pytest_workflow_*/*/work/singularity
+            ${{ github.workspace }}/*/*/.nextflow.log
+            ${{ github.workspace }}/*/*/log.out
+            ${{ github.workspace }}/*/*/log.err
+            ${{ github.workspace }}/*/*/work
+            !${{ github.workspace }}/*/*/work/conda
+            !${{ github.workspace }}/*/*/work/singularity
 
   nf-test-changes:
     name: nf-test-changes
