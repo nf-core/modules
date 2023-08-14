@@ -4,6 +4,8 @@ process PARABRICKS_FQ2BAM {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
 
+    stageInMode "copy"
+
     input:
     tuple val(meta), path(reads), path(interval_file)
     tuple val(meta2), path(fasta)
@@ -38,12 +40,12 @@ process PARABRICKS_FQ2BAM {
     # index and fasta need to be in the same dir as regular files (not symlinks)
     #   and have the same base name for pbrun to function
     #   here we copy the index into the staging dir of fasta
-    FASTA_PATH=`readlink -f $fasta`
-    cp \$INDEX.amb \$FASTA_PATH.amb
-    cp \$INDEX.ann \$FASTA_PATH.ann
-    cp \$INDEX.bwt \$FASTA_PATH.bwt
-    cp \$INDEX.pac \$FASTA_PATH.pac
-    cp \$INDEX.sa \$FASTA_PATH.sa
+    # FASTA_PATH=`readlink -f $fasta`
+    # cp \$INDEX.amb \$FASTA_PATH.amb
+    # cp \$INDEX.ann \$FASTA_PATH.ann
+    # cp \$INDEX.bwt \$FASTA_PATH.bwt
+    # cp \$INDEX.pac \$FASTA_PATH.pac
+    # cp \$INDEX.sa \$FASTA_PATH.sa
 
     pbrun \\
         fq2bam \\
