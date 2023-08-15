@@ -1,0 +1,42 @@
+name: "ashlar"
+description: Alignment by Simultaneous Harmonization of Layer/Adjacency Registration
+keywords:
+  - image_processing
+  - alignment
+  - registration
+tools:
+  - "ashlar":
+      description: "Alignment by Simultaneous Harmonization of Layer/Adjacency Registration"
+      homepage: "https://labsyspharm.github.io/ashlar/"
+      documentation: "https://labsyspharm.github.io/ashlar/"
+      doi: "10.1093/bioinformatics/btac544"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - images:
+      type: file
+      description: Overlapping tile image data in formats from most commercial microscopes
+      pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - tif:
+      type: file
+      description: A pyramidal, tiled OME-TIFF file created from input images.
+      pattern: "*.ome.tif"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@RobJY"
+  - "@jmuhlich"
