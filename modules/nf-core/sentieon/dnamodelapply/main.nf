@@ -1,4 +1,4 @@
-process SENTIEON_DNASCOPE {
+process SENTIEON_DNAMODELAPPLY {
     tag "$meta.id"
     label 'process_high'
     label 'sentieon'
@@ -8,18 +8,15 @@ process SENTIEON_DNASCOPE {
     container 'nf-core/sentieon:202112.06'
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(vcf), path(idx)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    tuple val(meta4), path(dbsnp)
-    tuple val(meta5), path(dbsnp_tbi)
-    tuple val(meta6), path(call_interval)
-    tuple val(meta7), path(ml_model)
+    tuple val(meta4), path(ml_model)
 
     output:
-    tuple val(meta), path("*.vcf.gz")                      , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")                  , emit: index
-    path "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +27,6 @@ process SENTIEON_DNASCOPE {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args      = task.ext.args   ?: ''
-    def args2     = task.ext.args2  ?: ''
-    def interval  = call_interval   ? "--interval ${call_interval}" : ''
-    def dbsnp_str = dbsnp           ? "-d ${dbsnp}"                 : ''
-    def model     = ml_model        ? "--model ${ml_model}"         : ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
@@ -59,12 +52,9 @@ process SENTIEON_DNASCOPE {
         -t $task.cpus \\
         -r $fasta \\
         $args \\
-        $interval \\
-        -i $bam \\
-        --algo DNAscope \\
-        $dbsnp_str \\
-        $args2 \\
-        $model \\
+        --algo DNAModelApply \\
+        --model $ml_model \\
+        -v $vcf \\
         ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml

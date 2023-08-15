@@ -13,6 +13,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -219,6 +223,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/dedup
           - profile: "conda"
+            tags: sentieon/dnamodelapply
+          - profile: "conda"
             tags: sentieon/dnascope
           - profile: "conda"
             tags: sentieon/gvcftyper
@@ -251,6 +257,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -288,6 +295,12 @@ jobs:
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.7.1
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
@@ -348,6 +361,7 @@ jobs:
             /home/runner/pytest_workflow_*/*/work
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
