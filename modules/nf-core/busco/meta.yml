@@ -60,10 +60,22 @@ output:
       type: file
       description: Full BUSCO results table
       pattern: "full_table.tsv"
+  - missing_busco_list:
+      type: file
+      description: List of missing BUSCOs
+      pattern: "missing_busco_list.tsv"
+  - single_copy_proteins:
+      type: file
+      description: Fasta file of single copy proteins (transcriptome mode)
+      pattern: "single_copy_proteins.faa"
   - seq_dir:
       type: dir
       description: BUSCO sequence directory
       pattern: "busco_sequences"
+  - translated_proteins:
+      type: directory
+      description: Six frame translations of each transcript made by the transcriptome mode
+      pattern: "translated_proteins"
   - versions:
       type: file
       description: File containing software versions
