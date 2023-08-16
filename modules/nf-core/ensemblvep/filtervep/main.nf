@@ -27,7 +27,7 @@ process ENSEMBLVEP_FILTERVEP {
         $args \\
         --input_file $input \\
         --output_file ${prefix}.${extension} \\
-        --only_matched 
+        --only_matched
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
