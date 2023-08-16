@@ -1,5 +1,5 @@
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_hmmer
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_hmmer -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_hmmer -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
@@ -45,7 +45,7 @@
       contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_mafft
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_mafft -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_mafft -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
@@ -80,7 +80,7 @@
       contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_nucl_hmmer
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_nucl_hmmer -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_nucl_hmmer -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
