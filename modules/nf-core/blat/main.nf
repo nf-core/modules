@@ -8,8 +8,8 @@ process BLAT {
         'biocontainers/blat:36--0' }"
 
     input:
-    tuple val(meta), path(query)
-    path  subject
+    tuple val(meta) , path(query)
+    tuple val(meta2), path(subject)
 
     output:
     tuple val(meta), path("*.psl"), emit: psl
@@ -30,8 +30,8 @@ process BLAT {
         $subject \\
         ${prefix}.fasta \\
         ${prefix}.psl
-    
-     rm ${prefix}.fasta
+
+    rm ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +43,7 @@ process BLAT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ${prefix}.psl
+    touch ${prefix}.psl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

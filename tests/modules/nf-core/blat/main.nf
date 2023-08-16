@@ -9,9 +9,12 @@ workflow test_blat {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
-    sequences = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    sequences = [
+        [ id:'sarscov2' ],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     
     SEQTK_SEQ ( input )
     BLAT ( SEQTK_SEQ.out.fastx, sequences )
