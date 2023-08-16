@@ -59,11 +59,11 @@ output:
   - full_table:
       type: file
       description: Full BUSCO results table
-      pattern: "*-busco/*/run_*/full_table.tsv"
+      pattern: "full_table.tsv"
   - seq_dir:
       type: dir
       description: BUSCO sequence directory
-      pattern: "*-busco/*/run_*/busco_sequences"
+      pattern: "busco_sequences"
   - versions:
       type: file
       description: File containing software versions
