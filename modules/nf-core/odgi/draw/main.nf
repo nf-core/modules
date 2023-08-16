@@ -5,11 +5,10 @@ process ODGI_DRAW {
     conda "bioconda::odgi=0.8.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/odgi:0.8.2--py310hc8f18ef_0':
-        'quay.io/biocontainers/odgi:0.8.2--py310hc8f18ef_0' }"
+        'biocontainers/odgi:0.8.2--py310hc8f18ef_0' }"
 
     input:
-    tuple val(meta), path(graph)
-    path(lay)
+    tuple val(meta), path(graph), path(lay)
 
     output:
     tuple val(meta), path("*.png"), emit: png

@@ -25,7 +25,7 @@ input:
       description: Nucleic or amino acid sequence file in FASTA format.
       pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
   - lineage:
-      type: value
+      type: string
       description: The BUSCO lineage to use, or "auto" to automatically select lineage
   - busco_lineages_path:
       type: directory

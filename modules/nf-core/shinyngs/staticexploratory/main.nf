@@ -2,10 +2,10 @@ process SHINYNGS_STATICEXPLORATORY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.7.1"
+    conda "bioconda::r-shinyngs=1.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.7.1--r42hdfd78af_1':
-        'quay.io/biocontainers/r-shinyngs:1.7.1--r42hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.1--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.1--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
@@ -19,7 +19,7 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/html/pca2d.html")                  , emit: pca2d_html, optional: true
     tuple val(meta), path("*/png/pca3d.png")                    , emit: pca3d_png
     tuple val(meta), path("*/html/pca3d.html")                  , emit: pca3d_html, optional: true
-    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png
+    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png, optional: true
     tuple val(meta), path("*/html/mad_correlation.html")        , emit: mad_html, optional: true
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
     path "versions.yml"                                         , emit: versions

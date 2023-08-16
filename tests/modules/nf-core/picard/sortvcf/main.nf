@@ -10,9 +10,13 @@ workflow test_picard_sortvcf {
                 file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
             ]
 
-    fasta  = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    fasta  = [ [ id:'genome' ],
+                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
-    dict  = [ file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
+    dict   = [ [ id:'genome' ],
+                file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+            ]
 
     PICARD_SORTVCF ( input, fasta, dict )
 }
