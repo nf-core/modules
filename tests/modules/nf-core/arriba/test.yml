@@ -1,5 +1,5 @@
 - name: arriba test_arriba_single_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config
   tags:
     - arriba
   files:
@@ -46,7 +46,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: arriba test_arriba_paired_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config
   tags:
     - arriba
   files:

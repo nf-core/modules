@@ -1,5 +1,5 @@
 - name: arcashla extract test_arcashla_extract
-  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arcashla/extract/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract -c ./tests/config/nextflow.config
   tags:
     - arcashla
     - arcashla/extract
@@ -18,7 +18,7 @@
     - path: output/arcashla/temp_files
 
 - name: arcashla extract test_arcashla_extract single end
-  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arcashla/extract/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract_single_end -c ./tests/config/nextflow.config
   tags:
     - arcashla
     - arcashla/extract

@@ -1,5 +1,5 @@
 - name: art illumina test_art_illumina_single_end
-  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_single_end -c ./tests/config/nextflow.config
   tags:
     - art
     - art/illumina
@@ -14,7 +14,7 @@
     - path: output/art/versions.yml
 
 - name: art illumina test_art_illumina_paired_end
-  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_paired_end -c ./tests/config/nextflow.config
   tags:
     - art
     - art/illumina
@@ -36,7 +36,7 @@
     - path: output/art/versions.yml
 
 - name: art illumina test_art_illumina_single_end_stub
-  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_single_end -c ./tests/config/nextflow.config -stub
   tags:
     - art
     - art/illumina
@@ -46,7 +46,7 @@
     - path: output/art/versions.yml
 
 - name: art illumina test_art_illumina_paired_end_stub
-  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/art/illumina/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/art/illumina -entry test_art_illumina_paired_end -c ./tests/config/nextflow.config -stub
   tags:
     - art
     - art/illumina
