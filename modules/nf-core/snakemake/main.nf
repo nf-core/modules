@@ -14,7 +14,7 @@ process SNAKEMAKE {
     tuple val(meta2), path(snakefile)
 
     output:
-    tuple val(meta), path("[!.snakemake|versions.yml]**"), emit: outputs, optional: true
+    tuple val(meta), path("[!.snakemake|versions.yml]**")         , emit: outputs      , optional: true
     tuple val(meta), path(".snakemake", type: 'dir', hidden: true), emit: snakemake_dir
     path "versions.yml"                                           , emit: versions
 
