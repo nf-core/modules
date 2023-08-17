@@ -4,6 +4,8 @@ keywords:
   - quast
   - assembly
   - quality
+  - contig
+  - scaffold
 tools:
   - quast:
       description: |
@@ -20,15 +22,9 @@ input:
       type: file
       description: |
         The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
-  - use_fasta:
-      type: boolean
-      description: Whether to use the provided fasta reference genome file
   - gff:
       type: file
       description: The genome GFF file. Has to contain at least a non-empty string dummy value.
-  - use_gff:
-      type: boolean
-      description: Whether to use the provided gff reference annotation file
 
 output:
   - quast:
@@ -38,7 +34,7 @@ output:
   - report:
       type: file
       description: tab-separated version of the summary, suitable for spreadsheets and mqc
-      pattern: "report.tsv"
+      pattern: "${prefix}.tsv"
 
   - versions:
       type: file
