@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml /search
+- name: "staramr search"
+  command: nextflow run ./tests/modules/nf-core/staramr/search -entry test_staramr_search -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staramr/search/nextflow.config
+  tags:
+    - "staramr"
+    - "staramr/search"
+  files:
+    - path: "output/staramr/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/staramr/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
