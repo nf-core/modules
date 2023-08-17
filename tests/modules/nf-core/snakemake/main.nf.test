@@ -41,7 +41,7 @@ rule hello_world:
 
         then {
             assert process.success
-            assert snapshot(process.out.outputs).match()
+            assert snapshot(process.out.outputs, process.out.versions).match()
         }
 
     }
