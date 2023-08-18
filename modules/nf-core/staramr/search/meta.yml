@@ -45,30 +45,30 @@ output:
   - xlsx:
       type: file
       description: Excel spreadsheet containing summary of StarAMR results.
-      pattern: "*.xlsx"
+      pattern: "results/*.xlsx"
   - summary_tsv:
       type: file
       description: A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line. A series of descriptive statistics is also provided for each genome as well as feedback for whether or not the genome passes several quality metrics and if not, feedback on why the genome fails.
-      pattern: "summary.tsv"
+      pattern: "results/summary.tsv"
   - detailed_summary_tsv:
       type: file
       description: A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line. A series of descriptive statistics is also provided for each genome as well as feedback for whether or not the genome passes several quality metrics and if not, feedback on why the genome fails.
-      pattern: "detailed_summary.tsv"
+      pattern: "results/detailed_summary.tsv"
   - resfinder_tsv:
       type: file
       description: A tabular file of each AMR gene and additional BLAST information from the ResFinder database, one gene per line.
-      pattern: "resfinder.tsv"
+      pattern: "results/resfinder.tsv"
   - plasmidfinder_tsv:
       type: file
       description: A tabular file of each AMR plasmid type and additional BLAST information from the PlasmidFinder database, one plasmid type per line.
-      pattern: "plasmidfinder.tsv"
+      pattern: "results/plasmidfinder.tsv"
   - mlst_tsv:
       type: file
       description: A tabular file of each multi-locus sequence type (MLST) and it's corresponding locus/alleles, one genome per line.
-      pattern: "mlst.tsv"
-  - txt:
+      pattern: "results/mlst.tsv"
+  - settings_txt:
       type: file
       description: The command-line, database versions, and other settings used to run staramr.
-      pattern: "*.txt"
+      pattern: "results/settings.txt"
 authors:
   - "@apetkau"

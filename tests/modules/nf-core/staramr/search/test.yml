@@ -4,19 +4,19 @@
     - staramr/search
     - staramr
   files:
-    - path: output/staramr/out/detailed_summary.tsv
+    - path: output/staramr/results/detailed_summary.tsv
       md5sum: 2b000d8c49bb208f0d400d1c230e9113
-    - path: output/staramr/out/mlst.tsv
+    - path: output/staramr/results/mlst.tsv
       md5sum: 37d050a8a407c971e32994f9b8cf910e
-    - path: output/staramr/out/plasmidfinder.tsv
+    - path: output/staramr/results/plasmidfinder.tsv
       md5sum: 06f38f23d6be0fb32bf66d31a517d78c
-    - path: output/staramr/out/resfinder.tsv
+    - path: output/staramr/results/resfinder.tsv
       md5sum: 3e18cd0c8064a41c0c663d56b2b6bc44
-    - path: output/staramr/out/results.xlsx
+    - path: output/staramr/results/results.xlsx
       should_exist: true
-    - path: output/staramr/out/settings.txt
+    - path: output/staramr/results/settings.txt
       contains_regex:
         - 'command_line\s*=.*staramr search.*genome.fna.gz'
-    - path: output/staramr/out/summary.tsv
+    - path: output/staramr/results/summary.tsv
       md5sum: 1a46eeaff355363df5592fd21e633b2b
     - path: output/staramr/versions.yml
