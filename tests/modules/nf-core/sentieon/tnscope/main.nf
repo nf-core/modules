@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SENTIEON_TNSCOPE   } from '../../../../../modules/nf-core/sentieon/dnascope/main.nf'
+include { SENTIEON_TNSCOPE   } from '../../../../../modules/nf-core/sentieon/tnscope/main.nf'
 
 workflow test_tnscope {
 
