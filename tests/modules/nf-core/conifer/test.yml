@@ -1,0 +1,6 @@
+- name: conifer
+  command: nextflow run ./tests/modules/nf-core/conifer/conifer -entry test_conifer -c ./tests/config/nextflow.config -stub-run
+  tags:
+    - conifer
+  files:
+    - path: output/conifer/test.score
