@@ -26,9 +26,9 @@ input:
   - genomes_fastas:
       type: file
       description: |
-          Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
-          Supports passing a single genome (as a single fasta file) or multiple genomes
-          to process and compile into the same report (as multiple fasta files).
+        Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
+        Supports passing a single genome (as a single fasta file) or multiple genomes
+        to process and compile into the same report (as multiple fasta files).
       pattern: "*.{fasta,fna,fsa,fa}"
 
 output:
@@ -48,18 +48,18 @@ output:
   - summary_tsv:
       type: file
       description: |
-          A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
-          A series of descriptive statistics is also provided for each genome,
-          as well as feedback for whether or not the genome passes several quality metrics and if not,
-          feedback on why the genome fails.
+        A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+        A series of descriptive statistics is also provided for each genome,
+        as well as feedback for whether or not the genome passes several quality metrics and if not,
+        feedback on why the genome fails.
       pattern: "*_results/summary.tsv"
   - detailed_summary_tsv:
       type: file
       description: |
-          A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
-          A series of descriptive statistics is also provided for each genome,
-          as well as feedback for whether or not the genome passes several quality metrics and if not,
-          feedback on why the genome fails.
+        A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+        A series of descriptive statistics is also provided for each genome,
+        as well as feedback for whether or not the genome passes several quality metrics and if not,
+        feedback on why the genome fails.
       pattern: "*_results/detailed_summary.tsv"
   - resfinder_tsv:
       type: file
