@@ -10,7 +10,7 @@ process CONIFER {
     input:
     tuple val(meta), path(kraken_result)
     path kraken_taxon_db
-    
+
     output:
     tuple val(meta), path("*.score"), emit: score
     path "versions.yml", emit: versions
