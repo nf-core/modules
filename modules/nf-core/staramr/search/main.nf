@@ -8,7 +8,7 @@ process STARAMR_SEARCH {
         'biocontainers/staramr:0.9.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(assembly_fasta) // assembly as fasta file
+    tuple val(meta), path(genomes_fastas) // genomes as fasta files (one genome per fasta file)
 
     output:
     tuple val(meta), path("results/results.xlsx")        , emit: xlsx
@@ -31,13 +31,15 @@ process STARAMR_SEARCH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gzip -cdf ${assembly_fasta} > ${assembly_fasta}.uncompressed
+    mkdir -p genomes
+    echo $genomes_fastas | xargs -I {} bash -c 'gzip -cdf {} > genomes/{}'
+
     staramr \\
         search \\
         $args \\
         --nprocs $task.cpus \\
         -o results \\
-        ${assembly_fasta}.uncompressed
+        genomes/*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
