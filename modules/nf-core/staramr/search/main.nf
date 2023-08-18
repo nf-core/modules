@@ -41,7 +41,7 @@ process STARAMR_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' ))
+        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
     END_VERSIONS
     """
 
@@ -57,7 +57,7 @@ process STARAMR_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' ))
+        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
     END_VERSIONS
     """
 }
