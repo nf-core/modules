@@ -1,22 +1,22 @@
 - name: staramr search test_staramr_search
   command: nextflow run ./tests/modules/nf-core/staramr/search -entry test_staramr_search -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staramr/search/nextflow.config
   tags:
-    - staramr
     - staramr/search
+    - staramr
   files:
-    - path: output/staramr/results/detailed_summary.tsv
+    - path: output/staramr/test_results/detailed_summary.tsv
       md5sum: c91d9923da94dd58a5d422bc0c756007
-    - path: output/staramr/results/mlst.tsv
+    - path: output/staramr/test_results/mlst.tsv
       md5sum: 0291e46250e14deff9e92dcca24f42be
-    - path: output/staramr/results/plasmidfinder.tsv
+    - path: output/staramr/test_results/plasmidfinder.tsv
       md5sum: 06f38f23d6be0fb32bf66d31a517d78c
-    - path: output/staramr/results/resfinder.tsv
+    - path: output/staramr/test_results/resfinder.tsv
       md5sum: 3e18cd0c8064a41c0c663d56b2b6bc44
-    - path: output/staramr/results/results.xlsx
+    - path: output/staramr/test_results/results.xlsx
       should_exist: true
-    - path: output/staramr/results/settings.txt
+    - path: output/staramr/test_results/settings.txt
       contains_regex:
         - 'command_line\s*=.*staramr search.*genome.fna.gz'
-    - path: output/staramr/results/summary.tsv
+    - path: output/staramr/test_results/summary.tsv
       md5sum: 6562e1c521d50ddf3e9d94b21c864c5e
     - path: output/staramr/versions.yml

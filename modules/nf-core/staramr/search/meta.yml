@@ -20,55 +20,66 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information.
         e.g. `[ id:'test', single_end:false ]`
 
-  - assembly_fasta:
+  - genomes_fastas:
       type: file
-      description: Assembled/complete genome in FASTA format to search for AMR/MLST/Plasmids.
+      description: |
+          Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
+          Supports passing a single genome (as a single fasta file) or multiple genomes
+          to process and compile into the same report (as multiple fasta files).
       pattern: "*.{fasta,fna,fsa,fa}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - xlsx:
+  - results_xlsx:
       type: file
       description: Excel spreadsheet containing summary of StarAMR results.
-      pattern: "results/*.xlsx"
+      pattern: "*_results/results.xlsx"
   - summary_tsv:
       type: file
-      description: A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line. A series of descriptive statistics is also provided for each genome as well as feedback for whether or not the genome passes several quality metrics and if not, feedback on why the genome fails.
-      pattern: "results/summary.tsv"
+      description: |
+          A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+          A series of descriptive statistics is also provided for each genome,
+          as well as feedback for whether or not the genome passes several quality metrics and if not,
+          feedback on why the genome fails.
+      pattern: "*_results/summary.tsv"
   - detailed_summary_tsv:
       type: file
-      description: A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line. A series of descriptive statistics is also provided for each genome as well as feedback for whether or not the genome passes several quality metrics and if not, feedback on why the genome fails.
-      pattern: "results/detailed_summary.tsv"
+      description: |
+          A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+          A series of descriptive statistics is also provided for each genome,
+          as well as feedback for whether or not the genome passes several quality metrics and if not,
+          feedback on why the genome fails.
+      pattern: "*_results/detailed_summary.tsv"
   - resfinder_tsv:
       type: file
       description: A tabular file of each AMR gene and additional BLAST information from the ResFinder database, one gene per line.
-      pattern: "results/resfinder.tsv"
+      pattern: "*_results/resfinder.tsv"
   - plasmidfinder_tsv:
       type: file
       description: A tabular file of each AMR plasmid type and additional BLAST information from the PlasmidFinder database, one plasmid type per line.
-      pattern: "results/plasmidfinder.tsv"
+      pattern: "*_results/plasmidfinder.tsv"
   - mlst_tsv:
       type: file
       description: A tabular file of each multi-locus sequence type (MLST) and it's corresponding locus/alleles, one genome per line.
-      pattern: "results/mlst.tsv"
+      pattern: "*_results/mlst.tsv"
   - settings_txt:
       type: file
       description: The command-line, database versions, and other settings used to run staramr.
-      pattern: "results/settings.txt"
+      pattern: "*_results/settings.txt"
+  - pointfinder_tsv:
+      type: file
+      description: An optional tabular file of each AMR point mutation and additional BLAST information from the PointFinder database, one gene per line.
+      pattern: "*_results/pointfinder.tsv"
 authors:
   - "@apetkau"
