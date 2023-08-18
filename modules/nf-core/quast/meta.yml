@@ -34,22 +34,22 @@ output:
   - report:
       type: file
       description: tab-separated version of the summary, suitable for spreadsheets and mqc
-      pattern: "${prefix}.tsv"
+      pattern: "${prefix}/report.tsv"
   - misassemblies:
       type: file
       description: |
         Report containing misassemblies, only when a reference fasta is provided
-      pattern: "${prefix}_misassemblies.tsv"
+      pattern: "${prefix}/contigs_reports/misassemblies_report.tsv"
   - transcriptome:
       type: file
       description: |
         Report containing all the alignments of transcriptome to the assembly, only when a reference fasta is provided
-      pattern: "${prefix}_transcriptome.tsv"
+      pattern: "${prefix}/contigs_reports/all_alignments_transcriptome.tsv"
   - unaligned:
       type: file
       description: |
         Report containing unaligned contigs, only when a reference fasta is provided
-      pattern: "${prefix}_unaligned.tsv"
+      pattern: "${prefix}/contigs_reports/unaligned_report.tsv"
   - versions:
       type: file
       description: File containing software versions

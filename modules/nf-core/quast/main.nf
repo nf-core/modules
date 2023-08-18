@@ -13,12 +13,12 @@ process QUAST {
     tuple val(meta3), path(gff)
 
     output:
-    tuple val(meta), path("${prefix}")                   , emit: results
-    tuple val(meta), path("${prefix}.tsv")               , emit: tsv
-    tuple val(meta), path("${prefix}_transcriptome.tsv") , optional: true , emit: transcriptome
-    tuple val(meta), path("${prefix}_misassemblies.tsv") , optional: true , emit: misassemblies
-    tuple val(meta), path("${prefix}_unaligned.tsv")     , optional: true , emit: unaligned
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("${prefix}")                                                 , emit: results
+    tuple val(meta), path("${prefix}/report.tsv")                                      , emit: tsv
+    tuple val(meta), path("${prefix}/contigs_reports/all_alignments_transcriptome.tsv"), optional: true , emit: transcriptome
+    tuple val(meta), path("${prefix}/contigs_reports/misassemblies_report.tsv")        , optional: true , emit: misassemblies
+    tuple val(meta), path("${prefix}/contigs_reports/unaligned_report.tsv")            , optional: true , emit: unaligned
+    path "versions.yml"                                                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +26,8 @@ process QUAST {
     script:
     def args      = task.ext.args   ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
-    def features  = gff ? "--features $gff" : ''
-    def reference = fasta ? "-r $fasta" : ''
+    def features  = gff             ?  "--features $gff" : ''
+    def reference = fasta           ?  "-r $fasta"       : ''
     """
     quast.py \\
         --output-dir $prefix \\
@@ -36,11 +36,6 @@ process QUAST {
         --threads $task.cpus \\
         $args \\
         ${consensus.join(' ')}
-
-    ln -s ${prefix}/report.tsv ${prefix}.tsv
-    [ -f  ${prefix}/contigs_reports/all_alignments_transcriptome.tsv ] && ln -s ${prefix}/contigs_reports/all_alignments_transcriptome.tsv ${prefix}_transcriptome.tsv
-    [ -f  ${prefix}/contigs_reports/misassemblies_report.tsv         ] && ln -s ${prefix}/contigs_reports/misassemblies_report.tsv ${prefix}_misassemblies.tsv
-    [ -f  ${prefix}/contigs_reports/unaligned_report.tsv             ] && ln -s ${prefix}/contigs_reports/unaligned_report.tsv ${prefix}_unaligned.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -74,8 +69,6 @@ process QUAST {
 
     mkdir -p $prefix/icarus_viewers
     touch $prefix/icarus_viewers/contig_size_viewer.html
-
-    ln -s $prefix/report.tsv ${prefix}.tsv
 
     if [ $fasta ]; then
         touch $prefix/basic_stats/NGx_plot.pdf
@@ -116,11 +109,6 @@ process QUAST {
         touch $prefix/genome_stats/genome_info.txt
         touch $prefix/genome_stats/transcriptome_gaps.txt
         touch $prefix/icarus_viewers/alignment_viewer.html
-
-        ln -sf ${prefix}/contigs_reports/misassemblies_report.tsv ${prefix}_misassemblies.tsv
-        ln -sf ${prefix}/contigs_reports/unaligned_report.tsv ${prefix}_unaligned.tsv
-        ln -sf ${prefix}/contigs_reports/all_alignments_transcriptome.tsv ${prefix}_transcriptome.tsv
-
     fi
 
     if ([ $fasta ] && [ $gff ]); then
