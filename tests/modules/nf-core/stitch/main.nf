@@ -32,16 +32,16 @@ workflow test_stitch {
 
     reference = [
         [ id:'test_reference' ], // meta map
-        file(params.test_data['homo_sapiens']['genome']['genome_fasta']    , checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta']    , checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true),
     ]
 
     stitch_input = [
         [ id:'test_positions' ], // meta map
-        file("../dbsnp_146.hg38.biallelic_snps.tsv", checkIfExists: true),
+        file("../dbsnp_138.hg38.first_10_biallelic_sites.tsv", checkIfExists: true),
         [],
         [],
-        "chr22",
+        "chr21",
         2,
         1
     ]

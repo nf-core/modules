@@ -1,11 +1,38 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml
-- name: "stitch"
+- name: stitch test_stitch
   command: nextflow run ./tests/modules/nf-core/stitch -entry test_stitch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stitch/nextflow.config
   tags:
-    - "stitch"
+    - stitch
   files:
-    - path: "output/stitch/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/stitch/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/stitch/RData/EM.all.chr21.RData
+      md5sum: b934df0d4774aa3d02bd763222e3076d
+    - path: output/stitch/RData/end.chr21.RData
+      md5sum: 98b475719981c84ad561463cff84c816
+    - path: output/stitch/RData/endEM.chr21.RData
+      md5sum: 1c46c5e6578ec4f7f99540bb6c3d3add
+    - path: output/stitch/RData/sampleNames.chr21.RData
+      md5sum: df745cab2454edcdafc0825136f17664
+    - path: output/stitch/RData/start.chr21.RData
+      md5sum: 586f5364a1f3a9632f7d10bd95a2f801
+    - path: output/stitch/RData/startEM.chr21.RData
+      md5sum: 96e225a2238b3f2b42e619ed72809da4
+    - path: output/stitch/input/sample.1.input.chr21.RData
+      md5sum: 39741bab12230d0cfcbff64621708da0
+    - path: output/stitch/input/sample.2.input.chr21.RData
+      md5sum: 39741bab12230d0cfcbff64621708da0
+    - path: output/stitch/plots/alphaMat.chr21.all.s.1.png
+      md5sum: e0d2c9a486e4c0a607f12d2cf4171072
+    - path: output/stitch/plots/alphaMat.chr21.normalized.s.1.png
+      md5sum: 82c76a77f91c93ed160a632a438b357b
+    - path: output/stitch/plots/hapSum.chr21.s.1.png
+      md5sum: f0bd367169020e444d73dc1aa142897e
+    - path: output/stitch/plots/hapSum_log.chr21.s.1.png
+      md5sum: d6635bdf8013761c681db3d7d25d11a2
+    - path: output/stitch/plots/metricsForPostImputationQC.chr21.sample.jpg
+      md5sum: 35e582ecf04398aed62a1a429a5d0bdf
+    - path: output/stitch/plots/metricsForPostImputationQCChromosomeWide.chr21.sample.jpg
+      md5sum: f450d32c65bbef11062d2522f75fab99
+    - path: output/stitch/plots/r2.chr21.goodonly.jpg
+      md5sum: 4a8c6f773da6d4356da6f80c4c45ead4
+    - path: output/stitch/stitch.chr21.vcf.gz
+      md5sum: a7650b4053d0f6abb675a4763d73626f
+    - path: output/stitch/versions.yml
