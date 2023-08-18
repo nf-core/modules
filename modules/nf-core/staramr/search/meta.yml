@@ -10,12 +10,13 @@ keywords:
 tools:
   - "staramr":
       description: |
-        Scan genome contigs against the ResFinder and PointFinder databases. In order to use the PointFinder databases, you will have to add --pointfinder-organism to the ext.args options.
+        Scan genome contigs against the ResFinder and PointFinder databases. In order to use the PointFinder databases, you will have to add --pointfinder-organism ORGANISM to the ext.args options.
       homepage: "https://github.com/phac-nml/staramr"
       documentation: "https://github.com/phac-nml/staramr"
       tool_dev_url: "https://github.com/phac-nml/staramr"
       doi: "10.5281/zenodo.7262331"
       licence: "['Apache Software License']"
+      args_id: "$args"
 
 input:
   - meta:
