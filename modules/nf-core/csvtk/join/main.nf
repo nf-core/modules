@@ -9,8 +9,6 @@ process CSVTK_JOIN {
 
     input:
     tuple val(meta), path(csv)
-    val in_format
-    val out_format
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
@@ -22,16 +20,12 @@ process CSVTK_JOIN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
-    def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
-    out_extension = out_format == "tsv" ? 'tsv' : 'csv'
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
     """
     csvtk \\
         join \\
         $args \\
         --num-cpus $task.cpus \\
-        --delimiter "${delimiter}" \\
-        --out-delimiter "${out_delimiter}" \\
         --out-file ${prefix}.${out_extension} \\
         $csv
 

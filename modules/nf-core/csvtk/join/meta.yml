@@ -23,14 +23,6 @@ input:
       type: file
       description: CSV/TSV formatted files
       pattern: "*.{csv,tsv}"
-  - in_format:
-      type: string
-      description: Input format (csv, tab, or a delimiting character)
-      pattern: "*"
-  - out_format:
-      type: string
-      description: Output format (csv, tab, or a delimiting character)
-      pattern: "*"
 
 output:
   - meta:

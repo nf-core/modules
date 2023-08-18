@@ -14,7 +14,5 @@ workflow test_csvtk_join {
         ]
     ]
 
-    in_format  = "tsv"
-    out_format = "csv"
-    CSVTK_JOIN ( input, in_format, out_format )
+    CSVTK_JOIN ( input )
 }
