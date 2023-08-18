@@ -38,7 +38,7 @@ workflow test_stitch {
 
     stitch_input = [
         [ id:'test_positions' ], // meta map
-        file("../dbsnp_138.hg38.first_10_biallelic_sites.tsv", checkIfExists: true),
+        file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/chr21/sequence/dbsnp_138.hg38.first_10_biallelic_sites.tsv", checkIfExists: true),
         [],
         [],
         "chr21",
