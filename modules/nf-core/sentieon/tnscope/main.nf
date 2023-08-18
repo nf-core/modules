@@ -31,7 +31,7 @@ process SENTIEON_TNSCOPE {
     }
     def args         = task.ext.args   ?: ''
     def args2        = task.ext.args2  ?: ''
-    def interval_cmd = call_interval   ? "--interval ${interval}" : ''
+    def interval_str = interval      ? "--interval ${interval}" : ''
     def cosmic_str = cosmic          ? "--cosmic ${cosmic}"          : ''
     def dbsnp_str  = dbsnp           ? "--dbsnp ${dbsnp}"            : ''
     def pon_str    = pon             ? "--pon ${pon}"                : ''
@@ -59,11 +59,14 @@ process SENTIEON_TNSCOPE {
         -t $task.cpus \\
         -r $fasta \\
         -i $bam \\
-        $interval \\
+        $interval_str \\
         $args \\
         --algo TNscope \\
         --tumor_sample ${meta.id} \\
         $args2 \\
+        $cosmic_str \\
+        $dbsnp_str \\
+        $pon_str \\
         ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
