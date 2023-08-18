@@ -14,7 +14,7 @@ process SENTIEON_TNSCOPE {
     tuple val(meta4), path(cosmic), path(cosmic_tbi)
     tuple val(meta5), path(pon), path(pon_tbi)
     tuple val(meta6), path(dbsnp), path(dbsnp_tbi)
-    tuple val(meta7), path(call_interval)
+    tuple val(meta7), path(interval)
 
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
@@ -29,9 +29,9 @@ process SENTIEON_TNSCOPE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args       = task.ext.args   ?: ''
-    def args2      = task.ext.args2  ?: ''
-    def interval   = call_interval   ? "--interval ${call_interval}" : ''
+    def args         = task.ext.args   ?: ''
+    def args2        = task.ext.args2  ?: ''
+    def interval_cmd = call_interval   ? "--interval ${interval}" : ''
     def cosmic_str = cosmic          ? "--cosmic ${cosmic}"          : ''
     def dbsnp_str  = dbsnp           ? "--dbsnp ${dbsnp}"            : ''
     def pon_str    = pon             ? "--pon ${pon}"                : ''
