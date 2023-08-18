@@ -1,8 +1,8 @@
 - name: staramr search test_staramr_search
   command: nextflow run ./tests/modules/nf-core/staramr/search -entry test_staramr_search -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staramr/search/nextflow.config
   tags:
-    - staramr/search
     - staramr
+    - staramr/search
   files:
     - path: output/staramr/test_results/detailed_summary.tsv
       md5sum: 7cf0c74dbd8e35b28af9cbfbaa70243c
@@ -19,27 +19,4 @@
         - 'command_line\s*=.*staramr search.*genome.*'
     - path: output/staramr/test_results/summary.tsv
       md5sum: 67f4e33763b8ce81c852f3a129f8b555
-    - path: output/staramr/versions.yml
-
-- name: staramr search test_staramr_search_multiple
-  command: nextflow run ./tests/modules/nf-core/staramr/search -entry test_staramr_search_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staramr/search/nextflow.config
-  tags:
-    - staramr/search
-    - staramr
-  files:
-    - path: output/staramr/test_multiple_results/detailed_summary.tsv
-      md5sum: 3156d0c9f5718454f858891c3c23563b
-    - path: output/staramr/test_multiple_results/mlst.tsv
-      md5sum: ac5fa76f9e035b7826aa23f6509b3b47
-    - path: output/staramr/test_multiple_results/plasmidfinder.tsv
-      md5sum: 06f38f23d6be0fb32bf66d31a517d78c
-    - path: output/staramr/test_multiple_results/resfinder.tsv
-      md5sum: 3e18cd0c8064a41c0c663d56b2b6bc44
-    - path: output/staramr/test_multiple_results/results.xlsx
-      should_exist: true
-    - path: output/staramr/test_multiple_results/settings.txt
-      contains_regex:
-        - 'command_line\s*=.*staramr search.*genome.*'
-    - path: output/staramr/test_multiple_results/summary.tsv
-      md5sum: 1642232c87f981038a2d37b4a16414a5
     - path: output/staramr/versions.yml

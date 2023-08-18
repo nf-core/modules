@@ -14,15 +14,3 @@ workflow test_staramr_search {
     STARAMR_SEARCH ( input )
 }
 
-workflow test_staramr_search_multiple {
-    
-    input = [
-        [ id:'test_multiple', single_end:false ], // meta map
-        [
-            file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true),
-            file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
-        ]
-    ]
-
-    STARAMR_SEARCH ( input )
-}

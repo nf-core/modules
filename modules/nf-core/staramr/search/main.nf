@@ -8,7 +8,7 @@ process STARAMR_SEARCH {
         'biocontainers/staramr:0.9.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(genomes_fastas) // genomes as fasta files (one genome per fasta file)
+    tuple val(meta), path(genome_fasta) // genome as a fasta file
 
     output:
     tuple val(meta), path("*_results/results.xlsx")        , emit: results_xlsx
@@ -27,20 +27,19 @@ process STARAMR_SEARCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def gzipped_fastas = genomes_fastas.collect{}
+    def is_gzipped = genome_fasta.getName().endsWith(".gz") ? true : false
+    def genome_uncompressed_name = genome_fasta.getName().replace(".gz", "")
     """
-    # The below makes sure all input genomes are in genomes/
-    # and decompresses any gzipped files
-    mkdir -p genomes
-    cp -L $genomes_fastas genomes/
-    gzip -df genomes/*.gz
+    if [ "$is_gzipped" = "true" ]; then
+        gzip -c -d $genome_fasta > $genome_uncompressed_name
+    fi
 
     staramr \\
         search \\
         $args \\
         --nprocs $task.cpus \\
         -o ${prefix}_results \\
-        genomes/*
+        $genome_uncompressed_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

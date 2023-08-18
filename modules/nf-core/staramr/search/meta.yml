@@ -9,7 +9,8 @@ keywords:
   - genomics
 tools:
   - "staramr":
-      description: "Scan genome contigs against the ResFinder and PointFinder databases"
+      description: | 
+          Scan genome contigs against the ResFinder and PointFinder databases. In order to use the PointFinder databases, you will have to add --pointfinder-organism to the ext.args options.
       homepage: "https://github.com/phac-nml/staramr"
       documentation: "https://github.com/phac-nml/staramr"
       tool_dev_url: "https://github.com/phac-nml/staramr"
@@ -23,12 +24,10 @@ input:
         Groovy Map containing sample information.
         e.g. `[ id:'test', single_end:false ]`
 
-  - genomes_fastas:
+  - genome_fasta:
       type: file
       description: |
         Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
-        Supports passing a single genome (as a single fasta file) or multiple genomes
-        to process and compile into the same report (as multiple fasta files).
       pattern: "*.{fasta,fna,fsa,fa}"
 
 output:
