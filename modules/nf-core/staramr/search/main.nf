@@ -27,9 +27,13 @@ process STARAMR_SEARCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def gzipped_fastas = genomes_fastas.collect{}
     """
+    # The below makes sure all input genomes are in genomes/
+    # and decompresses any gzipped files
     mkdir -p genomes
-    echo $genomes_fastas | xargs -I {} bash -c 'gzip -cdf {} > genomes/{}'
+    cp -L $genomes_fastas genomes/
+    gzip -df genomes/*.gz
 
     staramr \\
         search \\
