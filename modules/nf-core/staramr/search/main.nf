@@ -11,18 +11,18 @@ process STARAMR_SEARCH {
     tuple val(meta), path(assembly_fasta) // assembly as fasta file
 
     output:
-    tuple val(meta), path("out/results.xlsx"), emit: xlsx
-    tuple val(meta), path("out/summary.tsv"), emit: summary_tsv
+    tuple val(meta), path("out/results.xlsx")        , emit: xlsx
+    tuple val(meta), path("out/summary.tsv")         , emit: summary_tsv
     tuple val(meta), path("out/detailed_summary.tsv"), emit: detailed_summary_tsv
-    tuple val(meta), path("out/resfinder.tsv"), emit: resfinder_tsv
-    tuple val(meta), path("out/pointfinder.tsv"), emit: pointfinder_tsv
-    tuple val(meta), path("out/plasmidfinder.tsv"), emit: plasmidfinder_tsv
-    tuple val(meta), path("out/mlst.tsv"), emit: mlst_tsv
-    tuple val(meta), path("out/settings.txt"), emit: txt
-    tuple val(meta), path("out/hits/resfinder*"), emit: hits_resfinder_fasta
-    tuple val(meta), path("out/hits/pointfinder*"), emit: hits_pointfinder_fasta
-    tuple val(meta), path("out/hits/plasmidfinder*"), emit: hits_plasmidfinder_fasta
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("out/resfinder.tsv")       , emit: resfinder_tsv
+    tuple val(meta), path("out/plasmidfinder.tsv")   , emit: plasmidfinder_tsv
+    tuple val(meta), path("out/mlst.tsv")            , emit: mlst_tsv
+    tuple val(meta), path("out/settings.txt")        , emit: txt
+    tuple val(meta), path("out/pointfinder.tsv")     , emit: pointfinder_tsv         , optional: true
+    tuple val(meta), path("out/hits/resfinder*")     , emit: hits_resfinder_fasta    , optional: true
+    tuple val(meta), path("out/hits/pointfinder*")   , emit: hits_pointfinder_fasta  , optional: true
+    tuple val(meta), path("out/hits/plasmidfinder*") , emit: hits_plasmidfinder_fasta, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,12 +31,13 @@ process STARAMR_SEARCH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    gzip -cdf ${assembly_fasta} > ${assembly_fasta}.uncompressed
     staramr \\
         search \\
         $args \\
         --nprocs $task.cpus \\
         -o out \\
-        $assembly_fasta
+        ${assembly_fasta}.uncompressed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

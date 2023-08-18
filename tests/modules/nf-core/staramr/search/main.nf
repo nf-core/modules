@@ -8,7 +8,7 @@ workflow test_staramr_search {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
     ]
 
     STARAMR_SEARCH ( input )
