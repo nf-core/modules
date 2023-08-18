@@ -13,11 +13,10 @@
     - path: output/staramr/out/resfinder.tsv
       md5sum: 3e18cd0c8064a41c0c663d56b2b6bc44
     - path: output/staramr/out/results.xlsx
-      contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      should_exist: true
     - path: output/staramr/out/settings.txt
-      contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      contains_regex:
+        - 'command_line\s*=.*staramr search.*genome.fna.gz'
     - path: output/staramr/out/summary.tsv
       md5sum: 1a46eeaff355363df5592fd21e633b2b
     - path: output/staramr/versions.yml
