@@ -15,5 +15,5 @@ workflow test_tnscope {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
 
-    SENTIEON_TNSCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], [[:],] )
+    SENTIEON_TNSCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], [[:],[]] )
 }
