@@ -31,7 +31,7 @@ process STITCH {
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
     def bgen_output          = args2.contains( "--output_format bgen" )
     def rsync_cmd            = rdata               ? "rsync -rL ${rdata}/ RData"                                       : ""
-    def stitch_cmd           = random_seed         ? "Rscript <(cat $(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
+    def stitch_cmd           = random_seed         ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
     def cramlist_cmd         = cramlist            ? "--cramlist ${cramlist}"                                          : ""
     def reference_cmd        = fasta               ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata      ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
