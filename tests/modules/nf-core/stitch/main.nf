@@ -46,5 +46,5 @@ workflow test_stitch {
         1
     ]
 
-    STITCH ( stitch_input, reads, reference )
+    STITCH ( stitch_input, reads, reference, 1 )
 }
