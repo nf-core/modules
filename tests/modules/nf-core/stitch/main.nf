@@ -70,7 +70,7 @@ workflow GET_READS_BAM {
 
 
     emit:
-    Channel.of( reads ).combine( bamlist ).first()
+    Channel.of( reads_bam ).combine( bamlist ).first()
 }
 
 
