@@ -11,7 +11,7 @@ def rdata           = []
 def chromosome_name = "chr21"
 def K               = 2
 def nGen            = 1
-def stitch_input    = [ [ id: "test_positions" ], input, rdata, chromosome_name, K, nGen ]
+def stitch_input    = [ [ id: "test_positions" ], posfile, input, rdata, chromosome_name, K, nGen ]
 
 // sequencing data
 def crams = [
@@ -41,9 +41,11 @@ workflow test_stitch {
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
 
+    reads = Channel.of( reads ).combine( cramlist )
+
     STITCH (
         stitch_input,
-        reads.combine ( cramlist ),
+        reads,
         reference,
         seed
     )
