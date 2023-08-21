@@ -1,5 +1,5 @@
-- name: stitch test_stitch
-  command: nextflow run ./tests/modules/nf-core/stitch -entry test_stitch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stitch/nextflow.config
+- name: stitch test_with_seed
+  command: nextflow run ./tests/modules/nf-core/stitch -entry test_with_seed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stitch/nextflow.config
   tags:
     - stitch
   files:
@@ -28,3 +28,5 @@
     - path: output/stitch/stitch.chr21.vcf.gz
       md5sum: a7650b4053d0f6abb675a4763d73626f
     - path: output/stitch/versions.yml
+    - path: output/stitch/start.chr21.RData
+    - path: output/stitch/end.chr21.RData

@@ -35,8 +35,7 @@ def reference = [
 def seed = 1
 
 
-workflow test_stitch {
-
+workflow test_with_seed {
     cramlist = Channel.fromPath( crams )
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
