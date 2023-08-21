@@ -96,7 +96,7 @@ workflow test_two_stage_imputation {
 
     STITCH_IMPUTE_ONLY(
         stitch_input_second_step,
-        [[id: null], [], []],
+        [[id: null], [], [], cramlist],
         [[id: null], [], []],
         seed,
     )
