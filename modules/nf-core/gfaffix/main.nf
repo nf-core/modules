@@ -5,7 +5,7 @@ process GFAFFIX {
     conda "bioconda::gfaffix=0.1.5"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/0.1.5--h031d066_0' :
+        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5--h031d066_0 ' :
         'biocontainers/gfaffix:0.1.5--h031d066_0' }"
 
     input:
