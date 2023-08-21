@@ -28,7 +28,7 @@ process STARSOLO {
     def umi_len = meta.umi_len ? "--soloUMIlen ${meta.umi_len}" : ""
     def umi_start = meta.umi_start ? "--soloUMIstart ${meta.umi_start}" : ""
     def cb_len = meta.cb_len ? "--soloCBlen ${meta.cb_len}" : ""
-    def zcat = reads.any{it.contains(".gz")} ? "--readFilesCommand zcat": ""
+    def zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
     def whitelist = meta.whitelist ? "--soloCBwhitelist ${meta.whitelist}" : "--soloCBwhitelist None"
     def cb_start = meta.cb_start ? "--soloCBstart ${meta.cb_start}" : ""
     def barcode_len = meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len}" : ""
