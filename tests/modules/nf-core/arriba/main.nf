@@ -11,9 +11,9 @@ workflow test_arriba_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta']).map { it -> [[id:it.Name], it] }.collect()
+    fai = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta_fai']).map { it -> [[id:it.Name], it] }.collect()
+    gtf = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_gtf']).map { it -> [[id:it.Name], it] }.collect()
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
@@ -29,9 +29,9 @@ workflow test_arriba_paired_end {
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta']).map { it -> [[id:it.Name], it] }.collect()
+    fai = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta_fai']).map { it -> [[id:it.Name], it] }.collect()
+    gtf = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_gtf']).map { it -> [[id:it.Name], it] }.collect()
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
