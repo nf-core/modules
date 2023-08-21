@@ -16,15 +16,15 @@ def nGen_val            = 1
 def stitch_input        = [ [ id: "test_positions" ], posfile, input_empty, rdata_empty, chromosome_name_val, K_val, nGen_val ]
 
 // sequencing data
-def crams = [
+def crams_val = [
     params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram' ],
     params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'],
 ]
-def crais = [
+def crais_val = [
     params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai' ],
     params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'],
 ]
-def reads = [ [ id:"test_reads" ], crams, crais ]
+def reads = [ [ id:"test_reads" ], crams_val, crais_val ]
 
 // reference genome
 def reference = [
