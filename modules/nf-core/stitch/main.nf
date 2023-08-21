@@ -33,7 +33,7 @@ process STITCH {
     def is_bam               = crams                       ? crams[0].endsWith(".bam")                                         : false
     def rsync_cmd            = rdata                       ? "rsync -rL ${rdata}/ RData"                                       : ""
     def stitch_cmd           = seed                        ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
-    def cramlist_cmd         = cramlist                    ? (is_bam ? "--bamlist ${cramlist}" : "--cramlist ${cramlist}")     : ""
+    def cramlist_cmd         = is_bam && cramlist          ? "--bamlist ${cramlist}"                                           : cramlist ? "--cramlist ${cramlist}" : ""
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
     def rsync_version_cmd    = rdata                       ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
