@@ -39,14 +39,14 @@ def seed = 1
 //
 
 workflow GET_READS {
+    main:
     cramlist = Channel.fromPath( crams )
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
 
-    reads = Channel.of( reads ).combine( cramlist ).first()
 
     emit:
-        reads
+    Channel.of( reads ).combine( cramlist ).first()
 }
 
 
