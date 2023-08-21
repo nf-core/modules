@@ -56,6 +56,10 @@ process STARSOLO {
         $solotype_args \\
         $args
 
+    if [ -d ${prefix}.Solo.out ]; then
+        find ${prefix}.Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip {} \\;
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")

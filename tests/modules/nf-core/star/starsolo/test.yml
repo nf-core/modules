@@ -1,8 +1,8 @@
 - name: star starsolo test_starsolo
   command: nextflow run ./tests/modules/nf-core/star/starsolo -entry test_starsolo -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/starsolo/nextflow.config
   tags:
-    - star
     - star/starsolo
+    - star
   files:
     - path: output/star/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -45,16 +45,10 @@
       md5sum: 84d031c3083ae44cfa1984733b4875b7
     - path: output/starsolo/test_starsolo.Solo.out/Gene/UMIperCellSorted.txt
       md5sum: 65eab5a93b8411094193a643f5d2ab37
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/barcodes.tsv
-      md5sum: 285d09e1edce3b03c3304d72ec40d71b
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/features.tsv
-      md5sum: 7f05863a60b0ef33073ca1833f27c497
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/matrix.mtx
-      md5sum: 83aab899e08867dda0dac194a37dd6bf
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/barcodes.tsv
-      md5sum: 285d09e1edce3b03c3304d72ec40d71b
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/features.tsv
-      md5sum: 7f05863a60b0ef33073ca1833f27c497
-    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/matrix.mtx
-      md5sum: 83aab899e08867dda0dac194a37dd6bf
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/barcodes.tsv.gz
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/features.tsv.gz
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/filtered/matrix.mtx.gz
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/barcodes.tsv.gz
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/features.tsv.gz
+    - path: output/starsolo/test_starsolo.Solo.out/Gene/raw/matrix.mtx.gz
     - path: output/starsolo/versions.yml
