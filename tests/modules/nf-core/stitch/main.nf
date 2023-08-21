@@ -94,14 +94,9 @@ workflow test_two_stage_imputation {
     }
     .set { stitch_input_second_step }
 
-    reads_second_step = GET_READS.out.map {
-        meta, crams, crais, cramlist ->
-        [ meta, [], [], cramlist ]
-    }
-
     STITCH_IMPUTE_ONLY(
         stitch_input_second_step,
-        reads_second_step,
+        [[id: null], [], [], []],
         [[id: null], [], []],
         seed,
     )
