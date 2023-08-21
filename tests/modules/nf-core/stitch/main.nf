@@ -2,7 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { STITCH } from '../../../../modules/nf-core/stitch/main.nf'
+include { STITCH as STITCH_ONE_STEP        } from '../../../../modules/nf-core/stitch/main.nf'
+include { STITCH as STITCH_GENERATE_INPUTS } from '../../../../modules/nf-core/stitch/main.nf'
+include { STITCH as STITCH_IMPUTE_ONLY     } from '../../../../modules/nf-core/stitch/main.nf'
 
 // positions and essential parameters
 def posfile         = file(params.test_data['homo_sapiens']['genome']['genome_21_stitch_posfile'], checkIfExists: true)
@@ -52,7 +54,7 @@ workflow GET_READS {
 
 workflow test_with_seed {
     GET_READS()
-    STITCH (
+    STITCH_ONE_STEP (
         stitch_input,
         GET_READS.out,
         reference,
@@ -62,10 +64,42 @@ workflow test_with_seed {
 
 workflow test_no_seed {
     GET_READS()
-    STITCH (
+    STITCH_ONE_STEP (
         stitch_input,
         GET_READS.out,
         reference,
         [],
+    )
+}
+
+workflow test_two_stage_imputation {
+    GET_READS()
+    STITCH_GENERATE_INPUTS (
+        stitch_input,
+        GET_READS.out,
+        reference,
+        seed,
+    )
+
+    stitch_input
+    .map {
+        meta, positions, input, rdata, chromosome_name, K, nGen ->
+        [ meta, positions, chromosome_name ]
+    }
+    .join ( STITCH_GENERATE_INPUTS.out.input )
+    .join ( STITCH_GENERATE_INPUTS.out.rdata )
+    .map {
+        meta, positions, chromosome_name, input, rdata ->
+        [ meta, positions, input, rdata, chromosome_name ]
+    }
+    .combine ( K    )
+    .combine ( nGen )
+    .set { stitch_input_second_step }
+
+    STITCH_IMPUTE_ONLY(
+        stitch_input_second_step,
+        [[id: null], [], []],
+        [[id: null], [], []],
+        seed,
     )
 }
