@@ -15,7 +15,7 @@ def K_val               = 2
 def nGen_val            = 1
 def stitch_input        = [ [ id: "test_positions" ], posfile, input_empty, rdata_empty, chromosome_name_val, K_val, nGen_val ]
 
-// sequencing data
+// sequencing data in cram format
 def crams_val = [
     params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram' ],
     params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'],
@@ -25,6 +25,17 @@ def crais_val = [
     params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'],
 ]
 def reads = [ [ id:"test_reads" ], crams_val, crais_val ]
+
+// sequencing data in bam format
+def bams_val = [
+    params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam' ],
+    params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'],
+]
+def bais_val = [
+    params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai' ],
+    params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'],
+]
+def reads_bam = [ [ id:"test_reads" ], bams_val, bais_val ]
 
 // reference genome
 def reference = [
@@ -49,6 +60,17 @@ workflow GET_READS {
 
     emit:
     Channel.of( reads ).combine( cramlist ).first()
+}
+
+workflow GET_READS_BAM {
+    main:
+    bamlist = Channel.fromPath( bams_val )
+    .map { it[-1] as String } // get only filename
+    .collectFile( name: "bamlist.txt", newLine: true, sort: true )
+
+
+    emit:
+    Channel.of( reads ).combine( bamlist ).first()
 }
 
 
@@ -98,6 +120,16 @@ workflow test_two_stage_imputation {
         stitch_input_second_step,
         [[id: null], [], [], []],
         [[id: null], [], []],
+        seed,
+    )
+}
+
+workflow test_bam {
+    GET_READS_BAM()
+    STITCH_ONE_STEP (
+        stitch_input,
+        GET_READS_BAM.out,
+        reference,
         seed,
     )
 }
