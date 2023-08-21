@@ -34,6 +34,9 @@ def reference = [
 // for reproducibility
 def seed = 1
 
+//
+// Test workflows
+//
 
 workflow test_with_seed {
     cramlist = Channel.fromPath( crams )
