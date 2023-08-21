@@ -21,10 +21,10 @@ process BLAT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def gz_cmd = query =~ /\.gz$/ ? "gzip -cdf ${query} > ${prefix}.fasta" : ""
 
     """
-    gzip -cdf $query > ${prefix}.fasta
-
+    $gz_cmd
     blat \\
         $args \\
         $subject \\
