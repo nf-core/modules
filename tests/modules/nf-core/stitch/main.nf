@@ -4,47 +4,47 @@ nextflow.enable.dsl = 2
 
 include { STITCH } from '../../../../modules/nf-core/stitch/main.nf'
 
+// positions and essential parameters
+def posfile         = file(params.test_data['homo_sapiens']['genome']['genome_21_stitch_posfile'], checkIfExists: true)
+def input           = []
+def rdata           = []
+def chromosome_name = "chr21"
+def K               = 2
+def nGen            = 1
+def stitch_input    = [ [ id: "test_positions" ], input, rdata, chromosome_name, K, nGen ]
+
+// sequencing data
+def crams = [
+    params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram' ],
+    params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'],
+]
+def crais = [
+    params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai' ],
+    params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'],
+]
+def reads = [ [ id:"test_reads" ], crams, crais ]
+
+// reference genome
+def reference = [
+    [ id:"test_reference" ],
+    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta']    , checkIfExists: true),
+    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true),
+]
+
+// for reproducibility
+def seed = 1
+
+
 workflow test_stitch {
 
-    cramlist = Channel.fromPath(
-        [
-        params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram' ],
-        params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'],
-        ]
-    )
+    cramlist = Channel.fromPath( crams )
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
 
-    reads = Channel.of(
-        [
-            [ id:'test_reads' ], // meta map
-            [
-                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'      ], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai' ], checkIfExists: true),
-            ],
-            [
-                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'     ], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true),
-            ],
-        ]
+    STITCH (
+        stitch_input,
+        reads.combine ( cramlist ),
+        reference,
+        seed
     )
-    .combine ( cramlist )
-
-    reference = [
-        [ id:'test_reference' ], // meta map
-        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta']    , checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true),
-    ]
-
-    stitch_input = [
-        [ id:'test_positions' ], // meta map
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/chr21/sequence/dbsnp_138.hg38.first_10_biallelic_sites.tsv", checkIfExists: true),
-        [],
-        [],
-        "chr21",
-        2,
-        1
-    ]
-
-    STITCH ( stitch_input, reads, reference, 1 )
 }
