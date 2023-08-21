@@ -81,7 +81,7 @@ workflow test_two_stage_imputation {
         seed,
     )
 
-    stitch_input
+    Channel.of( stitch_input )
     .map {
         meta, positions, input, rdata, chromosome_name, K, nGen ->
         [ meta, positions ]
