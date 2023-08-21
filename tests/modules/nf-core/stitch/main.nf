@@ -81,7 +81,7 @@ workflow test_two_stage_imputation {
         seed,
     )
 
-    Channel.of( stitch_input )
+    Channel.of( [] )
     .map {
         meta, positions, input, rdata, chromosome_name, K, nGen ->
         [ meta, positions ]
@@ -94,9 +94,14 @@ workflow test_two_stage_imputation {
     }
     .set { stitch_input_second_step }
 
+    reads_second_step = GET_READS.out.map {
+        meta, crams, crais, cramlist ->
+        [ meta, [], [], cramlist ]
+    }
+
     STITCH_IMPUTE_ONLY(
         stitch_input_second_step,
-        [[id: null], [], [], cramlist],
+        reads_second_step,
         [[id: null], [], []],
         seed,
     )
