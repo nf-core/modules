@@ -42,7 +42,7 @@ def seed = 1
 
 workflow GET_READS {
     main:
-    cramlist = Channel.fromPath( crams )
+    cramlist = Channel.fromPath( crams_val )
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
 
