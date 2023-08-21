@@ -12,8 +12,8 @@ process STAR_GENOMEGENERATE {
     tuple val(meta2), path(gtf)
 
     output:
-    path "star"        , emit: index
-    path "versions.yml", emit: versions
+    tuple val(meta), path("star")  , emit: index
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
