@@ -25,6 +25,12 @@ input:
       description: Sequence file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,nib,2bit}"
 
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing subject information
+        e.g. `[ id:'test', single_end:false ]`
+
   - subject:
       type: file
       description: Sequence file
