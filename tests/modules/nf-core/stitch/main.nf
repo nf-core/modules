@@ -38,7 +38,7 @@ def seed = 1
 // Test workflows
 //
 
-workflow get_reads {
+workflow GET_READS {
     cramlist = Channel.fromPath( crams )
     .map { it[-1] as String } // get only filename
     .collectFile( name: "cramlist.txt", newLine: true, sort: true )
@@ -51,18 +51,20 @@ workflow get_reads {
 
 
 workflow test_with_seed {
+    GET_READS()
     STITCH (
         stitch_input,
-        get_reads.out,
+        GET_READS.out,
         reference,
         seed,
     )
 }
 
 workflow test_no_seed {
+    GET_READS()
     STITCH (
         stitch_input,
-        get_reads.out,
+        GET_READS.out,
         reference,
         null,
     )
