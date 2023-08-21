@@ -25,14 +25,14 @@ input:
   - solotype:
       type: string
       description: |
-      Type of single-cell library.
-      It can be CB_UMI_Simple for most common ones such as 10xv2 and 10xv3,
-      CB_UMI_Complex for method such as inDrop and SmartSeq for SMART-Seq.
+        Type of single-cell library.
+        It can be CB_UMI_Simple for most common ones such as 10xv2 and 10xv3,
+        CB_UMI_Complex for method such as inDrop and SmartSeq for SMART-Seq.
   - reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.      
+        respectively.
 output:
   #Only when we have meta
   - meta:
@@ -41,7 +41,7 @@ output:
         Groovy Map containing sample information.
         Here, you should add all the specific barcode/umi
         information for each sample.
-        e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]` 
+        e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
   - log_final:
       type: file
       description: STAR final log file
@@ -57,11 +57,11 @@ output:
   - summary:
       type: file
       description: STARSolo metrics summary CSV file.
-      pattern: "*/Gene/Summary.csv"      
+      pattern: "*/Gene/Summary.csv"
   - versions:
       type: file
       description: File containing software versions
-      pattern: "versions.yml"      
+      pattern: "versions.yml"
 
 authors:
   - "@kevinmenden"
