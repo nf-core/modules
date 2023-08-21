@@ -7,13 +7,13 @@ include { STITCH as STITCH_GENERATE_INPUTS } from '../../../../modules/nf-core/s
 include { STITCH as STITCH_IMPUTE_ONLY     } from '../../../../modules/nf-core/stitch/main.nf'
 
 // positions and essential parameters
-def posfile         = file(params.test_data['homo_sapiens']['genome']['genome_21_stitch_posfile'], checkIfExists: true)
-def input           = []
-def rdata           = []
-def chromosome_name = "chr21"
-def K               = 2
-def nGen            = 1
-def stitch_input    = [ [ id: "test_positions" ], posfile, input, rdata, chromosome_name, K, nGen ]
+def posfile             = file(params.test_data['homo_sapiens']['genome']['genome_21_stitch_posfile'], checkIfExists: true)
+def input_empty         = []
+def rdata_empty         = []
+def chromosome_name_val = "chr21"
+def K_val               = 2
+def nGen_val            = 1
+def stitch_input        = [ [ id: "test_positions" ], posfile, input_empty, rdata_empty, chromosome_name_val, K_val, nGen_val ]
 
 // sequencing data
 def crams = [
@@ -84,16 +84,14 @@ workflow test_two_stage_imputation {
     stitch_input
     .map {
         meta, positions, input, rdata, chromosome_name, K, nGen ->
-        [ meta, positions, chromosome_name ]
+        [ meta, positions ]
     }
     .join ( STITCH_GENERATE_INPUTS.out.input )
     .join ( STITCH_GENERATE_INPUTS.out.rdata )
     .map {
-        meta, positions, chromosome_name, input, rdata ->
-        [ meta, positions, input, rdata, chromosome_name ]
+        meta, positions, input, rdata ->
+        [ meta, positions, input, rdata, chromosome_name_val, K_val, nGen_val ]
     }
-    .combine ( K    )
-    .combine ( nGen )
     .set { stitch_input_second_step }
 
     STITCH_IMPUTE_ONLY(
