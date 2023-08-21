@@ -30,13 +30,14 @@ process STITCH {
     def args2                = task.ext.args2  ?: ""
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
     def bgen_output          = args2.contains( "--output_format bgen" )
+    def reads_ext            = collected_crams             ? collected_crams.extension.unique()                                : []
     def rsync_cmd            = rdata                       ? "rsync -rL ${rdata}/ RData"                                       : ""
     def stitch_cmd           = seed                        ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
-    def cramlist_cmd         = cramlist                    ? "--cramlist ${cramlist}"                                          : ""
+    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"                                    : ""
+    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"                                     : ""
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
     def rsync_version_cmd    = rdata                       ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
-    print(collected_crams)
     """
     ${rsync_cmd} ${args}
 
@@ -48,6 +49,7 @@ process STITCH {
         --K ${K} \\
         --nGen ${nGen} \\
         ${cramlist_cmd} \\
+        ${bamlist_cmd} \\
         ${reference_cmd} \\
         ${regenerate_input_cmd} \\
         ${args2}
