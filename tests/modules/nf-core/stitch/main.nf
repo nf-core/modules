@@ -66,6 +66,6 @@ workflow test_no_seed {
         stitch_input,
         GET_READS.out,
         reference,
-        null,
+        [],
     )
 }
