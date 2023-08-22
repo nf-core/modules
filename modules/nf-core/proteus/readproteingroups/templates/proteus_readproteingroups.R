@@ -266,7 +266,7 @@ for (normfun in unlist(strsplit(opt\$normfuns, ","))) {
 
     # Apply log2 and remove NAs as these will otherwise mess with some of the following modules
 
-    proteinGroups.normalized\$tab <- na.omit(log2(proteinGroups.normalized\$tab))
+    proteinGroups.normalized\$tab <- log2(proteinGroups.normalized\$tab)
 
     png(paste(output_prefix, 'proteus', normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
     print(
@@ -317,7 +317,7 @@ for (normfun in unlist(strsplit(opt\$normfuns, ","))) {
 
 # Process and save raw table
 
-proteinGroups\$tab <- na.omit(log2(proteinGroups\$tab))
+proteinGroups\$tab <- log2(proteinGroups\$tab)
 
 # Generate raw distribution plot
 
