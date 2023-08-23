@@ -37,8 +37,6 @@ process STAR_GENOMEGENERATE {
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
     } else {
@@ -60,8 +58,6 @@ process STAR_GENOMEGENERATE {
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
     }
@@ -89,8 +85,6 @@ process STAR_GENOMEGENERATE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
     END_VERSIONS
     """
 }
