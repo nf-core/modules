@@ -20,7 +20,7 @@ workflow FASTQ_ALIGN_STAR {
     // Map reads with STAR
     //
     STAR_ALIGN ( ch_reads, ch_index, ch_gtf, val_star_ignore_sjdbgtf, val_seq_platform, val_seq_center )
-    ch_versions = ch_versions.mix(STAR_ALIGN.out.versions)
+    ch_versions = ch_versions.mix(STAR_ALIGN.out.versions.first())
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
