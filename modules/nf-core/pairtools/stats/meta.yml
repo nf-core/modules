@@ -1,7 +1,7 @@
-name: pairtools_sort
-description: Sort a .pairs/.pairsam file
+name: pairtools_stats
+description: Calculate pairs statistics
 keywords:
-  - sort
+  - stats
   - pairs
   - pairsam
 tools:
@@ -19,9 +19,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - pairs:
       type: file
-      description: A pairs file
+      description: pairs file
 
 output:
   - meta:
@@ -33,11 +33,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - sorted:
+  - stat:
       type: file
-      description: Sorted pairs file
-      pattern: "*.{pairs.gz}"
+      description: stats of the pairs
+      pattern: "*.{pairs.stat}"
 
 authors:
-  - "@jianhong"
   - "@nservant"
