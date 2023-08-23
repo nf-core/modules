@@ -11,8 +11,14 @@ workflow test_align_star_single_end {
         [ id:'test', single_end:true ], // meta map
         [ file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
-    fasta = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta']).map { it -> [[id:it.Name], it] }.collect()
-    gtf = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_gtf']).map { it -> [[id:it.Name], it] }.collect()
+    fasta = [
+        [ id:'test_fasta', single_end:true ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf', single_end:true ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = true
     seq_platform = 'illumina'
     seq_center = false
@@ -29,8 +35,14 @@ workflow test_align_star_paired_end {
             file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_fasta']).map { it -> [[id:it.Name], it] }.collect()
-    gtf = Channel.fromPath(params.test_data['homo_sapiens']['genome']['genome_gtf']).map { it -> [[id:it.Name], it] }.collect()
+    fasta = [
+        [ id:'test_fasta', single_end:true ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf', single_end:true ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = true
     seq_platform = 'illumina'
     seq_center = false
