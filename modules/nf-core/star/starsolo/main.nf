@@ -27,33 +27,28 @@ process STARSOLO {
     def (forward, reverse) = reads.collate(2).transpose()
     def zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
 
-    // solotype helper function
-    def getParam(param, flag) {
-        return meta[param] ? "${flag} ${meta[param]}" : ""
-    }
-
     // Handle solotype argument logic
     switch(solotype) {
         case "CB_UMI_Simple":
-            solotype_args = "${getParam('umi_len', '--soloUMIlen')} ";
-            solotype_args = "${solotype_args}${getParam('whitelist', '--soloCBwhitelist')} ";
-            solotype_args = "${solotype_args}${getParam('umi_start', '--soloUMIstart')} ";
-            solotype_args = "${solotype_args}${getParam('cb_len', '--soloCBlen')} ";
-            solotype_args = "${solotype_args}${getParam('cb_start', '--soloCBstart')} ";
-            solotype_args = "${solotype_args}${getParam('barcode_len', '--soloBarcodeReadLength')} ";
-            solotype_args = "${solotype_args}${getParam('barcode_mate', '--soloBarcodeMate')}";
+            solotype_args = meta.umi_len ? "--soloUMIlen ${meta.umi_len} " : "";
+            solotype_args = solotype_args + (meta.whitelist ? "--soloCBwhitelist ${meta.whitelist} " : "");
+            solotype_args = solotype_args + (meta.umi_start ? "--soloUMIstart ${meta.umi_start} " : "");
+            solotype_args = solotype_args + (meta.cb_len ? "--soloCBlen ${meta.cb_len} " : "");
+            solotype_args = solotype_args + (meta.cb_start ? "--soloCBstart ${meta.cb_start} " : "");
+            solotype_args = solotype_args + (meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len} " : "");
+            solotype_args = solotype_args + (meta.barcode_mate ? "--soloBarcodeMate ${meta.barcode_mate} " : "");
             break
         case "CB_UMI_Complex":
-            solotype_args = "${getParam('cb_position', '--soloCBposition')} ";
-            solotype_args = "${solotype_args}${getParam('whitelist', '--soloCBwhitelist')} ";
-            solotype_args = "${solotype_args}${getParam('umi_position', '--soloUMIposition')} ";
-            solotype_args = "${solotype_args}${getParam('adapter_seq', '--soloAdapterSequence')} ";
-            solotype_args = "${solotype_args}${getParam('max_mismatch_adapter', '--soloAdapterMismatchesNmax')}";
+            solotype_args = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : "";
+            solotype_args = solotype_args + (meta.whitelist ? "--soloCBwhitelist ${meta.whitelist} " : "");
+            solotype_args = solotype_args + (meta.umi_position ? "--soloUMIposition ${meta.umi_position} " : "");
+            solotype_args = solotype_args + (meta.adapter_seq ? "--soloAdapterSequence ${meta.adapter_seq} " : "");
+            solotype_args = solotype_args + (meta.max_mismatch_adapter ? "--soloAdapterMismatchesNmax ${meta.max_mismatch_adapter} " : "");
             break
         case "SmartSeq":
             solotype_args = "--soloUMIdedup Exact ";
-            solotype_args = "${solotype_args}${getParam('strandedness', '--soloStrand')} ";
-            solotype_args = "${solotype_args}--outSAMattrRGline ID:${prefix}";
+            solotype_args = solotype_args + (meta.strandedness ? "--soloStrand ${meta.strandedness} " : "");
+            solotype_args = solotype_args + "--outSAMattrRGline ID:${prefix} ";
             break
         default:
             log.warn("Unknown output solotype (${solotype})");
