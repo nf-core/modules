@@ -5,8 +5,8 @@ process STAR_ALIGN {
 
 conda "bioconda::star=2.7.10b bioconda::samtools=1.16.1 conda-forge::gawk=5.1.0"
 container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a53b7c56addcc8233531e25d69b320bc56964994-0 ' :
-        'biocontainers/ mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a53b7c56addcc8233531e25d69b320bc56964994-0 ' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a53b7c56addcc8233531e25d69b320bc56964994-0' :
+        'biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a53b7c56addcc8233531e25d69b320bc56964994-0' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
