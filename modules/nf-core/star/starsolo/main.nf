@@ -35,28 +35,29 @@ process STARSOLO {
     // Handle solotype argument logic
     switch(solotype) {
         case "CB_UMI_Simple":
-            solotype_args = "${getParam('umi_len', '--soloUMIlen')} " +
-                            "${getParam('whitelist', '--soloCBwhitelist')} " +
-                            "${getParam('umi_start', '--soloUMIstart')} " +
-                            "${getParam('cb_len', '--soloCBlen')} " +
-                            "${getParam('cb_start', '--soloCBstart')} " +
-                            "${getParam('barcode_len', '--soloBarcodeReadLength')} " +
-                            "${getParam('barcode_mate', '--soloBarcodeMate')}"
+            solotype_args = "${getParam('umi_len', '--soloUMIlen')} ";
+            solotype_args = "${solotype_args}${getParam('whitelist', '--soloCBwhitelist')} ";
+            solotype_args = "${solotype_args}${getParam('umi_start', '--soloUMIstart')} ";
+            solotype_args = "${solotype_args}${getParam('cb_len', '--soloCBlen')} ";
+            solotype_args = "${solotype_args}${getParam('cb_start', '--soloCBstart')} ";
+            solotype_args = "${solotype_args}${getParam('barcode_len', '--soloBarcodeReadLength')} ";
+            solotype_args = "${solotype_args}${getParam('barcode_mate', '--soloBarcodeMate')}";
             break
         case "CB_UMI_Complex":
-            solotype_args = "${getParam('cb_position', '--soloCBposition')} " +
-                            "${getParam('whitelist', '--soloCBwhitelist')} " +
-                            "${getParam('umi_position', '--soloUMIposition')} " +
-                            "${getParam('adapter_seq', '--soloAdapterSequence')} " +
-                            "${getParam('max_mismatch_adapter', '--soloAdapterMismatchesNmax')}"
+            solotype_args = "${getParam('cb_position', '--soloCBposition')} ";
+            solotype_args = "${solotype_args}${getParam('whitelist', '--soloCBwhitelist')} ";
+            solotype_args = "${solotype_args}${getParam('umi_position', '--soloUMIposition')} ";
+            solotype_args = "${solotype_args}${getParam('adapter_seq', '--soloAdapterSequence')} ";
+            solotype_args = "${solotype_args}${getParam('max_mismatch_adapter', '--soloAdapterMismatchesNmax')}";
             break
         case "SmartSeq":
-            solotype_args = "--soloUMIdedup Exact " +
-                            "${getParam('strandedness', '--soloStrand')} " +
-                            "--outSAMattrRGline ID:${prefix}"
+            solotype_args = "--soloUMIdedup Exact ";
+            solotype_args = "${solotype_args}${getParam('strandedness', '--soloStrand')} ";
+            solotype_args = "${solotype_args}--outSAMattrRGline ID:${prefix}";
             break
         default:
-            exit 1, "Unknown solotype: ${solotype}"
+            log.warn("Unknown output solotype (${solotype})");
+            break
     }
 
     """
