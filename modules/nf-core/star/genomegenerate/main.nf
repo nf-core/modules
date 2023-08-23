@@ -2,7 +2,7 @@ process STAR_GENOMEGENERATE {
     tag "$fasta"
     label 'process_high'
 
-    conda "bioconda::star=2.7.10b bioconda::samtools=1.17 conda-forge::gawk=5.1.0"
+    conda "bioconda::star=2.7.10b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/star:2.7.10b--h6b7c446_1' :
         'biocontainers/star:2.7.10b--h6b7c446_1' }"
