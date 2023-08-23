@@ -17,5 +17,9 @@ workflow test_starsolo {
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STARSOLO ( input, STAR_GENOMEGENERATE.out.index )
+    meta_index = STAR_GENOMEGENERATE.out.index.map{
+        index ->
+        tuple([], index)
+    }
+    STARSOLO ( input, meta_index )
 }

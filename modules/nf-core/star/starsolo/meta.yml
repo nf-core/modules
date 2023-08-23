@@ -1,5 +1,5 @@
 name: "starsolo"
-description: write your description here
+description: Create a matrix counts for single-cell data using STARSolo, handling cell barcodes and UMI information.
 keywords:
   - align
   - count
@@ -39,7 +39,6 @@ input:
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |

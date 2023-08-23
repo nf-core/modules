@@ -12,12 +12,12 @@ process STARSOLO {
     path index
 
     output:
-    tuple val(meta), path('*.Solo.out')         , emit: counts
-    tuple val(meta), path('*Log.final.out')     , emit: log_final
-    tuple val(meta), path('*Log.out')           , emit: log_out
-    tuple val(meta), path('*Log.progress.out')  , emit: log_progress
-    tuple val(meta), path('*/Gene/Summary.csv') , emit: summary
-    path "versions.yml"                         , emit: versions
+    tuple val(meta),  path('*.Solo.out')         , emit: counts
+    tuple val(meta),  path('*Log.final.out')     , emit: log_final
+    tuple val(meta),  path('*Log.out')           , emit: log_out
+    tuple val(meta),  path('*Log.progress.out')  , emit: log_progress
+    tuple val(meta),  path('*/Gene/Summary.csv') , emit: summary
+    tuple val(meta2), path "versions.yml"        , emit: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -75,6 +75,7 @@ process STARSOLO {
     touch ${prefix}.Solo.out/Log.out
     touch ${prefix}.Solo.out/Log.progress.out
     touch ${prefix}.Solo.out/Summary.csv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")
