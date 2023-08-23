@@ -25,26 +25,40 @@ process STARSOLO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def (forward, reverse) = reads.collate(2).transpose()
-    def umi_len = meta.umi_len ? "--soloUMIlen ${meta.umi_len}" : ""
-    def umi_start = meta.umi_start ? "--soloUMIstart ${meta.umi_start}" : ""
-    def cb_len = meta.cb_len ? "--soloCBlen ${meta.cb_len}" : ""
     def zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
-    def whitelist = meta.whitelist ? "--soloCBwhitelist ${meta.whitelist}" : "--soloCBwhitelist None"
-    def cb_start = meta.cb_start ? "--soloCBstart ${meta.cb_start}" : ""
-    def barcode_len = meta.barcode_len ? "--soloBarcodeReadLength ${meta.barcode_len}" : ""
-    def barcode_mate = meta.barcode_mate ? "--soloBarcodeMate ${meta.barcode_mate}" : ""
-    def cb_position = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : ""
-    def umi_position = meta.umi_position ? "--soloUMIposition ${meta.umi_position}" : ""
-    def adapter_seq = meta.adapter_seq ? "--soloAdapterSequence ${meta.adapter_seq}" : ""
-    def max_mismatch_adapter = meta.max_mismatch_adapter ? "--soloAdapterMismatchesNmax ${meta.max_mismatch_adapter}" : ""
-    def strandedness = meta.strandedness ? "--soloStrand ${meta.strandedness}" : ""
-    def solotype_args = (solotype == "CB_UMI_Simple") ?
-        "${umi_len} ${whitelist} ${umi_start} ${cb_len} ${cb_start} ${barcode_len} ${barcode_mate}" :
-        (solotype == "CB_UMI_Complex") ?
-        "${cb_position} ${whitelist} ${umi_position} ${adapter_seq} ${max_mismatch_adapter}" :
-        (solotype == "SmartSeq") ?
-        "--soloUMIdedup Exact ${strandedness} --outSAMattrRGline ID:${prefix}" :
-        ""
+
+    // solotype helper function
+    def getParam(param, flag) {
+        return meta[param] ? "${flag} ${meta[param]}" : ""
+    }
+
+    // Handle solotype argument logic
+    switch(solotype) {
+        case "CB_UMI_Simple":
+            solotype_args = "${getParam('umi_len', '--soloUMIlen')} " +
+                            "${getParam('whitelist', '--soloCBwhitelist')} " +
+                            "${getParam('umi_start', '--soloUMIstart')} " +
+                            "${getParam('cb_len', '--soloCBlen')} " +
+                            "${getParam('cb_start', '--soloCBstart')} " +
+                            "${getParam('barcode_len', '--soloBarcodeReadLength')} " +
+                            "${getParam('barcode_mate', '--soloBarcodeMate')}"
+            break
+        case "CB_UMI_Complex":
+            solotype_args = "${getParam('cb_position', '--soloCBposition')} " +
+                            "${getParam('whitelist', '--soloCBwhitelist')} " +
+                            "${getParam('umi_position', '--soloUMIposition')} " +
+                            "${getParam('adapter_seq', '--soloAdapterSequence')} " +
+                            "${getParam('max_mismatch_adapter', '--soloAdapterMismatchesNmax')}"
+            break
+        case "SmartSeq":
+            solotype_args = "--soloUMIdedup Exact " +
+                            "${getParam('strandedness', '--soloStrand')} " +
+                            "--outSAMattrRGline ID:${prefix}"
+            break
+        default:
+            exit 1, "Unknown solotype: ${solotype}"
+    }
+
     """
     STAR \\
         --genomeDir $index \\
