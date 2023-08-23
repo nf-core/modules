@@ -9,7 +9,7 @@ process STARSOLO {
 
     input:
     tuple val(meta), val(solotype), path(reads)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta),  path('*.Solo.out')         , emit: counts
@@ -17,7 +17,7 @@ process STARSOLO {
     tuple val(meta),  path('*Log.out')           , emit: log_out
     tuple val(meta),  path('*Log.progress.out')  , emit: log_progress
     tuple val(meta),  path('*/Gene/Summary.csv') , emit: summary
-    tuple val(meta2), path("versions.yml")       , emit: versions
+    path "versions.yml"                          , emit: versions
     when:
     task.ext.when == null || task.ext.when
 
