@@ -26,6 +26,13 @@ input:
         Type of single-cell library.
         It can be CB_UMI_Simple for most common ones such as 10xv2 and 10xv3,
         CB_UMI_Complex for method such as inDrop and SmartSeq for SMART-Seq.
+  - meta2:
+      type: map
+      description: Groovy Map containing the STAR index information.
+  - index:
+      type: directory
+      description: STAR genome index
+      pattern: "star"
   - reads:
       type: file
       description: |
