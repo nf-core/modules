@@ -1,20 +1,16 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "exomiser"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Exomiser  annotates, filters and prioritises likely causative variants
 keywords:
-  - sort
-  - example
+  - variant prioritization
+  - disease phenotype
   - genomics
 tools:
   - "exomiser":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Exomiser prioritiser REST API"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      description: "Exomiser - A Tool to Annotate and Prioritize Exome Variants"
+      homepage: "https://bioconda.github.io/recipes/exomiser-rest-prioritiser/README.html"
+      documentation: "https://exomiser.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/exomiser/Exomiser"
+      doi: "https://doi.org/10.1038%2Fnprot.2015.124"
       licence: "['AGPL v3']"
 
 ## TODO nf-core: Add a description of all of the variables used as input
@@ -25,7 +21,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
+
   ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
@@ -40,7 +36,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  
+
   - versions:
       type: file
       description: File containing software versions
