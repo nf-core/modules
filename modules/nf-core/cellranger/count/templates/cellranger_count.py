@@ -32,7 +32,8 @@ fastq_all.mkdir(exist_ok=True)
 filename_pattern =  r'([^a-zA-Z0-9])R1([^a-zA-Z0-9])'
 
 for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2)):
-    if re.sub(filename_pattern, r'\1R2\2', r1.name) != r2.name:
+    # double escapes are required because nextflow processes this python 'template'
+    if re.sub(filename_pattern, r'\\1R2\\2', r1.name) != r2.name:
         raise AssertionError(
             dedent(
                 f"""\
