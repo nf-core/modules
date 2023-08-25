@@ -23,9 +23,5 @@ workflow test_starsolo {
     ]
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    meta_index = STAR_GENOMEGENERATE.out.index.map{
-        index ->
-        tuple([], index)
-    }
-    STARSOLO ( input, meta_index )
+    STARSOLO ( input, STAR_GENOMEGENERATE.out.index )
 }
