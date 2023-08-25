@@ -5,7 +5,7 @@ process GATK4_APPLYVQSR {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
@@ -41,6 +41,18 @@ process GATK4_APPLYVQSR {
         --recal-file $recal \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

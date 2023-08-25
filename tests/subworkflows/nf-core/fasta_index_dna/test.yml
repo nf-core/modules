@@ -1,8 +1,16 @@
 - name: fasta_index_dna test_bowtie2_build
   command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bowtie2_build -c ./tests/config/nextflow.config
   tags:
+    - bwa
+    - bwa/index
+    - bwamem2
+    - bwamem2/index
+    - dragmap
+    - dragmap/hashtable
     - bowtie2
     - bowtie2/build
+    - snapaligner
+    - snapaligner/index
     - subworkflows
     - subworkflows/fasta_index_dna
   files:
@@ -22,6 +30,12 @@
 - name: fasta_index_dna test_bwamem1_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bwamem1_index -c ./tests/config/nextflow.config
   tags:
+    - bowtie2
+    - bowtie2/build
+    - bwamem2
+    - bwamem2/index
+    - dragmap
+    - dragmap/hashtable
     - bwa
     - bwa/index
     - snapaligner
@@ -43,8 +57,16 @@
 - name: fasta_index_dna test_bwamem2_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bwamem2_index -c ./tests/config/nextflow.config
   tags:
+    - bowtie2
+    - bowtie2/build
+    - bwa
+    - bwa/index
+    - dragmap
+    - dragmap/hashtable
     - bwamem2
     - bwamem2/index
+    - snapaligner
+    - snapaligner/index
     - subworkflows/fasta_index_dna
   files:
     - path: output/bwamem2/bwamem2/genome.fasta.0123
@@ -61,8 +83,16 @@
 - name: fasta_index_dna test_dragmap_hashtable
   command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_dragmap_hashtable -c ./tests/config/nextflow.config
   tags:
+    - bowtie2
+    - bowtie2/build
+    - bwa
+    - bwa/index
+    - bwamem2
+    - bwamem2/index
     - dragmap
     - dragmap/hashtable
+    - snapaligner
+    - snapaligner/index
     - subworkflows
     - subworkflows/fasta_index_dna
   files:
@@ -83,6 +113,14 @@
 - name: fasta_index_dna test_snap_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_snap_index -c ./tests/config/nextflow.config
   tags:
+    - bowtie2
+    - bowtie2/build
+    - bwa
+    - bwa/index
+    - bwamem2
+    - bwamem2/index
+    - dragmap
+    - dragmap/hashtable
     - snapaligner
     - snapaligner/index
     - subworkflows

@@ -2,7 +2,7 @@ process DEEPCELL_MESMER {
     tag "$meta.id"
     label 'process_single'
 
-    container "vanvalenlab/deepcell-applications:0.4.0"
+    container "docker.io/vanvalenlab/deepcell-applications:0.4.1"
 
     input:
     tuple val(meta) , path(img)

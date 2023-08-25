@@ -2,10 +2,10 @@ process SHINYNGS_STATICDIFFERENTIAL {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.6.0"
+    conda "bioconda::r-shinyngs=1.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.6.0--r42hdfd78af_1':
-        'quay.io/biocontainers/r-shinyngs:1.6.0--r42hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.1--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.1--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats

@@ -1,0 +1,49 @@
+name: "vrhyme_extractunbinned"
+description: Extracting sequences that were unbinnned by vRhyme into a FASTA file
+keywords:
+  - bin
+  - binning
+  - link
+  - vrhyme
+  - extractunbinned
+tools:
+  - "vrhyme":
+      description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
+      homepage: https://github.com/AnantharamanLab/vRhyme
+      documentation: https://github.com/AnantharamanLab/vRhyme
+      tool_dev_url: https://github.com/AnantharamanLab/vRhyme
+      doi: 10.1093/nar/gkac341
+      licence: "['GPL v3 license', 'GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file containing contigs/scaffolds input into vRhyme
+      pattern: "*.{fasta,fna,fa}"
+  - membership:
+      type: file
+      description: TSV file containing information regarding which bins input sequences were placed information
+      pattern: "*.{tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - unbinnned_sequences:
+      type: file
+      description: FASTA file containing sequences unbinned by vRhyme
+      pattern: "*_unbinned_sequences.fasta"
+
+authors:
+  - "@CarsonJM"

@@ -1,0 +1,82 @@
+name: "proteus_readproteingroups"
+description: reads a maxQuant proteinGroups file with Proteus
+keywords:
+  - proteomics
+  - proteus
+  - readproteingroups
+tools:
+  - "proteus":
+      description: "R package for analysing proteomics data"
+      homepage: "https://github.com/bartongroup/Proteus"
+      documentation: "https://rdrr.io/github/bartongroup/Proteus/"
+      tool_dev_url: "https://github.com/bartongroup/Proteus"
+      doi: "10.1101/416511"
+      licence: "['GPL v2']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - samplesheet:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata; check here for specifications: https://rdrr.io/github/bartongroup/Proteus/man/readProteinGroups.html
+  - intensities:
+      type: file
+      description: |
+        proteinGroups TXT file with protein intensities information from maxQuant; check here for specifications: https://rdrr.io/github/bartongroup/Proteus/man/readProteinGroups.html
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
+
+output:
+  - dendro_plot:
+      type: file
+      description: |
+        PNG file; dendrogram of the normalized samples hierarchically clustered by their intensities
+  - mean_var_plot:
+      type: file
+      description: |
+        PNG file; plot of the log-intensity variance vs log-intensity mean of each condition in the normalized samples
+  - raw_dist_plot:
+      type: file
+      description: |
+        PNG file; plot of the intensity/ratio distributions of the raw samples
+  - norm_dist_plot:
+      type: file
+      description: |
+        PNG file; plot of the intensity/ratio distributions of the normalized samples
+  - raw_rdata:
+      type: file
+      description: |
+        RDS file of a proteinGroups object from Proteus, contains raw protein intensities and additional info
+  - norm_rdata:
+      type: file
+      description: |
+        RDS file of a proteinGroups object from Proteus, contains normalized protein intensities and additional info
+  - raw_tab:
+      type: file
+      description: |
+        TSV-format intensities table from Proteus, contains raw protein intensities
+  - norm_tab:
+      type: file
+      description: |
+        TSV-format intensities table from Proteus, contains normalized protein intensities
+  - session_info:
+      type: file
+      description: |
+        LOG file of the R sessionInfo from the module run
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@WackerO"
