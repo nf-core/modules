@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE   } from '../../../../modules/nf-core/star/genomegenerate/main.nf'
-include { STAR_ALIGN            } from '../../../../modules/nf-core/star/align/main.nf'
+include { STAR_GENOMEGENERATE   } from '../../../../../modules/nf-core/star/genomegenerate/main.nf'
+include { STAR_ALIGN            } from '../../../../../modules/nf-core/star/align/main.nf'
 include { QUALIMAP_RNASEQ       } from '../../../../../modules/nf-core/qualimap/rnaseq/main.nf'
 
 workflow test_qualimap_rnaseq {
