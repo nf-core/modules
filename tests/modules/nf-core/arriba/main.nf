@@ -11,6 +11,7 @@ workflow test_arriba_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
             ]
+    ]
     fasta = [
         [ id:'test_fasta' ], // meta map
         [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
