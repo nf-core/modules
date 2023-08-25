@@ -16,11 +16,11 @@ workflow test_qualimap_rnaseq {
         [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
     ]
     fai = [
-        [ id:'test_gtf' ], // meta map
+        [ id:'test_fai' ], // meta map
         [ file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true) ]
     ]
     gtf = [
-        [ id:'test_fasta_fai' ], // meta map
+        [ id:'test_fasta_gtf' ], // meta map
         [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
     ]
     star_ignore_sjdbgtf = false
