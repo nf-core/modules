@@ -1,9 +1,9 @@
-name: qualimap_bamqc
+name: qualimap_rnaseq
 description: Evaluate alignment data
 keywords:
   - quality control
   - qc
-  - bam
+  - rnaseq
 tools:
   - qualimap:
       description: |
@@ -25,10 +25,15 @@ input:
       type: file
       description: BAM file
       pattern: "*.{bam}"
-  - gff:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - gtf:
       type: file
-      description: Feature file with regions of interest
-      pattern: "*.{gff,gtf,bed}"
+      description: GTF file of the reference genome
+      pattern: "*.{gtf}"
 output:
   - meta:
       type: map
@@ -44,4 +49,4 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
-  - "@phue"
+  - "@FriederikeHanssen"
