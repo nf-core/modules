@@ -37,9 +37,10 @@ process CSVTK_JOIN {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
     """
-    touch ${prefix}.csv
+    touch ${prefix}.${out_extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
