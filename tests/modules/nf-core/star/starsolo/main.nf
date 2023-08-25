@@ -13,8 +13,14 @@ workflow test_starsolo {
             file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     meta_index = STAR_GENOMEGENERATE.out.index.map{
