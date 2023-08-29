@@ -10,6 +10,9 @@ process EXOMISER {
     input:
     tuple val(meta) , path(vcf)
     tuple val(meta2), path(config)
+    tuple val(meta) , path(phenopacket)
+    tuple val(meta) , path(analysis_parameters)
+    tuple val(meta) , path(output_parameters)
 
     # TODO @abhayr20: add additional inputs according to the pattern above
     # See:
