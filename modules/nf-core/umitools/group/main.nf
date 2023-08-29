@@ -48,10 +48,7 @@ process UMITOOLS_GROUP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def paired = meta.single_end ? "" : "--paired"
-    group_info = get_group_info ? "--group_out ${prefix}.tsv" : ""
     """
     touch ${prefix}.bam
     touch ${prefix}.log
