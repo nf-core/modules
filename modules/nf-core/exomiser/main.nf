@@ -17,11 +17,16 @@ process EXOMISER {
     # https://www.youtube.com/watch?v=84XtbqRkKSk&list=PL3xpfTVZLcNikun1FrSvtXW8ic32TciTJ
 
     output:
-    tuple val(meta), path("*.vcf") , optional:true, emit: vcf
-    tuple val(meta), path("*.html"), optional:true, emit: html
-    tuple val(meta), path("*.json"), optional:true, emit: json
+    tuple val(meta), path("*.vcf")          , optional:true, emit: vcf
+    tuple val(meta), path("*.html")         , optional:true, emit: html
+    tuple val(meta), path("*.json")         , optional:true, emit: json
     # TODO @abhayr20: add additional outputs
-    path "versions.yml"           , emit: versions
+
+    tuple val(meta), path("*.vcf.gz.tbi")   , optional:true, emit: vcf.gz.tbi
+    tuple val(meta), path("*genes.tsv")     , optional:true, emit: genes.tsv
+    tuple val(meta), path("*variants.tsv")  , optional:true, emit: variants.tsv
+
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,13 +37,15 @@ process EXOMISER {
 
     """
     #TODO @abhayr20: Add command used to annotate the vcf file
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+
+    # Normal command: java -jar exomiser-cli-13.2.0.jar --sample examples/pfeiffer-phenopacket.yml --analysis examples/exome-analysis.yml --output examples/output-options.yml
+
+    exomiser/exomiser-cli:13.2.0 \\
+        $args \\                            #handles sample and analysis flag
+        -- output \\                        # I need to describe output paramaters in an output.yml file
+
+
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
