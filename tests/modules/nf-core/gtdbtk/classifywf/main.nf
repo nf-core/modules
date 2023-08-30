@@ -6,12 +6,12 @@ include { GTDBTK_CLASSIFYWF } from '../../../../../modules/nf-core/gtdbtk/classi
 
 process STUB_GTDBTK_DATABASE {
     output:
-    tuple val("gtdbtk_r202_data"), path("database/*"), emit: database
+    tuple val("gtdbtk_r207_v2_data"), path("database/*"), emit: database
 
     stub:
     """
     mkdir database
-    touch database/gtdbtk_r202_data
+    touch database/gtdbtk_r207_v2_data
     """
 }
 
