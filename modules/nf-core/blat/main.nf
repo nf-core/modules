@@ -21,17 +21,26 @@ process BLAT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def gz_cmd = query =~ /\.gz$/ ? "gzip -cdf ${query} > ${prefix}.fasta" : ""
+    def unzip = query.toString().endsWith(".gz")
 
     """
-    $gz_cmd
+    in=$query
+    if $unzip
+    then
+        gunzip -cdf $query > ${prefix}.fasta
+        in=${prefix}.fasta
+    fi
+
     blat \\
         $args \\
         $subject \\
-        ${prefix}.fasta \\
+        \$in \\
         ${prefix}.psl
 
-    rm ${prefix}.fasta
+    if $unzip
+    then
+        rm ${prefix}.fasta
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
