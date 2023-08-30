@@ -52,7 +52,7 @@ process EXOMISER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(exomiser --version 2>&1) | sed 's/^.*exomiser //; s/Using.*\$//' ))
     END_VERSIONS
     """
 
@@ -65,7 +65,7 @@ process EXOMISER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(exomiser --version 2>&1) | sed 's/^.*exomiser //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
