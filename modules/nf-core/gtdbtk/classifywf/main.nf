@@ -52,17 +52,17 @@ process GTDBTK_CLASSIFYWF {
         --min_af $params.gtdbtk_min_af
 
     mv classify/* .
-    
+
     mv identify/* .
 
     mv align/* .\
 
     mv gtdbtk.log "gtdbtk.${prefix}.log"
-    
+
     mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
 
     find -name gtdbtk.${prefix}.*.classify.tree | xargs -r gzip # do not fail if .tree is missing
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
