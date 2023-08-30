@@ -15,9 +15,20 @@ process STUB_GTDBTK_DATABASE {
     """
 }
 
+process STUB_mash_database {
+    output:
+        path("db.msh"), emit: mash_db
+    
+    stub:
+    """
+    touch db.msh
+    """
+}
+
 workflow test_gtdbtk_classifywf {
 
     STUB_GTDBTK_DATABASE()
+    STUB_mash_database()
 
     input = [ 
         [ id:'test', single_end:false, assembler:'SPADES' ],
@@ -28,5 +39,5 @@ workflow test_gtdbtk_classifywf {
         ]
     ]
 	
-    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database )
+    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database, STUB_mash_database.out.mash_db )
 }
