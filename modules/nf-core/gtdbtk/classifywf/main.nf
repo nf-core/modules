@@ -14,16 +14,16 @@ process GTDBTK_CLASSIFYWF {
     path(mash_db)
 
     output:
-    path "gtdbtk.${prefix}.*.summary.tsv"        , emit: summary
-    path "gtdbtk.${prefix}.*.classify.tree.gz"   , emit: tree, optional: true
-    path "gtdbtk.${prefix}.*.markers_summary.tsv", emit: markers, optional: true
-    path "gtdbtk.${prefix}.*.msa.fasta.gz"       , emit: msa, optional: true
-    path "gtdbtk.${prefix}.*.user_msa.fasta.gz"  , emit: user_msa, optional: true
-    path "gtdbtk.${prefix}.*.filtered.tsv"       , emit: filtered, optional: true
-    path "gtdbtk.${prefix}.failed_genomes.tsv"   , emit: failed, optional: true
-    path "gtdbtk.${prefix}.log"                  , emit: log
-    path "gtdbtk.${prefix}.warnings.log"         , emit: warnings
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")         , emit: summary
+    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz")    , emit: tree, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv") , emit: markers, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz")        , emit: msa, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz")   , emit: user_msa, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv")        , emit: filtered, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv")    , emit: failed, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.log")                   , emit: log
+    tuple val(meta), path("gtdbtk.${prefix}.warnings.log")          , emit: warnings
+    path("versions.yml")                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
