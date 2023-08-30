@@ -233,6 +233,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnscope
+          - profile: "conda"
             tags: sentieon/varcal
           - profile: "conda"
             tags: sentieon/wgsmetrics
@@ -490,6 +492,12 @@ jobs:
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.7.1
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
