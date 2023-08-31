@@ -14,7 +14,7 @@
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": [
                 // Example: container "quay.io/biocontainers/fastqc:0.11.9--0"
-                "container\\s+\"(?<registryUrls>\\S+)\\/(?<depName>\\S+):(?<currentValue>.*\\-.*)\"\n"
+                "container\\s+\"(?<registryUrl>\\S+)\\/(?<depName>\\S+):(?<currentValue>.*\\-.*)\"\n"
             ],
             "datasourceTemplate": "docker"
         }
