@@ -76,6 +76,14 @@ process EXOMISER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    ## generate application.properties to indicate where the reference data is and which version to use
+    cat <<-END_PROPERTIES > application.properties
+    exomiser.data-directory=./data
+    exomiser.hg19.data-version=${exomiser_cache_version}
+    exomoser.hg38.data-version=${exomiser_cache_version}
+    exomiser.phenotype.data-version=${exomiser_cache_version}
+    END_PROPERTIES
+
     touch ${prefix}.vcf
     touch ${prefix}.html
     touch ${prefix}.json
