@@ -3,6 +3,7 @@ from subprocess import run
 from pathlib import Path
 from textwrap import dedent
 import shlex
+import re
 
 
 def chunk_iter(seq, size):
@@ -25,13 +26,21 @@ assert len(fastqs) % 2 == 0
 fastq_all = Path("./fastq_all")
 fastq_all.mkdir(exist_ok=True)
 
+# Match R1 in the filename, but only if it is followed by a non-digit or non-character
+# match "file_R1.fastq.gz", "file.R1_000.fastq.gz", etc. but
+# do not match "SRR12345", "file_INFIXR12", etc
+filename_pattern =  r'([^a-zA-Z0-9])R1([^a-zA-Z0-9])'
 
 for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2)):
-    if r1.name.replace("R1", "R2") != r2.name:
+    # double escapes are required because nextflow processes this python 'template'
+    if re.sub(filename_pattern, r'\\1R2\\2', r1.name) != r2.name:
         raise AssertionError(
             dedent(
                 f"""\
                 We expect R1 and R2 of the same sample to have the same filename except for R1/R2.
+                This has been checked by replacing "R1" with "R2" in the first filename and comparing it to the second filename.
+                If you believe this check shouldn't have failed on your filenames, please report an issue on GitHub!
+
                 Files involved:
                     - {r1}
                     - {r2}
