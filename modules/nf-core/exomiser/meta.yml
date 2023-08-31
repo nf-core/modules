@@ -52,6 +52,17 @@ input:
         YAML file containing HPO terms to describe proband
         or family trio (proband, mother and father)
     pattern: "*.{yml}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference data information
+        e.g. [ id:'genome' ]
+  - exomiser_cache:
+      type: directory
+      description: directory containing the exomiser reference data
+  - exomiser_cache_version:
+      type: string
+      description: exomiser reference data version
 
 # Refer: https://exomiser.readthedocs.io/en/latest/result_interpretation.html
 output:
@@ -93,7 +104,7 @@ output:
       pattern: "*.{variants.tsv}"
   - versions:
       type: file
-      description: File containing software versions
+      description: |
       pattern: "versions.yml"
 authors:
   - "@abhayr20"

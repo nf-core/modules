@@ -9,7 +9,9 @@ process EXOMISER {
         'biocontainers/exomiser-cli:13.2.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), assembly, path(analysis_yml), path(job_yml) , path(output_yml), path(ped), path(sample_phenopacket_yml)
+    tuple val(meta) , path(vcf), val(assembly), path(analysis_yml), path(job_yml) , path(output_yml), path(ped), path(sample_phenopacket_yml)
+    tuple val(meta2), path(exomiser_cache, stageAs: "data/*")
+    tuple val(meta2), val(exomiser_cache_version)
 
     output:
     tuple val(meta), path("*.vcf.gz")       , optional:true, emit: vcf
@@ -36,6 +38,14 @@ process EXOMISER {
     def sample_phenopacket_yml_cmd  = sample_phenopacket_yml    ? "--sample ${sample_phenopacket_yml}"  : ""
 
     """
+    ## generate application.properties to indicate where the reference data is and which version to use
+    cat <<-END_PROPERTIES > application.properties
+    exomiser.data-directory=./data
+    exomiser.hg19.data-version=${exomiser_data_version}
+    exomoser.hg38.data-version=${exomiser_data_version}
+    exomiser.phenotype.data-version=${exomiser_data_version}
+    END_PROPERTIES
+
     exomiser-cli \\
         ${analysis_yml_cmd} \\
         ${assembly_cmd} \\
@@ -46,6 +56,7 @@ process EXOMISER {
         ${ped_cmd} \\
         ${sample_phenopacket_yml_cmd} \\
         --vcf ${vcf} \\
+        --spring.config.location=./application.properties
         $args
 
     ## $args can contain
