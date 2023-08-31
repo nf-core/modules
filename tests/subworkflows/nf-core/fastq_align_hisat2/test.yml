@@ -3,9 +3,16 @@
   tags:
     - hisat2
     - hisat2/align
+    - samtools
+    - samtools/stats
+    - samtools/sort
+    - samtools/index
+    - samtools/idxstats
+    - samtools/flagstat
     - subworkflows
     - subworkflows/bam_sort_stats_samtools
     - subworkflows/fastq_align_hisat2
+    - subworkflows/bam_stats_samtools
   files:
     - path: output/hisat2/test.bam
     - path: output/hisat2/test.hisat2.summary.log
@@ -24,9 +31,16 @@
   tags:
     - hisat2
     - hisat2/align
+    - samtools
+    - samtools/stats
+    - samtools/sort
+    - samtools/index
+    - samtools/idxstats
+    - samtools/flagstat
     - subworkflows
     - subworkflows/bam_sort_stats_samtools
     - subworkflows/fastq_align_hisat2
+    - subworkflows/bam_stats_samtools
   files:
     - path: output/hisat2/test.bam
     - path: output/hisat2/test.hisat2.summary.log
