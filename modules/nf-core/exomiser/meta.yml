@@ -19,36 +19,40 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
-  - meta2:
-      type: map
-      description: not sure
-
   - vcf:
       type: file
       description: vcf file
-      pattern: "*.{vcf}"
-
-  - phenopacket:
+      pattern: "*.vcf.gz"
+  - assembly:
+      type: string
+      description: Genome assembly of sample VCF file
+  - analysis_yml:
+      type: file
+      description: |
+        YAML file containing steps to filter variants
+        (inheritance modes, frequency scores, pathogenicity score)
+    pattern: "*.{yml}"
+  - job_yml:
+      type: file
+      description: |
+        TBD
+  - output_yml:
+      type: file
+      description: |
+        YAML file with info about output file formats
+        (default HTML), JSON, TSV_GENE, TSV_VARIANT, VCF
+      pattern: "*.{yml}"
+  - ped:
+      type: file
+      description: |
+        PED file describing sample relations
+  - sample_phenopacket_yml:
       type: file
       description: |
         YAML file containing HPO terms to describe proband
         or family trio (proband, mother and father)
     pattern: "*.{yml}"
 
-  - analysis_parameters:
-      type: file
-      description: |
-        YAML file containing steps to filter variants
-        (inheritance modes, frequency scores, pathogenicity score)
-      pattern: "*.{yml}"
-
-  - output_parameters:
-      type: file
-      description: |
-        YAML file with info about output file formats
-        (default HTML), JSON, TSV_GENE, TSV_VARIANT, VCF
-      pattern: "*.{yml}"
 
 # Refer: https://exomiser.readthedocs.io/en/latest/result_interpretation.html
 output:
@@ -58,45 +62,41 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
-  - meta2:
-      type: map
-      description: not sure
-
-  - prioritized_variants_tsv:
-      type: .tsv
+  - vcf:
+      type: file
       description: |
-        file containing ranked list of prioritized genes or
-        variants according to their exomiser scores in TSV format
-      pattern: "*.{tsv}"
-
+        file containing list of prioritized genes or
+        variants in tabix-indexed VCF format
+      pattern: ".{vcf.gz}"
   - prioritized_variants_html:
-      type:
+      type: file
       description: |
         file containing ranked list of prioritized genes or
         variants according to their exomiser scores in HTML format
       pattern: ".{html}"
-
   - prioritized_variants_json:
-      type:
+      type: file
       description: |
         file containing  list of prioritized genes or
         variants and their exomiser scores as an unstructured
         JSON string
       pattern: ".{json}"
-
-  - prioritized_variants_vcf:
-      type:
+  - genes_tsv:
+      type: file
       description: |
-        file containing list of prioritized genes or
-        variants in tabix-indexed VCF format
-      pattern: ".{vcf.gz}"
-
+        file containing ranked list of prioritized genes or
+        according to their exomiser scores in TSV format
+      pattern: "*.{genes.tsv}"
+  - variants_tsv:
+      type: file
+      description: |
+        file containing ranked list of prioritized
+        variants according to their exomiser scores in TSV format
+      pattern: "*.{variants.tsv}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
-
 authors:
   - "@abhayr20"
+  - "@matthdsm"
