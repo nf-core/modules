@@ -14,17 +14,10 @@ process EXOMISER {
     tuple val(meta) , path(analysis_parameters)
     tuple val(meta) , path(output_parameters)
 
-    # TODO @abhayr20: add additional inputs according to the pattern above
-    # See:
-    # https://nf-co.re/docs/contributing/modules#new-module-guidelines-and-pr-review-checklist and
-    # https://www.youtube.com/watch?v=84XtbqRkKSk&list=PL3xpfTVZLcNikun1FrSvtXW8ic32TciTJ
-
     output:
     tuple val(meta), path("*.vcf")          , optional:true, emit: vcf
     tuple val(meta), path("*.html")         , optional:true, emit: html
     tuple val(meta), path("*.json")         , optional:true, emit: json
-    # TODO @abhayr20: add additional outputs
-
     tuple val(meta), path("*.vcf.gz.tbi")   , optional:true, emit: vcf.gz.tbi
     tuple val(meta), path("*genes.tsv")     , optional:true, emit: genes.tsv
     tuple val(meta), path("*variants.tsv")  , optional:true, emit: variants.tsv
@@ -39,15 +32,14 @@ process EXOMISER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    #TODO @abhayr20: Add command used to annotate the vcf file
-
     # Normal command: java -jar exomiser-cli-13.2.0.jar --sample examples/pfeiffer-phenopacket.yml --analysis examples/exome-analysis.yml --output examples/output-options.yml
+    # @Matthias: Would sample and analysis flag be somehow handled by $args?
 
     exomiser/exomiser-cli:13.2.0 \\
-        $args \\                            #handles sample and analysis flag
-        -- output \\                        # I need to describe output paramaters in an output.yml file
-
-
+        $args \\
+        --sample ${phenopacket} \\
+        --analysis ${analysis_parameters} \\
+        --output ${output_parameters}
 
 
     cat <<-END_VERSIONS > versions.yml
