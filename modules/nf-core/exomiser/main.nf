@@ -28,16 +28,23 @@ process EXOMISER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def analysis_yml_cmd            = analysis_yml              ? "--analysis ${analysis_yml}"          : ""
+    def assembly_cmd                = assembly                  ? "--assembly ${assembly}"              : ""
+    def job_yml_cmd                 = job_yml                   ? "--job ${job_yml}"                    : ""
+    def output_yml_cmd              = output_yml                ? "--output ${output_yml}"              : ""
+    def ped_cmd                     = ped                       ? "--ped ${ped}"                        : ""
+    def sample_phenopacket_yml_cmd  = sample_phenopacket_yml    ? "--sample ${sample_phenopacket_yml}"  : ""
+
     """
     exomiser-cli \\
-        --analysis ${analysis_yml} \\
-        --assembly ${assembly} \\
-        --job ${job_yml} \\
-        --output ${output_yml} \\
+        ${analysis_yml_cmd} \\
+        ${assembly_cmd} \\
+        ${job_yml_cmd } \\
+        ${output_yml_cmd} \\
         --output-directory . \\
         --output-filename ${prefix} \\
-        --ped ${ped} \\
-        --sample ${sample_phenopacket_yml} \\
+        ${ped_cmd} \\
+        ${sample_phenopacket_yml_cmd} \\
         --vcf ${vcf} \\
         $args
 
