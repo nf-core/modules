@@ -33,7 +33,7 @@ process GLIMPSE2_CONCORDANCE {
     def bins_cmd     = bins                   ? "--bins ${bins}"                   : ""
     def ac_bins_cmd  = ac_bins                ? "--ac-bins ${ac_bins}"             : ""
     def ale_ct_cmd   = allele_counts          ? "--allele-counts ${allele_counts}" : ""
-    def region_str   = region instanceof List ? region.join('\\n')                  : region
+    def region_str   = region instanceof List ? region.join('\\n')                 : region
 
     if (((groups ? 1:0) + (bins ? 1:0) + (ac_bins ? 1:0) + (allele_counts ? 1:0)) != 1) error "One and only one argument should be selected between groups, bins, ac_bins, allele_counts"
 
