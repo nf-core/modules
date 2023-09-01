@@ -16,5 +16,11 @@
             ],
             "datasourceTemplate": "docker"
         }
-    ]
+    ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "registryUrls": ["quay.io"]
+    }
+  ]
 }
