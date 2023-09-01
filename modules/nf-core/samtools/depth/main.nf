@@ -1,5 +1,5 @@
 process SAMTOOLS_DEPTH {
-    tag "$meta.id"
+    tag "$meta1.id"
     label 'process_low'
 
     conda "bioconda::samtools=1.17"
