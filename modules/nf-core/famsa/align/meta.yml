@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "famsa_align"
+description: Aligns sequences using FAMSA
+keywords:
+  - alignment
+  - MSA
+  - genomics
+tools:
+  - "famsa":
+      description: "Algorithm for large-scale multiple sequence alignments"
+      homepage: "https://github.com/refresh-bio/FAMSA"
+      documentation: "https://github.com/refresh-bio/FAMSA"
+      tool_dev_url: "https://github.com/refresh-bio/FAMSA"
+      doi: "10.1038/srep33964"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fasta}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing tree information
+        e.g. `[ id:'test_tree']`
+
+  - tree:
+      type: file
+      description: Input guide tree in Newick format
+      pattern: "*.{dnd}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - alignment:
+      type: file
+      description: Alignment file.
+      pattern: "*.{aln}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@luisas"

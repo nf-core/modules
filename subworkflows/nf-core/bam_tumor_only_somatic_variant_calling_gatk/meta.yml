@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: gatk_tumor_only_somatic_variant_calling
+name: bam_tumor_only_somatic_variant_calling_gatk
 description: |
   Perform variant calling on a single tumor sample using mutect2 tumor only mode.
   Run the input bam file through getpileupsummarries and then calculatecontaminationto get the contamination and segmentation tables.
@@ -13,7 +13,7 @@ keywords:
   - variant_calling
   - tumor_only
   - filtered_vcf
-modules:
+components:
   - gatk4/mutect2
   - gatk4/getpileupsummaries
   - gatk4/calculatecontamination
