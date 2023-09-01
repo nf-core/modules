@@ -9,7 +9,13 @@
     "schedule": ["every sunday"],
     "regexManagers": [
         {
-            "description": "Process Process Containers dependencies",
+            "description": "Process Conda dependencies",
+            "fileMatch": ["(^|/)main\\.nf$"],
+            "matchStrings": ["\\s+conda\\s+\"(?<registryUrl>\\S+)::(?<depName>\\S+)=(?<currentValue>.*\\-.*)'\"\n"],
+            "datasourceTemplate": "conda"
+        },
+        {
+            "description": "Process Containers dependencies",
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
             "datasourceTemplate": "docker"
