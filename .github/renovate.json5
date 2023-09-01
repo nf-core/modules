@@ -11,19 +11,9 @@
         {
             "description": "Process Process Containers dependencies",
             "fileMatch": ["(^|/)main\\.nf$"],
-            "matchStrings": [
-                "\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"
-            ],
-            "datasourceTemplate": "docker"
-        }
-    ],
-    "packageRules": [
-        {
-            "matchDatasources": ["docker"],
-            "registryUrls": [
-                "quay.io",
-                "registry.hub.docker.com" // We need this for updating depedancies in Dockerfiles
-            ]
+            "matchStrings": ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
+            "datasourceTemplate": "docker",
+            "registryUrlTemplate": "quay.io"
         }
     ]
 }
