@@ -15,7 +15,7 @@ process STUB_GTDBTK_DATABASE {
     """
 }
 
-process STUB_mash_database {
+process STUB_MASH_DATABASE {
     output:
         path("db.msh"), emit: mash_db
     
