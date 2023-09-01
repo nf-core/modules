@@ -12,8 +12,7 @@
             "description": "Process Process Containers dependencies",
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": [
-                // Example: container "quay.io/biocontainers/fastqc:0.11.9--0"
-                "container\\s+\"(?<depName>\\S+):(?<currentValue>.*\\-.*)\"\n"
+                "\\s+'(?<registryUrl>\\S+)\\/(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"
             ],
             "datasourceTemplate": "docker"
         }
