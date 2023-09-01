@@ -9,6 +9,14 @@ workflow test_samtools_depth {
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true) ]
 
+    SAMTOOLS_DEPTH ( input, [[],[]] )
+}
+
+workflow test_samtools_depth_intervals {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true) ]
+
     intervals = [ [ id:'bed' ],
                   file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true) ]
 
