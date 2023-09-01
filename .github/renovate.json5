@@ -17,10 +17,13 @@
             "datasourceTemplate": "docker"
         }
     ],
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "registryUrls": ["quay.io"]
-    }
-  ]
+    "packageRules": [
+        {
+            "matchDatasources": ["docker"],
+            "registryUrls": [
+                "quay.io",
+                "registry.hub.docker.com" // We need this for updating depedancies in Dockerfiles
+            ]
+        }
+    ]
 }
