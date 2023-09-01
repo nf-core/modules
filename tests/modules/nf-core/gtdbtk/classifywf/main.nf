@@ -28,7 +28,7 @@ process STUB_MASH_DATABASE {
 workflow test_gtdbtk_classifywf {
 
     STUB_GTDBTK_DATABASE()
-    STUB_mash_database()
+    STUB_MASH_DATABASE()
 
     input = [ 
         [ id:'test', single_end:false, assembler:'SPADES' ],
