@@ -12,7 +12,7 @@
             "description": "Process Process Containers dependencies",
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": [
-                "\\s+'(?<registryUrl>\\S+)\\/(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"
+                "\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"
             ],
             "datasourceTemplate": "docker"
         }
