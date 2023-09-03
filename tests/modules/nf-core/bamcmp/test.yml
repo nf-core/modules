@@ -1,11 +1,24 @@
 - name: bamcmp test_bamcmp
-  command: nextflow run ./tests/modules/nf-core/bamcmp -entry test_bamcmp -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bamcmp -entry test_bamcmp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bamcmp/nextflow.config
   tags:
     - bamcmp
   files:
-    - path: output/bamcmp/test_contamination.bam
-      md5sum: 5379655d8befef5a3c4b4e56c20de15f
+    - path: output/bamcmp/test_contaminant.bam
+      md5sum: 512031cd4f6b2d916fa40f275534652e
+    - path: output/bamcmp/test_cov2.bam
+      md5sum: 512031cd4f6b2d916fa40f275534652e
+    - path: output/bamcmp/test_human.bam
+      md5sum: e6a7fce16d4f4a2ad715d9a4fdea3d14
     - path: output/bamcmp/test_primary.bam
-      md5sum: e267741b9549068cd6f5fc98d8ff529d
+      md5sum: e6a7fce16d4f4a2ad715d9a4fdea3d14
     - path: output/bamcmp/versions.yml
-      md5sum: 34d569665ff0459e84114e966dd3483b
+    - path: output/bwa/cov2.bam
+      md5sum: 1b4b74fd0a3790c053bc2d64c989c637
+    - path: output/bwa/human.bam
+      md5sum: 522e317e97998f2def93ea40934f28e4
+    - path: output/bwa/versions.yml
+    - path: output/samtools/sorted_cov2.bam
+      md5sum: 668b64dfcd7844acfde3366d862f5457
+    - path: output/samtools/sorted_human.bam
+      md5sum: d3c3b4d76864f51b184975cc733d584b
+    - path: output/samtools/versions.yml

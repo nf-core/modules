@@ -11,21 +11,21 @@ process BAMCMP {
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
 
     output:
-    tuple val(meta), path("${$prefix1}.bam"), emit: primary_filtered_bam
-    tuple val(meta), path("${$prefix2}.bam"), emit: contamination_bam
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("${prefix1}.bam"), emit: primary_filtered_bam
+    tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def prefix1 = task.ext.prefix1 ?: "${meta.prefix}_primary"
-    def prefix2 = task.ext.prefix2 ?: "${meta.prefix}_contaminant"
-    if ("$primary_aligned_bam" == "${prefix1}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    prefix1 = task.ext.prefix1 ?: (task.ext.prefix ?:"${meta.id}_primary")
+    prefix2 = task.ext.prefix2 ?: (task.ext.prefix ?:"${meta.id}_contaminant")
+    //def prefix2 = task.ext.prefix2 ?: "${meta.prefix}_contaminant"
+    if ("$primary_aligned_bam"     == "${prefix1}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     if ("$contaminant_aligned_bam" == "${prefix1}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$primary_aligned_bam" == "${prefix2}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$primary_aligned_bam"     == "${prefix2}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     if ("$contaminant_aligned_bam" == "${prefix2}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     def VERSION = '2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
