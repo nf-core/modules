@@ -40,7 +40,7 @@ input:
       description: (Optional) File with truth phasing results. Supersedes genfile if both options given. File has a header row with a name for each sample, matching what is found in the bam file. Each subject is then a tab seperated column, with 0 = ref and 1 = alt, separated by a vertical bar |, e.g. 0|0 or 0|1. Note therefore this file has one more row than posfile which has no header.
       pattern: "*.{txt}"
   - chr:
-      type: character
+      type: string
       description: What chromosome to run. Should match BAM headers.
   - regionStart:
       type: integer
@@ -90,7 +90,7 @@ output:
       description: TBI file of the VCF.
       pattern: "*.{vcf.gz.tbi}"
   - RData:
-      type: dir
+      type: directory
       description: Optional directory path to prepared RData file with reference objects (useful with --save_prepared_reference=TRUE).
 
 authors:
