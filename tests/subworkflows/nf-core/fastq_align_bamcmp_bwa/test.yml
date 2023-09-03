@@ -1,0 +1,38 @@
+- name: fastq_align_bamcmp_bwa test_fastq_align_bamcmp_bwa
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_align_bamcmp_bwa -entry test_fastq_align_bamcmp_bwa -c ./tests/config/nextflow.config
+  tags:
+    - bamcmp
+    - bwa
+    - bwa/mem
+    - subworkflows
+    - subworkflows/bam_sort_stats_samtools
+    - subworkflows/fastq_align_bamcmp_bwa
+  files:
+    - path: output/bamcmp/test_filtered_contamination.bam
+      md5sum: 993e2f3919957ace0bbc26ab2a3324a2
+    - path: output/bamcmp/test_filtered_primary.bam
+      md5sum: ace4cda0abac88338805b4a9e6ebe783
+    - path: output/bwa/bwa/genome.amb
+      md5sum: 1891c1de381b3a96d4e72f590fde20c1
+    - path: output/bwa/bwa/genome.ann
+      md5sum: 2df4aa2d7580639fa0fcdbcad5e2e969
+    - path: output/bwa/bwa/genome.bwt
+      md5sum: 815eded87e4cb6b0f1daab5c4d6e30af
+    - path: output/bwa/bwa/genome.pac
+      md5sum: 8569fbdb2c98c6fb16dfa73d8eacb070
+    - path: output/bwa/bwa/genome.sa
+      md5sum: e7cff62b919448a3a3d0fe4aaf427594
+    - path: output/bwa/test_contaminant.bam
+      md5sum: a35c72d2697c0ef99ae84ac02d76f37c
+    - path: output/bwa/test_primary.bam
+      md5sum: 7a8ab02670da7ac7ac69a5f5addb8faa
+    - path: output/samtools/test.bam
+      md5sum: 61da68573f65336e6df2fe8063ca9a29
+    - path: output/samtools/test.bam.bai
+      md5sum: d2eb0d3bb1d404787458e93d6e88d5d3
+    - path: output/samtools/test.flagstat
+      md5sum: 9b28b87271513d81e264f70b8ed66d28
+    - path: output/samtools/test.idxstats
+      md5sum: 3b4efdc01262257caa34944471523c3a
+    - path: output/samtools/test.stats
+      md5sum: 2b1a8650bd3a11347820d0f722b519e3
