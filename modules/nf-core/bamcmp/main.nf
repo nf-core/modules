@@ -11,7 +11,7 @@ process BAMCMP {
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
 
     output:
-    tuple val(meta), path("${prefix1}.bam"), emit: primary_filtered_bam
+    tuple val(meta), path("${prefix}.bam"), emit: primary_filtered_bam
     tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
     path "versions.yml"                    , emit: versions
 
@@ -20,19 +20,24 @@ process BAMCMP {
 
     script:
     def args = task.ext.args ?: ''
-    prefix1 = task.ext.prefix1 ?: (task.ext.prefix ?:"${meta.id}_primary")
-    prefix2 = task.ext.prefix2 ?: (task.ext.prefix ?:"${meta.id}_contaminant")
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
     //def prefix2 = task.ext.prefix2 ?: "${meta.prefix}_contaminant"
-    if ("$primary_aligned_bam"     == "${prefix1}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$contaminant_aligned_bam" == "${prefix1}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$primary_aligned_bam"     == "${prefix2}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$contaminant_aligned_bam" == "${prefix2}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
+        error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" )
+        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.prefix2\" to disambiguate!"
+    if ("primary_aligned_bam"    == "contaminant_aligned_bam" )
+        error "Input file names for the two bam files are the same, ensure they are renamed upstream."
+    if ("${prefix}.bam"    == "${prefix2}.bam" )
+        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
+
     def VERSION = '2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bamcmp \\
         -1 $primary_aligned_bam \\
         -2 $contaminant_aligned_bam \\
-        -A ${prefix1}.bam \\
+        -A ${prefix}.bam \\
         -B ${prefix2}.bam \\
         $args
 
