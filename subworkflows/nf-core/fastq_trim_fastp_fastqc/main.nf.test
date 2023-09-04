@@ -1,0 +1,114 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_TRIM_FASTP_FASTQC"
+    script "subworkflows/nf-core/fastq_trim_fastp_fastqc/main.nf"
+    workflow "FASTQ_TRIM_FASTP_FASTQC"
+
+    test("test_fastq_trim_fastp_fastqc_single_end") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            workflow {
+                """
+                input_files = [ [ id:'test', single_end:true ], // meta map
+                        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                    ]
+                save_trimmed_fail = false
+                save_merged       = false
+                skip_fastqc       = false
+                skip_fastp        = false
+
+                input[0] = input_files
+                input[1] = []
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                input[4] = skip_fastqc
+                input[5] = skip_fastp
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow.out).match()
+        }
+
+    }
+
+
+    test("test_fastq_trim_fastp_fastqc_paired_end") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            workflow {
+                """
+                input_files = [ [ id:'test', single_end:false ], // meta map
+                    [ 
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+                    ]
+                ]
+                save_trimmed_fail = false
+                save_merged       = false
+                skip_fastqc       = false
+                skip_fastp        = false
+
+                input[0] = input_files
+                input[1] = []
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                input[4] = skip_fastqc
+                input[5] = skip_fastp
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow.out).match()
+        }
+
+    }
+
+
+    test("test_fastq_trim_fastp_fastqc_interleaved") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            workflow {
+                """
+                input_files = [ [ id:'test', single_end:true ], // meta map
+                        [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+                    ]
+                save_trimmed_fail = false
+                save_merged       = false
+                skip_fastqc       = false
+                skip_fastp        = false
+
+                input[0] = input_files
+                input[1] = []
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                input[4] = skip_fastqc
+                input[5] = skip_fastp
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow.out).match()
+        }
+
+    }
+
+}
