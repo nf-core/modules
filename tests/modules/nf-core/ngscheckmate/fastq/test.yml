@@ -1,13 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /fastq
-- name: "ngscheckmate fastq"
+- name: ngscheckmate fastq test_ngscheckmate_fastq
   command: nextflow run ./tests/modules/nf-core/ngscheckmate/fastq -entry test_ngscheckmate_fastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/fastq/nextflow.config
   tags:
-    - "ngscheckmate"
-    - "ngscheckmate/fastq"
+    - ngscheckmate/fastq
+    - ngscheckmate
   files:
-    - path: "output/ngscheckmate/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/ngscheckmate/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/ngscheckmate/test.vaf
+    - path: output/ngscheckmate/versions.yml
+
+- name: ngscheckmate fastq test_ngscheckmate_fastq_paired
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/fastq -entry test_ngscheckmate_fastq_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/fastq/nextflow.config
+  tags:
+    - ngscheckmate/fastq
+    - ngscheckmate
+  files:
+    - path: output/ngscheckmate/test_paired.vaf
+    - path: output/ngscheckmate/versions.yml

@@ -5,7 +5,7 @@ process NGSCHECKMATE_FASTQ {
     conda "bioconda::ngscheckmate=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_2':
-        'biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_2' }"
+        'quay.io/biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads)
