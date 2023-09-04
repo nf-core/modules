@@ -4,7 +4,7 @@ process ODGI_VIZ {
 
     conda "bioconda::odgi=0.8.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.8.3--py39h2add14b_0':
+        'https://depot.galaxyproject.org/singularity/odgi:0.8.3--py310h6cc9453_0':
         'biocontainers/odgi:0.8.3--py310h6cc9453_0' }"
 
     input:
