@@ -37,7 +37,7 @@ process SENTIEON_DNASCOPE {
     def args2                     = task.ext.args2                     ?: ''  // options for the vcf generation
     def args3                     = task.ext.args3                     ?: ''  // options for the gvcf generation
     def interval                  = intervals                          ? "--interval ${intervals}"               : ''
-    def dbsnp_str                 = dbsnp                              ? "-d ${dbsnp}"                           : ''
+    def dbsnp_cmd                 = dbsnp                              ? "-d ${dbsnp}"                           : ''
     def model_cmd                 = ml_model                           ? " --model ${ml_model}"                  : ''
     def pcr_indel_model_cmd       = pcr_indel_model                    ? " --pcr_indel_model ${pcr_indel_model}" : ''
     def prefix                    = task.ext.prefix                    ?: "${meta.id}"
