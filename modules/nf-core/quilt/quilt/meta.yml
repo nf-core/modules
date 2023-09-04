@@ -44,16 +44,16 @@ input:
   - chr:
       type: string
       description: What chromosome to run. Should match BAM headers.
-  - regionStart:
+  - regions_start:
       type: integer
       description: When running imputation, where to start from. The 1-based position x is kept if regionStart <= x <= regionEnd.
-  - regionEnd:
+  - regions_end:
       type: integer
       description: When running imputation, where to stop.
   - buffer:
       type: integer
       description: Buffer of region to perform imputation over. So imputation is run form regionStart-buffer to regionEnd+buffer, and reported for regionStart to regionEnd, including the bases of regionStart and regionEnd.
-  - nGen:
+  - ngen:
       type: integer
       description: Number of generations since founding or mixing. Note that the algorithm is relatively robust to this. Use nGen = 4 * Ne / K if unsure.
   - reference_haplotype_file:
