@@ -4,7 +4,7 @@ process NGSCHECKMATE_PATTERNGENERATOR {
 
     conda "bioconda::ngscheckmate=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_2':
+        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1':
         'quay.io/biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
 
     input:
@@ -13,8 +13,8 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     path(bowtie_index)
 
     output:
-    tuple val(meta), path("*.pt"), emit: pt
-    path "versions.yml"          , emit: versions
+    tuple val(meta1), path("*.pt"), emit: pt
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,10 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     def prefix = task.ext.prefix ?: "${meta1.id}"
 
     """
-    makesnvpattern.pl ${bed} ${fasta} ${bowtie_index} . ${prefix} > ${prefix}.pt
+
+    mkdir -p outdir
+    makesnvpattern.pl ${bed} ${fasta} ${bowtie_index}/${fasta.getBaseName()} outdir ${prefix}
+    cp outdir/${prefix}.pt .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
