@@ -2,9 +2,9 @@ process NGSCHECKMATE_FASTQ {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::ngscheckmate=1.0.0"
+    conda "bioconda::ngscheckmate=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_2':
+        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1:
         'quay.io/biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
 
     input:
