@@ -3,3 +3,7 @@ fastqc:
 
 snakemake:
   - modules/nf-core/snakemake/**
+
+subworkflows/fastq_trim_fastp_fastqc:
+  - subworkflows/nf-core/fastq_trim_fastp_fastqc/**
+  - tests/subworkflows/nf-core/fastq_trim_fastp_fastqc/**

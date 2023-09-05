@@ -13,9 +13,10 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input_files = [ [ id:'test', single_end:true ], // meta map
-                        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-                    ]
+                Channel.fromPath(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    .flatten()
+                    .map { it -> tuple( [ id: 'test' ], [ it ] ) }
+                    .set { input_files }
                 save_trimmed_fail = false
                 save_merged       = false
                 skip_fastqc       = false
@@ -48,12 +49,12 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input_files = [ [ id:'test', single_end:false ], // meta map
-                    [ 
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
-                    ]
-                ]
+                in_1 = Channel.fromPath(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                in_2 = Channel.fromPath(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                in_1.mix(in_2)
+                    .collect()
+                    .map { it -> tuple( [ id: 'test' ], it ) }
+                    .set { input_files }
                 save_trimmed_fail = false
                 save_merged       = false
                 skip_fastqc       = false
@@ -86,9 +87,10 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input_files = [ [ id:'test', single_end:true ], // meta map
-                        [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
-                    ]
+                Channel.fromPath(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    .flatten()
+                    .map { it -> tuple( [ id: 'test' ], it ) }
+                    .set { input_files }
                 save_trimmed_fail = false
                 save_merged       = false
                 skip_fastqc       = false
