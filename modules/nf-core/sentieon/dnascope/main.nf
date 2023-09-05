@@ -45,14 +45,14 @@ process SENTIEON_DNASCOPE {
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def vcf_cmd                   = ""
     def gvcf_cmd                  = ""
-    def base_cmd                  = '--algo DNAscope ' + dbsnp_cmd
+    def base_cmd                  = '--algo DNAscope ' + dbsnp_cmd + ' '
 
     if (emit_vcf) {  // emit_vcf can be the empty string, 'variant', 'confident' or 'all' but NOT 'gvcf'
-        vcf_cmd = base_cmd + args2 + model_cmd + pcr_indel_model_cmd + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz'
+        vcf_cmd = base_cmd + args2 + ' ' + model_cmd + pcr_indel_model_cmd + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz'
     }
 
     if (emit_gvcf) { // emit_gvcf can be either true or false
-        gvcf_cmd = base_cmd + args3 + model_cmd + pcr_indel_model_cmd + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz'
+        gvcf_cmd = base_cmd + args3 + ' ' + model_cmd + pcr_indel_model_cmd + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz'
     }
 
     """
