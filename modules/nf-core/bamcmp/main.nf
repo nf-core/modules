@@ -11,7 +11,7 @@ process BAMCMP {
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: primary_filtered_bam
+    tuple val(meta), path("${prefix}.bam") , emit: primary_filtered_bam
     tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
     path "versions.yml"                    , emit: versions
 
