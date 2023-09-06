@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Workflow FASTQ_TRIM_FASTP_FASTQC"
     script "subworkflows/nf-core/fastq_trim_fastp_fastqc/main.nf"
     workflow "FASTQ_TRIM_FASTP_FASTQC"
+    tag "subworkflows/fastq_trim_fastp_fastqc"
 
     test("test_fastq_trim_fastp_fastqc_single_end") {
 
