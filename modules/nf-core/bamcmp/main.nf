@@ -22,7 +22,7 @@ process BAMCMP {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_primary"
     prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
-    //def prefix2 = task.ext.prefix2 ?: "${meta.prefix}_contaminant"
+
     if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
     if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" )
@@ -44,6 +44,29 @@ process BAMCMP {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bamcmp: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}_primary"
+    prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
+
+    if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
+        error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" )
+        error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.prefix2\" to disambiguate!"
+    if ("primary_aligned_bam"    == "contaminant_aligned_bam" )
+        error "Input file names for the two bam files are the same, ensure they are renamed upstream."
+    if ("${prefix}.bam"    == "${prefix2}.bam" )
+        error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
+    """
+    touch ${prefix}.bam
+    touch ${prefix2}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
     END_VERSIONS
     """
 
