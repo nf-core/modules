@@ -39,5 +39,5 @@ workflow test_gtdbtk_classifywf {
         ]
     ]
 	
-    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database, STUB_mash_database.out.mash_db )
+    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database, STUB_MASH_DATABASE.out.mash_db )
 }
