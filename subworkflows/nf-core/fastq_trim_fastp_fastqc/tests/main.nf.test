@@ -42,6 +42,13 @@ nextflow_workflow {
                 workflow.out.trim_reads_merged, 
                 workflow.out.versions
             ).match()
+            assert workflow.out.trim_json.size() == 1
+            assert workflow.out.trim_html.size() == 1
+            assert workflow.out.trim_log.size() == 1
+            assert workflow.out.fastqc_raw_html.size() == 0
+            assert workflow.out.fastqc_raw_zip.size() == 0
+            assert workflow.out.fastqc_trim_html.size() == 1
+            assert workflow.out.fastqc_trim_zip.size() == 1
         }
 
     }
@@ -87,6 +94,13 @@ nextflow_workflow {
                 workflow.out.trim_reads_merged, 
                 workflow.out.versions
             ).match()
+            assert workflow.out.trim_json.size() == 1
+            assert workflow.out.trim_html.size() == 1
+            assert workflow.out.trim_log.size() == 1
+            assert workflow.out.fastqc_raw_html.size() == 0
+            assert workflow.out.fastqc_raw_zip.size() == 0
+            assert workflow.out.fastqc_trim_html.size() == 1
+            assert workflow.out.fastqc_trim_zip.size() == 1
         }
 
     }
@@ -130,6 +144,13 @@ nextflow_workflow {
                 workflow.out.trim_reads_merged, 
                 workflow.out.versions
             ).match()
+            assert workflow.out.trim_json.size() == 1
+            assert workflow.out.trim_html.size() == 1
+            assert workflow.out.trim_log.size() == 1
+            assert workflow.out.fastqc_raw_html.size() == 0
+            assert workflow.out.fastqc_raw_zip.size() == 0
+            assert workflow.out.fastqc_trim_html.size() == 1
+            assert workflow.out.fastqc_trim_zip.size() == 1
         }
 
     }
