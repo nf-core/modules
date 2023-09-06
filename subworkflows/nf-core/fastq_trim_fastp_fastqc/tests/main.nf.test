@@ -34,7 +34,14 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out).match()
+            assert workflow.trace.succeeded().size() == 3
+            assert snapshot(
+                workflow.out.reads, 
+                workflow.out.trim_json, 
+                workflow.out.trim_reads_fail, 
+                workflow.out.trim_reads_merged, 
+                workflow.out.versions
+            ).match()
         }
 
     }
@@ -72,7 +79,14 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out).match()
+            assert workflow.trace.succeeded().size() == 3
+            assert snapshot(
+                workflow.out.reads, 
+                workflow.out.trim_json, 
+                workflow.out.trim_reads_fail, 
+                workflow.out.trim_reads_merged, 
+                workflow.out.versions
+            ).match()
         }
 
     }
@@ -108,7 +122,14 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out).match()
+            assert workflow.trace.succeeded().size() == 3
+            assert snapshot(
+                workflow.out.reads, 
+                workflow.out.trim_json, 
+                workflow.out.trim_reads_fail, 
+                workflow.out.trim_reads_merged, 
+                workflow.out.versions
+            ).match()
         }
 
     }
