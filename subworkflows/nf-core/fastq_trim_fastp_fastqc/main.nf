@@ -26,21 +26,11 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     val_skip_fastqc       // value: boolean
 
     main:
-
-    ch_versions = Channel.empty()
-
-    ch_fastqc_raw_html = Channel.empty()
-    ch_fastqc_raw_zip  = Channel.empty()
-    if (!val_skip_fastqc) {
-        FASTQC_RAW (
-            ch_reads
-        )
-        fastqc_raw_html = FASTQC_RAW.out.html
-        fastqc_raw_zip  = FASTQC_RAW.out.zip
-        ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
-    }
-
+    // Initiate empty channels to populate
     ch_trim_reads        = ch_reads
+    ch_versions          = Channel.empty()
+    ch_fastqc_raw_html   = Channel.empty()
+    ch_fastqc_raw_zip    = Channel.empty()
     ch_trim_json         = Channel.empty()
     ch_trim_html         = Channel.empty()
     ch_trim_log          = Channel.empty()
@@ -48,6 +38,16 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     ch_trim_reads_merged = Channel.empty()
     ch_fastqc_trim_html  = Channel.empty()
     ch_fastqc_trim_zip   = Channel.empty()
+
+    if (!val_skip_fastqc) {
+        FASTQC_RAW (
+            ch_reads
+        )
+        ch_fastqc_raw_html = FASTQC_RAW.out.html
+        ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
+        ch_versions        = ch_versions.mix(FASTQC_RAW.out.versions.first())
+    }
+
     if (!val_skip_fastp) {
         FASTP (
             ch_reads,
