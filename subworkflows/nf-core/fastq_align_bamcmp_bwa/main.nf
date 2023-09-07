@@ -12,8 +12,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     ch_reads             // channel (mandatory): [ val(meta), [ path(reads) ] ]
     ch_primary_index     // channel (mandatory): [ val(meta2), path(index) ]
     ch_contaminant_index // channel (mandatory): [ val(meta3), path(ch_contaminant_index) ]
-    val_sort_bam         // boolean (mandatory): true or false
-    ch_fasta             // channel (optional) : [ path(fasta) ]
+    ch_fasta             // channel (optional) : [ val(meta4), path(fasta) ]
 
     main:
     ch_versions = Channel.empty()
@@ -31,6 +30,13 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
 
     BWA_MEM_CONTAMINANT ( ch_reads, ch_contaminant_index, true )
     ch_versions = ch_versions.mix(BWA_MEM_CONTAMINANT.out.versions)
+
+    //
+    // Use BAMCMP to retain only reads which map better to the primary genome.
+    // It is highly recommended to use the "as" method, not the default "mapq" method as is included in the config.
+    // This is because reads that align perfectly to multiple places in the contamination genome are given a MAPQ of 0,
+    // so they would be retained if they map badly to the primary genome, but with MAPQ > 0.
+    //
 
     ch_both_bams = BWA_MEM_PRIMARY.out.bam.join(BWA_MEM_CONTAMINANT.out.bam, by: [0], failOnDuplicate:true, failOnMismatch:true)
     BAMCMP(ch_both_bams)

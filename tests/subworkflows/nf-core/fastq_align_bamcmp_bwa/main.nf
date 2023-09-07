@@ -17,6 +17,7 @@ workflow test_fastq_align_bamcmp_bwa {
         [ id:'homo_sapiens_genome'], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
+
     contaminant_fasta = [
         [ id:'sarscov2_genome'], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
@@ -24,6 +25,6 @@ workflow test_fastq_align_bamcmp_bwa {
 
     BWA_INDEX_PRIMARY ( primary_fasta )
     BWA_INDEX_CONTAMINANT ( contaminant_fasta )
-    FASTQ_ALIGN_BAMCMP_BWA ( input, BWA_INDEX_PRIMARY.out.index, BWA_INDEX_CONTAMINANT.out.index, false, primary_fasta )
+    FASTQ_ALIGN_BAMCMP_BWA ( input, BWA_INDEX_PRIMARY.out.index, BWA_INDEX_CONTAMINANT.out.index, primary_fasta )
 
 }
