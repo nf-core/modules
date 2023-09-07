@@ -26,6 +26,9 @@ process PICARD_CLEANSAM {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
+    if ("$input" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
     """
     picard \\
         -Xmx${avail_mem}M \\
