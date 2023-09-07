@@ -9,8 +9,9 @@ process GATK4_GERMLINECNVCALLER {
     tuple val(meta), path(tsv), path(intervals), path(ploidy), path(model)
 
     output:
-    tuple val(meta), path("*-cnv-calls/*-calls"), emit: calls, optional: true
-    tuple val(meta), path("*-cnv-model/*-model"), emit: model, optional: true
+    tuple val(meta), path("*-cnv-model/*-calls"), emit: cohortcalls, optional: true
+    tuple val(meta), path("*-cnv-model/*-model"), emit: cohortmodel, optional: true
+    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls  , optional: true
     path  "versions.yml"                        , emit: versions
 
     when:
