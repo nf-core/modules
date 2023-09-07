@@ -11,14 +11,20 @@ workflow test_align_star_single_end {
         [ id:'test', single_end:true ], // meta map
         [ file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = true
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [[],[]] )
+    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center, fasta )
 }
 
 workflow test_align_star_paired_end {
@@ -29,13 +35,19 @@ workflow test_align_star_paired_end {
             file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = true
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, [], star_ignore_sjdbgtf, seq_platform, seq_center, [[],[]] )
+    FASTQ_ALIGN_STAR ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center, fasta )
 }
 
