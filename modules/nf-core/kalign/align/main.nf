@@ -28,7 +28,7 @@ process KALIGN_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-       kalign : \$(echo \$(kalign -v) | sed 's/kalign //g' )
+        kalign : \$(echo \$(kalign -v) | sed 's/kalign //g' )
     END_VERSIONS
     """
 
@@ -40,7 +40,7 @@ process KALIGN_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-       kalign : \$(echo \$(kalign -v) | sed 's/kalign //g' )
+        kalign : \$(echo \$(kalign -v) | sed 's/kalign //g' )
     END_VERSIONS
     """
 }
