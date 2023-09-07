@@ -8,7 +8,7 @@ process KALIGN_ALIGN {
         'biocontainers/kalign3:3.3.5--hdbdd923_0' }"
 
     input:
-    tuple val(meta),  path(fasta)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.aln"), emit: alignment
