@@ -61,6 +61,7 @@ process GATK4_GERMLINECNVCALLER {
     """
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls
     mkdir -p ${prefix}-cnv-model/${prefix}-model
+    mkdir -p ${prefix}-cnv-model/${prefix}-calls
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
