@@ -1,17 +1,52 @@
 - name: ngscheckmate fastq test_ngscheckmate_fastq
   command: nextflow run ./tests/modules/nf-core/ngscheckmate/fastq -entry test_ngscheckmate_fastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/fastq/nextflow.config
   tags:
-    - ngscheckmate/fastq
     - ngscheckmate
+    - ngscheckmate/fastq
   files:
+    - path: output/bedtools/test_split.bed
+      md5sum: 5058157987313b598f1c260e6965d6f7
+    - path: output/bedtools/versions.yml
+    - path: output/bowtie/bowtie/genome.1.ebwt
+      md5sum: d9b76ecf9fd0413240173273b38d8199
+    - path: output/bowtie/bowtie/genome.2.ebwt
+      md5sum: 02b44af9f94c62ecd3c583048e25d4cf
+    - path: output/bowtie/bowtie/genome.3.ebwt
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: output/bowtie/bowtie/genome.4.ebwt
+      md5sum: c25be5f8b0378abf7a58c8a880b87626
+    - path: output/bowtie/bowtie/genome.rev.1.ebwt
+      md5sum: b37aaf11853e65a3b13561f27a912b06
+    - path: output/bowtie/bowtie/genome.rev.2.ebwt
+      md5sum: 9e6b0c4c1ddb99ae71ff8a4fe5ec6459
+    - path: output/bowtie/versions.yml
+    - path: output/ngscheckmate/test.pt
+      md5sum: c7475a52c27cac2d5475cff74ff568b5
     - path: output/ngscheckmate/test.vaf
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/ngscheckmate/versions.yml
 
 - name: ngscheckmate fastq test_ngscheckmate_fastq_paired
   command: nextflow run ./tests/modules/nf-core/ngscheckmate/fastq -entry test_ngscheckmate_fastq_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/fastq/nextflow.config
   tags:
-    - ngscheckmate/fastq
     - ngscheckmate
+    - ngscheckmate/fastq
   files:
+    - path: output/bowtie/bowtie/genome.1.ebwt
+      md5sum: d9b76ecf9fd0413240173273b38d8199
+    - path: output/bowtie/bowtie/genome.2.ebwt
+      md5sum: 02b44af9f94c62ecd3c583048e25d4cf
+    - path: output/bowtie/bowtie/genome.3.ebwt
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: output/bowtie/bowtie/genome.4.ebwt
+      md5sum: c25be5f8b0378abf7a58c8a880b87626
+    - path: output/bowtie/bowtie/genome.rev.1.ebwt
+      md5sum: b37aaf11853e65a3b13561f27a912b06
+    - path: output/bowtie/bowtie/genome.rev.2.ebwt
+      md5sum: 9e6b0c4c1ddb99ae71ff8a4fe5ec6459
+    - path: output/bowtie/versions.yml
+    - path: output/ngscheckmate/test.pt
+      md5sum: c7475a52c27cac2d5475cff74ff568b5
     - path: output/ngscheckmate/test_paired.vaf
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/ngscheckmate/versions.yml
