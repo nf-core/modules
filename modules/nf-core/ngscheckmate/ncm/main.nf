@@ -24,7 +24,7 @@ process NGSCHECKMATE_NCM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "output"
+    def prefix = task.ext.prefix ?: "ngscheckmate"
     def unzip = files.any { it.toString().endsWith(".vcf.gz") }
     """
     if $unzip
@@ -48,9 +48,9 @@ process NGSCHECKMATE_NCM {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "ngscheckmate"
     """
-    touch ${prefix}_corr_matrix.txt
+    touch ${prefix}_output_corr_matrix.txt
     touch ${prefix}_matched.txt
     touch ${prefix}_all.txt
     touch ${prefix}.pdf
