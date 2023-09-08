@@ -12,11 +12,11 @@ process NGSCHECKMATE_NCM {
     tuple val(meta3), path(fasta)
 
     output:
-    path "*_corr_matrix.txt", emit: corr_matrix
-    path "*_matched.txt"    , emit: matched
-    path "*_all.txt"        , emit: all
-    path "*.pdf"            , emit: pdf, optional: true
-    path "*.vcf"            , emit: vcf, optional: true
+    tuple val(meta), path("*_corr_matrix.txt"), emit: corr_matrix
+    tuple val(meta), path("*_matched.txt")    , emit: matched
+    tuple val(meta), path("*_all.txt")        , emit: all
+    tuple val(meta), path("*.pdf")            , emit: pdf, optional: true
+    tuple val(meta), path("*.vcf")            , emit: vcf, optional: true
     path "versions.yml"     , emit: versions
 
     when:
@@ -46,4 +46,19 @@ process NGSCHECKMATE_NCM {
         ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_corr_matrix.txt
+    touch ${prefix}_matched.txt
+    touch ${prefix}_all.txt
+    touch ${prefix}.pdf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
+    END_VERSIONS
+    """
+
 }
