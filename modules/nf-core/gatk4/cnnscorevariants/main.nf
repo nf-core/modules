@@ -3,12 +3,7 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "broadinstitute/gatk:4.3.0.0" //Biocontainers is missing a package
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_CNNSCOREVARIANTS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
@@ -27,6 +22,10 @@ process GATK4_CNNSCOREVARIANTS {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_CNNSCOREVARIANTS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def aligned_input = aligned_input ? "--input $aligned_input" : ""
@@ -34,14 +33,14 @@ process GATK4_CNNSCOREVARIANTS {
     def architecture = architecture ? "--architecture $architecture" : ""
     def weights = weights ? "--weights $weights" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK CnnScoreVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" CNNScoreVariants \\
+    gatk --java-options "-Xmx${avail_mem}M" CNNScoreVariants \\
         --variant $vcf \\
         --output ${prefix}.cnn.vcf.gz \\
         --reference $fasta \\

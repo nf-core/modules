@@ -1,0 +1,67 @@
+name: genmap_map
+description: create mappability files for a genome
+keywords:
+  - mappability
+  - index
+  - fasta
+  - bedgraph
+  - csv
+  - wig
+tools:
+  - genmap:
+      description: Ultra-fast computation of genome mappability.
+      homepage: https://github.com/cpockrandt/genmap
+      documentation: https://github.com/cpockrandt/genmap
+      tool_dev_url: https://github.com/cpockrandt/genmap
+      doi: "10.1093/bioinformatics/btaa222"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - index:
+      type: directory
+      description: index directory
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing regions information
+        e.g. [ id:'test', single_end:false ]
+  - regions:
+      type: file
+      description: optional - a bed file with regions to define the mappability off
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - wig:
+      type: file
+      description: genmap wig mappability file
+      pattern: "*.wig"
+  - bedgraph:
+      type: file
+      description: genmap bedgraph mappability file
+      pattern: "*.bedgraph"
+  - txt:
+      type: file
+      description: genmap text mappability file
+      pattern: "*.txt"
+  - csv:
+      type: file
+      description: genmap csv mappability file
+      pattern: "*.csv"
+
+authors:
+  - "@jianhong"
+  - "@nvnieuwk"

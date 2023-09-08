@@ -1,0 +1,43 @@
+name: "paragraph_vcf2paragraph"
+description: Convert a VCF file to a JSON graph
+keywords:
+  - vcf
+  - json
+  - structural_variants
+tools:
+  - "paragraph":
+      description: "Graph realignment tools for structural variants"
+      homepage: "https://github.com/Illumina/paragraph"
+      documentation: "https://github.com/Illumina/paragraph"
+      tool_dev_url: "https://github.com/Illumina/paragraph"
+      doi: "10.1101/635011"
+      licence: "['Apache License 2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: The VCF/BCF file
+      pattern: "*.{vcf,bcf}(.gz)?"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - graph:
+      type: file
+      description: The created graph in BGZIP format
+      pattern: "*.json.gz"
+
+authors:
+  - "@nvnieuwk"

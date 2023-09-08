@@ -12,7 +12,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
       tool_dev_url: https://gitlab.com/mcfrith/last
-      doi: ""
+
       licence: ["GPL-3.0-or-later"]
 
 input:
@@ -26,7 +26,7 @@ input:
       description: Multiple Aligment Format (MAF) file, compressed with gzip
       pattern: "*.{maf.gz}"
   - format:
-      type: value
+      type: string
       description: Output format (PNG or GIF).
 
 output:

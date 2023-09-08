@@ -2,17 +2,17 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.9 bioconda::samtools=1.16.1"
+    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' :
-        'quay.io/biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
+        'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
 
     input:
     tuple val(meta), path(tumor), path(normal)
-    path  fasta
-    path  fasta_fai
-    path  targets
-    path  reference
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(targets)
+    tuple val(meta5), path(reference)
     val   panel_of_normals
 
     output:
@@ -67,9 +67,10 @@ process CNVKIT_BATCH {
     // generation of panel of normals
     def generate_pon = panel_of_normals ? true : false
 
-    if (generate_pon && !tumor_exists && normal_bam){
-        def pon_input = normal.collect("$it").join(' ')
+    if (generate_pon && !tumor_exists){
+        def pon_input = normal.join(' ')
         normal_args = "--normal $pon_input"
+        tumor_out = ""
     }
 
     def target_args = targets ? "--targets $targets" : ""
@@ -77,7 +78,9 @@ process CNVKIT_BATCH {
 
     def samtools_cram_convert = ''
     samtools_cram_convert += normal_cram ? "    samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out\n" : ''
+    samtools_cram_convert += normal_cram ? "    samtools index $normal_out\n" : ''
     samtools_cram_convert += tumor_cram ? "    samtools view -T $fasta $fai_reference $tumor -@ $task.cpus -o $tumor_out\n" : ''
+    samtools_cram_convert += tumor_cram ? "    samtools index $tumor_out\n" : ''
     def versions = normal_cram || tumor_cram ?
         "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')" :
         "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"

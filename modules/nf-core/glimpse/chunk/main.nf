@@ -5,11 +5,10 @@ process GLIMPSE_CHUNK {
     conda "bioconda::glimpse-bio=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h2ce4488_2':
-        'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(input)
-    val region
+    tuple val(meta), path(input), path(input_index), val(region)
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
@@ -21,7 +20,6 @@ process GLIMPSE_CHUNK {
     script:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def args    = task.ext.args   ?: ""
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     GLIMPSE_chunk \\
@@ -33,7 +31,7 @@ process GLIMPSE_CHUNK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        glimpse: $VERSION
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }

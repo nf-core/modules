@@ -1,15 +1,16 @@
 name: picard_liftovervcf
-description: convert between genome builds
+description: Lifts over a VCF file from one reference build to another.
 keywords:
-  - liftOver
+  - vcf
   - picard
+  - liftovervcf
 tools:
   - picard:
       description: Move annotations from one assembly to another
       homepage: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
       tool_dev_url: https://github.com/broadinstitute/picard
-      doi: ""
+
       licence: ["MIT"]
 
 input:
@@ -21,17 +22,32 @@ input:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
-  - chain:
-      type: file
-      description: The liftover chain file
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: fasta file
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: dictionary for fasta file
       pattern: "*.{dict}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - chain:
+      type: file
+      description: The liftover chain file
 
 output:
   - meta:
@@ -53,3 +69,4 @@ output:
 
 authors:
   - "@lucpen"
+  - "@ramprasadn"

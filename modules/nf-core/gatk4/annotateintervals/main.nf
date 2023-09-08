@@ -2,20 +2,20 @@ process GATK4_ANNOTATEINTERVALS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.3.0.0"
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(intervals)
-    path(fasta)
-    path(fasta_fai)
-    path(dict)
-    path(mappable_regions)
-    path(mappable_regions_tbi)
-    path(segmental_duplication_regions)
-    path(segmental_duplication_regions_tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(mappable_regions)
+    tuple val(meta6), path(mappable_regions_tbi)
+    tuple val(meta7), path(segmental_duplication_regions)
+    tuple val(meta8), path(segmental_duplication_regions_tbi)
 
     output:
     tuple val(meta), path("*.tsv"), emit: annotated_intervals
@@ -32,15 +32,15 @@ process GATK4_ANNOTATEINTERVALS {
     def mappability_track = mappable_regions ? "--mappability-track ${mappable_regions}" : ""
     def segmental_duplication_tracks = segmental_duplication_regions ? "--segmental-duplication-track ${segmental_duplication_regions}" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK AnnotateIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}g" AnnotateIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M" AnnotateIntervals \\
         ${inputs} \\
         --reference ${fasta} \\
         --output ${prefix}.tsv \\

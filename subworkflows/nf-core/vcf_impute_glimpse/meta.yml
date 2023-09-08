@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_impute_glimpse"
+description: Impute VCF/BCF files with Glimpse
+keywords:
+  - glimpse
+  - chunk
+  - phase
+  - ligate
+
+components:
+  - glimpse/chunk
+  - glimpse/phase
+  - glimpse/ligate
+  - bcftools/index
+
+input:
+  - ch_vcf:
+      type: file
+      description: |
+        Target dataset in VCF/BCF format defined at all variable positions.
+        Index file of the input VCF/BCF file containing genotype likelihoods.
+        File with sample names and ploidy information.
+        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ meta, vcf, csi, txt, region ]
+
+  - ch_ref:
+      type: file
+      description: |
+        Reference panel of haplotypes in VCF/BCF format.
+        Index file of the Reference panel file.
+        Structure: [ meta, vcf, csi ]
+
+  - ch_map:
+      type: file
+      description: |
+        File containing the genetic map.
+        Structure: [gmap]
+
+output:
+  - chunk_chr:
+      type: file
+      description: |
+        Tab delimited output txt file containing buffer and imputation regions.
+        Structure: [meta, txt]
+
+  - phased_variants:
+      type: file
+      description: |
+        Output VCF/BCF file containing genotype probabilities (GP field),
+        imputed dosages (DS field), best guess genotypes (GT field),
+        sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
+        Structure: [ val(meta), bcf ]
+
+  - merged_variants:
+      type: file
+      description: |
+        Output VCF/BCF file for the merged regions.
+        Phased information (HS field) is updated accordingly for the full region.
+        Structure: [ val(meta), bcf ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@LouisLeNezet"

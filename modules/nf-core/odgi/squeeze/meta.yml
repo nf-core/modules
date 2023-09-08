@@ -1,0 +1,44 @@
+name: "odgi_squeeze"
+description: Squeezes multiple graphs in ODGI format into the same file in ODGI format.
+keywords:
+  - squeeze
+  - odgi
+  - gfa
+  - combine graphs
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graphs:
+      type: file
+      description: Pangenome graph files in ODGI format.
+      pattern: "*.{og}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Squeezed pangenome graph in ODGI format.
+      pattern: "*.{og}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@subwaystation"

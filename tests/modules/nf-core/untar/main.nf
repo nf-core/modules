@@ -13,7 +13,6 @@ workflow test_untar {
     UNTAR ( input )
 }
 
-
 workflow test_untar_different_output_path {
     input = [
         [],

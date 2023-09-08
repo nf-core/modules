@@ -2,10 +2,10 @@ process KRAKENUNIQ_BUILD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::krakenuniq=1.0.1a"
+    conda "bioconda::krakenuniq=1.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.1a--pl5321h19e8d03_1':
-        'quay.io/biocontainers/krakenuniq:1.0.1a--pl5321h19e8d03_1' }"
+        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.2--pl5321h19e8d03_0':
+        'biocontainers/krakenuniq:1.0.2--pl5321h19e8d03_0' }"
 
     input:
     tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy"), path(custom_seqid2taxid)

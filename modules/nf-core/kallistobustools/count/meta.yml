@@ -3,13 +3,15 @@ description: quantifies scRNA-seq data from fastq files using kb-python.
 keywords:
   - scRNA-seq
   - count
+  - single-cell
+  - kallisto
+  - bustools
 tools:
   - kb:
       description: kallisto and bustools are wrapped in an easy-to-use program called kb
       homepage: https://www.kallistobus.tools/
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
-      doi: ""
       licence: MIT License
 
 input:
@@ -19,10 +21,10 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - reads:
-    type: file
-    description: |
-      List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-      respectively.
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
   - index:
       type: file
       description: kb-ref index file (.idx)
@@ -40,11 +42,11 @@ input:
       description: kb ref's c2 unspliced_t2c file
       pattern: "*.{introns_t2c.txt}"
   - workflow_mode:
-      type: value
+      type: string
       description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus,kite}"
   - technology:
-      type: value
+      type: string
       description: String value defining the sequencing technology used.
       pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
 

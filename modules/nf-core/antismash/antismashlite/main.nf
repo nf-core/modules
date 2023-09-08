@@ -2,10 +2,10 @@ process ANTISMASH_ANTISMASHLITE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::antismash-lite=6.0.1"
+    conda "bioconda::antismash-lite=6.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
-        'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
+        'biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
@@ -25,6 +25,7 @@ process ANTISMASH_ANTISMASHLITE {
     tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                 , optional: true, emit: clusterblast_file
     tuple val(meta), path("${prefix}/{css,images,js}")                       , emit: html_accessory_files
     tuple val(meta), path("${prefix}/knownclusterblast/region*/ctg*.html")   , optional: true, emit: knownclusterblast_html
+    tuple val(meta), path("${prefix}/knownclusterblast/")                    , optional: true, emit: knownclusterblast_dir
     tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt")            , optional: true, emit: knownclusterblast_txt
     tuple val(meta), path("${prefix}/svg/clusterblast*.svg")                 , optional: true, emit: svg_files_clusterblast
     tuple val(meta), path("${prefix}/svg/knownclusterblast*.svg")            , optional: true, emit: svg_files_knownclusterblast

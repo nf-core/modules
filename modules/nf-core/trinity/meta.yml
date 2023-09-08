@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/trinityrnaseq/trinityrnaseq/wiki"
       documentation: "https://github.com/trinityrnaseq/trinityrnaseq/wiki"
       tool_dev_url: "https://github.com/trinityrnaseq/trinityrnaseq/"
-      doi: "doi.org/10.1038/nbt.1883"
+      doi: "10.1038/nbt.1883"
       licence: "['BSD-3-clause']"
 
 input:
@@ -37,8 +37,8 @@ output:
       pattern: "versions.yml"
   - transcript_fasta:
       type: file
-      description: de novo assembled transcripts fasta file
-      pattern: "*.fasta"
+      description: de novo assembled transcripts fasta file compressed
+      pattern: "*.fa.gz"
 
 authors:
   - "@timslittle"

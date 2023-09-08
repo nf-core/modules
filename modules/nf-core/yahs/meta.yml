@@ -1,0 +1,71 @@
+name: "yahs"
+description: Performs assembly scaffolding using YaHS
+keywords:
+  - scaffolding
+  - assembly
+  - yahs
+  - hic
+tools:
+  - "yahs":
+      description: "YaHS, yet another Hi-C scaffolding tool."
+      homepage: "https://github.com/c-zhou/yahs"
+      documentation: "https://github.com/c-zhou/yahs"
+      tool_dev_url: "https://github.com/c-zhou/yahs"
+      doi: "10.1093/bioinformatics/btac808"
+      licence: "['MIT']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  #
+  - hic_map:
+      type: file
+      description: BED file containing coordinates of read alignments
+      pattern: "*.{bed,bam,bin}"
+
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+
+  - fai:
+      type: file
+      description: index of the reference file
+      pattern: "*.{fai}"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - scaffolds_fasta:
+      type: file
+      description: FASTA file with resulting contigs
+      pattern: "*scaffolds_final.fa"
+
+  - scaffolds_agp:
+      type: file
+      description: AGP file containing contigs placing coordinates
+      pattern: "*scaffolds_final.agp"
+
+  - binary:
+      type: file
+      description: BIN file with alignment results
+        of Hi-C reads to the contigs in internal YaHS
+        binary format
+      pattern: "*bin"
+
+authors:
+  - "@ksenia-krasheninnikova"

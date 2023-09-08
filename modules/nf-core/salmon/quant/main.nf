@@ -2,10 +2,10 @@ process SALMON_QUANT {
     tag "$meta.id"
     label "process_medium"
 
-    conda "bioconda::salmon=1.5.2"
+    conda "bioconda::salmon=1.10.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/salmon:1.5.2--h84f40af_0' :
-        'quay.io/biocontainers/salmon:1.5.2--h84f40af_0' }"
+        'https://depot.galaxyproject.org/singularity/salmon:1.10.1--h7e5ed60_0' :
+        'biocontainers/salmon:1.10.1--h7e5ed60_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,8 +16,9 @@ process SALMON_QUANT {
     val   lib_type
 
     output:
-    tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val(meta), path("${prefix}") , emit: results
+    tuple val(meta), path("*info.json"), emit: json_info, optional: true
+    path  "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +28,9 @@ process SALMON_QUANT {
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     def reference   = "--index $index"
-    def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def reads1 = [], reads2 = []
+    meta.single_end ? [reads].flatten().each{reads1 << it} : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
+    def input_reads = meta.single_end ? "-r ${reads1.join(" ")}" : "-1 ${reads1.join(" ")} -2 ${reads2.join(" ")}"
     if (alignment_mode) {
         reference   = "-t $transcript_fasta"
         input_reads = "-a $reads"
@@ -63,6 +66,10 @@ process SALMON_QUANT {
         $input_reads \\
         $args \\
         -o $prefix
+
+    if [ -f $prefix/aux_info/meta_info.json ]; then
+        cp $prefix/aux_info/meta_info.json "${prefix}_meta_info.json"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

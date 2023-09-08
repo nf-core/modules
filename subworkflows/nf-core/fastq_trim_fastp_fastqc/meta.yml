@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_trim_fastp_fastqc"
+description: Read QC, fastp trimming and read qc
+keywords:
+  - qc
+  - quality_control
+  - adapters
+  - trimming
+  - fastq
+components:
+  - fastqc
+  - fastp
+
+input:
+  - ch_reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path (reads) ]
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ], List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively. If you wish to run interleaved paired-end data,  supply as single-end data
+        but with `--interleaved_in` in your `modules.conf`'s `ext.args` for the module.
+  - ch_adapter_fasta:
+      type: file
+      description: |
+        Structure: path(adapter_fasta)
+        File in FASTA format containing possible adapters to remove.
+  - val_save_trimmed_fail:
+      type: boolean
+      description: |
+        Structure: val(save_trimmed_fail)
+        Specify true to save files that failed to pass trimming thresholds ending in `*.fail.fastq.gz`
+  - val_save_merged:
+      type: boolean
+      description: |
+        Structure: val(save_merged)
+        Specify true to save all merged reads to the a file ending in `*.merged.fastq.gz`
+  - val_skip_fastqc:
+      type: boolean
+      description: |
+        Structure: val(skip_fastqc)
+        skip the fastqc process if true
+  - val_skip_fastp:
+      type: boolean
+      description: |
+        Structure: val(skip_fastp)
+        skip the fastp process if true
+
+output:
+  - meta:
+      type: value
+      description: Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path(reads) ]
+        The trimmed/modified/unmerged fastq reads
+  - trim_json:
+      type: file
+      description: |
+        Structure: [ val(meta), path(trim_json) ]
+        Results in JSON format
+  - trim_html:
+      type: file
+      description: |
+        Structure: [ val(meta), path(trim_html) ]
+        Results in HTML format
+  - trim_log:
+      type: file
+      description: |
+        Structure: [ val(meta), path(trim_log) ]
+        fastq log file
+  - trim_reads_fail:
+      type: file
+      description: |
+        Structure: [ val(meta), path(trim_reads_fail) ]
+        Reads the failed the preprocessing
+  - trim_reads_merged:
+      type: file
+      description: |
+        Structure: [ val(meta), path(trim_reads_merged) ]
+        Reads that were successfully merged
+
+  - fastqc_raw_html:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastqc_raw_html) ]
+        Raw fastQC report
+  - fastqc_raw_zip:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastqc_raw_zip) ]
+        Raw fastQC report archive
+  - fastqc_trim_html:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastqc_trim_html) ]
+        Trimmed fastQC report
+  - fastqc_trim_zip:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastqc_trim_zip) ]
+        Trimmed fastQC report archive
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Joon-Klaps"

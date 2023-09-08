@@ -35,6 +35,12 @@ input:
   - use_parental_kmers:
       type: logical
       description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
+  - hic_read1:
+      type: file
+      description: Hi-C data Forward reads.
+  - hic_read2:
+      type: file
+      description: Hi-C data Reverse reads.
 
 output:
   - meta:
@@ -85,3 +91,4 @@ output:
 
 authors:
   - "@sidorov-si"
+  - "@scorreard"
