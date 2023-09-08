@@ -41,7 +41,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions.sort()
+                workflow.out.versions
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1
@@ -93,7 +93,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions.sort()
+                workflow.out.versions
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1
@@ -151,7 +151,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions.sort()
+                workflow.out.versions
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1

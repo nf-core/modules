@@ -99,5 +99,5 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
     fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
 
-    versions = ch_versions.ifEmpty(null) // channel: [ path(versions.yml) ]
+    versions = ch_versions.ifEmpty(null).toSortedList().flatten() // channel: [ path(versions.yml) ]
 }
