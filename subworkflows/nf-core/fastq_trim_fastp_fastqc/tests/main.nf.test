@@ -41,7 +41,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions
+                workflow.out.versions.sort()
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1
@@ -93,7 +93,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions
+                workflow.out.versions.sort()
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1
@@ -102,6 +102,14 @@ nextflow_workflow {
             assert workflow.out.fastqc_raw_zip.size() == 1
             assert workflow.out.fastqc_trim_html.size() == 1
             assert workflow.out.fastqc_trim_zip.size() == 1
+            /*
+            def expectedVersions =             [
+                "versions.yml:md5,54e38ebe354c705a56c06a11c0ccf68e",
+                "versions.yml:md5,712d34b9d3e3703d173d6422327e6f9e",
+                "versions.yml:md5,2da05fb640ca6106be6412bd32e8003f"
+            ]
+            assertContainsInAnyOrder(workflow.out.versions, expected)
+            */
         }
 
     }
@@ -143,7 +151,7 @@ nextflow_workflow {
                 workflow.out.trim_json, 
                 workflow.out.trim_reads_fail, 
                 workflow.out.trim_reads_merged, 
-                workflow.out.versions
+                workflow.out.versions.sort()
             ).match()
             assert workflow.out.trim_json.size() == 1
             assert workflow.out.trim_html.size() == 1
