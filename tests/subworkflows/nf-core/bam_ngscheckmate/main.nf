@@ -7,7 +7,7 @@ include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/nf-core/bedtools/make
 
 workflow test_bam_ngscheckmate_bam {
 
-    inputBed = [ [ id:'test_bed'],
+    inputBed = [ [ id:'sarscov2_bed'],
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
                 ]
 
@@ -31,6 +31,10 @@ workflow test_bam_ngscheckmate_bam {
 
 workflow test_bam_ngscheckmate_cram {
 
+    inputBed  = [ [ id:'homo_sapiens_bed'],
+                file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_bed'], checkIfExists: true)
+                ]
+
     input   = [[
             [ id:'test1' ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
@@ -39,10 +43,6 @@ workflow test_bam_ngscheckmate_cram {
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true)
         ]
     ]
-
-    inputBed  = [ [ id:'snp_bed'],
-                file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_bed'], checkIfExists: true)
-                ]
 
     fasta    = [ [ id:'homo_sapiens'],
                 file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
