@@ -48,7 +48,7 @@ process NGSCHECKMATE_NCM {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "ngscheckmate"
+    def prefix = task.ext.prefix ?: "$meta.id"
     """
     touch ${prefix}_output_corr_matrix.txt
     touch ${prefix}_matched.txt
