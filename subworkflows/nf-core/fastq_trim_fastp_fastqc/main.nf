@@ -86,6 +86,8 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         }
     }
 
+     ch_versions.collect().view()
+
     emit:
     reads             = ch_trim_reads         // channel: [ val(meta), path(reads) ]
     trim_json         = ch_trim_json          // channel: [ val(meta), path(json) ]
@@ -99,5 +101,5 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
     fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
 
-    versions = ch_versions.toSortedList() // channel: [ path(versions.yml) ]
+    versions = ch_versions.collect() // channel: [ path(versions.yml) ]
 }
