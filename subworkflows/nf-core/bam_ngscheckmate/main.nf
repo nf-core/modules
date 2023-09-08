@@ -12,12 +12,11 @@ workflow BAM_NGSCHECKMATE {
 
     ch_versions = Channel.empty()
 
-    ch_input_bed = ch_input.combine(ch_snp_bed)
+    ch_input_bed = ch_input.combine(ch_snp_bed.collect())
                         // do something to combine the metas?
                         .map{ input_meta, input_file, bed_meta, bed_file ->
                             [input_meta, input_file, bed_file]
                         }
-                        .view()
 
     BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
     ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions)
@@ -27,10 +26,15 @@ workflow BAM_NGSCHECKMATE {
     .vcf
     .map{meta, vcf -> vcf}    // discard individual metas
     .collect()                // group into one channel
-    .map{it -> [[ meta2, it]} // use the snp_bed file meta as the meta for the merged channel
-    .set {ch_flat_vcfs}
+    .map{files -> [files]}    // make the channel into [vcf1, vcf2, ...]
+    .set {ch_collected_vcfs}
 
-    NGSCHECKMATE_NCM (ch_flat_vcfs, ch_bed, ch_fasta)
+    ch_snp_bed
+    .map{meta, bed -> meta} // use the snp_bed file meta as the meta for the merged channel
+    .combine(ch_collected_vcfs) // add the vcf files after the meta, now looks like [meta, [vcf1, vcf2, ... ] ]
+    .set {ch_vcfs}
+
+    NGSCHECKMATE_NCM (ch_vcfs, ch_snp_bed, ch_fasta)
     ch_versions = ch_versions.mix(NGSCHECKMATE_NCM.out.versions)
 
     emit:
