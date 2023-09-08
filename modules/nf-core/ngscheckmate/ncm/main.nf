@@ -1,21 +1,21 @@
 process NGSCHECKMATE_NCM {
     label 'process_low'
 
-    conda "bioconda::ngscheckmate=1.0.0"
+    conda "bioconda::ngscheckmate=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_3':
-        'biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3' }"
+        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1':
+        'biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
 
     input:
-    path files
-    path snp_bed
-    path fasta
+    tuple val(meta) , path(files)
+    tuple val(meta2), path(snp_bed)
+    tuple val(meta3), path(fasta)
 
     output:
-    path "*.pdf"            , emit: pdf, optional: true
     path "*_corr_matrix.txt", emit: corr_matrix
     path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
+    path "*.pdf"            , emit: pdf, optional: true
     path "*.vcf"            , emit: vcf, optional: true
     path "versions.yml"     , emit: versions
 
