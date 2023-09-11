@@ -13,15 +13,15 @@ process SAMTOOLS_VIEW {
     path qname
 
     output:
-    tuple val(meta), path("${prefix}.bam"),                                  emit: bam,            optional: true
-    tuple val(meta), path("${prefix}.cram"),                                 emit: cram,           optional: true
-    tuple val(meta), path("${prefix}.sam"),                                  emit: sam,            optional: true
-    tuple val(meta), path("${prefix}.{bam,cram,sam}.bai"),                   emit: bai,            optional: true
-    tuple val(meta), path("${prefix}.{bam,cram,sam}.csi"),                   emit: csi,            optional: true
-    tuple val(meta), path("${prefix}.{bam,cram,sam}.crai"),                  emit: crai,           optional: true
-    tuple val(meta), path("${prefix}.unoutput.${file_type}"),                emit: unoutput,       optional: true
-    tuple val(meta), path("${prefix}.unoutput.${file_type}.{bai,csi,crsi}"), emit: unoutput_index, optional: true
-    path  "versions.yml",                                 emit: versions
+    tuple val(meta), path("${prefix}.bam"),                                    emit: bam,            optional: true
+    tuple val(meta), path("${prefix}.cram"),                                   emit: cram,           optional: true
+    tuple val(meta), path("${prefix}.sam"),                                    emit: sam,            optional: true
+    tuple val(meta), path("${prefix}.${file_type}.bai"),                       emit: bai,            optional: true
+    tuple val(meta), path("${prefix}.${file_type}.csi"),                       emit: csi,            optional: true
+    tuple val(meta), path("${prefix}.${file_type}.crai"),                      emit: crai,           optional: true
+    tuple val(meta), path("${prefix}.unselected.${file_type}"),                emit: unselected,       optional: true
+    tuple val(meta), path("${prefix}.unselected.${file_type}.{bai,csi,crsi}"), emit: unselected_index, optional: true
+    path  "versions.yml",                                                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,7 +35,7 @@ process SAMTOOLS_VIEW {
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     input.getExtension()
-    readnames = qname ? "--qname-file ${qname} --unoutput ${prefix}.unoutput.${file_type}": ""
+    readnames = qname ? "--qname-file ${qname} --output-unselected ${prefix}.unselected.${file_type}": ""
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
@@ -55,7 +55,7 @@ process SAMTOOLS_VIEW {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.cram
