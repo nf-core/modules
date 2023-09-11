@@ -85,6 +85,7 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
             ch_versions      = ch_versions.mix(FASTQC_TRIM.out.versions.first())
         }
     }
+    ch_versions.collect().view()
 
     emit:
     reads             = ch_trim_reads         // channel: [ val(meta), path(reads) ]
