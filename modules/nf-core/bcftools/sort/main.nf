@@ -2,6 +2,8 @@ process BCFTOOLS_SORT {
     tag "$meta.id"
     label 'process_medium'
 
+    // commit added just for triggering CI-tests :-)
+
     conda "bioconda::bcftools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
