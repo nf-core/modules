@@ -70,9 +70,9 @@ process PICARD_FILTERSAMREADS {
     touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-        END_VERSIONS
+    "${task.process}":
+        picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
     """
 
 }
