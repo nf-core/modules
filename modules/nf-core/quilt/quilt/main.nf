@@ -4,8 +4,8 @@ process QUILT_QUILT {
 
     conda "bioconda::r-quilt=1.0.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-quilt:1.0.4--r43h06b5641_2':
-        'biocontainers/r-quilt:1.0.4--r43h06b5641_2' }"
+        'https://depot.galaxyproject.org/singularity/r-quilt:1.0.4--r43h06b5641_3':
+        'biocontainers/r-quilt:1.0.4--r43h06b5641_3' }"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bamlist), val(chr), val(regions_start), val(regions_end), val(buffer), val(ngen), path(reference_haplotype_file), path(reference_legend_file), path(genetic_map_file)
@@ -24,33 +24,33 @@ process QUILT_QUILT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def extensions  = bams.collect { it.extension }
-    def extension   = extensions.flatten().unique()
-    def list_param  =   extension == ["bam"]  ? "bamlist=\"${bamlist}\""   :
-                        extension == ["cram"] ? "cramlist=\"${bamlist}\", reference=\"${fasta}\"" :
+    def args        =   task.ext.args ?: ''
+    def prefix      =   task.ext.prefix ?: "${meta.id}"
+    def extensions  =   bams.collect { it.extension }
+    def extension   =   extensions.flatten().unique()
+    def list_param  =   extension == ["bam"]  ? "--bamlist=${bamlist}"   :
+                        extension == ["cram"] ? "--cramlist=${bamlist} --reference=${fasta}" :
                         ""
 
     """
 
 
-    R -e 'library("QUILT") ; QUILT(
-        chr="$chr",
-        $list_param,
-        posfile="$posfile",
-        phasefile="$phasefile",
-        reference_haplotype_file="$reference_haplotype_file",
-        genetic_map_file="$genetic_map_file",
-        nGen=$ngen,
-        regionStart=$regions_start,
-        regionEnd=$regions_end,
-        buffer=$buffer,
-        outputdir="." $args,
-        reference_legend_file="$reference_legend_file",
-        nCores=$task.cpus,  # Using more than 1 core may lead to different md5sum
-        seed=$seed
-        )'
+    QUILT.R \\
+        --chr=$chr \\
+        $list_param \\
+        --posfile=$posfile \\
+        --phasefile=$phasefile \\
+        --reference_haplotype_file=$reference_haplotype_file \\
+        --genetic_map_file=$genetic_map_file \\
+        --nGen=$ngen \\
+        --regionStart=$regions_start \\
+        --regionEnd=$regions_end \\
+        --buffer=$buffer \\
+        --seed=$seed \\
+        --nCores=$task.cpus \\
+        --outputdir="." \\
+        --reference_legend_file=$reference_legend_file \\
+        $args
 
 
     cat <<-END_VERSIONS > versions.yml
