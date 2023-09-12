@@ -2,20 +2,20 @@ process ARRIBA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::arriba=2.3.0"
+    conda "bioconda::arriba=2.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arriba:2.3.0--haa8aa89_0' :
-        'biocontainers/arriba:2.3.0--haa8aa89_0' }"
+        'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
+        'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
     input:
     tuple val(meta), path(bam)
-    path fasta
-    path gtf
-    path blacklist
-    path known_fusions
-    path structural_variants
-    path tags
-    path protein_domains
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(gtf)
+    tuple val(meta4), path(blacklist)
+    tuple val(meta5), path(known_fusions)
+    tuple val(meta6), path(structural_variants)
+    tuple val(meta7), path(tags)
+    tuple val(meta8), path(protein_domains)
 
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions

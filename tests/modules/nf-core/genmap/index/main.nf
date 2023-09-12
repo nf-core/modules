@@ -6,7 +6,10 @@ include { GENMAP_INDEX } from '../../../../../modules/nf-core/genmap/index/main.
 
 workflow test_genmap_index {
 
-    input = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    input = [
+        [id:"test"],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     GENMAP_INDEX ( input )
 }

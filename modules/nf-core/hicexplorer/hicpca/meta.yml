@@ -1,0 +1,47 @@
+name: "hicexplorer_hicpca"
+description: Computes PCA eigenvectors for a Hi-C matrix.
+keywords:
+  - eigenvectors
+  - PCA
+  - hicPCA
+tools:
+  - "hicexplorer":
+      description: "Set of programs to process, analyze and visualize Hi-C and capture Hi-C data"
+      homepage: "https://hicexplorer.readthedocs.io"
+      documentation: "https://hicexplorer.readthedocs.io"
+      tool_dev_url: "https://github.com/deeptools/HiCExplorer"
+      doi: "10.1038/s41467-017-02525-w"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:50000 ]
+  - matrix:
+      type: file
+      description: HiCExplorer matrix in h5 format
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', bin:50000 ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - results:
+      type: file
+      description: Outputs of hicPCA
+  - pca1:
+      type: file
+      description: PCA1 file
+  - pca2:
+      type: file
+      description: PCA2 file
+
+authors:
+  - "@jianhong"

@@ -4,12 +4,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "quay.io/nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
@@ -25,6 +20,10 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args          = task.ext.args       ?: ''
     prefix            = task.ext.prefix     ?: "${meta.id}"
     def intervals     = bed                 ? "--intervals ${bed}" : ""
@@ -58,6 +57,10 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-calls

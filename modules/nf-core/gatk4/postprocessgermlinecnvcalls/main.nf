@@ -3,17 +3,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "quay.io/nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
 
     input:
-    tuple val(meta), path(ploidy)
-    tuple val(meta2), path(model)
-    tuple val(meta3), path(calls)
+    tuple val(meta), path(calls), path(model), path(ploidy)
 
     output:
     tuple val(meta), path("*_genotyped_intervals.vcf.gz") , emit: intervals, optional: true
@@ -25,11 +18,15 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ploidy_command = ploidy ? "--contig-ploidy-calls ${ploidy}"  : ""
-    def model_command  = model  ? "--model-shard-path ${model}"      : ""
-    def calls_command  = calls  ? "--calls-shard-path ${calls}"      : ""
+    def calls_command  = calls   ? calls.collect{"--calls-shard-path $it"}.join(' ')  : ""
+    def model_command  = model   ? model.collect{"--model-shard-path $it"}.join(' ')  : ""
+    def ploidy_command = ploidy  ? "--contig-ploidy-calls ${ploidy}"                  : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -39,9 +36,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" PostprocessGermlineCNVCalls \\
-        $ploidy_command \\
-        $model_command \\
         $calls_command \\
+        $model_command \\
+        $ploidy_command \\
         --output-genotyped-intervals ${prefix}_genotyped_intervals.vcf.gz \\
         --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
         --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
@@ -53,6 +50,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_genotyped_intervals.vcf.gz
