@@ -2,10 +2,10 @@ process ICOUNTMINI_METAGENE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::icount-mini=3.0.0"
+    conda "bioconda::icount-mini=3.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:3.0.0--pyh7cba7a3_0':
-        'biocontainers/icount-mini:3.0.0--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0':
+        'biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bed)
