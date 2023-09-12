@@ -47,7 +47,7 @@ process QUILT_QUILT {
         --regionEnd=$regions_end \\
         --buffer=$buffer \\
         --seed=$seed \\
-        --nCores=$task.cpus \\
+        --nCores=$task.cpus \\ # Using more than 1 core may lead to different md5sum
         --outputdir="." \\
         --reference_legend_file=$reference_legend_file \\
         $args
