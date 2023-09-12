@@ -51,6 +51,7 @@ process PICARD_MARKDUPLICATES {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
