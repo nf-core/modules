@@ -26,6 +26,9 @@ process PICARD_CLEANSAM {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
     """
     picard \\
         -Xmx${avail_mem}M \\
@@ -33,6 +36,18 @@ process PICARD_CLEANSAM {
         ${args} \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(picard CleanSam --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    """
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
