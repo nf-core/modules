@@ -1,0 +1,42 @@
+name: pairtools_stats
+description: Calculate pairs statistics
+keywords:
+  - stats
+  - pairs
+  - pairsam
+tools:
+  - pairtools:
+      description: CLI tools to process mapped Hi-C data
+      homepage: http://pairtools.readthedocs.io/
+      documentation: http://pairtools.readthedocs.io/
+      tool_dev_url: https://github.com/mirnylab/pairtools
+
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pairs:
+      type: file
+      description: pairs file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - stat:
+      type: file
+      description: stats of the pairs
+      pattern: "*.{pairs.stat}"
+
+authors:
+  - "@nservant"

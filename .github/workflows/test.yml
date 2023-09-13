@@ -13,6 +13,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -93,24 +97,13 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
 
       - name: Lint ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
         # HACK
         if: startsWith( matrix.tags, 'subworkflow' ) != true
-
-      - uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}
 
   pytest:
     runs-on: ubuntu-20.04
@@ -201,6 +194,8 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
+            tags: mitohifi/mitohifi
+          - profile: "conda"
             tags: mitohifi/findmitoreference
           - profile: "conda"
             tags: parabricks/applybqsr
@@ -219,13 +214,21 @@ jobs:
           - profile: "conda"
             tags: sentieon/dedup
           - profile: "conda"
+            tags: sentieon/dnamodelapply
+          - profile: "conda"
+            tags: sentieon/dnascope
+          - profile: "conda"
             tags: sentieon/gvcftyper
           - profile: "conda"
             tags: sentieon/haplotyper
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnscope
+          - profile: "conda"
             tags: sentieon/varcal
+          - profile: "conda"
+            tags: sentieon/wgsmetrics
           - profile: "conda"
             tags: spaceranger/count
           - profile: "conda"
@@ -247,6 +250,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -265,25 +269,22 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/cache@v3
+      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+        uses: nf-core/setup-nextflow@v1
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
-
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+          version: "${{ matrix.NXF_VER }}"
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.7.1
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
@@ -344,6 +345,7 @@ jobs:
             /home/runner/pytest_workflow_*/*/work
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
@@ -438,19 +440,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
-
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
 
       - name: Cache nf-test installation
         id: cache-software
@@ -472,6 +463,12 @@ jobs:
         uses: eWaterCycle/setup-singularity@v7
         with:
           singularity-version: 3.7.1
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
