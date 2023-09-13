@@ -9,7 +9,6 @@ keywords:
   - mappability
 tools:
   - "gem3":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "The GEM indexer (v3)."
       homepage: "https://github.com/miqalvarez/gem3/tree/gem3-indexer"
       licence: "['GPL v3']"
@@ -39,10 +38,10 @@ output:
       type: file
       description: The created index
       pattern: "*.gem"
-  - log:
+  - info:
       type: file
       description: The execution log
-      pattern: "*.log"
+      pattern: "*.info"
 
 authors:
   - "@miqalvarez"
