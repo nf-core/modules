@@ -4,8 +4,8 @@ process GEM3_GEM3INDEXER {
 
     conda "bioconda::gem3-mapper=3.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gem3-mapper:3.6.1--h21aa3a5_0':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/gem3-mapper:3.6.1--h9d449c0_12':
+        'biocontainers/gem3-mapper:3.6.1--h9d449c0_12' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,7 +13,7 @@ process GEM3_GEM3INDEXER {
 
     output:
     tuple val(meta), path("*.gem"), emit: index
-    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.info"), emit: info
     path "versions.yml"           , emit: versions
 
     when:
