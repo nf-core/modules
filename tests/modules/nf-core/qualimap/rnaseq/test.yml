@@ -1,0 +1,8 @@
+- name: qualimap rnaseq test workflow
+  command: nextflow run ./tests/modules/nf-core/qualimap/rnaseq -entry test_qualimap_rnaseq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/qualimap/rnaseq/nextflow.config
+  tags:
+    - qualimap
+    - qualimap/rnaseq
+  files:
+    - path: ./output/qualimap/test/qualimapReport.html
+    - path: ./output/qualimap/test/rnaseq_qc_results.txt
