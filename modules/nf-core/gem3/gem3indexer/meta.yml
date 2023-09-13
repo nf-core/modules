@@ -1,55 +1,48 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "gem3_gem3indexer"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Create a GEM index from a FASTA file
 keywords:
-  - sort
-  - example
-  - genomics
+  - fasta
+  - index
+  - reference
+  - mappability
 tools:
   - "gem3":
       ## TODO nf-core: Add a description and other details for the software below
-      description: "The GEM read mapper (v3)."
+      description: "The GEM indexer (v3)."
       homepage: "https://github.com/miqalvarez/gem3/tree/gem3-indexer"
-      documentation: "https://github.com/miqalvarez/gem3/tree/gem3-indexer"
-      tool_dev_url: "https://github.com/miqalvarez/gem3/tree/gem3-indexer"
-      doi: ""
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: A reference FASTA file to index
+      pattern: "*.{fasta,fa,fna}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
+        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - gem:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The created index
+      pattern: "*.gem"
+  - log:
+      type: file
+      description: The execution log
+      pattern: "*.log"
 
 authors:
   - "@miqalvarez"
