@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "magus_align"
+description: Multiple Sequence Alignment using Graph Clustering
+keywords:
+  - MSA
+  - alignment
+  - genomics
+tools:
+  - "magus":
+      description: "Multiple Sequence Alignment using Graph Clustering"
+      homepage: "https://github.com/vlasmirnov/MAGUS"
+      documentation: "https://github.com/vlasmirnov/MAGUS"
+      tool_dev_url: "https://github.com/vlasmirnov/MAGUS"
+      doi: "10.1093/bioinformatics/btaa992"
+      licence: "MIT"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@lrauschning"
