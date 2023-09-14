@@ -42,7 +42,7 @@ process GEM3_GEM3INDEXER {
  
     """
     touch ${prefix}.gem
-    touch ${prefix}.log
+    touch ${prefix}.info
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
