@@ -1,8 +1,8 @@
-- name: ngscheckmate vaffastq test_ngscheckmate_vaffastq
-  command: nextflow run ./tests/modules/nf-core/ngscheckmate/vaffastq -entry test_ngscheckmate_vaffastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/vaffastq/nextflow.config
+- name: ngscheckmate vafncm test_ngscheckmate_vafncm
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/vafncm -entry test_ngscheckmate_vafncm -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/vafncm/nextflow.config
   tags:
     - ngscheckmate
-    - ngscheckmate/vaffastq
+    - ngscheckmate/vafncm
   files:
     - path: output/bedtools/test_split.bed
       md5sum: 3397061f89af312675ab02f78a6aac22

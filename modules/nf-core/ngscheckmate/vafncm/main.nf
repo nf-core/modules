@@ -1,4 +1,4 @@
-process NGSCHECKMATE_VAFFASTQ {
+process NGSCHECKMATE_VAFNCM {
     label 'process_single'
 
     conda "bioconda::ngscheckmate=1.0.1"

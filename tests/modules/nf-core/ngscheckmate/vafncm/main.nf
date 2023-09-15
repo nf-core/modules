@@ -6,11 +6,11 @@ include { BOWTIE_BUILD } from '../../../../../modules/nf-core/bowtie/build/main.
 include { BEDTOOLS_MAKEWINDOWS } from '../../../../../modules/nf-core/bedtools/makewindows/main.nf'
 include { NGSCHECKMATE_PATTERNGENERATOR } from '../../../../../modules/nf-core/ngscheckmate/patterngenerator/main.nf'
 include { NGSCHECKMATE_FASTQ } from '../../../../../modules/nf-core/ngscheckmate/fastq/main.nf'
-include { NGSCHECKMATE_VAFFASTQ } from '../../../../../modules/nf-core/ngscheckmate/vaffastq/main.nf'
+include { NGSCHECKMATE_VAFNCM } from '../../../../../modules/nf-core/ngscheckmate/vafncm/main.nf'
 include { GAWK as GAWK_BED } from '../../../../../modules/nf-core/gawk/main.nf'
 include { GAWK as GAWK_FAI } from '../../../../../modules/nf-core/gawk/main.nf'
 
-workflow test_ngscheckmate_vaffastq {
+workflow test_ngscheckmate_vafncm {
 
     input = [
         [
@@ -64,5 +64,5 @@ workflow test_ngscheckmate_vaffastq {
     NGSCHECKMATE_FASTQ ( channel.fromList(input), NGSCHECKMATE_PATTERNGENERATOR.out.pt )
     ch_vafs = NGSCHECKMATE_FASTQ.out.vaf.map{it[1]}.collect().map{files -> [[id:"combined"], files]}
     ch_vafs.view()
-    NGSCHECKMATE_VAFFASTQ (ch_vafs  )
+    NGSCHECKMATE_VAFNCM(ch_vafs  )
 }
