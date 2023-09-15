@@ -1,5 +1,5 @@
 process MAGUS_ALIGN {
-    tag "$meta.id"
+    tag "$meta_fasta.id"
     label 'process_medium'
 
     conda "bioconda::magus-msa=0.1.2a"
