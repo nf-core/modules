@@ -65,8 +65,6 @@ workflow test_ngscheckmate_fastq_paired {
 
     bowtie_fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BOWTIE_BUILD ( bowtie_fasta )
-
     // create a bed file representing the entire genome from the fasta index
     GAWK_FAI(fasta_fai, [])
 

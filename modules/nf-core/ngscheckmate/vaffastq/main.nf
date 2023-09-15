@@ -10,10 +10,11 @@ process NGSCHECKMATE_VAFFASTQ {
     tuple val(meta), path(vafs)
 
     output:
-    path "*.pdf"            , emit: pdf, optional: true
-    path "*_corr_matrix.txt", emit: corr_matrix
-    path "*_all.txt"        , emit: all
-    path "versions.yml"     , emit: versions
+    tuple val(meta), path("*.pdf")             , emit: pdf, optional: true
+    tuple val(meta), path("*_corr_matrix.txt") , emit: corr_matrix
+    tuple val(meta), path("*_all.txt")         , emit: all
+    tuple val(meta), path("*_matched.txt")     , emit: matched
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +30,10 @@ process NGSCHECKMATE_VAFFASTQ {
 
     # remove the existance of the dummy file
     rm zzzzzz.vaf
-    sed -i.bak "/zzzzzz/d" combined_all.txt
+    sed -i.bak "/zzzzzz/d" ${prefix}_all.txt
+
+    # generate a file with all the samples that do match, for consistency with the bam mode (ngscheckmate/ncm)
+    sed "/unmatched/d" ${prefix}_all.txt > ${prefix}_matched.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

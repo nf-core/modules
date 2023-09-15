@@ -1,11 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "ngscheckmate_patterngenerator"
-description: Determining whether sequencing data comes from the same individual by using SNP matching. This module generates a .pt file for using on fastq files.
+description: Determining whether sequencing data comes from the same individual by using SNP matching. This module generates PT files from a bed file containing individual positions.
 keywords:
   - ngscheckmate
   - matching
   - snp
+  - qc
 tools:
   - ngscheckmate:
       description: NGSCheckMate is a software package for identifying next generation sequencing (NGS) data files from the same individual, including matching between DNA and RNA.
@@ -43,7 +44,6 @@ input:
       description: Folder of Bowtie genome index files
 
 output:
-
   - meta1:
       type: map
       description: |
@@ -57,7 +57,7 @@ output:
 
   - pt:
       type: file
-      description: Generated binary pattern file, containing
+      description: Generated binary pattern file, containing FASTQ strings to match from within raw data
       pattern: "*.pt"
 
 authors:
