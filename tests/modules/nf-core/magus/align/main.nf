@@ -1,7 +1,5 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
-
 include { MAGUS_ALIGN } from '../../../../../modules/nf-core/magus/align/main.nf'
 include { MAGUS_GUIDETREE } from '../../../../../modules/nf-core/magus/guidetree/main.nf'
 
