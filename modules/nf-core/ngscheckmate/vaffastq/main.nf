@@ -7,14 +7,12 @@ process NGSCHECKMATE_VAFFASTQ {
         'biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
 
     input:
-    path(vafs)
+    tuple val(meta), path(vafs)
 
     output:
     path "*.pdf"            , emit: pdf, optional: true
     path "*_corr_matrix.txt", emit: corr_matrix
-    path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
-    path "*.vcf"            , emit: vcf, optional: true
     path "versions.yml"     , emit: versions
 
     when:
@@ -22,10 +20,16 @@ process NGSCHECKMATE_VAFFASTQ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "NGSCheckMate"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    # tool has a bug where it misses the final file, so add a dummy one.
+    cp ${vafs[0]} zzzzzz.vaf
     vaf_ncm.py -I . -O . -N ${prefix} $args
+
+    # remove the existance of the dummy file
+    rm zzzzzz.vaf
+    sed -i.bak "/zzzzzz/d" combined_all.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -9,7 +9,7 @@ process NGSCHECKMATE_FASTQ {
 
     input:
     tuple val(meta), path(reads)
-    path snp_pt
+    tuple val(meta2), path(snp_pt)
 
     output:
     tuple val(meta), path("*.vaf"), emit: vaf
@@ -24,7 +24,7 @@ process NGSCHECKMATE_FASTQ {
     def fastq2command  = meta.single_end ? "" : " -2 ${reads[1]}"
 
     """
-    ngscheckmate_fastq  -1 ${reads[0]} $fastq2command -PT_FILE ${snp_pt} -p ${task.cpus} $args > ${prefix}.vaf
+    ngscheckmate_fastq  -1 ${reads[0]} $fastq2command ${snp_pt} -p ${task.cpus} $args > ${prefix}.vaf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
