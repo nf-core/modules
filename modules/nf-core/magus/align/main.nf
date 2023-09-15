@@ -33,7 +33,7 @@ process MAGUS_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(magus --version)
+        MAGUS:\$(magus --version)
     END_VERSIONS
     """
 
@@ -45,7 +45,7 @@ process MAGUS_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(magus --version)
+        MAGUS:\$(magus --version)
     END_VERSIONS
     """
 }
