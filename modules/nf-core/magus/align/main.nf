@@ -20,7 +20,7 @@ process MAGUS_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ? "alignment" : "${meta_fasta.id}"
+    def prefix = task.ext.prefix ?: "${meta_fasta.id}"
     def loadtree = tree ? "-t $tree" : ''
     meta = meta_tree + meta_fasta
     """
