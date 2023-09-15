@@ -9,7 +9,7 @@ workflow test_magus_align {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['multiplesequencealign']['illumina']['contigs_fasta'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
     ]
 
     MAGUS_ALIGN ( input, [ [:], [ ] ] )
