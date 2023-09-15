@@ -1,11 +1,10 @@
-- name: "magus guidetree"
+- name: magus guidetree test_magus_guidetree
   command: nextflow run ./tests/modules/nf-core/magus/guidetree -entry test_magus_guidetree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/magus/guidetree/nextflow.config
   tags:
-    - "magus"
-    - "magus/guidetree"
+    - magus/guidetree
+    - magus
   files:
-    - path: "output/magus/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/magus/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-
+    - path: output/magus/test.tree
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/magus/versions.yml
