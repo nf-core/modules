@@ -22,7 +22,7 @@ process MAGUS_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? "alignment" : "${meta_fasta.id}"
     def loadtree = tree ? "-t $tree" : ''
-    def meta = meta_tree + meta_fasta
+    meta = meta_tree + meta_fasta
     """
     magus \\
         -np $task.cpus \\
@@ -40,6 +40,7 @@ process MAGUS_ALIGN {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    meta = meta_tree + meta_fasta
     """
     touch ${prefix}.aln
 
