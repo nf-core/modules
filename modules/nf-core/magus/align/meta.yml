@@ -16,10 +16,16 @@ tools:
       licence: "MIT"
 
 input:
-  - meta:
+  - meta_fasta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information for the fasta
+        e.g. `[ id:'test', single_end:false ]`
+
+  - meta_tree:
+      type: map
+      description: |
+        Groovy Map containing sample information for the specified guide tree (if supplied)
         e.g. `[ id:'test', single_end:false ]`
 
   - fasta:
@@ -37,7 +43,7 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information. Values in meta_fasta take precedence over values in meta_tree.
         e.g. `[ id:'test', single_end:false ]`
 
   - versions:

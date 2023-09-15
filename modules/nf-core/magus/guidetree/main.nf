@@ -8,7 +8,7 @@ process MAGUS_GUIDETREE {
         'biocontainers/magus-msa:0.1.1' }"
 
     input:
-    tuple val(meta_fasta), path(fasta)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tree"), emit: tree
