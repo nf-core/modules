@@ -19,10 +19,10 @@ process MAGUS_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
+    meta = meta_tree + meta_fasta // merge meta information of fasta and guidetree, keeping fasta if there is a conflict
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_fasta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def loadtree = tree ? "-t $tree" : ''
-    meta = meta_tree + meta_fasta
     """
     magus \\
         -np $task.cpus \\
@@ -38,9 +38,9 @@ process MAGUS_ALIGN {
     """
 
     stub:
+    meta = meta_tree + meta_fasta // merge meta information of fasta and guidetree, keeping fasta if there is a conflict
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    meta = meta_tree + meta_fasta
     """
     touch ${prefix}.aln
 
