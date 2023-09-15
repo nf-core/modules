@@ -1,8 +1,8 @@
 - name: ngscheckmate vaffastq test_ngscheckmate_vaffastq
   command: nextflow run ./tests/modules/nf-core/ngscheckmate/vaffastq -entry test_ngscheckmate_vaffastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ngscheckmate/vaffastq/nextflow.config
   tags:
-    - ngscheckmate/vaffastq
     - ngscheckmate
+    - ngscheckmate/vaffastq
   files:
     - path: output/bedtools/test_split.bed
       md5sum: 3397061f89af312675ab02f78a6aac22
@@ -28,6 +28,8 @@
     - path: output/ngscheckmate/combined.pdf
     - path: output/ngscheckmate/combined_all.txt
       md5sum: 6e7c7446bb308af84ee9b1689e1e60ee
+    - path: output/ngscheckmate/combined_matched.txt
+      md5sum: 60d6159595026c2365acce3dbaa9677e
     - path: output/ngscheckmate/output_corr_matrix.txt
       md5sum: fe8139cc3dffb7df41d17aa24c599dba
     - path: output/ngscheckmate/sarscov2.pt
