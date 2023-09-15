@@ -24,14 +24,14 @@ input:
 
   - fasta:
       type: file
-      description:
+      description: Input sequences in FASTA format.
       pattern: "*.{fa,fna,fasta}"
 
   - tree:
       type: file
       description: Optional path to a file containing a guide tree in newick format to use as input.
         If empty, or overwritten by passing `-t [fasttree|fasttree-noml|clustal|parttree]`, MAGUS will construct its own guide tree. If empty, `fasttree` is used as a default.
-      pattern: "*.{dnd,txt}"
+      pattern: "*.{dnd,tree}"
 
 output:
   - meta:

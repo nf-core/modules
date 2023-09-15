@@ -23,7 +23,6 @@ process MAGUS_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def loadtree = tree ? "-t $tree" : ''
     """
-    #TODO make proper call, dry run on cluster
     magus \\
         -np $task.cpus \\
         -i $fasta \\
