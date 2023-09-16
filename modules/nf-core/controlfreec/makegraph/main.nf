@@ -23,6 +23,7 @@ process CONTROLFREEC_MAKEGRAPH {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def baf = baf ?: ""
+    def VERSION = '11.6b' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     cat \$(which makeGraph.R) | R --slave --args ${ploidy} ${args} ${ratio} ${baf}
 
@@ -32,7 +33,7 @@ process CONTROLFREEC_MAKEGRAPH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
+        controlfreec: $VERSION
     END_VERSIONS
     """
 
@@ -45,7 +46,7 @@ process CONTROLFREEC_MAKEGRAPH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
+        controlfreec: $VERSION
     END_VERSIONS
     """
 }
