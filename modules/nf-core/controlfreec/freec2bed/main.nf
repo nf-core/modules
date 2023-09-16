@@ -32,6 +32,7 @@ process CONTROLFREEC_FREEC2BED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '11.6b' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bed
 
