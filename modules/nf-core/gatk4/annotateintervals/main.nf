@@ -40,7 +40,8 @@ process GATK4_ANNOTATEINTERVALS {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" AnnotateIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        AnnotateIntervals \\
         ${inputs} \\
         --reference ${fasta} \\
         --output ${prefix}.tsv \\

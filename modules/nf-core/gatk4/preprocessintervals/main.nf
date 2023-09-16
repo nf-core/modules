@@ -35,7 +35,8 @@ process GATK4_PREPROCESSINTERVALS {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" PreprocessIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        PreprocessIntervals \\
         $include_command \\
         $exclude_command \\
         --reference $fasta \\

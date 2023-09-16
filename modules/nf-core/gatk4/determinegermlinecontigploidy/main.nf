@@ -39,7 +39,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" DetermineGermlineContigPloidy \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        DetermineGermlineContigPloidy \\
         ${input_list} \\
         --output ./ \\
         --output-prefix ${prefix} \\

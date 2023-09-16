@@ -35,7 +35,8 @@ process GATK4_SVCLUSTER {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" SVCluster \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        SVCluster \\
         --output ${prefix}.vcf.gz \\
         --ploidy-table ${ploidy_table} \\
         ${input} \\

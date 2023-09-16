@@ -32,12 +32,13 @@ process GATK4_FILTERINTERVALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" FilterIntervals \\
-    $annotated_command \\
-    $read_counts_command \\
-    --intervals $intervals \\
-    --output ${prefix}.interval_list \\
-    $args
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        FilterIntervals \\
+        $annotated_command \\
+        $read_counts_command \\
+        --intervals $intervals \\
+        --output ${prefix}.interval_list \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

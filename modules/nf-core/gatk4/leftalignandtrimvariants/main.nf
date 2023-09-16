@@ -33,7 +33,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
         LeftAlignAndTrimVariants \\
         $interval_command \\
         --variant $vcf \\

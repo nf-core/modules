@@ -36,7 +36,8 @@ process GATK4_SHIFTFASTA {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ShiftFasta \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        ShiftFasta \\
         --reference $fasta \\
         --output ${prefix}_shift.fasta \\
         --shift-back-output ${prefix}_shift.back_chain \\

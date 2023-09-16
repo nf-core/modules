@@ -32,7 +32,8 @@ process GATK4_SPLITNCIGARREADS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" SplitNCigarReads \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        SplitNCigarReads \\
         --input $bam \\
         --output ${prefix}.bam \\
         --reference $fasta \\

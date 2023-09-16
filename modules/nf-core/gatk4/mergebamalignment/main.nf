@@ -30,7 +30,8 @@ process GATK4_MERGEBAMALIGNMENT {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" MergeBamAlignment \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+        MergeBamAlignment \\
         --UNMAPPED_BAM $unmapped \\
         --ALIGNED_BAM $aligned \\
         --OUTPUT ${prefix}.bam \\
