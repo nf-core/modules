@@ -28,7 +28,7 @@ process GATK4_REVERTSAM {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         RevertSam \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.reverted.bam \\

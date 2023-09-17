@@ -29,7 +29,7 @@ process GATK4_MERGEMUTECTSTATS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         MergeMutectStats \\
         $input_list \\
         --output ${prefix}.vcf.gz.stats \\

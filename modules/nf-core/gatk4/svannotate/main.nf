@@ -35,7 +35,7 @@ process GATK4_SVANNOTATE {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         SVAnnotate \\
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\

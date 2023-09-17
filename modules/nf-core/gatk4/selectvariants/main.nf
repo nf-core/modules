@@ -30,7 +30,7 @@ process GATK4_SELECTVARIANTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         SelectVariants \\
         --variant $vcf \\
         --output ${prefix}.selectvariants.vcf.gz \\

@@ -36,7 +36,7 @@ process GATK4_FILTERVARIANTTRANCHES {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         FilterVariantTranches \\
         --variant $vcf \\
         $resources \\

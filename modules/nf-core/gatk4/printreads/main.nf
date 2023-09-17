@@ -36,7 +36,7 @@ process GATK4_PRINTREADS {
         error("Output filename is the same as input filename. Please specify a different prefix.")
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         PrintReads \\
         $args \\
         --reference $fasta \\

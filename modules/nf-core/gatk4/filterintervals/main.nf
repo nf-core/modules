@@ -32,7 +32,7 @@ process GATK4_FILTERINTERVALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         FilterIntervals \\
         $annotated_command \\
         $read_counts_command \\

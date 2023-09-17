@@ -28,7 +28,7 @@ process GATK4_INTERVALLISTTOBED {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         IntervalListToBed \\
         --INPUT $intervals \\
         --OUTPUT ${prefix}.bed \\

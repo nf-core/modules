@@ -36,7 +36,7 @@ process GATK4_ASEREADCOUNTER {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M-XX:-UsePerfData" \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ASEReadCounter \\
         --output ${prefix}_ase.csv \\
         --input ${input} \\

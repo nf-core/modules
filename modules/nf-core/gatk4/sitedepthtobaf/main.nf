@@ -37,7 +37,7 @@ process GATK4_SITEDEPTHTOBAF {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" //
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         SiteDepthtoBAF \\
         --baf-evidence-output ${prefix}.baf.txt.gz \\
         --baf-sites-vcf ${vcf} \\
