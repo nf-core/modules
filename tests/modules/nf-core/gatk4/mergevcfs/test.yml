@@ -16,9 +16,9 @@
     - gatk4
   files:
     - path: output/gatk4/test.vcf.gz
-      md5sum: decc16242dc77b978ee5189a19e5d520
+      md5sum: cfc515bf5631629504ffe349aa37fcc9
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: 3707cbc462521ba0cb2fbebe00cb3d7e
+      md5sum: 7b0508f89cdab07a4509ad7c2db3d942
 
 - name: gatk4 mergevcfs test_gatk4_mergevcfs_no_dict_stubs
   command: nextflow run ./tests/modules/nf-core/gatk4/mergevcfs -entry test_gatk4_mergevcfs_no_dict_stubs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/mergevcfs/nextflow.config
@@ -27,6 +27,6 @@
     - gatk4
   files:
     - path: output/gatk4/test.vcf.gz
-      md5sum: decc16242dc77b978ee5189a19e5d520
+      md5sum: cfc515bf5631629504ffe349aa37fcc9
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: 3707cbc462521ba0cb2fbebe00cb3d7e
+      md5sum: 7b0508f89cdab07a4509ad7c2db3d942
