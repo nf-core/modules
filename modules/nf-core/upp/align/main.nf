@@ -3,7 +3,7 @@ process UPP_ALIGN {
     tag "$meta_fasta.id"
     label 'process_medium'
 
-    conda "bioconda::sepp bioconda::pasta"
+    conda "bioconda::sepp"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
         'biocontainers/YOUR-TOOL-HERE' }"
@@ -25,7 +25,7 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def loadtree = tree ? "-t $tree" : ''
     """
-    python $(which sepp)/run_upp.py $args \\
+    run_upp.py $args \\
         -x $task.cpus \\
         -o ${prefix}.aln \\
         $loadtree \\
@@ -33,7 +33,7 @@ process UPP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        UPP \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process UPP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        UPP \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
     END_VERSIONS
     """
 }
