@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "upp_align"
+description: write your description here
+keywords:
+  - MSA
+  - alignment
+  - genomics
+
+tools:
+  - "UPP":
+      description: "Ultra-large alignments using Phylogeny-aware Profiles"
+      homepage: "https://github.com/smirarab/sepp"
+      documentation: "https://github.com/smirarab/sepp/blob/master/README.UPP.md"
+      tool_dev_url: "https://github.com/smirarab/sepp"
+      doi: "10.1186/s13059-015-0688-z"
+      licence: "GPL3"
+
+  - "HMMER":
+      description: "HMMER: biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org/"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: "BSD"
+
+  - "PASTA":
+      description: "Practical Alignment using SATe and Transitivity"
+      homepage: "https://github.com/smirarab/PASTA/"
+      documentation: "https://github.com/smirarab/pasta/blob/master/pasta-doc/pasta-tutorial.md"
+      tool_dev_url: "https://github.com/smirarab/PASTA/"
+      doi: "10.1089/cmb.2014.0156"
+      licence: "GPL3"
+
+input:
+  - meta_fasta:
+      type: map
+      description: |
+        Groovy Map containing sample information for the input fasta file
+        e.g. `[ id:'test', single_end:false ]`
+
+  - meta_tree:
+      type: map
+      description: |
+        Groovy Map containing sample information for the specified guide tree (if supplied)
+        e.g. `[ id:'test', single_end:false ]`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fna,fasta}"
+
+  - tree:
+      type: file
+      description: Optional path to a file containing a guide tree in newick format to use as input.
+         If empty, `fasttree` is used as a default.
+      pattern: "*.{dnd,tree}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information. Values in meta_fasta take precedence over values in meta_tree.
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - alignment:
+      type: file
+      description: File containing the output alignment, in FASTA format containing gaps.
+        The sequences may be in a different order than in the input FASTA.
+      pattern: "*_alignment.fasta"
+
+authors:
+  - "@lrauschning"
