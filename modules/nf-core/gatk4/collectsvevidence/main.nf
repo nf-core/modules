@@ -39,7 +39,8 @@ process GATK4_COLLECTSVEVIDENCE {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CollectSVEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CollectSVEvidence \\
         ${args} \\
         --input ${input} \\
         --sr-file ${prefix}.sr.txt.gz \\
