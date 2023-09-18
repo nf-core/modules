@@ -2,10 +2,10 @@ process EXPANSIONHUNTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::expansionhunter=4.0.2"
+    conda "bioconda::expansionhunter=5.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2--he785bd8_0' :
-        'biocontainers/expansionhunter:4.0.2--he785bd8_0' }"
+        'https://depot.galaxyproject.org/singularity/expansionhunter:5.0.0--hf366f20_0' :
+        'biocontainers/expansionhunter:5.0.0--hf366f20_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
