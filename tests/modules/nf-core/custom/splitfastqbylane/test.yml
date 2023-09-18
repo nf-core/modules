@@ -1,0 +1,31 @@
+- name: custom splitfastqbylane test_custom_splitfastqbylane
+  command: nextflow run ./tests/modules/nf-core/custom/splitfastqbylane -entry test_custom_splitfastqbylane -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/splitfastqbylane/nextflow.config
+  tags:
+    - custom
+    - custom/splitfastqbylane
+  files:
+    - path: output/custom/test@HK3MMAFX2_L001_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L001_R2.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L002_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L002_R2.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L003_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L003_R2.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L004_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L004_R2.split.fastq.gz
+    - path: output/custom/versions.yml
+      contains:
+        - "gawk"
+
+- name: custom splitfastqbylane test_custom_splitfastqbylane_single_end
+  command: nextflow run ./tests/modules/nf-core/custom/splitfastqbylane -entry test_custom_splitfastqbylane_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/splitfastqbylane/nextflow.config
+  tags:
+    - custom
+    - custom/splitfastqbylane
+  files:
+    - path: output/custom/test@HK3MMAFX2_L001_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L002_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L003_R1.split.fastq.gz
+    - path: output/custom/test@HK3MMAFX2_L004_R1.split.fastq.gz
+    - path: output/custom/versions.yml
+      contains:
+        - "gawk"
