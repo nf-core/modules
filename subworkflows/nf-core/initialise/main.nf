@@ -2,9 +2,13 @@
 // The role of this subworkflow is to check the input parameters and print help messages
 // Use this to start your nf-core pipeline
 
-include { paramsHelp } from 'plugin/nf-validation'
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
 
 workflow INITIALISE {
+
+    if ( params.validate_parameters != false ){
+        validateParameters()
+    }
 
     // Print citation for nf-core
     def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
@@ -46,4 +50,6 @@ workflow INITIALISE {
                 "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" +
                 "Please refer to the quick start section and usage docs for the pipeline.\n "
     }
+
+    log.info paramsSummaryLog(workflow)
 }
