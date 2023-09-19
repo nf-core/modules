@@ -23,9 +23,9 @@ workflow FASTQ_NGSCHECKMATE {
         .set {ch_collected_vafs}
 
     ch_snp_pt
-    .map{meta, snp_pt -> meta} // use the snp_bed file meta as the meta for the merged channel
-    .combine(ch_collected_vafs) // add the vaf files after the meta, now looks like [meta, [vaf1, vaf2, ... ] ]
-    .set {ch_vafs}
+        .map{meta, snp_pt -> meta} // use the snp_bed file meta as the meta for the merged channel
+        .combine(ch_collected_vafs) // add the vaf files after the meta, now looks like [meta, [vaf1, vaf2, ... ] ]
+        .set {ch_vafs}
 
     NGSCHECKMATE_VAFNCM (ch_vafs)
     ch_versions = ch_versions.mix(NGSCHECKMATE_VAFNCM.out.versions.first())
