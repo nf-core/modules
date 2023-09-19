@@ -2,10 +2,10 @@ process MAGUS_ALIGN {
     tag "$meta_fasta.id"
     label 'process_medium'
 
-    conda "bioconda::magus-msa=0.1.2a"
+    conda "bioconda::magus-msa=0.1.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/magus-msa:0.1.2a':
-        'biocontainers/magus-msa:0.1.2a' }"
+        'https://depot.galaxyproject.org/singularity/magus-msa:0.1.2--pyhdfd78af_0 ':
+        'biocontainers/magus-msa:0.1.2--pyhdfd78af_0 ' }"
 
     input:
     tuple val(meta_fasta), path(fasta)
