@@ -1,0 +1,7 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core subworkflows create-test-yml
+- name: "initialise"
+  command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config
+  tags:
+    - "subworkflows"
+    - "subworkflows/initialise"
