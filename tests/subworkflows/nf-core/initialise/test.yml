@@ -5,3 +5,15 @@
   tags:
     - "subworkflows"
     - "subworkflows/initialise"
+
+- name: "initialise help"
+  command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config --help
+  tags:
+    - "subworkflows"
+    - "subworkflows/initialise"
+
+- name: "initialise version"
+  command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config --version
+  tags:
+    - "subworkflows"
+    - "subworkflows/initialise"
