@@ -1,23 +1,21 @@
-- name: "magus align"
-  command: nextflow run ./tests/modules/nf-core/magus/align -entry test_magus_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/magus/align/nextflow.config
+- name: magus align test_magus_align
+  command: nextflow run ./tests/modules/nf-core/magus/align -entry test_magus_align -c ./tests/config/nex
   tags:
-    - "magus/align"
-    - "magus"
+    - magus
+    - magus/align
   files:
-    - path: "output/magus/test.aln"
-      md5sum: "112100ff69bc49de28f129d811b988e5"
-    - path: "output/magus/versions.yml"
+    - path: output/magus/test.aln
+      md5sum: 112100ff69bc49de28f129d811b988e5
+    - path: output/magus/versions.yml
 
-- name: "magus align guidetree"
-  command: nextflow run ./tests/modules/nf-core/magus/align -entry test_magus_align_with_guide_tree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/magus/align/nextflow.config
+- name: magus align test_magus_align_with_guide_tree
+  command: nextflow run ./tests/modules/nf-core/magus/align -entry test_magus_align_with_guide_tree -c ./
   tags:
-    - "magus/align"
-    - "magus"
+    - magus
+    - magus/align
   files:
-    - path: "output/magus/test.aln"
-      contains:
-        - "-TGCTGTAGTTGTCT-"
-    - path: "output/magus/test.tree"
-      contains:
-        - "NODE_3_length"
-    - path: "output/magus/versions.yml"
+    - path: output/magus/test.aln
+      md5sum: 112100ff69bc49de28f129d811b988e5
+    - path: output/magus/test.tree
+      md5sum: 27187ef532ca1b712e80c094c2656c76
+    - path: output/magus/versions.yml
