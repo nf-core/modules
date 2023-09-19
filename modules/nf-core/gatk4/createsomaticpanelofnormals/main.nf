@@ -32,7 +32,8 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CreateSomaticPanelOfNormals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CreateSomaticPanelOfNormals \\
         --variant gendb://$genomicsdb \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\
