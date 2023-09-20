@@ -5,15 +5,38 @@
   tags:
     - "subworkflows"
     - "subworkflows/initialise"
+  stdout:
+    contains:
+      - "The nf-core framework"
+      - "https://github.com/nf-core/modules/blob/master/CITATIONS.md"
+      - "Core Nextflow options"
+      - "runName"
+      - "containerEngine"
+      - "launchDir"
+      - "profile"
+      - "Input/output options"
 
 - name: "initialise help"
   command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config --help
   tags:
     - "subworkflows"
     - "subworkflows/initialise"
+  stdout:
+    contains:
+      - "The nf-core framework"
+      - "https://github.com/nf-core/modules/blob/master/CITATIONS.md"
+      - "Typical pipeline command:"
+      - "nextflow run nf-core/initialise --input samplesheet.csv -profile"
+      - "Input/output options"
+      - "--outdir"
 
 - name: "initialise version"
   command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config --version
   tags:
     - "subworkflows"
     - "subworkflows/initialise"
+  stdout:
+    contains:
+      - "The nf-core framework"
+      - "https://github.com/nf-core/modules/blob/master/CITATIONS.md"
+      - "nf-core/initialise v0.1"

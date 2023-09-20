@@ -12,10 +12,11 @@
             "description": "Define where the pipeline should find input data and save output data.",
             "required": ["outdir"],
             "properties": {
-                "validate_params": {
+                "validate_parameters": {
                     "type": "boolean",
                     "description": "Validate parameters?",
-                    "default": true
+                    "default": true,
+                    "hidden": true
                 },
                 "outdir": {
                     "type": "string",
@@ -26,7 +27,13 @@
                 "test_data_base": {
                     "type": "string",
                     "default": "https://raw.githubusercontent.com/nf-core/test-datasets/modules",
-                    "description": "Base for test data directory"
+                    "description": "Base for test data directory",
+                    "hidden": true
+                },
+                "test_data": {
+                    "type": "string",
+                    "description": "Fake test data param",
+                    "hidden": true
                 }
             }
         },
@@ -41,19 +48,18 @@
                     "type": "boolean",
                     "description": "Display help text.",
                     "fa_icon": "fas fa-question-circle",
-                    "default": false,
                     "hidden": true
                 },
                 "version": {
                     "type": "boolean",
                     "description": "Display version and exit.",
                     "fa_icon": "fas fa-question-circle",
-                    "default": false,
                     "hidden": true
                 },
                 "singularity_pull_docker_container": {
                     "type": "boolean",
-                    "description": "Pull Singularity container from Docker?"
+                    "description": "Pull Singularity container from Docker?",
+                    "hidden": true
                 },
                 "publish_dir_mode": {
                     "type": "string",
@@ -63,11 +69,19 @@
                     "fa_icon": "fas fa-copy",
                     "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
                     "hidden": true
+                },
+                "monochrome_logs": {
+                    "type": "boolean",
+                    "description": "Use monochrome_logs",
+                    "hidden": true
                 }
             }
         }
     },
     "allOf": [
+        {
+            "$ref": "#/definitions/input_output_options"
+        },
         {
             "$ref": "#/definitions/generic_options"
         }
