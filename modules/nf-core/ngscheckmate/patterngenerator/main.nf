@@ -1,5 +1,5 @@
 process NGSCHECKMATE_PATTERNGENERATOR {
-    tag "$meta1.id"
+    tag "$meta.id"
     label 'process_single'
 
     conda "bioconda::ngscheckmate=1.0.1"
