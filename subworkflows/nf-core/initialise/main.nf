@@ -6,25 +6,6 @@ include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-val
 
 workflow INITIALISE {
 
-    if ( params.validate_parameters != false ){
-        validateParameters()
-    }
-
-    // Print citation for nf-core
-    def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
-        "* The nf-core framework\n" +
-        "  https://doi.org/10.1038/s41587-020-0439-x\n\n" +
-        "* Software dependencies\n" +
-        "  https://github.com/${workflow.manifest.name}/blob/master/CITATIONS.md"
-    log.info citation
-
-    // Print help message if needed
-    if (params.help) {
-        def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
-        log.info paramsHelp(command)
-        System.exit(0)
-    }
-
     // Print workflow version and exit on --version
     if (params.version) {
         String version_string = ""
@@ -39,6 +20,25 @@ workflow INITIALISE {
             version_string += "-g${git_shortsha}"
         }
         log.info "${workflow.manifest.name} ${version_string}"
+        System.exit(0)
+    }
+
+    if ( params.validate_parameters != false ){
+        validateParameters()
+    }
+
+    // Print citation for nf-core
+    def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
+        "* The nf-core framework\n" +
+        "  https://doi.org/10.1038/s41587-020-0439-x\n\n" +
+        "* Software dependencies\n" +
+        "  ${workflow.manifest.homePage}/blob/master/CITATIONS.md"
+    log.info citation
+
+    // Print help message if needed
+    if (params.help) {
+        def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
+        log.info paramsHelp(command)
         System.exit(0)
     }
 
