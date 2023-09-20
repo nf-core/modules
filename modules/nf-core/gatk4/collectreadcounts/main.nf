@@ -37,7 +37,8 @@ process GATK4_COLLECTREADCOUNTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CollectReadCounts \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CollectReadCounts \\
         --input $input \\
         --intervals $intervals \\
         --output ${prefix}.$extension \\
