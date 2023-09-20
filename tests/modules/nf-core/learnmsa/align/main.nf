@@ -8,7 +8,7 @@ workflow test_learnmsa_align {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+        file(params.test_data['sarscov2']['genome']['alignment']['informative_sites'], checkIfExists: true)
     ]
 
     LEARNMSA_ALIGN ( input )
