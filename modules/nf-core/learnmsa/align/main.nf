@@ -29,7 +29,7 @@ process LEARNMSA_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        learnmsa: \$(learnMSA -h | grep -oP 'version \\K[0-9.]+')
+        learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process LEARNMSA_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        learnmsa: \$(learnMSA -h | grep -oP 'version \\K[0-9.]+')
+        learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
     END_VERSIONS
     """
 }

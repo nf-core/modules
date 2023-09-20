@@ -1,10 +1,10 @@
 - name: learnmsa align test_learnmsa_align
   command: nextflow run ./tests/modules/nf-core/learnmsa/align -entry test_learnmsa_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/learnmsa/align/nextflow.config
   tags:
-    - learnmsa/align
     - learnmsa
+    - learnmsa/align
   files:
     - path: output/learnmsa/test.aln
       contains:
-        - ">sample1"
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/learnmsa/versions.yml
