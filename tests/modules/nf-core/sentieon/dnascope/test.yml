@@ -1,9 +1,29 @@
-- name: sentieon test_dnascope
-  command: nextflow run ./tests/modules/nf-core/sentieon/dnascope -entry test_dnascope -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnascope/nextflow.config
+- name: sentieon test_dnascope_conservative_pcr_indel_model
+  command: nextflow run ./tests/modules/nf-core/sentieon/dnascope -entry test_dnascope_conservative_pcr_indel_model -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnascope/nextflow.config
   tags:
     - sentieon
     - sentieon/dnascope
   files:
-    - path: ./output/sentieon/test.vcf.gz
-    - path: ./output/sentieon/test.vcf.gz.tbi
+    - path: ./output/sentieon/test.unfiltered.vcf.gz
+    - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml
+- name: sentieon test_dnascope_aggressive_pcr_indel_model_vcf_all
+  command: nextflow run ./tests/modules/nf-core/sentieon/dnascope -entry test_dnascope_aggressive_pcr_indel_model_vcf_all -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnascope/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/dnascope
+  files:
+    - path: ./output/sentieon/test.unfiltered.vcf.gz
+    - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml
+- name: sentieon test_dnascope_hostile_pcr_indel_model_vcf_confident_gvcf
+  command: nextflow run ./tests/modules/nf-core/sentieon/dnascope -entry test_dnascope_hostile_pcr_indel_model_vcf_confident_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnascope/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/dnascope
+  files:
+    - path: ./output/sentieon/test.unfiltered.vcf.gz
+    - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
+    - path: ./output/sentieon/test.g.vcf.gz
+    - path: ./output/sentieon/test.g.vcf.gz.tbi
     - path: ./output/sentieon/versions.yml

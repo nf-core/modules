@@ -29,7 +29,8 @@ process GATK4_SAMTOFASTQ {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" SamToFastq \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        SamToFastq \\
         --INPUT $bam \\
         $output \\
         --TMP_DIR . \\

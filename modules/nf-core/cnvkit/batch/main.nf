@@ -9,10 +9,10 @@ process CNVKIT_BATCH {
 
     input:
     tuple val(meta), path(tumor), path(normal)
-    path  fasta
-    path  fasta_fai
-    path  targets
-    path  reference
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(targets)
+    tuple val(meta5), path(reference)
     val   panel_of_normals
 
     output:
