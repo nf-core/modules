@@ -22,6 +22,8 @@ process LEARNMSA_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+
+
     learnMSA \\
         $args \\
         -i $fasta \\
@@ -29,7 +31,7 @@ process LEARNMSA_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        learnMSA: \$(learnMSA -h | grep -oP 'version \\K[0-9.]+')
+        learnmsa: 1.3.2
     END_VERSIONS
     """
 
@@ -41,7 +43,7 @@ process LEARNMSA_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        learnMSA: \$(learnMSA -h | grep -oP 'version \\K[0-9.]+')
+        learnmsa: \$(learnMSA -h | grep -oP 'version \\K[0-9.]+')
     END_VERSIONS
     """
 }

@@ -7,7 +7,7 @@ include { LEARNMSA_ALIGN } from '../../../../../modules/nf-core/learnmsa/align/m
 workflow test_learnmsa_align {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
     ]
 
