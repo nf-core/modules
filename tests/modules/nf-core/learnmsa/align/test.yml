@@ -1,13 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /align
-- name: "learnmsa align"
+- name: learnmsa align test_learnmsa_align
   command: nextflow run ./tests/modules/nf-core/learnmsa/align -entry test_learnmsa_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/learnmsa/align/nextflow.config
   tags:
-    - "learnmsa"
-    - "learnmsa/align"
+    - learnmsa/align
+    - learnmsa
   files:
-    - path: "output/learnmsa/test.aln"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/learnmsa/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/learnmsa/test.aln
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/learnmsa/versions.yml
