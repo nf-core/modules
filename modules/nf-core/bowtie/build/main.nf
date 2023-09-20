@@ -1,5 +1,5 @@
 process BOWTIE_BUILD {
-    tag "$fasta"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "bioconda::bowtie=1.3.0"
@@ -8,20 +8,21 @@ process BOWTIE_BUILD {
         'biocontainers/bowtie:1.3.0--py38hed8969a_1' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path 'bowtie'       , emit: index
-    path "versions.yml" , emit: versions
+    tuple val(meta), path('bowtie') , emit: index
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     mkdir bowtie
-    bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
+    bowtie-build --threads $task.cpus $fasta bowtie/${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
