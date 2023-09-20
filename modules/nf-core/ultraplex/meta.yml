@@ -1,0 +1,57 @@
+name: "ultraplex"
+
+description: Ultraplex is an all-in-one software package for processing and demultiplexing fastq files.
+keywords:
+  - demultiplex
+  - fastq
+  - umi
+tools:
+  - "ultraplex":
+      description: fastq demultiplexer
+      homepage: https://github.com/ulelab/ultraplex
+      documentation: https://github.com/ulelab/ultraplex
+      tool_dev_url: https://github.com/ulelab/ultraplex
+      doi: "10.5281/zenodo.465128"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Zipped FASTQ file
+      pattern: "*.{fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Demultiplexed sample FASTQ files
+      pattern: "*[!no_match].fastq.gz"
+  - no_match_fastq:
+      type: file
+      description: FASTQ file containing reads that could not be demultiplexed
+      pattern: "*no_match.fastq.gz"
+  - report:
+      type: file
+      description: File containing demultiplexing log
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CharlotteAnne"
+  - "@oscarwilkins"
+  - "@chris-cheshire"
+  - "@marc-jones"
+  - "@iraiosub"
+  - "@samirelanduk"

@@ -1,0 +1,61 @@
+name: cnvkit_target
+description: Transform bait intervals into targets more suitable for CNVkit.
+keywords:
+  - cnvkit
+  - target
+  - cnv
+  - copy number
+tools:
+  - cnvkit:
+      description: |
+        CNVkit is a Python library and command-line software toolkit to infer and visualize copy number from high-throughput DNA sequencing data.
+        It is designed for use with hybrid capture, including both whole-exome and custom target panels, and short-read sequencing platforms such as Illumina and Ion Torrent.
+      homepage: https://cnvkit.readthedocs.io/en/stable/index.html
+      documentation: https://cnvkit.readthedocs.io/en/stable/index.html
+      tool_dev_url: "https://github.com/etal/cnvkit"
+      doi: 10.1371/journal.pcbi.1004873
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - baits:
+      type: file
+      description: BED or interval file listing the targeted regions.
+      pattern: "*.{bed}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - annotation:
+      type: file
+      description: Use gene models from this file to assign names to the target regions.
+      pattern: "*.{txt,bed,gff3,pil}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - bed:
+      type: file
+      description: File containing target regions
+      pattern: "*.{bed}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@adamrtalbot"
+  - "@priesgo"

@@ -17,7 +17,7 @@ workflow test_fastq_download_prefetch_fasterqdump_sratools_single_end {
         ]
     )
 
-    FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS ( input )
+    FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS ( input, [] )
 }
 
 workflow test_fastq_download_prefetch_fasterqdump_sratools_paired_end {
@@ -26,5 +26,5 @@ workflow test_fastq_download_prefetch_fasterqdump_sratools_paired_end {
         'SRR11140744'
     ]
 
-    FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS ( input )
+    FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS ( input, [] )
 }

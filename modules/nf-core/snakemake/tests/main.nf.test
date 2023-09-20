@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process SNAKEMAKE"
+    script "modules/nf-core/snakemake/main.nf"
+    process "SNAKEMAKE"
+    tag "snakemake"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+        // Input file
+        input[0] = [
+            [ id: 'input'],
+            []
+        ]
+// Snakefile
+    Channel.of('''
+rule all:
+    input: "hello.txt"
+
+rule hello_world:
+    output: "hello.txt"
+    shell: "echo Hello World > hello.txt"
+
+'''
+        )
+        .collectFile(name: 'Snakefile')
+        .map { file ->
+            [
+                [id: 'Snakefile'],
+                file
+            ]}
+        .set{ snakefile }
+
+        input[1] = snakefile
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.outputs, process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

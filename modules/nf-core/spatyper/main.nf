@@ -5,7 +5,7 @@ process SPATYPER {
     conda "bioconda::spatyper=0.3.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
-        'quay.io/biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
+        'biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
 
     input:
     tuple val(meta), path(fasta)

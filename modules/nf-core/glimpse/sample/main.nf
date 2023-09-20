@@ -5,7 +5,7 @@ process GLIMPSE_SAMPLE {
     conda "bioconda::glimpse-bio=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
     tuple val(meta), path(input)
@@ -27,7 +27,7 @@ process GLIMPSE_SAMPLE {
         $args \\
         --input $input \\
         --thread $task.cpus \\
-        --output ${prefix}_sampled.${suffix}
+        --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

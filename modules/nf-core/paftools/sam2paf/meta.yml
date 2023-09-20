@@ -1,0 +1,39 @@
+name: paftools_sam2paf
+description: A program to convert bam into paf.
+keywords:
+  - paf
+  - bam
+  - conversion
+tools:
+  - paftools:
+      description: |
+        A program to manipulate paf files / convert to and from paf.
+      homepage: https://github.com/lh3/minimap2
+      documentation: https://github.com/lh3/minimap2/blob/master/README.md
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: An input bam file to be converted into paf.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - paf:
+      type: file
+      description: |
+        An output paf containing detailed data about the sample
+      pattern: "${prefix}.paf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@DLBPointon"

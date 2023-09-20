@@ -2,10 +2,10 @@ process GATK4_FASTQTOSAM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gatk4=4.3.0.0"
+    conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -22,14 +22,15 @@ process GATK4_FASTQTOSAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads_command = meta.single_end ? "--FASTQ $reads" : "--FASTQ ${reads[0]} --FASTQ2 ${reads[1]}"
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" FastqToSam \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        FastqToSam \\
         $reads_command \\
         --OUTPUT ${prefix}.bam \\
         --SAMPLE_NAME $prefix \\

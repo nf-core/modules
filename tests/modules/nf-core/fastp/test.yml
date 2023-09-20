@@ -1,5 +1,5 @@
 - name: fastp test_fastp_single_end
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -16,14 +16,14 @@
         - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
         - "single end (151 cycles)"
     - path: output/fastp/test.fastp.json
-      md5sum: 2616b6791fd89fb1cc2d16a73b9463b0
+      md5sum: c852d7a6dba5819e4ac8d9673bedcacc
     - path: output/fastp/test.fastp.log
       contains:
         - "Q20 bases: 12922(92.9841%)"
         - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -56,7 +56,7 @@
         - "AAAAA6EEAEEEEEAEEAEEAEEEEEEA6EEEEAEEAEEEEE6EEEEEEAEEEEA///A<<EEEEEEEEEAEEEEEE"
 
 - name: fastp test_fastp_interleaved
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_interleaved -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -73,14 +73,14 @@
         - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
         - "paired end (151 cycles + 151 cycles)"
     - path: output/fastp/test.fastp.json
-      md5sum: 25ec85e3534f380ca2109c894671f1ed
+      md5sum: 168f516f7bd4b7b6c32da7cba87299a4
     - path: output/fastp/test.fastp.log
       contains:
         - "Q20 bases: 12922(92.9841%)"
         - "reads passed filter: 198"
 
 - name: fastp test_fastp_single_end_trim_fail
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -102,14 +102,14 @@
         - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
         - "single end (151 cycles)"
     - path: output/fastp/test.fastp.json
-      md5sum: 7e10b0b12fab5cff620fdeb1a32392f8
+      md5sum: 9a7ee180f000e8d00c7fb67f06293eb5
     - path: output/fastp/test.fastp.log
       contains:
         - "Q20 bases: 12922(92.9841%)"
         - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end_trim_fail
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -141,6 +141,8 @@
         - "GCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT"
         - "AAAAA6EEAEEEEEAEEAEEAEEEEEEA6EEEEAEEAEEEEE6EEEEEEAEEEEA///A<<EEEEEEEEEAEEEEEE"
     - path: output/fastp/test_1.fail.fastq.gz
+    - path: output/fastp/test_1.fastp.fastq.gz
+      md5sum: dc08e42319d0deab088da4d8600aa2bd
     - path: output/fastp/test_2.fail.fastq.gz
       contains:
         - "@ERR5069949.885966 NS500628:121:HK3MMAFX2:4:11610:19682:20132/2"
@@ -148,7 +150,7 @@
         - "A//AA6EEAEEEEE6EEE/EEA/EA///AAE/EAEEEAE6AE/E/E/EEAAE/EAA/E/E/<EA//E/6"
 
 - name: fastp test_fastp_paired_end_merged
-  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:

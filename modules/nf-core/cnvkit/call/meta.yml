@@ -2,6 +2,8 @@ name: cnvkit_call
 description: Given segmented log2 ratio estimates (.cns), derive each segment’s absolute integer copy number
 keywords:
   - cnvkit
+  - bam
+  - fasta
   - copy number
 tools:
   - cnvkit:
@@ -40,10 +42,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - cns:
+  - output:
       type: file
-      description: File containing copy number segment information
-      pattern: "*.{cns}"
+      description: File containing copy number information in new format.
+      pattern: "*.{bed,vcf,cdt,jtv,seg,interval_count}"
 
 authors:
   - "@adamrtalbot"
+  - "@priesgo"

@@ -12,8 +12,14 @@ workflow test_star_alignment_single_end {
         [ id:'test', single_end:true ], // meta map
         [ file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true) ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
@@ -30,8 +36,14 @@ workflow test_star_alignment_paired_end {
             file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
@@ -49,8 +61,14 @@ workflow test_star_alignment_paired_end_for_fusion {
             file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
@@ -67,12 +85,45 @@ workflow test_star_alignment_paired_end_for_starfusion {
             file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
     star_ignore_sjdbgtf = false
     seq_platform = false
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_FOR_STARFUSION ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
+}
+
+workflow test_star_alignment_paired_end_multiple {
+
+    input = [
+        [ id:'test', single_end:false ],
+        [
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
+    gtf = [
+        [ id:'test_gtf' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
+    ]
+    star_ignore_sjdbgtf = false
+    seq_platform = false
+    seq_center = false
+
+    STAR_GENOMEGENERATE ( fasta, gtf )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
 }

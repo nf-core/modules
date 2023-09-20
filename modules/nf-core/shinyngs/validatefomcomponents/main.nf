@@ -2,10 +2,10 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     tag "$sample"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.5.4"
+    conda "bioconda::r-shinyngs=1.8.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.5.4--r42hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.5.4--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.2--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.2--r43hdfd78af_0' }"
 
     input:
     tuple val(meta),  path(sample), path(assay_files)
@@ -13,11 +13,11 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     tuple val(meta3), path(contrasts)
 
     output:
-    tuple val(meta), path("*/*.sample_metadata.tsv")                                                            , emit: sample_meta
-    tuple val(meta), path("*/*.feature_metadata.tsv")                                                           , emit: feature_meta, optional: true
-    tuple val(meta), path("*/*.assay.tsv")                                                                      , emit: assays
-    tuple val(meta), path("*/*.contrasts_file.tsv")                                                             , emit: contrasts
-    path "versions.yml"                                                                                         , emit: versions
+    tuple val(meta), path("*/*.sample_metadata.tsv")   , emit: sample_meta
+    tuple val(meta), path("*/*.feature_metadata.tsv")  , emit: feature_meta, optional: true
+    tuple val(meta), path("*/*.assay.tsv")             , emit: assays
+    tuple val(meta), path("*/*.contrasts_file.tsv")    , emit: contrasts
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

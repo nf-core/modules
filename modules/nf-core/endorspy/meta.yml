@@ -7,7 +7,7 @@ keywords:
   - statistics
 tools:
   - "endorspy":
-      description: "endorS.py calculates endogenous DNA from samtools flagstat files and print to screen"
+      description: "endorS.py calculates percent on target and/or clonality from samtools flagstat files and print to screen"
       homepage: "https://github.com/aidaanva/endorS.py"
       documentation: "https://github.com/aidaanva/endorS.py"
       tool_dev_url: "https://github.com/aidaanva/endorS.py"
@@ -20,14 +20,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - stats:
+  - stats_raw:
       type: file
-      description: output of samtools flagstat in a text file
-  - stats_optional:
+      description: output of samtools flagstat in a txt file, assumes no quality filtering nor duplicate removal performed
+  - stats_qualityfiltered:
       type: file
-      description: output of a second samtools flagstat run in a text file. If two files are supplied,
-        the mapped reads of the second file is divided by the total reads in the first, since it
-        assumes that the <samplefile.stats> are related to the same sample. Useful after BAM filtering.
+      description: output of samtools flagstat in a txt file, assumes some form of quality or length filtering has been performed, must be provided with at least one of the options -r or -d
+  - stats_deduplicated:
+      type: file
+      description: output of samtools flagstat in a txt file, whereby duplicate removal has been performed on the input reads
 
 output:
   - meta:
