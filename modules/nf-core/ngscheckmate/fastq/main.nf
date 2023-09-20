@@ -21,7 +21,7 @@ process NGSCHECKMATE_FASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fastq2command  = meta.single_end ? "" : " -2 ${reads[1]}"
+    def fastq2command  = reads instanceof List ? " -2 ${reads[1]}" : ""
 
     """
     ngscheckmate_fastq  -1 ${reads[0]} $fastq2command ${snp_pt} -p ${task.cpus} $args > ${prefix}.vaf
