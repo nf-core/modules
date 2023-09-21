@@ -5,5 +5,9 @@ nextflow.enable.dsl = 2
 include { INITIALISE } from '../../../../subworkflows/nf-core/initialise/main.nf'
 
 workflow test_initialise {
-    INITIALISE ( )
+    INITIALISE ( 
+        params.version,
+        params.help,
+        params.validate_params
+    )
 }
