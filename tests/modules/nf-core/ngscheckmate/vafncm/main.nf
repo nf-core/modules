@@ -46,8 +46,6 @@ workflow test_ngscheckmate_vafncm {
         file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
         ]
 
-    bowtie_fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-
     // create a bed file representing the entire genome from the fasta index
     GAWK_FAI(fasta_fai, [])
 
@@ -58,11 +56,10 @@ workflow test_ngscheckmate_vafncm {
     GAWK_BED(BEDTOOLS_MAKEWINDOWS.out.bed, [])
 
     // generate the .pt file for ngscheckmate to use
-    BOWTIE_BUILD ( bowtie_fasta )
+    BOWTIE_BUILD ( fasta )
     NGSCHECKMATE_PATTERNGENERATOR ( GAWK_BED.out.output, fasta, BOWTIE_BUILD.out.index )
 
     NGSCHECKMATE_FASTQ ( channel.fromList(input), NGSCHECKMATE_PATTERNGENERATOR.out.pt )
     ch_vafs = NGSCHECKMATE_FASTQ.out.vaf.map{it[1]}.collect().map{files -> [[id:"combined"], files]}
-    ch_vafs.view()
     NGSCHECKMATE_VAFNCM(ch_vafs  )
 }
