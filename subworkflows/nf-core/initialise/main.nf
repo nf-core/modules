@@ -23,6 +23,14 @@ workflow INITIALISE {
         System.exit(0)
     }
 
+    // Print citation for nf-core
+    def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
+        "* The nf-core framework\n" +
+        "  https://doi.org/10.1038/s41587-020-0439-x\n\n" +
+        "* Software dependencies\n" +
+        "  ${workflow.manifest.homePage}/blob/master/CITATIONS.md"
+    log.info citation
+
     // Print help message if needed
     if (params.help) {
         def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
@@ -33,14 +41,6 @@ workflow INITIALISE {
     if ( params.validate_parameters != false ){
         validateParameters()
     }
-
-    // Print citation for nf-core
-    def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
-        "* The nf-core framework\n" +
-        "  https://doi.org/10.1038/s41587-020-0439-x\n\n" +
-        "* Software dependencies\n" +
-        "  ${workflow.manifest.homePage}/blob/master/CITATIONS.md"
-    log.info citation
 
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
         log.warn "[$workflow.manifest.name] You are attempting to run the pipeline without any custom configuration!\n\n" +
