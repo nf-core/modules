@@ -1,4 +1,3 @@
-
 process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
