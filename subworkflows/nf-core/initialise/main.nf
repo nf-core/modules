@@ -61,7 +61,7 @@ workflow INITIALISE {
         log.info paramsSummaryLog(workflow)
 
         summary_params = paramsSummaryMap(workflow)
-    
+
     emit:
         summary_params
 
