@@ -23,6 +23,13 @@ workflow INITIALISE {
         System.exit(0)
     }
 
+    // Print help message if needed
+    if (params.help) {
+        def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
+        log.info paramsHelp(command)
+        System.exit(0)
+    }
+
     if ( params.validate_parameters != false ){
         validateParameters()
     }
@@ -34,13 +41,6 @@ workflow INITIALISE {
         "* Software dependencies\n" +
         "  ${workflow.manifest.homePage}/blob/master/CITATIONS.md"
     log.info citation
-
-    // Print help message if needed
-    if (params.help) {
-        def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
-        log.info paramsHelp(command)
-        System.exit(0)
-    }
 
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
         log.warn "[$workflow.manifest.name] You are attempting to run the pipeline without any custom configuration!\n\n" +
