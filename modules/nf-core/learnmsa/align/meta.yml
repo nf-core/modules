@@ -25,17 +25,6 @@ input:
       description: Input sequences in FASTA format
       pattern: "*.{fa,fasta}"
 
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing tree information
-        e.g. `[ id:'test_tree']`
-
-  - tree:
-      type: file
-      description: Input guide tree in Newick format
-      pattern: "*.{dnd}"
-
 output:
   - meta:
       type: map
