@@ -42,7 +42,7 @@ process MAGUS_GUIDETREE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        MAGUS \$(magus --version)
+        MAGUS: \$(magus --version)
     END_VERSIONS
     """
 }
