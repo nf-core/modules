@@ -23,10 +23,6 @@ workflow INITIALISE {
         System.exit(0)
     }
 
-    if ( params.validate_parameters != false ){
-        validateParameters()
-    }
-
     // Print citation for nf-core
     def citation = "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
         "* The nf-core framework\n" +
@@ -40,6 +36,10 @@ workflow INITIALISE {
         def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
         log.info paramsHelp(command)
         System.exit(0)
+    }
+
+    if ( params.validate_parameters != false ){
+        validateParameters()
     }
 
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
