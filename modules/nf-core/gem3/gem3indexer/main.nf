@@ -14,7 +14,7 @@ process GEM3_GEM3INDEXER {
     output:
     tuple val(meta), path("*.gem") , emit: index
     tuple val(meta), path("*.info"), emit: info
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
