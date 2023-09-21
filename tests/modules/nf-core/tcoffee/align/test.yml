@@ -1,11 +1,35 @@
+- name: tcoffee align test_tcoffee_align_sequence
+  command: nextflow run ./tests/modules/nf-core/tcoffee/align -entry test_tcoffee_align_sequence -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tcoffee/align/nextflow.config
+  tags:
+    - tcoffee
+    - tcoffee/align
+  files:
+    - path: output/tcoffee/test.aln
+      md5sum: 5d134b8860ed490a1c3003bcfb7a13b1
+    - path: output/tcoffee/versions.yml
+
+- name: tcoffee align test_famsa_align_with_tree
+  command: nextflow run ./tests/modules/nf-core/tcoffee/align -entry test_famsa_align_with_tree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tcoffee/align/nextflow.config
+  tags:
+    - tcoffee
+    - tcoffee/align
+  files:
+    - path: output/famsa/test.dnd
+      md5sum: eaa8cafa3258962ed4027f2ee353dff7
+    - path: output/famsa/versions.yml
+    - path: output/tcoffee/test.aln
+      md5sum: 93bc8adfcd88f7913718eacc13da8e4a
+    - path: output/tcoffee/versions.yml
+
 - name: tcoffee align test_famsa_align_with_structures
   command: nextflow run ./tests/modules/nf-core/tcoffee/align -entry test_famsa_align_with_structures -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tcoffee/align/nextflow.config
   tags:
-    - tcoffee/align
     - tcoffee
+    - tcoffee/align
   files:
     - path: output/tcoffee/test.aln
-      md5sum: fd9552c58a7cf34ff3d6c927f69119fb
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/tcoffee/versions.yml
     - path: output/untar/test/1ahl.pdb
       md5sum: b951d50ea70e582a0ba3f499f4b7104c

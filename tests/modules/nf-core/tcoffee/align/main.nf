@@ -50,15 +50,6 @@ workflow test_famsa_align_with_structures {
     ch_structures = UNTAR ( structures ).untar
     ch_structures = ch_structures.map { meta,dir -> [[ id:'test' ], [] ,file(dir).listFiles().collect()]}
 
-    ch_structures
-            .map { meta,template,file ->
-                def id = file.nameWithoutExtension
-                "${id}_P_${id}"
-            }
-            .flatten()
-            .splitText()
-            .view()
-
 
     TCOFFEE_ALIGN_STRUCTURES ( input ,  [[:],[]] , ch_structures)
 

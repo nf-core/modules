@@ -22,7 +22,7 @@ process TCOFFEE_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    """    
+    """ 
     t_coffee -seq ${fasta} \
         $args \
         -outfile ${prefix}.aln
