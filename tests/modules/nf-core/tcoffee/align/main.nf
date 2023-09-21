@@ -9,34 +9,30 @@ include { TCOFFEE_ALIGN as TCOFFEE_ALIGN_STRUCTURES } from '../../../../../modul
 include { UNTAR                                     } from '../../../../../modules/nf-core/untar/main.nf'
 
 
-// workflow test_tcoffee_align_sequence {
+workflow test_tcoffee_align_sequence {
     
-//     input = [
-//         [ id:'test' ],
-//         file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
-//     ]
+    input = [
+        [ id:'test' ],
+        file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+    ]
 
-//     TCOFFEE_ALIGN_SEQUENCE ( input,  [[:],[]],  [[:],[],[]] )
-// }
+    TCOFFEE_ALIGN_SEQUENCE ( input,  [[:],[]],  [[:],[],[]] )
+}
 
 
-// workflow test_famsa_align_with_tree {
+workflow test_famsa_align_with_tree {
     
-//     input = [
-//         [ id:'test' ],
-//         file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
-//     ]
+    input = [
+        [ id:'test' ],
+        file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+    ]
 
     
-//     ch_tree = FAMSA_GUIDETREE ( input ).tree
+    ch_tree = FAMSA_GUIDETREE ( input ).tree
 
-//     TCOFFEE_ALIGN_WITHTREE ( input , ch_tree,  [[:],[],[]])
+    TCOFFEE_ALIGN_WITHTREE ( input , ch_tree,  [[:],[],[]])
 
-// }
-
-
-
-
+}
 
 workflow test_famsa_align_with_structures {
     

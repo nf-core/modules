@@ -1,7 +1,7 @@
 process TCOFFEE_ALIGN {
     tag "$meta.id"
     label 'process_medium'
-    
+
     conda "bioconda::t-coffee=13.45.0.4846264"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/t-coffee:13.45.0.4846264--hc57179f_5':
@@ -18,7 +18,7 @@ process TCOFFEE_ALIGN {
 
     when:
     task.ext.when == null || task.ext.when
-    
+
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -30,10 +30,10 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
     END_VERSIONS
     """
-    
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -41,7 +41,7 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
     END_VERSIONS
     """
 }
