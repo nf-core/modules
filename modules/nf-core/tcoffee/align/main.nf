@@ -30,7 +30,7 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tcoffee: 13.45.0.4846264
+        tcoffee: $( t_coffee -version | awk -F 'Version_' 'NR==1{split(\$2, a, " "); print a[1]}')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tcoffee: 13.45.0.4846264
+        tcoffee: $( t_coffee -version | awk -F 'Version_' 'NR==1{split(\$2, a, " "); print a[1]}')
     END_VERSIONS
     """
 }
