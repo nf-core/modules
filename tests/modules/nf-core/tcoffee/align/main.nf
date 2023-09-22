@@ -13,7 +13,7 @@ workflow test_tcoffee_align_sequence {
     
     input = [
         [ id:'test' ],
-        file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
     ]
 
     TCOFFEE_ALIGN_SEQUENCE ( input,  [[:],[]],  [[:],[],[]] )
