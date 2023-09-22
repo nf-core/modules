@@ -1,6 +1,6 @@
 process UMICOLLAPSE {
     tag "$meta.id"
-    label "process_high"
+    label "process_high_memory"
 
     conda "bioconda::umicollapse=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
