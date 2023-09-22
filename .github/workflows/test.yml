@@ -100,10 +100,13 @@ jobs:
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
 
-      - name: Lint ${{ matrix.tags }}
+      - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        # HACK
-        if: startsWith( matrix.tags, 'subworkflow' ) != true
+        if: startsWith( matrix.tags, 'module' )
+
+      - name: Lint subworkflow ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{ matrix.tags }}
+        if: startsWith( matrix.tags, 'subworkflow' )
 
   pytest:
     runs-on: ubuntu-20.04
