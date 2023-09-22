@@ -22,7 +22,7 @@ process TCOFFEE_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    """ 
+    """
     t_coffee -seq ${fasta} \
         $args \
         -outfile ${prefix}.aln
@@ -30,7 +30,7 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tcoffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | grep -oP 'Version_\\K[^ ]+' | head -n1 )
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process TCOFFEE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tcoffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | grep -oP 'Version_\\K[^ ]+' | head -n1 )
     END_VERSIONS
     """
 }
