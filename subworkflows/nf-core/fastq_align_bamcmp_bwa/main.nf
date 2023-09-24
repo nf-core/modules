@@ -39,13 +39,14 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     //
 
     ch_both_bams = BWA_MEM_PRIMARY.out.bam.join(BWA_MEM_CONTAMINANT.out.bam, by: [0], failOnDuplicate:true, failOnMismatch:true)
+    ch_both_bams.view()
     BAMCMP(ch_both_bams)
     ch_versions = ch_versions.mix(BAMCMP.out.versions)
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS ( BAMCMP.out.bam, ch_fasta)
+    BAM_SORT_STATS_SAMTOOLS ( BAMCMP.out.primary_filtered_bam, ch_fasta)
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
