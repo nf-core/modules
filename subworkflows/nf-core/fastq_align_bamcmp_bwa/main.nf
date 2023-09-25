@@ -39,7 +39,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     //
 
     ch_both_bams = BWA_MEM_PRIMARY.out.bam.join(BWA_MEM_CONTAMINANT.out.bam, by: [0], failOnDuplicate:true, failOnMismatch:true)
-    ch_both_bams.view()
+
     BAMCMP(ch_both_bams)
     ch_versions = ch_versions.mix(BAMCMP.out.versions)
     //
