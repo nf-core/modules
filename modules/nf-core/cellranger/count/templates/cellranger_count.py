@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Automatically rename staged files for input into cellranger count. 
+Automatically rename staged files for input into cellranger count.
 
 Copyright (c) Gregor Sturm 2023 - MIT License
 """
