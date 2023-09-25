@@ -4,12 +4,13 @@ include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_EXTRACT_RELATE_SOMALIER {
     take:
-        ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi, count ]
-        ch_fasta                // channel: [mandatory] [ fasta ]
-        ch_fasta_fai            // channel: [mandatory] [ fai ]
-        ch_somalier_sites       // channel: [mandatory] [ somalier_sites_vcf ]
-        ch_peds                 // channel: [mandatory] [ meta, ped ]
-        ch_sample_groups        // channel: [optional]  [ txt ]
+        ch_vcfs                 // channel: [mandatory] [ val(meta), path(vcf), path(tbi), val(count) ]
+        ch_fasta                // channel: [mandatory] [ path(fasta) ]
+        ch_fasta_fai            // channel: [mandatory] [ path(fai) ]
+        ch_somalier_sites       // channel: [mandatory] [ path(somalier_sites_vcf) ]
+        ch_peds                 // channel: [mandatory] [ val(meta), path(ped) ]
+        ch_sample_groups        // channel: [optional]  [ path(txt) ]
+        val_common_id           // string:  [optional]  A common identifier for the samples that need to be related. Has to be given when using single sample VCFs
     main:
 
     ch_versions         = Channel.empty()
@@ -26,7 +27,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_input.no_tbi
     )
 
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
+    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
 
     ch_somalierextract_input = ch_input.no_tbi
         .join(TABIX_TABIX.out.tbi)
@@ -39,15 +40,16 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
+    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions.first())
 
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
-        .join(ch_vcfs)
+        .join(ch_vcfs, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, vcf, tbi, count ->
-            [ count ? groupKey(meta, count): meta, extract ]
+            new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
+            [ count ? groupKey(new_meta, count): new_meta, extract ]
         }
         .groupTuple()
-        .join(ch_peds)
+        .join(ch_peds, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, ped ->
             extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
             [ meta, extract2, ped ]
@@ -61,9 +63,9 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
     ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     emit:
-    extract        = SOMALIER_EXTRACT.out.extract
-    html           = SOMALIER_RELATE.out.html
-    pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv
-    samples_tsv    = SOMALIER_RELATE.out.samples_tsv
-    versions       = ch_versions
+    extract        = SOMALIER_EXTRACT.out.extract       // channel: [ val(meta), path(extract) ]
+    html           = SOMALIER_RELATE.out.html           // channel: [ val(meta), path(html) ]
+    pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv      // channel: [ val(meta), path(tsv) ]
+    samples_tsv    = SOMALIER_RELATE.out.samples_tsv    // channel: [ val(meta), path(tsv) ]
+    versions       = ch_versions                        // channel: [ path(versions.yml) ]
 }

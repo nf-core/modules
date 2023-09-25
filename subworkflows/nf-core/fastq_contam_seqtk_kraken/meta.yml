@@ -1,11 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "FASTQ_CONTAM_SEQTK_KRAKEN"
 description: Produces a contamination report from FastQ input after subsampling
 keywords:
   - statistics
   - fastq
   - contamination
-modules:
-  - kraken/kraken2
+components:
+  - kraken2/kraken2
   - seqtk/sample
 input:
   - ch_reads:

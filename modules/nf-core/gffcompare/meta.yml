@@ -1,0 +1,91 @@
+name: "gffcompare"
+description: Compare, merge, annotate and estimate accuracy of generated gtf files
+keywords:
+  - transcripts
+  - gtf
+  - merge
+  - compare
+tools:
+  - "gffcompare":
+      description: "GffCompare by Geo Pertea"
+      homepage: "http://ccb.jhu.edu/software/stringtie/gffcompare.shtml"
+      documentation: "http://ccb.jhu.edu/software/stringtie/gffcompare.shtml"
+      tool_dev_url: "https://github.com/gpertea/gffcompare"
+      doi: "10.12688/f1000research.23297.1"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing meta data
+        e.g. [ id:'test', single_end:false ]
+  - gtfs:
+      type: file
+      description: |
+        GTF/GFF files
+        e.g. [ 'file_1.gtf', 'file_2.gtf' ]
+      pattern: "*.{gtf,gff}"
+  - fasta:
+      type: file
+      description: Genome reference fasta file (optional)
+      pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: Index for fasta file
+      pattern: "*.fai"
+  - reference_gtf:
+      type: file
+      description: Reference annotation in gtf/gff format (optional)
+      pattern: "*.{gtf,gff}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing meta data
+        e.g. [ id:'test', single_end:false ]
+  - annotated_gtf:
+      type: file
+      description: |
+        Annotated gtf file when reference gtf is provided (optional)
+      pattern: "*.annotated.gtf"
+  - combined_gtf:
+      type: file
+      description: |
+        Combined gtf file when multiple input files are
+        provided (optional)
+      pattern: "*.annotated.gtf"
+  - tmap:
+      type: file
+      description: |
+        File listing the most closely matching reference transcript
+        for each query transcript (optional)
+      pattern: "*.tmap"
+  - refmap:
+      type: file
+      description: |
+        File listing the reference transcripts with overlapping
+        query transcripts (optional)
+      pattern: "*.refmap"
+  - loci:
+      type: file
+      description: File with loci
+      pattern: "*.loci"
+  - stats:
+      type: file
+      description: |
+        File with stats for input transcripts as compared to
+        reference alternatively stats for the combined gtf
+      pattern: "*.stats"
+  - tracking:
+      type: file
+      description: |
+        This file matches transcripts up between samples
+      pattern: "*.tracking"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jemten"

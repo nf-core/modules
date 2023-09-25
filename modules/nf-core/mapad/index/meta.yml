@@ -1,0 +1,43 @@
+name: "mapad_index"
+description: Create mapAD index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - "mapad":
+      description: "An aDNA aware short-read mapper"
+      homepage: "https://github.com/mpieva/mapAD"
+      documentation: "https://github.com/mpieva/mapAD"
+      tool_dev_url: "https://github.com/mpieva/mapAD"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file
+      pattern: "*.{fasta,fa,fna}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: directory
+      description: mapAD genome index files
+      pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
+
+authors:
+  - "@jch-13"

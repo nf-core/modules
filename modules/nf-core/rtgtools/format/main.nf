@@ -5,7 +5,7 @@ process RTGTOOLS_FORMAT {
     conda "bioconda::rtg-tools=3.12.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
+        'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input1), path(input2), path(sam_rg)
@@ -29,7 +29,7 @@ process RTGTOOLS_FORMAT {
     if (!task.memory) {
         log.info '[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga + "G"
+        avail_mem = (task.memory.mega*0.8).intValue() + "M"
     }
 
     """
@@ -53,7 +53,7 @@ process RTGTOOLS_FORMAT {
     if (!task.memory) {
         log.info '[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga + "G"
+        avail_mem = (task.memory.mega*0.8).intValue() + "M"
     }
     """
     touch ${prefix}.sdf

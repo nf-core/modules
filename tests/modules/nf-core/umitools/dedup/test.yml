@@ -1,13 +1,15 @@
 - name: umitools dedup test_umitools_dedup_no_umi
-  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_no_umi -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_no_umi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
   files:
     - path: output/umitools/test.dedup.bam
+      md5sum: 350e942a0d45e8356fa24bc8c47dc1ed
+    - path: output/umitools/versions.yml
 
 - name: umitools dedup test_umitools_dedup_single_end_no_stats
-  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_single_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_single_end_no_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -23,15 +25,21 @@
     - path: output/bwa/bwa/genome.sa
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
     - path: output/bwa/test.bam
-      md5sum: 3ecbe569cadb9b6c881917ce60779f75
+      md5sum: af925e0019ce03eb8716ad3f8471311d
+    - path: output/bwa/versions.yml
     - path: output/samtools/test.bam.bai
-      md5sum: 095af0ad3921212597ffd7c342ecd5a0
+      md5sum: 4db1993dbd1ad8bbe3c5eea6d7ee6136
+    - path: output/samtools/versions.yml
     - path: output/umitools/test.dedup.bam
-    - path: output/umitools/test.umi_extract.fastq.gz
+      md5sum: 9541c6ac00eea9064786244be9d8738f
     - path: output/umitools/test.umi_extract.log
+      contains: ["Starting barcode extraction"]
+    - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]
 
 - name: umitools dedup test_umitools_dedup_paired_end_no_stats
-  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_no_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -47,16 +55,21 @@
     - path: output/bwa/bwa/genome.sa
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
     - path: output/bwa/test.bam
-      md5sum: e7dcbac1825bf210409b762dbb4fec8f
+      md5sum: 82063366bc9e8935f3c10d863b03f719
+    - path: output/bwa/versions.yml
     - path: output/samtools/test.bam.bai
-      md5sum: f75780d1de7860329b7fb4afeadc4bed
+      md5sum: b63b387c59f0fa8fbc24c9faf613240a
+    - path: output/samtools/versions.yml
     - path: output/umitools/test.dedup.bam
+      md5sum: 1bf0f4849aa8b488f1f1a86135e25a16
     - path: output/umitools/test.umi_extract.log
-    - path: output/umitools/test.umi_extract_1.fastq.gz
-    - path: output/umitools/test.umi_extract_2.fastq.gz
+      contains: ["Starting barcode extraction"]
+    - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]
 
 - name: umitools dedup test_umitools_dedup_paired_end_stats
-  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -72,10 +85,13 @@
     - path: output/bwa/bwa/genome.sa
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
     - path: output/bwa/test.bam
-      md5sum: e7dcbac1825bf210409b762dbb4fec8f
+      md5sum: 82063366bc9e8935f3c10d863b03f719
+    - path: output/bwa/versions.yml
     - path: output/samtools/test.bam.bai
-      md5sum: f75780d1de7860329b7fb4afeadc4bed
+      md5sum: b63b387c59f0fa8fbc24c9faf613240a
+    - path: output/samtools/versions.yml
     - path: output/umitools/test.dedup.bam
+      md5sum: 1bf0f4849aa8b488f1f1a86135e25a16
     - path: output/umitools/test.dedup_edit_distance.tsv
       md5sum: c247a49b58768e6e2e86a6c08483e612
     - path: output/umitools/test.dedup_per_umi.tsv
@@ -83,5 +99,7 @@
     - path: output/umitools/test.dedup_per_umi_per_position.tsv
       md5sum: 2e1a12e6f720510880068deddeefe063
     - path: output/umitools/test.umi_extract.log
-    - path: output/umitools/test.umi_extract_1.fastq.gz
-    - path: output/umitools/test.umi_extract_2.fastq.gz
+      contains: ["Starting barcode extraction"]
+    - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]
