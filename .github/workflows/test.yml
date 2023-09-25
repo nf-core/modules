@@ -109,7 +109,7 @@ jobs:
         run: subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g')
 
       - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint steps.set_tags.outputs.subworkflow_names
+        run: nf-core subworkflows lint steps.remove-substring.outputs.subworkflow_names
         if: ${{ startsWith(matrix.tags, 'subworkflow') }}
 
   pytest:
