@@ -9,9 +9,9 @@ process TOPAS_GENCONS {
 
     input:
     tuple val(meta), path(vcf)
-    tuple val(meta), path(vcf_indels)
-    tuple val(meta), path(reference)
-    tuple val(meta), path(fai)
+    tuple val(meta2), path(vcf_indels)
+    tuple val(meta3), path(reference)
+    tuple val(meta4), path(fai)
     val(vcf_output)
 
     output:
