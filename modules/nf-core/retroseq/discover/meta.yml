@@ -1,40 +1,33 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "retroseq_discover"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: RetroSeq is a tool for discovery and genotyping of transposable element variants (TEVs) from next-gen sequencing reads aligned to a reference genome in BAM format.
 keywords:
-  - sort
-  - example
+  - transposons
+  - transposable elements
   - genomics
 tools:
   - "retroseq":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "RetroSeq: discovery and genotyping of TEVs from reads in BAM format."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/tk2/RetroSeq"
+      documentation: "https://github.com/tk2/RetroSeq"
+      tool_dev_url: "https://github.com/tk2/RetroSeq"
+      doi: "10.1093/bioinformatics/bts697"
       licence: "['GPL']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
   
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted BAM file
+      pattern: "*.{bam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -45,11 +38,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - txt:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: txt file
+      pattern: "*.{tab}"
 
 authors:
   - "@peterpru"
