@@ -155,7 +155,7 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
 # Generate a boolean vector specifying the features to retain
 
 keep <- apply(abundance_matrix, 1, function(x){
-    sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
+    sum(x > opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
 })
 
 # Write out the matrix retaining the specified rows and re-prepending the
