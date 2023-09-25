@@ -102,11 +102,15 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        if: startsWith( matrix.tags, 'module' )
+        if: ${{ !startsWith(matrix.tags, 'subworkflow') }}
+
+      - name: Remove substring from matrix.tags
+        id: remove-substring
+        run: subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g')
 
       - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint ${{ matrix.tags }}
-        if: startsWith( matrix.tags, 'subworkflow' )
+        run: nf-core subworkflows lint steps.set_tags.outputs.subworkflow_names
+        if: ${{ startsWith(matrix.tags, 'subworkflow') }}
 
   pytest:
     runs-on: ubuntu-20.04
