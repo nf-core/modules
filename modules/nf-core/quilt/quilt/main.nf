@@ -23,28 +23,30 @@ process QUILT_QUILT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        =   task.ext.args ?: ''
-    def prefix      =   task.ext.prefix ?: "${meta.id}"
-    def extensions  =   bams.collect { it.extension }
-    def extension   =   extensions.flatten().unique()
-    def list_param  =   extension == ["bam"]  ? "--bamlist=${bamlist}"   :
-                        extension == ["cram"] ? "--cramlist=${bamlist} --reference=${fasta}" :
-                        ""
+    def args                        =   task.ext.args ?: ''
+    def prefix                      =   task.ext.prefix ?: "${meta.id}"
+    def extensions                  =   bams.collect { it.extension }
+    def extension                   =   extensions.flatten().unique()
+    def list_command                =   extension == ["bam"]  ? "--bamlist=${bamlist}"                       :
+                                        extension == ["cram"] ? "--cramlist=${bamlist} --reference=${fasta}" : ""
+    def genetic_map_file_command    =   genetic_map_file      ? "--genetic_map_file=${genetic_map_file}"     : ""
+    def posfile_command             =   posfile               ? "--posfile=${posfile}"                       : ""
+    def phasefile_command           =   phasefile             ? "--phasefile=${phasefile}"                   : ""
 
     """
 
 
     QUILT.R \\
+        $list_command \\
+        $genetic_map_file_command \\
+        $posfile_command \\
+        $phasefile_command \\
         --chr=$chr \\
-        $list_param \\
-        --posfile=$posfile \\
-        --phasefile=$phasefile \\
-        --reference_haplotype_file=$reference_haplotype_file \\
-        --genetic_map_file=$genetic_map_file \\
         --regionStart=$regions_start \\
         --regionEnd=$regions_end \\
         --nCores=$task.cpus \\
         --outputdir="." \\
+        --reference_haplotype_file=$reference_haplotype_file \\
         --reference_legend_file=$reference_legend_file \\
         $args
 
