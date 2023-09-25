@@ -5,7 +5,7 @@ process SAMTOOLS_FLAGSTAT {
     conda "bioconda::samtools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'quay.io/biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'biocontainers/samtools:1.17--h00cdaf9_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -26,6 +26,17 @@ process SAMTOOLS_FLAGSTAT {
         --threads ${task.cpus} \\
         $bam \\
         > ${prefix}.flagstat
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.flagstat
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

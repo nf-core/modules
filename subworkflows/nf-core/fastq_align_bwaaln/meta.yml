@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
-name: "fastq_align_bwaaln_samtools"
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_bwaaln"
 description: Align FASTQ files against reference genome with the bwa aln short-read aligner producing a sorted and indexed BAM files
 keywords:
   - bwa
@@ -8,7 +8,7 @@ keywords:
   - bwa
   - align
   - map
-modules:
+components:
   - bwa/aln
   - bwa/sampe
   - bwa/samse
@@ -18,6 +18,9 @@ input:
       description: |
         Structure: [ val(meta), path(fastq) ]
         One or two FASTQ files for single or paired end data respectively.
+        Note: the subworkflow adds a new meta ID `meta.id_index` that _must_
+        be used in `prefix` to ensure unique file names. See the associated
+        nextflow.config file.
   - ch_index:
       description: |
         Structure: [ val(meta), path(index) ]
@@ -29,6 +32,9 @@ output:
       description: |
         Structure: [ val(meta), path(bam) ]
         Sorted BAM/CRAM/SAM file
+        Note: the subworkflow adds a new meta ID `meta.id_index` that _must_
+        be used in `prefix` to ensure unique file names. See the associated
+        nextflow.config file.
   - bai:
       description: |
         Structure: [ val(meta), path(bai) ]
@@ -37,5 +43,9 @@ output:
       description: |
         Structure: [ val(meta), path(csi) ]
         BAM/CRAM/SAM samtools index file for larger references
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 authors:
   - "@jfy133"

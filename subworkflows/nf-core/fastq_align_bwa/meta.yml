@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fastq_align_bwa
 description: Align reads to a reference genome using bwa then sort with samtools
 keywords:
@@ -6,13 +6,15 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
+  - bwa/mem
   - bwa/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - ch_reads:
       description: |
@@ -22,7 +24,7 @@ input:
   - ch_index:
       description: |
         BWA genome index files
-        Structure: [ val(meta2), path(index) ]
+        Structure: [ val(meta), path(index) ]
   - val_sort_bam:
       type: boolean
       description: If true bwa modules sort resulting bam files
@@ -30,8 +32,8 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Optional reference fasta file. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta) ]
+        Optional reference fasta file. This only needs to be given if val_sort_bam = true.
+        Structure: [ val(meta), path(fasta) ]
 
 output:
   - bam_orig:

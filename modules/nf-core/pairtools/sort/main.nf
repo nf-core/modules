@@ -7,7 +7,7 @@ process PAIRTOOLS_SORT {
     conda "bioconda::pairtools=1.0.2 conda-forge::numpy=1.23"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.0.2--py39h2a9f597_0' :
-        'quay.io/biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
+        'biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -22,13 +22,13 @@ process PAIRTOOLS_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mem      = task.memory.toString().replaceAll(/(\s|\.|B)+/, '')
+    def mem = (task.memory.giga*0.8).intValue()
     """
     pairtools \\
         sort \\
         $args \\
         --nproc $task.cpus \\
-        --memory "$mem" \\
+        --memory "${mem}G" \\
         -o ${prefix}.pairs.gz \\
         $input
 

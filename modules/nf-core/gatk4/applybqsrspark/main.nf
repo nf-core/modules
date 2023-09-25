@@ -3,7 +3,7 @@ process GATK4_APPLYBQSR_SPARK {
     label 'process_low'
 
     conda "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312"
-    container 'broadinstitute/gatk:4.4.0.0'
+    container "nf-core/gatk:4.4.0.0"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
@@ -31,7 +31,9 @@ process GATK4_APPLYBQSR_SPARK {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ApplyBQSRSpark \\
+    gatk \\
+        --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ApplyBQSRSpark \\
         --input $input \\
         --output ${prefix}.${input.getExtension()} \\
         --reference $fasta \\

@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
-name: fgbio_create_umi_consensus
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_create_umi_consensus_fgbio
 description: |
   This workflow uses the suite FGBIO to identify and remove UMI tags from FASTQ reads
   convert them to unmapped BAM file, map them to the reference genome,
@@ -10,14 +10,23 @@ keywords:
   - samblaster
   - samtools
   - bwa
-modules:
+components:
   - bwa/index
   - bwa/mem
+  - bwamem2/mem
+  - bwamem2/index
   - fgbio/fastqtobam
   - fgbio/groupreadsbyumi
   - fgbio/callmolecularconsensusreads
+  - fgbio/callduplexconsensusreads
+  - fgbio/filterconsensusreads
   - samblaster
   - samtools/bam2fq
+  - samtools/view
+  - samtools/sort
+  - samtools/index
+  - samtools/fastq
+  - fgbio/zipperbams
 input:
   - meta:
       type: map

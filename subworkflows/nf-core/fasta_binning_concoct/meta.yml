@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_binning_concoct"
 description: Runs the CONCOCT workflow of contig binning
 keywords:
@@ -6,7 +6,7 @@ keywords:
   - binning
   - metagenomics
   - contigs
-modules:
+components:
   - concoct/cutupfasta
   - concoct/concoctcoveragetable
   - concoct/concoct

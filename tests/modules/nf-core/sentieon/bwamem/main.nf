@@ -25,7 +25,7 @@ workflow test_sentieon_bwamem_single_end {
     ]
 
     SENTIEON_BWAINDEX ( fasta_ch )
-    SENTIEON_BWAMEM ( input_ch, SENTIEON_BWAINDEX.out.index, fasta_file, fasta_fai_file )
+    SENTIEON_BWAMEM ( input_ch, SENTIEON_BWAINDEX.out.index, fasta_ch, [[:], fasta_fai_file] )
 }
 
 
@@ -51,6 +51,5 @@ workflow test_sentieon_bwa_mem_paired_end {
     ]
 
     SENTIEON_BWAINDEX ( fasta_ch )
-    SENTIEON_BWAMEM ( input_ch, SENTIEON_BWAINDEX.out.index, fasta_file, fasta_fai_file )
-
+    SENTIEON_BWAMEM ( input_ch, SENTIEON_BWAINDEX.out.index, fasta_ch, [[:], fasta_fai_file] )
 }

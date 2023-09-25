@@ -1,11 +1,12 @@
 process MANTA_SOMATIC {
     tag "$meta.id"
     label 'process_medium'
+    label 'error_retry'
 
     conda "bioconda::manta=1.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
-        'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
+        'biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor), path(target_bed), path(target_bed_tbi)
@@ -36,8 +37,9 @@ process MANTA_SOMATIC {
         --tumorBam $input_tumor \
         --normalBam $input_normal \
         --reference $fasta \
+        --runDir manta \
         $options_manta \
-        --runDir manta
+        $args
 
     python manta/runWorkflow.py -m local -j $task.cpus
 

@@ -35,6 +35,8 @@
     - path: output/umitools/test.umi_extract.log
       contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]
 
 - name: umitools dedup test_umitools_dedup_paired_end_no_stats
   command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_no_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
@@ -63,6 +65,8 @@
     - path: output/umitools/test.umi_extract.log
       contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]
 
 - name: umitools dedup test_umitools_dedup_paired_end_stats
   command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
@@ -97,3 +101,5 @@
     - path: output/umitools/test.umi_extract.log
       contains: ["Starting barcode extraction"]
     - path: output/umitools/versions.yml
+    - path: output/umitools/test.dedup.log
+      contains: ["# UMI-tools version:"]

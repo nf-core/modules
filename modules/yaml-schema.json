@@ -40,7 +40,7 @@
                             "type": {
                                 "type": "string",
                                 "description": "Type of the input channel",
-                                "enum": ["map", "file", "directory", "string", "integer", "float"]
+                                "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
                             },
                             "description": {
                                 "type": "string",
@@ -81,7 +81,7 @@
                             "type": {
                                 "type": "string",
                                 "description": "Type of the output channel",
-                                "enum": ["map", "file", "directory", "string", "integer", "float"]
+                                "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
                             },
                             "description": {
                                 "type": "string",
@@ -126,7 +126,7 @@
                             "documentation": {
                                 "type": "string",
                                 "description": "Documentation of the tool",
-                                "pattern": "^(http|https)://.*$"
+                                "pattern": "^(http|https|ftp)://.*$"
                             },
                             "tool_dev_url": {
                                 "type": "string",

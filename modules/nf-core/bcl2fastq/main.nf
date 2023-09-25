@@ -2,12 +2,7 @@ process BCL2FASTQ {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nfcore/bcl2fastq:2.20.0.422"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/bcl2fastq:2.20.0.422"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -26,6 +21,10 @@ process BCL2FASTQ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
