@@ -9,7 +9,8 @@ process RETROSEQ_DISCOVER {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta), path(tab)
+    path(tab)
+    path(extra_files)
 
     output:
     tuple val(meta), path("*.tab"), emit: tab
@@ -28,7 +29,7 @@ process RETROSEQ_DISCOVER {
         -discover \\
         -bam $bam \\
         -refTEs $tab\\
-        -output ${prefix}.tab\\
+        -output ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,9 +40,9 @@ process RETROSEQ_DISCOVER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.5" 
+    def VERSION = "1.5"
     """
-    touch out/${prefix}.tab
+    touch ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
