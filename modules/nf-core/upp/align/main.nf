@@ -32,7 +32,7 @@ process UPP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        UPP \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
+        UPP: \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process UPP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        UPP \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
+        UPP: \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
     END_VERSIONS
     """
 }
