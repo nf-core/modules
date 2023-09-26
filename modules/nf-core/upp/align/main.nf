@@ -1,4 +1,3 @@
-
 process UPP_ALIGN {
     tag "$meta_fasta.id"
     label 'process_medium'
