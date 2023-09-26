@@ -3,9 +3,6 @@ process UPP_ALIGN {
     label 'process_medium'
 
     conda "bioconda::sepp"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
 
     input:
     tuple val(meta_fasta), path(fasta)
@@ -32,18 +29,19 @@ process UPP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        UPP: \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
+        UPP: \$(echo \$(run_upp.py --version))
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    """
     touch ${prefix}.aln
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        UPP: \$(echo \$(run_upp.py --version | sed 's/run_upp\.py.*\$//' ))
+        UPP: \$(echo \$(run_upp.py --version))
     END_VERSIONS
     """
 }
