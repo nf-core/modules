@@ -1,8 +1,8 @@
-- name: samtools reheader test_samtools_reheader_chrdel
+- name: y
   command: nextflow run ./tests/modules/nf-core/samtools/reheader -entry test_samtools_reheader_chrdel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/reheader/nextflow.config
   tags:
-    - samtools/reheader
     - samtools
+    - samtools/reheader
   files:
     - path: output/samtools/test_chrDel.bam
       md5sum: 05aefec1f702a89a689240007dc4323d
@@ -11,8 +11,8 @@
 - name: samtools reheader test_samtools_reheader_rgdel
   command: nextflow run ./tests/modules/nf-core/samtools/reheader -entry test_samtools_reheader_rgdel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/reheader/nextflow.config
   tags:
-    - samtools/reheader
     - samtools
+    - samtools/reheader
   files:
     - path: output/samtools/test_rgDel.bam
       md5sum: 51e5c75a03312c7e7d814b5c6e2b2b74
