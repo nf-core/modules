@@ -1,7 +1,5 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
-
 include { UPP_ALIGN } from '../../../../../modules/nf-core/upp/align/main.nf'
 
 workflow test_upp_align {
