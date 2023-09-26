@@ -15,7 +15,7 @@ workflow test_samtools_reheader_chrdel {
     SAMTOOLS_REHEADER_CHRDEL ( input )
 }
 
-workflow test_samtools_reheader_comdel {
+workflow test_samtools_reheader_rgdel {
     
     input = [
         [ id:'test', single_end:false ], // meta map

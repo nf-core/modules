@@ -8,8 +8,8 @@
       md5sum: 05aefec1f702a89a689240007dc4323d
     - path: output/samtools/versions.yml
 
-- name: samtools reheader test_samtools_reheader_comdel
-  command: nextflow run ./tests/modules/nf-core/samtools/reheader -entry test_samtools_reheader_comdel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/reheader/nextflow.config
+- name: samtools reheader test_samtools_reheader_rgdel
+  command: nextflow run ./tests/modules/nf-core/samtools/reheader -entry test_samtools_reheader_rgdel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/reheader/nextflow.config
   tags:
     - samtools/reheader
     - samtools
