@@ -4,6 +4,7 @@ nextflow.enable.dsl = 2
 
 include { QUILT_QUILT                   } from '../../../../../modules/nf-core/quilt/quilt/main.nf'
 include { QUILT_QUILT as QUILT_OPTIONAL } from '../../../../../modules/nf-core/quilt/quilt/main.nf'
+include { QUILT_QUILT as QUILT_NOSEED   } from '../../../../../modules/nf-core/quilt/quilt/main.nf'
 
 
     // input sequencing data (bam)
@@ -87,4 +88,9 @@ workflow test_quilt_no_optional_files {
 workflow test_quilt_optional_outputs {
 
     QUILT_OPTIONAL ( ch_input, posfile_phasefile, fasta )
+}
+
+workflow test_quilt_no_seed {
+
+    QUILT_NOSEED ( ch_input, posfile_phasefile, fasta )
 }

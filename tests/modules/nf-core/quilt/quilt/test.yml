@@ -131,3 +131,15 @@
     - path: output/quilt/quilt.chr20.2000001.2100000.vcf.gz.tbi
       md5sum: 88d16933f2ac53058b7a5d5c849dc19a
     - path: output/quilt/versions.yml
+
+- name: quilt quilt test_quilt_no_seed
+  command: nextflow run ./tests/modules/nf-core/quilt/quilt -entry test_quilt_no_seed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/quilt/quilt/nextflow.config
+  tags:
+    - quilt/quilt
+    - quilt
+  files:
+    - path: output/quilt/quilt.chr20.2000001.2100000.vcf.gz
+      md5sum: 81e23143117401f1f37a7c125ce37751
+    - path: output/quilt/quilt.chr20.2000001.2100000.vcf.gz.tbi
+      md5sum: 4607cdcb20599cbebd1ccf76d4dc56ae
+    - path: output/quilt/versions.yml

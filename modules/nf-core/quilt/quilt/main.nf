@@ -32,6 +32,7 @@ process QUILT_QUILT {
     def genetic_map_file_command    =   genetic_map_file      ? "--genetic_map_file=${genetic_map_file}"     : ""
     def posfile_command             =   posfile               ? "--posfile=${posfile}"                       : ""
     def phasefile_command           =   phasefile             ? "--phasefile=${phasefile}"                   : ""
+    if (!(args ==~ /.*--seed.*/)) {args += " --seed=1"}
 
     """
 
