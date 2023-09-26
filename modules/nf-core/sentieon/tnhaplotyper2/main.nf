@@ -39,7 +39,6 @@ process SENTIEON_TNHAPLOTYPER2 {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def args                      = task.ext.args                      ?: ''
-    def args2                     = task.ext.args2                     ?: ''
     def prefix                    = task.ext.prefix                    ?: "${meta.id}"
     def tumour_id                 = task.ext.tumour_id                 ?: "${meta.tumour_id}"
     def normal_id                 = task.ext.normal_id                 ?: "${meta.normal_id}"
@@ -77,6 +76,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     sentieon driver \\
         -t $task.cpus \\
         -r $fasta \\
+        $args \\
         $inputs \\
         --algo TNhaplotyper2 \\
         --tumor_sample $tumour_id \\
