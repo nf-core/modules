@@ -75,6 +75,14 @@ output:
       type: file
       description: Filtered version of input matrix
       pattern: "*.filtered.tsv"
+  - na_removed:
+      type: file
+      description: List of features that were removed because too many NA
+      pattern: "*.NA_removed.txt"
+  - abundance_removed:
+      type: file
+      description: List of features that were removed because of insufficient abundance
+      pattern: "*.abundance_removed.txt"
 
 authors:
   - "@pinin4fjords"

@@ -78,7 +78,9 @@ opt <- list(
     minimum_abundance = 1,
     minimum_samples = 1,
     minimum_proportion = 0,
-    grouping_variable = NULL
+    grouping_variable = NULL,
+    minimum_samples_not_na = 1,
+    minimum_proportion_not_na = 0.5
 )
 opt_types <- lapply(opt, class)
 
@@ -120,6 +122,7 @@ if (opt\$sample_file != ''){
         )
     }else{
         abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
+
     }
 }else{
 
@@ -152,16 +155,39 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
     opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
-# Generate a boolean vector specifying the features to retain
+# Also set up filtering for NAs
 
+if (opt\$minimum_proportion_not_na > 0) {
+    opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
+}
+
+# Prepare variables that are needed in the apply (prefix is also needed later)
+
+prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+rowcounter <- 1 # This keeps track of the current row to allow rowname extraction
+
+# Generate a boolean vector specifying the features to retain
+opt\$keep_all_na <- TRUE
 keep <- apply(abundance_matrix, 1, function(x){
-    sum(x > opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
+    # Check if enough entries in the current row have a value
+    na_test <- sum(!is.na(x))/length(x) >= opt\$minimum_proportion_not_na
+
+    # Check if there is a high enough abundance in the current row
+    sum_test <- sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples
+
+    # Log feature IDs that fail a test
+    if (!na_test) {
+        write(rownames(abundance_matrix)[rowcounter], file=paste0(prefix, '.NA_removed.txt'), append=T)
+    }
+    if (!sum_test) {
+        write(rownames(abundance_matrix)[rowcounter], file=paste0(prefix, '.abundance_removed.txt'), append=T)
+    }
+    rowcounter <<- rowcounter+1
+    na_test && sum_test
 })
 
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
-
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
 
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
