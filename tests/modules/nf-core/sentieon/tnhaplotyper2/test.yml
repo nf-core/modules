@@ -5,6 +5,28 @@
     - sentieon/tnhaplotyper2
   files:
     - path: ./output/sentieon/test.contamination_data.tsv
+      should_exist: false
+    - path: ./output/sentieon/test.orientation_data.tsv
+      should_exist: false
+    - path: ./output/sentieon/test.segments
+      should_exist: false
+    - path: ./output/sentieon/test.vcf.gz
+      contains:
+        [
+          "##fileformat=VCFv4.2",
+          "chr21\t14517382\t.\tT\tG\t.\t.\tAS_SB_TABLE=0,13|0,2;DP=16;ECNT=1;MBQ=15,18;MFRL=475,379;MMQ=60,60;MPOS=43;NALOD=0.974;NLOD=2.4;POPAF=6;TLOD=5.13\tGT:AD:AF:DP:F1R2:F2R1:SB\t0/0:8,0:0.0966:8:0,0:0,0:0,8,0,0\t0/1:5,2:0.333:7:0,0:0,0:0,5,0,2",
+        ]
+    - path: ./output/sentieon/test.vcf.gz.stats
+      contains: ["statistic\tvalue", "callable\t1355165"]
+    - path: ./output/sentieon/test.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml
+- name: sentieon test_tnhaplotyper2_emit_contamination_and_orientation_data
+  command: nextflow run ./tests/modules/nf-core/sentieon/tnhaplotyper2 -entry test_tnhaplotyper2_emit_contamination_and_orientation_data -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/tnhaplotyper2/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/tnhaplotyper2
+  files:
+    - path: ./output/sentieon/test.contamination_data.tsv
       contains: ["sample\tcontamination\terror", "tumour\t0\t0"]
     - path: ./output/sentieon/test.orientation_data.tsv
       contains:
