@@ -2,7 +2,7 @@ process DEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/deepvariant:1.5.0"
+    container "docker.io/nf-core/deepvariant:1.5.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
