@@ -102,6 +102,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
+    touch ${prefix}.contamination_data.tsv
+    touch ${prefix}.orientation_data.tsv
+    touch ${prefix}.segments
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
