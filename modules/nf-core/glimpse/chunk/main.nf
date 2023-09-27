@@ -34,4 +34,16 @@ process GLIMPSE_CHUNK {
         glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
+
+    stub:
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ""
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
+    """
 }
