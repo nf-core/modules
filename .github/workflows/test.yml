@@ -111,7 +111,6 @@ jobs:
       - name: Lint subworkflow ${{ matrix.tags }}
         run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
-  pytest:
     runs-on: ubuntu-20.04
     name: pytest
     needs: [pytest-changes]
