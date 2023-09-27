@@ -28,7 +28,7 @@ workflow VCF_IMPUTE_GLIMPSE {
                                 .map { meta, it -> [meta, it["RegionIn"], it["RegionOut"]]}
 
     phase_input = ch_vcf.map{meta, vcf, csi, sample, region -> [meta, vcf, csi, sample]}
-                            .join(chunk_output)
+                            .combine(chunk_output, by: 0)
                             .combine(ch_ref)
                             .combine(ch_map)
                             .map{meta, vcf, csi, sample,
@@ -45,10 +45,11 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE_PHASE.out.phased_variant
-                                    .groupTuple()
-                                    .combine( INDEX_PHASE.out.csi
-                                            .groupTuple()
-                                            .collect(), by: 0 )
+        .groupTuple( by: 0 )
+        .combine( INDEX_PHASE.out.csi
+            .groupTuple( by: 0 ),
+            by: 0
+        )
 
     GLIMPSE_LIGATE ( ligate_input )
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
