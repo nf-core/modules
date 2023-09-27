@@ -54,7 +54,7 @@ process NONPAREIL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' ))
+        nonpareil: \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' )
     END_VERSIONS
     """
 }
