@@ -4,8 +4,8 @@ process FCS_FCSADAPTOR {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.2.3/fcs-adaptor.0.2.3.sif':
-        'docker.io/ncbi/fcs-adaptor:0.2.3' }"
+        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.4.0/fcs-adaptor.sif':
+        'docker.io/ncbi/fcs-adaptor:0.4.0' }"
 
     input:
     tuple val(meta), path(assembly)
@@ -28,7 +28,7 @@ process FCS_FCSADAPTOR {
     }
     def args = task.ext.args ?: '--prok' // --prok || --euk
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def FCSADAPTOR_VERSION = '0.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     /app/fcs/bin/av_screen_x \\
         -o output/ \\
@@ -44,6 +44,29 @@ process FCS_FCSADAPTOR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        FCS-adaptor: $FCSADAPTOR_VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def FCSGX_VERSION = '0.4.0'
+
+    """
+    mkdir -p out
+    touch out/${prefix}.cleaned_sequences.fa.gz
+    touch out/${prefix}.fcs_adaptor_report.txt
+    touch out/${prefix}.fcs_adaptor.log
+    touch out/${prefix}.pipeline_args.yaml
+    touch out/${prefix}.skipped_trims.jsonl
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
         FCS-adaptor: $FCSADAPTOR_VERSION
     END_VERSIONS
     """
