@@ -4,6 +4,8 @@ description: filter a matrix based on a minimum value and numbers of samples
 keywords:
   - matrix
   - filter
+  - abundance
+  - na
 tools:
   - "matrixfilter":
       description: "filter a matrix based on a minimum value and numbers of samples"
@@ -34,26 +36,26 @@ input:
         present (see grouping_variable), but also to validate matrix columns.
         If not provided, all numeric columns are selected.
   - minimum_abundance:
-      type: numeric
+      type: float
       description: |
         Minimum abundance value, supplied via task.ext.args as --minimum_abundance
       default: 1
   - minimum_samples:
-      type: numeric
+      type: integer
       description: |
         Minimum observations that must pass the threshold to retain
         the row/ feature (e.g. gene). Supplied via task.ext.args as
         --minimum_samples
       default: 1
   - minimum_proportion:
-      type: numeric
+      type: float
       description: |
         A minimum proportion of observations that must pass the threshold.
         Supplied via task.ext.args as --minimum_proportion. Overrides
         minimum_samples
       default: 0
   - grouping_variable:
-      type: optional string
+      type: string
       description: |
         Optionally supply a variable from the sample sheet that can be used to
         define groups and derive a minimum group size upon which to base
@@ -61,13 +63,13 @@ input:
         features that might be present in only one group. Supplied via
         task.ext.args as --grouping_variable
   - minimum_proportion_not_na:
-      type: numeric
+      type: float
       description: |
         A minimum proportion of observations that must have a numeric value (not be NA).
         Supplied via task.ext.args as --minimum_proportion_not_na
       default: 0.5
   - minimum_samples_not_na:
-      type: numeric
+      type: integer
       description: |
         Minimum observations that must have a numeric value (not be NA) to retain
         the row/ feature (e.g. gene). Supplied via task.ext.args as

@@ -182,7 +182,7 @@ keep <- apply(abundance_matrix, 1, function(x){
     }
     if (!sum_test) {
         write(rownames(abundance_matrix)[rowcounter], file=paste0(prefix, '.abundance_removed.txt'), append=T)
-    }    
+    }
     rowcounter <<- rowcounter+1
     na_test && sum_test
 })
