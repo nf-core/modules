@@ -51,7 +51,6 @@ process GLIMPSE_CONCORDANCE {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def args    = task.ext.args   ?: ""
     """
-    touch input.txt
     touch ${prefix}.error.cal.txt.gz
     touch ${prefix}.error.grp.txt.gz
     touch ${prefix}.error.spl.txt.gz

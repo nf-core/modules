@@ -76,11 +76,6 @@ process GLIMPSE2_PHASE {
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
     def suffix = task.ext.suffix ?: "bcf"
     """
-    if $input_bam
-    then
-        touch all_bam.txt
-    fi
-
     touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml

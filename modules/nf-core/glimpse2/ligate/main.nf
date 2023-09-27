@@ -41,7 +41,6 @@ process GLIMPSE2_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    touch all_files.txt
     touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml

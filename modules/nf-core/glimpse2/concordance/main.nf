@@ -64,8 +64,6 @@ process GLIMPSE2_CONCORDANCE {
     def args                 = task.ext.args                      ?: ""
     def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "touch ${prefix}_r2_sites.txt.gz" : ""
     """
-    touch regions.txt
-    touch input.txt
     touch ${prefix}.error.cal.txt.gz
     touch ${prefix}.error.grp.txt.gz
     touch ${prefix}.error.spl.txt.gz
