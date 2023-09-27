@@ -8,7 +8,7 @@ process QUILT_QUILT {
         'biocontainers/r-quilt:1.0.5--r43h06b5641_0' }"
 
     input:
-    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_haplotype_file), path(reference_legend_file), val(chr), val(regions_start), val(regions_end), path(genetic_map_file)
+    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_haplotype_file), path(reference_legend_file), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map_file)
     tuple val(meta2), path(posfile), path(phasefile)
     tuple val(meta3), path(fasta)
 
@@ -45,6 +45,8 @@ process QUILT_QUILT {
         --chr=$chr \\
         --regionStart=$regions_start \\
         --regionEnd=$regions_end \\
+        --nGen=$ngen \\
+        --buffer=$buffer \\
         --nCores=$task.cpus \\
         --outputdir="." \\
         --reference_haplotype_file=$reference_haplotype_file \\

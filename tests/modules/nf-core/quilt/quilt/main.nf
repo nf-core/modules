@@ -45,10 +45,12 @@ include { QUILT_QUILT as QUILT_NOSEED   } from '../../../../../modules/nf-core/q
     def chr = "chr20"
     def regions_start = 2000001
     def regions_end = 2100000
+    def ngen = 100
+    def buffer = 10000
 
     // input channel quilt
 
-    ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end , genetic_map_file ]
+    ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end , ngen, buffer, genetic_map_file ]
 
     // (optional) input truth data
 
@@ -79,7 +81,7 @@ workflow test_quilt_no_optional_files {
     posfile_phasefile = [[id: null], posfile, phasefile]
     genetic_map_file = []
 
-    ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end, genetic_map_file ]
+    ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end, ngen, buffer, genetic_map_file ]
 
 
     QUILT_QUILT ( ch_input, posfile_phasefile, fasta )
