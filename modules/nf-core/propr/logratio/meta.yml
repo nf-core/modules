@@ -1,0 +1,69 @@
+name: "propr_logratio"
+description: ALR/CLR transform the data matrix
+keywords:
+  - alr
+  - clr
+  - logratio
+  - boxcox
+  - transformation
+  - propr
+
+tools:
+  - "propr":
+      description: "Logratio methods for omics data"
+      homepage: "https://github.com/tpq/propr"
+      documentation: "https://rdrr.io/cran/propr/man/propr.html"
+      tool_dev_url: "https://github.com/tpq/propr"
+      doi: "10.1038/s41598-017-16520-0"
+      licence: ["GPL-2"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        This can be used at the workflow level to pass optional parameters to the module. 
+        [id: 'test', ...]
+  - count:
+      type: file
+      description: |
+        Count matrix, where rows = variables or genes, columns = samples or cells. 
+        This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
+        You may want to handle the zeros with a different method beforehand.
+      pattern: "*.{csv,tsv}"
+  - transformation:
+      type: string
+      description: |
+        'clr' or 'alr'. Default: 'clr'
+  - reference:
+      type: string
+      description: |
+        Reference gene for ALR transformation. It can be a number refering to the gene index or a string corresponding to the gene name. 
+        If null, then the default option is used (last variable as reference in the case of alr, and geometric mean in the case of clr).
+  - alpha:
+      type: string
+      description: |
+        Alpha parameter for Box-Cox transformation. If null, then standard log transformation is applied.
+      
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        This can be used at the workflow level to pass optional parameters to the module. 
+        [id: 'test', ...]
+  - logratio:
+      type: file
+      description: ALR/CLR transformed data matrix. With rows = variables or genes, columns = samples or cells. 
+      pattern: "*.logratio.tsv"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.R_sessionInfo.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@suzannejin"
