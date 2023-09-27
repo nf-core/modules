@@ -234,7 +234,6 @@ if (opt\$transform == 'alr'){
     }
 
     # set the reference column to NA
-    # TODO decide if set reference column to NA, or remove column directly
     logratio[,opt\$ivar] = NA
 
 }else if (opt\$transform == 'clr'){

@@ -44,7 +44,7 @@ input:
       type: string
       description: |
         Alpha parameter for Box-Cox transformation. If null, then standard log transformation is applied.
-      
+
 output:
   - meta:
       type: map
@@ -54,7 +54,7 @@ output:
         [id: 'test', ...]
   - logratio:
       type: file
-      description: ALR/CLR transformed data matrix. With rows = variables or genes, columns = samples or cells. 
+      description: ALR/CLR transformed data matrix. With rows = variables or genes, columns = samples or cells.
       pattern: "*.logratio.tsv"
   - session_info:
       type: file
