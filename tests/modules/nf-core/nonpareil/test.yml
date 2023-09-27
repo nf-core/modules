@@ -1,0 +1,13 @@
+- name: nonpareil test_nonpareil
+  command: nextflow run ./tests/modules/nf-core/nonpareil -entry test_nonpareil -c ./tests/config/nextflow.config
+  tags:
+    - nonpareil
+  files:
+    - path: output/nonpareil/test.npa
+    - path: output/nonpareil/test.npc
+    - path: output/nonpareil/test.npl
+      md5sum: be95453a272a9f685d5695d2b391fde8
+    - path: output/nonpareil/test.npo
+      contains:
+        - "# @impl: Nonpareil"
+    - path: output/nonpareil/versions.yml
