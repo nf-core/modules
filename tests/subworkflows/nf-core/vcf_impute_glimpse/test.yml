@@ -1,33 +1,114 @@
 - name: vcf_impute_glimpse test_vcf_impute_glimpse_without_sample
   command: nextflow run ./tests/subworkflows/nf-core/vcf_impute_glimpse -entry test_vcf_impute_glimpse_without_sample -c ./tests/config/nextflow.config
   tags:
+    - bcftools
+    - bcftools/index
     - glimpse
     - glimpse/chunk
     - glimpse/ligate
     - glimpse/phase
-    - bcftools
-    - bcftools/index
     - subworkflows
     - subworkflows/vcf_impute_glimpse
   files:
-    - path: output/glimpse/input.txt
-      md5sum: 75bff56f26d8a590c429afee74df5110
-    - path: output/glimpse/input.vcf.gz
-    - path: output/glimpse/input_chr21_16600115-16799989.vcf.gz
+    - path: output/glimpse/input_chr21_chunk.txt
+      md5sum: 426f0f75efed96818656876116f73b06
+    - path: output/glimpse/input_chr21_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16600115-16701484.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16692524-16750657.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16742115-16799989.vcf.gz
+    - path: output/index/input_chr21_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16600115-16701484.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16692524-16750657.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16742115-16799989.vcf.gz.csi
 
 - name: vcf_impute_glimpse test_vcf_impute_glimpse_with_sample
   command: nextflow run ./tests/subworkflows/nf-core/vcf_impute_glimpse -entry test_vcf_impute_glimpse_with_sample -c ./tests/config/nextflow.config
   tags:
+    - bcftools
+    - bcftools/index
     - glimpse
     - glimpse/chunk
     - glimpse/ligate
     - glimpse/phase
-    - bcftools
-    - bcftools/index
     - subworkflows
     - subworkflows/vcf_impute_glimpse
   files:
-    - path: output/glimpse/input.txt
-      md5sum: 75bff56f26d8a590c429afee74df5110
-    - path: output/glimpse/input.vcf.gz
-    - path: output/glimpse/input_chr21_16600115-16799989.vcf.gz
+    - path: output/glimpse/input_chr21_chunk.txt
+      md5sum: 426f0f75efed96818656876116f73b06
+    - path: output/glimpse/input_chr21_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16600115-16701484.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16692524-16750657.vcf.gz
+    - path: output/glimpse/input_chr21_ref_panel_phase_chr21_16742115-16799989.vcf.gz
+    - path: output/index/input_chr21_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16600115-16701484.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16692524-16750657.vcf.gz.csi
+    - path: output/index/input_chr21_ref_panel_phase_chr21_16742115-16799989.vcf.gz.csi
+
+- name: vcf_impute_glimpse test_vcf_impute_glimpse_multiple
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_impute_glimpse -entry test_vcf_impute_glimpse_multiple -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/index
+    - glimpse
+    - glimpse/chunk
+    - glimpse/ligate
+    - glimpse/phase
+    - subworkflows
+    - subworkflows/vcf_impute_glimpse
+  files:
+    - path: output/glimpse/input2_chr21:16600000-16790000_chunk.txt
+      md5sum: f0feee0a2d9268ff1187aad21bba1be6
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel2_ligate.vcf.gz
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel2_phase_chr21_16600115-16696070.vcf.gz
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel2_phase_chr21_16688248-16789993.vcf.gz
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel_phase_chr21_16600115-16696070.vcf.gz
+    - path: output/glimpse/input2_chr21:16600000-16790000_ref_panel_phase_chr21_16688248-16789993.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_chunk.txt
+      md5sum: f8bf09bb0061d5dde597203bc78c1f68
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel2_ligate.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel2_phase_chr21_16610009-16705585.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel2_phase_chr21_16696511-16799989.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel_phase_chr21_16610009-16705585.vcf.gz
+    - path: output/glimpse/input2_chr21:16610000-16800000_ref_panel_phase_chr21_16696511-16799989.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_chunk.txt
+      md5sum: f0feee0a2d9268ff1187aad21bba1be6
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel2_ligate.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel2_phase_chr21_16600115-16696070.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel2_phase_chr21_16688248-16789993.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel_phase_chr21_16600115-16696070.vcf.gz
+    - path: output/glimpse/input_chr21:16600000-16790000_ref_panel_phase_chr21_16688248-16789993.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_chunk.txt
+      md5sum: f8bf09bb0061d5dde597203bc78c1f68
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel2_ligate.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel2_phase_chr21_16610009-16705585.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel2_phase_chr21_16696511-16799989.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel_ligate.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel_phase_chr21_16610009-16705585.vcf.gz
+    - path: output/glimpse/input_chr21:16610000-16800000_ref_panel_phase_chr21_16696511-16799989.vcf.gz
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel2_ligate.vcf.gz.csi
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel2_phase_chr21_16600115-16696070.vcf.gz.csi
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel2_phase_chr21_16688248-16789993.vcf.gz.csi
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel_phase_chr21_16600115-16696070.vcf.gz.csi
+    - path: output/index/input2_chr21:16600000-16790000_ref_panel_phase_chr21_16688248-16789993.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel2_ligate.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel2_phase_chr21_16610009-16705585.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel2_phase_chr21_16696511-16799989.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel_phase_chr21_16610009-16705585.vcf.gz.csi
+    - path: output/index/input2_chr21:16610000-16800000_ref_panel_phase_chr21_16696511-16799989.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel2_ligate.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel2_phase_chr21_16600115-16696070.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel2_phase_chr21_16688248-16789993.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel_phase_chr21_16600115-16696070.vcf.gz.csi
+    - path: output/index/input_chr21:16600000-16790000_ref_panel_phase_chr21_16688248-16789993.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel2_ligate.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel2_phase_chr21_16610009-16705585.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel2_phase_chr21_16696511-16799989.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel_ligate.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel_phase_chr21_16610009-16705585.vcf.gz.csi
+    - path: output/index/input_chr21:16610000-16800000_ref_panel_phase_chr21_16696511-16799989.vcf.gz.csi
