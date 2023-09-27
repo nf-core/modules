@@ -58,4 +58,24 @@ process GLIMPSE2_CONCORDANCE {
         glimpse2: "\$(GLIMPSE2_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
+
+    stub:
+    def prefix               = task.ext.prefix                    ?: "${meta.id}"
+    def args                 = task.ext.args                      ?: ""
+    def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "touch ${prefix}_r2_sites.txt.gz" : ""
+    """
+    touch regions.txt
+    touch input.txt
+    touch ${prefix}.error.cal.txt.gz
+    touch ${prefix}.error.grp.txt.gz
+    touch ${prefix}.error.spl.txt.gz
+    touch ${prefix}.rsquare.grp.txt.gz
+    touch ${prefix}.rsquare.spl.txt.gz
+    ${rsquare_per_site_cmd}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
+    """
 }

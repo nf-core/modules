@@ -18,7 +18,7 @@ process GLIMPSE2_LIGATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
@@ -31,8 +31,22 @@ process GLIMPSE2_LIGATE {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            glimpse2: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "vcf.gz"
+    """
+    touch all_files.txt
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
