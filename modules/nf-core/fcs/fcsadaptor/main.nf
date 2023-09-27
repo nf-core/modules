@@ -66,7 +66,6 @@ process FCS_FCSADAPTOR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
         FCS-adaptor: $FCSADAPTOR_VERSION
     END_VERSIONS
     """
