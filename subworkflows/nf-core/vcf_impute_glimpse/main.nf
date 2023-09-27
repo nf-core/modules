@@ -21,7 +21,7 @@ workflow VCF_IMPUTE_GLIMPSE {
                 }
 
     GLIMPSE_CHUNK ( input_chunk )
-    ch_versions = ch_versions.mix(GLIMPSE_CHUNK.out.versions)
+    ch_versions = ch_versions.mix( GLIMPSE_CHUNK.out.versions )
 
     chunk_output = GLIMPSE_CHUNK.out.chunk_chr
                                 .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
@@ -38,10 +38,10 @@ workflow VCF_IMPUTE_GLIMPSE {
                             [meta + meta_ref + meta_map, vcf, csi, sample, regionin, regionout, ref, ref_index, map]}
 
     GLIMPSE_PHASE ( phase_input ) // [meta, vcf, index, sample_infos, regionin, regionout, ref, ref_index, map]
-    ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
+    ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions )
 
     INDEX_PHASE ( GLIMPSE_PHASE.out.phased_variant )
-    ch_versions = ch_versions.mix( INDEX_PHASE.out.versions.first() )
+    ch_versions = ch_versions.mix( INDEX_PHASE.out.versions )
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE_PHASE.out.phased_variant
@@ -52,10 +52,10 @@ workflow VCF_IMPUTE_GLIMPSE {
         )
 
     GLIMPSE_LIGATE ( ligate_input )
-    ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
+    ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions )
 
     INDEX_LIGATE ( GLIMPSE_LIGATE.out.merged_variants )
-    ch_versions = ch_versions.mix( INDEX_LIGATE.out.versions.first() )
+    ch_versions = ch_versions.mix( INDEX_LIGATE.out.versions )
 
     emit:
     chunk_chr              = GLIMPSE_CHUNK.out.chunk_chr           // channel: [ val(meta), txt ]
