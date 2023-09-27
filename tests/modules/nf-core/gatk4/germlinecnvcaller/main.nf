@@ -58,7 +58,7 @@ workflow test_gatk4_germlinecnvcaller {
 
     gcnvc_case_input = GATK4_COLLECTREADCOUNTS.out.tsv.first()
             .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
-            .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
+            .combine(GATK4_GERMLINECNVCALLER_COHORT.out.cohortmodel)
             .map{ meta, counts, meta2, calls, meta3, model -> [ [id:'test'], counts, [], calls, model ]}
     GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input )
 
