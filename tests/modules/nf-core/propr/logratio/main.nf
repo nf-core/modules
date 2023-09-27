@@ -8,7 +8,10 @@ workflow test_propr_logratio {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+        file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+        'clr',
+        null,
+        null
     ]
 
     PROPR_LOGRATIO ( input )

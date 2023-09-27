@@ -15,7 +15,7 @@
 #' Otherwise, give another number. Or use NULL when no row.names are present.
 #' 
 #' @return output Data frame
-read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names = TRUE){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -27,13 +27,21 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
         stop(paste("Unknown separator for", ext))
     }
 
-    read.delim(
+    mat <- read.delim(
         file,
         sep = separator,
         header = header,
         row.names = row.names,
         check.names = check.names
     )
+
+    if ( (row.names == 'gene_id') & ('gene_name' %in% colnames(mat)) ){
+        mat <- mat[, -which(colnames(mat) == 'gene_name')]
+    }else if ( (row.names == 'gene_name') & ('gene_id' %in% colnames(mat)) ){
+        mat <- mat[, -which(colnames(mat) == 'gene_id')]
+    }
+
+    return(mat)
 }
 
 
@@ -58,7 +66,7 @@ can_be_numeric <- function(x) {
 #' 
 #' @return The reference gene index
 set_reference <- function(ivar, mat){
-    if (ivar == 'null'){
+    if (ivar == 'NA'){
         ivar <- ncol(mat)
     }else{
         isnumeric <- can_be_numeric(ivar)
@@ -116,13 +124,15 @@ opt <- list(
     count     = '$count',
     prefix    = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     transform = '$transformation',
-    reference = '$reference',
-    alpha     = ifelse('$alpha' == 'null', NA, as.numeric('$alpha'))
+    reference = ifelse('$reference' == 'null', NA, '$reference'),
+    alpha     = ifelse('$alpha' == 'null', NA, as.numeric('$alpha')),
+    gene_id_col = 'gene_name'
 )
 
 
 if (!opt\$transform %in% c('clr', 'alr')) stop('Please make sure you provided the correct lr_transformation')
 
+print(opt)
 
 ################################################
 ################################################
@@ -142,8 +152,16 @@ library(MASS)
 
 
 # read matrix
-mat <- read_delim_flexible(opt\$count)
+mat <- read_delim_flexible(
+    opt\$count,
+    header = TRUE,
+    row.names = opt\$gene_id_col,
+    check.names = FALSE
+    )
 mat <- t(mat)
+
+print(dim(mat))
+print(mat[1:5,1:5])
 
 
 # check zeros
