@@ -106,7 +106,7 @@ jobs:
 
       - name: Remove substring from matrix.tags
         id: remove_substring
-        run: subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
       - name: Lint subworkflow ${{ matrix.tags }}
         run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
