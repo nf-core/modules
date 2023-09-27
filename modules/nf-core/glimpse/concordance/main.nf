@@ -27,9 +27,9 @@ process GLIMPSE_CONCORDANCE {
     script:
     def args         = task.ext.args   ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def min_prob_cmd = min_prob ? "--minPROB ${min_prob}": "--minPROB 0.9999"
-    def min_dp_cmd   = min_dp   ? "--minDP ${min_dp}"    : "--minDP 8"
-    def bins_cmd     = bins     ? "--bins ${bins}"       : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
+    def min_prob_cmd = min_prob ? "--minPROB ${min_prob}" : "--minPROB 0.9999"
+    def min_dp_cmd   = min_dp   ? "--minDP ${min_dp}"     : "--minDP 8"
+    def bins_cmd     = bins     ? "--bins ${bins}"        : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
     """
     echo $region $freq $truth $estimate > input.txt
     GLIMPSE_concordance \\
@@ -44,6 +44,23 @@ process GLIMPSE_CONCORDANCE {
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ""
+    """
+    touch input.txt
+    touch ${prefix}.error.cal.txt.gz
+    touch ${prefix}.error.grp.txt.gz
+    touch ${prefix}.error.spl.txt.gz
+    touch ${prefix}.rsquare.grp.txt.gz
+    touch ${prefix}.rsquare.spl.txt.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }
