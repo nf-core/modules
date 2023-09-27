@@ -4,8 +4,13 @@
     - custom
     - custom/matrixfilter
   files:
+    - path: output/custom/R_sessionInfo.log
+      md5sum: 8704c32ade147ff7023bc03efacaa304
+    - path: output/custom/SRP254919_test.abundance_removed.txt
+      md5sum: 4cd7d1c9717f06b3515490935352ec39
     - path: output/custom/SRP254919_test.filtered.tsv
       md5sum: 84f2a16e50f5ce9d38e8176fb324ebe0
+    - path: output/custom/versions.yml
 
 - name: custom matrixfilter test_custom_matrixfilter_prop
   command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_custom_matrixfilter_prop -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
@@ -13,8 +18,13 @@
     - custom
     - custom/matrixfilter
   files:
+    - path: output/custom/R_sessionInfo.log
+      md5sum: 8704c32ade147ff7023bc03efacaa304
+    - path: output/custom/SRP254919_test.abundance_removed.txt
+      md5sum: 9e4a79ba3a73ea5d3e7bc70cee7658b5
     - path: output/custom/SRP254919_test.filtered.tsv
       md5sum: 8cf3de07e8a37ce6a8dea40c7a696a79
+    - path: output/custom/versions.yml
 
 - name: custom matrixfilter test_custom_matrixfilter_group
   command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_custom_matrixfilter_group -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
@@ -22,5 +32,42 @@
     - custom
     - custom/matrixfilter
   files:
+    - path: output/custom/R_sessionInfo.log
+      md5sum: 8704c32ade147ff7023bc03efacaa304
+    - path: output/custom/SRP254919_test.abundance_removed.txt
+      md5sum: 14dcd51cbe21c273dd039b8a24a47c56
     - path: output/custom/SRP254919_test.filtered.tsv
       md5sum: 6b25196c3bc03167dbdddc03cfa90a29
+    - path: output/custom/versions.yml
+
+- name: custom matrixfilter test_custom_matrixfilter_na_prop
+  command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_custom_matrixfilter_na_prop -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
+  tags:
+    - custom
+    - custom/matrixfilter
+  files:
+    - path: output/custom/R_sessionInfo.log
+      md5sum: 8704c32ade147ff7023bc03efacaa304
+    - path: output/custom/mq_prop_test.NA_removed.txt
+      md5sum: a3174a8066408fbf70a30821e78ae856
+    - path: output/custom/mq_prop_test.abundance_removed.txt
+      md5sum: 987c115e605de59a6b760a288c57e635
+    - path: output/custom/mq_prop_test.filtered.tsv
+      md5sum: a0943baaa48ea76bdb8c80a580dc9953
+    - path: output/custom/versions.yml
+
+- name: custom matrixfilter test_custom_matrixfilter_na_samples
+  command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_custom_matrixfilter_na_samples -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
+  tags:
+    - custom
+    - custom/matrixfilter
+  files:
+    - path: output/custom/R_sessionInfo.log
+      md5sum: 8704c32ade147ff7023bc03efacaa304
+    - path: output/custom/mq_samples_test.NA_removed.txt
+      md5sum: a3174a8066408fbf70a30821e78ae856
+    - path: output/custom/mq_samples_test.abundance_removed.txt
+      md5sum: f02161dff2c1617258d6d64e2f37da78
+    - path: output/custom/mq_samples_test.filtered.tsv
+      md5sum: f0d81baf35d7eb324365ad5e1c6eb2ae
+    - path: output/custom/versions.yml

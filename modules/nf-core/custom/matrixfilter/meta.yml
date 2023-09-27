@@ -60,6 +60,18 @@ input:
         minimum observation numbers. The rationale being to allow retention of
         features that might be present in only one group. Supplied via
         task.ext.args as --grouping_variable
+  - minimum_proportion_not_na:
+      type: numeric
+      description: |
+        A minimum proportion of observations that must have a numeric value (not be NA).
+        Supplied via task.ext.args as --minimum_proportion_not_na
+      default: 0.5
+  - minimum_samples_not_na:
+      type: numeric
+      description: |
+        Minimum observations that must have a numeric value (not be NA) to retain
+        the row/ feature (e.g. gene). Supplied via task.ext.args as
+        --minimum_samples_not_na. Overrides minimum_proportion_not_na
 
 output:
   - versions:
