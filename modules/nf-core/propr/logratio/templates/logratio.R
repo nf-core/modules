@@ -7,6 +7,25 @@
 ################################################
 ################################################
 
+
+#' Parse out options from a string without recourse to optparse
+#'
+#' @param x Long-form argument list like --opt1 val1 --opt2 val2
+#'
+#' @return named list of options and values similar to optparse
+
+parse_args <- function(x){
+    args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
+
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
+}
+
+
 #' Flexibly read CSV or TSV files
 #'
 #' @param file Input file
@@ -106,7 +125,7 @@ get_logratio <- function(mat, ivar){
 #' @return BoxCox-transformed ratio matrix
 get_boxcox <- function(mat, ivar, alpha){
     use <- propr:::ivar2index(mat, ivar)
-    aX <- (ct^alpha - 1) / alpha
+    aX <- (mat^alpha - 1) / alpha
     aSet <- aX[, use, drop = FALSE]
     ref <- rowMeans(aSet)
     lr <- sweep(aX, 1, ref, "-")
@@ -124,15 +143,47 @@ opt <- list(
     count     = '$count',
     prefix    = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     transform = '$transformation',
-    reference = ifelse('$reference' == 'null', NA, '$reference'),
-    alpha     = ifelse('$alpha' == 'null', NA, as.numeric('$alpha')),
-    gene_id_col = 'gene_name'
+    reference = ifelse('$reference' == 'null', 'NA', '$reference'),
+    alpha     = ifelse('$alpha' == 'null', 'NA', as.numeric('$alpha')),
+    gene_id_col = 'gene_id'
 )
+opt_types <- lapply(opt, class)
+
+# Apply parameter overrides
+args_opt <- parse_args('$task.ext.args')
+for ( ao in names(args_opt)){
+    if (! ao %in% names(opt)){
+        stop(paste("Invalid option:", ao))
+    }else{
+
+        # Preserve classes from defaults where possible
+        if (! is.null(opt[[ao]])){
+            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        opt[[ao]] <- args_opt[[ao]]
+    }
+}
+
+# Check if required parameters have been provided
+required_opts <- c('count')
+missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+if (length(missing) > 0){
+    stop(paste("Missing required options:", paste(missing, collapse=', ')))
+}
+
+# Check file inputs are valid
+for (file_input in c('count')){
+    if (is.null(opt[[file_input]])) {
+        stop(paste("Please provide", file_input), call. = FALSE)
+    }
+    if (! file.exists(opt[[file_input]])){
+        stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
+    }
+}
 
 
 if (!opt\$transform %in% c('clr', 'alr')) stop('Please make sure you provided the correct lr_transformation')
 
-print(opt)
 
 ################################################
 ################################################
@@ -160,14 +211,11 @@ mat <- read_delim_flexible(
     )
 mat <- t(mat)
 
-print(dim(mat))
-print(mat[1:5,1:5])
-
 
 # check zeros
 # log transformation should be applied on non-zero data
 # otherwise Inf values are generated
-if (any(mat == 0)) stop("There are missing values in the input matrix. Please handle the zeros before running this script")
+if (any(mat == 0)) print("Zeros will be replaced by minimun value before logratio analysis")
 
 
 # compute ALR/CLR
@@ -176,9 +224,10 @@ if (opt\$transform == 'alr'){
     # get reference set
     opt\$ivar <- set_reference(opt\$reference, mat)
     gene_name <- colnames(mat)[opt\$ivar]
+    opt\$reference <- gene_name
 
     # get alr
-    if (is.na(opt\$alpha)){
+    if (opt\$alpha == 'NA'){
         logratio <- get_logratio(mat, opt\$ivar)
     }else{
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
@@ -191,7 +240,7 @@ if (opt\$transform == 'alr'){
 }else if (opt\$transform == 'clr'){
 
     # get clr
-    if (is.na(opt\$alpha)){
+    if (opt\$alpha == 'NA'){
         logratio <- get_logratio(mat, 'clr')
     }else{
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)

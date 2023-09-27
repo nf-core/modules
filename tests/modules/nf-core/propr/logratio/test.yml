@@ -1,14 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /logratio
-- name: "propr/logratio"
+- name: propr logratio test_propr_logratio
   command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
   tags:
-    - "propr"
-    - "propr/logratio"
+    - propr/logratio
+    - propr
   files:
-    - path: "output/propr/test.logratio.tsv"
-  #     md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/propr/test.R_sessionInfo.log"
-    - path: "output/propr/versions.yml"
-  #     md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/propr/test.clr.NA.NA.logratio.tsv
+      md5sum: 06f0737aa2ef19bb013faf78b0a1ef66
+    - path: output/propr/test.clr.NA.NA.R_sessionInfo.log
+      md5sum: de93993ff4903423edd301357399c621
+    - path: output/propr/versions.yml
