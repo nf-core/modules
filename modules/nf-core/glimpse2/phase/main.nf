@@ -69,4 +69,23 @@ process GLIMPSE2_PHASE {
         glimpse2: "\$(GLIMPSE2_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
+
+    stub:
+    def region = input_region    ? "${output_region.replace(":","_")}" : "${reference}"
+    def args   = task.ext.args   ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}_${region}"
+    def suffix = task.ext.suffix ?: "bcf"
+    """
+    if $input_bam
+    then
+        touch all_bam.txt
+    fi
+
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
 }
