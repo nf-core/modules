@@ -22,9 +22,14 @@ process TCOFFEE_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def tree_args = tree ? "--usetree $tree" : ""
+    def template_args = template ? "--template_file $template" : ""
     """
     t_coffee -seq ${fasta} \
+        $tree_args \
+        $template_args \
         $args \
+        -thread ${task.cpus} \
         -outfile ${prefix}.aln
 
 
