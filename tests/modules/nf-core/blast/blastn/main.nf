@@ -6,6 +6,7 @@ include { BLAST_MAKEBLASTDB } from '../../../../../modules/nf-core/blast/makebla
 include { BLAST_BLASTN      } from '../../../../../modules/nf-core/blast/blastn/main.nf'
 
 workflow test_blast_blastn {
+
     input = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     BLAST_MAKEBLASTDB ( input )
