@@ -7,16 +7,14 @@ include { BCFTOOLS_INDEX as INDEX_LIGATE } from '../../../modules/nf-core/bcftoo
 workflow VCF_IMPUTE_GLIMPSE {
 
     take:
-    ch_vcf      // channel (mandatory): [ meta, vcf, csi, sample, region ]
-    ch_ref      // channel (mandatory): [ meta, vcf, csi ]
-    ch_map      // channel  (optional): [ meta, map ]
+    ch_input      // channel (mandatory): [ meta, vcf, csi, sample, region, ref, ref_index, map ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    input_chunk = ch_vcf.map{
-                    meta, vcf, csi, sample, region ->
+    input_chunk = ch_input.map{
+                    meta, vcf, csi, sample, region, ref, ref_index, map ->
                     [ meta, vcf, csi, region]
                 }
 
@@ -27,15 +25,10 @@ workflow VCF_IMPUTE_GLIMPSE {
                                 .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
                                 .map { meta, it -> [meta, it["RegionIn"], it["RegionOut"]]}
 
-    phase_input = ch_vcf.map{meta, vcf, csi, sample, region -> [meta, vcf, csi, sample]}
+    phase_input = ch_input.map{ meta, vcf, csi, sample, region, ref, ref_index, map -> [meta, vcf, csi, sample, ref, ref_index, map]}
                         .combine(chunk_output, by: 0)
-                        .combine(ch_ref)
-                        .combine(ch_map)
-                        .map{meta, vcf, csi, sample,
-                            regionin, regionout,
-                            meta_ref, ref, ref_index,
-                            meta_map, map ->
-                            [meta + meta_ref + meta_map, vcf, csi, sample, regionin, regionout, ref, ref_index, map]}
+                        .map{meta, vcf, csi, sample, ref, ref_index, map, regionin, regionout ->
+                            [meta, vcf, csi, sample, regionin, regionout, ref, ref_index, map]}
 
     GLIMPSE_PHASE ( phase_input ) // [meta, vcf, index, sample_infos, regionin, regionout, ref, ref_index, map]
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions )
