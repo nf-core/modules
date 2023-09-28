@@ -39,7 +39,7 @@ process BLAST_BLASTP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        \$(echo \$(blastp -version 2>&1) | sed 's/://' )
+        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -47,11 +47,11 @@ process BLAST_BLASTP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.csv
+    touch ${prefix}.blastp.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        \$(echo \$(blastp -version 2>&1) | sed 's/://' )
+        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
     END_VERSIONS
     """
 }
