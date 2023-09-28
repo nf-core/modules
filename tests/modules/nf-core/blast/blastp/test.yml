@@ -1,24 +1,24 @@
-- name: "blast blastp"
+- name: blast blastp
   command: nextflow run ./tests/modules/nf-core/blast/blastp -entry test_blast_blastp -c ./tests/config/nextflow.config
   tags:
-    - "blast"
-    - "blast/blastp"
+    - blast
+    - blast/blastp
   files:
     - path: output/blast/test.csv
       md5sum: 37a8b6ef8942b5d465be26126bce8965
-    - path: ./output/blast/blast_db/genome.fasta
+    - path: output/blast/blast_db/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
-    - path: ./output/blast/blast_db/genome.fasta.pdb
+    - path: output/blast/blast_db/genome.fasta.pdb
       md5sum: 0d553c830656469211de113c5022f06d
-    - path: ./output/blast/blast_db/genome.fasta.phr
+    - path: output/blast/blast_db/genome.fasta.phr
       md5sum: f4b4ddb034fd3dd7b25c89e9d50c004e
-    - path: ./output/blast/blast_db/genome.fasta.pin
-    - path: ./output/blast/blast_db/genome.fasta.pjs
-    - path: ./output/blast/blast_db/genome.fasta.pot
+    - path: output/blast/blast_db/genome.fasta.pin
+    - path: output/blast/blast_db/genome.fasta.pjs
+    - path: output/blast/blast_db/genome.fasta.pot
       md5sum: 1e53e9d08f1d23af0299cfa87478a7bb
-    - path: ./output/blast/blast_db/genome.fasta.psq
+    - path: output/blast/blast_db/genome.fasta.psq
       md5sum: cf2ba5f8fc9088651c82de851b4c45a4
-    - path: ./output/blast/blast_db/genome.fasta.ptf
+    - path: output/blast/blast_db/genome.fasta.ptf
       md5sum: de1250813f0c7affc6d12dac9d0fb6bb
-    - path: ./output/blast/blast_db/genome.fasta.pto
+    - path: output/blast/blast_db/genome.fasta.pto
       md5sum: 33cdeccccebe80329f1fdbee7f5874cb
