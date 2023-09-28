@@ -56,7 +56,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 
     if ( (row.names == 'gene_id') & ('gene_name' %in% colnames(mat)) ){
         mat <- mat[, -which(colnames(mat) == 'gene_name')]
-    }else if ( (row.names == 'gene_name') & ('gene_id' %in% colnames(mat)) ){
+    } else if ( (row.names == 'gene_name') & ('gene_id' %in% colnames(mat)) ){
         mat <- mat[, -which(colnames(mat) == 'gene_id')]
     }
 
@@ -87,7 +87,7 @@ can_be_numeric <- function(x) {
 set_reference <- function(ivar, mat){
     if (ivar == 'NA'){
         ivar <- ncol(mat)
-    }else{
+    } else {
         isnumeric <- can_be_numeric(ivar)
         if (!isnumeric){
             genes <- colnames(mat)
@@ -154,7 +154,7 @@ args_opt <- parse_args('$task.ext.args')
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
-    }else{
+    } else {
 
         # Preserve classes from defaults where possible
         if (! is.null(opt[[ao]])){
@@ -208,7 +208,7 @@ mat <- read_delim_flexible(
     header = TRUE,
     row.names = opt\$gene_id_col,
     check.names = FALSE
-    )
+)
 mat <- t(mat)
 
 
@@ -229,19 +229,19 @@ if (opt\$transform == 'alr'){
     # get alr
     if (opt\$alpha == 'NA'){
         logratio <- get_logratio(mat, opt\$ivar)
-    }else{
+    } else {
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
     }
 
     # set the reference column to NA
     logratio[,opt\$ivar] = NA
 
-}else if (opt\$transform == 'clr'){
+} else if (opt\$transform == 'clr'){
 
     # get clr
     if (opt\$alpha == 'NA'){
         logratio <- get_logratio(mat, 'clr')
-    }else{
+    } else {
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
     }
 }
