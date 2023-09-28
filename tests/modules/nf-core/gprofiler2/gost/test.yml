@@ -1,0 +1,13 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml /gost
+- name: "gprofiler2 gost"
+  command: nextflow run ./tests/modules/nf-core/gprofiler2/gost -entry test_gprofiler2_gost -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gprofiler2/gost/nextflow.config
+  tags:
+    - "gprofiler2"
+    - "gprofiler2/gost"
+  files:
+    - path: "output/gprofiler2/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/gprofiler2/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    
