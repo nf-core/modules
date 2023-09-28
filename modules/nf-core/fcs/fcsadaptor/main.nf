@@ -36,7 +36,8 @@ process FCS_FCSADAPTOR {
         $assembly
 
     # compress and/or rename files with prefix
-    gzip -cf output/cleaned_sequences/* > "${prefix}.cleaned_sequences.fa.gz"
+    gzip output/cleaned_sequences/*
+    cp output/cleaned_sequences/* >       "${prefix}.cleaned_sequences.fa.gz"
     cp "output/fcs_adaptor_report.txt"    "${prefix}.fcs_adaptor_report.txt"
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
     cp "output/pipeline_args.yaml"        "${prefix}.pipeline_args.yaml"
@@ -57,12 +58,11 @@ process FCS_FCSADAPTOR {
     def FCSGX_VERSION = '0.4.0'
 
     """
-    mkdir -p out
-    touch out/${prefix}.cleaned_sequences.fa.gz
-    touch out/${prefix}.fcs_adaptor_report.txt
-    touch out/${prefix}.fcs_adaptor.log
-    touch out/${prefix}.pipeline_args.yaml
-    touch out/${prefix}.skipped_trims.jsonl
+    touch ${prefix}.cleaned_sequences.fa.gz
+    touch ${prefix}.fcs_adaptor_report.txt
+    touch ${prefix}.fcs_adaptor.log
+    touch ${prefix}.pipeline_args.yaml
+    touch ${prefix}.skipped_trims.jsonl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
