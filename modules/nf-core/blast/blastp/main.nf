@@ -1,4 +1,4 @@
-process BLAST_TBLASTN {
+process BLAST_BLASTP {
     tag "$meta.id"
     label 'process_medium'
 
@@ -9,10 +9,10 @@ process BLAST_TBLASTN {
 
     input:
     tuple val(meta), path(fasta)
-    path  db
+    path(db)
 
     output:
-    tuple val(meta), path('*.txt'), emit: txt
+    tuple val(meta), path("*.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,18 +21,25 @@ process BLAST_TBLASTN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.name.endsWith(".gz")
+    def fasta_name = fasta.name.replace(".gz", "")
     """
-    DB=`find -L ./ -name "*.nsq" | sed 's/\\.nsq\$//'`
-    tblastn \\
-        -num_threads $task.cpus \\
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $fasta > $fasta_name
+    fi
+
+    DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
+    blastp \\
         -db \$DB \\
-        -query $fasta \\
-        $args \\
-        -out ${prefix}.txt
+        -query ${fasta_name} \\
+        -out ${prefix}.csv \\
+        -num_threads ${task.cpus} \\
+        -outfmt 10 \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\$//')
+        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -40,11 +47,11 @@ process BLAST_TBLASTN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
+    touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\$//')
+        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
     END_VERSIONS
     """
 }

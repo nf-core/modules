@@ -37,4 +37,18 @@ process SEQKIT_SLIDING {
         seqkit: \$( seqkit | sed '3!d; s/Version: //' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fastx" ==~ /.+\.fasta$|.+\.fa$|.+\.fas$|.+\.fna$/) {
+        extension = "fasta"
+    }
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
+    END_VERSIONS
+    """
 }
