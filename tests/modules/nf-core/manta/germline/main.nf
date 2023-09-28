@@ -18,7 +18,10 @@ workflow test_manta_germline {
               file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
             ]
 
-    MANTA_GERMLINE ( input, fasta, fai, [] )
+    config = Channel.of("[manta]", "enableRemoteReadRetrievalForInsertionsInGermlineCallingModes = 0")
+        .collectFile(name:"manta_options.ini", newLine:true)
+
+    MANTA_GERMLINE ( input, fasta, fai, config )
 }
 
 workflow test_manta_germline_target_bed {
