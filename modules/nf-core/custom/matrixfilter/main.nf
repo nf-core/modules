@@ -12,8 +12,7 @@ process CUSTOM_MATRIXFILTER {
 
     output:
     tuple val(meta), path("*.filtered.tsv")             , emit: filtered
-    tuple val(meta), path("*.NA_removed.txt")           , optional: true, emit: na_removed
-    tuple val(meta), path("*.abundance_removed.txt")    , optional: true, emit: abundance_removed
+    tuple val(meta), path("*.rejections.tsv")           , optional: true, emit: rejections
     tuple val(meta), path("R_sessionInfo.log")          , emit: session_info
     path "versions.yml"                                 , emit: versions
 

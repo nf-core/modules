@@ -165,7 +165,9 @@ if (is.null(opt\$minimum_samples_not_na)) {
 # Prepare variables that are needed in the apply (prefix is also needed later)
 
 prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
-rowcounter <- 1 # This keeps track of the current row to allow rowname extraction
+rowcounter <- 1     # This keeps track of the current row to allow rowname extraction
+out_id <- c()       # This vector stores IDs of rejected features
+out_reason <- c()   # This vector stores reasons for rejections
 
 # Generate a boolean vector specifying the features to retain
 
@@ -174,17 +176,19 @@ keep <- apply(abundance_matrix, 1, function(x){
     na_test <- !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_na
 
     # Check if there is a high enough abundance in the current row
-    sum_test <- sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples
+    abund_test <- sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples
 
     # Log feature IDs that fail a test
     if (!na_test) {
-        write(rownames(abundance_matrix)[rowcounter], file=paste0(prefix, '.NA_removed.txt'), append=T)
+        out_id <<- append(out_id, rownames(abundance_matrix)[rowcounter])
+        out_reason <<- append(out_reason, "NA test")
     }
-    if (!sum_test) {
-        write(rownames(abundance_matrix)[rowcounter], file=paste0(prefix, '.abundance_removed.txt'), append=T)
+    if (!abund_test) {
+        out_id <<- append(out_id, rownames(abundance_matrix)[rowcounter])
+        out_reason <<- append(out_reason, "Abundance test")
     }
     rowcounter <<- rowcounter+1
-    na_test && sum_test
+    na_test && abund_test
 })
 
 # Write out the matrix retaining the specified rows and re-prepending the
@@ -197,6 +201,25 @@ write.table(
         '.filtered.tsv'
     ),
     col.names = c(feature_id_name, colnames(abundance_matrix)),
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
+# Create and write a matrix of rejections
+
+rejections <- data.frame(out_id, out_reason)
+rejections_aggregated <- rejections[!duplicated(rejections\$out_id),]                                   # Remove copies of IDs, keep only 1 of each
+rejections_aggregated[, 'out_reason'] <- aggregate(out_reason~out_id, data=rejections, toString)[,2]    # Concat reasons for each ID with comma
+rejections_aggregated <- rejections_aggregated[order(rejections_aggregated[["out_reason"]]),]                      # Sort by reason
+
+write.table(
+    rejections_aggregated,
+    file = paste0(
+        prefix,
+        '.rejections.tsv'
+    ),
+    col.names = c("Feature ID", "Reason for rejection"),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
