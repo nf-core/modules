@@ -174,8 +174,6 @@ boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
   sapply(tests, function(f) f(row))
 }))
 
-colnames(boolean_matrix) <- names(tests)
-
 # We will retain features passing all tests
 
 keep <- apply(boolean_matrix, 1, all)
@@ -200,11 +198,12 @@ write.table(
 # Write a boolean matrix returning specifying the status of each test
 
 write.table(
-    data.frame(rownames(abundance_matrix)[keep], boolean_matrix),
+    data.frame(rownames(abundance_matrix), boolean_matrix),
     file = paste0(
         prefix,
         '.tests.tsv'
     ),
+    col.names = c(feature_id_name, names(tests)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
