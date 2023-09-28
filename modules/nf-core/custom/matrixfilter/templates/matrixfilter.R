@@ -171,7 +171,7 @@ tests <- list(
 # Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
 
 boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
-  sapply(tests, function(f) f(row))
+    sapply(tests, function(f) f(row))
 }))
 
 # We will retain features passing all tests
