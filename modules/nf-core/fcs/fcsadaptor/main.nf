@@ -37,7 +37,7 @@ process FCS_FCSADAPTOR {
 
     # compress and/or rename files with prefix
     gzip output/cleaned_sequences/*
-    cp output/cleaned_sequences/* >       "${prefix}.cleaned_sequences.fa.gz"
+    cp output/cleaned_sequences/*         "${prefix}.cleaned_sequences.fa.gz"
     cp "output/fcs_adaptor_report.txt"    "${prefix}.fcs_adaptor_report.txt"
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
     cp "output/pipeline_args.yaml"        "${prefix}.pipeline_args.yaml"
