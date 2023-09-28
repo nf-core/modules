@@ -12,7 +12,7 @@ process BLAST_BLASTP {
     path(db)
 
     output:
-    tuple val(meta), path("*.blastp.csv"), emit: csv
+    tuple val(meta), path("*.csv"), emit: csv
     path "versions.yml"                  , emit: versions
 
     when:
@@ -32,7 +32,7 @@ process BLAST_BLASTP {
     blastp \\
         -db \$DB \\
         -query ${fasta_name} \\
-        -out ${prefix}.blastp.csv \\
+        -out ${prefix}.csv \\
         -num_threads ${task.cpus} \\
         -outfmt 10 \\
         $args
@@ -47,7 +47,7 @@ process BLAST_BLASTP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.blastp.csv
+    touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
