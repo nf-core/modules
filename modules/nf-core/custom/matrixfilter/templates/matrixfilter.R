@@ -156,43 +156,32 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
 
 # Also set up filtering for NAs; use by default minimum_proportion_not_na; only
 # use minimum_samples_not_na if it is provided (default NULL)
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
 
 if (is.null(opt\$minimum_samples_not_na)) {
     opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
 }
 
-# Prepare variables that are needed in the apply (prefix is also needed later)
+# Define the tests
 
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
-rowcounter <- 1     # This keeps track of the current row to allow rowname extraction
-out_id <- c()       # This vector stores IDs of rejected features
-out_reason <- c()   # This vector stores reasons for rejections
+tests <- list(
+    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples,
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_n
+)
 
-# Generate a boolean vector specifying the features to retain
+# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
 
-keep <- apply(abundance_matrix, 1, function(x){
-    # Check if all or enough entries in the current row have a value
-    na_test <- !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_na
+boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
+    sapply(tests, function(f) f(row))
+}))
 
-    # Check if there is a high enough abundance in the current row
-    abund_test <- sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples
+# We will retain features passing all tests
 
-    # Log feature IDs that fail a test
-    if (!na_test) {
-        out_id <<- append(out_id, rownames(abundance_matrix)[rowcounter])
-        out_reason <<- append(out_reason, "NA test")
-    }
-    if (!abund_test) {
-        out_id <<- append(out_id, rownames(abundance_matrix)[rowcounter])
-        out_reason <<- append(out_reason, "Abundance test")
-    }
-    rowcounter <<- rowcounter+1
-    na_test && abund_test
-})
+keep <- apply(boolean_matrix, 1, all)
 
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
+
+prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
 
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
@@ -206,20 +195,15 @@ write.table(
     quote = FALSE
 )
 
-# Create and write a matrix of rejections
-
-rejections <- data.frame(out_id, out_reason)
-rejections_aggregated <- rejections[!duplicated(rejections\$out_id),]                                   # Remove copies of IDs, keep only 1 of each
-rejections_aggregated[, 'out_reason'] <- aggregate(out_reason~out_id, data=rejections, toString)[,2]    # Concat reasons for each ID with comma
-rejections_aggregated <- rejections_aggregated[order(rejections_aggregated[["out_reason"]]),]                      # Sort by reason
+# Write a boolean matrix returning specifying the status of each test
 
 write.table(
-    rejections_aggregated,
+    data.frame(rownames(abundance_matrix), boolean_matrix),
     file = paste0(
         prefix,
-        '.rejections.tsv'
+        '.tests.tsv'
     ),
-    col.names = c("Feature ID", "Reason for rejection"),
+    col.names = c(feature_id_name, names(tests)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
