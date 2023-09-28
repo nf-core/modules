@@ -45,14 +45,22 @@ process MANTA_SOMATIC {
 
     python manta/runWorkflow.py -m local -j $task.cpus
 
-    mv manta/results/variants/candidateSmallIndels.vcf.gz     ${prefix}.candidate_small_indels.vcf.gz
-    mv manta/results/variants/candidateSmallIndels.vcf.gz.tbi ${prefix}.candidate_small_indels.vcf.gz.tbi
-    mv manta/results/variants/candidateSV.vcf.gz              ${prefix}.candidate_sv.vcf.gz
-    mv manta/results/variants/candidateSV.vcf.gz.tbi          ${prefix}.candidate_sv.vcf.gz.tbi
-    mv manta/results/variants/diploidSV.vcf.gz                ${prefix}.diploid_sv.vcf.gz
-    mv manta/results/variants/diploidSV.vcf.gz.tbi            ${prefix}.diploid_sv.vcf.gz.tbi
-    mv manta/results/variants/somaticSV.vcf.gz                ${prefix}.somatic_sv.vcf.gz
-    mv manta/results/variants/somaticSV.vcf.gz.tbi            ${prefix}.somatic_sv.vcf.gz.tbi
+    mv manta/results/variants/candidateSmallIndels.vcf.gz \\
+        ${prefix}.candidate_small_indels.vcf.gz
+    mv manta/results/variants/candidateSmallIndels.vcf.gz.tbi \\
+        ${prefix}.candidate_small_indels.vcf.gz.tbi
+    mv manta/results/variants/candidateSV.vcf.gz \\
+        ${prefix}.candidate_sv.vcf.gz
+    mv manta/results/variants/candidateSV.vcf.gz.tbi \\
+        ${prefix}.candidate_sv.vcf.gz.tbi
+    mv manta/results/variants/diploidSV.vcf.gz \\
+        ${prefix}.diploid_sv.vcf.gz
+    mv manta/results/variants/diploidSV.vcf.gz.tbi \\
+        ${prefix}.diploid_sv.vcf.gz.tbi
+    mv manta/results/variants/somaticSV.vcf.gz \\
+        ${prefix}.somatic_sv.vcf.gz
+    mv manta/results/variants/somaticSV.vcf.gz.tbi \\
+        ${prefix}.somatic_sv.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
