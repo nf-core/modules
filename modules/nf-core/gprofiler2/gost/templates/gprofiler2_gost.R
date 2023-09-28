@@ -243,7 +243,7 @@ if (nrow(de.genes) == 0) {
   print("No differential features found, pathway enrichment analysis with gprofiler2 will be skipped.")
   stop()
 }
-query <- de.genes[[de_id_column]]
+query <- as.character(de.genes[[de_id_column]])
 # TODO IS AS.CHARACTER NEEDED ABOVE?
 
 
@@ -274,10 +274,11 @@ output_prefix <- opt\$output_prefix
 if (isProvided(opt\$custom_gmt)){
 
     # If custom GMT file was provided, extract only requested datasources (gprofiler will NOT filter automatically!)
-    gmt <- (Filter(function(line) any(startsWith(line, datasources)), readLines(opt\$gmt)))
-    gmt_file <- paste0(strsplit(basename(opt\$gmt), split = "\\\\.")[[1]], 1), "_filtered.gmt"))
-    writeLines(out_gmt, gmt_file)
-    gost_id <- upload_GMT_file(out_path)
+    gmt <- Filter(function(line) any(startsWith(line, datasources)), readLines(opt\$gmt))
+    gmt_path <- paste0(strsplit(basename(opt\$gmt), split = "\\\\.")[[1]], "_filtered.gmt")
+    write(gmt_path, file="/home-link/iivow01/git/modules/error_gpro/gmt_path")
+    writeLines(gmt, gmt_path)
+    gost_id <- upload_GMT_file(gmt_path)
 } else {
 
     # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
