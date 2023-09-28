@@ -23,14 +23,18 @@ process BAMCMP {
     prefix = task.ext.prefix ?: "${meta.id}_primary"
     prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
-    if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  )
+    if ("$primary_aligned_bam" == "${prefix}.bam"  | "$contaminant_aligned_bam" == "${prefix}.bam"  ) {
         error "Input and output names for the primary-genome bam file are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" )
+    }
+    if ("$primary_aligned_bam" == "${prefix2}.bam" | "$contaminant_aligned_bam" == "${prefix2}.bam" ) {
         error "Input and output names for the contaminant-genome bam file are the same, use \"task.ext.prefix2\" to disambiguate!"
-    if ("primary_aligned_bam"    == "contaminant_aligned_bam" )
+    }
+    if ("primary_aligned_bam"    == "contaminant_aligned_bam" ) {
         error "Input file names for the two bam files are the same, ensure they are renamed upstream."
-    if ("${prefix}.bam"    == "${prefix2}.bam" )
+    }
+    if ("${prefix}.bam"    == "${prefix2}.bam" ) {
         error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
+    }
 
     def VERSION = '2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
