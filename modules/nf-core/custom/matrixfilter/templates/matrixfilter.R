@@ -78,7 +78,9 @@ opt <- list(
     minimum_abundance = 1,
     minimum_samples = 1,
     minimum_proportion = 0,
-    grouping_variable = NULL
+    grouping_variable = NULL,
+    minimum_proportion_not_na = 0.5,
+    minimum_samples_not_na = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -152,11 +154,29 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
     opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
-# Generate a boolean vector specifying the features to retain
+# Also set up filtering for NAs; use by default minimum_proportion_not_na; only
+# use minimum_samples_not_na if it is provided (default NULL)
 
-keep <- apply(abundance_matrix, 1, function(x){
-    sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
-})
+if (is.null(opt\$minimum_samples_not_na)) {
+    opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
+}
+
+# Define the tests
+
+tests <- list(
+    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples,
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_n
+)
+
+# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
+
+boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
+    sapply(tests, function(f) f(row))
+}))
+
+# We will retain features passing all tests
+
+keep <- apply(boolean_matrix, 1, all)
 
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
@@ -170,6 +190,20 @@ write.table(
         '.filtered.tsv'
     ),
     col.names = c(feature_id_name, colnames(abundance_matrix)),
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
+# Write a boolean matrix returning specifying the status of each test
+
+write.table(
+    data.frame(rownames(abundance_matrix), boolean_matrix),
+    file = paste0(
+        prefix,
+        '.tests.tsv'
+    ),
+    col.names = c(feature_id_name, names(tests)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
