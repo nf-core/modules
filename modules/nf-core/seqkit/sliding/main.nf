@@ -42,7 +42,8 @@ process SEQKIT_SLIDING {
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("$fastx" ==~ /.+\.fasta$|.+\.fa$|.+\.fas$|.+\.fna$/) {
         extension = "fasta"
-    }    """
+    }
+    """
     touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
