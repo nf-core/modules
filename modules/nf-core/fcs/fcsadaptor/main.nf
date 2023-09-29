@@ -36,7 +36,7 @@ process FCS_FCSADAPTOR {
         $assembly
 
     # compress and/or rename files with prefix
-    gzip output/cleaned_sequences/*
+    find output/cleaned_sequences/  -type f ! -name "*.gz" -exec gzip {} \;
     cp output/cleaned_sequences/*         "${prefix}.cleaned_sequences.fa.gz"
     cp "output/fcs_adaptor_report.txt"    "${prefix}.fcs_adaptor_report.txt"
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
