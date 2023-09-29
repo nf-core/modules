@@ -36,7 +36,6 @@ workflow INITIALISE {
         if ( logo ) {
             log.info logo(workflow, params.monochrome_logs)
         }
-        
         log.info "${workflow.manifest.name} ${version_string}"
 
         // Print citation for nf-core
