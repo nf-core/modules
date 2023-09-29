@@ -29,7 +29,8 @@ process GATK4_COMPOSESTRTABLEFILE {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ComposeSTRTableFile \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ComposeSTRTableFile \\
         --reference $fasta \\
         --output ${fasta.baseName}.zip \\
         --tmp-dir . \\
