@@ -27,12 +27,14 @@ process FASTQSCREEN_BUILDFROMINDEX {
     config = database
         .collect { "########## ${it[0]} \nDATABASE ${it[0]} $dir/${it[1]}/${it[1] + '_to_be_replaced'}" }
         .join("\n\n")
+        .replace("\n", "\\n")
 
     """
     mkdir $dir
     $copy_index
 
-    echo "$config"  >> $dir/fastq_screen.conf
+    echo "$config" >> $dir/fastq_screen.conf
+    sed -i 's/\\\\n/\\n/g' $dir/fastq_screen.conf
     echo "Replace folder name real index name"
 
     for f in ${folder.join(' ')}
@@ -48,7 +50,6 @@ process FASTQSCREEN_BUILDFROMINDEX {
     done
 
     cat <<-END_VERSIONS > versions.yml
-
     "${task.process}":
         fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
     END_VERSIONS
