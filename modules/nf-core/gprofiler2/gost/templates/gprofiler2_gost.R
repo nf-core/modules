@@ -129,7 +129,7 @@ opt <- list(
     reference_level = '$reference',
     target_level = '$target',
     blocking_variables = NULL,
-    genome = '$genome',
+    organism = '$genome',
     significant = T,
     min_diff = 1,
     correction_method = 'fdr',
@@ -169,9 +169,28 @@ for ( ao in names(args_opt)) {
     }
 }
 
+# _____
+
+opt\$output_prefix = "testchen"
+opt\$de_table = '/home-link/iivow01/git/modules/gpro_input/test.tsv',
+opt\$de_id_column = 'gene_id'
+opt\$organism = 'gp__mSms_5zrx_pQk'
+opt\$significant = T
+opt\$min_diff = 1
+opt\$correction_method = 'fdr'
+opt\$sources = c('KEGG', 'REAC')
+opt\$evcodes = F
+opt\$user_threshold = '0.05'
+opt\$background = NULL
+opt\$gmt = "/home-link/iivow01/git/modules/gpro_input/test.gmt"
+opt\$counts_table = NULL
+opt\$domain_scope = 'annotated'
+opt\$round_digits = -1
+
+# ____
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix', 'sources')
+required_opts <- c('output_prefix', 'sources')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
