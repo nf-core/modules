@@ -2,13 +2,7 @@ process SPACERANGER_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    // TODO push to nf-core docker
     container "docker.io/nfcore/spaceranger:2.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "SPACERANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
 
     input:
     path gtf
@@ -21,6 +15,10 @@ process SPACERANGER_MKGTF {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """

@@ -1,7 +1,10 @@
 name: "cooler_balance"
 description: Run matrix balancing on a cool file
 keywords:
-  - balance
+  - cooler/balance
+  - cooler
+  - cool
+  - cooler
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -22,7 +25,7 @@ input:
       description: Path to COOL file
       pattern: "*.{cool,mcool}"
   - resolution:
-      type: value
+      type: integer
       description: Resolution
 
 output:

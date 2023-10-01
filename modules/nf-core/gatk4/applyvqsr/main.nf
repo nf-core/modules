@@ -33,7 +33,8 @@ process GATK4_APPLYVQSR {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ApplyVQSR \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ApplyVQSR \\
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         $reference_command \\
@@ -41,6 +42,18 @@ process GATK4_APPLYVQSR {
         --recal-file $recal \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
