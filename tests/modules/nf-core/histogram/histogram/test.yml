@@ -1,0 +1,19 @@
+- name: histogram histogram test_histogram_histogram
+  command: nextflow run ./tests/modules/nf-core/histogram/histogram -entry test_histogram_histogram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/histogram/histogram/nextflow.config
+  tags:
+    - histogram
+    - histogram/histogram
+  files:
+    - path: output/histogram/abc123_all_stats.csv
+      md5sum: 6afc75b8ac3d33c335ed89cf97d93a79
+    - path: output/histogram/abc123_all_stats_histogram.png
+      md5sum: d76a1caacee7ee8bba87a9e4ad0479a0
+    - path: output/histogram/abc123_all_stats_histogram_log.png
+      md5sum: 77d0f421e6748f89dbae226cd9872e0b
+    - path: output/histogram/abc123_no_sec_supp_stats.csv
+      md5sum: 6afc75b8ac3d33c335ed89cf97d93a79
+    - path: output/histogram/abc123_no_sec_supp_stats_histogram.png
+      md5sum: d76a1caacee7ee8bba87a9e4ad0479a0
+    - path: output/histogram/abc123_no_sec_supp_stats_histogram_log.png
+      md5sum: 77d0f421e6748f89dbae226cd9872e0b
+    - path: output/histogram/versions.yml
