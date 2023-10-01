@@ -5,13 +5,13 @@ process GATK4_COLLECTREADCOUNTS {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    path(fasta)
-    path(fai)
-    path(dict)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*.hdf5"), optional: true, emit: hdf5
@@ -37,7 +37,8 @@ process GATK4_COLLECTREADCOUNTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CollectReadCounts \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CollectReadCounts \\
         --input $input \\
         --intervals $intervals \\
         --output ${prefix}.$extension \\

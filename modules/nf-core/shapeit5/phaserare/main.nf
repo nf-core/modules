@@ -15,10 +15,10 @@ process SHAPEIT5_PHASERARE {
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0' }"
+        'biocontainers/shapeit5:1.0.0--h0c8ee15_0' }"
 
     input:
-        tuple val(meta) , path(input_plain), path(input_plain_index), val(input_region), path(pedigree)
+        tuple val(meta) , path(input_plain), path(input_plain_index), path(pedigree), val(input_region)
         tuple val(meta2), path(scaffold)   , path(scaffold_index)   , val(scaffold_region)
         tuple val(meta3), path(map)
 
@@ -30,10 +30,11 @@ process SHAPEIT5_PHASERARE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-
-    def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":","_")}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
+    if ("$input_plain" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def map_command       = map       ? "--map $map"             : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
@@ -51,8 +52,21 @@ process SHAPEIT5_PHASERARE {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "vcf.gz"
+    """
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }

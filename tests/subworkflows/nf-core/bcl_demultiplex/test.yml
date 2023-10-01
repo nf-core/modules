@@ -2,6 +2,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bclconvert -c ./tests/config/nextflow.config
   tags:
     - bclconvert
+    - bcl2fastq
     - subworkflows
     - subworkflows/bcl_demultiplex
   files:
@@ -37,23 +38,24 @@
       md5sum: 0a0341e2990b4fa1d9ad4b4c603144c1
     - path: output/bclconvert/Undetermined_S0_L001_R1_001.fastq.gz
       md5sum: febef808ae5397ea4ee7ee40e5fd39e0
-    - path: output/bclconvert/test/InterOp/ControlMetricsOut.bin
+    - path: output/bclconvert/InterOp/ControlMetricsOut.bin
       md5sum: 6d77b38d0793a6e1ce1e85706e488953
-    - path: output/bclconvert/test/InterOp/CorrectedIntMetricsOut.bin
+    - path: output/bclconvert/InterOp/CorrectedIntMetricsOut.bin
       md5sum: 2bbf84d3be72734addaa2fe794711434
-    - path: output/bclconvert/test/InterOp/ErrorMetricsOut.bin
+    - path: output/bclconvert/InterOp/ErrorMetricsOut.bin
       md5sum: 38c88def138e9bb832539911affdb286
-    - path: output/bclconvert/test/InterOp/ExtractionMetricsOut.bin
+    - path: output/bclconvert/InterOp/ExtractionMetricsOut.bin
       md5sum: 7497c3178837eea8f09350b5cd252e99
-    - path: output/bclconvert/test/InterOp/IndexMetricsOut.bin
-    - path: output/bclconvert/test/InterOp/QMetricsOut.bin
+    - path: output/bclconvert/InterOp/IndexMetricsOut.bin
+    - path: output/bclconvert/InterOp/QMetricsOut.bin
       md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
-    - path: output/bclconvert/test/InterOp/TileMetricsOut.bin
+    - path: output/bclconvert/InterOp/TileMetricsOut.bin
       md5sum: 83891751ec1c91a425a524b476b6ca3c
 
 - name: bcl_demultiplex test_bcl_demultiplex_bcl2fastq
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bcl2fastq -c ./tests/config/nextflow.config
   tags:
+    - bclconvert
     - bcl2fastq
     - subworkflows
     - subworkflows/bcl_demultiplex
@@ -72,17 +74,17 @@
       md5sum: 0c6f2d87ee183b84d1051cde9a5643d1
     - path: output/bcl2fastq/Stats/Stats.json
       md5sum: 8e5f038b8aa9e465599d3575f930e604
-    - path: output/bcl2fastq/test/InterOp/ControlMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/ControlMetricsOut.bin
       md5sum: 6d77b38d0793a6e1ce1e85706e488953
-    - path: output/bcl2fastq/test/InterOp/CorrectedIntMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/CorrectedIntMetricsOut.bin
       md5sum: 2bbf84d3be72734addaa2fe794711434
-    - path: output/bcl2fastq/test/InterOp/ErrorMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/ErrorMetricsOut.bin
       md5sum: 38c88def138e9bb832539911affdb286
-    - path: output/bcl2fastq/test/InterOp/ExtractionMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/ExtractionMetricsOut.bin
       md5sum: 7497c3178837eea8f09350b5cd252e99
-    - path: output/bcl2fastq/test/InterOp/IndexMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/IndexMetricsOut.bin
       md5sum: 9e688c58a5487b8eaf69c9e1005ad0bf
-    - path: output/bcl2fastq/test/InterOp/QMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/QMetricsOut.bin
       md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
-    - path: output/bcl2fastq/test/InterOp/TileMetricsOut.bin
+    - path: output/bcl2fastq/InterOp/TileMetricsOut.bin
       md5sum: 83891751ec1c91a425a524b476b6ca3c

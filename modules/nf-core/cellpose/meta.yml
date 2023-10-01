@@ -2,13 +2,15 @@ name: "cellpose"
 description: cellpose segments cells in images
 keywords:
   - segmentation
+  - image
+  - cellpose
 tools:
   - "cellpose":
       description: "cellpose is an anatomical segmentation algorithm written in Python 3 by Carsen Stringer and Marius Pachitariu"
       homepage: "https://github.com/MouseLand/cellpose"
       documentation: "https://cellpose.readthedocs.io/en/latest/command.html"
       tool_dev_url: "https://github.com/MouseLand/cellpose"
-      doi: "https://doi.org/10.1038/s41592-022-01663-4"
+      doi: 10.1038/s41592-022-01663-4
       licence: "BSD 3-Clause"
 
 input:
@@ -18,13 +20,12 @@ input:
         Groovy Map containing sample information
         (sample id)
   - image:
-      type: image stack
+      type: file
       description: tif file for ready for segmentation
       pattern: "*.{tif,tiff}"
   - model:
-      type: pretrained model from the model zoo
-      description: string for picking a pretrained model
-      pattern: "{nuclei,cyto,cyto2,tissuenet,tissuenet,TN1,TN2,TN3,LC1,LC2,LC3,LC4}"
+      type: file
+      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop approach.
 
 output:
   - meta:
@@ -36,8 +37,8 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - image_mask:
-      type: tif_file
+  - mask:
+      type: file
       description: labelled mask output from cellpose in tif format
       pattern: "*.{tif, tiff}"
 
