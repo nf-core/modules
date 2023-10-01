@@ -1,7 +1,10 @@
 name: "cellranger_multi"
-description: Module to use Cell Ranger's pipelines to analyze sequencing data produced from various Chromium technologies, including Single Cell Gene Expression, Single Cell Immune Profiling, Feature Barcoding, and Cell Multiplexing.
+description:
+  Module to use Cell Ranger's pipelines to analyze sequencing data produced from various Chromium technologies,
+  including Single Cell Gene Expression, Single Cell Immune Profiling, Feature Barcoding, and Cell Multiplexing.
 keywords:
   - align
+  - count
   - reference
   - cellranger
   - multiomics
@@ -22,22 +25,71 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information.
         e.g. [ id:'test', single_end:false ]
-  - csv:
+  - gex_fastqs:
       type: file
-      description: Cell Ranger config file, in modified CSV format
-      pattern: "*.csv"
-
+      description: Gene expression FASTQ files.
+  - vdj_fastqs:
+      type: file
+      description: VDJ FASTQ files.
+  - ab_fastqs:
+      type: file
+      description: Antibody capture FASTQ files.
+  - beam_fastqs:
+      type: file
+      description: Antigen capture FASTQ files.
+  - cmo_fastqs:
+      type: file
+      description: Multiplexing capture FASTQ files.
+  - crispr_fastqs:
+      type: file
+      description: CRISPR guide capture FASTQ files.
+  - gex_reference:
+      type: directory
+      description: Gene expression reference.
+  - gex_frna_probeset:
+      type: directory
+      description: Gene expression targeted probe set.
+  - gex_targetpanel:
+      type: directory
+      description: Gene expression target panel.
+  - vdj_reference:
+      type: directory
+      description: VDJ reference.
+  - vdj_primer_index:
+      type: directory
+      description: VDJ inner primer index.
+  - fb_reference:
+      type: file
+      description: Feature barcoding reference.
+  - beam_panel:
+      type: file
+      description: Antigen capture panel.
+  - cmo_reference:
+      type: file
+      description: Multiplexing capture reference.
+  - cmo_barcodes:
+      type: file
+      description: Multiplexing capture barcodes.
+  - cmo_barcode_assignment:
+      type: file
+      description: Multiplexing capture sample barcode assignment.
+  - frna_sampleinfo:
+      type: file
+      description: Fixed RNA sample information.
 output:
   - outs:
       type: file
-      description: Files containing the outputs of Cell Ranger
+      description: Files containing the outputs of Cell Ranger, see official 10X Genomics documentation for a complete list
       pattern: "${meta.id}/outs/*"
+  - config:
+      type: file
+      description: Cell Ranger configuration file.
+      pattern: "cellranger_multi_config.csv"
   - versions:
       type: file
-      description: File containing software versions
+      description: File containing software versions.
       pattern: "versions.yml"
-
 authors:
   - "@klkeys"
