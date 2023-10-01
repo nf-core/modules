@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_index_dna"
 description: |
   Generate aligner index for a reference genome.
@@ -10,7 +11,7 @@ keywords:
   - bwamem2
   - dragmap
   - snapaligner
-modules:
+components:
   - bowtie2/build
   - bwa/index
   - bwamem2/index

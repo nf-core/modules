@@ -11,30 +11,35 @@ include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpile
 include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP_TWO } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
 
 workflow test_ngscheckmate_ncm_bam {
-    input    = [ file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
-                 file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true),
-                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)]
+    input    = [ [ id: 'combined_bams'],
+                [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true,      ),
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true ),
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true ),
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true )
+                  ]
+            ]
 
-    fasta    = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    fasta    = [ [ id:'sarscov2'],
+                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     inputBed = [ [ id:'test'],
-                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
 
     BEDTOOLS_MAKEWINDOWS(inputBed).
     bed.
-    map{it[1]}.
-    view().
     set{snp_channel}
 
     NGSCHECKMATE_NCM_BAM(input, snp_channel, fasta)
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    fasta    = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    fasta    = [ [ id:'sarscov2'],
+                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
 
     inputBed = [ [ id:'test'],
-                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
 
     input1   = [ [ id:'test1' ], // meta map
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -46,17 +51,16 @@ workflow test_ngscheckmate_ncm_vcf {
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
                 ]
 
-    BCFTOOLS_MPILEUP ( input1, fasta, false )
+    BCFTOOLS_MPILEUP     ( input1, fasta, false )
     BCFTOOLS_MPILEUP_TWO ( input2, fasta, false )
 
     BCFTOOLS_MPILEUP_TWO.out.vcf.
-        combine( BCFTOOLS_MPILEUP.out.vcf ).
-        map { [ it[1], it[3] ] }.
+        map{it[1]}.
+        combine( BCFTOOLS_MPILEUP.out.vcf.map{it[1]} ).
+        map { [ [id: "combined_vcfs"] ,it ] }.
         set { vcf_channel }
 
-    BEDTOOLS_MAKEWINDOWS( inputBed).bed.
-        map { it[1] }.
-        view().
+    BEDTOOLS_MAKEWINDOWS( inputBed ).bed.
         set { snp_channel }
 
     NGSCHECKMATE_NCM_VCF(vcf_channel, snp_channel, fasta)

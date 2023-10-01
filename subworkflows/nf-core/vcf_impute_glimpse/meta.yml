@@ -1,4 +1,5 @@
-name: "vcf_imputation_glimpse"
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_impute_glimpse"
 description: Impute VCF/BCF files with Glimpse
 keywords:
   - glimpse
@@ -6,42 +7,25 @@ keywords:
   - phase
   - ligate
 
-modules:
+components:
   - glimpse/chunk
   - glimpse/phase
   - glimpse/ligate
+  - bcftools/index
 
 input:
-  - ch_vcf:
+  - ch_input:
       type: file
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
         Index file of the input VCF/BCF file containing genotype likelihoods.
+        File with sample names and ploidy information.
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ meta, vcf, csi, region ]
-
-  - ch_ref:
-      type: file
-      description: |
         Reference panel of haplotypes in VCF/BCF format.
         Index file of the Reference panel file.
-        Structure: [ meta, vcf, csi ]
-
-  - ch_map:
-      type: file
-      description: |
         File containing the genetic map.
-        Structure: [gmap]
-
-  - ch_infos:
-      type: file
-      description: |
-        File with sample names and ploidy information.
-        One sample per line with a mandatory second column indicating ploidy (1 or 2).
-        Sample names that are not present are assumed to have ploidy 2 (diploids).
-        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-        Structure: [ txt ]
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ meta, vcf, csi, txt, region, ref_vcf, ref_csi, gmap ]
 
 output:
   - chunk_chr:

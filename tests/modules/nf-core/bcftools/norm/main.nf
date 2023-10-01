@@ -11,7 +11,9 @@ workflow test_bcftools_norm_no_tbi {
             []
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }
@@ -23,7 +25,9 @@ workflow test_bcftools_norm_tbi {
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }
@@ -35,7 +39,9 @@ workflow test_bcftools_norm_tbi_output_vcf {
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }
@@ -47,7 +53,9 @@ workflow test_bcftools_norm_tbi_output_vcfgz {
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }
@@ -59,7 +67,9 @@ workflow test_bcftools_norm_tbi_output_bcfgz {
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }
@@ -71,7 +81,9 @@ workflow test_bcftools_norm_tbi_output_bcf {
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
 
     BCFTOOLS_NORM ( input, fasta )
 }

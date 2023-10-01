@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bed_scatter_bedtools"
 description: |
   Scatters inputted BED files by the amount specified.
@@ -6,7 +7,7 @@ keywords:
   - bed
   - scatter
   - bedtools
-modules:
+components:
   - bedtools/split
 input:
   - ch_bed:

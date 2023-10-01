@@ -14,7 +14,7 @@ import groovy.json.JsonSlurper
 
 def getFastpReadsAfterFiltering(json_file) {
     def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
-    return json['after_filtering']['total_reads'].toInteger()
+    return json['after_filtering']['total_reads'].toLong()
 }
 
 workflow FASTQ_FASTQC_UMITOOLS_FASTP {
@@ -77,7 +77,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     trim_read_count   = Channel.empty()
     if (!skip_trimming) {
         FASTP (
-            reads,
+            umi_reads,
             adapter_fasta,
             save_trimmed_fail,
             save_merged
@@ -100,7 +100,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .set { ch_num_trimmed_reads }
 
         ch_num_trimmed_reads
-            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toInteger() }
+            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toLong() }
             .map { meta, reads, num_reads -> [ meta, reads ] }
             .set { trim_reads }
 

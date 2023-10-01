@@ -1,0 +1,79 @@
+name: "starsolo"
+description: Create a counts matrix for single-cell data using STARSolo, handling cell barcodes and UMI information.
+keywords:
+  - align
+  - count
+  - genome
+  - reference
+tools:
+  - "starsolo":
+      description: "Mapping, demultiplexing and quantification for single cell RNA-seq."
+      homepage: "https://github.com/alexdobin/STAR/"
+      documentation: "https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md"
+      doi: "10.1101/2021.05.05.442755"
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        Here, you should add all the specific barcode/umi
+        information for each sample.
+        e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
+  - solotype:
+      type: string
+      description: |
+        Type of single-cell library.
+        It can be CB_UMI_Simple for most common ones such as 10xv2 and 10xv3,
+        CB_UMI_Complex for method such as inDrop and SmartSeq for SMART-Seq.
+  - meta2:
+      type: map
+      description: Groovy Map containing the STAR index information.
+  - index:
+      type: directory
+      description: STAR genome index
+      pattern: "star"
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        Here, you should add all the specific barcode/umi
+        information for each sample.
+        e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
+  - log_final:
+      type: file
+      description: STAR final log file
+      pattern: "*Log.final.out"
+  - log_out:
+      type: file
+      description: STAR lot out file
+      pattern: "*Log.out"
+  - log_progress:
+      type: file
+      description: STAR log progress file
+      pattern: "*Log.progress.out"
+  - summary:
+      type: file
+      description: STARSolo metrics summary CSV file.
+      pattern: "*/Gene/Summary.csv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@kevinmenden"
+  - "@ggabernet"
+  - "@grst"
+  - "@fmalmeida"
+  - "@rhreynolds"
+  - "@apeltzer"
+  - "@vivian-chen16"
+  - "@maxulysse"
+  - "@joaodemeirelles"
