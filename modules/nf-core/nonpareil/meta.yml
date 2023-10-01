@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "nonpareil"
+description: write your description here
+keywords:
+  - metagenomics
+  - statistics
+  - coverage
+  - complexity
+tools:
+  - "nonpareil":
+      description: "Estimate average coverage and create curves for metagenomic datasets"
+      homepage: "https://github.com/lmrodriguezr/nonpareil"
+      documentation: "https://nonpareil.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/lmrodriguezr/nonpareil"
+      doi: "10.1128/msystems.00039-"
+      licence: "['Artistic License 2.0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - reads:
+      type: file
+      description: Uncompressed FASTQ or FASTA file
+      pattern: "*.{fasta,fna,fas,fa,fastq,fq}"
+  - format:
+      type: string
+      description: File format of input file
+      pattern: "fasta|fastq"
+  - mode:
+      type: string
+      description: Mode of redundancy estimation
+      pattern: "kmer|alignment"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - npa:
+      type: file
+      description: Raw redundancy values
+      pattern: "*.npa"
+  - npc:
+      type: file
+      description: Mates distribution file
+      pattern: "*.npc"
+  - npl:
+      type: file
+      description: Log file
+      pattern: "*.npl"
+  - npo:
+      type: file
+      description: Redundancy summary file
+      pattern: "*.npo"
+
+authors:
+  - "@jfy133"

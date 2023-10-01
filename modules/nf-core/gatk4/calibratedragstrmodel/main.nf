@@ -32,7 +32,8 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CalibrateDragstrModel \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CalibrateDragstrModel \\
         --input ${bam} \\
         --output ${prefix}.txt \\
         --reference ${fasta} \\

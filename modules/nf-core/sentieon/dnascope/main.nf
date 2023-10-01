@@ -8,18 +8,22 @@ process SENTIEON_DNASCOPE {
     container 'nf-core/sentieon:202112.06'
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dbsnp)
     tuple val(meta5), path(dbsnp_tbi)
-    tuple val(meta6), path(call_interval)
-    tuple val(meta7), path(ml_model)
+    tuple val(meta6), path(ml_model)
+    val(pcr_indel_model)
+    val(emit_vcf)
+    val(emit_gvcf)
 
     output:
-    tuple val(meta), path("*.vcf.gz")                      , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")                  , emit: index
-    path "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*.unfiltered.vcf.gz")    , optional:true, emit: vcf   // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel
+    tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), optional:true, emit: vcf_tbi
+    tuple val(meta), path("*.g.vcf.gz")             , optional:true, emit: gvcf   // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
+    tuple val(meta), path("*.g.vcf.gz.tbi")         , optional:true, emit: gvcf_tbi
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,14 +33,27 @@ process SENTIEON_DNASCOPE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args      = task.ext.args   ?: ''
-    def args2     = task.ext.args2  ?: ''
-    def interval  = call_interval   ? "--interval ${call_interval}" : ''
-    def dbsnp_str = dbsnp           ? "-d ${dbsnp}"                 : ''
-    def model     = ml_model        ? "--model ${ml_model}"         : ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args                      = task.ext.args                      ?: ''  // options for the driver
+    def args2                     = task.ext.args2                     ?: ''  // options for the vcf generation
+    def args3                     = task.ext.args3                     ?: ''  // options for the gvcf generation
+    def interval                  = intervals                          ? "--interval ${intervals}"               : ''
+    def dbsnp_cmd                 = dbsnp                              ? "-d ${dbsnp}"                           : ''
+    def model_cmd                 = ml_model                           ? " --model ${ml_model}"                  : ''
+    def pcr_indel_model_cmd       = pcr_indel_model                    ? " --pcr_indel_model ${pcr_indel_model}" : ''
+    def prefix                    = task.ext.prefix                    ?: "${meta.id}"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
+    def vcf_cmd                   = ""
+    def gvcf_cmd                  = ""
+    def base_cmd                  = '--algo DNAscope ' + dbsnp_cmd + ' '
+
+    if (emit_vcf) {  // emit_vcf can be the empty string, 'variant', 'confident' or 'all' but NOT 'gvcf'
+        vcf_cmd = base_cmd + args2 + ' ' + model_cmd + pcr_indel_model_cmd + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz'
+    }
+
+    if (emit_gvcf) { // emit_gvcf can be either true or false
+        gvcf_cmd = base_cmd + args3 + ' ' + model_cmd + pcr_indel_model_cmd + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz'
+    }
 
     """
     if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
@@ -55,17 +72,7 @@ process SENTIEON_DNASCOPE {
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
-    sentieon driver \\
-        -t $task.cpus \\
-        -r $fasta \\
-        $args \\
-        $interval \\
-        -i $bam \\
-        --algo DNAscope \\
-        $dbsnp_str \\
-        $args2 \\
-        $model \\
-        ${prefix}.vcf.gz
+    sentieon driver $args -r $fasta -t $task.cpus -i $bam $interval $vcf_cmd $gvcf_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -80,8 +87,10 @@ process SENTIEON_DNASCOPE {
         error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
+    touch ${prefix}.unfiltered.vcf.gz
+    touch ${prefix}.unfiltered.vcf.gz.tbi
+    touch ${prefix}.g.vcf.gz
+    touch ${prefix}.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
