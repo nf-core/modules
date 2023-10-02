@@ -68,7 +68,7 @@ process GATK4_MARKDUPLICATES {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}.bam"
-    prefix_no_suffix = prefix.tokenize('.')[-1]
+    prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
     """
     touch ${prefix_no_suffix}.bam
     touch ${prefix_no_suffix}.cram
