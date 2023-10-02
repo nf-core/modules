@@ -65,4 +65,21 @@ process GATK4_MARKDUPLICATES {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    prefix_no_suffix = prefix.tokenize('.')[-1]
+    """
+    touch ${prefix_no_suffix}.bam
+    touch ${prefix_no_suffix}.cram
+    touch ${prefix_no_suffix}.crai
+    touch ${prefix_no_suffix}.bai
+    touch ${prefix}.crai
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+
 }
