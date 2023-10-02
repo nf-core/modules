@@ -1,6 +1,6 @@
 process PROPR_LOGRATIO {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "conda-forge::r-propr=4.2.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,9 +11,9 @@ process PROPR_LOGRATIO {
     tuple val(meta), path(count)
 
     output:
-    tuple val(meta), path("*.logratio.tsv"), emit: logratio
-    path "*.R_sessionInfo.log", emit: session_info
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.logratio.tsv"),    emit: logratio
+    path "*.R_sessionInfo.log",                 emit: session_info
+    path "versions.yml",                        emit: versions
 
     when:
     task.ext.when == null || task.ext.when
