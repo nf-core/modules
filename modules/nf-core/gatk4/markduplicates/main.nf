@@ -74,7 +74,7 @@ process GATK4_MARKDUPLICATES {
     touch ${prefix_no_suffix}.cram
     touch ${prefix_no_suffix}.crai
     touch ${prefix_no_suffix}.bai
-    touch ${prefix}.crai
+    touch ${prefix}.metrics
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
