@@ -34,7 +34,7 @@ parse_args <- function(x){
 #' Otherwise, give another number. Or use NULL when no row.names are present.
 #'
 #' @return output Data frame
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
+read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names = TRUE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -82,10 +82,11 @@ can_be_numeric <- function(x) {
 #' If it is 'null', then set the last column as reference (default).
 #' Otherwise, it should refer to either gene name or gene index.
 #' If the gene name is given, find its index.
+#' @param mat Data matrix, with genes as columns
 #'
 #' @return The reference gene index
 set_reference <- function(ivar, mat){
-    if (ivar == 'NA'){
+    if (is.na(ivar)){
         ivar <- ncol(mat)
     } else {
         isnumeric <- can_be_numeric(ivar)
@@ -143,18 +144,14 @@ opt <- list(
     count          = '$count',
     prefix         = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     transformation = 'clr',
-    reference      = 'NA',
-    alpha          = 'NA',
+    reference      = NA,
+    alpha          = NA,
     feature_id_col = 'gene_id'
 )
-opt_types <- list(
-    count          = 'character',
-    prefix         = 'character',
-    transformation = 'character',
-    reference      = 'character',
-    alpha          = 'numeric',
-    feature_id_col = 'character'
-)
+opt_types <- lapply(opt, class)
+opt_types\$reference <- 'character'
+opt_types\$alpha <- 'numeric'
+
 
 # Apply parameter overrides
 args_opt <- parse_args('$task.ext.args')
@@ -166,6 +163,10 @@ for ( ao in names(args_opt)){
         # Preserve classes from defaults where possible
         if (! is.null(opt[[ao]])){
             args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        # set NA
+        if (args_opt[[ao]] %in% c('NA', NA, 'null')){
+            args_opt[[ao]] <- NA
         }
         opt[[ao]] <- args_opt[[ao]]
     }
@@ -191,7 +192,6 @@ for (file_input in c('count')){
 
 if (!opt\$transformation %in% c('clr', 'alr')) stop('Please make sure you provided the correct lr_transformation')
 
-print(opt)
 
 ################################################
 ################################################
@@ -233,11 +233,9 @@ if (opt\$transformation == 'alr'){
     opt\$ivar <- set_reference(opt\$reference, mat)
     gene_name <- colnames(mat)[opt\$ivar]
     opt\$reference <- gene_name
-    print(opt\$ivar)
-    print(opt\$reference)
 
     # get alr
-    if (opt\$alpha == 'NA'){
+    if (is.na(opt\$alpha)){
         logratio <- get_logratio(mat, opt\$ivar)
     } else {
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
@@ -249,7 +247,7 @@ if (opt\$transformation == 'alr'){
 } else if (opt\$transformation == 'clr'){
 
     # get clr
-    if (opt\$alpha == 'NA'){
+    if (is.na(opt\$alpha)){
         logratio <- get_logratio(mat, 'clr')
     } else {
         logratio <- get_boxcox(mat, NA, opt\$alpha)
