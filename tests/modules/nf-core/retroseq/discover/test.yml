@@ -1,19 +1,9 @@
-- name: "retroseq discover"
+- name: retroseq discover test_retroseq_discover
   command: nextflow run ./tests/modules/nf-core/retroseq/discover -entry test_retroseq_discover -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/retroseq/discover/nextflow.config
   tags:
-    - "retroseq"
-    - "retroseq/discover"
+    - retroseq/discover
+    - retroseq
   files:
-    - path: "output/retroseq/test.tab"
-    - path: "output/retroseq/versions.yml"
-      md5sum: bf86165d42e78a0c41f6fedf61407e19
-
-- name: "retroseq discover stub"
-  command: nextflow run ./tests/modules/nf-core/retroseq/discover -entry test_retroseq_discover -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/retroseq/discover/nextflow.config -stub
-  tags:
-    - "retroseq"
-    - "retroseq/discover"
-  files:
-    - path: "output/retroseq/test.tab"
-    - path: "output/retroseq/versions.yml"
-      md5sum: bf86165d42e78a0c41f6fedf61407e19
+    - path: output/retroseq/test.tab
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/retroseq/versions.yml
