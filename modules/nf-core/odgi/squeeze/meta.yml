@@ -21,9 +21,9 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - graphs:
-      type: files
-      description: Pangenome graph files in ODGI or GFA v1.0 format.
-      pattern: "*.{og,gfa}"
+      type: file
+      description: Pangenome graph files in ODGI format.
+      pattern: "*.{og}"
 
 output:
   - meta:

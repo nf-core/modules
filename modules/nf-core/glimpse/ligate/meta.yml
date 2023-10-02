@@ -2,6 +2,8 @@ name: "glimpse_ligate"
 description: Concatenates imputation chunks in a single VCF/BCF file ligating phased information.
 keywords:
   - ligate
+  - low-coverage
+  - glimpse
   - imputation
 tools:
   - "glimpse":
@@ -23,6 +25,11 @@ input:
       type: file
       description: VCF/BCF file containing genotype probabilities (GP field).
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - input_index:
+      type: file
+      description: Index file of the input VCF/BCF file containing genotype likelihoods.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
 
 output:
   - meta:

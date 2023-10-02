@@ -1,0 +1,47 @@
+name: "bcftools_split"
+description: Split a vcf file into files per chromosome
+keywords:
+  - vcf
+  - split
+  - genomics
+tools:
+  - "bcftools":
+      description: Sort VCF files by coordinates.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      tool_dev_url: https://github.com/samtools/bcftools
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: Compressed vcf file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Compressed vcf file index
+      pattern: "*.{tbi,csi}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - split_vcf:
+      type: file
+      description: Compressed vcf files per chromosome
+      pattern: "*.vcf.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"
+  - "@atrigila"
