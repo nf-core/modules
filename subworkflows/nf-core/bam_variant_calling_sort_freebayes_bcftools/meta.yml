@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_variant_calling_sort_freebayes_bcftools"
+description: Call variants using freebayes, then sort and index
+keywords:
+  - variant
+  - sort
+  - index
+  - bam
+  - cram
+  - vcf
+components:
+  - freebayes
+  - bcftools/sort
+  - bcftools/index
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input1:
+      type: file
+      description: BAM/CRAM/SAM file;
+      pattern: "*.{bam,cram,sam}"
+  - index1:
+      type: file
+      description: Index BAI/CRAI/CSI file
+      pattern: "*.{bai,crai,csi}"
+  - input2:
+      type: file
+      description: BAM/CRAM/SAM file; used to run variant calling with pair (normal vs tumor)
+      pattern: "*.{bam,cram,sam}"
+  - index2:
+      type: file
+      description: Index BAI/CRAI/CSI file
+      pattern: "*.{bai,crai,csi}"
+  - bed:
+      type: file
+      description: Optional - Limit analysis to targets listed in this BED-format FILE.
+      pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: reference fasta file
+      pattern: ".{fa,fa.gz,fasta,fasta.gz}"
+  - fai:
+      type: file
+      description: reference fasta file index
+      pattern: "*.{fa,fasta}.fai"
+  - samples:
+      type: file
+      description: Optional - Limit analysis to samples listed (one per line) in the FILE.
+      pattern: "*.txt"
+  - populations:
+      type: file
+      description: Optional - Each line of FILE should list a sample and a population which it is part of.
+      pattern: "*.txt"
+  - cnv:
+      type: file
+      description: |
+        A copy number map BED file, which has either a sample-level ploidy:
+        sample_name copy_number
+        or a region-specific format:
+        seq_name start end sample_name copy_number
+      pattern: "*.bed"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Sorted VCF file
+      pattern: "*.{vcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index file
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index file (activated with -t parameter)
+      pattern: "*.tbi"
+authors:
+  - "@priyanka-surana"
+  - "@FriederikeHanssen"
+  - "@ramprasadn"

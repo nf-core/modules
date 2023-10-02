@@ -1,42 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bed_scatter_bedtools"
 description: |
   Scatters inputted BED files by the amount specified.
-  The subworkflow is also able to create artificial BED files from the fasta index.
   The configuration in nextflow.config should be added to your modules.config for the subworkflow to work.
 keywords:
   - bed
   - scatter
   - bedtools
-  - gawk
-modules:
+components:
   - bedtools/split
-  - gawk
 input:
-  - meta:
-      type: map
+  - ch_bed:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bed:
-      type: file
-      description: The BED file to scatter.
-      pattern: "*.bed"
-  - scatter_count:
-      type: integer
-      description: The amount of times the BED file should be split
+        The input channel containing the BED file and an integer stating the amount of files it should be split into
+        Structure: [ val(meta), path(bed), val(scatter_count) ]
 output:
-  - meta:
-      type: map
+  - scattered_beds:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bed:
-      type: file
-      description: A scattered BED file (all BED files from the same source are transposed but contain the same meta)
-      pattern: "*.bed"
+        One channel entry per scattered BED file (all BED files from the same source are transposed but contain the same meta)
+        Structure: [ val(meta), path(bed), val(scatter_count) ]
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 authors:
   - "@nvnieuwk"

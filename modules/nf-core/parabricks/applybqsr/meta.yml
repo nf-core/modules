@@ -1,0 +1,62 @@
+name: "parabricks_applybqsr"
+description: NVIDIA Clara Parabricks GPU-accelerated apply Base Quality Score Recalibration (BQSR).
+keywords:
+  - bqsr
+  - bam
+  - GPU-accelerated
+  - base quality score recalibration
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/"
+      licence: "custom"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        e.g. [ id:'test' ]
+  - input:
+      type: file
+      description: bam file for sample to be variant called.
+      pattern: "*.bam"
+  - input_index:
+      type: file
+      description: bai index corresponding to input bam file. Only necessary if intervals are provided.
+      pattern: "*.bai"
+  - bqsr_table:
+      type: file
+      description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
+      pattern: "*.table"
+  - interval_file:
+      type: file
+      description: File or files containing genomic intervals for use in base quality score recalibration.
+      pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - fasta:
+      type: file
+      description: Reference fasta - must be unzipped.
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions.
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM file after applying BQSR.
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: bai index corresponding to output bam file.
+      pattern: "*.bai"
+
+authors:
+  - "@bsiranosian"

@@ -5,7 +5,7 @@ process RTGTOOLS_VCFEVAL {
     conda "bioconda::rtg-tools=3.12.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
+        'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(evaluation_bed)
@@ -57,6 +57,30 @@ process RTGTOOLS_VCFEVAL {
     mv done progress ..
     for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
     cd ..
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.tp.vcf.gz
+    touch ${prefix}.tp.vcf.gz.tbi
+    touch ${prefix}.fn.vcf.gz
+    touch ${prefix}.fn.vcf.gz.tbi
+    touch ${prefix}.fp.vcf.gz
+    touch ${prefix}.fp.vcf.gz.tbi
+    touch ${prefix}.tp-baseline.vcf.gz
+    touch ${prefix}.tp-baseline.vcf.gz.tbi
+    touch ${prefix}.snp_roc.tsv.gz
+    touch ${prefix}.non_snp_roc.tsv.gz
+    touch ${prefix}.weighted_roc.tsv.gz
+    touch ${prefix}.summary.txt
+    touch ${prefix}.phasing.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

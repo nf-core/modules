@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fastq_download_prefetch_fasterqdump_sratools
 description: Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).
 keywords:
@@ -7,7 +8,7 @@ keywords:
   - fastq
   - prefetch
   - fasterq-dump
-modules:
+components:
   - custom/sratoolsncbisettings
   - sratools/prefetch
   - sratools/fasterqdump
@@ -21,6 +22,11 @@ input:
       type: string
       description: >
         SRA run identifier.
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the sra-toolkit
+      pattern: "*.cart"
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - meta:

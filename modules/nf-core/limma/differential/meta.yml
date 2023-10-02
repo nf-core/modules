@@ -1,0 +1,80 @@
+name: "limma_differential"
+description: runs a differential expression analysis with Limma
+keywords:
+  - differential
+  - expression
+  - microarray
+  - limma
+
+tools:
+  - "limma":
+      description: "Linear Models for Microarray Data"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/limma.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf"
+      tool_dev_url: https://github.com/cran/limma""
+      doi: "10.18129/B9.bioc.limma"
+      licence: "['LGPL >=3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information. This can be used at the
+        workflow level to pass optional parameters to the module, e.g.
+        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+        '--blocking_variable $meta.blocking'.
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
+  - reference:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the reference samples
+  - target:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the target samples
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the sample sheet
+        and matrix
+  - samplesheeet:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata
+  - intensities:
+      type: file
+      description: |
+        Raw TSV or CSV format expression matrix with probes by row and samples
+        by column
+
+output:
+  - results:
+      type: file
+      description: TSV-format table of differential expression information as
+        output by Limma
+      pattern: "*.limma.results.tsv"
+  - md_plot:
+      type: file
+      description: Limma mean difference plot
+      pattern: "*.mean_difference.png"
+  - rdata:
+      type: file
+      description: Serialised MArrayLM object
+      pattern: "*.MArrayLM.limma.rds"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"

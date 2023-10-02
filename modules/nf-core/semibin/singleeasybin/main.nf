@@ -5,7 +5,7 @@ process SEMIBIN_SINGLEEASYBIN {
     conda "bioconda::semibin=1.4.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/semibin:1.4.0--pyh7cba7a3_0':
-        'quay.io/biocontainers/semibin:1.4.0--pyh7cba7a3_0' }"
+        'biocontainers/semibin:1.4.0--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(fasta), path(bam)

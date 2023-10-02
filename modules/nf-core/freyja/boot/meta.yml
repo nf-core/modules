@@ -1,0 +1,83 @@
+name: "freyja_boot"
+description: Bootstrap sample demixing by resampling each site based on a multinomial distribution of read depth across all sites, where the event probabilities were determined by the fraction of the total sample reads found at each site, followed by a secondary resampling at each site according to a multinomial distribution (that is, binomial when there was only one SNV at a site), where event probabilities were determined by the frequencies of each base at the site, and the number of trials is given by the sequencing depth.
+keywords:
+  - variants
+  - fasta
+  - deconvolution
+  - wastewater
+  - bootstrapping
+tools:
+  - "freyja":
+      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2 samples and provides functionality to analyze lineage dynamics."
+      homepage: "https://github.com/andersen-lab/Freyja"
+      documentation: "https://github.com/andersen-lab/Freyja/wiki"
+      tool_dev_url: "https://github.com/andersen-lab/Freyja"
+      doi: "10.1038/s41586-022-05049-6"
+      licence: "['BSD-2-Clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - variants:
+      type: file
+      description: File containing identified variants in a gff-like format
+      pattern: "*.variants.tsv"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - depths:
+      type: file
+      description: File containing depth of the variants
+      pattern: "*.depth.tsv"
+
+  - repeats:
+      type: integer
+      description: Number of bootstrap repeats to perform
+
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - barcodes:
+      type: file
+      description: File containing lineage defining barcodes
+      pattern: "*barcodes.csv"
+
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - lineages_meta:
+      type: file
+      description: File containing lineage metadata that correspond to barcodes
+      pattern: "*lineages.json"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - lineages:
+      type: file
+      description: a csv file that includes the lineages present and their corresponding abundances
+      pattern: "*lineages.csv"
+  - summarized:
+      type: file
+      description: a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+      pattern: "*summarized.csv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@Joon-Klaps"

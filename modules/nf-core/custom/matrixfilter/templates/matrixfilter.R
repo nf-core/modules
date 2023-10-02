@@ -25,37 +25,18 @@
 #' Parse out options from a string without recourse to optparse
 #'
 #' @param x Long-form argument list like --opt1 val1 --opt2 val2
-#' @param opt_defaults A lis with default argument values
 #'
 #' @return named list of options and values similar to optparse
 
-parse_args <- function(x, opt_defaults){
+parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
 
     # Ensure the option vectors are length 2 (key/ value) to catch empty ones
     args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
 
     parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
     parsed_args[! is.na(parsed_args)]
-
-    # Now apply CLI options to override defaults
-
-    opt_types <- lapply(opt_defaults, class)
-
-    for ( ao in names(parsed_args)){
-        if (! ao %in% names(opt_defaults)){
-            stop(paste("Invalid option:", ao))
-        }else{
-
-            # Preserve classes from defaults where possible
-            if (! is.null(opt_defaults[[ao]])){
-                parsed_args[[ao]] <- as(parsed_args[[ao]], opt_types[[ao]])
-            }
-            opt_defaults[[ao]] <- parsed_args[[ao]]
-        }
-    }
-    opt_defaults
 }
 
 #' Flexibly read CSV or TSV files
@@ -83,7 +64,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = FALSE
     )
 }
 
@@ -92,13 +74,29 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
 opt <- list(
     abundance_matrix_file = '$abundance',
     sample_file = '$samplesheet',
+    sample_id_col = NULL,
     minimum_abundance = 1,
     minimum_samples = 1,
     minimum_proportion = 0,
-    grouping_variable = NULL
+    grouping_variable = NULL,
+    minimum_proportion_not_na = 0.5,
+    minimum_samples_not_na = NULL
 )
+opt_types <- lapply(opt, class)
 
-opt <- parse_args('$task.ext.args', opt)
+args_opt <- parse_args('$task.ext.args')
+for ( ao in names(args_opt)){
+    if (! ao %in% names(opt)){
+        stop(paste("Invalid option:", ao))
+    }else{
+
+        # Preserve classes from defaults where possible
+        if (! is.null(opt[[ao]])){
+            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        opt[[ao]] <- args_opt[[ao]]
+    }
+}
 
 abundance_matrix <- read_delim_flexible(opt\$abundance_matrix_file, row.names = 1)
 feature_id_name <- colnames( read_delim_flexible(opt\$abundance_matrix_file, nrows = 1)[1])
@@ -109,7 +107,10 @@ if (opt\$sample_file != ''){
 
     # Read the sample sheet and check against matrix
 
-    samplesheet <- read_delim_flexible(opt\$sample_file, row.names = 1)
+    samplesheet <- read_delim_flexible(
+        opt\$sample_file,
+        row.names = ifelse(is.null(opt\$sample_id_col), 1, opt\$sample_id_col)
+    )
     missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
 
     if (length(missing_samples) > 0){
@@ -153,11 +154,29 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
     opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
-# Generate a boolean vector specifying the features to retain
+# Also set up filtering for NAs; use by default minimum_proportion_not_na; only
+# use minimum_samples_not_na if it is provided (default NULL)
 
-keep <- apply(abundance_matrix, 1, function(x){
-    sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
-})
+if (is.null(opt\$minimum_samples_not_na)) {
+    opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
+}
+
+# Define the tests
+
+tests <- list(
+    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples,
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_n
+)
+
+# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
+
+boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
+    sapply(tests, function(f) f(row))
+}))
+
+# We will retain features passing all tests
+
+keep <- apply(boolean_matrix, 1, all)
 
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
@@ -171,6 +190,20 @@ write.table(
         '.filtered.tsv'
     ),
     col.names = c(feature_id_name, colnames(abundance_matrix)),
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
+# Write a boolean matrix returning specifying the status of each test
+
+write.table(
+    data.frame(rownames(abundance_matrix), boolean_matrix),
+    file = paste0(
+        prefix,
+        '.tests.tsv'
+    ),
+    col.names = c(feature_id_name, names(tests)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_split_by_region"
 description: Split the reads in the input bam by specified genomic region.
 keywords:
@@ -6,50 +7,30 @@ keywords:
   - sam
   - cram
   - index
-modules:
+components:
   - samtools/view
   - samtools/index
 input:
-  - meta:
-      type: map
+  - ch_bam:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: Index for BAM/CRAM/SAM file
-      pattern: "*.{bai,crai,sai}"
-  - regions_file:
-      type: file
-      description: |
-        A file containing the genomic regions used to separate the reads in the
-        input bam. This should be a BED or TSV file containing either a single
-        column of chromosome names, two columns (chromosome name and position),
-        or three columns (chromosome name, start position, and end position).
-      pattern: "*.{bed,tsv}"
+        The input channel of this subworkflow containing:
+        - meta: Groovy Map containing sample information => doesn't have a field called 'genomic_region'
+        - bam: BAM/CRAM/SAM file
+        - bai: Index for BAM/CRAM/SAM file
+        - regions_file: A file containing the genomic regions used to separate the reads in the
+            input bam. This should be a BED or TSV file containing either a single
+            column of chromosome names, two columns (chromosome name and position),
+            or three columns (chromosome name, start position, and end position).
+        Structure: [ val(meta), path(bam), path(bai), path(regions_file) ]
 output:
-  - meta:
-      type: map
+  - bam_bai:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-        This will include an additional entry 'genomic_region' that contains the
-        chromosome name that the included reads are mapped to.
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: BAM/CRAM/SAM samtools index
-      pattern: "*.{bai,crai,sai}"
+        BAM/CRAM/SAM file, the meta contains a new 'genomic_region' field with the included regions
+        Structure: [ val(meta), path(bam), path(bai) ]
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+
 authors:
   - "@TCLamnidis"

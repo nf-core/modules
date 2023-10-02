@@ -1,0 +1,18 @@
+- name: vrhyme linkbins test_vrhyme_linkbins
+  command: nextflow run ./tests/modules/nf-core/vrhyme/linkbins -entry test_vrhyme_linkbins -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vrhyme/linkbins/nextflow.config
+  tags:
+    - vrhyme/linkbins
+    - vrhyme
+  files:
+    - path: output/vrhyme/test_linked_bins.fasta
+      md5sum: 92cee5d85211d1e657f67ba75d3b2b30
+    - path: output/vrhyme/versions.yml
+
+- name: vrhyme linkbins test_vrhyme_linkbins_stub
+  command: nextflow run ./tests/modules/nf-core/vrhyme/linkbins -entry test_vrhyme_linkbins -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vrhyme/linkbins/nextflow.config -stub-run
+  tags:
+    - vrhyme/linkbins
+    - vrhyme
+  files:
+    - path: output/vrhyme/test_linked_bins.fasta
+    - path: output/vrhyme/versions.yml

@@ -1,0 +1,47 @@
+name: "basicpy"
+description: BaSiCPy is a python package for background and shading correction of optical microscopy images. It is developed based on the Matlab version of BaSiC tool with major improvements in the algorithm.
+keywords:
+  - illumiation_correction
+  - background_correction
+  - microscopy
+  - imaging
+tools:
+  - "basicpy":
+      description: "BaSiCPy is a python package for background and shading correction of optical microscopy images. It is developed based on the Matlab version of BaSiC tool with major improvements in the algorithm. The container of this tool needs to be initialized with an empty Entrypoint. See the nextflow.config of the tests for details."
+      homepage: "https://github.com/peng-lab/BaSiCPy"
+      documentation: "https://basicpy.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
+      doi: 10.1038/ncomms14836
+      licence: "MIT License"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+
+  - image:
+      type: file
+      description: Tiff file to be used for dark and flat field illumination correction
+      pattern: "*.{tiff,tif}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - fields:
+      type: file
+      description: Tiff fields for dark and flat field illumination correction
+      pattern: "*.{tiff,tif}"
+
+authors:
+  - "@FloWuenne"

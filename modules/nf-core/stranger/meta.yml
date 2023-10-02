@@ -24,6 +24,11 @@ input:
       type: file
       description: VCF with repeat expansions
       pattern: "*.{vcf.gz,vcf}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - variant_catalog:
       type: file
       description: json file with repeat expansion sites to genotype

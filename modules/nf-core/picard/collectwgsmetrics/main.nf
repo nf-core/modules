@@ -2,15 +2,15 @@ process PICARD_COLLECTWGSMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=2.27.4 r::r-base"
+    conda "bioconda::picard=3.0.0 r::r-base"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
+        'biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
     path  intervallist
 
     output:
@@ -23,16 +23,16 @@ process PICARD_COLLECTWGSMETRICS {
     script:
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = 3
+    def avail_mem = 3072
     def interval  = intervallist ? "--INTERVALS ${intervallist}" : ''
     if (!task.memory) {
         log.info '[Picard CollectWgsMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         CollectWgsMetrics \\
         $args \\
         --INPUT $bam \\
