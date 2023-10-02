@@ -11,9 +11,9 @@ process PROPR_LOGRATIO {
     tuple val(meta), path(count)
 
     output:
-    tuple val(meta), path("*.logratio.tsv"),    emit: logratio
-    path "*.R_sessionInfo.log",                 emit: session_info
-    path "versions.yml",                        emit: versions
+    tuple val(meta), path("*.logratio.tsv"), emit: logratio
+    path "*.R_sessionInfo.log"             , emit: session_info
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
