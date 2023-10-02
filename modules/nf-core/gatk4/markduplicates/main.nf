@@ -72,7 +72,7 @@ process GATK4_MARKDUPLICATES {
     """
     touch ${prefix_no_suffix}.bam
     touch ${prefix_no_suffix}.cram
-    touch ${prefix_no_suffix}.crai
+    touch ${prefix_no_suffix}.cram.crai
     touch ${prefix_no_suffix}.bai
     touch ${prefix}.metrics
 
