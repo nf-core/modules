@@ -7,7 +7,7 @@ include { BLAST_BLASTP } from '../../../../../modules/nf-core/blast/blastp/main.
 
 workflow test_blast_blastp {
 
-    input = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
 
     BLAST_MAKEBLASTDB ( input )
     BLAST_BLASTP ( [ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db )
