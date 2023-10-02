@@ -2,10 +2,10 @@ process SPRING_COMPRESS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::spring=1.1.0"
+    conda "bioconda::spring=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spring:1.1.0--h9f5acd7_0' :
-        'quay.io/biocontainers/spring:1.1.0--h9f5acd7_0' }"
+        'https://depot.galaxyproject.org/singularity/spring:1.1.1--h9f5acd7_0' :
+        'biocontainers/spring:1.1.1--h9f5acd7_0' }"
 
     input:
     tuple val(meta), path(fastq1), path(fastq2)
