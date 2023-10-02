@@ -20,7 +20,7 @@ process SPRING_COMPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def input = meta.single_end ? "-i ${fastq1}" : "-i ${fastq1} ${fastq2}"
 
     """
