@@ -140,14 +140,21 @@ get_boxcox <- function(mat, ivar, alpha){
 ################################################
 
 opt <- list(
-    count     = '$count',
-    prefix    = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    transform = '$transformation',
-    reference = ifelse('$reference' == 'null', 'NA', '$reference'),
-    alpha     = ifelse('$alpha' == 'null', 'NA', as.numeric('$alpha')),
-    gene_id_col = 'gene_id'
+    count          = '$count',
+    prefix         = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    transformation = 'clr',
+    reference      = 'NA',
+    alpha          = 'NA',
+    feature_id_col = 'gene_id'
 )
-opt_types <- lapply(opt, class)
+opt_types <- list(
+    count          = 'character',
+    prefix         = 'character',
+    transformation = 'character',
+    reference      = 'character',
+    alpha          = 'numeric',
+    feature_id_col = 'character'
+)
 
 # Apply parameter overrides
 args_opt <- parse_args('$task.ext.args')
@@ -182,8 +189,9 @@ for (file_input in c('count')){
 }
 
 
-if (!opt\$transform %in% c('clr', 'alr')) stop('Please make sure you provided the correct lr_transformation')
+if (!opt\$transformation %in% c('clr', 'alr')) stop('Please make sure you provided the correct lr_transformation')
 
+print(opt)
 
 ################################################
 ################################################
@@ -206,7 +214,7 @@ library(MASS)
 mat <- read_delim_flexible(
     opt\$count,
     header = TRUE,
-    row.names = opt\$gene_id_col,
+    row.names = opt\$feature_id_col,
     check.names = FALSE
 )
 mat <- t(mat)
@@ -219,12 +227,14 @@ if (any(mat == 0)) print("Zeros will be replaced by minimun value before lograti
 
 
 # compute ALR/CLR
-if (opt\$transform == 'alr'){
+if (opt\$transformation == 'alr'){
 
     # get reference set
     opt\$ivar <- set_reference(opt\$reference, mat)
     gene_name <- colnames(mat)[opt\$ivar]
     opt\$reference <- gene_name
+    print(opt\$ivar)
+    print(opt\$reference)
 
     # get alr
     if (opt\$alpha == 'NA'){
@@ -236,13 +246,13 @@ if (opt\$transform == 'alr'){
     # set the reference column to NA
     logratio[,opt\$ivar] = NA
 
-} else if (opt\$transform == 'clr'){
+} else if (opt\$transformation == 'clr'){
 
     # get clr
     if (opt\$alpha == 'NA'){
         logratio <- get_logratio(mat, 'clr')
     } else {
-        logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
+        logratio <- get_boxcox(mat, NA, opt\$alpha)
     }
 }
 

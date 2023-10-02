@@ -34,16 +34,16 @@ input:
   - transformation:
       type: string
       description: |
-        'clr' or 'alr'. Default: 'clr'
+        (Optional) 'clr' or 'alr'. Default: 'clr'
   - reference:
       type: string
       description: |
-        Reference gene for ALR transformation. It can be a number refering to the gene index or a string corresponding to the gene name.
-        If null, then the default option is used (last variable as reference in the case of alr, and geometric mean in the case of clr).
+        (Optional) Reference gene for ALR transformation. It can be a number refering to the gene index or a string corresponding to the gene name.
+        Default = last variable
   - alpha:
       type: string
       description: |
-        Alpha parameter for Box-Cox transformation. If null, then standard log transformation is applied.
+        (Optional) Alpha parameter for Box-Cox transformation. Default = null, standard log transformation is applied.
 
 output:
   - meta:

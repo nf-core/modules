@@ -1,10 +1,76 @@
-- name: propr logratio test_propr_logratio
-  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+- name: propr logratio test_propr_logratio_default
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_default -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
   tags:
-    - propr/logratio
     - propr
+    - propr/logratio
   files:
     - path: output/propr/test.clr.NA.NA.logratio.tsv
       md5sum: 06f0737aa2ef19bb013faf78b0a1ef66
     - path: output/propr/test.clr.NA.NA.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_clr_boxcox
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_clr_boxcox -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.clr.NA.0.1.logratio.tsv
+      md5sum: ca53e697ac77735f6e5fbf0bea38a31a
+    - path: output/propr/test.clr.NA.0.1.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_alr
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_alr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.alr.NA.NA.logratio.tsv
+      md5sum: c7011396f0f7dd8c34dc57a07b34e1d4
+    - path: output/propr/test.alr.NA.NA.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_alr_boxcox
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_alr_boxcox -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.alr.NA.0.1.logratio.tsv
+      md5sum: 2e7ee994f0b2dda32ff0cc4276b6eec4
+    - path: output/propr/test.alr.NA.0.1.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_alr_geneid
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_alr_geneid -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.alr.ENSMUSG00000030324.NA.logratio.tsv
+      md5sum: a467a09ab7118fa4ce2058f44608f521
+    - path: output/propr/test.alr.ENSMUSG00000030324.NA.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_alr_genename
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_alr_genename -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.alr.Rho.NA.logratio.tsv
+      md5sum: df0ecc1b2fefa27d39a730fd966769b6
+    - path: output/propr/test.alr.Rho.NA.R_sessionInfo.log
+    - path: output/propr/versions.yml
+
+- name: propr logratio test_propr_logratio_alr_geneid_boxcox
+  command: nextflow run ./tests/modules/nf-core/propr/logratio -entry test_propr_logratio_alr_geneid_boxcox -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/logratio/nextflow.config
+  tags:
+    - propr
+    - propr/logratio
+  files:
+    - path: output/propr/test.alr.ENSMUSG00000030324.0.2.logratio.tsv
+      md5sum: 0554e5c6bf8f8a9f2bca18a2fedca99c
+    - path: output/propr/test.alr.ENSMUSG00000030324.0.2.R_sessionInfo.log
     - path: output/propr/versions.yml

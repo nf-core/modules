@@ -8,7 +8,7 @@ process PROPR_LOGRATIO {
         'biocontainers/r-propr:4.2.6' }"
 
     input:
-    tuple val(meta), path(count), val(transformation), val(reference), val(alpha)
+    tuple val(meta), path(count)
 
     output:
     tuple val(meta), path("*.logratio.tsv"), emit: logratio
