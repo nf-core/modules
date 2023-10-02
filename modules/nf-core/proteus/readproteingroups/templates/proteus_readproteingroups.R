@@ -124,11 +124,11 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 opt <- list(
     intensities_file = '$intensities',
     sample_file = '$samplesheet',
-    contrast_variable = '$contrast_variable',
+    contrast_variable = NULL,
     protein_id_col = 'Majority protein IDs',
     sample_id_col = 'sample',
     measure_col_prefix = 'intensities',
-    normfuns = 'normalizeMedian',
+    normfun = 'normalizeMedian',
     plotSampleDistributions_method = 'violin',
     plotMV_loess = T,
     palette_name = 'Set1',
@@ -154,7 +154,7 @@ for ( ao in names(args_opt)) {
 
 # Check if required parameters have been provided
 
-required_opts <- c('intensities_file', 'sample_file', 'contrast_variable')
+required_opts <- c('contrast_variable')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
@@ -238,8 +238,6 @@ if (length(missing_columns) > 0) {
 ################################################
 ################################################
 
-output_prefix <- opt\$contrast_variable
-
 # Replace proteus default ID column with user param and re-set the names of the resulting object (gsub sets the names to NULL)
 
 proteinColumns <- setNames(gsub("Majority protein IDs", opt\$protein_id_col, proteus::proteinColumns), names(proteus::proteinColumns))
@@ -254,66 +252,61 @@ proteinGroups <- readProteinGroups(
 
 valid_normfuns <- list("normalizeMedian", "normalizeQuantiles")
 
-# Generate plots for all requested normalizations; also, save normalized protein groups for limma
+# Generate plots for requested normalization; also, save normalized protein groups for limma
 
-for (normfun in unlist(strsplit(opt\$normfuns, ","))) {
-    if (! (normfun %in% valid_normfuns)) {
-        stop(paste0("Invalid normfuns argument: ", normfun,
-        ". Valid normfuns are: ", paste(valid_normfuns, collapse=", "), "."))
-    }
-
-    proteinGroups.normalized <- normalizeData(proteinGroups, norm.fun = eval(parse(text=normfun))) # Proteus also accepts other norm.funs, e.g. from limma
-
-    # Apply log2 and remove NAs as these will otherwise mess with some of the following modules
-
-    proteinGroups.normalized\$tab <- log2(proteinGroups.normalized\$tab)
-
-    png(paste(output_prefix, 'proteus', normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
-    print(
-        plotSampleDistributions(proteinGroups.normalized, title=paste0("Sample distributions after applying\n", normfun), fill="condition", method=opt\$plotSampleDistributions_method)
-            + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
-            + theme(plot.title = element_text(size = 12))
-        )
-    dev.off()
-
-    png(paste(output_prefix, 'proteus', normfun, 'normalized_mean_variance_relationship.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
-    print(
-        plotMV(proteinGroups.normalized, with.loess=opt\$plotMV_loess)
-            + ggtitle(paste0("Sample mean variance relationship after applying\n", normfun))
-            + scale_fill_distiller(palette=opt\$palette_name)
-            + theme(plot.title = element_text(size = 12))
-        )
-    dev.off()
-
-    png(paste(output_prefix, 'proteus', normfun, 'normalized_dendrogram.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
-    print(
-        plotClustering(proteinGroups.normalized)
-            + ggtitle(paste0("Sample clustering after applying\n", normfun))
-            + theme(plot.title = element_text(size = 12))
-        )
-    dev.off()
-
-    # R object for other processes to use
-
-    saveRDS(proteinGroups.normalized, file = paste(output_prefix, 'proteus', normfun, 'normalized_proteingroups.rds', sep='.'))
-
-    # Write normalized intensities matrix
-
-    out_df <- data.frame(
-        round_dataframe_columns(proteinGroups.normalized\$tab, digits=opt\$round_digits),
-        check.names = FALSE
-    )
-    out_df[[opt\$protein_id_col]] <- rownames(proteinGroups.normalized\$tab) # proteus saves the IDs as rownames; save these to a separate column
-    out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
-    write.table(
-        out_df,
-        file = paste(output_prefix, 'proteus', normfun, 'normalized_proteingroups_tab', 'tsv', sep = '.'),
-        col.names = TRUE,
-        row.names = FALSE,
-        sep = '\t',
-        quote = FALSE
-    )
+if (! (opt\$normfun %in% valid_normfuns)) {
+    stop(paste0("Invalid normfun argument: ", opt\$normfun,
+    ". Valid normfuns are: ", paste(valid_normfuns, collapse=", "), "."))
 }
+
+proteinGroups.normalized <- normalizeData(proteinGroups, norm.fun = eval(parse(text=opt\$normfun))) # Proteus also accepts other norm.funs, e.g. from limma
+proteinGroups.normalized\$tab <- log2(proteinGroups.normalized\$tab)
+
+png(paste(opt\$normfun, 'normalized_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
+print(
+    plotSampleDistributions(proteinGroups.normalized, title=paste0("Sample distributions after applying\n", opt\$normfun, " in contrast ", opt\$contrast_variable), fill="condition", method=opt\$plotSampleDistributions_method)
+        + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
+        + theme(plot.title = element_text(size = 12))
+    )
+dev.off()
+
+png(paste(opt\$normfun, 'normalized_mean_variance_relationship.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
+print(
+    plotMV(proteinGroups.normalized, with.loess=opt\$plotMV_loess)
+        + ggtitle(paste0("Sample mean variance relationship after applying\n", opt\$normfun, " in contrast ", opt\$contrast_variable))
+        + scale_fill_distiller(palette=opt\$palette_name)
+        + theme(plot.title = element_text(size = 12))
+    )
+dev.off()
+
+png(paste(opt\$normfun, 'normalized_dendrogram.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
+print(
+    plotClustering(proteinGroups.normalized)
+        + ggtitle(paste0("Sample clustering after applying\n", opt\$normfun, " in contrast ", opt\$contrast_variable))
+        + theme(plot.title = element_text(size = 12))
+    )
+dev.off()
+
+# R object for other processes to use
+
+saveRDS(proteinGroups.normalized, file = paste(opt\$normfun, 'normalized_proteingroups.rds', sep='.'))
+
+# Write normalized intensities matrix
+
+out_df <- data.frame(
+    round_dataframe_columns(proteinGroups.normalized\$tab, digits=opt\$round_digits),
+    check.names = FALSE
+)
+out_df[[opt\$protein_id_col]] <- rownames(proteinGroups.normalized\$tab) # proteus saves the IDs as rownames; save these to a separate column
+out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
+write.table(
+    out_df,
+    file = paste(opt\$normfun, 'normalized_proteingroups_tab', 'tsv', sep = '.'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
 
 # Process and save raw table
 
@@ -321,9 +314,9 @@ proteinGroups\$tab <- log2(proteinGroups\$tab)
 
 # Generate raw distribution plot
 
-png(paste(output_prefix, 'proteus.raw_distributions.png', sep='.'), width = 5*300, height = 5*300, res = 300, pointsize = 8)
+png('raw_distributions.png', width = 5*300, height = 5*300, res = 300, pointsize = 8)
 print(
-    plotSampleDistributions(proteinGroups, title="Raw sample distributions", fill="condition", method=opt\$plotSampleDistributions_method)
+    plotSampleDistributions(proteinGroups, title=paste("Raw sample distributions in contrast", opt\$contrast_variable), fill="condition", method=opt\$plotSampleDistributions_method)
         + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
         + theme(plot.title = element_text(size = 12))
     )
@@ -331,7 +324,8 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(proteinGroups, file = paste(output_prefix, 'proteus.raw_proteingroups.rds', sep = '.'))
+saveRDS(proteinGroups, file = 'raw_proteingroups.rds')
+
 
 # Write raw intensities matrix
 
@@ -345,7 +339,7 @@ out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt
 
 write.table(
     out_df,
-    file = paste(output_prefix, 'proteus', 'raw_proteingroups_tab', 'tsv', sep = '.'),
+    file = 'raw_proteingroups_tab.tsv',
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
