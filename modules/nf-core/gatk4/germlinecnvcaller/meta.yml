@@ -2,8 +2,8 @@ name: "gatk4_germlinecnvcaller"
 description: Calls copy-number variants in germline samples given their counts and the output of DetermineGermlineContigPloidy.
 keywords:
   - gatk
-  - gatk4_germlinecnvcaller
   - germline contig ploidy
+  - germlinecnvcaller
 tools:
   - "gatk4":
       description:
@@ -21,16 +21,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - tsv:
       type: file
       description: One or more count TSV files created with gatk/collectreadcounts
@@ -44,8 +34,8 @@ input:
       description: Optional - directory containing the model produced by germlinecnvcaller cohort mode
       pattern: "*-cnv-model/*-model"
   - ploidy:
-      type: file
-      description: directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
+      type: directory
+      description: Directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
       pattern: "*-calls"
 
 output:
@@ -58,14 +48,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - calls:
-      type: file
+  - cohortcalls:
+      type: directory
       description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
-      pattern: "*-cnv-calls/*-calls"
-  - model:
+      pattern: "*-cnv-model/*-calls"
+  - cohortmodel:
       type: directory
       description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
       pattern: "*-cnv-model/*-model"
+  - casecalls:
+      type: directory
+      description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
+      pattern: "*-cnv-calls/*-calls"
 
 authors:
   - "@ryanjameskennedy"
