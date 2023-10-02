@@ -1,13 +1,13 @@
 - name: mmseqs linclust test_mmseqs_linclust
-  command: nextflow run ./tests/modules/nf-core/mmseqs/linclust -entry test_mmseqs_linclust -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mmseqs/linclust -entry test_mmseqs_linclust -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/linclust/nextflow.config
   tags:
-    - mmseqs
     - mmseqs/linclust
+    - mmseqs
   files:
     - path: output/mmseqs/test_output_cluster/test_output_cluster.0
     - path: output/mmseqs/test_output_cluster/test_output_cluster.1
     - path: output/mmseqs/test_output_cluster/test_output_cluster.dbtype
+      md5sum: 5c879eb8a8613fd4537b919e7d68d089
     - path: output/mmseqs/test_output_cluster/test_output_cluster.index
-    - path: "output/mmseqs/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-
+      md5sum: 38908275cdd5727ae0eb9be017f9ca13
+    - path: output/mmseqs/versions.yml

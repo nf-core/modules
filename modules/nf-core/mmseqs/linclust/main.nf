@@ -20,7 +20,7 @@ process MMSEQS_LINCLUST {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: "*.dbtype"
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if ("$db_input" == "${prefix}") error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
 
     """
@@ -32,9 +32,10 @@ process MMSEQS_LINCLUST {
         linclust \\
         \$DB_INPUT_PATH_NAME \\
         ${prefix}/${prefix} \\
-        tmp \\
+        tmp1 \\
         $args \\
-        --threads ${task.cpus}
+        --threads ${task.cpus} \\
+        --compressed 1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,9 +45,10 @@ process MMSEQS_LINCLUST {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
+
     touch ${prefix}/${prefix}.{0..9}
     touch ${prefix}/${prefix}.dbtype
     touch ${prefix}/${prefix}.index
