@@ -27,7 +27,8 @@ nextflow_process {
         then {
             assertAll (
             { assert process.success },
-            { assert snapshot(process.out.html).match("html") },
+            { assert process.out.html.get(0).get(1) ==~ ".*/test_fastqc.html" },
+            { assert path(process.out.html.get(0).get(1)).getText().contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
             { assert snapshot(process.out.versions).match("versions") },
             { assert process.out.zip.get(0).get(1) ==~ ".*/test_fastqc.zip" }
             )
