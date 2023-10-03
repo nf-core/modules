@@ -1,9 +1,11 @@
 name: gatk4_markduplicates_spark
 description: This tool locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are defined as originating from a single fragment of DNA.
 keywords:
-  - markduplicates
   - bam
+  - gatk4
+  - markduplicates
   - sort
+  - spark
 tools:
   - gatk4:
       description:
@@ -49,10 +51,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - output:
       type: file
-      description: Marked duplicates BAM file
-      pattern: "*.{bam}"
+      description: Marked duplicates BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - bam_index:
+      type: file
+      description: Optional BAM index file
+      pattern: "*.bai"
 
 authors:
   - "@ajodeh-juma"

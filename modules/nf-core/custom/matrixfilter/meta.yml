@@ -4,9 +4,12 @@ description: filter a matrix based on a minimum value and numbers of samples
 keywords:
   - matrix
   - filter
+  - abundance
+  - na
 tools:
   - "matrixfilter":
       description: "filter a matrix based on a minimum value and numbers of samples"
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/matrixfilter/main.nf"
 
 input:
   - meta:
@@ -33,32 +36,44 @@ input:
         present (see grouping_variable), but also to validate matrix columns.
         If not provided, all numeric columns are selected.
   - minimum_abundance:
-      type: numeric
+      type: float
       description: |
         Minimum abundance value, supplied via task.ext.args as --minimum_abundance
       default: 1
   - minimum_samples:
-      type: numeric
+      type: integer
       description: |
         Minimum observations that must pass the threshold to retain
         the row/ feature (e.g. gene). Supplied via task.ext.args as
         --minimum_samples
       default: 1
   - minimum_proportion:
-      type: numeric
+      type: float
       description: |
         A minimum proportion of observations that must pass the threshold.
         Supplied via task.ext.args as --minimum_proportion. Overrides
         minimum_samples
       default: 0
   - grouping_variable:
-      type: optional string
+      type: string
       description: |
         Optionally supply a variable from the sample sheet that can be used to
         define groups and derive a minimum group size upon which to base
         minimum observation numbers. The rationale being to allow retention of
         features that might be present in only one group. Supplied via
         task.ext.args as --grouping_variable
+  - minimum_proportion_not_na:
+      type: float
+      description: |
+        A minimum proportion of observations that must have a numeric value (not be NA).
+        Supplied via task.ext.args as --minimum_proportion_not_na
+      default: 0.5
+  - minimum_samples_not_na:
+      type: integer
+      description: |
+        Minimum observations that must have a numeric value (not be NA) to retain
+        the row/ feature (e.g. gene). Supplied via task.ext.args as
+        --minimum_samples_not_na. Overrides minimum_proportion_not_na
 
 output:
   - versions:
@@ -74,6 +89,10 @@ output:
       type: file
       description: Filtered version of input matrix
       pattern: "*.filtered.tsv"
+  - tests:
+      type: file
+      description: Boolean matrix with pass/ fail status for each test on each feature
+      pattern: "*.tests.tsv"
 
 authors:
   - "@pinin4fjords"

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fastq_align_bwa
 description: Align reads to a reference genome using bwa then sort with samtools
 keywords:
@@ -5,74 +6,67 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
+  - bwa/mem
   - bwa/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
-# TODO Update when we decide on a standard for subworkflow docs
+  - bam_sort_stats_samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - ch_reads:
-      type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
+        Structure: [ val(meta), [ path(reads) ] ]
   - ch_index:
-      type: file
-      description: BWA genome index files
-      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
-  - sort_bam:
+      description: |
+        BWA genome index files
+        Structure: [ val(meta), path(index) ]
+  - val_sort_bam:
       type: boolean
       description: If true bwa modules sort resulting bam files
-      pattern: "true or false"
+      pattern: "true|false"
   - ch_fasta:
       type: file
       description: |
-        Structure: [val(meta2), path(fasta)]
-        Reference fasta file
-      pattern: "*.{fasta,fa}"
+        Optional reference fasta file. This only needs to be given if val_sort_bam = true.
+        Structure: [ val(meta), path(fasta) ]
 
-# TODO Update when we decide on a standard for subworkflow docs
 output:
   - bam_orig:
-      type: file
-      description: BAM file produced by bwa
-      pattern: "*.bam"
+      description: |
+        BAM file produced by bwa
+        Structure: [ val(meta), path(bam) ]
   - bam:
-      type: file
-      description: BAM file ordered by samtools
-      pattern: "*.bam"
+      description: |
+        BAM file ordered by samtools
+        Structure: [ val(meta), path(bam) ]
   - bai:
-      type: file
-      description: BAM index (currently only for snapaligner)
-      pattern: "*.bai"
+      description: |
+        BAI index of the ordered BAM file
+        Structure: [ val(meta), path(bai) ]
+  - csi:
+      description: |
+        CSI index of the ordered BAM file
+        Structure: [ val(meta), path(csi) ]
   - stats:
-      type: file
-      description: File containing samtools stats output
-      pattern: "*.{stats}"
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
   - flagstat:
-      type: file
-      description: File containing samtools flagstat output
-      pattern: "*.{flagstat}"
+      description: |
+        File containing samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
   - idxstats:
-      type: file
-      description: File containing samtools idxstats output
-      pattern: "*.{idxstats}"
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 authors:
   - "@JoseEspinosa"

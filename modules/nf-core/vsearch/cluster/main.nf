@@ -5,7 +5,7 @@ process VSEARCH_CLUSTER {
     conda "bioconda::vsearch=2.21.1 bioconda::samtools=1.16.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0':
-        'quay.io/biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
+        'biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,7 +20,7 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path('*.blast.tsv.gz')          , optional: true, emit: blast
     tuple val(meta), path('*.uc.tsv.gz')             , optional: true, emit: uc
     tuple val(meta), path('*.centroids.fasta.gz')    , optional: true, emit: centroids
-    tuple val(meta), path('*.clusters.fasta.gz')     , optional: true, emit: clusters
+    tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
     tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
     tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
     path "versions.yml"                              , emit: versions
@@ -58,7 +58,10 @@ process VSEARCH_CLUSTER {
         --threads $task.cpus \\
         $args
 
-    if [[ $args3 != "--samout" ]]
+    if [[ $args3 == "--clusters" ]]
+    then
+        gzip -n ${prefix}.${out_ext}*
+    elif [[ $args3 != "--samout" ]]
     then
         gzip -n ${prefix}.${out_ext}
     else

@@ -1,12 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_subsample_fq_salmon"
 description: Subsample fastq
 keywords:
   - fastq
   - subsample
   - strandedness
-modules:
+components:
   - fq/subsample
   - salmon/quant
+  - salmon/index
 input:
   - meta:
       type: map

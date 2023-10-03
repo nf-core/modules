@@ -1,18 +1,19 @@
 name: "gatk4_printsvevidence"
 description: WARNING - this tool is still experimental and shouldn't be used in a production setting. Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
 keywords:
-  - structural variants
   - gatk4
+  - printsvevidence
+  - structural variants
 tools:
   - gatk4:
-    description: |
-      Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
-      with a primary focus on variant discovery and genotyping. Its powerful processing engine
-      and high-performance computing features make it capable of taking on projects of any size.
-    homepage: https://gatk.broadinstitute.org/hc/en-us
-    documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-    doi: 10.1158/1538-7445.AM2017-3590
-    licence: ["Apache-2.0"]
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
@@ -21,11 +22,11 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - evidence_files:
-      type: files
+      type: file
       description: The evidence files created by CollectSVEvidence. They all need to be of the same type to print the SV evidence.
       pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
   - evidence_indices:
-      type: files
+      type: file
       description: The indices of the evidence files created by CollectSVEvidence
       pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
   - bed:
