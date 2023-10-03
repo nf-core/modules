@@ -1,5 +1,5 @@
 process MAGUS_ALIGN {
-    tag "$meta_fasta.id"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "bioconda::magus-msa=0.1.2"
@@ -8,8 +8,8 @@ process MAGUS_ALIGN {
         'biocontainers/magus-msa:0.1.2--pyhdfd78af_0 ' }"
 
     input:
-    tuple val(meta_fasta), path(fasta)
-    tuple val(meta_tree), path(tree)
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(tree)
 
     output:
     tuple val(meta), path("*.aln"), emit: alignment
@@ -19,7 +19,6 @@ process MAGUS_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    meta = meta_tree + meta_fasta // merge meta information of fasta and guidetree, keeping fasta if there is a conflict
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def loadtree = tree ? "-t $tree" : ''
@@ -38,7 +37,6 @@ process MAGUS_ALIGN {
     """
 
     stub:
-    meta = meta_tree + meta_fasta // merge meta information of fasta and guidetree, keeping fasta if there is a conflict
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
