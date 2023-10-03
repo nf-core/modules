@@ -9,7 +9,7 @@ process FASTQSCREEN_FASTQSCREEN {
 
     input:
     tuple val(meta), path(reads)  // .fastq files
-    path genome
+    path database
 
     output:
     tuple val(meta), path ("*_fq_screen"), emit: fastq_screen
@@ -25,7 +25,7 @@ process FASTQSCREEN_FASTQSCREEN {
     """
     fastq_screen --threads ${task.cpus} \\
         --aligner bowtie2 \\
-        --conf ${genome}/fastq_screen.conf \\
+        --conf ${database}/fastq_screen.conf \\
         $reads \\
         $args \\
         --outdir ${prefix}_fq_screen
