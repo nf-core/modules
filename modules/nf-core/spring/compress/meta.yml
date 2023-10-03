@@ -1,0 +1,47 @@
+name: "spring_compress"
+description: Fast, efficient, lossless compression of FASTQ files.
+keywords:
+  - FASTQ
+  - compression
+  - lossless
+tools:
+  - "spring":
+      description: "SPRING is a compression tool for Fastq files (containing up to 4.29 Billion reads)"
+      homepage: "https://github.com/shubhamchandak94/Spring"
+      documentation: "https://github.com/shubhamchandak94/Spring/blob/master/README.md"
+      tool_dev_url: "https://github.com/shubhamchandak94/Spring"
+      doi: "10.1093/bioinformatics/bty1015"
+      licence: "['Free for non-commercial use']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq1:
+      type: file
+      description: FASTQ file to compress.
+      pattern: "*.{fq.gz,fastq.gz}"
+  - fastq2:
+      type: file
+      description: Parired FASTQ file fon non single-end experiments.
+      pattern: "*.{fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - spring:
+      type: file
+      description: One sequence file in spring compressed format.
+      pattern: "*.{spring}"
+
+authors:
+  - "@xec-cm"
