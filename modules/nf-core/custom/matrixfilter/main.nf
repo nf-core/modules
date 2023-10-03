@@ -4,7 +4,7 @@ process CUSTOM_MATRIXFILTER {
     conda "conda-forge::r-base=4.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-base:4.2.1' :
-        'quay.io/biocontainers/r-base:4.2.1' }"
+        'biocontainers/r-base:4.2.1' }"
 
     input:
     tuple val(meta), path(abundance)
@@ -12,6 +12,7 @@ process CUSTOM_MATRIXFILTER {
 
     output:
     tuple val(meta), path("*.filtered.tsv")             , emit: filtered
+    tuple val(meta), path("*.tests.tsv")                , emit: tests
     tuple val(meta), path("R_sessionInfo.log")          , emit: session_info
     path "versions.yml"                                 , emit: versions
 

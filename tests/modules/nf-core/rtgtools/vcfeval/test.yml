@@ -1,75 +1,67 @@
 - name: rtgtools vcfeval test_rtgtools_vcfeval
-  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rtgtools/vcfeval/nextflow.config
   tags:
-    - rtgtools
     - rtgtools/vcfeval
+    - rtgtools
   files:
-    - path: output/rtgtools/test_results/done
-    - path: output/rtgtools/test_results/fn.vcf.gz
-      md5sum: be9c9106055bfad4c5985bc0d33efd56
-    - path: output/rtgtools/test_results/fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: 65142f7398361eebb00028255c4645f9
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/fp.vcf.gz
-      md5sum: e0f0ff841dc63e9fb61fd3a5db137ced
-    - path: output/rtgtools/test_results/fp.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: 459988c1aa5206214587044971db2518
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/non_snp_roc.tsv.gz
-      md5sum: ad5bad32c48f05aef232e2c0e708877a
-    - path: output/rtgtools/test_results/phasing.txt
-      md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test_results/progress
-    - path: output/rtgtools/test_results/snp_roc.tsv.gz
-      md5sum: 6785b83d66486e7e6c75c5a5b1574c09
-    - path: output/rtgtools/test_results/summary.txt
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: 0ccf995d071c7d27812e9e899b67050a
+    - path: output/rtgtools/test.phasing.txt
+      md5sum: 31988234bee208cacb3de90dabe1797f
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: cff421e8b15db7d92355fbef0be5ec93
+    - path: output/rtgtools/test.summary.txt
       md5sum: f4c8df93c8bdab603036bbc27b4a28c3
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz
-      md5sum: be9c9106055bfad4c5985bc0d33efd56
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 65142f7398361eebb00028255c4645f9
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/tp.vcf.gz
-      md5sum: e0f0ff841dc63e9fb61fd3a5db137ced
-    - path: output/rtgtools/test_results/tp.vcf.gz.tbi
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: 459988c1aa5206214587044971db2518
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/vcfeval.log
-    - path: output/rtgtools/test_results/weighted_roc.tsv.gz
-      md5sum: fa7c046ea0084172f1ef91f19de07b2b
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: 946dd5b0a6f33993bc2f7378c503c5cc
     - path: output/rtgtools/versions.yml
-      md5sum: 270ed7a5a8e347b251eb4aa2198f98e8
 
 - name: rtgtools vcfeval test_rtgtools_vcfeval_no_optional_inputs
-  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rtgtools/vcfeval/nextflow.config
   tags:
-    - rtgtools
     - rtgtools/vcfeval
+    - rtgtools
   files:
-    - path: output/rtgtools/test_results/done
-    - path: output/rtgtools/test_results/fn.vcf.gz
-      md5sum: c11c889a4f42c8ea325748bd768ea34d
-    - path: output/rtgtools/test_results/fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: 6a148698fa6c20d6e5bbe384d962363a
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/fp.vcf.gz
-      md5sum: 138e85c1cd79f8fea9a33e81ce0c734c
-    - path: output/rtgtools/test_results/fp.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: 9c1606449d3c256233bdd2b6c8016776
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test_results/non_snp_roc.tsv.gz
-      md5sum: 34fb78a008dfc0bef02807b8a7012b07
-    - path: output/rtgtools/test_results/phasing.txt
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: 9990107a5d8951e124d452f6cac26062
+    - path: output/rtgtools/test.phasing.txt
       md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test_results/progress
-    - path: output/rtgtools/test_results/snp_roc.tsv.gz
-      md5sum: a4c5761c2653e2d04fc84c1cea13b1f0
-    - path: output/rtgtools/test_results/summary.txt
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: cde86d34fa86475194e29a74dfc9090c
+    - path: output/rtgtools/test.summary.txt
       md5sum: f33feb32f84958fb931063044fba369b
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz
-      md5sum: d1c2d990899edf127ea5fcca8866fcb0
-    - path: output/rtgtools/test_results/tp-baseline.vcf.gz.tbi
-      md5sum: 3307008fea47adb75c46d395c5567bc0
-    - path: output/rtgtools/test_results/tp.vcf.gz
-      md5sum: e35b4dab82894eee9b77c81f9bc89cca
-    - path: output/rtgtools/test_results/tp.vcf.gz.tbi
-      md5sum: 45d8f8793140944f129e728299918c88
-    - path: output/rtgtools/test_results/vcfeval.log
-    - path: output/rtgtools/test_results/weighted_roc.tsv.gz
-      md5sum: 5b8efc9e9381f604880412800f58e4e9
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 5d9bb9b55b03d42c1726c0c32498b624
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
+      md5sum: 95938320b425e28cf06c45ab45ad0360
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: d771fa4d28b42b43e698cee93c92cf65
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
+      md5sum: a0e9ac2d38c04bd591ab8f857c5c9133
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: 005c2e8bacaaab0b409da449301d67fd
     - path: output/rtgtools/versions.yml
-      md5sum: 55568e4bbe5ab7e634a1f392abb89cc4

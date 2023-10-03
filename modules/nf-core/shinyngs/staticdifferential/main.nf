@@ -2,10 +2,10 @@ process SHINYNGS_STATICDIFFERENTIAL {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.5.0"
+    conda "bioconda::r-shinyngs=1.8.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.5.0--r42hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.5.0--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.2--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.2--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
@@ -26,9 +26,9 @@ process SHINYNGS_STATICDIFFERENTIAL {
     def prefix = task.ext.prefix ?: meta.id
     """
     differential_plots.R \\
-        --differential_file $differential_result \\
-        --feature_metadata $feature_meta \\
-        --outdir $prefix \\
+        --differential_file "$differential_result" \\
+        --feature_metadata "$feature_meta" \\
+        --outdir "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

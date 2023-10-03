@@ -14,7 +14,7 @@ tools:
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
       tool_dev_url: https://github.com/huishenlab/biscuit
-      doi: ""
+
       licence: ["MIT"]
 
 input:
@@ -28,7 +28,7 @@ input:
       description: |
         Biscuit BED file (output of biscuit vcf2bed)
   - index:
-      type: dir
+      type: directory
       description: Biscuit genome index directory (generated with 'biscuit index')
       pattern: "BiscuitIndex"
 

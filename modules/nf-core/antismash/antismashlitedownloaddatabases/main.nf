@@ -4,7 +4,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     conda "bioconda::antismash-lite=6.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
+        'biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
 
     /*
     These files are normally downloaded/created by download-antismash-databases itself, and must be retrieved for input by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines. This is solely for use for CI tests of the nf-core/module version of antiSMASH.
@@ -35,7 +35,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
+    cp_cmd = ( session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
@@ -51,7 +51,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     stub:
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
+    cp_cmd = (session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
     """
     echo "download-antismash-databases --database-dir antismash_db $args"
 

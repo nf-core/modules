@@ -2,10 +2,10 @@ process BAMTOOLS_CONVERT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bamtools=2.5.1"
+    conda "bioconda::bamtools=2.5.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
-        'quay.io/biocontainers/bamtools:2.5.1--h9a82719_9' }"
+        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2' :
+        'biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
 
     input:
     tuple val(meta), path(bam)

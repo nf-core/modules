@@ -5,7 +5,7 @@ process EPANG_SPLIT {
     conda "bioconda::epa-ng=0.3.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
-        'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
+        'biocontainers/epa-ng:0.3.8--h9a82719_1' }"
 
     input:
     tuple val(meta), path(refaln), path(fullaln)
@@ -26,8 +26,8 @@ process EPANG_SPLIT {
         $args \\
         --split $refaln $fullaln
 
-    gzip -c query.fasta > ${prefix}query.fasta.gz; rm query.fasta
-    gzip -c reference.fasta > ${prefix}reference.fasta.gz; rm reference.fasta
+    gzip -c query.fasta > ${prefix}.query.fasta.gz; rm query.fasta
+    gzip -c reference.fasta > ${prefix}.reference.fasta.gz; rm reference.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

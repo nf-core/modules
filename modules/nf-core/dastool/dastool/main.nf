@@ -2,10 +2,10 @@ process DASTOOL_DASTOOL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::das_tool=1.1.4"
+    conda "bioconda::das_tool=1.1.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/das_tool:1.1.4--r41hdfd78af_1' :
-        'quay.io/biocontainers/das_tool:1.1.4--r41hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/das_tool:1.1.6--r42hdfd78af_0' :
+        'biocontainers/das_tool:1.1.6--r42hdfd78af_0' }"
 
     input:
     tuple val(meta), path(contigs), path(bins)

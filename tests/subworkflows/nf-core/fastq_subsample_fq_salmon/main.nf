@@ -21,5 +21,5 @@ workflow test_fastq_subsample_fq_salmon {
     gtf              = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
-    FASTQ_SUBSAMPLE_FQ_SALMON ( input, SALMON_INDEX.out.index, transcript_fasta, gtf)
+    FASTQ_SUBSAMPLE_FQ_SALMON ( input, genome_fasta, transcript_fasta, gtf, SALMON_INDEX.out.index, false )
 }

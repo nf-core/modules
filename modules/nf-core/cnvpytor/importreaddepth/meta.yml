@@ -31,9 +31,9 @@ input:
       description: specifies reference genome file (only for cram file without reference genome)
       pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
   - fai:
-    type: file
-    description: Index of reference fasta file
-    pattern: "*.fai"
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
 
 output:
   - meta:

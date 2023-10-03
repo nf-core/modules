@@ -1,7 +1,8 @@
-- name: "bakta baktadbdownload"
-  command: nextflow run ./tests/modules/nf-core/bakta/baktadbdownload -entry test_bakta_baktadbdownload -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bakta/baktadbdownload/nextflow.config -stub-run
+- name: bakta baktadbdownload test_bakta_baktadbdownload
+  command: nextflow run ./tests/modules/nf-core/bakta/baktadbdownload -entry test_bakta_baktadbdownload -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bakta/baktadbdownload/nextflow.config
   tags:
-    - "bakta"
-    - "bakta/baktadbdownload"
+    - bakta/baktadbdownload
+    - bakta
   files:
-    - path: "output/bakta/db.tar.gz"
+    - path: output/bakta/db-light/
+    - path: output/bakta/versions.yml

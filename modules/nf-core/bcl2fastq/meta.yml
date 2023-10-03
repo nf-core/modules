@@ -13,6 +13,7 @@ tools:
 
 input:
   - meta:
+      type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
@@ -21,9 +22,10 @@ input:
       description: "Input samplesheet"
       pattern: "*.{csv}"
   - run_dir:
-      type: directory
-      description: "Input run directory containing RunInfo.xml and BCL data"
-
+      type: file
+      description: |
+        Input run directory containing RunInfo.xml and BCL data
+        Could be a directory or a tar of the directory
 output:
   - versions:
       type: file

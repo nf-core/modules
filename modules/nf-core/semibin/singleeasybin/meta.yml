@@ -1,0 +1,62 @@
+name: semibin_singleeasybin
+description: metagenomic binning with self-supervised learning
+keywords:
+  - binning
+  - assembly-binning
+  - metagenomics
+tools:
+  - "semibin":
+      description: "Metagenomic binning with semi-supervised siamese neural network"
+      homepage: "https://github.com/BigDataBiology/SemiBin"
+      documentation: "https://semibin.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/BigDataBiology/SemiBin"
+      doi: "10.1038/s41467-022-29843-y"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram}"
+  - fasta:
+      type: file
+      description: Fasta file of the assembled contigs
+      pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - csv:
+      type: file
+      description: generated files
+      pattern: "*.csv"
+  - h5:
+      type: file
+      description: trained model
+      pattern: "*.h5"
+  - output_prerecluster_bins:
+      type: file
+      description: output_prerecluster_bins
+      pattern: "output_prerecluster_bins/*.fa"
+  - output_recluster_bins:
+      type: file
+      description: output_recluster_bins
+      pattern: "output_recluster_bins/*.fa"
+  - tsv:
+      type: file
+      description: information of bins
+      pattern: "*.tsv"
+authors:
+  - "@BigDataBiology"

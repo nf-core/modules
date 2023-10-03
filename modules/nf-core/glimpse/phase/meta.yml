@@ -1,0 +1,90 @@
+name: "glimpse_phase"
+description: main GLIMPSE algorithm, performs phasing and imputation refining genotype likelihoods
+keywords:
+  - phase
+  - imputation
+  - low-coverage
+  - glimpse
+
+tools:
+  - "glimpse":
+      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      homepage: "https://odelaneau.github.io/GLIMPSE"
+      documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
+      tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
+      doi: "10.1038/s41588-020-00756-0"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - input:
+      type: file
+      description: Input VCF/BCF file containing genotype likelihoods.
+      pattern: "*.{vcf.gz,bcf.gz}"
+
+  - input_index:
+      type: file
+      description: Index file of the input VCF/BCF file containing genotype likelihoods.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+
+  - samples_file:
+      type: file
+      description: |
+        File with sample names and ploidy information.
+        One sample per line with a mandatory second column indicating ploidy (1 or 2).
+        Sample names that are not present are assumed to have ploidy 2 (diploids).
+        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
+      pattern: "*.{txt,tsv}"
+
+  - input_region:
+      type: string
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - output_region:
+      type: string
+      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+
+  - reference:
+      type: file
+      description: Reference panel of haplotypes in VCF/BCF format.
+      pattern: "*.{vcf.gz,bcf.gz}"
+
+  - reference_index:
+      type: file
+      description: Index file of the Reference panel file.
+      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+
+  - map:
+      type: file
+      description: File containing the genetic map.
+      pattern: "*.gmap"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - phased_variants:
+      type: file
+      description: |
+        Output VCF/BCF file containing genotype probabilities (GP field),
+        imputed dosages (DS field), best guess genotypes (GT field),
+        sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+authors:
+  - "@louislenezet"

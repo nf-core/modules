@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_variant_demix_boot_freyja"
+description: Recover relative lineage abundances from mixed SARS-CoV-2 samples from a sequencing dataset (BAM aligned to the Hu-1 reference)
+keywords:
+  - bam
+  - variants
+  - cram
+
+components:
+  - freyja/variants
+  - freyja/demix
+  - freyja/update
+  - freyja/boot
+
+input:
+  - ch_bam:
+      type: file
+      description: |
+        Structure: [ val(meta), path(bam) ]
+        Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and sorted BAM file
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+        Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and the fasta reference used for the sorted BAM file
+  - val_repeats:
+      type: value (int)
+      description: Number of bootstrap repeats to perform
+  - val_db_name:
+      type: value (string)
+      description: Name of the dir where UShER's files will be stored
+  - ch_barcodes:
+      type: file
+      description: |
+        Structure: path(barcodes)
+        File containing lineage defining barcodes
+  - ch_lineages_meta:
+      type: file
+      description: |
+        Structure: path(lineages_meta)
+        File containing lineage metadata that correspond to barcodes
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - variants:
+      type: file
+      description: |
+        Structure: [ val(meta), path(variants) ]
+        File containing identified variants in a gff-like format
+  - depths:
+      type: file
+      description: |
+        Structure: [ val(meta), path(variants) ]
+        File containing depth of the variants
+  - demix:
+      type: file
+      description: |
+        Structure: [ val(meta), path(demix) ]
+        a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
+  - lineages:
+      type: file
+      description: |
+        Structure: [ val(meta), path(lineages) ]
+        a csv file that includes the lineages present and their corresponding abundances
+  - summarized:
+      type: file
+      description: |
+        Structure: [ val(meta), path(lineages) ]
+        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+  - barcodes:
+      type: file
+      description: path(barcodes)
+        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+  - lineages_meta:
+      type: file
+      description: path(lineages_meta)
+        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Joon-Klaps"
