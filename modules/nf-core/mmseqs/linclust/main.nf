@@ -1,4 +1,4 @@
-process MMSEQS_CLUSTER {
+process MMSEQS_LINCLUST {
     tag "$meta.id"
     label 'process_high'
 
@@ -29,7 +29,7 @@ process MMSEQS_CLUSTER {
     DB_INPUT_PATH_NAME=\$(find -L "$db_input/" -maxdepth 1 -name "$args2" | sed 's/\\.\\[^.\\]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
-        cluster \\
+        linclust \\
         \$DB_INPUT_PATH_NAME \\
         ${prefix}/${prefix} \\
         tmp1 \\
