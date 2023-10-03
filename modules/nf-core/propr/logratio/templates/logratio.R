@@ -241,9 +241,6 @@ if (opt\$transformation == 'alr'){
         logratio <- get_boxcox(mat, opt\$ivar, opt\$alpha)
     }
 
-    # set the reference column to NA
-    logratio[,opt\$ivar] = NA
-
 } else if (opt\$transformation == 'clr'){
 
     # get clr
