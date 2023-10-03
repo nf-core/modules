@@ -14,13 +14,13 @@ tools:
       doi: "10.5281/zenodo.5838377"
       licence: ["GPL-3.0-or-later"]
 input:
-  - id:
+  - genome_names:
       type: string
       description: |
         List of names for each index
-  - index:
+  - indexes:
       type: directory
-      description: Bowtie2 genome directory with index files
+      description: Bowtie2 genome directories containing index files
 output:
   - versions:
       type: file

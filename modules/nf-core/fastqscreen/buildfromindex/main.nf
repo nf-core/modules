@@ -7,8 +7,8 @@ process FASTQSCREEN_BUILDFROMINDEX {
         'quay.io/biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    val(id)
-    path(index), stageAs: "dir*"
+    val(genome_names)
+    path(indexes), stageAs: "dir*"
 
     output:
     path("FastQ_Screen_Genomes"), emit: database
@@ -19,9 +19,9 @@ process FASTQSCREEN_BUILDFROMINDEX {
 
     script:
     dir = "FastQ_Screen_Genomes"
-    folder = index.collect { it.toString() }
-    database = [id, folder].transpose()
-    copy_index = folder.collect { "cp -r ${it} $dir/${it}"}.join(" && ")
+    folder = indexes.collect { it.toString() }
+    database = [genome_names, folder].transpose()
+    copy_indexes = folder.collect { "cp -r ${it} $dir/${it}"}.join(" && ")
 
     // Folder name and index (within folder) name could be different - use bash to look for index name
     config = database
@@ -31,7 +31,7 @@ process FASTQSCREEN_BUILDFROMINDEX {
 
     """
     mkdir $dir
-    $copy_index
+    $copy_indexes
 
     echo "$config" >> $dir/fastq_screen.conf
     sed -i 's/\\\\n/\\n/g' $dir/fastq_screen.conf
