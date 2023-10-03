@@ -17,7 +17,7 @@ workflow test_fastqscreen_buildfromindex {
     BOWTIE2_BUILD ( ch_fasta )
 
     FASTQSCREEN_BUILDFROMINDEX (BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect(),
-                                BOWTIE2_BUILD.out.index.map{it -> it[1]}.collect())
+                                BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect())
 
     FASTQSCREEN_BUILDFROMINDEX.out.database.view()
     FASTQSCREEN_BUILDFROMINDEX.out.versions.view()
