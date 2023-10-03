@@ -5,7 +5,7 @@ process STECFINDER {
     conda "bioconda::stecfinder=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stecfinder:1.1.0--pyhdfd78af_0':
-        'quay.io/biocontainers/stecfinder:1.1.0--pyhdfd78af_0' }"
+        'biocontainers/stecfinder:1.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(seqs)
