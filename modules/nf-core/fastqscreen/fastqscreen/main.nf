@@ -4,8 +4,8 @@ process FASTQSCREEN_FASTQSCREEN {
 
     conda "bioconda::fastq-screen=0.15.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq-screen%3A0.15.3--pl5321hdfd78af_0':
-        'quay.io/biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
+        'https://depot.galaxyproject.org/singularity/fastq-screen:0.15.3--pl5321hdfd78af_0':
+        'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)  // .fastq files
