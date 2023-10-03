@@ -18,7 +18,10 @@ workflow test_manta_germline {
               file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
             ]
 
-    MANTA_GERMLINE ( input, fasta, fai )
+    config = Channel.of("[manta]", "enableRemoteReadRetrievalForInsertionsInGermlineCallingModes = 0")
+        .collectFile(name:"manta_options.ini", newLine:true)
+
+    MANTA_GERMLINE ( input, fasta, fai, config )
 }
 
 workflow test_manta_germline_target_bed {
@@ -36,7 +39,7 @@ workflow test_manta_germline_target_bed {
               file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
             ]
 
-    MANTA_GERMLINE ( input, fasta, fai )
+    MANTA_GERMLINE ( input, fasta, fai, [] )
 }
 
 workflow test_manta_germline_target_bed_jointcalling {
@@ -56,5 +59,5 @@ workflow test_manta_germline_target_bed_jointcalling {
               file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
             ]
 
-    MANTA_GERMLINE ( input, fasta, fai )
+    MANTA_GERMLINE ( input, fasta, fai, [] )
 }
