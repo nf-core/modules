@@ -9,9 +9,9 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
 
     input:
     tuple val(meta), path(genomicsdb)
-    path  fasta
-    path  fai
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -32,7 +32,8 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CreateSomaticPanelOfNormals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CreateSomaticPanelOfNormals \\
         --variant gendb://$genomicsdb \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\

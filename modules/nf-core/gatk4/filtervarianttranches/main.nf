@@ -27,8 +27,8 @@ process GATK4_FILTERVARIANTTRANCHES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def resources = resources.collect{"--resource $it"}.join(' ')
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK FilterVariantTranches] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -36,7 +36,8 @@ process GATK4_FILTERVARIANTTRANCHES {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" FilterVariantTranches \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        FilterVariantTranches \\
         --variant $vcf \\
         $resources \\
         --output ${prefix}.filtered.vcf.gz \\

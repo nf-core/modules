@@ -27,9 +27,9 @@ process GATK4_SPLITCRAM {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-
     """
-    gatk --java-options "-Xmx${avail_mem}M" SplitCRAM \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        SplitCRAM \\
         ${args} \\
         --input ${cram} \\
         --output ${prefix}.%04d.cram \\

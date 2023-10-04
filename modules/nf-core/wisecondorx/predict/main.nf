@@ -14,9 +14,13 @@ process WISECONDORX_PREDICT {
     tuple val(meta3), path(blacklist)
 
     output:
-    tuple val(meta), path("*.bed"), emit: bed, optional:true
-    tuple val(meta), path("*.png"), emit: plot, optional:true
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_aberrations.bed")      , emit: aberrations_bed, optional:true
+    tuple val(meta), path("*_bins.bed")             , emit: bins_bed, optional:true
+    tuple val(meta), path("*_segments.bed")         , emit: segments_bed, optional:true
+    tuple val(meta), path("*_chr_statistics.txt")   , emit: chr_statistics, optional:true
+    tuple val(meta), path("[!genome_wide]*.png")    , emit: chr_plots, optional:true
+    tuple val(meta), path("genome_wide.png")        , emit: genome_plot, optional:true
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +29,8 @@ process WISECONDORX_PREDICT {
     def args = task.ext.args ?: '--bed --plot'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = blacklist ? "--blacklist ${blacklist}" : ""
+
+    def plots = args.contains("--plot") ? "mv ${prefix}.plots/* ." : ""
 
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
@@ -35,6 +41,8 @@ process WISECONDORX_PREDICT {
         ${prefix} \\
         ${bed} \\
         ${args}
+
+    ${plots}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -47,8 +55,8 @@ process WISECONDORX_PREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def bed = args.contains("--bed") ? "touch ${prefix}.bed" : ""
-    def plot = args.contains("--plot") ? "touch ${prefix}.png" : ""
+    def bed = args.contains("--bed") ? "touch ${prefix}_aberrations.bed && touch ${prefix}_bins.bed && touch ${prefix}_chr_statistics.txt && touch ${prefix}_segments.bed" : ""
+    def plot = args.contains("--plot") ? "touch genome_wide.png && touch chr22.png && touch chr1.png" : ""
 
     """
     ${bed}

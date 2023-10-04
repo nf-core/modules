@@ -2,14 +2,13 @@ process ODGI_DRAW {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::odgi=0.8.2"
+    conda "bioconda::odgi=0.8.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.8.2--py310hc8f18ef_0':
-        'biocontainers/odgi:0.8.2--py310hc8f18ef_0' }"
+        'https://depot.galaxyproject.org/singularity/odgi:0.8.3--py310h6cc9453_0':
+        'biocontainers/odgi:0.8.3--py310h6cc9453_0' }"
 
     input:
-    tuple val(meta), path(graph)
-    path(lay)
+    tuple val(meta), path(graph), path(lay)
 
     output:
     tuple val(meta), path("*.png"), emit: png

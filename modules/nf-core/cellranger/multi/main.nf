@@ -2,12 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/nfcore/cellranger:7.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/cellranger:7.1.0"
 
     input:
     val meta
@@ -38,6 +33,10 @@ process CELLRANGER_MULTI {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 

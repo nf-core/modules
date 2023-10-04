@@ -3,6 +3,7 @@ description: Generate fragment-delimited genomic bins
 keywords:
   - digest
   - enzyme
+  - cooler
 tools:
   - cooler:
       description: Sparse binary format for genomic interaction matrices
@@ -21,7 +22,7 @@ input:
       type: file
       description: Path to a chromsizes file.
   - enzyme:
-      type: String
+      type: string
       description: Name of restriction enzyme. e.g. CviQI.
       documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
 

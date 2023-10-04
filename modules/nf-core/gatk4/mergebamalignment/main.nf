@@ -9,8 +9,8 @@ process GATK4_MERGEBAMALIGNMENT {
 
     input:
     tuple val(meta), path(aligned), path(unmapped)
-    path  fasta
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path('*.bam'), emit: bam
@@ -30,7 +30,8 @@ process GATK4_MERGEBAMALIGNMENT {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" MergeBamAlignment \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        MergeBamAlignment \\
         --UNMAPPED_BAM $unmapped \\
         --ALIGNED_BAM $aligned \\
         --OUTPUT ${prefix}.bam \\

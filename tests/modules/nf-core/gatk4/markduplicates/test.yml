@@ -34,3 +34,36 @@
     - path: output/gatk4/test.cram.crai
     - path: output/gatk4/test.cram.metrics
     - path: output/gatk4/versions.yml
+
+- name: gatk4 markduplicates test_gatk4_markduplicates_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -stub -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/markduplicates
+  files:
+    - path: output/gatk4/test.bai
+    - path: output/gatk4/test.bam
+    - path: output/gatk4/test.bam.metrics
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -stub -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/markduplicates
+  files:
+    - path: output/gatk4/test.bai
+    - path: output/gatk4/test.bam
+    - path: output/gatk4/test.bam.metrics
+    - path: output/gatk4/versions.yml
+
+- name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output_stub
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -stub -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/markduplicates
+  files:
+    - path: output/gatk4/test.cram
+    - path: output/gatk4/test.cram.crai
+    - path: output/gatk4/test.cram.metrics
+    - path: output/gatk4/versions.yml

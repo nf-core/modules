@@ -2,10 +2,10 @@ process ISOSEQ3_REFINE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::isoseq3=3.8.1"
+    conda "bioconda::isoseq3=3.8.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq3:3.8.1--h9ee0642_0' :
-        'biocontainers/isoseq3:3.8.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/isoseq3:3.8.2--h9ee0642_0' :
+        'biocontainers/isoseq3:3.8.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)

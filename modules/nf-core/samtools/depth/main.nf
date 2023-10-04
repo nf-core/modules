@@ -1,5 +1,5 @@
 process SAMTOOLS_DEPTH {
-    tag "$meta.id"
+    tag "$meta1.id"
     label 'process_low'
 
     conda "bioconda::samtools=1.17"
@@ -8,10 +8,11 @@ process SAMTOOLS_DEPTH {
         'biocontainers/samtools:1.17--h00cdaf9_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta1), path(bam)
+    tuple val(meta2), path(intervals)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta1), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
     when:
@@ -19,12 +20,14 @@ process SAMTOOLS_DEPTH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta1.id}"
+    def positions = intervals ? "-b ${intervals}" : ""
     """
     samtools \\
         depth \\
         --threads ${task.cpus-1} \\
         $args \\
+        $positions \\
         -o ${prefix}.tsv \\
         $bam
 

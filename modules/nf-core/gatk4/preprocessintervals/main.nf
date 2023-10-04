@@ -8,10 +8,11 @@ process GATK4_PREPROCESSINTERVALS {
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(exclude_intervals)
-    path fasta
-    path fai
-    path dict
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(fai)
+    tuple val(meta3), path(dict)
+    tuple val(meta4), path(intervals)
+    tuple val(meta5), path(exclude_intervals)
 
     output:
     tuple val(meta), path("*.interval_list"), emit: interval_list
@@ -21,8 +22,9 @@ process GATK4_PREPROCESSINTERVALS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def include_command = intervals         ? "--intervals $intervals"                 : ""
     def exclude_command = exclude_intervals ? "--exclude-intervals $exclude_intervals" : ""
 
     def avail_mem = 3072
@@ -31,8 +33,11 @@ process GATK4_PREPROCESSINTERVALS {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
     """
-    gatk --java-options "-Xmx${avail_mem}M" PreprocessIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        PreprocessIntervals \\
+        $include_command \\
         $exclude_command \\
         --reference $fasta \\
         --output ${prefix}.interval_list \\

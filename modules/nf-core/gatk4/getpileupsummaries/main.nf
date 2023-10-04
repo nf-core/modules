@@ -9,9 +9,9 @@ process GATK4_GETPILEUPSUMMARIES {
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
-    path  fasta
-    path  fai
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
     path  variants
     path  variants_tbi
 
@@ -35,7 +35,8 @@ process GATK4_GETPILEUPSUMMARIES {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" GetPileupSummaries \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        GetPileupSummaries \\
         --input $input \\
         --variant $variants \\
         --output ${prefix}.pileups.table \\

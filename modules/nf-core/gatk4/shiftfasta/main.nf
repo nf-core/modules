@@ -9,8 +9,8 @@ process GATK4_SHIFTFASTA {
 
     input:
     tuple val(meta), path(fasta)
-    path (fasta_fai)
-    path (dict)
+    tuple val(meta2), path(fasta_fai)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path("*_shift.fasta")       , emit: shift_fa
@@ -28,6 +28,7 @@ process GATK4_SHIFTFASTA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def seq_dict = dict ? "--sequence-dictionary ${dict}" : ""
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK ShiftFasta] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -35,7 +36,8 @@ process GATK4_SHIFTFASTA {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ShiftFasta \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ShiftFasta \\
         --reference $fasta \\
         --output ${prefix}_shift.fasta \\
         --shift-back-output ${prefix}_shift.back_chain \\

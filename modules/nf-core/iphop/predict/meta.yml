@@ -1,0 +1,58 @@
+name: "iphop_predict"
+description: Predict phage host using iPHoP
+keywords:
+  - metagenomics
+  - iphop
+  - database
+  - download
+  - phage
+  - bacteria
+  - host
+tools:
+  - "iphop":
+      description: Predict host genus from genomes of uncultivated phages.
+      homepage: https://bitbucket.org/srouxjgi/iphop/src/main/
+      documentation: https://bitbucket.org/srouxjgi/iphop/src/main/
+      tool_dev_url: https://bitbucket.org/srouxjgi/iphop/src/main/
+      doi: "10.1371/journal.pbio.3002083"
+      licence: "['Modified GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file containing phage contigs/scaffolds/chromosomes
+      pattern: "*.{fasta,fna,fa}"
+  - iphop_db:
+      type: directory
+      description: Directory pointing to iPHoP database
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - iphop_genus:
+      type: file
+      description: File containing integrated host predictions at genus level, with a minimum score defined by the `--min_score` argument
+      pattern: "Host_prediction_to_genus_m*.csv"
+  - iphop_genome:
+      type: file
+      description: File containing integrated host predictions at host genome level, with a minimum score defined by the `--min_score` argument
+      pattern: "Host_prediction_to_genome_m*.csv"
+  - iphop_detailed_output:
+      type: file
+      description: File containing each phage's top 5 hits via each method
+      pattern: "Detailed_output_by_tool.csv"
+
+authors:
+  - "@CarsonJM"

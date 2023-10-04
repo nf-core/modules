@@ -1,10 +1,10 @@
 name: "gatk4_determinegermlinecontigploidy"
 description: Determines the baseline contig ploidy for germline samples given counts data
 keywords:
-  - gatk4
-  - determinegermlinecontigploidy
-  - counts
   - copy number
+  - counts
+  - determinegermlinecontigploidy
+  - gatk4
 tools:
   - gatk4:
       description: |
@@ -22,6 +22,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
   - counts:
       type: file
       description: One or more count TSV files created with gatk/collectreadcounts
@@ -43,8 +48,7 @@ input:
       description: |
         Optional - A folder containing the ploidy model.
         When a model is supplied to tool will run in CASE mode.
-        The folder can be tar-zipped.
-      pattern: "*(.tar.gz)?"
+        pattern: '*-model/'
 
 output:
   - meta:
@@ -59,13 +63,13 @@ output:
   - calls:
       type: directory
       description: A folder containing the calls from the input files
-      pattern: "*.tar.gz"
+      pattern: "*-calls/"
   - model:
       type: directory
       description: |
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).
-      pattern: "*.tar.gz"
+      pattern: "*-model/"
 
 authors:
   - "@nvnieuwk"
