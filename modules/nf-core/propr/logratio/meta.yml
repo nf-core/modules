@@ -1,5 +1,5 @@
 name: "propr_logratio"
-description: ALR/CLR transform the data matrix
+description: Transform the data matrix using centered logratio transformation (CLR) or additive logratio transformation (ALR)
 keywords:
   - alr
   - clr
@@ -21,8 +21,8 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module.
+        Groovy Map containing additional information.
+        meta.id can be used to name the output files.
         [id: 'test', ...]
   - count:
       type: file
@@ -31,26 +31,13 @@ input:
         This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
         You may want to handle the zeros with a different method beforehand.
       pattern: "*.{csv,tsv}"
-  - transformation:
-      type: string
-      description: |
-        (Optional) 'clr' or 'alr'. Default: 'clr'
-  - reference:
-      type: string
-      description: |
-        (Optional) Reference gene for ALR transformation. It can be a number refering to the gene index or a string corresponding to the gene name.
-        Default = last variable
-  - alpha:
-      type: string
-      description: |
-        (Optional) Alpha parameter for Box-Cox transformation. Default = null, standard log transformation is applied.
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module.
+        Groovy Map containing additional information.
+        meta.id can be used to name the output files.
         [id: 'test', ...]
   - logratio:
       type: file

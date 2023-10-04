@@ -143,10 +143,10 @@ get_boxcox <- function(mat, ivar, alpha){
 opt <- list(
     count          = '$count',
     prefix         = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    transformation = 'clr',
-    reference      = NA,
-    alpha          = NA,
-    feature_id_col = 'gene_id'
+    transformation = 'clr',       # it can be clr or alr
+    reference      = NA,          # reference gene (name or index) for alr
+    alpha          = NA,          # alpha for box-cox transformation
+    feature_id_col = 'gene_id'    # column name of the feature ids
 )
 opt_types <- lapply(opt, class)
 opt_types\$reference <- 'character'
