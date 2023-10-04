@@ -1,13 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /histplot
-- name: "purgedups histplot"
+- name: purgedups histplot test_purgedups_histplot
   command: nextflow run ./tests/modules/nf-core/purgedups/histplot -entry test_purgedups_histplot -c ./tests/config/nextflow.config
   tags:
-    - "purgedups"
-    - "purgedups/histplot"
+    - purgedups/histplot
+    - purgedups
   files:
-    - path: "output/purgedups/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purgedups/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/purgedups/test.png
+      md5sum: 59c0f25a2f83b244be096a4e9e77cc42
+    - path: output/purgedups/versions.yml
