@@ -9,13 +9,13 @@ process GATK4_ANNOTATEINTERVALS {
 
     input:
     tuple val(meta), path(intervals)
-    path(fasta)
-    path(fasta_fai)
-    path(dict)
-    path(mappable_regions)
-    path(mappable_regions_tbi)
-    path(segmental_duplication_regions)
-    path(segmental_duplication_regions_tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(mappable_regions)
+    tuple val(meta6), path(mappable_regions_tbi)
+    tuple val(meta7), path(segmental_duplication_regions)
+    tuple val(meta8), path(segmental_duplication_regions_tbi)
 
     output:
     tuple val(meta), path("*.tsv"), emit: annotated_intervals
@@ -40,7 +40,8 @@ process GATK4_ANNOTATEINTERVALS {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" AnnotateIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        AnnotateIntervals \\
         ${inputs} \\
         --reference ${fasta} \\
         --output ${prefix}.tsv \\

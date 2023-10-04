@@ -1,12 +1,11 @@
 process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
-
+    
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-
     container "nf-core/universc:1.2.5.1"
 
     input:
@@ -22,6 +21,10 @@ process UNIVERSC {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
     if ( reads instanceof Path || reads.size() != 2 ) {
@@ -47,6 +50,10 @@ process UNIVERSC {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
     mkdir -p "${meta.id}/"
     mkdir -p "${meta.id}/SC_RNA_COUNTER_CS"

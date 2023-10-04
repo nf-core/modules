@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { BCL2FASTQ } from '../../../../modules/nf-core/bcl2fastq/main.nf'
 
 workflow test_bcl2fastq {
+    //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
     ch_flowcell = Channel.value([
             [id:'test', lane:1 ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
@@ -20,3 +21,4 @@ workflow test_bcl2fastq {
 
     BCL2FASTQ (ch_flowcell_merge)
 }
+

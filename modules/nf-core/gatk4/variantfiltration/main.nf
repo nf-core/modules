@@ -32,7 +32,8 @@ process GATK4_VARIANTFILTRATION {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" VariantFiltration \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        VariantFiltration \\
         --variant $vcf \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\
