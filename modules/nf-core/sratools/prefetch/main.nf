@@ -13,8 +13,8 @@ process SRATOOLS_PREFETCH {
     path certificate
 
     output:
-    tuple val(meta), path(id), emit: sra
-    path 'versions.yml'      , emit: versions
+    tuple val(meta), path("${id}{,.sralite}"), emit: sra
+    path 'versions.yml'                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

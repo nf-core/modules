@@ -33,7 +33,7 @@ process SRATOOLS_FASTERQDUMP {
         --threads $task.cpus \\
         --outfile $outfile \\
         ${key_file} \\
-        ${sra.name}
+        ${sra}
 
     pigz \\
         $args2 \\
