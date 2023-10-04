@@ -33,8 +33,8 @@ process FASTQSCREEN_BUILDFROMINDEX {
     mkdir $dir
     $copy_indexes
 
-    echo "$config" >> $dir/fastq_screen.conf
-    sed -i 's/\\\\n/\\n/g' $dir/fastq_screen.conf
+    echo "$config" > fastq_screen.conf
+    sed 's/\\\\n/\\n/g' fastq_screen.conf > $dir/fastq_screen.conf
     echo "Replace folder name real index name"
 
     for f in ${folder.join(' ')}
