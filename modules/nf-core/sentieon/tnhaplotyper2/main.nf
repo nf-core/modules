@@ -38,10 +38,10 @@ process SENTIEON_TNHAPLOTYPER2 {
     }
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
-    def args                      = task.ext.args                      ?: ''
-    def args2                     = task.ext.args2                     ?: ''  // args2 could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
-    def args3                     = task.ext.args3                     ?: ''  // args3 could be something like "--tumor_sample <tumour_id>"
-    def args4                     = task.ext.args4                     ?: ''  // args4 could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
+    def args                      = task.ext.args                      ?: ''  // options for "sentieon driver"
+    def args2                     = task.ext.args2                     ?: ''  // options for the TNhaplotyper2 algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
+    def args3                     = task.ext.args3                     ?: ''  // options for the OrientationBias algorithm. It could be something like "--tumor_sample <tumour_id>"
+    def args4                     = task.ext.args4                     ?: ''  // options for the ContaminationModel algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
     def prefix                    = task.ext.prefix                    ?: "${meta.id}"
     def pon_command               = panel_of_normals                   ? "--pon $panel_of_normals"           : ""
     def gr_command                = germline_resource                  ? "--germline_vcf $germline_resource" : ""
