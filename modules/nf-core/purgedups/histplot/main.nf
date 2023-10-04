@@ -21,10 +21,10 @@ process PURGEDUPS_HISTPLOT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    hist_plot.py \
-        -c $cutoff \
-        $args \
-        $statfile \
+    hist_plot.py \\
+        -c $cutoff \\
+        $args \\
+        $statfile \\
         ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
