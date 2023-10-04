@@ -23,6 +23,11 @@ input:
   - reads:
       type: file
       description: Short reads file(s). In fastq or fasta, compressed or uncompressed
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - sr_bam:
       type: file
       description: Aligned short-read BAM/SAM file. Must have CIGAR information.
