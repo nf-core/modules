@@ -39,9 +39,10 @@ process SENTIEON_TNHAPLOTYPER2 {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def args                      = task.ext.args                      ?: ''
+    def args2                     = task.ext.args2                     ?: ''  // args2 could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
+    def args3                     = task.ext.args3                     ?: ''  // args3 could be something like "--tumor_sample <tumour_id>"
+    def args4                     = task.ext.args4                     ?: ''  // args4 could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
     def prefix                    = task.ext.prefix                    ?: "${meta.id}"
-    def tumour_id                 = task.ext.tumour_id                 ?: "${meta.tumour_id}"
-    def normal_id                 = task.ext.normal_id                 ?: "${meta.normal_id}"
     def pon_command               = panel_of_normals                   ? "--pon $panel_of_normals"           : ""
     def gr_command                = germline_resource                  ? "--germline_vcf $germline_resource" : ""
     def inputs                    = input.collect{ "-i $it"}.join(" ")
@@ -49,11 +50,11 @@ process SENTIEON_TNHAPLOTYPER2 {
     def contamination_cmd         = ""
 
     if (emit_orientation_data) {
-        orientation_bias_cmd = "--algo OrientationBias --tumor_sample $tumour_id ${prefix}.orientation_data.tsv"
+        orientation_bias_cmd = "--algo OrientationBias $args3 ${prefix}.orientation_data.tsv"
     }
 
     if (emit_contamination_data) {
-        contamination_cmd = "--algo ContaminationModel --tumor_sample $tumour_id --normal_sample $normal_id --vcf $germline_resource --tumor_segments ${prefix}.segments ${prefix}.contamination_data.tsv"
+        contamination_cmd = "--algo ContaminationModel $args4 --vcf $germline_resource --tumor_segments ${prefix}.segments ${prefix}.contamination_data.tsv"
     }
 
     """
@@ -79,8 +80,7 @@ process SENTIEON_TNHAPLOTYPER2 {
         $args \\
         $inputs \\
         --algo TNhaplotyper2 \\
-        --tumor_sample $tumour_id \\
-        --normal_sample $normal_id \\
+        $args2 \\
         $gr_command \\
         $pon_command \\
         ${prefix}.vcf.gz \\
