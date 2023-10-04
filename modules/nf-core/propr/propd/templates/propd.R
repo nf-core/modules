@@ -74,15 +74,15 @@ opt <- list(
     prefix          = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count           = '$count',
     samplesheet     = '$samplesheet',
-    features_id_col = 'gene_id',
-    obs_id_col      = 'sample',
-    group_col       = 'treatment',
-    metric          = 'theta_d',
-    alpha           = NA,
-    permutation     = 0,
-    cutoff_min      = NA,
-    cutoff_max      = NA,
-    cutoff_interval = NA,
+    features_id_col = 'gene_id',            # column name of feature ids
+    obs_id_col      = 'sample',             # column name of observation ids
+    group_col       = 'treatment',          # column name of grouping variable
+    metric          = 'theta_d',            # differential proportionality metric: theta_d, theta_e or theta_f
+    alpha           = NA,                   # alpha for boxcox transformation
+    permutation     = 0,                    # permutation cycles for computing FDR
+    cutoff_min      = NA,                   # minimun threshold to test
+    cutoff_max      = NA,                   # maximun threshold to test
+    cutoff_interval = NA,                   # interval between thresholds
     ncores          = as.integer('$task.cpus')
 )
 opt_types <- list(
@@ -217,6 +217,11 @@ if (opt\$permutation > 0) {
 ## Generate outputs                           ##
 ################################################
 ################################################
+
+saveRDS(
+    pd,
+    file = paste0(opt\$prefix, '.propd.rds')
+)
 
 write.table(
     getResults(pd),

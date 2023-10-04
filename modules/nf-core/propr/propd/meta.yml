@@ -20,7 +20,7 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information.
+        Groovy Map containing additional information.
         This can be used at the workflow level to pass optional parameters to the module.
         [id: 'test', ...]
   - count:
@@ -29,30 +29,6 @@ input:
         Count matrix, where rows = variables or genes, columns = samples or cells.
         This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
       pattern: "*.{csv,tsv}"
-  - metric:
-      type: string
-      description: |
-        (Optional) Differential proportionality metric 'theta_d' or 'theta_e' or 'theta_f'. Default = theta_d
-  - alpha:
-      type: float
-      description: |
-        (Optional) Alpha parameter for Box-Cox transformation. Default = null, standard log transformation is applied to the ratios.
-  - permutation:
-      type: integer
-      description: |
-        (Optional) Number of permutation cycles to calculate FDR. Default = 0, no permutation.
-  - cutoff_min:
-      type: float
-      description: |
-        (Optional) Minimun FDR cutoff to test.
-  - cutoff_max:
-      type: float
-      description: |
-        (Optional) Maximun FDR cutoff to test.
-  - cutoff_interval:
-      type: float
-      description: |
-        (Optional) Step between each cutoff.
   - meta2:
       type: map
       description: |
@@ -61,18 +37,18 @@ input:
       type: file
       description: |
         CSV or TSV format sample sheet with sample metadata
-  - grouping_var:
-      type: string
-      description: |
-        (Optional) Variable from the sample sheet that can be used to define groups. Default = treatment.
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information.
+        Groovy Map containing additional information.
         This can be used at the workflow level to pass optional parameters to the module.
         [id: 'test', ...]
+  - propd:
+      type: file
+      description: R propd object
+      pattern: "*.propd.rds"
   - results:
       type: file
       description: Results table
