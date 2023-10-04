@@ -10,7 +10,7 @@ process EKLIPSE {
         'biocontainers/eklipse:1.8--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path ref_gb
 
     output:

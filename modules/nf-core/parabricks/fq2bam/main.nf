@@ -2,12 +2,14 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful.
+    */
+    stageInMode "copy"
 
     input:
     tuple val(meta), path(reads), path(interval_file)
@@ -27,6 +29,10 @@ process PARABRICKS_FQ2BAM {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
@@ -36,15 +42,6 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    # index and fasta need to be in the same dir as regular files (not symlinks)
-    #   and have the same base name for pbrun to function
-    #   here we copy the index into the staging dir of fasta
-    FASTA_PATH=`readlink -f $fasta`
-    cp \$INDEX.amb \$FASTA_PATH.amb
-    cp \$INDEX.ann \$FASTA_PATH.ann
-    cp \$INDEX.bwt \$FASTA_PATH.bwt
-    cp \$INDEX.pac \$FASTA_PATH.pac
-    cp \$INDEX.sa \$FASTA_PATH.sa
 
     pbrun \\
         fq2bam \\
@@ -65,6 +62,10 @@ process PARABRICKS_FQ2BAM {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"

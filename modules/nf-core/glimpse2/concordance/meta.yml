@@ -23,7 +23,7 @@ input:
 
   - region:
       type: string
-      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000). Can also be a list of such regions.
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
   - freq:
@@ -110,15 +110,20 @@ output:
       description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
       pattern: "*.errors.spl.txt.gz"
 
-  - rsquared_grp:
+  - rsquare_grp:
       type: file
       description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
       pattern: "*.rsquare.grp.txt.gz"
 
-  - rsquared_spl:
+  - rsquare_spl:
       type: file
       description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
       pattern: "*.rsquare.spl.txt.gz"
+
+  - rsquare_per_site:
+      type: file
+      description: Variant r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+      pattern: "_r2_sites.txt.gz"
 
 authors:
   - "@louislenezet"

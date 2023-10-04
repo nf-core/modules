@@ -43,7 +43,8 @@ process GATK4_MARKDUPLICATES {
     // Using samtools and not Markduplicates to compress to CRAM speeds up computation:
     // https://medium.com/@acarroll.dna/looking-at-trade-offs-in-compression-levels-for-genomics-tools-eec2834e8b94
     """
-    gatk --java-options "-Xmx${avail_mem}M" MarkDuplicates \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        MarkDuplicates \\
         $input_list \\
         --OUTPUT ${prefix_bam} \\
         --METRICS_FILE ${prefix}.metrics \\
@@ -57,6 +58,23 @@ process GATK4_MARKDUPLICATES {
         rm ${prefix_bam}
         samtools index ${prefix}
     fi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
+    """
+    touch ${prefix_no_suffix}.bam
+    touch ${prefix_no_suffix}.cram
+    touch ${prefix_no_suffix}.cram.crai
+    touch ${prefix_no_suffix}.bai
+    touch ${prefix}.metrics
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

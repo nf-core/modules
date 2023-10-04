@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: simpleaf_index
+description: Indexing of transcriptome for gene expression quantification using SimpleAF
+keywords:
+  - indexing
+  - transcriptome
+  - gene expression
+  - SimpleAF
+tools:
+  - simpleaf:
+      description: |
+        SimpleAF is a tool for quantification of gene expression from RNA-seq data
+      homepage: https://github.com/COMBINE-lab/simpleaf
+      licence: ["BSD-3-Clause"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on genome_fasta
+  - genome_fasta:
+      type: file
+      description: |
+        FASTA file containing the genome sequence
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information on genome_gtf
+  - genome_gtf:
+      type: file
+      description: |
+        GTF file containing transcript annotations. Optional if transcript FASTA file is provided.
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information on transcript_fasta
+  - transcript_fasta:
+      type: file
+      description: |
+        FASTA file containing the transcript sequences. Optional if transcript GTF file is provided.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on genome_fasta or transcript_fasta (whichever was used)
+  - index:
+      type: directory
+      description: |
+        Folder containing the Salmon index files
+      pattern: "salmon/index"
+  - transcript_tsv:
+      type: file
+      description: |
+        Transcript-to-gene mapping file in 3-column TSV format
+      pattern: "salmon/ref/*_t2g_3col.tsv"
+  - salmon:
+      type: directory
+      description: |
+        Folder containing the Salmon files
+      pattern: "salmon"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@fmalmeida"
+  - "@maxulysse"
+  - "@Khajidu"
+  - "@apeltzer"
+  - "@pinin4fjords"
