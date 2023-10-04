@@ -9,7 +9,7 @@ process HYPO {
 
     input:
     tuple val(meta), path(sr_bam)
-    tuple val(meta), path(reads)
+    tuple val(meta2), path(reads)
     path draft
     val genome_size
     val reads_coverage
