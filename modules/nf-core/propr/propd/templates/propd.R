@@ -140,7 +140,7 @@ for (file_input in c('count','samplesheet')){
 }
 
 # check parameters
-if (!opt\$metric %in% c('theta_d', 'theta_e', 'theta_f')) stop('Please provide a valid differential proportionality metric')
+if (! opt\$metric %in% c('theta_d', 'theta_e', 'theta_f')) stop('Please provide a valid differential proportionality metric')
 
 
 ################################################
@@ -195,9 +195,9 @@ pd <- propd(
 )
 if (opt\$metric == 'theta_d'){
     pd <- setDisjointed(pd)
-}else if (opt\$metric == 'theta_e'){
+} else if (opt\$metric == 'theta_e'){
     pd <- setEmergent(pd)
-}else if (opt\$metric == 'theta_f'){
+} else if (opt\$metric == 'theta_f'){
     pd <- setActive(pd, what = "theta_f")
 }
 
