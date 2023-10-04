@@ -5,10 +5,10 @@ nextflow.enable.dsl = 2
 include { PICARD_ADDORREPLACEREADGROUPS as NORMAL_ADDORREPLACEREADGROUPS } from '../../../../../modules/nf-core/picard/addorreplacereadgroups/main.nf'
 include { PICARD_ADDORREPLACEREADGROUPS as TUMOUR_ADDORREPLACEREADGROUPS } from '../../../../../modules/nf-core/picard/addorreplacereadgroups/main.nf'
 include { SAMTOOLS_INDEX                                                 } from '../../../../../modules/nf-core/samtools/index/main.nf'
-include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_TEST0         } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
-include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_TEST1         } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
-include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_TEST2         } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
-include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_TEST3         } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
+include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_NO_PON        } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
+include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_PON           } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
+include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_CONTAM_ORIENT } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
+include { SENTIEON_TNHAPLOTYPER2 as SENTIEON_TNHAPLOTYPER2_NO_NORMAL     } from '../../../../../modules/nf-core/sentieon/tnhaplotyper2/main.nf'
 
 workflow test_tnhaplotyper2_no_pon {
 
@@ -41,7 +41,7 @@ workflow test_tnhaplotyper2_no_pon {
     emit_contamination_data = false
     emit_orientation_data   = false
 
-    SENTIEON_TNHAPLOTYPER2_TEST0(input, dict, fasta, fai, germline_resource, germline_resource_tbi, [[:], []], [[:], []], emit_orientation_data, emit_contamination_data)
+    SENTIEON_TNHAPLOTYPER2_NO_PON(input, dict, fasta, fai, germline_resource, germline_resource_tbi, [[:], []], [[:], []], emit_orientation_data, emit_contamination_data)
 
 }
 
@@ -78,7 +78,7 @@ workflow test_tnhaplotyper2 {
     emit_contamination_data = false
     emit_orientation_data   = false
 
-    SENTIEON_TNHAPLOTYPER2_TEST1(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
+    SENTIEON_TNHAPLOTYPER2_PON(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
 
 }
 
@@ -115,7 +115,7 @@ workflow test_tnhaplotyper2_emit_contamination_and_orientation_data {
     emit_contamination_data = true
     emit_orientation_data   = true
 
-    SENTIEON_TNHAPLOTYPER2_TEST2(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
+    SENTIEON_TNHAPLOTYPER2_CONTAM_ORIENT(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
 
 }
 
@@ -145,6 +145,6 @@ workflow test_tnhaplotyper2_no_normal {
     emit_contamination_data = true
     emit_orientation_data   = true
 
-    SENTIEON_TNHAPLOTYPER2_TEST3(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
+    SENTIEON_TNHAPLOTYPER2_NO_NORMAL(input, dict, fasta, fai, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, emit_orientation_data, emit_contamination_data)
 
 }
