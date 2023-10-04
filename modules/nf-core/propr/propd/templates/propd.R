@@ -28,9 +28,9 @@ parse_args <- function(x){
 #'
 #' @param file Input file
 #' @param header Boolean. TRUE if first row is header. False without header.
-#' @param row.names The first column is used as row names by default. 
+#' @param row.names The first column is used as row names by default.
 #' Otherwise, give another number. Or use NULL when no row.names are present.
-#' 
+#'
 #' @return output Data frame
 read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names = TRUE){
 
@@ -190,7 +190,7 @@ pd <- propd(
     mat,
     group    = group,
     alpha    = opt\$alpha,
-    weighted = FALSE, 
+    weighted = FALSE,
     p        = opt\$permutation
 )
 if (opt\$metric == 'theta_d'){

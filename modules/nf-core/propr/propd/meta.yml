@@ -21,12 +21,12 @@ input:
       type: map
       description: |
         Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module. 
+        This can be used at the workflow level to pass optional parameters to the module.
         [id: 'test', ...]
   - count:
       type: file
       description: |
-        Count matrix, where rows = variables or genes, columns = samples or cells. 
+        Count matrix, where rows = variables or genes, columns = samples or cells.
         This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
       pattern: "*.{csv,tsv}"
   - metric:
@@ -71,7 +71,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module. 
+        This can be used at the workflow level to pass optional parameters to the module.
         [id: 'test', ...]
   - results:
       type: file
