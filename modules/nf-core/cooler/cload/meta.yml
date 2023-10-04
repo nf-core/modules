@@ -2,6 +2,9 @@ name: cooler_cload
 description: Create a cooler from genomic pairs and bins
 keywords:
   - cool
+  - cooler
+  - cload
+  - hic
 tools:
   - cooler:
       description: Sparse binary format for genomic interaction matrices
@@ -24,7 +27,7 @@ input:
       type: file
       description: Path to index file of the contacts.
   - cool_bin:
-      type: value
+      type: integer
       description: Bins size in bp
   - chromsizes:
       type: file
@@ -45,7 +48,7 @@ output:
       description: Output COOL file path
       pattern: "*.cool"
   - cool_bin:
-      type: value
+      type: integer
       description: Bins size in bp
 
 authors:

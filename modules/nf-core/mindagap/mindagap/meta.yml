@@ -1,0 +1,51 @@
+name: "mindagap_mindagap"
+description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted values.
+keywords:
+  - imaging
+  - resolve_bioscience
+  - spatial_transcriptomics
+tools:
+  - "mindagap":
+      description: "Mindagap is a collection of tools to process multiplexed FISH data, such as produced by Resolve Biosciences Molecular Cartography."
+      homepage: "https://github.com/ViriatoII/MindaGap"
+      documentation: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
+      tool_dev_url: "https://github.com/ViriatoII/MindaGap"
+      licence: "BSD-3-Clause license"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tiff:
+      type: file
+      description: A tiff file containing gridlines as produced by Molecular Cartography imaging.
+      pattern: "*.{tiff}"
+  - boxsize:
+      type: integer
+      description: A larger number allows to overcome large gaps, but makes looses fine details in new filled grid.
+  - loopnum:
+      type: integer
+      description: The number of times gaussian blur is run consecutively on the gridlines. A smaller number is faster, but the result is less good.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - tiff:
+      type: file
+      description: A tiff file with gridlines filled based on consecutive gaussian blurring.
+      pattern: "*.{tiff}"
+
+authors:
+  - "@ViriatoII"
+  - "@flowuenne"

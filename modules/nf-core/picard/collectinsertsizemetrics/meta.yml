@@ -1,0 +1,48 @@
+name: "picard_collectinsertsizemetrics"
+description: Collect metrics about the insert size distribution of a paired-end library.
+keywords:
+  - metrics
+  - alignment
+  - insert
+  - statistics
+  - bam
+
+tools:
+  - "picard":
+      description: "Java tools for working with NGS data in the BAM format"
+      homepage: "https://broadinstitute.github.io/picard/"
+      documentation: "https://broadinstitute.github.io/picard/"
+      tool_dev_url: "https://github.com/broadinstitute/picard"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - pdf:
+      type: file
+      description: Histogram plots of the insert size metrics computed by Picard
+      pattern: "*.pdf"
+  - metrics:
+      type: file
+      description: Values used by Picard to generate the insert size histograms
+      pattern: "*.txt"
+authors:
+  - "@FerriolCalvet"
