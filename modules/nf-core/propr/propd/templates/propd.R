@@ -63,7 +63,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
     return(mat)
 }
 
-
 ################################################
 ################################################
 ## Parse arguments                            ##
@@ -101,7 +100,6 @@ opt_types <- list(
     ncores          = 'numeric'
 )
 
-
 # Apply parameter overrides
 args_opt <- parse_args('$task.ext.args')
 for ( ao in names(args_opt)){
@@ -120,7 +118,6 @@ for ( ao in names(args_opt)){
         opt[[ao]] <- args_opt[[ao]]
     }
 }
-
 
 # Check if required parameters have been provided
 required_opts <- c('count','samplesheet')
@@ -142,7 +139,6 @@ for (file_input in c('count','samplesheet')){
 # check parameters
 if (! opt\$metric %in% c('theta_d', 'theta_e', 'theta_f')) stop('Please provide a valid differential proportionality metric')
 
-
 ################################################
 ################################################
 ## Finish loading libraries                   ##
@@ -150,7 +146,6 @@ if (! opt\$metric %in% c('theta_d', 'theta_e', 'theta_f')) stop('Please provide 
 ################################################
 
 library(propr)
-
 
 ################################################
 ################################################
@@ -211,7 +206,6 @@ if (opt\$permutation > 0) {
     pd <- updateCutoffs(pd, cutoff=cutoff, ncores=opt\$ncores)
 }
 
-
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -242,7 +236,6 @@ if (opt\$permutation > 0) {
     )
 }
 
-
 ################################################
 ################################################
 ## R SESSION INFO                             ##
@@ -252,7 +245,6 @@ if (opt\$permutation > 0) {
 sink(paste0(opt\$prefix, ".R_sessionInfo.log"))
 print(sessionInfo())
 sink()
-
 
 ################################################
 ################################################
@@ -270,7 +262,6 @@ writeLines(
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')
-
 
 ################################################
 ################################################
