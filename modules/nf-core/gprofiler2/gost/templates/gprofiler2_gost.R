@@ -121,26 +121,6 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 
 # Set defaults and classes
 
-write("1", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
-
-    # output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
-    # de_table = '\$de_table',
-    # de_id_column = 'gene_id'
-    # organism = '\$genome',
-    # significant = T,
-    # min_diff = 1,
-    # correction_method = 'fdr',
-    # sources = NULL,
-    # evcodes = F,
-    # user_threshold = '0.05',
-    # background = NULL,
-    # gmt = NULL,
-    # counts_table = NULL,
-    # domain_scope = 'annotated',
-    # round_digits = -1
-
-
-
 opt <- list(
     output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
     de_table = '\$de_table',
@@ -178,9 +158,8 @@ for ( ao in names(args_opt)) {
 }
 
 # _____
-write("3", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
-opt\$output_prefix = "testchen"
+#opt\$output_prefix = "/home-link/iivow01/git/modules/output_gpro"
 opt\$de_table = '/home-link/iivow01/git/modules/gpro_input/test.tsv'
 write("4", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 opt\$de_id_column = 'gene_id'
@@ -316,38 +295,26 @@ if (!is.null(opt\$custom_gmt)){
 
     # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
     gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", org_name, ".ENSG.gmt")
-    # tryCatch(
-    #     {
-    #         wget_command <- paste0("wget ", gmt_url)
-    #         sys_return <- system(wget_command)
-    #         if (sys_return != 0 && !("saved" %in% sys_return)) {
-    #             print("Failed to fetch the GMT file from gprofiler with this URL:")
-    #             print(gmt_url)
-    #             print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
-    #         }
-    #     },
-    #     error=function(gost_error) {
-    #         print("Failed to fetch the GMT file from gprofiler with this URL:")
-    #         print(gmt_url)
-    #         print("Got error:")
-    #         print(gost_error)
-    #         print("For reproducibility reasons, please try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'. Then provide it to the pipeline with the parameter `--custom_gmt`")
-    #     }
-    # )
-    gost_id <- opt\$organism
+    tryCatch(
+        {
+            wget_command <- paste0("wget ", gmt_url)
+            sys_return <- system(wget_command)
+            if (sys_return != 0 && !("saved" %in% sys_return)) {
+                print("Failed to fetch the GMT file from gprofiler with this URL:")
+                print(gmt_url)
+                print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
+            }
+        },
+        error=function(gost_error) {
+            print("Failed to fetch the GMT file from gprofiler with this URL:")
+            print(gmt_url)
+            print("Got error:")
+            print(gost_error)
+            print("For reproducibility reasons, please try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'. Then provide it to the pipeline with the parameter `--custom_gmt`")
+        }
+    )
+    gost_id <- org_name
 }
-
-
-
-
-
-
-
-write("äää", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt")
-
-
-
-
 
 
 
@@ -360,7 +327,8 @@ write("äää", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt")
 if (!is.null(opt\$background)) {
     background <- readLines(opt\$background)
 } else if (!is.null(opt\$counts_table)) {
-# Else if counts table was provided, use as background all features whose row sums are > 0
+# Else if counts table was provided, use as background all features whose row sums are > 0 --> TODO: Should this filter stay?
+# An alternative would be to expect the counts table
     counts_table <- read_delim_flexible(
         file = opt\$counts_table,
         row.names = 1
@@ -408,9 +376,6 @@ if (nrow(gostres\$result) > 0) {
 
     static_plot <- gostplot(gostres, capped=T, interactive=F)
     png(filename = file.path(output_prefix, "gostplot.png"), width = 900, height = 600)
-    static_plot
-    dev.off()
-    png(file = "/home-link/iivow01/git/modules/error_gpro/gostres.png", width = 900, height = 600)
     static_plot
     dev.off()
 
@@ -470,7 +435,7 @@ for (df in split(gostres\$result, gostres\$result\$source)){
     )
     write.table(
         df_subset,
-        file = "/home-link/iivow01/git/modules/error_gpro/df_subset.tsv",
+        file = "/home-link/iivow01/git/modules/output_gpro/enriched_pathways_tab.tsv",
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',

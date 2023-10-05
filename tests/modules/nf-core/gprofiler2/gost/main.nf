@@ -10,6 +10,12 @@ workflow test_gprofiler2_gost {
         [ id:'test' ], // meta map
         file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true)
     ]
+    background = Channel.from([])
+    gmt = Channel.from([])
 
-    GPROFILER2_GOST ( input )
+    GPROFILER2_GOST (
+        input,
+        background,
+        gmt
+    )
 }
