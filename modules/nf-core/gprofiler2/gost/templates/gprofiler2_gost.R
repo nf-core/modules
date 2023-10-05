@@ -126,10 +126,6 @@ write("1", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", appen
     # output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
     # de_table = '\$de_table',
     # de_id_column = 'gene_id'
-    # contrast_variable = '\$contrast_variable',
-    # reference_level = '\$reference',
-    # target_level = '\$target',
-    # blocking_variables = NULL,
     # organism = '\$genome',
     # significant = T,
     # min_diff = 1,
@@ -147,34 +143,21 @@ write("1", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", appen
 
 opt <- list(
     output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
-    de_table = 'de_table',
+    de_table = '\$de_table',
     de_id_column = 'gene_id',
-    contrast_variable = 'contrast_variable',
-    reference_level = 'reference',
-    target_level = 'target',
-    blocking_variables = NULL,
-    organism = NULL,
+    genome = '\$genome',
     significant = T,
     min_diff = 1,
     correction_method = 'fdr',
     sources = NULL,
     evcodes = F,
     user_threshold = '0.05',
-    background = NULL,
     gmt = NULL,
+    background = NULL,
     counts_table = NULL,
     domain_scope = 'annotated',
     round_digits = -1
 )
-
-   write("2", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
-
-
-
-
-
-
-
 
 opt_types <- lapply(opt, class)
 
@@ -219,13 +202,12 @@ opt\$round_digits = -1
 # ____
 # Check if required parameters have been provided
 
-required_opts <- c('output_prefix', 'sources')
+required_opts <- c('output_prefix', 'genome', 'sources')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
-write("äääaaa", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt")
 
 # Check file inputs are valid
 
@@ -238,9 +220,9 @@ for (file_input in c('de_table')) {
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
 }
-write("5", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
 # Determine organism and libary
+# TODO: leave as is, make params, or move this dictionary to an external file?
 
 org_names <- list(
     'GRCh37' = 'hsapiens',
@@ -254,16 +236,16 @@ org_keytypes <- list(
     'GRCm38' = 'ENSEMBL',
     'TAIR10' = 'TAIR'
 )
-org_libraries <- list(
-    'GRCh37' = 'org.Hs.eg.db',
-    'GRCh38' = 'org.Hs.eg.db',
-    'GRCm38' = 'org.Mm.eg.db',
-    'TAIR10' = 'org.At.tair.db'
-)
+# org_libraries <- list(
+#     'GRCh37' = 'org.Hs.eg.db',
+#     'GRCh38' = 'org.Hs.eg.db',
+#     'GRCm38' = 'org.Mm.eg.db',
+#     'TAIR10' = 'org.At.tair.db'
+# )
 
 org_name <- org_names[[opt\$genome]]
 org_keytype <- org_keytypes[[opt\$genome]]
-org_library <- org_libraries[[opt\$genome]]
+# org_library <- org_libraries[[opt\$genome]]
 
 ################################################
 ################################################
@@ -296,7 +278,6 @@ if (nrow(de.genes) == 0) {
 }
 query <- as.character(de.genes[[opt\$de_id_column]])
 # TODO IS AS.CHARACTER NEEDED ABOVE?
-write("6", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
 
 ################################################
@@ -334,7 +315,7 @@ if (!is.null(opt\$custom_gmt)){
 } else {
 
     # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-    gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+    gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", org_name, ".ENSG.gmt")
     # tryCatch(
     #     {
     #         wget_command <- paste0("wget ", gmt_url)

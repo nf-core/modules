@@ -12,7 +12,9 @@ process GPROFILER2_GOST {
         'biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(differential)
+    path(background)
+    path(gmt)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
