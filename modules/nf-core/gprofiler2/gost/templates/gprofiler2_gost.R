@@ -121,15 +121,39 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 
 # Set defaults and classes
 
+write("1", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
+
+    # output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
+    # de_table = '\$de_table',
+    # de_id_column = 'gene_id'
+    # contrast_variable = '\$contrast_variable',
+    # reference_level = '\$reference',
+    # target_level = '\$target',
+    # blocking_variables = NULL,
+    # organism = '\$genome',
+    # significant = T,
+    # min_diff = 1,
+    # correction_method = 'fdr',
+    # sources = NULL,
+    # evcodes = F,
+    # user_threshold = '0.05',
+    # background = NULL,
+    # gmt = NULL,
+    # counts_table = NULL,
+    # domain_scope = 'annotated',
+    # round_digits = -1
+
+
+
 opt <- list(
-    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    de_table = '$de_table',
-    de_id_column = 'gene_id'
-    contrast_variable = '$contrast_variable',
-    reference_level = '$reference',
-    target_level = '$target',
+    output_prefix = ifelse('\$task.ext.prefix' == 'null', '\$meta.id', '\$task.ext.prefix'),
+    de_table = 'de_table',
+    de_id_column = 'gene_id',
+    contrast_variable = 'contrast_variable',
+    reference_level = 'reference',
+    target_level = 'target',
     blocking_variables = NULL,
-    organism = '$genome',
+    organism = NULL,
     significant = T,
     min_diff = 1,
     correction_method = 'fdr',
@@ -143,7 +167,8 @@ opt <- list(
     round_digits = -1
 )
 
-   
+   write("2", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
+
 
 
 
@@ -170,11 +195,15 @@ for ( ao in names(args_opt)) {
 }
 
 # _____
+write("3", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
 opt\$output_prefix = "testchen"
-opt\$de_table = '/home-link/iivow01/git/modules/gpro_input/test.tsv',
+opt\$de_table = '/home-link/iivow01/git/modules/gpro_input/test.tsv'
+write("4", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 opt\$de_id_column = 'gene_id'
-opt\$organism = 'gp__mSms_5zrx_pQk'
+opt\$organism = 'mmusculus'
+#opt\$organism = 'gp__mSms_5zrx_pQk'
+opt\$genome = 'GRCm38'
 opt\$significant = T
 opt\$min_diff = 1
 opt\$correction_method = 'fdr'
@@ -196,6 +225,7 @@ missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! require
 if (length(missing) > 0) {
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
+write("äääaaa", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt")
 
 # Check file inputs are valid
 
@@ -208,6 +238,7 @@ for (file_input in c('de_table')) {
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
 }
+write("5", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
 # Determine organism and libary
 
@@ -242,6 +273,7 @@ org_library <- org_libraries[[opt\$genome]]
 
 #library(plotly)
 library(gprofiler2)
+library(ggplot2)
 
 #BiocManager::install(org_library, version="3.17", force=T)
 #library(org_library, character.only=T)
@@ -262,8 +294,9 @@ if (nrow(de.genes) == 0) {
   print("No differential features found, pathway enrichment analysis with gprofiler2 will be skipped.")
   stop()
 }
-query <- as.character(de.genes[[de_id_column]])
+query <- as.character(de.genes[[opt\$de_id_column]])
 # TODO IS AS.CHARACTER NEEDED ABOVE?
+write("6", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt", append=T)
 
 
 ################################################
@@ -273,7 +306,7 @@ query <- as.character(de.genes[[de_id_column]])
 ################################################
 
 output_prefix <- opt\$output_prefix
-
+dir.create(output_prefix)
 # Generate plots for all requested normalizations; also, save normalized protein groups for limma
 
 
@@ -290,7 +323,7 @@ output_prefix <- opt\$output_prefix
 
 
 
-if (isProvided(opt\$custom_gmt)){
+if (!is.null(opt\$custom_gmt)){
 
     # If custom GMT file was provided, extract only requested datasources (gprofiler will NOT filter automatically!)
     gmt <- Filter(function(line) any(startsWith(line, datasources)), readLines(opt\$gmt))
@@ -301,26 +334,26 @@ if (isProvided(opt\$custom_gmt)){
 } else {
 
     # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-    gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", organism, ".ENSG.gmt")
-    tryCatch(
-        {
-            wget_command <- paste0("wget ", gmt_url)
-            sys_return <- system(wget_command)
-            if (sys_return != 0 && !("saved" %in% sys_return)) {
-                print("Failed to fetch the GMT file from gprofiler with this URL:")
-                print(gmt_url)
-                print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
-            }
-        },
-        error=function(gost_error) {
-            print("Failed to fetch the GMT file from gprofiler with this URL:")
-            print(gmt_url)
-            print("Got error:")
-            print(gost_error)
-            print("For reproducibility reasons, please try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'. Then provide it to the pipeline with the parameter `--custom_gmt`")
-        }
-    )
-    gost_id <- organism
+    gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+    # tryCatch(
+    #     {
+    #         wget_command <- paste0("wget ", gmt_url)
+    #         sys_return <- system(wget_command)
+    #         if (sys_return != 0 && !("saved" %in% sys_return)) {
+    #             print("Failed to fetch the GMT file from gprofiler with this URL:")
+    #             print(gmt_url)
+    #             print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
+    #         }
+    #     },
+    #     error=function(gost_error) {
+    #         print("Failed to fetch the GMT file from gprofiler with this URL:")
+    #         print(gmt_url)
+    #         print("Got error:")
+    #         print(gost_error)
+    #         print("For reproducibility reasons, please try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'. Then provide it to the pipeline with the parameter `--custom_gmt`")
+    #     }
+    # )
+    gost_id <- opt\$organism
 }
 
 
@@ -329,7 +362,7 @@ if (isProvided(opt\$custom_gmt)){
 
 
 
-
+write("äää", file = "/home-link/iivow01/git/modules/error_gpro/gostres.txt")
 
 
 
@@ -345,14 +378,15 @@ if (isProvided(opt\$custom_gmt)){
 # If custom background was provided, use that
 if (!is.null(opt\$background)) {
     background <- readLines(opt\$background)
-}
+} else if (!is.null(opt\$counts_table)) {
 # Else if counts table was provided, use as background all features whose row sums are > 0
-else if (!is.null(opt\$counts_table)) {
     counts_table <- read_delim_flexible(
         file = opt\$counts_table,
         row.names = 1
     )
     background <- rownames(counts_table)[rowSums(counts(cds))>0]
+} else {
+    background <- NULL
 }
 
 gostres <- gost(
@@ -367,11 +401,11 @@ gostres <- gost(
     domain_scope=opt\$domain_scope
 )
 
-if (nrow(gostres$result) > 0) {
+if (nrow(gostres\$result) > 0) {
 
     # Create interactive plot and save to HTML
     interactive_plot <- gostplot(gostres, capped=T, interactive=T)
-    interactive_plot[['x']][['layout']][['annotations']][[1]][['x']] <- -opt\$adj_pval_threshold
+    interactive_plot[['x']][['layout']][['annotations']][[1]][['x']] <- opt\$adj_pval_threshold
 
     # limit gostplot y maximum dynamically for all subplots
     #for (counter in c(1:length(contrast_files))) {
@@ -393,6 +427,9 @@ if (nrow(gostres$result) > 0) {
 
     static_plot <- gostplot(gostres, capped=T, interactive=F)
     png(filename = file.path(output_prefix, "gostplot.png"), width = 900, height = 600)
+    static_plot
+    dev.off()
+    png(file = "/home-link/iivow01/git/modules/error_gpro/gostres.png", width = 900, height = 600)
     static_plot
     dev.off()
 
@@ -417,34 +454,42 @@ if (nrow(gostres$result) > 0) {
 
 
 # Subset gost results to those pathways with a min. number of differential features
-gostres$result <- gostres$result[which(gostres$result$intersection_size>=opt/$min_diff),]
+gostres\$result <- gostres\$result[which(gostres\$result\$intersection_size>=opt\$min_diff),]
 
 # annotate query size (number of differential features in contrast)
-gostres$result$original_query_size <- rep(length(as.character(DE_genes$Ensembl_ID)), nrow(gostres$result))
+gostres\$result\$original_query_size <- rep(length(as.character(de.genes\$Ensembl_ID)), nrow(gostres\$result))
 
 
 
 # Iterate over the enrichment results by source
-for (df in split(pathway_gostres, pathway_gostres$source)){
-    db_source <- df$source[1]
-    df$short_name <- sapply(df$term_name, substr, start=1, stop=50)
+for (df in split(gostres\$result, gostres\$result\$source)){
+    db_source <- df\$source[1]
+    df\$short_name <- sapply(df\$term_name, substr, start=1, stop=50)
 
     df_subset <- data.frame(
-        Pathway_name = df$short_name,
-        Pathway_code = df$term_id,
-        DE_genes = df$intersection_size,
-        Pathway_size = df$term_size,
-        Fraction_DE = (df$intersection_size / df$term_size),
-        Padj = df$p_value,
-        DE_genes_names = df$intersection
+        Pathway_name = df\$short_name,
+        Pathway_code = df\$term_id,
+        DE_genes = df\$intersection_size,
+        Pathway_size = df\$term_size,
+        Fraction_DE = (df\$intersection_size / df\$term_size),
+        Padj = df\$p_value,
+        DE_genes_names = df\$intersection
     )
     df_subset <- data.frame(
         round_dataframe_columns(df_subset, digits=opt\$round_digits),
         check.names = FALSE
     )
     write.table(
-        out_df,
+        df_subset,
         file = paste(output_prefix, 'gprofiler2', db_source, 'enriched_pathways_tab', 'tsv', sep = '.'),
+        col.names = TRUE,
+        row.names = FALSE,
+        sep = '\t',
+        quote = FALSE
+    )
+    write.table(
+        df_subset,
+        file = "/home-link/iivow01/git/modules/error_gpro/df_subset.tsv",
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -454,7 +499,7 @@ for (df in split(pathway_gostres, pathway_gostres$source)){
     # Enriched pathways horizontal barplots of padj values
     p <- ggplot(df_subset, aes(x=reorder(Pathway_name, Fraction_DE), y=Fraction_DE)) +
         geom_bar(aes(fill=Padj), stat="identity", width = 0.7) +
-        geom_text(aes(label=paste0(df_subset$DE_genes, "/", df_subset$Pathway_size)), vjust=0.4, hjust=-0.5, size=3) +
+        geom_text(aes(label=paste0(df_subset\$de.genes, "/", df_subset\$Pathway_size)), vjust=0.4, hjust=-0.5, size=3) +
         coord_flip() +
         scale_y_continuous(limits = c(0.00, 1.00)) +
         scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
@@ -496,30 +541,30 @@ org_name
 
 # R object for other processes to use
 
-saveRDS(proteinGroups, file = paste(output_prefix, 'proteus.raw_proteingroups.rds', sep = '.'))
+#saveRDS(proteinGroups, file = paste(output_prefix, 'proteus.raw_proteingroups.rds', sep = '.'))
 
 # Remove parents column to be able to save the table in tsv format
 
-#gostres$result$parents <- NULL
+#gostres\$result\$parents <- NULL
 
 # Write enrichment table without parents column (otherwise will throw error)
 
-out_df <- data.frame(
-        round_dataframe_columns(gostres$result[,names(gostres$result) != "parents"], digits=opt\$round_digits),
-        check.names = FALSE
-    )
-out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; save these to a separate column
-out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
+# out_df <- data.frame(
+#         round_dataframe_columns(gostres\$result[,names(gostres\$result) != "parents"], digits=opt\$round_digits),
+#         check.names = FALSE
+#     )
+# out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; save these to a separate column
+# out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
 
 
-write.table(
-    out_df,
-    file = paste(output_prefix, 'gprofiler2', 'enriched_pathways_tab', 'tsv', sep = '.'),
-    col.names = TRUE,
-    row.names = FALSE,
-    sep = '\t',
-    quote = FALSE
-)
+# write.table(
+#     out_df,
+#     file = paste(output_prefix, 'gprofiler2', 'enriched_pathways_tab', 'tsv', sep = '.'),
+#     col.names = TRUE,
+#     row.names = FALSE,
+#     sep = '\t',
+#     quote = FALSE
+# )
 
 ################################################
 ################################################
@@ -538,16 +583,12 @@ sink()
 ################################################
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-limma.version <- as.character(packageVersion('limma'))
-plotly.version <- as.character(packageVersion('plotly'))
-proteus.version <- as.character(packageVersion('proteus'))
+gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 writeLines(
     c(
-        '"${task.process}":',
+        '"\${task.process}":',
         paste('    r-base:', r.version),
-        paste('    r-proteus-bartongroup:', proteus.version),
-        paste('    r-plotly:', plotly.version),
-        paste('    bioconductor-limma:', limma.version)
+        paste('    r-gprofiler2:', gprofiler2.version)
     ),
 'versions.yml')
 
