@@ -1,5 +1,5 @@
 process MITOHIFI_FINDMITOREFERENCE {
-    tag '$species'
+    tag "$species"
     label 'process_low'
 
     // Docker image available at the project github repository
