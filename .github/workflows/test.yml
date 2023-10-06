@@ -16,6 +16,7 @@ concurrency:
 env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   prettier:
@@ -59,6 +60,7 @@ jobs:
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -102,15 +104,15 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        if: ${{ !startsWith(matrix.tags, 'subworkflow') }}
+        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
 
       - name: Remove substring from matrix.tags
-        id: remove-substring
-        run: subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g')
+        id: remove_substring
+        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
       - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint steps.set_tags.outputs.subworkflow_names
-        if: ${{ startsWith(matrix.tags, 'subworkflow') }}
+        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
+        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
     runs-on: ubuntu-20.04
@@ -367,6 +369,7 @@ jobs:
         id: filter
         with:
           filters: "tests/config/nftest_modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
     runs-on: ubuntu-20.04
