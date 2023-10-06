@@ -2,10 +2,10 @@ process SRATOOLS_PREFETCH {
     tag "$id"
     label 'process_low'
 
-    conda "bioconda::sra-tools=3.0.8"
+    conda "bioconda::sra-tools=2.11.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.0.8--h9f5acd7_0' :
-        'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
+        'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
+        'biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
 
     input:
     tuple val(meta), val(id)
@@ -13,8 +13,8 @@ process SRATOOLS_PREFETCH {
     path certificate
 
     output:
-    tuple val(meta), path("${id}{,.sralite}"), emit: sra
-    path 'versions.yml'                      , emit: versions
+    tuple val(meta), path(id), emit: sra
+    path 'versions.yml'      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

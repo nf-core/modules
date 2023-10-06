@@ -47,7 +47,7 @@ retry_with_backoff !{args2} \
     !{args} \
     !{id}
 
-[ -f !{id}.sralite ] && vdb-validate !{id}.sralite || vdb-validate !{id}
+vdb-validate !{id}
 
 cat <<-END_VERSIONS > versions.yml
 "!{task.process}":
