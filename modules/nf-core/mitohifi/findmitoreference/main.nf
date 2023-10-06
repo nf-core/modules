@@ -2,10 +2,8 @@ process MITOHIFI_FINDMITOREFERENCE {
     tag '$species'
     label 'process_low'
 
-    // Docker image available at the biocontainers Dockerhub
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://biocontainers/mitohifi:3.0.0_cv1':
-        'docker.io/biocontainers/mitohifi:3.0.0_cv1' }"
+    // Docker image available at the project github repository
+    container 'ghcr.io/marcelauliano/mitohifi:master'
 
     input:
     val species
