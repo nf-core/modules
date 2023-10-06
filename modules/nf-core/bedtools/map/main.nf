@@ -12,7 +12,7 @@ process BEDTOOLS_MAP {
     tuple val(meta2), path(chrom_sizes)
 
     output:
-    tuple val(meta), path("*.${extension}"), emit: map
+    tuple val(meta), path("*.${extension}"), emit: mapped
     path  "versions.yml"                   , emit: versions
 
     when:
