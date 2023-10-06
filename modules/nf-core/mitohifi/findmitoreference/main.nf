@@ -7,8 +7,6 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     input:
     val species
-    val email
-    val min_length
 
     output:
     path "*.fasta",                 emit: fasta
@@ -22,8 +20,6 @@ process MITOHIFI_FINDMITOREFERENCE {
     """
     findMitoReference.py \\
         --species $species \\
-        --email $email \\
-        --min_length $min_length \\
         --outfolder .
 
     cat <<-END_VERSIONS > versions.yml
