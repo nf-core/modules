@@ -10,7 +10,7 @@
       md5sum: 466d05dafb2eec672150754168010b4d
     - path: output/sratools/versions.yml
       contains:
-        - "sratools: 2.11.0"
+        - "sratools: 3.0.8"
 
 - name: sratools fasterqdump test_sratools_fasterqdump_paired_end
   command: nextflow run ./tests/modules/nf-core/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sratools/fasterqdump/nextflow.config
@@ -26,4 +26,4 @@
       md5sum: 065666caf5b2d5dfb0cb25d5f3abe659
     - path: output/sratools/versions.yml
       contains:
-        - "sratools: 2.11.0"
+        - "sratools: 3.0.8"
