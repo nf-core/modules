@@ -204,6 +204,7 @@ if (opt\$permutation > 0) {
         opt\$cutoff_interval
     )
     pd <- updateCutoffs(pd, cutoff=cutoff, ncores=opt\$ncores)
+    pd <- updateF(pd)
 }
 
 ################################################
