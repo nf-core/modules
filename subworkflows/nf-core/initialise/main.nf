@@ -9,7 +9,7 @@ workflow INITIALISE {
     take:
         version         // bool
         help            // bool
-        validate_params // bool
+        validateParams  // bool
         logo            // bool
 
     main:
@@ -47,13 +47,13 @@ workflow INITIALISE {
         log.info citation
 
         // Print help message if needed
-        if (params.help) {
+        if (help) {
             def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
             log.info paramsHelp(command)
             System.exit(0)
         }
 
-        if ( params.validate_params != false ){
+        if ( validateParams != false ){
             validateParameters()
         }
 
