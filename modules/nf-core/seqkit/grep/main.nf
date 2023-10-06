@@ -3,10 +3,10 @@ process SEQKIT_GREP {
     label 'process_low'
 
 
-    conda "bioconda::seqkit=2.4.0"
+    conda "bioconda::seqkit=2.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.4.0--h9ee0642_0':
-        'biocontainers/seqkit:2.4.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.5.1--h9ee0642_0':
+        'biocontainers/seqkit:2.5.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(sequence)
