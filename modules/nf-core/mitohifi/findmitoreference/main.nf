@@ -17,10 +17,12 @@ process MITOHIFI_FINDMITOREFERENCE {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     """
     findMitoReference.py \\
         --species $species \\
-        --outfolder .
+        --outfolder . \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
