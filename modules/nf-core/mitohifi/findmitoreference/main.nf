@@ -20,7 +20,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     def args = task.ext.args ?: ''
     """
     findMitoReference.py \\
-        --species $species \\
+        --species "$species" \\
         --outfolder . \\
         $args
 
