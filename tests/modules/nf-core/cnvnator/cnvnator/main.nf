@@ -9,7 +9,7 @@ include { CNVNATOR_CNVNATOR as CNVNATOR_PARTITION } from '../../../../../modules
 include { CNVNATOR_CNVNATOR as CNVNATOR_CALL      } from '../../../../../modules/nf-core/cnvnator/cnvnator/main.nf'
 
 workflow test_cnvnator {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -19,12 +19,11 @@ workflow test_cnvnator {
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    // fasta = file("/Users/ramprasad.neethiraj/Documents/modules/chr22", checkIfExists: true)
 
-    CNVNATOR_RD ( input, [[:],[]], [[:],[]], fasta, fai )
-    CNVNATOR_HIST ( [[:],[],[]], pytor, [[:],[]], fasta, fai )
-    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], fasta, fai )
-    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], fasta, fai )
-    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], fasta, fai )
+    CNVNATOR_RD ( input, [[:],[]], [[:],[]], [], [] )
+    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], fasta, [] )
+    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [], [] )
+    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], [], [] )
+    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [[:],[]], [], [] )
 }

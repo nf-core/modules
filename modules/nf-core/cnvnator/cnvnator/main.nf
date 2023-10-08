@@ -16,7 +16,7 @@ process CNVNATOR_CNVNATOR {
 
     output:
     tuple val(output_meta), path("${prefix}.pytor"), emit: pytor
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,11 @@ process CNVNATOR_CNVNATOR {
     def input_cmd = bam             ? "-tree ${bam}"      : ''
     output_meta   = bam             ? meta                : meta2
     prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
-    def reference = fasta           ? "-fasta ${fasta}"   : ''
+    if (fasta) {
+        reference = fasta.isDirectory() ? "-d ${fasta}" : "-fasta ${fasta}"
+    } else {
+        reference = ''
+    }
     def vcf_cmd   = vcf             ? "-vcf ${vcf}"       : ''
     """
     cnvnator \\
