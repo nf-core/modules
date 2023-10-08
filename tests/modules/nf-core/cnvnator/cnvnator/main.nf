@@ -15,14 +15,19 @@ workflow test_cnvnator {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
+
+    input1 = [
+	[ id:'test', single_end:false ],
+	file("/home/ramprasad.neethiraj/nextflow/raredisease/work/91/0e416924ada7507395408109876bcb/earlycasualcaiman_T1.bam", checkIfExists: true),
+	file("/home/ramprasad.neethiraj/nextflow/raredisease/work/2a/b8547d48fb0115b3268f1d89dd66d2/earlycasualcaiman_T1.bam.bai", checkIfExists: true)
+	]
     pytor = [
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
     ]
-    // fasta = file("/Users/ramprasad.neethiraj/Documents/modules/chr22", checkIfExists: true)
 
-    CNVNATOR_RD ( input, [[:],[]], [[:],[]], [], [] )
-    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], fasta, [] )
+    CNVNATOR_RD ( input1, [[:],[]], [[:],[]], [], [] )
+    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], [], [] )
     CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [], [] )
     CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], [], [] )
     CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [[:],[]], [], [] )

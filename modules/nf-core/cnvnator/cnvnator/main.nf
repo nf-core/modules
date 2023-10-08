@@ -16,6 +16,7 @@ process CNVNATOR_CNVNATOR {
 
     output:
     tuple val(output_meta), path("${prefix}.pytor"), emit: pytor
+    tuple val(output_meta), path("${prefix}_cnvnator.vcf"), emit: vcf, optional: true
     path "versions.yml"                            , emit: versions
 
     when:
@@ -31,13 +32,14 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    def vcf_cmd   = vcf             ? "-vcf ${vcf}"       : ''
+    convert_cmd = args.contains("-call") ? ">cnvnator.calls ; cnvnator2VCF.pl cnvnator.calls >" + prefix + "_cnvnator.vcf" : ''
     """
     cnvnator \\
         -root ${prefix}.pytor \\
         $args \\
+        $reference \\
         $input_cmd \\
-        $reference 
+	$convert_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
