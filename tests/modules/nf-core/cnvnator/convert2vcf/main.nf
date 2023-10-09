@@ -23,10 +23,10 @@ workflow test_cnvnator_convert2vcf {
         file("/home/ramprasad.neethiraj/nextflow/raredisease/work/2a/b8547d48fb0115b3268f1d89dd66d2/earlycasualcaiman_T1.bam.bai", checkIfExists: true)
 	]
 
-    CNVNATOR_RD ( input1, [[:],[]], [], [] )
-    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [], [] )
-    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [], [] )
-    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [], [] )
-    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [], [] )
+    CNVNATOR_RD ( input1, [[:],[]], [[:],[]], [[:],[]] )
+    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], [[:],[]] )
+    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [[:],[]] )
+    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], [[:],[]] )
+    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [[:],[]], [[:],[]] )
     CNVNATOR_CONVERT2VCF (CNVNATOR_CALL.out.tab)
 }
