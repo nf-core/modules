@@ -1,19 +1,19 @@
 - name: samtools stats test_samtools_stats
-  command: nextflow run ./tests/modules/nf-core/samtools/stats -entry test_samtools_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/stats/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/stats -entry test_samtools_stats -c ./tests/config/nextflow.config
   tags:
-    - samtools/stats
     - samtools
+    - samtools/stats
   files:
     - path: output/samtools/test.stats
-      md5sum: 6e768486d5df0257351c5419a79f9c9b
+      md5sum: 045a48208b1c6f5b8af4347fe31f4def
     - path: output/samtools/versions.yml
 
 - name: samtools stats test_samtools_stats_cram
-  command: nextflow run ./tests/modules/nf-core/samtools/stats -entry test_samtools_stats_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/stats/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/stats -entry test_samtools_stats_cram -c ./tests/config/nextflow.config
   tags:
-    - samtools/stats
     - samtools
+    - samtools/stats
   files:
     - path: output/samtools/test.stats
-      md5sum: 7c9ee5747793cceb9d6f4d733345641a
+      md5sum: dfbfa130d4a6925ddd1931dcd8354a43
     - path: output/samtools/versions.yml

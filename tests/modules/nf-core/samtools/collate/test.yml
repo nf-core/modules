@@ -1,19 +1,19 @@
 - name: samtools collate test_samtools_collate
-  command: nextflow run ./tests/modules/nf-core/samtools/collate -entry test_samtools_collate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/collate/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/collate -entry test_samtools_collate -c ./tests/config/nextflow.config
   tags:
     - samtools/collate
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: a391344352f99d04312a4f4fb48c9d58
+      md5sum: 2403c0accd96b1f52c516a5c55df4ade
     - path: output/samtools/versions.yml
 
 - name: samtools collate test_samtools_collate_cram
-  command: nextflow run ./tests/modules/nf-core/samtools/collate -entry test_samtools_collate_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/collate/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/collate -entry test_samtools_collate_cram -c ./tests/config/nextflow.config
   tags:
     - samtools/collate
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: 524dbd97cb9a5c03871e4814b98362f6
+      md5sum: 644576d7e03b891dac5b6991177ede51
     - path: output/samtools/versions.yml
