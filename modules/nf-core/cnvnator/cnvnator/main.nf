@@ -42,13 +42,14 @@ process CNVNATOR_CNVNATOR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(cnvnator 2>&1) | sed -n '/CNVnator/p' | sed 's/CNVnator v//')
+        CNVnator: \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
     END_VERSIONS
     """
 
     stub:
     def args      = task.ext.args   ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
+    output_meta   = bam             ? meta                : meta2
     def calls_cmd = args.contains("-call") ? "touch ${prefix}_cnvnator.tab" : ''
     """
     touch ${prefix}.pytor
@@ -56,7 +57,7 @@ process CNVNATOR_CNVNATOR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(cnvnator 2>&1) | sed -n '/CNVnator/p' | sed 's/CNVnator v//')
+        CNVnator: \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
     END_VERSIONS
     """
 }
