@@ -30,9 +30,9 @@ process GLIMPSE2_SPLITREFERENCE {
         task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
-    def map_command = map ? "--map $map" : ""
+    def args        = task.ext.args   ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
+    def map_command = map             ? "--map $map" : ""
 
     """
     GLIMPSE2_split_reference \\
@@ -45,8 +45,20 @@ process GLIMPSE2_SPLITREFERENCE {
         --output ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            glimpse2: "\$(GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
+    """
+    touch ${prefix}.bin
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
