@@ -1,0 +1,13 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml /convert2vcf
+- name: "cnvnator convert2vcf"
+  command:  
+  tags:
+    - "cnvnator"
+    - "cnvnator/convert2vcf"
+  files:
+    - path: "output/cnvnator/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/cnvnator/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    

@@ -15,9 +15,9 @@ process CNVNATOR_CNVNATOR {
     path fai
 
     output:
-    tuple val(output_meta), path("${prefix}.pytor"), emit: pytor
-    tuple val(output_meta), path("${prefix}_cnvnator.vcf"), emit: vcf, optional: true
-    path "versions.yml"                            , emit: versions
+    tuple val(output_meta), path("${prefix}.pytor")       , emit: pytor
+    tuple val(output_meta), path("${prefix}_cnvnator.tab"), emit: tab, optional: true
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,14 +32,14 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    convert_cmd = args.contains("-call") ? ">cnvnator.calls ; cnvnator2VCF.pl cnvnator.calls >" + prefix + "_cnvnator.vcf" : ''
+    calls_cmd = args.contains("-call") ? ">${prefix} + "_cnvnator.tab" : ''
     """
     cnvnator \\
         -root ${prefix}.pytor \\
         $args \\
         $reference \\
         $input_cmd \\
-	$convert_cmd
+    	$calls_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

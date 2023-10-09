@@ -7,6 +7,7 @@ include { CNVNATOR_CNVNATOR as CNVNATOR_HIST      } from '../../../../../modules
 include { CNVNATOR_CNVNATOR as CNVNATOR_STAT      } from '../../../../../modules/nf-core/cnvnator/cnvnator/main.nf'
 include { CNVNATOR_CNVNATOR as CNVNATOR_PARTITION } from '../../../../../modules/nf-core/cnvnator/cnvnator/main.nf'
 include { CNVNATOR_CNVNATOR as CNVNATOR_CALL      } from '../../../../../modules/nf-core/cnvnator/cnvnator/main.nf'
+include { CNVNATOR_CONVERT2VCF                    } from '../../../../../modules/nf-core/cnvnator/convert2vcf/main.nf'
 
 workflow test_cnvnator {
 
@@ -17,9 +18,9 @@ workflow test_cnvnator {
     ]
 
     input1 = [
-	[ id:'test', single_end:false ],
-	file("/home/ramprasad.neethiraj/nextflow/raredisease/work/91/0e416924ada7507395408109876bcb/earlycasualcaiman_T1.bam", checkIfExists: true),
-	file("/home/ramprasad.neethiraj/nextflow/raredisease/work/2a/b8547d48fb0115b3268f1d89dd66d2/earlycasualcaiman_T1.bam.bai", checkIfExists: true)
+        [ id:'test', single_end:false ],
+        file("/home/ramprasad.neethiraj/nextflow/raredisease/work/91/0e416924ada7507395408109876bcb/earlycasualcaiman_T1.bam", checkIfExists: true),
+        file("/home/ramprasad.neethiraj/nextflow/raredisease/work/2a/b8547d48fb0115b3268f1d89dd66d2/earlycasualcaiman_T1.bam.bai", checkIfExists: true)
 	]
 
     pytor = [
@@ -32,4 +33,5 @@ workflow test_cnvnator {
     CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [], [] )
     CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], [], [] )
     CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [[:],[]], [], [] )
+    CNVNATOR_CONVERT2VCF (CNVNATOR_CALL.out.tab)
 }
