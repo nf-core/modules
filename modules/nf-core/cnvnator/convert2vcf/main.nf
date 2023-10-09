@@ -29,7 +29,7 @@ process CNVNATOR_CONVERT2VCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(cnvnator 2>&1) | sed -n '/CNVnator/p' | sed 's/CNVnator v//')
     END_VERSIONS
     """
 
@@ -37,11 +37,11 @@ process CNVNATOR_CONVERT2VCF {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    touch ${prefix}_cnvnator.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(cnvnator 2>&1) | sed -n '/CNVnator/p' | sed 's/CNVnator v//')
     END_VERSIONS
     """
 }

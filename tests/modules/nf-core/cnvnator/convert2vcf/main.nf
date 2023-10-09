@@ -23,11 +23,6 @@ workflow test_cnvnator_convert2vcf {
         file("/home/ramprasad.neethiraj/nextflow/raredisease/work/2a/b8547d48fb0115b3268f1d89dd66d2/earlycasualcaiman_T1.bam.bai", checkIfExists: true)
 	]
 
-    pytor = [
-        [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
-    ]
-
     CNVNATOR_RD ( input1, [[:],[]], [[:],[]], [], [] )
     CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], [], [] )
     CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [], [] )
