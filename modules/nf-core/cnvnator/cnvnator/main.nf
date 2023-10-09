@@ -32,7 +32,7 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    calls_cmd = args.contains("-call") ? ">${prefix} + "_cnvnator.tab" : ''
+    calls_cmd = args.contains("-call") ? ">${prefix}_cnvnator.tab" : ''
     """
     cnvnator \\
         -root ${prefix}.pytor \\
