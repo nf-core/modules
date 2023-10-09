@@ -8,7 +8,7 @@
       md5sum: 7647dba20c89c0e3d7ad13842f060eb0
     - path: output/sratools/versions.yml
       contains:
-        - "sratools: 2.11.0"
+        - "sratools: 3.0.8"
 
 - name: sratools prefetch test_sratools_prefetch_with_sralite
   command: nextflow run ./tests/modules/nf-core/sratools/prefetch -entry test_sratools_prefetch_with_sralite -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sratools/prefetch/nextflow.config
@@ -20,4 +20,4 @@
       md5sum: 7acfce556ca0951aff49d780899c105b
     - path: output/sratools/versions.yml
       contains:
-        - "sratools: 2.11.0"
+        - "sratools: 3.0.8"
