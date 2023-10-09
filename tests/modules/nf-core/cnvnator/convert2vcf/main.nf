@@ -9,7 +9,7 @@ include { CNVNATOR_CNVNATOR as CNVNATOR_PARTITION } from '../../../../../modules
 include { CNVNATOR_CNVNATOR as CNVNATOR_CALL      } from '../../../../../modules/nf-core/cnvnator/cnvnator/main.nf'
 include { CNVNATOR_CONVERT2VCF                    } from '../../../../../modules/nf-core/cnvnator/convert2vcf/main.nf'
 
-workflow test_cnvnator {
+workflow test_cnvnator_convert2vcf {
 
     input = [
         [ id:'test', single_end:false ], // meta map
