@@ -65,7 +65,6 @@ process RMARKDOWNNOTEBOOK {
             start_idx <- which(rmd_content == "---")[1]
             end_idx <- which(rmd_content == "---")[2]
             rmd_yaml_content <- paste(rmd_content[(start_idx+1):(end_idx-1)], collapse = "\\n")
-            print(rmd_yaml_content)
             rmd_params <- yaml::yaml.load(rmd_yaml_content)
 
             # Override the params
@@ -74,8 +73,11 @@ process RMARKDOWNNOTEBOOK {
             # Convert back to YAML string
             updated_yaml_content <- as.character(yaml::as.yaml(rmd_params))
 
-            # Replace the YAML in Rmd
-            rmd_content[(start_idx+1):(end_idx-1)] <- unlist(strsplit(updated_yaml_content, "\\n"))
+            # Remove the old YAML content
+            rmd_content <- rmd_content[-((start_idx+1):(end_idx-1))]
+
+            # Insert the updated YAML content at the right position
+            rmd_content <- append(rmd_content, values = unlist(strsplit(updated_yaml_content, split = "\\n")), after = start_idx)
 
             writeLines(rmd_content, '${prefix}.parameterised.Rmd')
         """
