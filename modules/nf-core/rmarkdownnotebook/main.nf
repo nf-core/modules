@@ -71,15 +71,15 @@ process RMARKDOWNNOTEBOOK {
 
             # Recursive function to add 'value' to list elements, except for top-level
             add_value_recursively <- function(lst, is_top_level = FALSE) {
-              if (!is.list(lst)) {
-                return(lst)
-              }
+                if (!is.list(lst)) {
+                    return(lst)
+                }
 
-              lst <- lapply(lst, add_value_recursively)
-              if (!is_top_level) {
-                lst <- list(value = lst)
-              }
-              return(lst)
+                lst <- lapply(lst, add_value_recursively)
+                if (!is_top_level) {
+                    lst <- list(value = lst)
+                }
+                return(lst)
             }
 
             # Reformat nested lists under 'params' to have a 'value' key recursively
