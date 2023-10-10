@@ -5,7 +5,7 @@ nextflow_process {
     tag "sratools/fasterqdump"
     tag "modules_nfcore"
 
-    test("sratools/fasterqdump single_end") {
+    test("Single-end") {
 
         setup {
             run("UNTAR") {
@@ -36,7 +36,7 @@ nextflow_process {
         }
     }
 
-    test("sratools/fasterqdump paired_end") {
+    test("Paired-end") {
 
         setup {
             run("UNTAR") {
