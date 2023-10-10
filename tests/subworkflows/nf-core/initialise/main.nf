@@ -8,6 +8,7 @@ workflow test_initialise {
     INITIALISE ( 
         params.version,
         params.help,
-        params.validate_params
+        params.validate_params,
+        params.logo
     )
 }
