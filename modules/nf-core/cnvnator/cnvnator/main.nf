@@ -31,7 +31,7 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    calls_cmd = args.contains("-call") ? ">${prefix}.tab" : ''
+    calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
     """
     cnvnator \\
         -root ${prefix}.root \\
