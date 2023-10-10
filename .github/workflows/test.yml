@@ -20,13 +20,15 @@ env:
 
 jobs:
   prettier:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
+        with:
+          cache: "npm"
 
       - name: Install Prettier
         run: npm install -g prettier
