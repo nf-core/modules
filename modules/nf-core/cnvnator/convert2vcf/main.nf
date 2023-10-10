@@ -20,7 +20,7 @@ process CNVNATOR_CONVERT2VCF {
     script:
     def args       = task.ext.args   ?: ''
     def prefix     = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = "> ${prefix}_cnvnator.vcf"
+    def output_cmd = "> ${prefix}.vcf"
     """
     cnvnator2VCF.pl \\
         ${calls} \\
@@ -37,7 +37,7 @@ process CNVNATOR_CONVERT2VCF {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_cnvnator.vcf
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
