@@ -3,6 +3,7 @@ description: Demultiplex bgzip'd fastq files
 keywords:
   - demultiplex
   - fastq
+  - bgzip
 tools:
   - "sgdemux":
       description: "Tool for demultiplexing sequencing data generated on Singular Genomics' sequencing instruments."
@@ -44,24 +45,24 @@ output:
         Demultiplexing summary stats; control_reads_omitted failing_reads_omitted, total_templates
       pattern: "output/metrics.tsv"
   - most_frequent_unmatched:
-    type: file
-    description: |
-      File containing approx. counts of barcodes that did not match the expected barcodes
-    pattern: "output/most_frequence_unmatched.tsv"
+      type: file
+      description: |
+        File containing approx. counts of barcodes that did not match the expected barcodes
+      pattern: "output/most_frequence_unmatched.tsv"
   - per_project_metrics:
       type: file
       description: Summary metrics for samples in the same project
       pattern: "output/per_project_metrics.tsv"
   - per_sample_metrics:
-    type: file
-    description: Summary metrics for each sample
-    pattern: "output/per_sample_metrics.tsv"
+      type: file
+      description: Summary metrics for each sample
+      pattern: "output/per_sample_metrics.tsv"
   - sample_barcode_hop_metrics:
-    type: file
-    description: |
-      File output for dual-indexed runs with barcodes which are unexpected combinations of
-      expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
-    pattern: "output/sample_barcode_hop_metrics/tsv"
+      type: file
+      description: |
+        File output for dual-indexed runs with barcodes which are unexpected combinations of
+        expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
+      pattern: "output/sample_barcode_hop_metrics/tsv"
 
 authors:
   - "Samantha White: @samfulcrum"

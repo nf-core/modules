@@ -11,7 +11,7 @@ tools:
       homepage: "https://samtools.github.io/bcftools/bcftools.html"
       documentation: "https://samtools.github.io/bcftools/bcftools.html#convert"
       tool_dev_url: "https://github.com/samtools/bcftools"
-      doi: "https://doi.org/10.1093/gigascience/giab008"
+      doi: "10.1093/gigascience/giab008"
       licence: "['GPL']"
 
 input:
@@ -34,14 +34,19 @@ input:
       type: file
       description: (Optional) The index for the input files, if needed
       pattern: "*.bed"
-  - bed:
-      type: file
-      description: (Optional) The BED file containing the regions for the VCF file
-      pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: (Optional) The reference fasta, only needed for gVCF conversion
       pattern: "*.{fa,fasta}"
+  - bed:
+      type: file
+      description: (Optional) The BED file containing the regions for the VCF file
+      pattern: "*.bed"
 
 output:
   - meta:
@@ -69,6 +74,20 @@ output:
       type: file
       description: BCF merged output file => when `--output-type u` is used
       pattern: "*.bcf"
+  - hap:
+      type: file
+      description: hap format used by IMPUTE2 and SHAPEIT
+      pattern: "*.hap.gz"
+  - legend:
+      type: file
+      description: legend format used by IMPUTE2 and SHAPEIT
+      pattern: "*.legend.gz"
+  - sample:
+      type: file
+      description: sample format used by IMPUTE2 and SHAPEIT
+      pattern: "*.samples"
 
 authors:
   - "@nvnieuwk"
+  - "@ramprasadn"
+  - "@atrigila"

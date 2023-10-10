@@ -2,13 +2,13 @@ process ENDORSPY {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::endorspy=0.4"
+    conda "bioconda::endorspy=1.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/endorspy:0.4--hdfd78af_0':
-        'quay.io/biocontainers/endorspy:0.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/endorspy:1.3--hdfd78af_0':
+        'biocontainers/endorspy:1.3--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(stats), path(stats_optional)
+    tuple val(meta), path(stats_raw), path(stats_qualityfiltered), path(stats_deduplicated)
 
     output:
     tuple val(meta), path("*_mqc.json"), emit: json
@@ -20,12 +20,18 @@ process ENDORSPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def optionalstats = stats_optional ? "statsOptional=${stats_optional}" : ''
+    def optionalraw = stats_raw ? "-r ${stats_raw}" : ''
+    def optionalqualityfiltered = stats_qualityfiltered ? "-q ${stats_qualityfiltered}" : ''
+    def optionaldeduplicated = stats_deduplicated ? "-d ${stats_deduplicated}" : ''
+
+    if ( stats_qualityfiltered && !stats_raw && !stats_deduplicated ) error "ERROR: only input channel stats_qualityfiltered provided. No stats can be calculated. Add at least one additional input channel: stats_raw or stats_deduplicated"
+
 
     """
     endorspy \\
-        $stats \\
-        $optionalstats \\
+        $optionalraw \\
+        $optionalqualityfiltered \\
+        $optionaldeduplicated \\
         $args \\
         -o json \\
         -n $prefix

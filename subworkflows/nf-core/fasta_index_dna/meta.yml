@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_index_dna"
 description: |
   Generate aligner index for a reference genome.
@@ -5,11 +6,12 @@ description: |
 keywords:
   - fasta
   - index
+  - bowtie2
   - bwamem
   - bwamem2
   - dragmap
   - snapaligner
-modules:
+components:
   - bowtie2/build
   - bwa/index
   - bwamem2/index
@@ -35,7 +37,7 @@ input:
         Sam formatted liftover file for the reference genome alt contigs
         See: https://github.com/lh3/bwa/blob/master/README-alt.md
         Download from: https://sourceforge.net/projects/bio-bwa/files/bwakit
-  - aligner:
+  - val_aligner:
       type: string
       description: Aligner to use for alignment
       enum:
@@ -59,3 +61,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@matthdsm"
+  - "@ramprasadn"

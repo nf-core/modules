@@ -1,0 +1,65 @@
+name: "gatk4_postprocessgermlinecnvcalls"
+description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
+keywords:
+  - copy number
+  - gatk4
+  - postprocessgermlinecnvcalls
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593411-PostprocessGermlineCNVCalls
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ploidy:
+      type: directory
+      description: |
+        Optional - A folder containing the ploidy model.
+        When a model is supplied to tool will run in CASE mode.
+      pattern: "*-calls/"
+  - calls:
+      type: directory
+      description: A folder containing the calls from the input files
+      pattern: "*-cnv-calls/*-calls"
+  - model:
+      type: directory
+      description: |
+        A folder containing the model from the input files.
+        This will only be created in COHORT mode (when no model is supplied to the process).
+      pattern: "*-cnv-model/*-model"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - denoised:
+      type: file
+      description: Denoised copy ratio file
+      pattern: "*.vcf.gz"
+  - segments:
+      type: file
+      description: Segments VCF file
+      pattern: "*.vcf.gz"
+  - intervals:
+      type: file
+      description: Intervals VCF file
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@ryanjameskennedy"
