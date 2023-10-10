@@ -38,7 +38,7 @@ process CNVNATOR_CNVNATOR {
         $args \\
         $reference \\
         $input_cmd \\
-    	$calls_cmd
+        $calls_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

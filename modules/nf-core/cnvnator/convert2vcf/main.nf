@@ -29,7 +29,7 @@ process CNVNATOR_CONVERT2VCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-       CNVnator : \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
+        CNVnator : \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process CNVNATOR_CONVERT2VCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-       CNVnator : \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
+        CNVnator : \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
     END_VERSIONS
     """
 }
