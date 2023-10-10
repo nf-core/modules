@@ -17,8 +17,8 @@ workflow test_cnvnator {
     ]
 
     CNVNATOR_RD ( input, [[:],[]], [[:],[]], [[:],[]] )
-    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.pytor, [[:],[]], [[:],[]] )
-    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.pytor, [[:],[]], [[:],[]] )
-    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.pytor, [[:],[]], [[:],[]] )
-    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.pytor, [[:],[]], [[:],[]] )
+    CNVNATOR_HIST ( [[:],[],[]], CNVNATOR_RD.out.root, [[:],[]], [[:],[]] )
+    CNVNATOR_STAT ( [[:],[],[]], CNVNATOR_HIST.out.root, [[:],[]], [[:],[]] )
+    CNVNATOR_PARTITION ( [[:],[],[]], CNVNATOR_STAT.out.root, [[:],[]], [[:],[]] )
+    CNVNATOR_CALL ( [[:],[],[]], CNVNATOR_PARTITION.out.root, [[:],[]], [[:],[]] )
 }
