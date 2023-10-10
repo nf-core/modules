@@ -30,8 +30,7 @@ process SURVIVOR_SIMSV {
 
     def create_parameters = parameters ? "" : "SURVIVOR simSV ${prefix}.txt"
     def params_file = parameters ? parameters : "${prefix}.txt"
-    def create_vcf = fasta ? "SURVIVOR simSV ${fasta} ${params_file} ${snp_mutation_frequency} ${sim_reads} ${prefix}" : "" 
-                        
+    def create_vcf = fasta ? "SURVIVOR simSV ${fasta} ${params_file} ${snp_mutation_frequency} ${sim_reads} ${prefix}" : ""
 
     """
     ${create_parameters}
@@ -48,8 +47,7 @@ process SURVIVOR_SIMSV {
     def prefix = task.ext.prefix ?: meta.id ?: "simSV"
 
     def create_parameters = parameters ? "" : "touch ${prefix}.txt"
-    def create_vcf = fasta ? "touch ${prefix}.vcf" : "" 
-
+    def create_vcf = fasta ? "touch ${prefix}.vcf" : ""
 
     """
     ${create_parameters}
