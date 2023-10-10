@@ -63,11 +63,11 @@ process RMARKDOWNNOTEBOOK {
 
             # Substitute values
             for (key in names(params)) {
-              # Generate pattern for substitution. Assumes each parameter in
-              # the Rmd is in the format: key: value
-              pattern <- paste0("^\\\s*", key, ":.*\$")
-              replacement <- paste0(key, ": ", params[[key]])
-              rmd_content <- gsub(pattern, replacement, rmd_content)
+                # Generate pattern for substitution. Assumes each parameter in
+                # the Rmd is in the format: key: value
+                pattern <- paste0("^\\\s*", key, ":.*\$")
+                replacement <- paste0(key, ": ", params[[key]])
+                rmd_content <- gsub(pattern, replacement, rmd_content)
             }
             writeLines(rmd_content, '${prefix}.parameterised.Rmd')
         """
