@@ -61,14 +61,21 @@ process RMARKDOWNNOTEBOOK {
             # be reused
             rmd_content <- readLines('${prefix}.Rmd')
 
-            # Substitute values
-            for (key in names(params)) {
-                # Generate pattern for substitution. Assumes each parameter in
-                # the Rmd is in the format: key: value
-                pattern <- paste0("^\\\s*", key, ":.*\$")
-                replacement <- paste0(key, ": ", params[[key]])
-                rmd_content <- gsub(pattern, replacement, rmd_content)
-            }
+            # Extract YAML content between the first two '---'
+            start_idx <- which(rmd_content == "---")[1]
+            end_idx <- which(rmd_content == "---")[2]
+            rmd_yaml_content <- paste(rmd_content[(start_idx+1):(end_idx-1)], collapse = "\n")
+            rmd_params <- yaml.load(rmd_yaml_content)
+
+            # Override the params
+            rmd_params$params <- modifyList(rmd_params$params, external_params)
+
+            # Convert back to YAML string
+            updated_yaml_content <- as.character(yaml::as.yaml(rmd_params))
+
+            # Replace the YAML in Rmd
+            rmd_content[(start_idx+1):(end_idx-1)] <- unlist(strsplit(updated_yaml_content, "\n"))
+
             writeLines(rmd_content, '${prefix}.parameterised.Rmd')
         """
     } else {
