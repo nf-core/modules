@@ -2,10 +2,10 @@ process DSHBIO_SPLITGFF3 {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::dsh-bio=2.1"
+    conda "bioconda::dsh-bio=2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
-        'biocontainers/dsh-bio:2.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dsh-bio:2.3--hdfd78af_0' :
+        'biocontainers/dsh-bio:2.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff3)
