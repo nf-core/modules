@@ -18,10 +18,11 @@ process RMARKDOWNNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")           , emit: report
-    tuple val(meta), path ("artifacts/*")     , emit: artifacts, optional: true
-    tuple val(meta), path ("session_info.log"), emit: session_info
-    path  "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.html")              , emit: report
+    tuple val(meta), path("*.parameterised.Rmd") , emit: parameterised_notebook, optional: true
+    tuple val(meta), path ("artifacts/*")        , emit: artifacts, optional: true
+    tuple val(meta), path ("session_info.log")   , emit: session_info
+    path  "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,6 +55,21 @@ process RMARKDOWNNOTEBOOK {
         render_cmd = """\
             params = yaml::read_yaml('.params.yml')
             rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
+
+            # As well as rendering with params, produce a version of the R
+            # markdown with param definitions set, so the notebook itself can
+            # be reused
+            rmd_content <- readLines('${prefix}.Rmd')
+
+            # Substitute values
+            for (key in names(params)) {
+              # Generate pattern for substitution. Assumes each parameter in
+              # the Rmd is in the format: key: value
+              pattern <- paste0("^\\\s*", key, ":.*\$")
+              replacement <- paste0(key, ": ", params[[key]])
+              rmd_content <- gsub(pattern, replacement, rmd_content)
+            }
+            writeLines(rmd_content, '${prefix}.parameterised.Rmd')
         """
     } else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd')"
