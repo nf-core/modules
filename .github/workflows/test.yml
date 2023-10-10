@@ -368,7 +368,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/nftest_modules.yml"
+          filters: ".github/modules.yml"
           token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
