@@ -65,7 +65,7 @@ process RMARKDOWNNOTEBOOK {
             start_idx <- which(rmd_content == "---")[1]
             end_idx <- which(rmd_content == "---")[2]
             rmd_yaml_content <- paste(rmd_content[(start_idx+1):(end_idx-1)], collapse = "\n")
-            rmd_params <- yaml.load(rmd_yaml_content)
+            rmd_params <- yaml::yaml.load(rmd_yaml_content)
 
             # Override the params
             rmd_params$params <- modifyList(rmd_params$params, external_params)
