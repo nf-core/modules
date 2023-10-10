@@ -1,13 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /revseq
-- name: "emboss revseq"
+- name: emboss revseq test_emboss_revseq
   command: nextflow run ./tests/modules/nf-core/emboss/revseq -entry test_emboss_revseq -c ./tests/config/nextflow.config
   tags:
-    - "emboss"
-    - "emboss/revseq"
+    - emboss/revseq
+    - emboss
   files:
-    - path: "output/emboss/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/emboss/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/emboss/test.rev.fasta
+      md5sum: 78a4b77f08b5c95ab24e592f543f679c
+    - path: output/emboss/versions.yml

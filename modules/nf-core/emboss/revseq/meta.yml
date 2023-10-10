@@ -1,55 +1,45 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "emboss_revseq"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: the revseq program from emboss reverse complements a nucleotide sequence
 keywords:
-  - sort
-  - example
-  - genomics
+  - nucleotides
+  - reverse complement
+  - sequences
 tools:
   - "emboss":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "The European Molecular Biology Open Software Suite"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['GPL']"
+      homepage: "https://www.ebi.ac.uk/Tools/sfc/emboss_seqret/"
+      documentation: "https://emboss.bioinformatics.nl/cgi-bin/emboss/help/seqret"
+      tool_dev_url: "http://emboss.open-bio.org/"
+      doi: "10.1016/s0168-9525(00)02024-2 "
+      licence: ["GPL"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - sequences:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input sequences
+      pattern: "*.{fasta,fna,fa,fst,aln,phy}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - revseq:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File with reverse complemented sequences
+      pattern: "*.{fasta,fna,fa,fst,aln,phy}"
 
 authors:
   - "@erikrikarddaniel"
