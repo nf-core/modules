@@ -1,11 +1,15 @@
 - name: bamcmp test_bamcmp
-  command: nextflow run ./tests/modules/nf-core/bamcmp -entry test_bamcmp -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bamcmp -entry test_bamcmp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bamcmp/nextflow.config
   tags:
     - bamcmp
   files:
-    - path: output/bamcmp/test_contamination.bam
-      md5sum: 5379655d8befef5a3c4b4e56c20de15f
+    - path: output/bamcmp/test_contaminant.bam
+    - path: output/bamcmp/test_cov2.bam
     - path: output/bamcmp/test_primary.bam
-      md5sum: e267741b9549068cd6f5fc98d8ff529d
     - path: output/bamcmp/versions.yml
-      md5sum: 34d569665ff0459e84114e966dd3483b
+    - path: output/bwa/cov2.bam
+    - path: output/bwa/human.bam
+    - path: output/bwa/versions.yml
+    - path: output/samtools/sorted_cov2.bam
+    - path: output/samtools/sorted_human.bam
+    - path: output/samtools/versions.yml

@@ -14,28 +14,18 @@ components:
   - bcftools/index
 
 input:
-  - ch_vcf:
+  - ch_input:
       type: file
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
         Index file of the input VCF/BCF file containing genotype likelihoods.
         File with sample names and ploidy information.
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ meta, vcf, csi, txt, region ]
-
-  - ch_ref:
-      type: file
-      description: |
         Reference panel of haplotypes in VCF/BCF format.
         Index file of the Reference panel file.
-        Structure: [ meta, vcf, csi ]
-
-  - ch_map:
-      type: file
-      description: |
         File containing the genetic map.
-        Structure: [gmap]
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ meta, vcf, csi, txt, region, ref_vcf, ref_csi, gmap ]
 
 output:
   - chunk_chr:

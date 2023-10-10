@@ -9,8 +9,9 @@ process GATK4_GERMLINECNVCALLER {
     tuple val(meta), path(tsv), path(intervals), path(ploidy), path(model)
 
     output:
-    tuple val(meta), path("*-cnv-calls/*-calls"), emit: calls, optional: true
-    tuple val(meta), path("*-cnv-model/*-model"), emit: model, optional: true
+    tuple val(meta), path("*-cnv-model/*-calls"), emit: cohortcalls, optional: true
+    tuple val(meta), path("*-cnv-model/*-model"), emit: cohortmodel, optional: true
+    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls  , optional: true
     path  "versions.yml"                        , emit: versions
 
     when:
@@ -36,7 +37,8 @@ process GATK4_GERMLINECNVCALLER {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" GermlineCNVCaller \\
+    gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
+        GermlineCNVCaller \\
         $input_list \\
         $ploidy_command \\
         $output_command \\
@@ -60,6 +62,7 @@ process GATK4_GERMLINECNVCALLER {
     """
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls
     mkdir -p ${prefix}-cnv-model/${prefix}-model
+    mkdir -p ${prefix}-cnv-model/${prefix}-calls
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
