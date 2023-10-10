@@ -69,6 +69,22 @@ process RMARKDOWNNOTEBOOK {
             # Override the params
             rmd_params[['params']] <- modifyList(rmd_params[['params']], params)
 
+            # Recursive function to add 'value' to list elements, except for top-level
+            add_value_recursively <- function(lst, is_top_level = FALSE) {
+              if (!is.list(lst)) {
+                return(lst)
+              }
+
+              lst <- lapply(lst, add_value_recursively)
+              if (!is_top_level) {
+                lst <- list(value = lst)
+              }
+              return(lst)
+            }
+
+            # Reformat nested lists under 'params' to have a 'value' key recursively
+            rmd_params[['params']] <- add_value_recursively(rmd_params[['params']], is_top_level = TRUE)
+
             # Convert back to YAML string
             updated_yaml_content <- as.character(yaml::as.yaml(rmd_params))
 
@@ -81,7 +97,7 @@ process RMARKDOWNNOTEBOOK {
             writeLines(rmd_content, '${prefix}.parameterised.Rmd')
 
             # Render based on the updated file
-            rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html')
+            rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html', envir = new.env())
         """
     } else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd', output_file='${prefix}.html')"
