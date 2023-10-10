@@ -37,7 +37,7 @@ jobs:
         run: prettier --check .
 
   editorconfig:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -51,7 +51,7 @@ jobs:
 
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -360,7 +360,7 @@ jobs:
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -523,7 +523,7 @@ jobs:
             test.tap
 
   confirm-pass:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
     if: always()
     steps:
