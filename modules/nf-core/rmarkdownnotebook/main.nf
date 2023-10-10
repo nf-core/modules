@@ -54,7 +54,6 @@ process RMARKDOWNNOTEBOOK {
         params_cmd = dump_params_yml(nb_params)
         render_cmd = """\
             params = yaml::read_yaml('.params.yml')
-            rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
 
             # As well as rendering with params, produce a version of the R
             # markdown with param definitions set, so the notebook itself can
@@ -80,9 +79,12 @@ process RMARKDOWNNOTEBOOK {
             rmd_content <- append(rmd_content, values = unlist(strsplit(updated_yaml_content, split = "\\n")), after = start_idx)
 
             writeLines(rmd_content, '${prefix}.parameterised.Rmd')
+
+            # Render based on the updated file
+            rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html')
         """
     } else {
-        render_cmd = "rmarkdown::render('${prefix}.Rmd')"
+        render_cmd = "rmarkdown::render('${prefix}.Rmd', output_file='${prefix}.html')"
     }
 
     """
