@@ -37,7 +37,7 @@ process GATK4_PRINTSVEVIDENCE {
                     file_name =~ ".rd.txt" ? "rd" :
                     false
 
-    if(!file_type){
+    if (!file_type){
         error("The input file name should contain one of the following: '.sr.txt', '.pe.txt', '.baf.txt', '.rd.txt'")
     }
 
@@ -47,9 +47,9 @@ process GATK4_PRINTSVEVIDENCE {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-
     """
-    gatk --java-options "-Xmx${avail_mem}M" PrintSVEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        PrintSVEvidence \\
         ${input_files} \\
         --sequence-dictionary ${dict} \\
         ${intervals} \\

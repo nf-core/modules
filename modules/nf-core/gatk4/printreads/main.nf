@@ -25,6 +25,7 @@ process GATK4_PRINTREADS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK PrintReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -34,9 +35,9 @@ process GATK4_PRINTREADS {
     if ("${input}" == "${prefix}.${input.extension}") {
         error("Output filename is the same as input filename. Please specify a different prefix.")
     }
-
     """
-    gatk --java-options "-Xmx${avail_mem}M" PrintReads \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        PrintReads \\
         $args \\
         --reference $fasta \\
         --input $input \\

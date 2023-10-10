@@ -22,14 +22,15 @@ process GATK4_COMPOSESTRTABLEFILE {
     script:
     def args = task.ext.args ?: ''
 
-    def avail_mem = 6
+    def avail_mem = 6144
     if (!task.memory) {
         log.info '[GATK ComposeSTRTableFile] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ComposeSTRTableFile \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ComposeSTRTableFile \\
         --reference $fasta \\
         --output ${fasta.baseName}.zip \\
         --tmp-dir . \\

@@ -2,15 +2,10 @@ process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/nfcore/cellranger:7.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/cellranger:7.1.0"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: "fastq_???/*")
     path  reference
 
     output:
@@ -21,26 +16,19 @@ process CELLRANGER_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference_name = reference.name
-    """
-    cellranger \\
-        count \\
-        --id='$prefix' \\
-        --fastqs=. \\
-        --transcriptome=$reference_name \\
-        --localcores=$task.cpus \\
-        --localmem=${task.memory.toGiga()} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
-    """
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    template "cellranger_count.py"
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"

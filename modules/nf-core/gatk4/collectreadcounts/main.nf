@@ -9,9 +9,9 @@ process GATK4_COLLECTREADCOUNTS {
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    path(fasta)
-    path(fai)
-    path(dict)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("*.hdf5"), optional: true, emit: hdf5
@@ -37,7 +37,8 @@ process GATK4_COLLECTREADCOUNTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CollectReadCounts \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CollectReadCounts \\
         --input $input \\
         --intervals $intervals \\
         --output ${prefix}.$extension \\
