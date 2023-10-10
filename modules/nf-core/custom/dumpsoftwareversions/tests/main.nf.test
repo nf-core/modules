@@ -27,7 +27,7 @@ nextflow_process {
                   multiqc: 1.9
                 '''.stripIndent()
                 
-                input[0] = Channel.of(fastqc_version, multiqc_version).collectFile(sort: true)
+                input[0] = Channel.of(fastqc_version, multiqc_version).collectFile(name: 'collated_versions.yml', sort: 'deep')
                 """
             }
         }
