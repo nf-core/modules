@@ -6,6 +6,13 @@ nextflow_process {
 
     test("Should run without failures") {
 
+        when {
+            params {
+                settings_path = '/tmp/.ncbi'
+                settings_file = "${params.settings_path}/user-settings.mkfg"
+            }
+        }
+
         then {
             assert process.success
             assert snapshot(process.out).match()
