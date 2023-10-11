@@ -248,6 +248,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -283,11 +285,9 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Set up Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -400,6 +400,8 @@ jobs:
           - profile: "conda"
             tags: cellranger/mkref
           - profile: "conda"
+            tags: custom/dumpsoftwareversions
+          - profile: "conda"
             tags: deepvariant
           - profile: "conda"
             tags: ensemblvep/vep
@@ -442,10 +444,13 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NF_TEST_VER: 0.8.1
 
     steps:
       - uses: actions/checkout@v3
@@ -460,7 +465,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NF_TEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -468,11 +473,9 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      - name: Set up Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
