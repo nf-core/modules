@@ -461,7 +461,7 @@ jobs:
           key: ${{ runner.os }}-nftest
 
       - name: Install nf-test
-        # if: steps.cache-software.outputs.cache-hit != 'true'
+        if: steps.cache-software.outputs.cache-hit != 'true'
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
