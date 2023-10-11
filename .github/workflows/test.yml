@@ -248,6 +248,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -440,10 +442,13 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NF_TEST_VER: 0.8.1
 
     steps:
       - uses: actions/checkout@v3
@@ -458,7 +463,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NF_TEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
