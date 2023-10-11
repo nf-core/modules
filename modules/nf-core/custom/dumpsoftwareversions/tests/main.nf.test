@@ -9,21 +9,21 @@ nextflow_process {
     tag "modules_nfcore"
 
     test("Should run without failures") {
+        setup {
+            run("FASTQC") {
+                script "modules/nf-core/fastqc/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ])
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                def fastqc_version = '''
-                FASTQC:
-                  fastqc: 0.11.9
-                '''.stripIndent()
-
-                def multiqc_version = '''
-                MULTIQC:
-                  multiqc: 1.9
-                '''.stripIndent()
-                
-                input[0] = Channel.of(fastqc_version, multiqc_version).collectFile(name: 'collated_versions.yml', sort: 'deep')
+                input[0] = FASTQC.out.versions
                 """
             }
         }
@@ -34,7 +34,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
