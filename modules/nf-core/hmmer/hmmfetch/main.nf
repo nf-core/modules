@@ -30,7 +30,7 @@ process HMMER_HMMFETCH {
     def kfopt   = keyfile ? '-f' : ''
     def index   = ! key && ! keyfile ? '--index' : ''
     def outfile = ! key && ! keyfile ? '' : '> selection.hmm'
-    
+
     """
     hmmfetch \\
         $kfopt \\
@@ -49,7 +49,7 @@ process HMMER_HMMFETCH {
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
     touch selection.hmm
 
