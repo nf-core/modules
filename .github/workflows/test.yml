@@ -27,8 +27,6 @@ jobs:
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
-        with:
-          cache: "npm"
 
       - name: Install Prettier
         run: npm install -g prettier
@@ -522,20 +520,20 @@ jobs:
           path: >-
             test.tap
 
-  # confirm-pass:
-  #   runs-on: self-hosted
-  #   needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
-  #   if: always()
-  #   steps:
-  #     - name: All tests ok
-  #       if: ${{ success() || !contains(needs.*.result, 'failure') }}
-  #       run: exit 0
-  #     - name: One or more tests failed
-  #       if: ${{ contains(needs.*.result, 'failure') }}
-  #       run: exit 1
+  confirm-pass:
+    runs-on: self-hosted
+    needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
 
-  #     - name: debug-print
-  #       if: always()
-  #       run: |
-  #         echo "toJSON(needs) = ${{ toJSON(needs) }}"
-  #         echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
