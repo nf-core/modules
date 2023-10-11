@@ -17,6 +17,11 @@ tools:
       licence: ["BSD"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - hmm:
       type: file
       description: HMM file with multiple HMM models

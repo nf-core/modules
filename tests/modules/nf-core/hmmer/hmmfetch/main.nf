@@ -6,14 +6,20 @@ include { HMMER_HMMFETCH } from '../../../../../modules/nf-core/hmmer/hmmfetch/m
 
 workflow test_hmmer_hmmfetch_key {
 
-    input = file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    input = [
+        [ id:'test', single_end:false ],
+        file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    ]
 
     HMMER_HMMFETCH ( input, '16S_rRNA', [], [] )
 }
 
 workflow test_hmmer_hmmfetch_keyfile {
 
-    input = file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    input = [
+        [ id:'test', single_end:false ],
+        file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    ]
 
     Channel
         .of('16S_rRNA', '23S_rRNA')
@@ -25,7 +31,10 @@ workflow test_hmmer_hmmfetch_keyfile {
 
 workflow test_hmmer_hmmfetch_index {
 
-    input = file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    input = [
+        [ id:'test', single_end:false ],
+        file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
+    ]
 
     HMMER_HMMFETCH ( input, [], [], [] )
 }

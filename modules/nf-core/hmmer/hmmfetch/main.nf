@@ -1,5 +1,5 @@
 process HMMER_HMMFETCH {
-    tag "$hmm"
+    tag "$meta.id"
     label 'process_single'
 
     conda "bioconda::hmmer=3.3.2"
@@ -11,7 +11,7 @@ process HMMER_HMMFETCH {
     // In the latter case, the hmm database will be indexed and an index but no output
     // hmm will be produced.
     input:
-    path  hmm
+    tuple val(meta), path(hmm)
     val   key
     path  keyfile
     path  index         // Only used to stage the index from a previous run
