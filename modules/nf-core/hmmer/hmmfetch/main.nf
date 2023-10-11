@@ -17,7 +17,7 @@ process HMMER_HMMFETCH {
     path  index         // Only used to stage the index from a previous run
 
     output:
-    path "selection.hmm", emit: hmm,   optional: true
+    tuple val(meta), path("selection.hmm"), emit: hmm,   optional: true
     path "*.ssi"        , emit: index, optional: true
     path "versions.yml" , emit: versions
 
