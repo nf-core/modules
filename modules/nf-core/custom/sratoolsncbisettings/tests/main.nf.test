@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process CUSTOM_SRATOOLSNCBISETTINGS"
     script "modules/nf-core/custom/sratoolsncbisettings/main.nf"
     process "CUSTOM_SRATOOLSNCBISETTINGS"
+    tag "custom"
+    tag "custom/sratoolsncbisettings"
 
     test("Should run without failures") {
 
