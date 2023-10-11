@@ -27,6 +27,8 @@ jobs:
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       - name: Install Prettier
         run: npm install -g prettier
@@ -96,11 +98,15 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
