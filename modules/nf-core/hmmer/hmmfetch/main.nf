@@ -17,19 +17,20 @@ process HMMER_HMMFETCH {
     path  index         // Only used to stage the index from a previous run
 
     output:
-    tuple val(meta), path("selection.hmm"), emit: hmm,   optional: true
-    tuple val(meta), path("*.ssi")        , emit: index, optional: true
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.hmm"), emit: hmm,   optional: true
+    tuple val(meta), path("*.ssi"), emit: index, optional: true
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def keyarg  = key ?: ''
     def kfopt   = keyfile ? '-f' : ''
     def index   = ! key && ! keyfile ? '--index' : ''
-    def outfile = ! key && ! keyfile ? '' : '> selection.hmm'
+    def outfile = ! key && ! keyfile ? '' : "> ${prefix}.hmm"
 
     """
     hmmfetch \\
