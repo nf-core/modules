@@ -8,7 +8,7 @@ workflow test_hmmer_hmmfetch_key {
     
     input = file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
 
-    HMMER_HMMFETCH ( input, '16S_rRNA', [] )
+    HMMER_HMMFETCH ( input, '16S_rRNA', [], [] )
 }
 
 workflow test_hmmer_hmmfetch_keyfile {
@@ -20,12 +20,12 @@ workflow test_hmmer_hmmfetch_keyfile {
         .collectFile(name: 'keys.txt', newLine: true)
         .set { keyfile }
 
-    HMMER_HMMFETCH ( input, [], keyfile )
+    HMMER_HMMFETCH ( input, [], keyfile, [] )
 }
 
 workflow test_hmmer_hmmfetch_index {
     
     input = file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
 
-    HMMER_HMMFETCH ( input, [], [] )
+    HMMER_HMMFETCH ( input, [], [], [] )
 }

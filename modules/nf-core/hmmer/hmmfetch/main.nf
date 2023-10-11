@@ -14,6 +14,7 @@ process HMMER_HMMFETCH {
     path  hmm
     val   key
     path  keyfile
+    path  index         // Only used to stage the index from a previous run
 
     output:
     path "selection.hmm", emit: hmm,   optional: true
