@@ -65,7 +65,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-core-lint:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-core-lint
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -117,7 +117,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -374,7 +374,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
