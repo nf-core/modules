@@ -50,9 +50,10 @@ process HMMER_HMMFETCH {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch selection.hmm
+    touch ${prefix}.hmm
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
