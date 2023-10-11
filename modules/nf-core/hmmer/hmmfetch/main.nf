@@ -18,7 +18,7 @@ process HMMER_HMMFETCH {
 
     output:
     tuple val(meta), path("selection.hmm"), emit: hmm,   optional: true
-    path "*.ssi"        , emit: index, optional: true
+    tuple val(meta), path("*.ssi")        , emit: index, optional: true
     path "versions.yml" , emit: versions
 
     when:
