@@ -29,14 +29,14 @@ process VT_DECOMPOSE {
 
     def bed = intervals ? "-i ${intervals}" : ""
     def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    
+
     """
     vt decompose \\
         -o ${prefix}.vcf \\
         ${bed} \\
         ${args} \\
         ${vcf}
-    
+
     bgzip ${args2} --threads ${task.cpus} ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
@@ -48,9 +48,9 @@ process VT_DECOMPOSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    
+
     """
-    touch ${prefix}.vcf.gz    
+    touch ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
