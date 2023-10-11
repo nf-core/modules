@@ -271,13 +271,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
@@ -330,6 +323,12 @@ jobs:
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
+      - name: test python and conda path
+        run: |
+          echo "python: $(which python)"
+          echo "conda: $(which conda)"
+          echo "PYTHONPATH: $PYTHONPATH"
+          echo "CONDA_PREFIX: $CONDA_PREFIX"
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
