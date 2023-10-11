@@ -11,10 +11,6 @@ nextflow_process {
     test("Should run without failures") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
             process {
                 """
                 def fastqc_version = '''
