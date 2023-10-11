@@ -1,0 +1,16 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_SRATOOLSNCBISETTINGS"
+    script "modules/nf-core/custom/sratoolsncbisettings/main.nf"
+    process "CUSTOM_SRATOOLSNCBISETTINGS"
+
+    test("Should run without failures") {
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
