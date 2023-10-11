@@ -29,7 +29,7 @@ process GFATOOLS_GFA2FA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$( gfatools version | sed '1!d; s/.* //' )
+        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process GFATOOLS_GFA2FA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$( gfatools version | sed '1!d; s/.* //' )
+        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
     END_VERSIONS
     """
 }
