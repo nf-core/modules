@@ -43,6 +43,7 @@ workflow NEXTFLOW_PIPELINE_UTILS {
         checkCondaChannels()
     }
 
+    emit:
 }
 
 /*

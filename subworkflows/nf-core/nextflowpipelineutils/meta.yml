@@ -1,50 +1,35 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "nextflowpipelineutils"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+name: "nextflow_pipeline_utils"
+description: Subworkflow with functionality that may be useful for any Nextflow pipeline
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - utility
+  - pipeline
+  - initialise
+  - version
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - dumpsoftwareversions
 input:
-  - ch_bam:
-      type: file
+  - print_version:
+      type: boolean
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Print the version of the pipeline and exit
+  - dump_parameters:
+      type: boolean
+      description: |
+        Dump the parameters of the pipeline to a JSON file
+  - output_directory:
+      type: directory
+      description: Path to output dir to write JSON file to.
+      pattern: "results/"
+  - check_conda_channel:
+      type: boolean
+      description: |
+        Check if the conda channel priority is correct.
 output:
-  - bam:
-      type: file
+  - fake:
+      type: boolean
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+        Fake output to ensure that the linting passes
 authors:
   - "@adamrtalbot"
   - "@drpatelh"
