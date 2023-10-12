@@ -7,6 +7,8 @@ process ZIP {
         'https://depot.galaxyproject.org/singularity/p7zip:16.02' :
         'biocontainers/p7zip:16.02' }"
 
+    stageInMode 'copy'
+
     input:
     tuple val(meta), path(files, stageAs: "inputs/*")
 
