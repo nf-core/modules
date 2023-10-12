@@ -17,7 +17,14 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(
+                process.out.versions
+            ).match()
+
+            with(process.out.ncbi_settings) {
+                assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') }
+                assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') }
+            }
         }
 
     }
