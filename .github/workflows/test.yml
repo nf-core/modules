@@ -312,7 +312,6 @@ jobs:
           conda config --set solver libmamba
           echo $(realpath $(which conda)) >> $GITHUB_PATH
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath $CONDA)/bin >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
