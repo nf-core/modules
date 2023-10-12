@@ -55,7 +55,7 @@ process RMARKDOWNNOTEBOOK {
         render_cmd = """\
             params = yaml::read_yaml('.params.yml')
 
-            # As well as rendering with params, produce a version of the R
+            # Instead of rendering with params, produce a version of the R
             # markdown with param definitions set, so the notebook itself can
             # be reused
             rmd_content <- readLines('${prefix}.Rmd')
