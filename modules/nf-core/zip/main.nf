@@ -24,6 +24,7 @@ process ZIP {
     """
     7z \\
         a \\
+        -l \\
         $args \\
         "${prefix}.zip" ./inputs/*
 
