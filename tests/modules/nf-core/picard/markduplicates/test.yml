@@ -1,57 +1,38 @@
 - name: picard markduplicates test_picard_markduplicates_sorted_bam
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c ./tests/config/nextflow.config
   tags:
-    - picard/markduplicates
     - picard
+    - picard/markduplicates
   files:
     - path: output/picard/test.marked.MarkDuplicates.metrics.txt
       contains:
         - "1.0	97	97"
     - path: output/picard/test.marked.bam
-      md5sum: 9963cba5c95a8d5cb632df217aa40d63
+      md5sum: 41a9a8cbe2400fb8307ce1a7899e19b6
     - path: output/picard/versions.yml
-- name: picard markduplicates test_picard_markduplicates_sorted_bam stub
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config -stub-run
-  tags:
-    - picard/markduplicates
-    - picard
-  files:
-    - path: output/picard/test.marked.MarkDuplicates.metrics.txt
-    - path: output/picard/test.marked.bam
-    - path: output/picard/versions.yml
+
 - name: picard markduplicates test_picard_markduplicates_unsorted_bam
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c ./tests/config/nextflow.config
   tags:
-    - picard/markduplicates
     - picard
+    - picard/markduplicates
   files:
     - path: output/picard/test.marked.MarkDuplicates.metrics.txt
       contains:
         - "1.0	97	97"
-    - path: ./output/picard/test.marked.bam
-- name: picard markduplicates test_picard_markduplicates_unsorted_bam stub
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config -stub-run
+    - path: output/picard/test.marked.bam
+      md5sum: 6552e40d42a77bcec9f184b076e89340
+    - path: output/picard/versions.yml
+
+- name: picard markduplicates test_picard_markduplicates_sorted_cram
+  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_cram -c ./tests/config/nextflow.config
   tags:
-    - picard/markduplicates
     - picard
-  files:
-    - path: output/picard/test.marked.MarkDuplicates.metrics.txt
-    - path: ./output/picard/test.marked.bam
-- name: picard markduplicates sorted cram
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config
-  tags:
     - picard/markduplicates
-    - picard
   files:
     - path: output/picard/test.marked.MarkDuplicates.metrics.txt
       contains:
         - "1.0	0.999986	1178"
-    - path: ./output/picard/test.marked.bam
-- name: picard markduplicates sorted cram stub
-  command: nextflow run ./tests/modules/nf-core/picard/markduplicates -entry test_picard_markduplicates_sorted_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/markduplicates/nextflow.config -stub-run
-  tags:
-    - picard/markduplicates
-    - picard
-  files:
-    - path: output/picard/test.marked.MarkDuplicates.metrics.txt
-    - path: ./output/picard/test.marked.bam
+    - path: output/picard/test.marked.bam
+      md5sum: 80eb6c43eb6982ee55bb06f59001cbe6
+    - path: output/picard/versions.yml
