@@ -1,0 +1,123 @@
+nextflow_workflow {
+
+    name "Test Workflow NEXTFLOW_PIPELINE_UTILS"
+    script "subworkflows/nf-core/nextflowpipelineutils/main.nf"
+    workflow "NEXTFLOW_PIPELINE_UTILS"
+
+    test("Should run no inputs") {
+
+        when {
+            params {
+                outdir = "tests/results"
+            }
+            workflow {
+                """
+                input[0] = false
+                input[1] = false
+                input[2] = null
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow).match()
+        }
+
+    }
+
+    test("Should print version") {
+
+        when {
+            params {
+                outdir = "tests/results"
+            }
+            workflow {
+                """
+                input[0] = true
+                input[1] = false
+                input[2] = null
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow).match()
+        }
+
+    }
+
+
+    test("Should dump params") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                input[0] = false
+                input[1] = true
+                input[2] = params.outdir
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow).match()
+        }
+
+    }
+
+    test("Should not create params JSON if no output directory") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                input[0] = false
+                input[1] = true
+                input[2] = null
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow, path(params.outdir).list()).match()
+        }
+
+    }
+
+    test("Should check conda channels") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                input[0] = false
+                input[1] = false
+                input[2] = null
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow).match()
+        }
+
+    }
+
+}
