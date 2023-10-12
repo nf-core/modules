@@ -8,8 +8,8 @@ process GOLEFT_INDEXCOV {
         'biocontainers/goleft:0.2.4--h9ee0642_1' }"
 
     input:
-    tuple val(meta),path(bams),path(indexes)
-    tuple val(meta2),path(fai)
+    tuple val(meta), path(bams), path(indexes)
+    tuple val(meta2), path(fai)
 
     output:
     tuple val(meta), path("${prefix}/*")  , emit: output
