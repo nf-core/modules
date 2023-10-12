@@ -52,12 +52,3 @@ process GOLEFT_INDEXCOV {
     END_VERSIONS
     """
 }
-
-/*
-    //if ( bams.any{it.toString() ==~ /.*\\.cram/ } ) error "For CRAM, CRAI index should be provided, not the CRAM itself" 
-    """
-
-    """
-
-}
-*/
