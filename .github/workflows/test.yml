@@ -310,7 +310,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
-          export PATH="/opt/actions-runner/_work/modules/modules/3/condabin/conda:$PATH"
+          echo $(realpath $(which conda)) >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
