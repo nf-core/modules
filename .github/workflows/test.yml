@@ -516,7 +516,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:
