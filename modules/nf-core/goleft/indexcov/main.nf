@@ -1,4 +1,3 @@
-
 process GOLEFT_INDEXCOV {
     tag 'N=${bams.size()}'
     label 'process_single'
