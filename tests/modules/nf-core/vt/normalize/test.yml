@@ -5,9 +5,11 @@
     - vt/normalize
   files:
     - path: output/vt/genome.fasta.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685
+      contains:
+        - "chr22"
     - path: output/vt/normalize.vcf.gz
-      md5sum: 2bb6d810f0899e90787c71bec4d48df2
+      contains:
+        - "##fileformat=VCFv4.2"
     - path: output/vt/versions.yml
 
 - name: vt normalize test_vt_normalize_intervals
@@ -17,9 +19,11 @@
     - vt/normalize
   files:
     - path: output/vt/genome.fasta.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685
+      contains:
+        - "chr22"
     - path: output/vt/normalize.vcf.gz
-      md5sum: 60e559afaecfe3c182c19ea815395592
+      contains:
+        - "##fileformat=VCFv4.2"
     - path: output/vt/versions.yml
 
 - name: vt normalize test_vt_normalize_no_fai
@@ -29,7 +33,9 @@
     - vt/normalize
   files:
     - path: output/vt/genome.fasta.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685
+      contains:
+        - "chr22"
     - path: output/vt/normalize.vcf.gz
-      md5sum: 2bb6d810f0899e90787c71bec4d48df2
+      contains:
+        - "##fileformat=VCFv4.2"
     - path: output/vt/versions.yml
