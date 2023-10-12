@@ -5,9 +5,6 @@
     - picard/markduplicates
     - samtools
     - samtools/index
-    - samtools/stats
-    - samtools/idxstats
-    - samtools/flagstat
     - subworkflows
     - subworkflows/bam_markduplicates_picard
     - subworkflows/bam_stats_samtools
@@ -16,7 +13,7 @@
       contains:
         - "97"
     - path: output/picard/test.bam
-      md5sum: 922074f5709c586de8a62e6a42eb5986
+      md5sum: 75f42377c9b6ea57ef390b24877ba787
     - path: output/samtools/test.bam.bai
       md5sum: c48f2544a2c7454e3dba60f5db6eff9b
     - path: output/samtools/test.flagstat
@@ -33,9 +30,6 @@
     - picard/markduplicates
     - samtools
     - samtools/index
-    - samtools/stats
-    - samtools/idxstats
-    - samtools/flagstat
     - subworkflows
     - subworkflows/bam_markduplicates_picard
     - subworkflows/bam_stats_samtools
@@ -44,7 +38,7 @@
       contains:
         - "0.999986"
     - path: output/picard/test.bam
-      md5sum: 48387ea956117dd39df99825b5117e28
+      md5sum: 291c3495d3ba2635acf1274e3dcfd9f5
     - path: output/samtools/test.bam.bai
       md5sum: 812ddc02ad163bab5711dbb778588a93
     - path: output/samtools/test.flagstat
