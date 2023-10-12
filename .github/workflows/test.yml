@@ -310,7 +310,6 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
-          echo $(realpath $(which conda)) >> $GITHUB_PATH
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
 
       # Set up secrets
