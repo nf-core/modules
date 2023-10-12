@@ -326,14 +326,6 @@ jobs:
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
-      - name: test python and conda path
-        run: |
-          echo "python: $(which python)"
-          echo "conda: $(which conda)"
-          echo "PYTHONPATH: $PYTHONPATH"
-          echo "CONDA_PREFIX: $CONDA_PREFIX"
-          echo "conda absolute: $(realpath conda)"
-          echo "PATH: $PATH"
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
