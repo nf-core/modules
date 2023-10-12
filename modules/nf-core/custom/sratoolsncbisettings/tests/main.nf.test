@@ -73,11 +73,10 @@ nextflow_process {
             assert snapshot(
                 process.out.versions
             ).match()
-
-            assert process.stdout.contains('Command error:')
-            assert process.stdout.contains('missing the required entries')
-            assert process.stdout.contains('/LIBS/GUID')
-            assert process.stdout.contains('/libs/cloud/report_instance_identity')
+            assert process.stdout.any { it.contains('Command error:') }
+            assert process.stdout.any { it.contains('missing the required entries') }
+            assert process.stdout.any { it.contains('/LIBS/GUID') }
+            assert process.stdout.any { it.contains('/libs/cloud/report_instance_identity') }
         }
 
     }
@@ -100,13 +99,11 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.versions
-            ).match()
+            assert snapshot(process.out.versions).match()
 
             with(process.out.ncbi_settings) {
-                assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') }
-                assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') }
+                { assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') } }
+                { assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') } }
             }
         }
 
