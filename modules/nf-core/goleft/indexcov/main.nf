@@ -1,5 +1,5 @@
 process GOLEFT_INDEXCOV {
-    tag 'N=${bams.size()}'
+    tag '${meta.id}'
     label 'process_single'
 
     conda "bioconda::goleft=0.2.4"
@@ -9,7 +9,7 @@ process GOLEFT_INDEXCOV {
 
     input:
     tuple val(meta),path(bams),path(indexes)
-    path  fai
+    tuple val(meta2),path(fai)
 
     output:
     tuple val(meta), path("${prefix}/*")  , emit: output
@@ -19,8 +19,7 @@ process GOLEFT_INDEXCOV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args0 = meta.args ?: ''
-    def args1 = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // indexcov uses BAM files or CRAI
     def input_files = bams.findAll{it.name.endsWith(".bam")} + indexes.findAll{it.name.endsWith(".crai")}
@@ -30,7 +29,7 @@ process GOLEFT_INDEXCOV {
         --fai "${fai}"  \\
         --directory "${prefix}" \\
         ${extranormalize} \\
-        $args0 $args1 \\
+        $args \\
         ${input_files.join(" ")}
 
     cat <<-END_VERSIONS > versions.yml

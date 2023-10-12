@@ -18,7 +18,7 @@ workflow test_goleft_indexcov {
             ]
     ])
 
-    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai = Channel.of([ [:], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)])
 
     GOLEFT_INDEXCOV ( input , fai)
 }
