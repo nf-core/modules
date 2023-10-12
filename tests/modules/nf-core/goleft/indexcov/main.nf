@@ -11,11 +11,11 @@ workflow test_goleft_indexcov {
 	    [
             file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
             file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)
-            ],
-            [
+        ],
+        [
             file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
             file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true)
-            ]
+        ]
     ])
 
     fai = Channel.of([ [:], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)])
