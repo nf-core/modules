@@ -1,8 +1,9 @@
 nextflow_process {
 
     name "Test Process CUSTOM_SRATOOLSNCBISETTINGS"
-    script "modules/nf-core/custom/sratoolsncbisettings/main.nf"
+    script "../main.nf"
     process "CUSTOM_SRATOOLSNCBISETTINGS"
+    config "modules/nf-core/custom/sratoolsncbisettings/tests/nextflow.config"
     tag "custom"
     tag "custom/sratoolsncbisettings"
 
