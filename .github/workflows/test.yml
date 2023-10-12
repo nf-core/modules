@@ -60,7 +60,7 @@ jobs:
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -369,7 +369,7 @@ jobs:
         id: filter
         with:
           filters: ".github/modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-test:
     runs-on: ubuntu-20.04
