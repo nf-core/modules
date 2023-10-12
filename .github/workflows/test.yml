@@ -311,7 +311,7 @@ jobs:
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
           export PATH="$CONDA/condabin:$PATH"
-          export PATH="$(realpath conda):$PATH"
+          export PATH="$(realpath $(which conda)):$PATH"
 
       # Set up secrets
       - name: Set up nextflow secrets
