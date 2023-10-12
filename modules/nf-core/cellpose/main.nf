@@ -9,8 +9,9 @@ process CELLPOSE {
     path(model)
 
     output:
-    tuple val(meta), path("*masks.tif"),   emit: mask
-    path "versions.yml"                ,   emit: versions
+    tuple val(meta), path("*masks.tif") ,   emit: mask
+    tuple val(meta), path("*flows.tif"),   emit: flows, optional: true
+    path "versions.yml"                 ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -41,6 +41,11 @@ output:
       type: file
       description: labelled mask output from cellpose in tif format
       pattern: "*.{tif, tiff}"
+  - flows:
+      type: file
+      description: cell flow output from cellpose
+      pattern: "*.{tif}"
 
 authors:
   - "@josenimo"
+  - "@FloWuenne"
