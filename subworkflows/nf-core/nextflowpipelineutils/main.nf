@@ -51,7 +51,7 @@ workflow NEXTFLOW_PIPELINE_UTILS {
 ========================================================================================
 */
 
-// 
+//
 // Generate version string
 //
 def getWorkflowVersion() {
