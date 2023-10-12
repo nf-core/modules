@@ -311,6 +311,7 @@ jobs:
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
           export PATH="$CONDA/condabin:$PATH"
+          export PATH="$(realpath conda):$PATH"
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -330,6 +331,8 @@ jobs:
           echo "conda: $(which conda)"
           echo "PYTHONPATH: $PYTHONPATH"
           echo "CONDA_PREFIX: $CONDA_PREFIX"
+          echo "conda absolute: $(realpath conda)"
+          echo "PATH: $PATH"
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
