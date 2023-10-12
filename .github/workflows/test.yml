@@ -1,4 +1,4 @@
-name: test
+name: Run tests
 on:
   push:
     branches: [master]
@@ -20,13 +20,15 @@ env:
 
 jobs:
   prettier:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       - name: Install Prettier
         run: npm install -g prettier
@@ -35,11 +37,13 @@ jobs:
         run: prettier --check .
 
   editorconfig:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       - name: Install editorconfig-checker
         run: npm install -g editorconfig-checker
@@ -49,7 +53,7 @@ jobs:
 
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -63,7 +67,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-core-lint:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-core-lint
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -88,19 +92,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
@@ -115,7 +118,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -268,16 +271,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
       - name: Setup Nextflow ${{ matrix.NXF_VER }}
         uses: nf-core/setup-nextflow@v1
         with:
@@ -299,6 +299,7 @@ jobs:
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
@@ -309,6 +310,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -358,7 +360,7 @@ jobs:
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -372,7 +374,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
@@ -450,6 +452,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
 
@@ -521,7 +527,7 @@ jobs:
             test.tap
 
   confirm-pass:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
     if: always()
     steps:
