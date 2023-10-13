@@ -22,13 +22,13 @@ process PAIRTOOLS_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mem = (task.memory.giga*0.8).intValue()
+    def buffer = task.memory.toGiga().intdiv(2)
     """
     pairtools \\
         sort \\
         $args \\
         --nproc $task.cpus \\
-        --memory "${mem}G" \\
+        --memory ${buffer}G \\
         -o ${prefix}.pairs.gz \\
         $input
 
