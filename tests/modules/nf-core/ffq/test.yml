@@ -4,8 +4,8 @@
     - ffq
   files:
     - path: output/ffq/SRR9990627.json
-      contains: 
-         - SRR9990627
+      contains:
+        - SRR9990627
 
 - name: ffq test_ffq_multiple_ids
   command: nextflow run ./tests/modules/nf-core/ffq -entry test_ffq_multiple_ids -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ffq/nextflow.config
@@ -13,6 +13,6 @@
     - ffq
   files:
     - path: output/ffq/metadata.json
-      contains: 
-         - SRR9990627
-         - SRX7347523
+      contains:
+        - SRR9990627
+        - SRX7347523
