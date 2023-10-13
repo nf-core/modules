@@ -258,6 +258,8 @@ jobs:
             tags: subworkflows/fasta_clean_fcs
           - profile: "conda"
             tags: islandpath
+          - profile: "conda"
+            tags: subworkflows/bam_qc_picard
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
