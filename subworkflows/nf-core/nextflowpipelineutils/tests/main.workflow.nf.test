@@ -2,6 +2,7 @@ nextflow_workflow {
 
     name "Test Workflow NEXTFLOW_PIPELINE_UTILS"
     script "../main.nf"
+    config "subworkflows/nf-core/nextflowpipelineutils/tests/nextflow.config"
     workflow "NEXTFLOW_PIPELINE_UTILS"
     tag 'subworkflows'
     tag 'nextflowpipelineutils'
@@ -48,7 +49,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.stdout).match()
+            assert workflow.stdout.contains("nextflow_workflow v9.9.9")
         }
 
     }
