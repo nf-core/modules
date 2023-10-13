@@ -56,11 +56,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -367,11 +368,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
           filters: ".github/modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-test:
     runs-on: ubuntu-20.04
