@@ -1,0 +1,53 @@
+nextflow_process {
+    name "Test Process SRATOOLS_PREFETCH"
+    script "modules/nf-core/sratools/prefetch/main.nf"
+    process "SRATOOLS_PREFETCH"
+    tag "sratools/prefetch"
+    tag "modules_nfcore"
+
+    test("sratools/prefetch") {
+
+        when {
+            params {
+                outdir = "output"
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(process).match() }
+            )
+        }
+    }
+
+    test("sratools/prefetch with sralite") {
+
+        when {
+            params {
+                outdir = "output"
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ], 'SRR1170046' ])
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(process).match() }
+            )
+        }
+    }
+}
