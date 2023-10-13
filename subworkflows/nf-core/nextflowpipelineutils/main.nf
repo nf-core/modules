@@ -44,6 +44,7 @@ workflow NEXTFLOW_PIPELINE_UTILS {
     }
 
     emit:
+        out = true
 }
 
 /*
