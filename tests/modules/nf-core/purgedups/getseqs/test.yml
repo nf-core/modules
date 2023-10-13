@@ -1,10 +1,10 @@
 - name: purgedups getseqs test_purgedups_getseqs
-  command: nextflow run ./tests/modules/nf-core/purgedups/getseqs -entry test_purgedups_getseqs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purgedups/getseqs/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/purgedups/getseqs -entry test_purgedups_getseqs -c ./tests/config/nextflow.config
   tags:
     - purgedups
     - purgedups/getseqs
   files:
     - path: output/purgedups/test.hap.fa
+      md5sum: bff313962ef6a7b982ae3f93f8368c10
     - path: output/purgedups/test.purged.fa
-      md5sum: 70d0b87ecc04353767b1a713992f00fe
     - path: output/purgedups/versions.yml
