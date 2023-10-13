@@ -7,6 +7,7 @@ include { DEEPTMHMM } from '../../../../modules/nf-core/deeptmhmm/main.nf'
 workflow test_deeptmhmm {
 
     fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+
     DEEPTMHMM ( [ [id:'test'], fasta ] )
 }
 
