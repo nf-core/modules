@@ -59,6 +59,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
+          base: ${{ github.ref }}
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
@@ -368,6 +369,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
+          base: ${{ github.ref }}
           filters: ".github/modules.yml"
           token: ""
 
