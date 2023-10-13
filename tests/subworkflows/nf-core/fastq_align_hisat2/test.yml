@@ -3,8 +3,12 @@
   tags:
     - hisat2
     - hisat2/align
+    - samtools
+    - samtools/index
+    - samtools/sort
     - subworkflows
     - subworkflows/bam_sort_stats_samtools
+    - subworkflows/bam_stats_samtools
     - subworkflows/fastq_align_hisat2
   files:
     - path: output/hisat2/test.bam
@@ -24,8 +28,12 @@
   tags:
     - hisat2
     - hisat2/align
+    - samtools
+    - samtools/index
+    - samtools/sort
     - subworkflows
     - subworkflows/bam_sort_stats_samtools
+    - subworkflows/bam_stats_samtools
     - subworkflows/fastq_align_hisat2
   files:
     - path: output/hisat2/test.bam
