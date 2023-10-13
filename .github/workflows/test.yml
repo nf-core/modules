@@ -452,7 +452,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NF_TEST_VER: 0.8.1
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
@@ -467,7 +467,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NF_TEST_VER }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -518,7 +518,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:

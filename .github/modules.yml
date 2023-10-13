@@ -1,6 +1,9 @@
 custom/dumpsoftwareversions:
   - modules/nf-core/custom/dumpsoftwareversions/**
 
+custom/sratoolsncbisettings:
+  - modules/nf-core/custom/sratoolsncbisettings/**
+
 fastqc:
   - modules/nf-core/fastqc/**
 
@@ -12,3 +15,6 @@ sratools/fasterqdump:
 
 sratools/prefetch:
   - modules/nf-core/sratools/prefetch/**
+
+fastq_download_prefetch_fasterqdump_sratools:
+  - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
