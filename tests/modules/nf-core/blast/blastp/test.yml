@@ -1,0 +1,25 @@
+- name: blast blastp
+  command: nextflow run ./tests/modules/nf-core/blast/blastp -entry test_blast_blastp -c ./tests/config/nextflow.config
+  tags:
+    - blast
+    - blast/blastp
+  files:
+    - path: output/blast/blast_db/proteome.fasta
+      md5sum: db0ecd5dbce6bf9730685b94ec87854d
+    - path: output/blast/blast_db/proteome.fasta.pdb
+      md5sum: eb25908a7938ed15d5c7ca3be48aa0a1
+    - path: output/blast/blast_db/proteome.fasta.phr
+      md5sum: c523f92ddfe648ae41ef2a17c599937f
+    - path: output/blast/blast_db/proteome.fasta.pin
+    - path: output/blast/blast_db/proteome.fasta.pjs
+    - path: output/blast/blast_db/proteome.fasta.pot
+      md5sum: 2030b82268722e50fbbe0c3f4977a24a
+    - path: output/blast/blast_db/proteome.fasta.psq
+      md5sum: 026b799b20282170a0b350c7aa7b9fe0
+    - path: output/blast/blast_db/proteome.fasta.ptf
+      md5sum: de1250813f0c7affc6d12dac9d0fb6bb
+    - path: output/blast/blast_db/proteome.fasta.pto
+      md5sum: fe1ae01c06a57e09fa931e1ba7889c29
+    - path: output/blast/test.csv
+      md5sum: 19214c68e1a208705dd4d6f0c5dea78b
+    - path: output/blast/versions.yml

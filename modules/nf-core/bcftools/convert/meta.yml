@@ -74,7 +74,20 @@ output:
       type: file
       description: BCF merged output file => when `--output-type u` is used
       pattern: "*.bcf"
+  - hap:
+      type: file
+      description: hap format used by IMPUTE2 and SHAPEIT
+      pattern: "*.hap.gz"
+  - legend:
+      type: file
+      description: legend format used by IMPUTE2 and SHAPEIT
+      pattern: "*.legend.gz"
+  - sample:
+      type: file
+      description: sample format used by IMPUTE2 and SHAPEIT
+      pattern: "*.samples"
 
 authors:
   - "@nvnieuwk"
   - "@ramprasadn"
+  - "@atrigila"

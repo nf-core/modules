@@ -4,6 +4,7 @@
     - picard
     - picard/collectmultiplemetrics
     - picard/collectwgsmetrics
+    - picard/collecthsmetrics
     - subworkflows
     - subworkflows/bam_qc_picard
   files:
@@ -23,6 +24,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/bam_qc_picard -entry test_bam_qc_picard_targetted -c ./tests/config/nextflow.config
   tags:
     - picard
+    - picard/collectwgsmetrics
     - picard/collecthsmetrics
     - picard/collectmultiplemetrics
     - subworkflows

@@ -5,11 +5,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
     container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     tuple val(meta), path(calls), path(model), path(ploidy)
 
@@ -23,6 +18,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def calls_command  = calls   ? calls.collect{"--calls-shard-path $it"}.join(' ')  : ""
@@ -36,7 +35,8 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" PostprocessGermlineCNVCalls \\
+    gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
+        PostprocessGermlineCNVCalls \\
         $calls_command \\
         $model_command \\
         $ploidy_command \\
@@ -51,6 +51,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_genotyped_intervals.vcf.gz

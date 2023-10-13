@@ -13,6 +13,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -55,6 +60,7 @@ jobs:
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -90,27 +96,23 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools
-        run: python -m pip install nf-core
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
 
-      - name: Lint ${{ matrix.tags }}
+      - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        # HACK
-        if: startsWith( matrix.tags, 'subworkflow' ) != true
+        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
 
-      - uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}
+      - name: Remove substring from matrix.tags
+        id: remove_substring
+        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+
+      - name: Lint subworkflow ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
+        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
     runs-on: ubuntu-20.04
@@ -185,6 +187,8 @@ jobs:
           - profile: "conda"
             tags: genescopefk
           - profile: "conda"
+            tags: hlala/preparegraph
+          - profile: "conda"
             tags: ilastik/multicut
           - profile: "conda"
             tags: ilastik/pixelclassification
@@ -199,7 +203,13 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
+            tags: mitohifi/mitohifi
+          - profile: "conda"
             tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: parabricks/applybqsr
+          - profile: "conda"
+            tags: parabricks/fq2bam
           - profile: "conda"
             tags: scimap/mcmicro
           - profile: "conda"
@@ -209,13 +219,27 @@ jobs:
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
+            tags: sentieon/datametrics
+          - profile: "conda"
             tags: sentieon/dedup
+          - profile: "conda"
+            tags: sentieon/dnamodelapply
+          - profile: "conda"
+            tags: sentieon/dnascope
           - profile: "conda"
             tags: sentieon/gvcftyper
           - profile: "conda"
             tags: sentieon/haplotyper
           - profile: "conda"
+            tags: sentieon/readwriter
+          - profile: "conda"
+            tags: sentieon/tnhaplotyper2
+          - profile: "conda"
+            tags: sentieon/tnscope
+          - profile: "conda"
             tags: sentieon/varcal
+          - profile: "conda"
+            tags: sentieon/wgsmetrics
           - profile: "conda"
             tags: spaceranger/count
           - profile: "conda"
@@ -226,6 +250,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -237,6 +263,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -255,25 +282,20 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/cache@v3
+      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+        uses: nf-core/setup-nextflow@v1
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
+          version: "${{ matrix.NXF_VER }}"
 
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
@@ -334,6 +356,7 @@ jobs:
             /home/runner/pytest_workflow_*/*/work
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
@@ -347,7 +370,8 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/nftest_modules.yml"
+          filters: ".github/modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
     runs-on: ubuntu-20.04
@@ -377,6 +401,8 @@ jobs:
             tags: cellranger/mkgtf
           - profile: "conda"
             tags: cellranger/mkref
+          - profile: "conda"
+            tags: custom/dumpsoftwareversions
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
@@ -420,27 +446,19 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
-
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
 
       - name: Cache nf-test installation
         id: cache-software
@@ -449,7 +467,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -457,11 +475,15 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
+
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
@@ -496,7 +518,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:

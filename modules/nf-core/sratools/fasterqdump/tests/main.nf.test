@@ -1,0 +1,70 @@
+nextflow_process {
+    name "Test Process SRATOOLS_FASTERQDUMP"
+    script "../main.nf"
+    process "SRATOOLS_FASTERQDUMP"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sratools/fasterqdump"
+
+    test("Single-end") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['SRR13255544_tar_gz'], checkIfExists: true) ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_single_end', single_end:true ], files]}
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Paired-end") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['SRR11140744_tar_gz'], checkIfExists: true) ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_paired_end', single_end:false ], files]}
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

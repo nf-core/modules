@@ -134,9 +134,17 @@
                                 "pattern": "^(http|https)://.*$"
                             },
                             "doi": {
-                                "type": "string",
                                 "description": "DOI of the tool",
-                                "pattern": "^10.\\d{4,9}\\/[^,]+$"
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "enum": ["no DOI available"]
+                                    }
+                                ]
                             },
                             "licence": {
                                 "type": ["array", "string"],
