@@ -5,11 +5,15 @@ nextflow.enable.dsl = 2
 include { DEEPTMHMM } from '../../../../modules/nf-core/deeptmhmm/main.nf'
 
 workflow test_deeptmhmm {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
 
-    DEEPTMHMM ( input )
+    fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+
+    DEEPTMHMM ( [ [id:'test'], fasta ] )
+}
+
+workflow test_deeptmhmm_gz {
+
+    fasta_gz = [ file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
+
+    DEEPTMHMM ( [ [id:'test'], fasta_gz ] )
 }
