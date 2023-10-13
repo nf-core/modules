@@ -118,7 +118,9 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow).match()
+            assert "  There is a problem with your Conda configuration!" in stdout
+            assert "  [conda-forge, bioconda, defaults]" in stdout
+            assert snapshot(workflow.out).match() 
         }
 
     }
