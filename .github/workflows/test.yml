@@ -56,10 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
-          base: ${{ github.ref }}
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
@@ -366,10 +365,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
-          base: ${{ github.ref }}
           filters: ".github/modules.yml"
           token: ""
 
