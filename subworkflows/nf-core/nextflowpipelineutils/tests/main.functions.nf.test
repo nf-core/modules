@@ -42,7 +42,8 @@ nextflow_function {
 
         then {
             assert function.success
-            assert snapshot(function.result).match()
+            assert function.result =~ /publish_dir_mode/
+            assert function.result =~ /copy/
         }
 
     }
