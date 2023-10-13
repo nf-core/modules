@@ -1,7 +1,7 @@
 nextflow_workflow {
 
     name "Test Workflow NEXTFLOW_PIPELINE_UTILS"
-    script "subworkflows/nf-core/nextflowpipelineutils/main.nf"
+    script "../main.nf"
     workflow "NEXTFLOW_PIPELINE_UTILS"
     tag 'subworkflows'
     tag 'nextflowpipelineutils'
@@ -25,7 +25,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow).match()
+            assert snapshot(workflow.out).match()
         }
 
     }
@@ -48,7 +48,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow).match()
+            assert snapshot(workflow.stdout).match()
         }
 
     }
@@ -72,7 +72,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow).match()
+            assert snapshot(workflow.out).match()
         }
 
     }
@@ -95,7 +95,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert snapshot(workflow, path(params.outdir).list()).match()
+            assert snapshot(workflow.out, path(params.outdir).list()).match()
         }
 
     }
@@ -118,9 +118,8 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert "  There is a problem with your Conda configuration!" in stdout
-            assert "  [conda-forge, bioconda, defaults]" in stdout
-            assert snapshot(workflow.out).match() 
+            assert workflow.stdout.contains("  There is a problem with your Conda configuration!")
+            assert workflow.stdout.contains("  [conda-forge, bioconda, defaults]")
         }
 
     }
