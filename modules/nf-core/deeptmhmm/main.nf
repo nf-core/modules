@@ -1,22 +1,22 @@
 process DEEPTMHMM {
-    tag '$deeptmhmm'
+    tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pybiolib=1.1.1367"
+    conda "bioconda::pybiolib=1.1.1393"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pybiolib:1.1.1367--pyhdfd78af_0':
-        'biocontainers/pybiolib:1.1.1367--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/pybiolib:1.1.1393--pyhdfd78af_0':
+        'biocontainers/pybiolib:1.1.1393--pyhdfd78af_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "biolib_results/TMRs.gff3"                 , emit: gff3
-    path "biolib_results/predicted_topologies.3line", emit: line3
-    path "biolib_results/deeptmhmm_results.md"      , emit: md
-    path "biolib_results/*_probs.csv"               , optional: true, emit: csv
-    path "biolib_results/plot.png"                  , optional: true, emit: png
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("biolib_results/TMRs.gff3")                 , emit: gff3
+    tuple val(meta), path("biolib_results/predicted_topologies.3line"), emit: line3
+    tuple val(meta), path("biolib_results/deeptmhmm_results.md")      , emit: md
+    tuple val(meta), path("biolib_results/*_probs.csv")               , optional: true, emit: csv
+    tuple val(meta), path("biolib_results/plot.png")                  , optional: true, emit: png
+    path "versions.yml"                                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

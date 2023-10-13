@@ -15,12 +15,24 @@ tools:
       licence: ["MIT"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
   - fasta:
       type: file
       description: Database of sequences in FASTA format
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
   - gff3:
       type: file
       description: Predicted topologies (inside, outside, TMhelix) in general Feature Format Version 3
