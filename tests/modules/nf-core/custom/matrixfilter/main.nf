@@ -43,3 +43,31 @@ workflow test_custom_matrixfilter_group {
         ch_samplesheet
     )
 }
+
+workflow test_custom_matrixfilter_na_prop {
+
+    expression_sample_sheet = file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['proteomics']['maxquant']['mq_proteus_mat'], checkIfExists: true)
+
+    ch_samples_matrix = [ [ "id":"mq_prop" ], expression_matrix_file ]
+    ch_samplesheet = [ [ "id":"mq_prop" ], expression_sample_sheet ]
+
+    CUSTOM_MATRIXFILTER(
+        ch_samples_matrix,
+        ch_samplesheet
+    )
+}
+
+workflow test_custom_matrixfilter_na_samples {
+
+    expression_sample_sheet = file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['proteomics']['maxquant']['mq_proteus_mat'], checkIfExists: true)
+
+    ch_samples_matrix = [ [ "id":"mq_samples" ], expression_matrix_file ]
+    ch_samplesheet = [ [ "id":"mq_samples" ], expression_sample_sheet ]
+
+    CUSTOM_MATRIXFILTER(
+        ch_samples_matrix,
+        ch_samplesheet
+    )
+}

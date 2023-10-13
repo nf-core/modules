@@ -16,6 +16,7 @@ concurrency:
 env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   prettier:
@@ -59,6 +60,7 @@ jobs:
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -102,15 +104,15 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        if: ${{ !startsWith(matrix.tags, 'subworkflow') }}
+        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
 
       - name: Remove substring from matrix.tags
-        id: remove-substring
-        run: subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g')
+        id: remove_substring
+        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
       - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint steps.set_tags.outputs.subworkflow_names
-        if: ${{ startsWith(matrix.tags, 'subworkflow') }}
+        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
+        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
     runs-on: ubuntu-20.04
@@ -231,6 +233,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnhaplotyper2
+          - profile: "conda"
             tags: sentieon/tnscope
           - profile: "conda"
             tags: sentieon/varcal
@@ -246,6 +250,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -281,11 +287,9 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Set up Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -366,7 +370,8 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/nftest_modules.yml"
+          filters: ".github/modules.yml"
+          token: "${{ secrets.GITHUB_TOKEN }}"
 
   nf-test:
     runs-on: ubuntu-20.04
@@ -396,6 +401,8 @@ jobs:
             tags: cellranger/mkgtf
           - profile: "conda"
             tags: cellranger/mkref
+          - profile: "conda"
+            tags: custom/dumpsoftwareversions
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
@@ -439,10 +446,13 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
@@ -457,7 +467,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -465,11 +475,9 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      - name: Set up Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -510,7 +518,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:

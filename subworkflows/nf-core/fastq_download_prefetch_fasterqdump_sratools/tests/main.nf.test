@@ -1,0 +1,37 @@
+nextflow_workflow {
+
+    name "Test workflow: fastq_download_prefetch_fasterqdump_sratools/main.nf"
+    script "../main.nf"
+    workflow "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
+    tag "subworkflow"
+    tag "subworkflow_nfcore"
+    tag "custom/sratoolsncbisettings"
+    tag "sratools/prefetch"
+    tag "sratools/fasterqdump"
+    tag "fastq_download_prefetch_fasterqdump_sratools"
+
+    test("Parameters: default") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [[ id:'test_single_end', single_end:true  ], 'DRR000774'],
+                    [[ id:'test_paired_end', single_end:false ], 'SRR11140744']
+                )
+                input[1] = []
+                """
+            }
+            params {
+                outdir = "output"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
