@@ -248,6 +248,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -398,6 +400,8 @@ jobs:
           - profile: "conda"
             tags: cellranger/mkref
           - profile: "conda"
+            tags: custom/dumpsoftwareversions
+          - profile: "conda"
             tags: deepvariant
           - profile: "conda"
             tags: ensemblvep/vep
@@ -440,10 +444,13 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
@@ -458,7 +465,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -509,7 +516,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:

@@ -898,10 +898,6 @@ csvtk/split:
   - modules/nf-core/csvtk/split/**
   - tests/modules/nf-core/csvtk/split/**
 
-custom/dumpsoftwareversions:
-  - modules/nf-core/custom/dumpsoftwareversions/**
-  - tests/modules/nf-core/custom/dumpsoftwareversions/**
-
 custom/getchromsizes:
   - modules/nf-core/custom/getchromsizes/**
   - tests/modules/nf-core/custom/getchromsizes/**
@@ -909,10 +905,6 @@ custom/getchromsizes:
 custom/matrixfilter:
   - modules/nf-core/custom/matrixfilter/**
   - tests/modules/nf-core/custom/matrixfilter/**
-
-custom/sratoolsncbisettings:
-  - modules/nf-core/custom/sratoolsncbisettings/**
-  - tests/modules/nf-core/custom/sratoolsncbisettings/**
 
 custom/tabulartogseacls:
   - modules/nf-core/custom/tabulartogseacls/**
@@ -1691,6 +1683,10 @@ gfatools/gfa2fa:
   - modules/nf-core/gfatools/gfa2fa/**
   - tests/modules/nf-core/gfatools/gfa2fa/**
 
+gfatools/stat:
+  - modules/nf-core/gfatools/stat/**
+  - tests/modules/nf-core/gfatools/stat/**
+
 gffcompare:
   - modules/nf-core/gffcompare/**
   - tests/modules/nf-core/gffcompare/**
@@ -1750,6 +1746,10 @@ gnu/sort:
 goat/taxonsearch:
   - modules/nf-core/goat/taxonsearch/**
   - tests/modules/nf-core/goat/taxonsearch/**
+
+goleft/indexcov:
+  - modules/nf-core/goleft/indexcov/**
+  - tests/modules/nf-core/goleft/indexcov/**
 
 goleft/indexsplit:
   - modules/nf-core/goleft/indexsplit/**
@@ -1929,6 +1929,10 @@ hmmer/hmmalign:
 hmmer/hmmbuild:
   - modules/nf-core/hmmer/hmmbuild/**
   - tests/modules/nf-core/hmmer/hmmbuild/**
+
+hmmer/hmmfetch:
+  - modules/nf-core/hmmer/hmmfetch/**
+  - tests/modules/nf-core/hmmer/hmmfetch/**
 
 hmmer/hmmsearch:
   - modules/nf-core/hmmer/hmmsearch/**
@@ -3720,10 +3724,6 @@ spring/decompress:
   - modules/nf-core/spring/decompress/**
   - tests/modules/nf-core/spring/decompress/**
 
-sratools/fasterqdump:
-  - modules/nf-core/sratools/fasterqdump/**
-  - tests/modules/nf-core/sratools/fasterqdump/**
-
 srst2/srst2:
   - modules/nf-core/srst2/srst2/**
   - tests/modules/nf-core/srst2/srst2/**
@@ -3923,10 +3923,6 @@ subworkflows/fastq_contam_seqtk_kraken:
 subworkflows/fastq_create_umi_consensus_fgbio:
   - subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
   - tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
-
-subworkflows/fastq_download_prefetch_fasterqdump_sratools:
-  - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
-  - tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
 
 subworkflows/fastq_fastqc_umitools_fastp:
   - subworkflows/nf-core/fastq_fastqc_umitools_fastp/**
@@ -4293,6 +4289,14 @@ vsearch/usearchglobal:
   - modules/nf-core/vsearch/usearchglobal/**
   - tests/modules/nf-core/vsearch/usearchglobal/**
 
+vt/decompose:
+  - modules/nf-core/vt/decompose/**
+  - tests/modules/nf-core/vt/decompose/**
+
+vt/normalize:
+  - modules/nf-core/vt/normalize/**
+  - tests/modules/nf-core/vt/normalize/**
+
 wfmash:
   - modules/nf-core/wfmash/**
   - tests/modules/nf-core/wfmash/**
@@ -4344,3 +4348,7 @@ yara/index:
 yara/mapper:
   - modules/nf-core/yara/mapper/**
   - tests/modules/nf-core/yara/mapper/**
+
+zip:
+  - modules/nf-core/zip/**
+  - tests/modules/nf-core/zip/**
