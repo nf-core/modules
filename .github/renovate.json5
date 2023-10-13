@@ -1,0 +1,34 @@
+{
+    $schema: "https://docs.renovatebot.com/renovate-schema.json",
+    extends: ["config:base"],
+    platform: "github",
+    dependencyDashboard: true,
+    dependencyDashboardTitle: "Renovate Dashboard 🤖",
+    suppressNotifications: ["prIgnoreNotification"],
+    rebaseWhen: "conflicted",
+    schedule: ["every sunday"],
+    reviewers: ["team:maintainers"],
+    regexManagers: [
+        {
+            description: "Process Conda dependencies",
+            fileMatch: ["(^|/)main\\.nf$"],
+            matchStrings: ['\\s+conda\\s+"(?<registryUrl>\\S+)::(?<depName>\\S+)=(?<currentValue>.*\\-.*)\'"\n'],
+            datasourceTemplate: "conda",
+        },
+        {
+            description: "Process Containers dependencies",
+            fileMatch: ["(^|/)main\\.nf$"],
+            matchStrings: ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
+            datasourceTemplate: "docker",
+        },
+    ],
+    packageRules: [
+        {
+            matchDatasources: ["docker"],
+            registryUrls: [
+                "quay.io",
+                "registry.hub.docker.com", // We need this for updating depedancies in Dockerfiles
+            ],
+        },
+    ],
+}
