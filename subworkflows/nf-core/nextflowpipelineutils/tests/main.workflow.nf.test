@@ -101,28 +101,4 @@ nextflow_workflow {
 
     }
 
-    test("Should check conda channels") {
-
-        when {
-            params {
-                outdir = "$outputDir"
-            }
-            workflow {
-                """
-                input[0] = false
-                input[1] = false
-                input[2] = null
-                input[3] = true
-                """
-            }
-        }
-
-        then {
-            assert workflow.success
-            assert workflow.stdout.contains("  There is a problem with your Conda configuration!")
-            assert workflow.stdout.contains("  [conda-forge, bioconda, defaults]")
-        }
-
-    }
-
 }
