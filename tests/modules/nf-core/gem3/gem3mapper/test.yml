@@ -1,10 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /gem3mapper
-- name: "gem3"
-  command: nextflow run ./tests/modules/nf-core/gem3/gem3mapper -entry test_gem3_gem3mapper -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gem3/gem3mapper/nextflow.config
+- name: gem3 gem3mapper test_gem3_gem3mapper_single_end
+  command: nextflow run ./tests/modules/nf-core/gem3/gem3mapper -entry test_gem3_gem3mapper_single_end -c ./tests/config/nextflow.config
   tags:
-    - "gem3"
-    - "gem3/gem3mapper"
+    - gem3/gem3mapper
+    - gem3
   files:
-    - path: "output/gem3/test.bam"
-    - path: "output/gem3/versions.yml"
+    - path: output/gem3/test.bam
+    - path: output/gem3/versions.yml
+
+- name: gem3 gem3mapper test_gem3_gem3mapper_paired_end
+  command: nextflow run ./tests/modules/nf-core/gem3/gem3mapper -entry test_gem3_gem3mapper_paired_end -c ./tests/config/nextflow.config
+  tags:
+    - gem3/gem3mapper
+    - gem3
+  files:
+    - path: output/gem3/test.bam
+    - path: output/gem3/versions.yml
