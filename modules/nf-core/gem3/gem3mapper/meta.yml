@@ -18,12 +18,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - fastq:
       type: file
       description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  
+
   - gem:
       type: file
       description: GEM3 genome index files
@@ -35,7 +35,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
