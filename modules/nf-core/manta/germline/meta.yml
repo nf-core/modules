@@ -57,6 +57,10 @@ input:
       type: file
       description: Genome reference FASTA index file
       pattern: "*.{fa.fai,fasta.fai}"
+  - config:
+      type: file
+      description: Manta configuration file
+      pattern: "*.{ini,conf,config}"
 
 output:
   - meta:
@@ -96,3 +100,4 @@ output:
 authors:
   - "@maxulysse"
   - "@ramprasadn"
+  - "@nvnieuwk"

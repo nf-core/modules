@@ -1,0 +1,70 @@
+name: "propr_propd"
+description: Perform differential proportionality analysis
+keywords:
+  - differential
+  - proportionality
+  - logratio
+  - expression
+  - propr
+
+tools:
+  - "propr":
+      description: "Logratio methods for omics data"
+      homepage: "https://github.com/tpq/propr"
+      documentation: "https://rdrr.io/cran/propr/man/propr.html"
+      tool_dev_url: "https://github.com/tpq/propr"
+      doi: "10.1038/s41598-017-16520-0"
+      licence: ["GPL-2"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing additional information.
+        This can be used at the workflow level to pass optional parameters to the module.
+        [id: 'test', ...]
+  - count:
+      type: file
+      description: |
+        Count matrix, where rows = variables or genes, columns = samples or cells.
+        This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
+      pattern: "*.{csv,tsv}"
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the sample sheet and matrix
+  - samplesheet:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing additional information.
+        This can be used at the workflow level to pass optional parameters to the module.
+        [id: 'test', ...]
+  - propd:
+      type: file
+      description: R propd object
+      pattern: "*.propd.rds"
+  - results:
+      type: file
+      description: Results table
+      pattern: "*.propd.tsv"
+  - fdr:
+      type: file
+      description: (optional) propr fdr table
+      pattern: "*.fdr.tsv"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.R_sessionInfo.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@suzannejin"

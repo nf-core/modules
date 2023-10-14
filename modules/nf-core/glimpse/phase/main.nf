@@ -38,8 +38,21 @@ process GLIMPSE_PHASE {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":","_")}"
+    def suffix = task.ext.suffix ?: "vcf.gz"
+    """
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }
