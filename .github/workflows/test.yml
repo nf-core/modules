@@ -320,6 +320,7 @@ jobs:
       - name: Set up nextflow secrets
         if: env.SENTIEON_LICENSE_BASE64 != null
         run: |
+          echo $(realpath python) >> $GITHUB_PATH
           nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
@@ -510,13 +511,13 @@ jobs:
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
-          echo $(which python)
 
       # Set up secrets
       - name: Set up nextflow secrets
         if: env.SENTIEON_LICENSE_BASE64 != null
         run: |
+          echo "python = $(which python)">> GITHUB_OUTPUT
+          echo $(realpath python) >> $GITHUB_PATH
           nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
