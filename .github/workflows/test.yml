@@ -299,16 +299,13 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
-          auto-update-conda: true
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
-        if: matrix.profile == 'conda'
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
@@ -495,7 +492,6 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
@@ -504,7 +500,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
-        if: matrix.profile == 'conda'
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
