@@ -56,11 +56,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-core-lint:
     runs-on: ubuntu-20.04
@@ -233,6 +234,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnhaplotyper2
+          - profile: "conda"
             tags: sentieon/tnscope
           - profile: "conda"
             tags: sentieon/varcal
@@ -365,11 +368,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
           filters: ".github/modules.yml"
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          token: ""
 
   nf-test:
     runs-on: ubuntu-20.04
@@ -450,7 +454,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NF_TEST_VER: 0.8.1
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
@@ -465,7 +469,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NF_TEST_VER }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -516,7 +520,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:
