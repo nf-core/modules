@@ -509,6 +509,8 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
