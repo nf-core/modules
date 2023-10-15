@@ -516,8 +516,8 @@ jobs:
       - name: Set up nextflow secrets
         if: env.SENTIEON_LICENSE_BASE64 != null
         run: |
-          echo "python = $(which python)">> GITHUB_OUTPUT
           echo $(realpath python) >> $GITHUB_PATH
+          echo "python = $(which python)">> GITHUB_OUTPUT
           nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
