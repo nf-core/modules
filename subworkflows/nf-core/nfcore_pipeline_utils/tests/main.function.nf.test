@@ -5,7 +5,6 @@ nextflow_function {
     script "../main.nf"
     config "subworkflows/nf-core/nfcore_pipeline_utils/tests/nextflow.config"
 	
-
     test("Test Function checkConfigProvided") {
 
         function "checkConfigProvided"
@@ -28,8 +27,6 @@ nextflow_function {
 
     }
 
-	
-
     test("Test Function workflowCitation") {
 
         function "workflowCitation"
@@ -51,8 +48,6 @@ nextflow_function {
         }
 
     }
-
-	
 
     test("Test Function nfCoreLogo") {
 
