@@ -2,33 +2,27 @@ process GPROFILER2_GOST {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "conda-forge::r-gprofiler2=0.2.2"
+    conda "r-ggplot2=3.4.3 r-gprofiler2=0.2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0':
+        'biocontainers/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0' }"
 
     input:
-    tuple val(meta), path(differential)
-    path(background)
-    path(gmt)
+    tuple val(meta), path(de_file)
+    path(background_file)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.*"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.gprofiler2.all_enriched_pathways_tab.tsv") , emit: all_enrich
+    tuple val(meta), path("*.gprofiler2.gost_results.rds")              , emit: rds         , optional: true
+    tuple val(meta), path("*.gprofiler2.gostplot.png")                  , emit: plot_png    , optional: true
+    tuple val(meta), path("*.gprofiler2.gostplot.html")                 , emit: plot_html   , optional: true
+    tuple val(meta), path("*.gprofiler2.sub_enriched_pathways_tab.tsv") , emit: sub_enrich  , optional: true
+    tuple val(meta), path("*.gprofiler2.sub_enriched_pathways_tab.png") , emit: sub_plot    , optional: true
+    path "versions.yml"                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    //"""
-    //Rscript /home-link/iivow01/git/modules/modules/nf-core/gprofiler2/gost/templates/gprofiler2_gost.R
-    
-    //"""
-        template 'gprofiler2_gost.R'
+    template 'gprofiler2_gost.R'
 }
