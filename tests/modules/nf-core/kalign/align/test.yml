@@ -1,0 +1,9 @@
+- name: kalign align test_kalign_align
+  command: nextflow run ./tests/modules/nf-core/kalign/align -entry test_kalign_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kalign/align/nextflow.config
+  tags:
+    - kalign
+    - kalign/align
+  files:
+    - path: output/kalign/test.aln
+      md5sum: 5d12e1503a8efa6b441e02922e6f2b22
+    - path: output/kalign/versions.yml

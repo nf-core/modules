@@ -18,10 +18,11 @@ process RMARKDOWNNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")           , emit: report
-    tuple val(meta), path ("artifacts/*")     , emit: artifacts, optional: true
-    tuple val(meta), path ("session_info.log"), emit: session_info
-    path  "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.html")              , emit: report
+    tuple val(meta), path("*.parameterised.Rmd") , emit: parameterised_notebook, optional: true
+    tuple val(meta), path ("artifacts/*")        , emit: artifacts, optional: true
+    tuple val(meta), path ("session_info.log")   , emit: session_info
+    path  "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,10 +54,53 @@ process RMARKDOWNNOTEBOOK {
         params_cmd = dump_params_yml(nb_params)
         render_cmd = """\
             params = yaml::read_yaml('.params.yml')
-            rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
+
+            # Instead of rendering with params, produce a version of the R
+            # markdown with param definitions set, so the notebook itself can
+            # be reused
+            rmd_content <- readLines('${prefix}.Rmd')
+
+            # Extract YAML content between the first two '---'
+            start_idx <- which(rmd_content == "---")[1]
+            end_idx <- which(rmd_content == "---")[2]
+            rmd_yaml_content <- paste(rmd_content[(start_idx+1):(end_idx-1)], collapse = "\\n")
+            rmd_params <- yaml::yaml.load(rmd_yaml_content)
+
+            # Override the params
+            rmd_params[['params']] <- modifyList(rmd_params[['params']], params)
+
+            # Recursive function to add 'value' to list elements, except for top-level
+            add_value_recursively <- function(lst, is_top_level = FALSE) {
+                if (!is.list(lst)) {
+                    return(lst)
+                }
+
+                lst <- lapply(lst, add_value_recursively)
+                if (!is_top_level) {
+                    lst <- list(value = lst)
+                }
+                return(lst)
+            }
+
+            # Reformat nested lists under 'params' to have a 'value' key recursively
+            rmd_params[['params']] <- add_value_recursively(rmd_params[['params']], is_top_level = TRUE)
+
+            # Convert back to YAML string
+            updated_yaml_content <- as.character(yaml::as.yaml(rmd_params))
+
+            # Remove the old YAML content
+            rmd_content <- rmd_content[-((start_idx+1):(end_idx-1))]
+
+            # Insert the updated YAML content at the right position
+            rmd_content <- append(rmd_content, values = unlist(strsplit(updated_yaml_content, split = "\\n")), after = start_idx)
+
+            writeLines(rmd_content, '${prefix}.parameterised.Rmd')
+
+            # Render based on the updated file
+            rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html', envir = new.env())
         """
     } else {
-        render_cmd = "rmarkdown::render('${prefix}.Rmd')"
+        render_cmd = "rmarkdown::render('${prefix}.Rmd', output_file='${prefix}.html')"
     }
 
     """

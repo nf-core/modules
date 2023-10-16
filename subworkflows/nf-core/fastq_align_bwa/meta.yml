@@ -24,7 +24,7 @@ input:
   - ch_index:
       description: |
         BWA genome index files
-        Structure: [ val(meta2), path(index) ]
+        Structure: [ val(meta), path(index) ]
   - val_sort_bam:
       type: boolean
       description: If true bwa modules sort resulting bam files
@@ -32,8 +32,8 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Optional reference fasta file. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta) ]
+        Optional reference fasta file. This only needs to be given if val_sort_bam = true.
+        Structure: [ val(meta), path(fasta) ]
 
 output:
   - bam_orig:
