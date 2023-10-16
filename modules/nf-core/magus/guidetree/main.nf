@@ -4,15 +4,15 @@ process MAGUS_GUIDETREE {
 
     conda "bioconda::magus-msa=0.1.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/magus-msa:0.1.2--pyhdfd78af_0 ':
-        'biocontainers/magus-msa:0.1.2--pyhdfd78af_0 ' }"
+        'https://depot.galaxyproject.org/singularity/magus-msa:0.1.2--pyhdfd78af_0':
+        'biocontainers/magus-msa:0.1.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tree"), emit: tree
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

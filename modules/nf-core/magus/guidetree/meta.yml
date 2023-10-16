@@ -6,6 +6,7 @@ keywords:
   - MSA
   - guidetree
   - genomics
+  - graph
 tools:
   - "magus":
       description: "Multiple Sequence Alignment using Graph Clustering"
@@ -19,7 +20,7 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing fasta meta information
         e.g. `[ id:'test', single_end:false ]`
 
   - fasta:

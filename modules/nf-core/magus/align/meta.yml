@@ -6,6 +6,7 @@ keywords:
   - MSA
   - alignment
   - genomics
+  - graph
 tools:
   - "magus":
       description: "Multiple Sequence Alignment using Graph Clustering"
@@ -16,13 +17,13 @@ tools:
       licence: "MIT"
 
 input:
-  - meta_fasta:
+  - meta:
       type: map
       description: |
-        Groovy Map containing sample information for the fasta
+        Groovy Map containing the fasta meta information
         e.g. `[ id:'test', single_end:false ]`
 
-  - meta_tree:
+  - meta2:
       type: map
       description: |
         Groovy Map containing sample information for the specified guide tree (if supplied)
@@ -43,7 +44,7 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information. Values in meta_fasta take precedence over values in meta_tree.
+        Groovy Map containing sample meta information.
         e.g. `[ id:'test', single_end:false ]`
 
   - versions:
