@@ -13,7 +13,7 @@ process NCBIDATASETS_DOWNLOAD {
 
     input:
 
-    tuple val(meta)
+    val(meta)
 
     output:
     // Required output
@@ -42,7 +42,7 @@ process NCBIDATASETS_DOWNLOAD {
 
 
     def args = task.ext.args ?: ''
-    def args_from_csv = mneta.extra_args ?: ''
+    def args_from_csv = meta.extra_args ?: ''
     args_from_csv = args_from_csv.replaceAll("^\"|\"\$", "")
     def prefix = task.ext.prefix ?: "${meta.id.replaceAll(' ', '_')}"
 

@@ -5,6 +5,8 @@ nextflow_process {
     process "NCBIDATASETS_DOWNLOAD"
     autoSort false
     tag "module"
+    tag "ncbidatasets"
+
 
 
     test("Download genome") {
@@ -23,10 +25,7 @@ nextflow_process {
 
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "GCF_000146045.2", command: "genome accession"],
-                    ""
-                )
+                input[0] = [id: "GCF_000146045.2", command: "genome accession"]
                 """
             }
         }
@@ -71,11 +70,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "GCF_000146045.2", command: "genome accession"],
-                    "--include genome,rna,cds,gff3,gtf,gbff"
-                )
-
+                input[0] = [id: "GCF_000146045.2", command: "genome accession", extra_args: "--include genome,rna,cds,gff3,gtf,gbff"]
                 """
             }
         }
@@ -127,10 +122,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "GCF_009866885.1", command: "genome gene-id"],
-                    ""
-                )
+                input[0] = [id: "GCF_009866885.1", command: "genome gene-id"]
                 """
             }
         }
@@ -155,10 +147,7 @@ nextflow_process {
 
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "3025863", command: "genome taxon"],
-                    ""
-                )
+                input[0] = [id: "3025863", command: "genome taxon"]
                 """
             }
         }
@@ -202,10 +191,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "NP_000483.3", command: "gene accession"],
-                    ""
-                )
+                input[0] = [id: "NP_000483.3", command: "gene accession"]
                 """
             }
         }
@@ -252,10 +238,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "NP_000483.3", command: "gene accession"],
-                    "--include gene,rna,protein,cds,5p-utr,3p-utr"
-                )
+                input[0] = [id: "NP_000483.3", command: "gene accession", extra_args: "--include gene,rna,protein,cds,5p-utr,3p-utr"]
                 """
             }
         }
@@ -306,10 +289,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "plasmodium falciparum", command: "gene taxon"],
-                    ""
-                )
+                input[0] = [id: "plasmodium falciparum", command: "gene taxon"]
                 """
             }
         }
@@ -352,10 +332,7 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "NC_045512.2", command: "virus genome accession"],
-                    ""
-                )
+                input[0] = [id: "NC_045512.2", command: "virus genome accession"]
                 """
             }
         }
@@ -400,10 +377,8 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "NC_045512.2", command: "virus genome accession"],
-                    "--include genome,cds,protein"
-                )
+                input[0] =
+                    [id: "NC_045512.2", command: "virus genome accession", extra_args: "--include genome,cds,protein"]
                 """
             }
         }
@@ -453,10 +428,8 @@ nextflow_process {
                 """
                 // define inputs of the process here. Example:
                 // input[0] = file("test-file.txt")
-                input[0] = tuple(
-                    [id: "sars-cov-2", command: "virus genome taxon"],
-                    "--host cat"
-                )
+                input[0] =
+                    [id: "sars-cov-2", command: "virus genome taxon", extra_args: "--host cat"]
                 """
             }
         }

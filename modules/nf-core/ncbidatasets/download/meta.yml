@@ -24,6 +24,9 @@ input:
         e.g. `[ command:'genome accession', id:'GCF_000146045.2' ]`
         will result in `datasets download genome accession GCF_000146045.2`
 
+        e.g. `[ command:'genome accession', id:'GCF_000146045.2', extra_args: '--include genome,rna,cds,gff3,gtf,gbff']`
+        will result in `datasets download genome accession GCF_000146045.2 --include genome,rna,cds,gff3,gtf,gbff`
+
 
 output:
   - meta:
