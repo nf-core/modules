@@ -18,7 +18,8 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing command and id for `datasets download <command> <id>`
+        Groovy Map containing `command` and `id` keys for `datasets download <command> <id>`.
+        Optionally, you can provide additional command-line arguments via the key `extra_args`
 
         e.g. `[ command:'genome accession', id:'GCF_000146045.2' ]`
         will result in `datasets download genome accession GCF_000146045.2`
