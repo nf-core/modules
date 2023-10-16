@@ -1,6 +1,6 @@
 process SOURMASH_COMPARE {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "bioconda::sourmash=4.8.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -33,7 +33,7 @@ process SOURMASH_COMPARE {
     """
     sourmash compare \\
         $args \\
-        --processes $task.cpus \\
+        --processes ${task.cpus} \\
         ${comp} \\
         ${csv} \\
         ${ffile} \\

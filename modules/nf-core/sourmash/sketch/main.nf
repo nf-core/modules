@@ -1,6 +1,6 @@
 process SOURMASH_SKETCH {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda "bioconda::sourmash=4.8.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
