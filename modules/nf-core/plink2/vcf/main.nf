@@ -13,7 +13,8 @@ process PLINK2_VCF {
     output:
     tuple val(meta), path("*.pgen")    , emit: pgen
     tuple val(meta), path("*.psam")    , emit: psam
-    tuple val(meta), path("*.pvar"), emit: pvar
+    tuple val(meta), path("*.pvar")    , emit: pvar
+    tuple val(meta), path("*.pvar.zst"), emit: pvar_zst, optional: true
     path "versions.yml"                , emit: versions
 
     when:
