@@ -1,4 +1,4 @@
-process NCBIDATASETSCLI {
+process NCBIDATASETS_DOWNLOAD {
     tag "$meta.id"
     label 'process_single'
     // flaky label tags processes that can fail due to external factors.
