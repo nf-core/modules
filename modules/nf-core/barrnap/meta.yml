@@ -23,7 +23,7 @@ input:
 
   - reads:
       type: file
-      description: fastq or fasta file
+      description: fastq or fasta file nucleotides (it can be amino acids as well)
       pattern: "*.{fna,fasta,faa,fastq}"
 
 output:
@@ -39,7 +39,7 @@ output:
       pattern: "versions.yml"
   - gff:
       type: file
-      description: gff file containing the
+      description: gff file containing coordinates of genes
       pattern: "*.gff"
 
 authors:
