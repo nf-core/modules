@@ -25,6 +25,7 @@ process TCOFFEE_ALIGN {
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     """
+    export TEMP='./' # conda: /tmp/
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
