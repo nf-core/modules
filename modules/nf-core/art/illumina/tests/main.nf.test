@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process ART_ILLUMINA"
+    script "../main.nf"
+    process "ART_ILLUMINA"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "art"
+
+    test("single-end") {
+
+        config "./single-end.nextflow.config"
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'HS25'
+                input[2] = '15'
+                input[3] = '150'
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("paired-end") {
+
+        config "./paired-end.nextflow.config"
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'HS25'
+                input[2] = '15'
+                input[3] = '150'
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
