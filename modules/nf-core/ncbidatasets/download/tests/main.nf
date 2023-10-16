@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process NCBIDATASETS_DOWNLOAD"
-    script "modules/nf-core/ncbidatasets/download/ncbidatasets_download_draft.nf"
+    script "modules/nf-core/ncbidatasets/download/main.nf"
     process "NCBIDATASETS_DOWNLOAD"
     autoSort false
     tag "module"
