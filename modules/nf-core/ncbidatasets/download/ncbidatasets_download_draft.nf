@@ -20,16 +20,16 @@ process NCBIDATASETS_DOWNLOAD {
     tuple val(meta), path("*.zip")   ,             emit: zip
     path "versions.yml"              ,             emit: versions
     // Optional outputs, depends on tool usage
+    tuple val(meta), path("cds.fna.gz"),           emit: cds,        optional: true
+    tuple val(meta), path("gene.fna.gz"),          emit: gene,       optional: true
     tuple val(meta), path("*genomic.fna.gz"),      emit: genome,     optional: true
-    tuple val(meta), path("rna.fna.gz"),           emit: rna,        optional: true
-    tuple val(meta), path("protein.faa.gz"),       emit: protein,    optional: true
+    tuple val(meta), path("genomic.gbff.gz"),      emit: gbff,       optional: true
     tuple val(meta), path("genomic.gff.gz"),       emit: gff,        optional: true
     tuple val(meta), path("genomic.gtf.gz"),       emit: gtf,        optional: true
-    tuple val(meta), path("genomic.gbff.gz"),      emit: gbff,       optional: true
-    tuple val(meta), path("gene.fna.gz"),          emit: gene,       optional: true
-    tuple val(meta), path("cds.fna.gz"),           emit: cds,        optional: true
-    tuple val(meta), path("5p_utr.fna.gz"),        emit: utr_5p,     optional: true
+    tuple val(meta), path("protein.faa.gz"),       emit: protein,    optional: true
+    tuple val(meta), path("rna.fna.gz"),           emit: rna,        optional: true
     tuple val(meta), path("3p_utr.fna.gz"),        emit: utr_3p,     optional: true
+    tuple val(meta), path("5p_utr.fna.gz"),        emit: utr_5p,     optional: true
 
 
 
