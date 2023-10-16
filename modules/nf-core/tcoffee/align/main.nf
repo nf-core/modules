@@ -4,8 +4,8 @@ process TCOFFEE_ALIGN {
 
     conda "bioconda::t-coffee=13.46.0.919e8c6b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--h4cf071a_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--h4cf071a_0' }"
+        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
+        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
 
     input:
     tuple val(meta) ,  path(fasta)
