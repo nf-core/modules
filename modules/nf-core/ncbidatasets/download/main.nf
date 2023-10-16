@@ -2,10 +2,6 @@ process NCBIDATASETS_DOWNLOAD {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "conda-forge::ncbi-datasets-cli=15.11.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-datasets-pylib:15.11.0--pyhdfd78af_0':
@@ -98,7 +94,7 @@ process NCBIDATASETS_DOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
-    def args_from_csv = extra_args ?: ''
+    def args_from_csv = meta.extra_args ?: ''
     args_from_csv = args_from_csv.replaceAll("^\"|\"\$", "")
     def prefix = task.ext.prefix ?: "${meta.id.replaceAll(' ', '_')}"
     """
@@ -106,7 +102,7 @@ process NCBIDATASETS_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        ncbi-datasets-cli: \$(echo \$(datasets --version 2>&1) | sed 's/datasets version: //' )
     END_VERSIONS
     """
 }

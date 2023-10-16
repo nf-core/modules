@@ -460,5 +460,53 @@ nextflow_process {
         }
     }
 
+    test("Download genome - stub run") {
+        tag "genome_single"
+        options "-stub-run"
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+                outdir = "$outputDir"
+
+
+            }
+            process {
+                """
+
+                // define inputs of the process here. Example:
+                // input[0] = file("test-file.txt")
+                input[0] = [id: "GCF_000146045.2", command: "genome accession"]
+                """
+            }
+        }
+
+        then {
+            // assert that the genomic.fna.gz file is present. Name can vary, so needs a bit of workaround here
+            def meta = process.out.zip.get(0).get(0)
+
+            assertAll(
+                { assert process.success },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
+                { assert process.out.genome.size() == 0},
+                { assert process.out.protein.size() == 0 },
+                { assert process.out.rna.size() == 0 },
+                { assert process.out.gff.size() == 0 },
+                { assert process.out.gtf.size() == 0 },
+                { assert process.out.gbff.size() == 0 },
+                { assert process.out.cds.size() == 0 },
+                { assert process.out.utr_5p.size() == 0 },
+                { assert process.out.utr_3p.size() == 0 },
+                { assert process.out.gene.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
+
+            )
+        }
+
+    }
+
 }
 
