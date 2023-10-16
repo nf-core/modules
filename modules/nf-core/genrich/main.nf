@@ -10,18 +10,15 @@ process GENRICH {
     input:
     tuple val(meta), path(treatment_bam), path(control_bam)
     path  blacklist_bed
-    val   save_pvalues
-    val   save_pileup
-    val   save_bed
-    val   save_duplicates
 
     output:
-    tuple val(meta), path("*.narrowPeak")                    , emit: peak
-    tuple val(meta), path("*pvalues.bedGraph"), optional:true, emit: bedgraph_pvalues
-    tuple val(meta), path("*pileup.bedGraph"),  optional:true, emit: bedgraph_pileup
-    tuple val(meta), path("*intervals.bed"),    optional:true, emit: bed_intervals
-    tuple val(meta), path("*duplicates.txt"),   optional:true, emit: duplicates
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("*.narrowPeak")                     , emit: peak
+    path "versions.yml"                                       , emit: versions
+
+    tuple val(meta), path("*.pvalues.bedGraph"), optional:true, emit: bedgraph_pvalues
+    tuple val(meta), path("*.pileup.bedGraph"),  optional:true, emit: bedgraph_pileup
+    tuple val(meta), path("*.intervals.bed"),    optional:true, emit: bed_intervals
+    tuple val(meta), path("*.duplicates.txt"),   optional:true, emit: duplicates
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,41 +26,29 @@ process GENRICH {
     script:
     def args       = task.ext.args   ?: ""
     def prefix     = task.ext.prefix ?: "${meta.id}"
-    def layout     = (!args.contains("-y") && meta.single_end) ? "-y" : ""
-    def treatment  = treatment_bam   ? "-t ${treatment_bam.sort().join(',')}"   : ""
-    def control    = control_bam     ? "-c ${control_bam.sort().join(',')}"     : ""
-    def blacklist  = blacklist_bed   ? "-E $blacklist_bed"                      : ""
-    def pvalues    = save_pvalues    ? "-f ${prefix}.pvalues.bedGraph"          : ""
-    def pileup     = save_pileup     ? "-k ${prefix}.pileup.bedGraph"           : ""
-    def bed        = save_bed        ? "-b ${prefix}.intervals.bed"             : ""
-    def duplicates = ""
+    def treatment  = treatment_bam   ? "-t ${treatment_bam.join(',')}"   : ""
+    def control    = control_bam     ? "-c ${control_bam.join(',')}"     : ""
+    def blacklist  = blacklist_bed   ? "-E $blacklist_bed"               : ""
 
-    if (save_duplicates) {
-        if (args.contains('-r')) {
-            duplicates = "-R ${prefix}.duplicates.txt"
-        } else {
-            log.info '[Genrich] Duplicates can only be saved if they are filtered, defaulting to -r option (Remove PCR duplicates).'
-            duplicates = "-r -R ${prefix}.duplicates.txt"
-        }
+    if (meta.single_end && (!args.contains("-y") && !args.contains("-w"))) {
+        log.info '[Genrich] Single-end data can only be analyzed if unpaired alignments are kept (-y or -w <int>), defaulting to -y option.'
+        args = "-y ${args}"
     }
-
+    if (args.contains("-R") && !args.contains("-r")) {
+        log.info '[Genrich] Duplicates can only be saved if they are filtered out, defaulting to -r option (Remove PCR duplicates).'
+        args = "-r ${args}"
+    }
     """
     Genrich \\
-        $treatment \\
         $args \\
-        $layout \\
+        $treatment \\
+        $control \\
         $blacklist \\
-        -o ${prefix}.narrowPeak \\
-        $pvalues \\
-        $pileup \\
-        $bed \\
-        $duplicates \\
-        $control
+        -o ${prefix}.narrowPeak
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
     END_VERSIONS
     """
-
 }
