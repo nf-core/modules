@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "parabricks_haplotypecaller"
+description: NVIDIA Clara Parabricks GPU-accelerated apply Haplotype caller.
+keywords:
+  - bam
+  - cram
+  - vcf
+  - GPU-accelerated
+  - variant calling
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/"
+      licence: "custom"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - input:
+      type: file
+      description: bam or cram files for sample to be variant called.
+      pattern: "*.{bam, cram}"
+  - input_index:
+      type: file
+      description: bai or crai index corresponding to input bam or cram files. Only necessary if intervals are provided.
+      pattern: "*.{bai, crai}"
+  - interval_file:
+      type: file
+      description: File or files containing genomic intervals for use in base quality score recalibration.
+      pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - fasta:
+      type: file
+      description: Reference fasta - must be unzipped.
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: VCF file after generated after variant calling
+      pattern: "*.vcf"
+
+authors:
+  - "@Furentsu"
