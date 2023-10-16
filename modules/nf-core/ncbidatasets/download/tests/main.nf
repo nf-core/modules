@@ -6,6 +6,7 @@ nextflow_process {
     autoSort false
     tag "module"
     tag "ncbidatasets"
+    tag "ncbidatasets/download"
 
 
 
