@@ -31,7 +31,8 @@ process GATK4_INTERVALLISTTOOLS {
 
     mkdir ${prefix}_split
 
-    gatk --java-options "-Xmx${avail_mem}M" IntervalListTools \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        IntervalListTools \\
         --INPUT $intervals \\
         --OUTPUT ${prefix}_split \\
         --TMP_DIR . \\

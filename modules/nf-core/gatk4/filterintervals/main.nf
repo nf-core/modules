@@ -9,8 +9,8 @@ process GATK4_FILTERINTERVALS {
 
     input:
     tuple val(meta), path(intervals)
-    path read_counts
-    path annotated_intervals
+    tuple val(meta2), path(read_counts)
+    tuple val(meta3), path(annotated_intervals)
 
     output:
     tuple val(meta), path("*.interval_list"), emit: interval_list
@@ -20,10 +20,10 @@ process GATK4_FILTERINTERVALS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
-    def read_counts_command = read_counts ? "--input $read_counts" : ""
+    def annotated_command   = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
+    def read_counts_command = read_counts ? read_counts.collect{"--input $it"}.join(" ") : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -32,12 +32,13 @@ process GATK4_FILTERINTERVALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" FilterIntervals \\
-    $annotated_command \\
-    $read_counts_command \\
-    --intervals $intervals \\
-    --output ${prefix}.interval_list \\
-    $args
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        FilterIntervals \\
+        $annotated_command \\
+        $read_counts_command \\
+        --intervals $intervals \\
+        --output ${prefix}.interval_list \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

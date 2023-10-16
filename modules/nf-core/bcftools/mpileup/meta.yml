@@ -25,6 +25,10 @@ input:
   - intervals:
       type: file
       description: Input intervals file. A file (commonly '.bed') containing regions to subset
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information about the genome fasta, e.g. [ id: 'sarscov2' ]
   - fasta:
       type: file
       description: FASTA reference file

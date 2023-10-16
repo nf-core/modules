@@ -14,7 +14,8 @@ process BRACKEN_BRACKEN {
     path database
 
     output:
-    tuple val(meta), path(bracken_report), emit: reports
+    tuple val(meta), path(bracken_report)        , emit: reports
+    tuple val(meta), path("*bracken_species.txt"), emit: txt
     path "versions.yml"          , emit: versions
 
     when:

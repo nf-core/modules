@@ -1,4 +1,4 @@
-name: test
+name: Run tests
 on:
   push:
     branches: [master]
@@ -13,15 +13,22 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   prettier:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       - name: Install Prettier
         run: npm install -g prettier
@@ -30,11 +37,13 @@ jobs:
         run: prettier --check .
 
   editorconfig:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
       - name: Install editorconfig-checker
         run: npm install -g editorconfig-checker
@@ -44,20 +53,22 @@ jobs:
 
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
+          token: ""
 
   nf-core-lint:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-core-lint
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -73,7 +84,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.11"
 
       - uses: actions/cache@v3
         with:
@@ -82,38 +93,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - name: Install nf-core tools
-        run: python -m pip install nf-core
-
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
-
-      - name: Lint ${{ matrix.tags }}
-        run: nf-core modules lint ${{ matrix.tags }}
-        # HACK
-        if: startsWith( matrix.tags, 'subworkflow' ) != true
-
-      - uses: actions/cache@v3
+      - uses: actions/setup-java@v3
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
+        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
+
+      - name: Remove substring from matrix.tags
+        id: remove_substring
+        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+
+      - name: Lint subworkflow ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
+        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -185,6 +191,8 @@ jobs:
           - profile: "conda"
             tags: genescopefk
           - profile: "conda"
+            tags: hlala/preparegraph
+          - profile: "conda"
             tags: ilastik/multicut
           - profile: "conda"
             tags: ilastik/pixelclassification
@@ -199,7 +207,17 @@ jobs:
           - profile: "conda"
             tags: merquryfk/ploidyplot
           - profile: "conda"
+            tags: mitohifi/mitohifi
+          - profile: "conda"
             tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: parabricks/applybqsr
+          - profile: "conda"
+            tags: parabricks/fq2bam
+          - profile: "conda"
+            tags: picard/collecthsmetrics
+          - profile: "conda"
+            tags: picard/collectwgsmetrics
           - profile: "conda"
             tags: scimap/mcmicro
           - profile: "conda"
@@ -209,13 +227,27 @@ jobs:
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
+            tags: sentieon/datametrics
+          - profile: "conda"
             tags: sentieon/dedup
+          - profile: "conda"
+            tags: sentieon/dnamodelapply
+          - profile: "conda"
+            tags: sentieon/dnascope
           - profile: "conda"
             tags: sentieon/gvcftyper
           - profile: "conda"
             tags: sentieon/haplotyper
           - profile: "conda"
+            tags: sentieon/readwriter
+          - profile: "conda"
+            tags: sentieon/tnhaplotyper2
+          - profile: "conda"
+            tags: sentieon/tnscope
+          - profile: "conda"
             tags: sentieon/varcal
+          - profile: "conda"
+            tags: sentieon/wgsmetrics
           - profile: "conda"
             tags: spaceranger/count
           - profile: "conda"
@@ -226,6 +258,8 @@ jobs:
             tags: universc
           - profile: "singularity"
             tags: universc
+          - profile: "conda"
+            tags: vt/decompose
           - profile: "singularity"
             tags: gatk4/determinegermlinecontigploidy
           - profile: "conda"
@@ -234,61 +268,56 @@ jobs:
             tags: subworkflows/fasta_clean_fcs
           - profile: "conda"
             tags: islandpath
+          - profile: "conda"
+            tags: subworkflows/bam_qc_picard
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: "3.11"
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/cache@v3
+      - uses: actions/setup-java@v3
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+        uses: nf-core/setup-nextflow@v1
+        with:
+          version: "${{ matrix.NXF_VER }}"
 
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: true
+          miniconda-version: "latest"
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
-        if: matrix.profile == 'conda'
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -298,7 +327,7 @@ jobs:
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
           SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
-          SENTIEON_AUTH_DATA=$(python tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+          SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
@@ -334,23 +363,26 @@ jobs:
             /home/runner/pytest_workflow_*/*/work
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
+            !${{ github.workspace }}/.singularity
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v2
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
         id: filter
         with:
-          filters: "tests/config/nftest_modules.yml"
+          filters: ".github/modules.yml"
+          token: ""
 
   nf-test:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
@@ -377,6 +409,8 @@ jobs:
             tags: cellranger/mkgtf
           - profile: "conda"
             tags: cellranger/mkref
+          - profile: "conda"
+            tags: custom/dumpsoftwareversions
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
@@ -420,27 +454,23 @@ jobs:
           - profile: "singularity"
             tags: universc
           - profile: "conda"
+            tags: vt/decompose
+          - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      NFTEST_VER: "0.8.1"
 
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
+      - uses: actions/setup-java@v3
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
-
-      - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
 
       - name: Cache nf-test installation
         id: cache-software
@@ -449,7 +479,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -457,26 +487,31 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
+
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v7
-        with:
-          singularity-version: 3.7.1
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
-        if: matrix.profile == 'conda'
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -486,7 +521,7 @@ jobs:
           nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
           SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
           SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
-          SENTIEON_AUTH_DATA=$(python tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+          SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
@@ -496,7 +531,8 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
-            --tap=test.tap
+            --tap=test.tap \
+            --verbose
 
       - uses: pcolby/tap-summary@v1
         with:
@@ -504,7 +540,7 @@ jobs:
             test.tap
 
   confirm-pass:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
     if: always()
     steps:

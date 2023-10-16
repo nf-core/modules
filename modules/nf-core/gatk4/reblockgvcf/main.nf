@@ -35,7 +35,8 @@ process GATK4_REBLOCKGVCF {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ReblockGVCF \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ReblockGVCF \\
         --variant $gvcf \\
         --output ${prefix}.rb.g.vcf.gz \\
         --reference $fasta \\

@@ -32,7 +32,8 @@ process GATK4_COMBINEGVCFS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CombineGVCFs \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CombineGVCFs \\
         $input_list \\
         --output ${prefix}.combined.g.vcf.gz \\
         --reference ${fasta} \\

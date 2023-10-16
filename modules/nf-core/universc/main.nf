@@ -2,10 +2,6 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     container "nf-core/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
         containerOptions = "--privileged"
@@ -31,6 +27,10 @@ process UNIVERSC {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
@@ -63,6 +63,10 @@ process UNIVERSC {
 
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
     mkdir -p "sample-${meta.id}/outs/"
     touch sample-${meta.id}/outs/fake_file.txt

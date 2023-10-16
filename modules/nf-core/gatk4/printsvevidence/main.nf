@@ -48,7 +48,8 @@ process GATK4_PRINTSVEVIDENCE {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" PrintSVEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        PrintSVEvidence \\
         ${input_files} \\
         --sequence-dictionary ${dict} \\
         ${intervals} \\

@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { QUALIMAP_BAMQCCRAM } from '../../../../../modules/nf-core/qualimap/bamqccram/main.nf'
 
-workflow test_qualimap_bamqc {
+workflow test_qualimap_bamqccram {
     input   = [ [ id:'test', single_end:false ], // meta map
                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)

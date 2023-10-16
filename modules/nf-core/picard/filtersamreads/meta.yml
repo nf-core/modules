@@ -3,6 +3,8 @@ description: Filters SAM/BAM files to include/exclude either aligned/unaligned r
 keywords:
   - bam
   - filter
+  - picard
+  - sam
 tools:
   - picard:
       description: |
@@ -25,7 +27,7 @@ input:
       description: List of BAM files. If filtering without read list must be sorted by queryname with picard sortsam
       pattern: "*.{bam}"
   - filter:
-      type: value
+      type: string
       description: Picard filter type
       pattern: "includeAligned|excludeAligned|includeReadList|excludeReadList"
   - readlist:

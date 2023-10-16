@@ -6,13 +6,14 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
   - star/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - ch_reads:
       description: |
