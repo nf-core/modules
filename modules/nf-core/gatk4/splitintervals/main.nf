@@ -32,7 +32,8 @@ process GATK4_SPLITINTERVALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" SplitIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        SplitIntervals \\
         --output ${prefix} \\
         --intervals $intervals \\
         $reference \\

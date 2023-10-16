@@ -47,6 +47,8 @@ process MMSEQS_CLUSTER {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
+
     touch ${prefix}/${prefix}.{0..9}
     touch ${prefix}/${prefix}.dbtype
     touch ${prefix}/${prefix}.index

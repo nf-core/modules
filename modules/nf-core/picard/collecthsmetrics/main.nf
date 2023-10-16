@@ -2,10 +2,10 @@ process PICARD_COLLECTHSMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=3.0.0"
+    conda "bioconda::picard=3.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
+        'biocontainers/picard:3.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals), path(target_intervals)

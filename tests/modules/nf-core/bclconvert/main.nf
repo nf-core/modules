@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { BCLCONVERT } from '../../../../modules/nf-core/bclconvert/main.nf'
 
 workflow test_bclconvert {
+    //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
     ch_flowcell = Channel.value([
             [id:'test', lane:1 ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),

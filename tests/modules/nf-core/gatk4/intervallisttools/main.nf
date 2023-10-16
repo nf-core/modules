@@ -11,7 +11,8 @@ workflow test_gatk4_intervallisttools {
         [ id:'test' ],
         file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
     ]
-    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    dict = Channel.fromPath(file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true))
+        .map{ dict -> [ [id:'test'], dict ] }
 
     GATK4_BEDTOINTERVALLIST ( input, dict )
     GATK4_INTERVALLISTTOOLS ( GATK4_BEDTOINTERVALLIST.out.interval_list )
