@@ -7,8 +7,8 @@ include { MUSCLE5_SUPER5 } from '../../../../../modules/nf-core/muscle5/super5/m
 workflow test_muscle5_super5 {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test' ], 
+        fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     ]
 
     MUSCLE5_SUPER5 ( input )

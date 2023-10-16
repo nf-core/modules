@@ -1,13 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /super5
-- name: "muscle5 super5"
+- name: muscle5 super5 test_muscle5_super5
   command: nextflow run ./tests/modules/nf-core/muscle5/super5 -entry test_muscle5_super5 -c ./tests/config/nextflow.config
   tags:
-    - "muscle5"
-    - "muscle5/super5"
+    - muscle5/super5
+    - muscle5
   files:
-    - path: "output/muscle5/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/muscle5/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+    - path: output/muscle5/testabc.3.aln
+      md5sum: 006a173438952c838215cd6cc9b42a3d
+    - path: output/muscle5/testacb.3.aln
+      md5sum: fc94bb7d0b0308537fa0997c06c5a86f
+    - path: output/muscle5/testbca.3.aln
+      md5sum: 00496f951481d58bf23bb7690057c59f
+    - path: output/muscle5/testnone.3.aln
+      md5sum: 958666a45eabba897417fc2ade08a21b
+    - path: output/muscle5/versions.yml

@@ -1,55 +1,39 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "muscle5_super5"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Muscle is a program for creating multiple alignments of amino acid or nucleotide sequences. This paricular module uses the super5 algorithm for very big allignments. It can permuatate the guide tree according to a set of flags.
 keywords:
-  - sort
-  - example
-  - genomics
+  - align
+  - msa
+  - multiple sequence alignment
 tools:
-  - "muscle5":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "MUSCLE: multiple sequence alignment with high accuracy and high throughput"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['GPL v3']"
-
-## TODO nf-core: Add a description of all of the variables used as input
+  - muscle -super5:
+      description: "Muscle v5 is a major re-write of MUSCLE based on new algorithms."
+      homepage: "https://drive5.com/muscle5/"
+      documentation: "https://drive5.com/muscle5/manual/"
+      doi: "10.1101/2021.06.20.449169"
+      licence: "[http://www.drive5.com/muscle/manual/license.html]"
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: Input sequences for alignment must be in FASTA format
+      pattern: "*.{fasta,fa,fna}"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - aligned_fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: Multiple sequence alignment produced in FASTA format
+      pattern: "*.{aln}"
 authors:
   - "@alessiovignoli"
