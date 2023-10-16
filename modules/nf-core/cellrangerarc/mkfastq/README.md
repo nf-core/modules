@@ -14,11 +14,11 @@ ENV BCL2FASTQ2_VER=<VERSION> \
 3. Create and test the container:
 
 ```bash
-docker build . -t nfcore/cellranger-arc-mkfastq:<CELLRANGERARC_VERSION>
+docker build . -t quay.io/nf-core/cellranger-arc-mkfastq:<CELLRANGERARC_VERSION>
 ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
 
 ```bash
-docker push nfcore/cellranger-arc-mkfastq:<CELLRANGERARC_VERSION>
+docker push quay.io/nf-core/cellranger-arc-mkfastq:<CELLRANGERARC_VERSION>
 ```

@@ -13,11 +13,11 @@ ENV CELLRANGER_ARC_VER=<VERSION>
 3. Create and test the container:
 
 ```bash
-docker build . -t nfcore/cellranger-arc:<VERSION>
+docker build . -t quay.io/nf-core/cellranger-arc:<VERSION>
 ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
 
 ```bash
-docker push nfcore/cellranger-arc:<VERSION>
+docker push quay.io/nf-core/cellranger-arc:<VERSION>
 ```

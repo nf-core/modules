@@ -1,5 +1,5 @@
 # Dockerfile to create container with Cell Ranger v2.0.2
-# Push to nfcore/cellranger-arc:<VER>
+# Push to quay.io/nf-core/cellranger-arc:<VER>
 
 FROM continuumio/miniconda3:4.8.2
 LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>, Florian Heyl" \

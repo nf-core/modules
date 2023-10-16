@@ -1,5 +1,5 @@
 # Dockerfile to create container with Cell Ranger Arc v2.0.2 and bcl2fastq v2.20.0
-# Push to nfcore/cellranger-arc-mkfastq:<VER>
+# Push to quay.io/nf-core/cellranger-arc-mkfastq:<VER>
 
 FROM continuumio/miniconda3:4.8.2
 LABEL authors="Regina Reynolds, Florian Heyl, Gisela Gabernet <gisela.gabernet@gmail.com>" \
