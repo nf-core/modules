@@ -1,4 +1,10 @@
 {
+    "test_cat_unzipped_zipped_size": {
+        "content": [
+            375
+        ],
+        "timestamp": "2023-10-16T14:33:08.049445686"
+    },
     "test_cat_unzipped_unzipped": {
         "content": [
             {
@@ -28,38 +34,7 @@
                 ]
             }
         ],
-        "timestamp": "2023-10-16T12:58:15.77604818"
-    },
-    "test_cat_zipped_zipped": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.gz:md5,1c3e5c5ddf6ebcaf56f3283905269974"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ],
-                "file_out": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.gz:md5,1c3e5c5ddf6ebcaf56f3283905269974"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ]
-            }
-        ],
-        "timestamp": "2023-10-16T12:58:28.552619778"
+        "timestamp": "2023-10-16T14:32:18.500464399"
     },
     "test_cat_zipped_unzipped": {
         "content": [
@@ -90,68 +65,57 @@
                 ]
             }
         ],
-        "timestamp": "2023-10-16T12:56:53.482831598"
+        "timestamp": "2023-10-16T14:32:49.642741302"
     },
-    "test_cat_one_file_unzipped_zipped": {
+    "test_cat_zipped_zipped_lines": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "cat.txt.gz:md5,da9c36c3e304f1591029f88a2bf2d9a6"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ],
-                "file_out": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "cat.txt.gz:md5,da9c36c3e304f1591029f88a2bf2d9a6"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ]
-            }
+            [
+                "MT192765.1\tGenbank\ttranscript\t259\t29667\t.\t+\t.\tID=unknown_transcript_1;geneID=orf1ab;gene_name=orf1ab",
+                "MT192765.1\tGenbank\tgene\t259\t21548\t.\t+\t.\tParent=unknown_transcript_1",
+                "MT192765.1\tGenbank\tCDS\t259\t13461\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
+                "MT192765.1\tGenbank\tCDS\t13461\t21548\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
+                "MT192765.1\tGenbank\tCDS\t21556\t25377\t.\t+\t0\tParent=unknown_transcript_1;gbkey=CDS;gene=S;note=\"structural protein\";product=\"surface glycoprotein\";protein_id=QIK50427.1",
+                "MT192765.1\tGenbank\tgene\t21556\t25377\t.\t+\t.\tParent=unknown_transcript_1"
+            ]
         ],
-        "timestamp": "2023-10-16T12:59:09.214997947"
+        "timestamp": "2023-10-16T14:32:33.629048645"
     },
-    "test_cat_unzipped_zipped": {
+    "test_cat_unzipped_zipped_lines": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "cat.txt.gz:md5,f807b0f5a14e52f00d3e26aa3ad74826"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ],
-                "file_out": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "cat.txt.gz:md5,f807b0f5a14e52f00d3e26aa3ad74826"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,115ed6177ebcff24eb99d503fa5ef894"
-                ]
-            }
+            [
+                ">MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome",
+                "GTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGT",
+                "GTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAG",
+                "TAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTTGTCCGG",
+                "GTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTT",
+                "ACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAG"
+            ]
         ],
-        "timestamp": "2023-10-16T12:58:57.166235206"
+        "timestamp": "2023-10-16T14:33:08.038830506"
+    },
+    "test_cat_one_file_unzipped_zipped_lines": {
+        "content": [
+            [
+                ">MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome",
+                "GTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGT",
+                "GTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAG",
+                "TAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTTGTCCGG",
+                "GTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTT",
+                "ACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAG"
+            ]
+        ],
+        "timestamp": "2023-10-16T14:33:21.39642399"
+    },
+    "test_cat_zipped_zipped_size": {
+        "content": [
+            78
+        ],
+        "timestamp": "2023-10-16T14:32:33.641869244"
+    },
+    "test_cat_one_file_unzipped_zipped_size": {
+        "content": [
+            374
+        ],
+        "timestamp": "2023-10-16T14:33:21.4094373"
     }
 }
