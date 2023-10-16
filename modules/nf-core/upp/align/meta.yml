@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "upp_align"
-description: write your description here
+description: "This module runs a Multiple Sequence Alignment using the UPP suite, part of the SEPP package"
 keywords:
   - MSA
   - alignment
@@ -33,16 +33,16 @@ tools:
       licence: "GPL3"
 
 input:
-  - meta_fasta:
+  - meta:
       type: map
       description: |
-        Groovy Map containing sample information for the input fasta file
+        Groovy Map containing meta information for the input fasta file
         e.g. `[ id:'test', single_end:false ]`
 
-  - meta_tree:
+  - meta2:
       type: map
       description: |
-        Groovy Map containing sample information for the specified guide tree (if supplied)
+        Groovy Map containing meta information for the specified guide tree (if supplied)
         e.g. `[ id:'test', single_end:false ]`
 
   - fasta:
@@ -60,7 +60,7 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information. Values in meta_fasta take precedence over values in meta_tree.
+        Groovy Map containing fasta meta information
         e.g. `[ id:'test', single_end:false ]`
 
   - versions:
