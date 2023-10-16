@@ -2,7 +2,7 @@ process CELLRANGERATAC_MKREF {
     tag "$reference_config"
     label 'process_medium'
 
-    container "nfcore/cellranger-atac:2.1.0"
+    container "nf-core/cellranger-atac:2.1.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

@@ -16,12 +16,12 @@ update to Dockerhub needs to be done manually.
 3. Create and test the container:
 
    ```bash
-   docker build . -t nfcore/cellranger-atac:<VERSION>
+   docker build . -t quay.io/nf-core/cellranger-atac:<VERSION>
    ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member
    to do so.
 
    ```bash
-   docker push nfcore/cellranger-atac:<VERSION>
+   docker push quay.io/nf-core/cellranger-atac:<VERSION>
    ```

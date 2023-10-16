@@ -10,18 +10,18 @@ the bcl2fastq2 or Cell Ranger ATAC versions in the container and pushing the upd
 
    ```bash
    ENV BCL2FASTQ2_VER=<VERSION> \
-       ATAC_VER=<VERSION>
+       CELLRANGERATAC_VER=<VERSION>
    ```
 
 3. Create and test the container:
 
    ```bash
-   docker build . -t nfcore/cellranger-atac-mkfastq:<CELLRANGERATAC_VERSION>
+   docker build . -t quay.io/nf-core/cellranger-atac-mkfastq:<CELLRANGERATAC_VERSION>
    ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team
    member to do so.
 
    ```bash
-   docker push nfcore/cellranger-atac-mkfastq:<CELLRANGERATAC_VERSION>
+   docker push quay.io/nf-core/cellranger-atac-mkfastq:<CELLRANGERATAC_VERSION>
    ```
