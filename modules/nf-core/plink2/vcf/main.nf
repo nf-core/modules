@@ -13,7 +13,7 @@ process PLINK2_VCF {
     output:
     tuple val(meta), path("*.pgen")    , emit: pgen
     tuple val(meta), path("*.psam")    , emit: psam
-    tuple val(meta), path("*.pvar.zst"), emit: pvar
+    tuple val(meta), path("*.pvar"), emit: pvar
     path "versions.yml"                , emit: versions
 
     when:
@@ -29,7 +29,6 @@ process PLINK2_VCF {
         --memory $mem_mb \\
         $args \\
         --vcf $vcf \\
-        --make-pgen vzs \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
