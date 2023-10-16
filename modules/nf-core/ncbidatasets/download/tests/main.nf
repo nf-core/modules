@@ -348,9 +348,9 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${meta.id}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
                 { assert process.out.genome.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/genomic.fna.gz").exists() },
+                { assert process.out.genome.get(0).get(1) ==~ ".*/genomic.fna.gz" },
 
                 { assert process.out.cds.size() == 0 },
                 { assert process.out.protein.size() == 0 },
@@ -393,13 +393,13 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${meta.id}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
                 { assert process.out.genome.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/genomic.fna.gz").exists() },
+                { assert process.out.genome.get(0).get(1) ==~ ".*/genomic.fna.gz" },
                 { assert process.out.protein.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/protein.faa.gz").exists() },
+                { assert process.out.protein.get(0).get(1) ==~ ".*/protein.faa.gz" },
                 { assert process.out.cds.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/cds.fna.gz").exists() },
+                { assert process.out.cds.get(0).get(1) ==~ ".*/cds.fna.gz" },
 
                 { assert process.out.rna.size() == 0 },
                 { assert process.out.gene.size() == 0 },
@@ -442,7 +442,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${meta.id}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
 
                 { assert process.out.genome.size() == 0 },
                 { assert process.out.protein.size() == 0 },
