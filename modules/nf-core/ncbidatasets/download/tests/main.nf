@@ -209,11 +209,11 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${meta.id}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
                 { assert process.out.protein.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/protein.faa.gz").exists() },
+                { assert process.out.protein.get(0).get(1) ==~ ".*/protein.faa.gz" },
                 { assert process.out.rna.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/rna.fna.gz").exists() },
+                { assert process.out.rna.get(0).get(1) ==~ ".*/rna.fna.gz" },
 
                 // gene.fna is not present in NM, NR, NP, XM, XR, XP and YP accessions
                 { assert process.out.gene.size() == 0 },
@@ -255,17 +255,17 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${meta.id}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${meta.id}_ncbi_dataset.zip" },
                 { assert process.out.gene.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/gene.fna.gz").exists() },
+                { assert process.out.gene.get(0).get(1) ==~ ".*/gene.fna.gz" },
                 { assert process.out.rna.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/rna.fna.gz").exists() },
+                { assert process.out.rna.get(0).get(1) ==~ ".*/rna.fna.gz" },
                 { assert process.out.cds.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/cds.fna.gz").exists() },
+                { assert process.out.cds.get(0).get(1) ==~ ".*/cds.fna.gz" },
                 { assert process.out.utr_5p.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/5p_utr.fna.gz").exists() },
+                { assert process.out.utr_5p.get(0).get(1) ==~ ".*/5p_utr.fna.gz" },
                 { assert process.out.utr_3p.size() == 1 },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/3p_utr.fna.gz").exists() },
+                { assert process.out.utr_3p.get(0).get(1) ==~ ".*/3p_utr.fna.gz" },
 
                 { assert process.out.genome.size() == 0 },
                 { assert process.out.gff.size() == 0 },
@@ -306,7 +306,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert new File("${outputDir}/external_assemblies/${meta.id}/ncbidatasetscli/${prefix}_ncbi_dataset.zip").exists() },
+                { assert process.out.zip.get(0).get(1) ==~ ".*/${prefix}_ncbi_dataset.zip" },
 
                 { assert process.out.protein.size() == 0 },
                 { assert process.out.rna.size() == 0 },
