@@ -35,6 +35,9 @@ nextflow_process {
             assert snapshot(
                 path(process.out.reads.get(0).get(1)).linesGzip[0..6]
             ).match()
+            html_text=["Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)","single end (151 cycles)"]
+            assert path(process.out.html.get(0).get(1)).getText().contains(html_text)
+
         }
 
     }
