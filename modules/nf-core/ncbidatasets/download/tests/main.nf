@@ -48,6 +48,10 @@ nextflow_process {
                 { assert process.out.utr_5p.size() == 0 },
                 { assert process.out.utr_3p.size() == 0 },
                 { assert process.out.gene.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
+
             )
         }
 
@@ -100,6 +104,8 @@ nextflow_process {
                 { assert process.out.utr_3p.size() == 0 },
                 { assert process.out.gene.size() == 0 },
 
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
             )
         }
 
@@ -173,6 +179,9 @@ nextflow_process {
                 { assert process.out.utr_5p.size() == 0 },
                 { assert process.out.utr_3p.size() == 0 },
 
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
+
             )
         }
 
@@ -221,6 +230,9 @@ nextflow_process {
                 { assert process.out.gff.size() == 0 },
                 { assert process.out.gtf.size() == 0 },
                 { assert process.out.gbff.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
             )
         }
 
@@ -271,6 +283,9 @@ nextflow_process {
                 { assert process.out.gff.size() == 0 },
                 { assert process.out.gtf.size() == 0 },
                 { assert process.out.gbff.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
             )
         }
 
@@ -315,6 +330,9 @@ nextflow_process {
                 { assert process.out.gff.size() == 0 },
                 { assert process.out.gtf.size() == 0 },
                 { assert process.out.gbff.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
             )
         }
     }
@@ -360,6 +378,9 @@ nextflow_process {
                 { assert process.out.gbff.size() == 0 },
                 { assert process.out.utr_5p.size() == 0 },
                 { assert process.out.utr_3p.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
             )
         }
     }
@@ -409,6 +430,9 @@ nextflow_process {
                 { assert process.out.utr_5p.size() == 0 },
                 { assert process.out.utr_3p.size() == 0 },
 
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
+
 
             )
         }
@@ -454,6 +478,9 @@ nextflow_process {
                 { assert process.out.gbff.size() == 0 },
                 { assert process.out.utr_5p.size() == 0 },
                 { assert process.out.utr_3p.size() == 0 },
+
+                // check versions.yml
+                { assert snapshot(process.out.versions).match("versions") },
 
 
             )
