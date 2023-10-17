@@ -41,7 +41,7 @@ nextflow_process {
                 },
                 {
                     def read = path(process.out.fastq.get(0).get(1)).linesGzip[1]
-                    assert read.equals(GAAAAGAGCTATGAATTGCAGACACCTTTTGAAATTAAATTGGCAAAGAAATTTGACACCTTCTATGGGGAATGTCCAAATTTTGTATTTCCCTTAAATTCCATAATCAAGACTATTCAACCAAGGGTTGAAAAGAAAAAGCTTGATGGC")
+                    assert read.equals("GAAAAGAGCTATGAATTGCAGACACCTTTTGAAATTAAATTGGCAAAGAAATTTGACACCTTCTATGGGGAATGTCCAAATTTTGTATTTCCCTTAAATTCCATAATCAAGACTATTCAACCAAGGGTTGAAAAGAAAAAGCTTGATGGC")
                 },
                 {
                     def read_qc = path(process.out.fastq.get(0).get(1)).linesGzip[3]
