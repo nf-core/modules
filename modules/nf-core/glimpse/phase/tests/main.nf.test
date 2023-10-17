@@ -55,7 +55,6 @@ nextflow_process {
                 .orElse(null)
             String selectedFilename = selectedFile != null ? selectedFile.getPath() : null
             def lines = path(selectedFilename).linesGzip.last()
-            print(lines)
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
