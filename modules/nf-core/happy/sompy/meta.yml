@@ -51,11 +51,11 @@ input:
       description: False positive / confident call regions. Calls outside these regions will be labelled as UNK.
       pattern: "*.{bed,bed.gz}"
   - stratification_tsv:
-      type: file(s)
+      type: file
       description: Ambiguous region bed file(s)
       pattern: "*.bed"
   - bams:
-      type: file(s)
+      type: file
       description: one or more BAM files for feature table extraction
       pattern: "*.bam"
 
