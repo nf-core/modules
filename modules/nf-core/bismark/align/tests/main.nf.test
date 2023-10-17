@@ -42,13 +42,12 @@ nextflow_process {
             { assert snapshot(process.out.unmapped).match("unmapped_se") },
             { assert snapshot(process.out.versions).match("versions") },
             {
-            with(process.out.report) {
-                with(get(0)) {
-                    assert get(1).endsWith("_SE_report.txt")
-                    assert path(get(1)).getText().contains("Bismark completed in")
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith("_SE_report.txt")
+                        assert path(get(1)).readLines().last().contains("Bismark completed in")
+                    }
                 }
-            }
-
             }
             )
         }
@@ -81,13 +80,12 @@ nextflow_process {
             { assert snapshot(process.out.unmapped).match("unmapped_pe") },
             { assert snapshot(process.out.versions).match("versions") },
             {
-            with(process.out.report) {
-                with(get(0)) {
-                    assert get(1).endsWith("_PE_report.txt")
-                    assert path(get(1)).getText().contains("Bismark completed in")
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith("_PE_report.txt")
+                        assert path(get(1)).readLines().last().contains("Bismark completed in")
+                    }
                 }
-            }
-
             }
             )
         }
