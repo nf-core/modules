@@ -37,3 +37,9 @@
   stdout:
     contains:
       - "nf-core/initialise v0.1"
+
+- name: "initialise no logo"
+  command: nextflow run ./tests/subworkflows/nf-core/initialise -entry test_initialise -c ./tests/config/nextflow.config --logo false
+  tags:
+    - "subworkflows"
+    - "subworkflows/initialise"
