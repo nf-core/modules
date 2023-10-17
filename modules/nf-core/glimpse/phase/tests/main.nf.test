@@ -45,12 +45,20 @@ nextflow_process {
         }
 
         then {
-            println(process.out.phased_variant)
-            //process.out.phased_variant.filter(~/^*.vcf.gz$/).view()
-            def lines = path(process.out.phased_variant.get(0).get(1)).linesGzip[4..4734]
+            String targetFileName = "input_present_chr21_16650000-16800000.vcf.gz"
+            File selectedFile = process.out.phased_variant.stream()
+                .filter(vector -> vector.size() > 1)
+                .map(vector -> new File(vector.get(1).toString()))
+                .filter(file -> file.getName().equals(targetFileName))
+                .findFirst()
+                .orElse(null)
+            String selectedFilename = selectedFile != null ? selectedFile.getPath() : null
+            def lines = path(selectedFilename).linesGzip.last()
+            print(lines)
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.phased_variant.size() == 4},
                 { assert snapshot(lines).match("imputed") }
             )
         }
