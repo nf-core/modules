@@ -9,11 +9,11 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 workflow test_cellrangerarc_count {
 
     input = [ [ id:'test', single_end:false ], // meta map
-            [  file(params.test_data['mus_musculus']['10xgenomics']['test_scARC_gex_R1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['mus_musculus']['10xgenomics']['test_scARC_gex_R2_fastq_gz'], checkIfExists: true),
-                file(params.test_data['mus_musculus']['10xgenomics']['test_scARC_atac_R1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['mus_musculus']['10xgenomics']['test_scARC_atac_R2_fastq_gz'], checkIfExists: true),
-                file(params.test_data['mus_musculus']['10xgenomics']['test_scARC_atac_I2_fastq_gz'], checkIfExists: true)
+            [  file(params.test_data['mus_musculus']['illumina']['test_scARC_gex_R1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['mus_musculus']['illumina']['test_scARC_gex_R2_fastq_gz'], checkIfExists: true),
+                file(params.test_data['mus_musculus']['illumina']['test_scARC_atac_R1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['mus_musculus']['illumina']['test_scARC_atac_R2_fastq_gz'], checkIfExists: true),
+                file(params.test_data['mus_musculus']['illumina']['test_scARC_atac_I2_fastq_gz'], checkIfExists: true)
         ]
     ]
 
@@ -22,7 +22,7 @@ workflow test_cellrangerarc_count {
     motifs = file(params.test_data['homo_sapiens']['genome']['genome_motifs'], checkIfExists: true)
     reference_config = file(params.test_data['mus_musculus']['illumina']['genome_config'], checkIfExists: true)
     reference_name = "cellrangerarc_reference"
-    lib_csv = file(params.test_data['mus_musculus']['10xgenomics']['10x_multiome_lib_csv'], checkIfExists: true)
+    lib_csv = file(params.test_data['mus_musculus']['illumina']['multiome_lib_csv'], checkIfExists: true)
 
     UNZIP( fasta )
 
