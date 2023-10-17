@@ -33,11 +33,11 @@ workflow test_ngscheckmate_ncm_bam {
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    fasta    = [ [ id:'sarscov2'],
+    fasta    = [ [ id:'sarscov2' ],
                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 ]
 
-    inputBed = [ [ id:'test'],
+    inputBed = [ [ id:'test' ],
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
                 ]
 
