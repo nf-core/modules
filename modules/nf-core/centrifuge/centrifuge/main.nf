@@ -12,12 +12,11 @@ process CENTRIFUGE_CENTRIFUGE {
     path db
     val save_unaligned
     val save_aligned
-    val sam_format
 
     output:
     tuple val(meta), path('*report.txt')                 , emit: report
     tuple val(meta), path('*results.txt')                , emit: results
-    tuple val(meta), path('*.sam')                       , optional: true, emit: sam
+    tuple val(meta), path('*.{sam,tab}')                 , optional: true, emit: sam
     tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz')   , optional: true, emit: fastq_mapped
     tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz') , optional: true, emit: fastq_unmapped
     path "versions.yml"                                  , emit: versions
@@ -38,7 +37,6 @@ process CENTRIFUGE_CENTRIFUGE {
         unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
         aligned = save_aligned ? "--al-conc-gz ${prefix}.mapped.fastq.gz" : ''
     }
-    def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
     db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
@@ -50,7 +48,6 @@ process CENTRIFUGE_CENTRIFUGE {
         -S ${prefix}.results.txt \\
         $unaligned \\
         $aligned \\
-        $sam_output \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

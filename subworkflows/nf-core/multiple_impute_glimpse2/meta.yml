@@ -1,4 +1,4 @@
-name: "multiple_imputation_glimpse2"
+name: "multiple_impute_glimpse2"
 description: Impute VCF/BCF files, but also CRAM and BAM files with Glimpse2
 keywords:
   - glimpse
@@ -7,11 +7,11 @@ keywords:
   - ligate
   - split_reference
 
-modules:
+components:
   - glimpse2/chunk
-  - glimpse/2phase
+  - glimpse2/phase
   - glimpse2/ligate
-  - glimpse2/split_reference
+  - glimpse2/splitreference
   - bcftools/index
 
 input:

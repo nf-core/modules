@@ -10,13 +10,14 @@ keywords:
   - chip-seq
   - atac-seq
   - hic
-modules:
+components:
   - chromap/chromap
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - meta:
       type: map

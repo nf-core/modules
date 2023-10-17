@@ -8,11 +8,11 @@ process KALLISTO_INDEX {
         'biocontainers/kallisto:0.46.2--h4f7b962_1' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "kallisto" , emit: idx
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("kallisto")  , emit: index
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

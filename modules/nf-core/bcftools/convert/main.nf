@@ -13,11 +13,14 @@ process BCFTOOLS_CONVERT {
     path(bed)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
-    tuple val(meta), path("*.vcf")   , optional:true , emit: vcf
-    tuple val(meta), path("*.bcf.gz"), optional:true , emit: bcf_gz
-    tuple val(meta), path("*.bcf")   , optional:true , emit: bcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.vcf.gz"),      optional:true , emit: vcf_gz
+    tuple val(meta), path("*.vcf")   ,      optional:true , emit: vcf
+    tuple val(meta), path("*.bcf.gz"),      optional:true , emit: bcf_gz
+    tuple val(meta), path("*.bcf")   ,      optional:true , emit: bcf
+    tuple val(meta), path("*.hap.gz"),      optional:true , emit: hap
+    tuple val(meta), path("*.legend.gz"),   optional:true , emit: legend
+    tuple val(meta), path("*.samples"),     optional:true , emit: samples
+    path "versions.yml",                                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,17 +31,18 @@ process BCFTOOLS_CONVERT {
 
     def regions = bed ? "--regions-file $bed" : ""
     def reference = fasta ?  "--fasta-ref $fasta" : ""
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+    def extension = args.contains("--output-type b")    || args.contains("-Ob")    ? "--output ${prefix}.bcf.gz" :
+                    args.contains("--output-type u")    || args.contains("-Ou")    ? "--output ${prefix}.bcf" :
+                    args.contains("--output-type z")    || args.contains("-Oz")    ? "--output ${prefix}.vcf.gz" :
+                    args.contains("--output-type v")    || args.contains("-Ov")    ? "--output ${prefix}.vcf" :
+                    args.contains("--haplegendsample")  || args.contains("-h")     ? "" :
+                    "--output ${prefix}.vcf.gz"
 
     """
     bcftools convert \\
         $args \\
         $regions \\
-        --output ${prefix}.${extension} \\
+        $extension \\
         --threads $task.cpus \\
         $reference \\
         $input

@@ -1,0 +1,68 @@
+---
+name: "peka"
+description: Runs PEKA CLIP peak k-mer analysis
+keywords:
+  - motif
+  - CLIP
+  - iCLIP
+  - genomics
+  - k-mer
+tools:
+  - "peka":
+      description: "Positionally-enriched k-mer analysis (PEKA) is a software package for identifying enriched protein-RNA binding motifs from CLIP datasets"
+      homepage: "https://github.com/ulelab/peka"
+      documentation: "https://github.com/ulelab/peka"
+      tool_dev_url: "https://github.com/ulelab/peka"
+      doi: "10.1186/s13059-022-02755-2"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - peaks:
+      type: file
+      description: BED file of peak regions
+      pattern: "*.{bed,bed.gz}"
+  - crosslinks:
+      type: file
+      description: BED file of crosslinks
+      pattern: "*.{bed,bed.gz}"
+  - fasta:
+      type: file
+      description: Genome reference sequence used
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: FAI file corresponding to the reference sequence
+      pattern: "*.{fai}"
+  - gtf:
+      type: file
+      description: A segmented GTF used to annotate peaks
+      pattern: "*.{gtf}"
+
+output:
+  - cluster:
+      type: file
+      description: TSV file of summed occurrence distributions of k-mers within defined clusters
+      pattern: "*.tsv"
+  - distribution:
+      type: file
+      description: TSV file with calculated PEKA score and occurrence distribution for all possible k-mers
+      pattern: "*.tsv"
+  - pdf:
+      type: file
+      description: PDF file with graphs showing k-mer occurrence distributions around thresholded crosslink sites
+      pattern: "*.pdf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@kkuret"
+  - "@codeprimate123"
+  - "@chris-cheshire"
+  - "@charlotteanne"

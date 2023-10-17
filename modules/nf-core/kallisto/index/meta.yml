@@ -1,6 +1,8 @@
 name: kallisto_index
 description: Create kallisto index
 keywords:
+  - kallisto
+  - kallisto/index
   - index
 tools:
   - kallisto:
@@ -12,20 +14,30 @@ tools:
       licence: ["BSD-2-Clause"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: genome fasta file
       pattern: "*.{fasta}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - index:
+      type: directory
+      description: Kallisto genome index
+      pattern: "*.idx"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - idx:
-      type: index
-      description: Kallisto genome index
-      pattern: "*.idx"
 
 authors:
   - "@ggabernet"

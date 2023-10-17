@@ -15,6 +15,7 @@ process HOMER_ANNOTATEPEAKS {
 
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
+    tuple val(meta), path("*annStats.txt"), emit: stats, optional: true
     path  "versions.yml"                       , emit: versions
 
     when:
