@@ -37,7 +37,8 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" CondenseDepthEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CondenseDepthEvidence \\
         --depth-evidence ${depth_evidence} \\
         --output ${prefix}.rd.txt.gz \\
         --reference ${fasta} \\

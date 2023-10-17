@@ -1,0 +1,47 @@
+name: "ensemblvep_filtervep"
+description: Filter variants based on Ensembl Variant Effect Predictor (VEP) annotations.
+keywords:
+  - annotation
+  - vcf
+  - tab
+  - filter
+tools:
+  - ensemblvep:
+      description: |
+        VEP determines the effect of your variants (SNPs, insertions, deletions, CNVs
+        or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions.
+      homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
+      documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - input:
+      type: file
+      description: VCF/TAB file annotated with vep
+      pattern: "*.{vcf,tab,tsv,txt}"
+  - feature_file:
+      type: file
+      description: File containing features on separate lines. To be used with --filter option.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - output:
+      type: file
+      description: VCF/TAB file
+      pattern: "*.{vcf,tab,txt,tsv}"
+
+authors:
+  - "@ramprasadn"

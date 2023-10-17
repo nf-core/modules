@@ -1,0 +1,21 @@
+- name: famsa align test_famsa_align
+  command: nextflow run ./tests/modules/nf-core/famsa/align -entry test_famsa_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/famsa/align/nextflow.config
+  tags:
+    - famsa/align
+    - famsa
+  files:
+    - path: output/famsa/test.aln
+      md5sum: 7cf7375f2ba360814ea978731838b972
+    - path: output/famsa/versions.yml
+
+- name: famsa align test_famsa_align_with_tree
+  command: nextflow run ./tests/modules/nf-core/famsa/align -entry test_famsa_align_with_tree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/famsa/align/nextflow.config
+  tags:
+    - famsa/align
+    - famsa
+  files:
+    - path: output/famsa/test.aln
+      md5sum: 7cf7375f2ba360814ea978731838b972
+    - path: output/famsa/test.dnd
+      md5sum: f3ef8b16a7a16cb4548942ebf2e7bad6
+    - path: output/famsa/versions.yml

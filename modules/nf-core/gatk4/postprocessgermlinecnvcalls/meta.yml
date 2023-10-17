@@ -1,9 +1,9 @@
 name: "gatk4_postprocessgermlinecnvcalls"
 description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
 keywords:
+  - copy number
   - gatk4
   - postprocessgermlinecnvcalls
-  - copy number
 tools:
   - gatk4:
       description: |
@@ -17,16 +17,6 @@ tools:
 
 input:
   - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta3:
       type: map
       description: |
         Groovy Map containing sample information

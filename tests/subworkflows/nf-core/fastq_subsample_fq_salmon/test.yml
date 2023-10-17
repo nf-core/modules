@@ -1,8 +1,11 @@
 - name: fastq_subsample_fq_salmon test_fastq_subsample_fq_salmon
   command: nextflow run ./tests/subworkflows/nf-core/fastq_subsample_fq_salmon -entry test_fastq_subsample_fq_salmon -c ./tests/config/nextflow.config
   tags:
-    - subsample
-    - strandedness
+    - salmon
+    - salmon/quant
+    - salmon/index
+    - fq
+    - fq/subsample
     - subworkflows
     - subworkflows/fastq_subsample_fq_salmon
   files:

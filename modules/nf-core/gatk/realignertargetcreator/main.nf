@@ -8,11 +8,11 @@ process GATK_REALIGNERTARGETCREATOR {
         'biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
-    tuple val(meta), path(input), path(index)
-    path fasta
-    path fai
-    path dict
-    path known_vcf
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(known_vcf)
 
     output:
     tuple val(meta), path("*.intervals"), emit: intervals
@@ -25,7 +25,7 @@ process GATK_REALIGNERTARGETCREATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
-    if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -39,7 +39,7 @@ process GATK_REALIGNERTARGETCREATOR {
         -Xmx${avail_mem}M \\
         -T RealignerTargetCreator \\
         -nt ${task.cpus} \\
-        -I ${input} \\
+        -I ${bam} \\
         -R ${fasta} \\
         -o ${prefix}.intervals \\
         ${known} \\

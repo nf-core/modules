@@ -1,12 +1,12 @@
 
 process CONCOCT_CONCOCT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     conda "bioconda::concoct=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py38h7be5676_2':
-        'biocontainers/concoct:1.1.0--py38h7be5676_2' }"
+        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py311h245ed52_4':
+        'biocontainers/concoct:1.1.0--py311h245ed52_4' }"
 
     input:
     tuple val(meta), path(coverage_file), path(fasta)

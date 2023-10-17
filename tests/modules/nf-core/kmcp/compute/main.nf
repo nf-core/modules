@@ -19,7 +19,7 @@ workflow test_kmcp_compute_directory {
 
 input = UNTAR ( [
             [ id:'test' ],
-            file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kmcp.tar.gz", checkIfExists: true)
+            file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/kmcp/kmcp_profile.tar.gz", checkIfExists: true)
         ]).untar
 
 KMCP_COMPUTE ( input )

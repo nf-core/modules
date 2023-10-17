@@ -2,11 +2,6 @@ process BASICPY {
     tag "$meta.id"
     label 'process_single'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Basicpy module does not support Conda. Please use Docker / Singularity instead."
-    }
-
     container "docker.io/yfukai/basicpy-docker-mcmicro:0.2.1"
 
     input:
@@ -20,6 +15,10 @@ process BASICPY {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.0.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
@@ -33,6 +32,10 @@ process BASICPY {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
+    }
     """
     touch ${prefix}.-dfp.tiff
     touch ${prefix}.-dfp.tiff

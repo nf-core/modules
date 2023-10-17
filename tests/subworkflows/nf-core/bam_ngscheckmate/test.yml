@@ -22,13 +22,13 @@
       md5sum: 3d2568ae4b8aa1193dacb91f0980aabf
     - path: output/bedtools/test_split.bed
       md5sum: 5058157987313b598f1c260e6965d6f7
-    - path: output/ngscheckmate/output.pdf
-    - path: output/ngscheckmate/output_all.txt
+    - path: output/ngscheckmate/sarscov2_bed.pdf
+    - path: output/ngscheckmate/sarscov2_bed_all.txt
       md5sum: efdecd402fb7f1425d96624a73ba33b2
-    - path: output/ngscheckmate/output_corr_matrix.txt
+    - path: output/ngscheckmate/sarscov2_bed_matched.txt
+      md5sum: efdecd402fb7f1425d96624a73ba33b2
+    - path: output/ngscheckmate/sarscov2_bed_output_corr_matrix.txt
       md5sum: 8b8acb28a3a2bc7c450a15eed397d8d8
-    - path: output/ngscheckmate/output_matched.txt
-      md5sum: efdecd402fb7f1425d96624a73ba33b2
 
 - name: bam_ngscheckmate test_bam_ngscheckmate_cram
   command: nextflow run ./tests/subworkflows/nf-core/bam_ngscheckmate -entry test_bam_ngscheckmate_cram -c ./tests/config/nextflow.config
@@ -43,19 +43,21 @@
     - path: output/bcftools/test1.bcftools_stats.txt
       md5sum: 5b7ce8a5a1537552f48d3ec1f6ea09d5
     - path: output/bcftools/test1.vcf.gz
-      md5sum: 9835085fde06b8cdc6cff7a69e397d2e
+      md5sum: e0c0930b39c02151b2e097a59b7bfac7
     - path: output/bcftools/test1.vcf.gz.tbi
       md5sum: 6fc7d8cdf94ef3f5de2856570a33cdf9
     - path: output/bcftools/test2.bcftools_stats.txt
       md5sum: 165b983283ab3150c0fa0c5ba1f7ea72
     - path: output/bcftools/test2.vcf.gz
-      md5sum: e1d2ce2d6282fadd25d18d5e55a3de8d
+      md5sum: 8330fd1a1e9f57c3efbd9c803f2b9966
     - path: output/bcftools/test2.vcf.gz.tbi
-      md5sum: 7f087f60490ad9e6885355d879267271
-    - path: output/ngscheckmate/output.pdf
-    - path: output/ngscheckmate/output_all.txt
+      md5sum: 58f333f170bcf99d593eab8b64b5ef2e
+    - path: output/bedtools/test_split.bed
+      md5sum: 5b596df60679cc68b67ba00b9226a8ea
+    - path: output/ngscheckmate/homo_sapiens_bed.pdf
+    - path: output/ngscheckmate/homo_sapiens_bed_all.txt
       md5sum: 35339268c624c8bfda5d48d80ac6fbbc
-    - path: output/ngscheckmate/output_corr_matrix.txt
+    - path: output/ngscheckmate/homo_sapiens_bed_matched.txt
+      md5sum: 35339268c624c8bfda5d48d80ac6fbbc
+    - path: output/ngscheckmate/homo_sapiens_bed_output_corr_matrix.txt
       md5sum: e82495c1d7dd4520a25e85725fcd109c
-    - path: output/ngscheckmate/output_matched.txt
-      md5sum: 35339268c624c8bfda5d48d80ac6fbbc

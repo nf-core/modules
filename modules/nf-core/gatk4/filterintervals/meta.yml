@@ -1,8 +1,9 @@
 name: "gatk4_filterintervals"
 description: Filters intervals based on annotations and/or count statistics.
 keywords:
+  - filterintervals
   - gatk4
-  - gatk4_filterintervals
+  - interval_list
 tools:
   - "gatk4":
       description:
@@ -18,16 +19,26 @@ input:
   - meta:
       type: map
       description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - intervals:
+      type: file
+      description: Processed interval list file (processed_intervals.interval_list)
+      pattern: "*.interval_list"
+  - meta2:
+      type: map
+      description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - read_counts:
       type: file
       description: Read counts input file
       pattern: "*.{tsv, hdf5}"
-  - intervals:
-      type: file
-      description: Processed interval list file (processed_intervals.interval_list)
-      pattern: "*.interval_list"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - annotated_intervals:
       type: file
       description: Annotated intervals TSV file (annotated_intervals.tsv).
