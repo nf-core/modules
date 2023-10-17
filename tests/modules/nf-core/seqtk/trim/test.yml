@@ -1,0 +1,21 @@
+- name: seqtk trim test_seqtk_trim_single_end
+  command: nextflow run ./tests/modules/nf-core/seqtk/trim -entry test_seqtk_trim_single_end -c ./tests/config/nextflow.config
+  tags:
+    - seqtk/trim
+    - seqtk
+  files:
+    - path: output/seqtk/test_test_1.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: output/seqtk/versions.yml
+
+- name: seqtk trim test_seqtk_trim_paired_end
+  command: nextflow run ./tests/modules/nf-core/seqtk/trim -entry test_seqtk_trim_paired_end -c ./tests/config/nextflow.config
+  tags:
+    - seqtk/trim
+    - seqtk
+  files:
+    - path: output/seqtk/test_test_1.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: output/seqtk/test_test_2.fastq.gz
+      md5sum: 375aeb74819ca3d72203135ac80df78c
+    - path: output/seqtk/versions.yml
