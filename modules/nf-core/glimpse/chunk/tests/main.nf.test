@@ -4,8 +4,9 @@ nextflow_process {
     script "modules/nf-core/glimpse/chunk/main.nf"
     process "GLIMPSE_CHUNK"
     tag "glimpse"
-    tag "glimpse/chunk"
+    tag "glimpse_chunk"
     tag "modules_nfcore"
+    tag "modules"
 
     test("Should run without failures") {
         config "modules/nf-core/glimpse/chunk/tests/nextflow.config"
