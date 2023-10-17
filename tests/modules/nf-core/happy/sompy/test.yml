@@ -1,8 +1,8 @@
 - name: happy sompy test_sompy
   command: nextflow run ./tests/modules/nf-core/happy/sompy -entry test_sompy -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/sompy/nextflow.config
   tags:
-    - happy/sompy
     - happy
+    - happy/sompy
   files:
     - path: output/happy/test.features.csv
       md5sum: 34a8239e739edd5ea89be78b86262d4e
@@ -14,8 +14,8 @@
 - name: happy sompy test_sompy_bam
   command: nextflow run ./tests/modules/nf-core/happy/sompy -entry test_sompy_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/sompy/nextflow.config
   tags:
-    - happy/sompy
     - happy
+    - happy/sompy
   files:
     - path: output/happy/test.features.csv
       md5sum: 34a8239e739edd5ea89be78b86262d4e
