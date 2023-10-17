@@ -69,7 +69,7 @@ process KMC_KMC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
+        kmc : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
     END_VERSIONS
     """
 
@@ -85,7 +85,7 @@ process KMC_KMC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
+        kmc : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
     END_VERSIONS
     """
 }
