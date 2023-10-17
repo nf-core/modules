@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE_PHASE"
+    script "modules/nf-core/glimpse/phase/main.nf"
+    process "GLIMPSE_PHASE"
+    tag "glimpse"
+    tag "glimpse/phase"
+    tag "modules_nfcore"
+
+    test("test_glimpse_phase") {
+
+        when {
+            process {
+                """
+                ch_sample = Channel.of([sample:'present'])
+                    | combine(Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt'))
+                    | concat(Channel.of([[sample: 'absent'], []]))
+                region        = Channel.fromList([
+                    ["chr21:16600000-16750000","chr21:16650000-16700000"],
+                    ["chr21:16650000-16800000","chr21:16700000-16750000"]
+                ])
+                input_vcf     = Channel.of([
+                    [ id:'input'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
+                ])
+                ref_panel     = Channel.of([
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                ])
+                ch_map        = Channel.of([
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
+                ])
+
+                input[0]      = input_vcf
+                    | combine(ch_sample)
+                    | combine(region)
+                    | map { meta, vcf, index, metaS, sample, regionI, regionO ->
+                        [[id: meta.id + "_" + metaS.sample, region : regionI], vcf, index, sample, regionI, regionO]
+                    }
+                    | combine(ref_panel)
+                    | combine(ch_map)
+                """
+            }
+        }
+
+        then {
+            println(process.out.phased_variant)
+            //process.out.phased_variant.filter(~/^*.vcf.gz$/).view()
+            def lines = path(process.out.phased_variant.get(0).get(1)).linesGzip[4..4734]
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(lines).match("imputed") }
+            )
+        }
+
+    }
+}
