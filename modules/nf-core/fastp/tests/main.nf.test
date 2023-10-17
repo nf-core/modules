@@ -4,7 +4,6 @@ nextflow_process {
     script "modules/nf-core/fastp/main.nf"
     process "FASTP"
     tag "module"
-    tag "modules_nfcore"
     tag "fastp"
 
     test("test_fastp_single_end") {
