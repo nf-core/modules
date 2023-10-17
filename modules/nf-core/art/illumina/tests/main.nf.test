@@ -33,7 +33,21 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.aln.get(0).get(1)).md5 == "7aa88720911ca1a862e4a24d57435e3c"},
+                { assert path(process.out.fastq.get(0).get(1)).linesGzip.size() == 11880 },
+                {
+                    def read_name = path(process.out.fastq.get(0).get(1)).linesGzip[0]
+                    assert read_name.equals("@MT192765.1-2970")
+                },
+                {
+                    def read = path(process.out.fastq.get(0).get(1)).linesGzip[1]
+                    assert read.equals//GAAAAGAGCTATGAATTGCAGACACCTTTTGAAATTAAATTGGCAAAGAAATTTGACACCTTCTATGGGGAATGTCCAAATTTTGTATTTCCCTTAAATTCCATAATCAAGACT//TCAACCAAGGGTTGAAAAGAAAAAGCTTGATGGC")
+                },
+                {
+                    def read_qc = path(process.out.fastq.get(0).get(1)).linesGzip[3]
+                    assert read_qc.equals("C1CGGGCGG=GGGJGJG=JJCJJJCJGJJJJGJJJ1JJJGJJGGJGJJGGGJJGJJJCJGGGJ(=G1GGG//CCGGGCGCGGGCCGCCG8GGGGGGGGGGCC(CGG1GGGG1GGCGCGGCGGGCGCGGGCGGGGCGCCGGGGGCG8GGGG")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -65,7 +79,33 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.fastq.get(0).get(1).get(0)).linesGzip.size() == 5940 },
+                                {
+                    def read_name = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[0]
+                    assert read_name.equals("@MT192765.1-2970/1")
+                },
+                {
+                    def read = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[1]
+                    assert read.equals("GTTGCGACTACGTGATGAGGAACGAGAAGCGGCTTGACTGCCGCCTCTGCTCCCTTCTGCGTAGAAGCCTTTTGGCAATGTTGTTCCTTGAGGAAGTTGTAGCACGATTGCAGCATTGTTAGCAGGATTGCGGGTGCCAATGTGATCTTT")
+                },
+                {
+                    def read_qc = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[3]
+                    assert read_qc.equals("CCCGGGGGGGGGGGCJCJJJJJ1JJJGJJ(JJJGGGJJJJGGJGJJGJJJCCGCJCJC=GCGGG8GJGGGCGG=1G1CJGG=GGCGGCGGGGGCCGG=8GJCCGCCGCGGGGGGGC=GGG=CCGCGGCGGGCC=GGGGGGCGGCCCGCGG")
+                },
+                { assert path(process.out.fastq.get(0).get(1).get(1)).linesGzip.size() == 5940 },
+                {
+                    def read_name = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[0]
+                    assert read_name.equals("@MT192765.1-2970/2")
+                },
+                {
+                    def read = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[1]
+                    assert read.equals("GAGCTACCAGACGAATTCGTGGTGGTGACGGTAAAATGAAAGATCTCAGTCCAAGATGGTATTTCTACTACCTAGGAACTGGGCCAGAAGCTGGACTTCCCTATGGTGCTAACAAAGACGGCATCATATGGGTTGCAACTGAGGGAGCCT")
+                },
+                {
+                    def read_qc = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[3]
+                    assert read_qc.equals("1CCGGGGGGGCGGGJJJJJGJG1GJGJ=JGJJCJJJCJJJGJ1GJGJGGJJC8JGG=JGGCGCCGCGGCCCGJCGGGGCJC==CGG88CGGGCGGGCCCGGC8JJJJCGGCGGCCGGGG=CGGGGCCGGCCCGCGCCCCG8GGGG=GGGC")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
