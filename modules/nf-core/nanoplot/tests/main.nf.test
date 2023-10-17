@@ -1,8 +1,10 @@
 nextflow_process {
 
     name "Test Process NANOPLOT"
+    tag "modules_nfcore"
+    tag "modules"
     tag "nanoplot"
-    script "modules/nf-core/nanoplot/main.nf"
+    script "../main.nf"
     process "NANOPLOT"
 
     test("NanoPlot summary") {
@@ -19,15 +21,19 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(
-                process.out.txt,
-                process.out.versions
-            ).match()
-
-            with(process.out.html.get(0)) {
-                assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
-            }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.txt,
+                            process.out.versions
+                         ).match()
+                },
+                {
+                    with(process.out.html.get(0)) {
+                        assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
+                    }
+                } 
+            )
         }
 
     }
@@ -46,15 +52,19 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(
-                process.out.txt,
-                process.out.versions
-            ).match()
-
-            with(process.out.html.get(0)) {
-                assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
-            }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.txt,
+                            process.out.versions
+                         ).match()
+                },
+                {
+                    with(process.out.html.get(0)) {
+                        assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
+                    }
+                } 
+            )
         }
 
     }
