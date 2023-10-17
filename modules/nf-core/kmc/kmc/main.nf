@@ -60,18 +60,17 @@ process KMC_KMC {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    touch versions.yml
-    kmc \\
-        -k$kmer_size  \\
-        $fastq \\
-        $ouput \\
-        $output_dir
+    kmc --help
+    #    -k${task.ext.kmer_size}  \\
+    #    fastq \\
+    #    ouput \\
+    #    output_dir
     
 
-    #cat <<-END_VERSIONS > versions.yml
-    #"${task.process}":
-    #    : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
-    #END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
+    END_VERSIONS
     """
 
     stub:
@@ -86,7 +85,7 @@ process KMC_KMC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(kmc --version 2>&1) | grep "ver." ))
     END_VERSIONS
     """
 }
