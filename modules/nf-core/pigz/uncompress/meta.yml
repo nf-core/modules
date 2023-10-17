@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "pigz_compress"
+description: write your description here
+keywords:
+  - compress
+  - gzip
+  - parallelized
+tools:
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      tool_dev_url: "none"
+
+input:
+  - zip:
+      type: file
+      description: Gzipped file
+      pattern: "*.{gzip}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - file:
+      type: file
+      description: File to compress
+      pattern: "*"
+
+authors:
+  - "@lrauschning"
