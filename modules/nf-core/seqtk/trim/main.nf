@@ -12,7 +12,7 @@ process SEQTK_TRIM {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
