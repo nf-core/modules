@@ -7,10 +7,10 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 
 workflow test_cellrangerarc_mkref {
 
-    fasta = file(params.test_data['mus_musculus']['genome']['genome_19_fasta'], checkIfExists: true)
+    fasta = [ [], file(params.test_data['mus_musculus']['genome']['genome_19_fasta'], checkIfExists: true)]
     gtf = file(params.test_data['mus_musculus']['genome']['genome_19_gtf'], checkIfExists: true)
-    motifs = file(params.test_data['homo_sapiens']['genome']['genome_motif'], checkIfExists: true)
-    reference_config = file(params.test_data['mus_musculus']['genome']['genome_config'], checkIfExists: true)
+    motifs = file(params.test_data['homo_sapiens']['genome']['genome_motifs'], checkIfExists: true)
+    reference_config = file(params.test_data['mus_musculus']['illumina']['genome_config'], checkIfExists: true)
     reference_name = "cellrangerarc_reference"
 
     UNZIP( fasta )
