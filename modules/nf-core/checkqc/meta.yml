@@ -15,9 +15,11 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  - run_folder:
-      type: directory
-      description: Illumina run folder
+  - run_dir:
+      type: file
+      description: |
+        Illumina sequencing run directory
+        Can be directory or a compressed tar (tar.gz) of the directory
   - checkqc_config:
       type: file
       description: CheckQC configuration file

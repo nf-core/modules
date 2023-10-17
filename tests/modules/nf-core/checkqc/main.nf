@@ -3,13 +3,16 @@
 nextflow.enable.dsl = 2
 
 include { CHECKQC } from '../../../../modules/nf-core/checkqc/main.nf'
+include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_checkqc {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+
+    run_dir_tar = [
+        [],
+        file('/home/matilda/workspace/test-datasets/data/genomics/homo_sapiens/illumina/bcl/flowcell_checkqc.tar.gz', checkIfExists: true)
     ]
 
-    CHECKQC ( input )
+    UNTAR ( run_dir_tar )
+
+    CHECKQC ( UNTAR.out.untar.map{ it[1] }, [])
 }
