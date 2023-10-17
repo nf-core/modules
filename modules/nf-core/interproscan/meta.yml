@@ -1,0 +1,54 @@
+name: "interproscan"
+description: Produces protein annotations and predictions from a FASTA file
+keywords:
+  - annotation
+  - fasta
+  - interproscan
+tools:
+  - "interproscan":
+      description: "InterPro integrates together predictive information about proteins function from a number of partner resources"
+      homepage: "https://www.ebi.ac.uk/interpro/search/sequence/"
+      documentation: "https://interproscan-docs.readthedocs.io"
+      tool_dev_url: "https://github.com/ebi-pf-team/interproscan"
+      doi: "10.1093/bioinformatics/btu031"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Input fasta file containing query sequences
+      pattern: "*.{fa,fasta}"
+  - out_ext:
+      type: string
+      description: Specify the type of output file to be generated
+      pattern: "tsv|xml|gff3|json"
+
+output:
+  - tsv:
+      type: file
+      description: Tab separated file containing with detailed hits
+      pattern: "*.{tsv}"
+  - xml:
+      type: file
+      description: XML file containing with detailed hits
+      pattern: "*.{xml}"
+  - gff3:
+      type: file
+      description: GFF3 file containing with detailed hits
+      pattern: "*.{gff3}"
+  - json:
+      type: file
+      description: JSON file containing with detailed hits
+      pattern: "*.{json}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@toniher"

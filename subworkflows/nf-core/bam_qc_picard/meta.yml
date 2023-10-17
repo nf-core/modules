@@ -1,4 +1,5 @@
-name: bam_qc
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_qc_picard
 description: Produces comprehensive statistics from BAM file
 keywords:
   - statistics
@@ -8,7 +9,7 @@ keywords:
   - bam
   - sam
   - cram
-modules:
+components:
   - picard/collectmultiplemetrics
   - picard/collectwgsmetrics
   - picard/collecthsmetrics
@@ -26,6 +27,14 @@ input:
       type: file
       description: BAM/CRAM/SAM file index
       pattern: "*.{bai,crai,sai}"
+  - bait_intervals:
+      type: optional file
+      description: An interval list or bed file that contains the locations of the baits used.
+      pattern: "baits.{interval_list,bed,bed.gz}"
+  - target_intervals:
+      type: optional file
+      description: An interval list or bed file that contains the locations of the targets.
+      pattern: "targets.{interval_list,bed,bed.gz}"
   - meta2:
       type: map
       description: |
@@ -44,14 +53,15 @@ input:
       type: optional file
       description: Reference fasta file index
       pattern: "*.{fasta,fa,fna}.fai"
-  - bait_intervals:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta_dict:
       type: optional file
-      description: An interval list file that contains the locations of the baits used.
-      pattern: "baits.interval_list"
-  - target_intervals:
-      type: optional file
-      description: An interval list file that contains the locations of the targets.
-      pattern: "targets.interval_list"
+      description: Reference fasta sequence dictionary
+      pattern: "*.{dict}"
 output:
   - meta:
       type: map

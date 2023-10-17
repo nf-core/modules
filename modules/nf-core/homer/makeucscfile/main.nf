@@ -6,7 +6,7 @@ process HOMER_MAKEUCSCFILE {
     conda "bioconda::homer=4.11=pl526hc9558a2_3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
-        'quay.io/biocontainers/homer:4.11--pl526hc9558a2_3' }"
+        'biocontainers/homer:4.11--pl526hc9558a2_3' }"
 
     input:
     tuple val(meta), path(tagDir)

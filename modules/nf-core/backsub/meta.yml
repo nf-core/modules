@@ -1,0 +1,72 @@
+name: "backsub"
+description: Pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched `tif` images.
+keywords:
+  - background
+  - cycif
+  - autofluorescence
+  - image_analysis
+  - mcmicro
+  - highly_multiplexed_imaging
+
+tools:
+  - "backsub":
+      description: "Module for pixel-by-pixel channel subtraction scaled by exposure times"
+      homepage: "https://github.com/SchapiroLabor/Background_subtraction"
+      documentation: "https://github.com/SchapiroLabor/Background_subtraction/blob/master/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/Background_subtraction"
+      licence: "MIT licence"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - image:
+      type: file
+      description: Multi-channel image file
+      pattern: "*.{tif,tiff}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - markerfile:
+      type: file
+      description: Marker file with channel names, exposure times, and specified background to subtract (and remove to exclude channels from output)
+      pattern: "*.csv"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - backsub_tif:
+      type: file
+      description: Background corrected pyramidal ome.tif
+      pattern: "*.{tif}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - markerout:
+      type: file
+      description: Marker file adjusted to match the background corrected image
+      pattern: "*.{csv}"
+authors:
+  - "@kbestak"

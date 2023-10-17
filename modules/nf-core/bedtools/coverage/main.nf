@@ -5,7 +5,7 @@ process BEDTOOLS_COVERAGE {
     conda "bioconda::bedtools=2.30.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
-        'quay.io/biocontainers/bedtools:2.30.0--h468198e_3' }"
+        'biocontainers/bedtools:2.30.0--h468198e_3' }"
 
     input:
     tuple val(meta), path(input_A), path(input_B)

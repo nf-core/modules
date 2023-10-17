@@ -2,6 +2,8 @@ name: gatk4_bedtointervallist
 description: Creates an interval list from a bed file and a reference dict
 keywords:
   - bed
+  - bedtointervallist
+  - gatk4
   - interval list
 tools:
   - gatk4:
@@ -23,6 +25,11 @@ input:
       type: file
       description: Input bed file
       pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: Sequence dictionary
@@ -38,3 +45,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@kevinmenden"
+  - "@ramprasadn"

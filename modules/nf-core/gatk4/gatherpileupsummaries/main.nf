@@ -5,7 +5,7 @@ process GATK4_GATHERPILEUPSUMMARIES {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
 
     input:
@@ -31,7 +31,8 @@ process GATK4_GATHERPILEUPSUMMARIES {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" GatherPileupSummaries \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        GatherPileupSummaries \\
         $input_list \\
         --O ${prefix}.pileups.table \\
         --sequence-dictionary $dict \\

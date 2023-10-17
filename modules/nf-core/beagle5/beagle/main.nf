@@ -5,7 +5,7 @@ process BEAGLE5_BEAGLE {
     conda "bioconda::beagle=5.2_21Apr21.304"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/beagle:5.2_21Apr21.304--hdfd78af_0':
-        'quay.io/biocontainers/beagle:5.2_21Apr21.304--hdfd78af_0' }"
+        'biocontainers/beagle:5.2_21Apr21.304--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)

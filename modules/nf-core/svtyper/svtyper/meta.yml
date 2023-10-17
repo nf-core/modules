@@ -1,0 +1,66 @@
+name: "svtyper_svtyper"
+description: SVTyper performs breakpoint genotyping of structural variants (SVs) using whole genome sequencing data
+keywords:
+  - sv
+  - structural variants
+  - genotyping
+tools:
+  - "svtyper":
+      description: "Compute genotype of structural variants based on breakpoint depth"
+      homepage: "https://github.com/hall-lab/svtyper"
+      documentation: "https://github.com/hall-lab/svtyper"
+      tool_dev_url: "https://github.com/hall-lab/svtyper"
+      doi: "10.1038/nmeth.3505"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for FASTA file
+        e.g. [ id:'fasta']
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - vcf:
+      type: file
+      description: Matching VCF of alignments
+      pattern: "*.vcf"
+  - fasta:
+      type: file
+      description: FASTA file used to generate alignments
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: FAI file used to generate alignments
+      pattern: "*.{fai}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: JSON file including Library information
+      pattern: "*.json"
+  - gt_vcf:
+      type: file
+      description: Genotyped SVs
+      pattern: "*.vcf"
+  - relevant_bam:
+      type: file
+      description: Relevant alignments
+      pattern: "*.bam"
+authors:
+  - "@kubranarci"

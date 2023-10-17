@@ -12,7 +12,7 @@ workflow test_ampir {
 
     model = "precursor"
 
-    min_length = []
+    min_length = 10
 
     min_probability = "0.7"
 

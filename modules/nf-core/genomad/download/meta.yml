@@ -1,0 +1,31 @@
+name: "genomad_download"
+description: Download geNomad databases and related files
+keywords:
+  - metagenomics
+  - genomad
+  - database
+  - download
+  - phage
+  - virus
+  - plasmid
+tools:
+  - "genomad":
+      description: "Identification of mobile genetic elements"
+      homepage: https://portal.nersc.gov/genomad/
+      documentation: https://portal.nersc.gov/genomad/
+      tool_dev_url: https://github.com/apcamargo/genomad/
+      doi: 10.1101/2023.03.05.531206
+      licence: "['Lawrence Berkeley National Labs BSD variant license']"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - genomad_db:
+      type: directory
+      description: Directory containing downloaded data with directory being named "genomad_db"
+      pattern: "genomad_db"
+
+authors:
+  - "@CarsonJM"

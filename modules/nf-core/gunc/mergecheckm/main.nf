@@ -5,7 +5,7 @@ process GUNC_MERGECHECKM {
     conda "bioconda::gunc=1.0.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        'quay.io/biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
+        'biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(gunc_file), path(checkm_file)

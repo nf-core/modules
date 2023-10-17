@@ -5,7 +5,7 @@ process SISTR {
     conda "bioconda::sistr_cmd=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sistr_cmd:1.1.1--pyh864c0ab_2':
-        'quay.io/biocontainers/sistr_cmd:1.1.1--pyh864c0ab_2' }"
+        'biocontainers/sistr_cmd:1.1.1--pyh864c0ab_2' }"
 
     input:
     tuple val(meta), path(fasta)

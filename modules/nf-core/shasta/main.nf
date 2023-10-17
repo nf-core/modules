@@ -5,7 +5,7 @@ process SHASTA {
     conda "bioconda::shasta=0.8.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shasta:0.8.0--h7d875b9_0':
-        'quay.io/biocontainers/shasta:0.8.0--h7d875b9_0' }"
+        'biocontainers/shasta:0.8.0--h7d875b9_0' }"
 
     input:
     tuple val(meta), path(reads)

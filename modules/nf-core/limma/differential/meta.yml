@@ -19,10 +19,30 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing contrast information, which can be referred to in
-        calls at the pipeline level e.g. [ variable:'treatment', reference:'treated',
-        control:'saline', blocking:'' ] passed in as ext.args like: '--reference_level
-        $meta.reference --treatment_level $meta.target'
+        Groovy Map containing contrast information. This can be used at the
+        workflow level to pass optional parameters to the module, e.g.
+        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+        '--blocking_variable $meta.blocking'.
+  - contrast_variable:
+      type: string
+      description: |
+        The column in the sample sheet that should be used to define groups for
+        comparison
+  - reference:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the reference samples
+  - target:
+      type: string
+      description: |
+        The value within the contrast_variable column of the sample sheet that
+        should be used to derive the target samples
+  - meta2:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the sample sheet
+        and matrix
   - samplesheeet:
       type: file
       description: |

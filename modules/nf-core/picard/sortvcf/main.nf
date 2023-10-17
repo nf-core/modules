@@ -2,15 +2,15 @@ process PICARD_SORTVCF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::picard=3.0.0"
+    conda "bioconda::picard=3.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
+        'biocontainers/picard:3.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
-    path reference
-    path sequence_dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(dict)
 
     output:
     tuple val(meta), path("*_sorted.vcf.gz"), emit: vcf
@@ -22,8 +22,8 @@ process PICARD_SORTVCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seq_dict = sequence_dict ? "--SEQUENCE_DICTIONARY $sequence_dict" : ""
-    def reference = reference ? "--REFERENCE_SEQUENCE $reference" : ""
+    def seq_dict = dict ? "--SEQUENCE_DICTIONARY $dict" : ""
+    def reference = fasta ? "--REFERENCE_SEQUENCE $fasta" : ""
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard SortVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'

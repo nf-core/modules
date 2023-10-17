@@ -1,7 +1,9 @@
 name: "bcftools_split"
 description: Split a vcf file into files per chromosome
 keywords:
-  - sort
+  - vcf
+  - split
+  - genomics
 tools:
   - "bcftools":
       description: Sort VCF files by coordinates.
@@ -34,7 +36,7 @@ output:
         e.g. [ id:'test', single_end:false ]
   - split_vcf:
       type: file
-      description:
+      description: Compressed vcf files per chromosome
       pattern: "*.vcf.gz"
   - versions:
       type: file

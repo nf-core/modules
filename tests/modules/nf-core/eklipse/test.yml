@@ -1,0 +1,12 @@
+- name: eklipse test_eklipse
+  command: nextflow run ./tests/modules/nf-core/eklipse -entry test_eklipse -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/eklipse/nextflow.config
+  tags:
+    - eklipse
+  files:
+    - path: output/eklipse/eKLIPse_deletions.csv
+      md5sum: 8bcfdb8f3e8a63dcd211c2a53b6ca0a7
+    - path: output/eklipse/eKLIPse_genes.csv
+      md5sum: ec1a1f31d018ca66a46d8a2d17bc8d18
+    - path: output/eklipse/eKLIPse_test.png
+      md5sum: d1ea2a548bc4f8d321b1128a61ea8b0a
+    - path: output/eklipse/versions.yml

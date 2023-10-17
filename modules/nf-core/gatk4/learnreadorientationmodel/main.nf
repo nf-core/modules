@@ -5,7 +5,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(f1r2)
@@ -29,7 +29,8 @@ process GATK4_LEARNREADORIENTATIONMODEL {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" LearnReadOrientationModel \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        LearnReadOrientationModel \\
         $input_list \\
         --output ${prefix}.tar.gz \\
         --tmp-dir . \\

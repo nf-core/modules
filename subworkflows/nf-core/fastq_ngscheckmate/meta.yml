@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_ngscheckmate"
+description: Take a set of fastq files and run NGSCheckMate to determine whether samples match with each other, using a set of SNPs.
+keywords:
+  - ngscheckmate
+  - qc
+  - fastq
+  - snp
+components:
+  - ngscheckmate/fastq
+  - ngscheckmate/vaffastq
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - fastq:
+      type: file
+      description: Single or pair of fastq files
+      pattern: "*.{fastq.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing snp_pt file information
+        e.g. [ id:'sarscov2' ]
+  - snp_bed:
+      type: file
+      description: Binary PT file containing the SNPs to analyse. NGSCheckMate provides one for human samples.
+      pattern: "*.{bed}"
+output:
+  - pdf:
+      type: file
+      description: A pdf containing a dendrogram showing how the samples match up
+      pattern: "*.{pdf}"
+  - corr_matrix:
+      type: file
+      description: A text file containing the correlation matrix between each sample
+      pattern: "*corr_matrix.txt"
+  - matched:
+      type: file
+      description: A txt file containing only the samples that match with each other
+      pattern: "*matched.txt"
+  - all:
+      type: file
+      description: A txt file containing all the sample comparisons, whether they match or not
+      pattern: "*all.txt"
+  - vcf:
+      type: file
+      description: vcf files for each sample giving the SNP calls
+      pattern: "*.vcf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@SPPearce"

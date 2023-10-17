@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: vcf_annotate_ensemblvep_snpeff
+description: |
+  Perform annotation with ensemblvep and/or snpeff and bgzip + tabix index the resulting VCF file. This subworkflow uses the scatter-gather method to run VEP/snpEff in parallel to increase throughput. The input VCF is split into multiple smaller VCFs of fixed size, which are annotated separately and concatenated back together to a single output file per sample. Only VCF/BCF outputs are currently supported.
+keywords:
+  - vcf
+  - annotation
+  - ensemblvep
+  - snpeff
+components:
+  - ensemblvep/vep
+  - snpeff/snpeff
+  - tabix/tabix
+  - bcftools/pluginscatter
+  - bcftools/concat
+  - bcftools/sort
+input:
+  - ch_vcf:
+      description: |
+        vcf file to annotate
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+  - ch_fasta:
+      description: |
+        Reference genome fasta file (optional)
+        Structure: [ val(meta2), path(fasta) ]
+  - val_vep_genome:
+      type: string
+      description: genome to use for ensemblvep
+  - val_vep_species:
+      type: string
+      description: species to use for ensemblvep
+  - val_vep_cache_version:
+      type: integer
+      description: cache version to use for ensemblvep
+  - ch_vep_cache:
+      description: |
+        the root cache folder for ensemblvep (optional)
+        Structure: [ path(cache) ]
+  - ch_vep_extra_files:
+      description: |
+        any extra files needed by plugins for ensemblvep (optional)
+        Structure: [ path(file1), path(file2)... ]
+  - val_snpeff_db:
+      type: string
+      description: database to use for snpeff
+  - ch_snpeff_cache:
+      description: |
+        the root cache folder for snpeff (optional)
+        Structure: [ path(cache) ]
+  - val_tools_to_use:
+      type: list
+      description: The tools to use. Options => '["ensemblvep", "snpeff"]'
+  - val_sites_per_chunk:
+      type: integer
+      description: |
+        The amount of variants per scattered VCF.
+        Set this value to `null`, `[]` or `false` to disable scattering.
+output:
+  - vcf_tbi:
+      description: |
+        Compressed vcf file + tabix index
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+  - reports:
+      type: file
+      description: html reports
+      pattern: "*.html"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@maxulysse"
+  - "@matthdsm"
+  - "@nvnieuwk"

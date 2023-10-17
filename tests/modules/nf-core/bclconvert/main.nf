@@ -3,9 +3,9 @@
 nextflow.enable.dsl = 2
 
 include { BCLCONVERT } from '../../../../modules/nf-core/bclconvert/main.nf'
-include { UNTAR      } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_bclconvert {
+    //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
     ch_flowcell = Channel.value([
             [id:'test', lane:1 ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
@@ -17,7 +17,7 @@ workflow test_bclconvert {
         tar: [meta, run]
     }.set{ ch_fc_split }
 
-    ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
+    ch_flowcell_merge = ch_fc_split.samplesheet.join( ch_fc_split.tar )
 
-    BCLCONVERT (ch_flowcell_untar)
+    BCLCONVERT (ch_flowcell_merge)
 }

@@ -1,0 +1,42 @@
+name: "sambamba_flagstat"
+description: Outputs some statistics drawn from read flags.
+keywords:
+  - stats
+  - flagstat
+  - sambamba
+tools:
+  - "sambamba":
+      description: "Tools for working with SAM/BAM data"
+      homepage: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
+      documentation: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
+      tool_dev_url: "https://github.com/biod/sambamba"
+      licence: "['GPL v2']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - stats:
+      type: file
+      description: Stats file
+      pattern: "*.{stats}"
+
+authors:
+  - "@kubranarci"

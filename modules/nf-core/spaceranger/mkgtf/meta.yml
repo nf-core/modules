@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "spaceranger_mkgtf"
+description: Module to build a filtered GTF needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkgtf command.
+keywords:
+  - reference
+  - mkref
+  - index
+  - spaceranger
+tools:
+  - "spaceranger":
+      description: |
+        Visium Spatial Gene Expression is a next-generation molecular profiling solution for classifying tissue
+        based on total mRNA. Space Ranger is a set of analysis pipelines that process Visium Spatial Gene Expression
+        data with brightfield and fluorescence microscope images. Space Ranger allows users to map the whole
+        transcriptome in formalin fixed paraffin embedded (FFPE) and fresh frozen tissues to discover novel
+        insights into normal development, disease pathology, and clinical translational research. Space Ranger provides
+        pipelines for end to end analysis of Visium Spatial Gene Expression experiments.
+      homepage: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
+      documentation: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
+      tool_dev_url: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
+      licence: "10x Genomics EULA"
+input:
+  - gtf:
+      type: file
+      description: The reference GTF transcriptome file
+      pattern: "*.gtf"
+output:
+  - gtf:
+      type: directory
+      description: The filtered GTF transcriptome file
+      pattern: "*.filtered.gtf"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@grst"

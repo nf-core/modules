@@ -1,0 +1,48 @@
+name: "crisprcleanr_normalize"
+description: remove false positives of functional crispr genomics due to CNVs
+keywords:
+  - sort
+  - CNV
+  - correction
+  - CRISPR
+tools:
+  - "crisprcleanr":
+      description: "Analysis of CRISPR functional genomics, remove false positive due to CNVs."
+      homepage: "https://github.com/francescojm/CRISPRcleanR"
+      documentation: "https://github.com/francescojm/CRISPRcleanR/blob/master/Quick_start.pdf"
+      tool_dev_url: "https://github.com/francescojm/CRISPRcleanR/tree/v3.0.0"
+      doi: "10.1186/s12864-018-4989-y"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - count_file:
+      type: file
+      description: sgRNA raw counts
+      pattern: "*.tsv"
+  - library_file:
+      type: file
+      description: sgRNA library
+      pattern: "*.tsv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - norm_count_file:
+      type: file
+      description: normalized count file
+      pattern: "*.tsv"
+
+authors:
+  - "@LaurenceKuhl"

@@ -1,8 +1,10 @@
 name: gatk4_createsequencedictionary
 description: Creates a sequence dictionary for a reference sequence
 keywords:
+  - createsequencedictionary
   - dictionary
   - fasta
+  - gatk4
 tools:
   - gatk:
       description: |
@@ -15,6 +17,11 @@ tools:
       licence: ["Apache-2.0"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: Input fasta file
@@ -30,3 +37,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@maxulysse"
+  - "@ramprasadn"

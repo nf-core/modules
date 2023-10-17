@@ -5,7 +5,7 @@ process CLONALFRAMEML {
     conda "bioconda::clonalframeml=1.12"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1' :
-        'quay.io/biocontainers/clonalframeml:1.12--h7d875b9_1' }"
+        'biocontainers/clonalframeml:1.12--h7d875b9_1' }"
 
     input:
     tuple val(meta), path(newick), path(msa)

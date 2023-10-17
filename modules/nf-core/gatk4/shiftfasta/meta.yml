@@ -1,8 +1,11 @@
 name: "gatk4_shiftfasta"
 description: Create a fasta with the bases shifted by offset
 keywords:
-  - shiftedfasta
+  - gatk4
   - mitochondria
+  - shiftchain
+  - shiftfasta
+  - shiftintervals
 tools:
   - gatk4:
       description: |
@@ -19,16 +22,26 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing fasta information
+        Groovy Map containing reference information
         e.g. [ id:'test' ]
   - fasta:
       type: file
       description: fasta file
       pattern: "*.{fa,fasta}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta_fai:
       type: file
       description: index for fasta file
       pattern: "*.{fai}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - dict:
       type: file
       description: sequence dictionary file

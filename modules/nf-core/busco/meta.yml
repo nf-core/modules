@@ -25,7 +25,7 @@ input:
       description: Nucleic or amino acid sequence file in FASTA format.
       pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
   - lineage:
-      type: value
+      type: string
       description: The BUSCO lineage to use, or "auto" to automatically select lineage
   - busco_lineages_path:
       type: directory
@@ -56,6 +56,26 @@ output:
       type: directory
       description: BUSCO lineage specific output
       pattern: "*-busco"
+  - full_table:
+      type: file
+      description: Full BUSCO results table
+      pattern: "full_table.tsv"
+  - missing_busco_list:
+      type: file
+      description: List of missing BUSCOs
+      pattern: "missing_busco_list.tsv"
+  - single_copy_proteins:
+      type: file
+      description: Fasta file of single copy proteins (transcriptome mode)
+      pattern: "single_copy_proteins.faa"
+  - seq_dir:
+      type: directory
+      description: BUSCO sequence directory
+      pattern: "busco_sequences"
+  - translated_proteins:
+      type: directory
+      description: Six frame translations of each transcript made by the transcriptome mode
+      pattern: "translated_proteins"
   - versions:
       type: file
       description: File containing software versions

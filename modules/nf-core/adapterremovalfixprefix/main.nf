@@ -6,7 +6,7 @@ process ADAPTERREMOVALFIXPREFIX {
     conda "bioconda::adapterremovalfixprefix=0.0.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
-        'quay.io/biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"
+        'biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(fastq)

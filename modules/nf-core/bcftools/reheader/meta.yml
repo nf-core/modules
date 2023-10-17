@@ -27,6 +27,11 @@ input:
       type: file
       description: New header to add to the VCF
       pattern: "*.{header.txt}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fai:
       type: file
       description: Fasta index to update header sequences with
@@ -50,3 +55,4 @@ output:
 authors:
   - "@bjohnnyd"
   - "@jemten"
+  - "@ramprasadn"

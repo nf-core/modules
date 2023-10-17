@@ -1,0 +1,55 @@
+name: "ilastik_pixelclassification"
+
+description: Ilastik is a tool that utilizes machine learning algorithms to classify pixels, segment, track and count cells in images. Ilastik contains a graphical user interface to interactively label pixels. However, this nextflow module will implement the --headless mode, to apply pixel classification using a pre-trained .ilp file on an input image.
+keywords:
+  - pixel_classification
+  - segmentation
+  - probability_maps
+tools:
+  - "ilastik":
+      description: "Ilastik is a user friendly tool that enables pixel classification, segmentation and analysis."
+      homepage: "https://www.ilastik.org/"
+      documentation: "https://www.ilastik.org/documentation/"
+      tool_dev_url: "https://github.com/ilastik/ilastik"
+      licence: "GPL3"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information for h5 file
+        e.g. [ id:'test', single_end:false ]
+
+  - input_img:
+      type: file
+      description: Input img file containing image stack to classify
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for ilp file
+        e.g. [ id:'test', single_end:false ]
+
+  - ilp:
+      type: file
+      description: Trained ilastik pixel classification .ilp project file
+      pattern: "*.{ilp}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - output:
+      type: file
+      description: Output file from ilastik pixel classification.
+
+authors:
+  - "@FloWuenne"

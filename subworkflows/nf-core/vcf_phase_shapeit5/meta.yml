@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_phase_shapeit5"
+description: Phase vcf panel with Shapeit5 tools
+keywords:
+  - chunk
+  - phase
+  - ligate
+  - index
+  - vcf
+
+components:
+  - bedtools/makewindows
+  - shapeit5/phasecommon
+  - shapeit5/ligate
+  - bcftools/index
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - ch_vcf:
+      type: file
+      description: |
+        Target dataset in VCF/BCF format defined at all variable positions.
+        Index file of the input VCF/BCF file containing genotype likelihoods.
+        Pedigree information in the following format: offspring father mother.
+        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ val(meta), path(vcf), path(csi), path(pedigree), val(region) ]
+  - ch_ref:
+      type: file
+      description: |
+        Reference panel of haplotypes in VCF/BCF format.
+        Index file of the Reference panel file.
+        Structure: [ val(meta), path(ref), path(csi) ]
+  - ch_scaffold:
+      type: file
+      description: |
+        Scaffold of haplotypes in VCF/BCF format.
+        Index file of the Scaffold of haplotypes file.
+        Structure: [ val(meta), path(scaffold), path(csi) ]
+  - ch_map:
+      type: file
+      description: File containing the genetic map.
+      Structure: [val(meta), path(map)]
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bed:
+      type: file
+      description: BED file containing the windows
+      pattern: "*.bed"
+  - variants_phased:
+      type: file
+      description: Phased haplotypes in VCF/BCF format.
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - variants_index:
+      type: file
+      description: CSI bcftools index
+      pattern: "*.csi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@LouisLeNezet"

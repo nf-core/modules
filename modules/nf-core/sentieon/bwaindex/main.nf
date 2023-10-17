@@ -3,14 +3,7 @@ process SENTIEON_BWAINDEX {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container 'nfcore/sentieon:202112.06'
+    container 'nf-core/sentieon:202112.06'
 
     input:
     tuple val(meta), path(fasta)
@@ -23,24 +16,19 @@ process SENTIEON_BWAINDEX {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
     """
-    if [ \${SENTIEON_LICENSE_BASE64:-"unset"} != "unset" ]; then
-        echo "Initializing SENTIEON_LICENSE env variable"
-        if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then # Sentieon License server
-            export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        else  # Localhost license file
-            export SENTIEON_LICENSE=\$(mktemp)
-            echo -e "\$LICENSE_ENCODED" | base64 -d > \$SENTIEON_LICENSE
-        fi
-    fi
-
     mkdir bwa
 
     sentieon \\
         bwa index \\
         $args \\
-        -p bwa/${fasta.baseName} \\
+        -p $prefix \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
@@ -51,6 +39,10 @@ process SENTIEON_BWAINDEX {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
     mkdir bwa
 

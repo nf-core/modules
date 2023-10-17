@@ -4,9 +4,13 @@ repos:
     hooks:
       - id: prettier
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.21.0
+    rev: 0.22.0
     hooks:
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
         files: ^modules/nf-core/.*/meta\.yml$
-        args: ["--schemafile", "yaml-schema.json"]
+        args: ["--schemafile", "modules/yaml-schema.json"]
+      - id: check-jsonschema
+        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        files: ^subworkflows/nf-core/.*/meta\.yml$
+        args: ["--schemafile", "subworkflows/yaml-schema.json"]

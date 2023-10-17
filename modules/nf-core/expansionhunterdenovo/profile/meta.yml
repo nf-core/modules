@@ -30,10 +30,20 @@ input:
       type: file
       description: Index of the BAM/CRAM file
       pattern: "*.{bai,crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: The FASTA reference file
       pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta_fai:
       type: file
       description: The index of the FASTA reference file

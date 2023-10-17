@@ -1,0 +1,27 @@
+name: metaphlan_makedb
+description: Build MetaPhlAn database for taxonomic profiling.
+keywords:
+  - metaphlan
+  - index
+  - database
+  - metagenomics
+tools:
+  - metaphlan:
+      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
+      homepage: https://huttenhower.sph.harvard.edu/metaphlan/
+      documentation: https://github.com/biobakery/MetaPhlAn
+      doi: "10.7554/eLife.65088"
+      licence: ["MIT License"]
+
+output:
+  - db:
+      type: directory
+      description: Output directory containing the indexed METAPHLAN database
+      pattern: "*/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@LilyAnderssonLee"

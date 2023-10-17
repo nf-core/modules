@@ -5,7 +5,7 @@ process GATK4_INTERVALLISTTOOLS {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(intervals)
@@ -31,7 +31,8 @@ process GATK4_INTERVALLISTTOOLS {
 
     mkdir ${prefix}_split
 
-    gatk --java-options "-Xmx${avail_mem}M" IntervalListTools \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        IntervalListTools \\
         --INPUT $intervals \\
         --OUTPUT ${prefix}_split \\
         --TMP_DIR . \\

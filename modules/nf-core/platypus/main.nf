@@ -9,7 +9,7 @@ process PLATYPUS {
     conda "bioconda::platypus-variant=0.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1':
-        'quay.io/biocontainers/platypus-variant:0.8.1--py27_1' }"
+        'biocontainers/platypus-variant:0.8.1--py27_1' }"
 
     input:
 

@@ -5,7 +5,7 @@ process EMMTYPER {
     conda "bioconda::emmtyper=0.2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0' :
-        'quay.io/biocontainers/emmtyper:0.2.0--py_0' }"
+        'biocontainers/emmtyper:0.2.0--py_0' }"
 
     input:
     tuple val(meta), path(fasta)

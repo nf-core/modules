@@ -1,0 +1,27 @@
+name: "annotsv_installannotations"
+description: Install the AnnotSV annotations
+keywords:
+  - annotation
+  - download
+  - installation
+  - structural variants
+tools:
+  - "annotsv":
+      description: "Annotation and Ranking of Structural Variation"
+      homepage: "https://lbgi.fr/AnnotSV/"
+      documentation: "https://lbgi.fr/AnnotSV/"
+      tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
+      licence: "['GPL v3']"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - annotations:
+      type: file
+      description: A folder containing the annotations
+      pattern: "AnnotSV_annotations"
+
+authors:
+  - "@nvnieuwk"

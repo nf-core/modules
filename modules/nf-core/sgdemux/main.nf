@@ -5,7 +5,7 @@ process SGDEMUX {
     conda "bioconda::sgdemux=1.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1--ha982bd6_0' :
-        'quay.io/biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
+        'biocontainers/sgdemux:1.1.1--ha982bd6_0' }"
 
     input:
     // Input fastq's must be bgzipped for compatibility with sgdemux

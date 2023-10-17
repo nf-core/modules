@@ -9,7 +9,8 @@ workflow test_vcfanno {
     input = [
         [ id:'test_compressed', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
     ]
     lua = []
     toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
@@ -25,7 +26,8 @@ workflow test_vcfanno_uncompressed {
     input = [
         [ id:'test_uncompressed', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
-        []
+        [],
+        file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
     ]
     lua = []
     toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)

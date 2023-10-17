@@ -5,7 +5,7 @@ process DEEPTOOLS_PLOTHEATMAP {
     conda "bioconda::deeptools=3.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'quay.io/biocontainers/deeptools:3.5.1--py_0' }"
+        'biocontainers/deeptools:3.5.1--py_0' }"
 
     input:
     tuple val(meta), path(matrix)

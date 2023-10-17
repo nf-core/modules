@@ -23,6 +23,11 @@ input:
       type: file
       description: BAM/CRAM file
       pattern: "*.{bam,cram}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: |
@@ -50,3 +55,4 @@ output:
       pattern: "versions.yml"
 authors:
   - "@projectoriented"
+  - "@ramprasadn"

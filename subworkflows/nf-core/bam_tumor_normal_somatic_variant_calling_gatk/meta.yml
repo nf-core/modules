@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: bam_tumor_normal_somatic_variant_calling_gatk
 description: |
   Perform variant calling on a paired tumor normal set of samples using mutect2 tumor normal mode.
@@ -14,7 +15,7 @@ keywords:
   - variant_calling
   - tumor_only
   - filtered_vcf
-modules:
+components:
   - gatk4/mutect2
   - gatk4/learnreadorientationmodel
   - gatk4/getpileupsummaries

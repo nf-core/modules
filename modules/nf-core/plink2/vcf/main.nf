@@ -5,7 +5,7 @@ process PLINK2_VCF {
     conda "bioconda::plink2=2.00a2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'quay.io/biocontainers/plink2:2.00a2.3--h712d239_1' }"
+        'biocontainers/plink2:2.00a2.3--h712d239_1' }"
 
     input:
     tuple val(meta), path(vcf)

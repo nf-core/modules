@@ -1,0 +1,43 @@
+name: "cellranger_multi"
+description: Module to use Cell Ranger's pipelines to analyze sequencing data produced from various Chromium technologies, including Single Cell Gene Expression, Single Cell Immune Profiling, Feature Barcoding, and Cell Multiplexing.
+keywords:
+  - align
+  - reference
+  - cellranger
+  - multiomics
+  - gene expression
+  - vdj
+  - antigen capture
+  - antibody capture
+  - crispr
+tools:
+  - "cellranger":
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
+      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
+      licence: 10X Genomics EULA
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - csv:
+      type: file
+      description: Cell Ranger config file, in modified CSV format
+      pattern: "*.csv"
+
+output:
+  - outs:
+      type: file
+      description: Files containing the outputs of Cell Ranger
+      pattern: "${meta.id}/outs/*"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@klkeys"

@@ -6,7 +6,7 @@ process LEEHOM {
     conda "bioconda::leehom=1.2.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
-        'quay.io/biocontainers/leehom:1.2.15--h29e30f7_1' }"
+        'biocontainers/leehom:1.2.15--h29e30f7_1' }"
 
     input:
     tuple val(meta), path(reads)

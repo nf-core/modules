@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "bcftools_pluginscatter"
+description: Split VCF by chunks or regions, creating multiple VCFs.
+keywords:
+  - scatter
+  - vcf
+  - bcf
+  - genomics
+tools:
+  - "pluginscatter":
+      description: |
+        Split VCF by chunks or regions, creating multiple VCFs.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
+      doi: 10.1093/gigascience/giab008
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: The input VCF to scatter
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tbi:
+      type: file
+      description: Optional index of the input VCF
+      pattern: "*.tbi"
+  - sites_per_chunk:
+      type: integer
+      description: |
+        How many variants should be in each output file
+        Either this or `scatter` or `scatter_file` have to be given
+  - scatter:
+      type: string
+      description: |
+        A comma delimited list of regions to scatter into
+        Either this or `sites_per_chunk` or `scatter_file` have to be given
+  - scatter_file:
+      type: file
+      description: |
+        A file containing a region on each line with an optional second column containing the filename
+        Either this or `sites_per_chunk` or `scatter` have to be given
+  - regions:
+      type: file
+      description: Optional file containing the regions to work on
+      pattern: "*.bed"
+  - targets:
+      type: file
+      description: Optional file containing the regions to work on (but streams instead of index-jumping)
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - scatter:
+      type: file
+      description: The resulting files of the scattering
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+
+authors:
+  - "@nvnieuwk"

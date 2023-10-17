@@ -6,7 +6,7 @@ process PHANTOMPEAKQUALTOOLS {
     conda "bioconda::phantompeakqualtools=1.2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0' :
-        'quay.io/biocontainers/phantompeakqualtools:1.2.2--0' }"
+        'biocontainers/phantompeakqualtools:1.2.2--0' }"
 
     input:
     tuple val(meta), path(bam)

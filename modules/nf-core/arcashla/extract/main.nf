@@ -5,7 +5,7 @@ process ARCASHLA_EXTRACT {
     conda "bioconda::arcas-hla=0.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0':
-        'quay.io/biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
+        'biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)

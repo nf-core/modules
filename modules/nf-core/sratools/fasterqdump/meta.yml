@@ -27,7 +27,11 @@ input:
       description: >
         An NCBI user settings file.
       pattern: "*.mkfg"
-
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the sra-toolkit
+      pattern: "*.cart"
 output:
   - meta:
       type: map

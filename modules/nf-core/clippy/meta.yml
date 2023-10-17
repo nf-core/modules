@@ -1,0 +1,52 @@
+---
+name: clippy
+description: Runs the Clippy CLIP peak caller
+keywords:
+  - iCLIP
+  - eCLIP
+  - CLIP
+tools:
+  - "clippy":
+      description: "An intuitive and interactive peak caller for CLIP data"
+      homepage: "https://github.com/ulelab/clippy"
+      documentation: "https://github.com/ulelab/clippy"
+      tool_dev_url: "https://github.com/ulelab/clippy"
+      doi: "10.7554/eLife.84034"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file of crosslinks
+      pattern: "*.{bed,bed.gz}"
+  - gtf:
+      type: file
+      description: A GTF file of genes to call peaks on
+      pattern: "*.{gtf}"
+  - fai:
+      type: file
+      description: FAI file corresponding to the reference sequence
+      pattern: "*.{fai}"
+
+output:
+  - peaks:
+      type: file
+      description: BED file of peaks called by Clippy
+      pattern: "*_broadPeaks.bed.gz"
+  - summits:
+      type: file
+      description: BED file of peak summits called by Clippy
+      pattern: "*[0-9].bed.gz"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+
+authors:
+  - "@marc-jones"
+  - "@CharlotteAnne"

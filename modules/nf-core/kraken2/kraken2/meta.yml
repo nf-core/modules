@@ -28,12 +28,12 @@ input:
       type: directory
       description: Kraken2 database
   - save_output_fastqs:
-      type: boolean
+      type: string
       description: |
         If true, optional commands are added to save classified and unclassified reads
         as fastq files
   - save_reads_assignment:
-      type: boolean
+      type: string
       description: |
         If true, an optional command is added to save a file reporting the taxonomic
         classification of each input read

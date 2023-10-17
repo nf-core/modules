@@ -5,10 +5,10 @@ process SHAPEIT5_PHASECOMMON {
     conda "bioconda::shapeit5=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
 
     input:
-        tuple val(meta) , path(input), path(input_index), val(region), path(pedigree)
+        tuple val(meta) , path(input), path(input_index), path(pedigree), val(region)
         tuple val(meta2), path(reference), path(reference_index)
         tuple val(meta3), path(scaffold), path(scaffold_index)
         tuple val(meta4), path(map)
@@ -22,19 +22,15 @@ process SHAPEIT5_PHASECOMMON {
 
     script:
     def args   = task.ext.args   ?: ''
-
-    def prefix = task.ext.prefix ?: "${meta.id}_${region.replace(":","_")}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
+    if ("$input" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def map_command       = map       ? "--map $map"             : ""
     def reference_command = reference ? "--reference $reference" : ""
     def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
-
-    meta.put("SHAPEIT5_PHASECOMMON", ["reference":"", "map":"", "scaffold":""])
-    meta.SHAPEIT5_PHASECOMMON.reference = reference ? meta2 :"None"
-    meta.SHAPEIT5_PHASECOMMON.map       = map       ? meta3 :"None"
-    meta.SHAPEIT5_PHASECOMMON.scaffold  = scaffold  ? meta4 :"None"
 
     """
     SHAPEIT5_phase_common \\
@@ -49,8 +45,21 @@ process SHAPEIT5_PHASECOMMON {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "vcf.gz"
+    """
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }

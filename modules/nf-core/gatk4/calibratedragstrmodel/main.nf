@@ -5,7 +5,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index)
@@ -32,7 +32,8 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CalibrateDragstrModel \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CalibrateDragstrModel \\
         --input ${bam} \\
         --output ${prefix}.txt \\
         --reference ${fasta} \\

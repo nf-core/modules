@@ -2,15 +2,15 @@ process PICARD_COLLECTWGSMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=3.0.0 r::r-base"
+    conda "bioconda::picard=3.1.0 r::r-base"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
+        'biocontainers/picard:3.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
     path  intervallist
 
     output:

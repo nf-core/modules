@@ -1,10 +1,9 @@
 name: "gatk4_collectreadcounts"
 description: Collects read counts at specified intervals. The count for each interval is calculated by counting the number of read starts that lie in the interval.
 keywords:
+  - collectreadcounts
   - bam
   - cram
-  - CollectReadCounts
-  - gatk
   - gatk4
 tools:
   - gatk4:
@@ -24,11 +23,26 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
+  - input_index:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"

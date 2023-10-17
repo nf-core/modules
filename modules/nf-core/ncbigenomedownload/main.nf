@@ -5,7 +5,7 @@ process NCBIGENOMEDOWNLOAD {
     conda "bioconda::ncbi-genome-download=0.3.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.1--pyh5e36f6f_0' :
-        'quay.io/biocontainers/ncbi-genome-download:0.3.1--pyh5e36f6f_0' }"
+        'biocontainers/ncbi-genome-download:0.3.1--pyh5e36f6f_0' }"
 
     input:
     val meta

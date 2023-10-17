@@ -1,0 +1,46 @@
+---
+name: icountmini_segment
+description: Formats a GTF file for use with iCount sigxls
+keywords:
+  - iCLIP
+  - gtf
+  - genomics
+tools:
+  - icount:
+      description: Computational pipeline for analysis of iCLIP data
+      homepage: https://github.com/ulelab/iCount-Mini
+      documentation: https://github.com/ulelab/iCount-Mini
+      tool_dev_url: https://github.com/ulelab/iCount-Mini
+      doi: "10.1038/nsmb.1838"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - gtf:
+      type: file
+      description: A GTF file to use for the segmentation
+      pattern: "*.{gtf}"
+  - fai:
+      type: file
+      description: FAI file corresponding to the reference sequence
+      pattern: "*.{fai}"
+
+output:
+  - gtf:
+      type: file
+      description: Segmented GTF file for use with iCount sigxls
+      pattern: "*.{gtf}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@marc-jones"
+  - "@chris-cheshire"
+  - "@charlotteanne"

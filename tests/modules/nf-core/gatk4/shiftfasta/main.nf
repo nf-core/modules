@@ -10,8 +10,14 @@ workflow test_gatk4_shiftfasta {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    index =  file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict  =  file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    index = [
+        [ id:'genome' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    ]
+    dict  = [
+        [ id:'genome' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    ]
 
     GATK4_SHIFTFASTA ( input, index, dict )
 }
