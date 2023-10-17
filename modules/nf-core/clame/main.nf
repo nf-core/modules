@@ -1,6 +1,5 @@
 process CLAME {
     tag "$meta.id"
-    
     label 'process_high'
 
     conda "bioconda::clame=1.0"
@@ -33,7 +32,6 @@ process CLAME {
         -multiFasta ${fasta} \\
         -output ${prefix} \\
         || test -f ${prefix}.binning
-        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         : \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
