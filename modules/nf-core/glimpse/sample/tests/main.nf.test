@@ -7,10 +7,9 @@ nextflow_process {
     tag "glimpse/sample"
     tag "modules_nfcore"
 
-    options "--sample"
 
     test("test_glimpse_sample") {
-        config "modules/nf-core/glimpse/sample/tests/nextflow.config"
+        config "./nextflow.config"
         setup {
             run("GLIMPSE_PHASE") {
                 script "../../phase/main.nf"
