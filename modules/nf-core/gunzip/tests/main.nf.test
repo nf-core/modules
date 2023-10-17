@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process GUNZIP"
+    script "../main.nf"
+    process "GUNZIP"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+
+            process {
+                """
+                    input[0] = [ [],
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
