@@ -11,9 +11,6 @@ process DRAGEN {
     path reference
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
-    path "versions.yml"           , emit: versions
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     tuple val(meta) , path("*.bam")                                 , optional: true , emit: bam
     tuple val(meta) , path("*.bai")                                 , optional: true , emit: bai
     tuple val(meta) , path("*.bam.md5sum")                          , optional: true , emit: bam_md5
@@ -30,7 +27,6 @@ process DRAGEN {
     tuple val(meta) , path("*.mapping_metrics.csv")                 , optional: true , emit: mapping_metrics
     tuple val(meta) , path("*.g.vcf.gz")                            , optional: true , emit: gvcf_gzip
     tuple val(meta) , path("*.g.vcf.gz.tbi")                        , optional: true , emit: gvcf_gzip_§tbi
-    // TODO nf-core: List additional required output channels/values here
     path "versions.yml"            , emit: versions
 
     when:
@@ -52,10 +48,9 @@ process DRAGEN {
     }
 
     """
-    #dragen_reset
+    ${bin_path}_reset
 
-    #$bin_path \\
-    echo \\
+    $bin_path \\
         $args \\
         $input \\
         -n $task.cpus \\
