@@ -381,11 +381,6 @@ jobs:
       - name: debug
         run: cat .github/tags.yml
 
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: ".github/tags.yml"
-
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
       - uses: frouioui/paths-filter@main
         id: filter
