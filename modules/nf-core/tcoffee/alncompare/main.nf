@@ -5,23 +5,23 @@ process TCOFFEE_ALNCOMPARE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::t-coffee=13.46.0.919e8c6b" : null)
+    conda "bioconda::t-coffee=13.46.0.919e8c6b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/t-coffee:13.45.0.4846264--hc57179f_5':
         'biocontainers/t-coffee:13.45.0.4846264--hc57179f_5'}"
 
     input:
-    tuple val(meta), path(msa), path (ref_msa)
+    tuple val(meta), path(msa), path(ref_msa)
 
     output:
-    tuple val(meta), path ("*.scores"), emit: scores
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.scores"), emit: scores
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '-compare_mode tc'
+    def args = '-compare_mode tc' + task.ext.args ?: ''
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
 
