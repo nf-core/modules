@@ -31,7 +31,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals ? intervals.collect{"--interval-file $it"}.join(' ') : ""
     def copy_index_command = bam_index ? "cp -L $bam_index `readlink -f $bam`.bai" : ""
-    
+
     """
     # parabricks complains when index is not a regular file in the same directory as the bam
     # copy the index to this path.
