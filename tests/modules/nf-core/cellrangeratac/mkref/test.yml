@@ -1,0 +1,20 @@
+- name: cellrangeratac mkref test_cellrangeratac_mkref
+  command: nextflow run ./tests/modules/nf-core/cellrangeratac/mkref -entry test_cellrangeratac_mkref -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellrangeratac/mkref/nextflow.config
+  tags:
+    - cellrangeratac/mkref
+    - cellrangeratac
+  files:
+    - path: output/cellrangeratac/cellrangeratac_reference/fasta/genome.fa
+      md5sum: 9465e0f0df6e2c6eb39729c39cee5465
+    - path: output/cellrangeratac/cellrangeratac_reference/fasta/genome.fa.fai
+      md5sum: e7badd133a2c8dd7540102c0e9bad7c2
+    - path: output/cellrangeratac/cellrangeratac_reference/genes/genes.gtf.gz
+      md5sum: 845cc395f0805d2cc0ef63bce9fdf80f
+    - path: output/cellrangeratac/cellrangeratac_reference/reference.json
+      md5sum: bb4b790c913ca332f332d19322d23d5d
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/motifs.pfm
+      md5sum: 294d4041e4ffd4c633376c2b9d180ac0
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/transcripts.bed
+      md5sum: cddf2a033e035f22e9257a83dea046d3
+    - path: output/cellrangeratac/cellrangeratac_reference/regions/tss.bed
+      md5sum: d195287180efdeffde39aef4a1f0d6d8
