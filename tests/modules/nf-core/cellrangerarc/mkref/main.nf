@@ -13,7 +13,7 @@ workflow test_cellrangerarc_mkref {
     reference_config = file(params.test_data['mus_musculus']['illumina']['genome_config'], checkIfExists: true)
     reference_name = "cellrangerarc_reference"
 
-    UNZIP( fasta )
+    UNZIP( fasta ) 
 
     CELLRANGERARC_MKREF ( UNZIP.out.unzipped_archive.map { it[1] } + "/chr19.fa",
                             gtf,
