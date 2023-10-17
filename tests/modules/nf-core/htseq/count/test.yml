@@ -1,0 +1,9 @@
+- name: htseq count test_htseq_count
+  command: nextflow run ./tests/modules/nf-core/htseq/count -entry test_htseq_count -c ./tests/config/nextflow.config
+  tags:
+    - htseq/count
+    - htseq
+  files:
+    - path: output/htseq/test.txt
+      md5sum: 5e37b2292f1d21945acb532afa5eb615
+    - path: output/htseq/versions.yml
