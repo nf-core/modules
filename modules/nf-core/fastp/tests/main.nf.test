@@ -211,10 +211,13 @@ nextflow_process {
                 save_trimmed_fail = true
                 save_merged       = false
 
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-                           ]
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
                 input[1] = adapter_fasta
                 input[2] = save_trimmed_fail
                 input[3] = save_merged
@@ -227,17 +230,16 @@ nextflow_process {
             def log_text   = [ "No adapter detected for read1", "Q30 bases: 12281(88.3716%)"]
             def json_text  = ['"passed_filter_reads": 198']
             def read1_lines = path(process.out.reads.get(0).get(1).get(0)).linesGzip
-            def failed_read1_lines = path(process.out.reads_fail.get(0).get(1).get(0)).linesGzip
+            // def failed_read1_lines = path(process.out.reads_fail.get(0).get(1).get(0)).linesGzip is empty file
             def read2_lines = path(process.out.reads.get(0).get(1).get(1)).linesGzip
             def failed_read2_lines = path(process.out.reads_fail.get(0).get(1).get(1)).linesGzip
             assertAll(
                 { assert process.success },
                 { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads1") },
-                { assert snapshot(failed_read1_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads1_fail") },
                 { assert snapshot(read2_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads2") },
                 { assert snapshot(failed_read2_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads2_fail") },
                 { assert snapshot(read1_lines.size()).match("test_fastp_paired_end_trim_fail_reads1_size") },
-                { assert snapshot(failed_read1_lines.size()).match("test_fastp_paired_end_trim_fail_reads1_fail_size") },
+                { assert path(process.out.reads_fail.get(0).get(1).get(0)).exists() },
                 { assert snapshot(read2_lines.size()).match("test_fastp_paired_end_trim_fail_reads2_size") },
                 { assert snapshot(failed_read2_lines.size()).match("test_fastp_paired_end_trim_fail_reads2_fail_size") },
                 { html_text.each { html_part ->
@@ -286,7 +288,7 @@ nextflow_process {
             def json_text         = ['"merged_and_filtered": {', '"total_reads": 75', '"total_bases": 13683']
             def read1_lines       = path(process.out.reads.get(0).get(1).get(0)).linesGzip
             def read2_lines       = path(process.out.reads.get(0).get(1).get(1)).linesGzip
-            def read_merged_lines = path(process.out.reads_merged.get(0).get(1).get(1)).linesGzip
+            def read_merged_lines = path(process.out.reads_merged.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
                 { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_reads1") },
@@ -341,7 +343,7 @@ nextflow_process {
             def json_text         = ['"merged_and_filtered": {', '"total_reads": 75', '"total_bases": 13683',"--adapter_fasta"]
             def read1_lines       = path(process.out.reads.get(0).get(1).get(0)).linesGzip
             def read2_lines       = path(process.out.reads.get(0).get(1).get(1)).linesGzip
-            def read_merged_lines = path(process.out.reads_merged.get(0).get(1).get(1)).linesGzip
+            def read_merged_lines = path(process.out.reads_merged.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
                 { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_reads1") },
