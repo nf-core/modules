@@ -282,6 +282,10 @@ jobs:
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
     steps:
+      - name: stop job if matrix tags is empty
+        if: ${{ matrix.tags != '' }}
+        run: exit 1
+
       - uses: actions/checkout@v3
 
       - name: Set up Python
