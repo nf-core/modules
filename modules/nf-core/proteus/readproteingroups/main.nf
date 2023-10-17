@@ -1,5 +1,5 @@
 process PROTEUS_READPROTEINGROUPS {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_single'
 
     conda "conda-forge::r-base=4.2.1 bioconda::r-proteus-bartongroup=0.2.16 conda-forge::r-plotly=4.10.2 bioconda::bioconductor-limma=3.54.0"
@@ -9,8 +9,6 @@ process PROTEUS_READPROTEINGROUPS {
 
     input:
     tuple val(meta), path(samplesheet), path(intensities)
-    tuple val(meta2), val(contrast_variable)
-
 
     output:
     tuple val(meta), path("*dendrogram.png")                    , emit: dendro_plot
