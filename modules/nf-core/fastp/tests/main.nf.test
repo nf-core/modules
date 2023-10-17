@@ -15,6 +15,7 @@ nextflow_process {
             }
             process {
                 """
+                adapter_fasta     = []
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -23,7 +24,7 @@ nextflow_process {
                     [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
                 ]
 
-                input[1] = []
+                input[1] = adapter_fasta
                 input[2] = save_trimmed_fail
                 input[3] = save_merged
                 """
@@ -31,15 +32,338 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(
-                path(process.out.reads.get(0).get(1)).linesGzip[0..6]
-            ).match()
-            html_text=["Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)","single end (151 cycles)"]
-            assert path(process.out.html.get(0).get(1)).getText().contains(html_text)
-
+            def html_text  = [ "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)","single end (151 cycles)" ]
+            def log_text   = [ "Q20 bases: 12922(92.9841%)", "reads passed filter: 99" ]
+            def read_lines = path(process.out.reads.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read_lines[0..1]).match("test_fastp_single_end_reads") },
+                { assert snapshot(read_lines.size()).match("test_fastp_single_end_reads_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { assert snapshot(process.out.json).match("test_fastp_single_end_json") },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
         }
-
     }
 
+    test("test_fastp_paired_end") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text  = [ "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)", "The input has little adapter percentage (~0.000000%), probably it's trimmed before."]
+            def log_text   = [ "No adapter detected for read1", "Q30 bases: 12281(88.3716%)"]
+            def json_text  = ['"passed_filter_reads": 198']
+            def read1_lines = path(process.out.reads.get(0).get(1).get(0)).linesGzip
+            def read2_lines = path(process.out.reads.get(0).get(1).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_reads1") },
+                { assert snapshot(read2_lines[0..1]).match("test_fastp_paired_end_reads2") },
+                { assert snapshot(read1_lines.size()).match("test_fastp_paired_end_reads1_size") },
+                { assert snapshot(read2_lines.size()).match("test_fastp_paired_end_reads2_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { json_text.each { json_part ->
+                    { assert path(process.out.json.get(0).get(1)).getText().contains(json_part) }
+                    }
+                },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("fastp test_fastp_interleaved") {
+        config './nextflow.config'
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                            [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+                        ]
+
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text  = [ "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)", "paired end (151 cycles + 151 cycles)"]
+            def log_text   = [ "Q20 bases: 12922(92.9841%)","reads passed filter: 198"]
+            def read_lines = path(process.out.reads.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read_lines[0..1]).match("fastp test_fastp_interleaved_reads") },
+                { assert snapshot(read_lines.size()).match("fastp test_fastp_interleaved_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { assert snapshot(process.out.json).match("fastp test_fastp_interleaved_json") },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_single_end_trim_fail") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = true
+                save_merged       = false
+
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                        ]
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text         = [ "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)","single end (151 cycles)"]
+            def log_text          = [ "Q20 bases: 12922(92.9841%)", "reads passed filter: 99" ]
+            def read_lines        = path(process.out.reads.get(0).get(1)).linesGzip
+            def failed_read_lines = path(process.out.reads_fail.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read_lines[0..1]).match("test_fastp_single_end_trim_fail_reads") },
+                { assert snapshot(failed_read_lines[0..1]).match("test_fastp_single_end_trim_fail_reads_fail") },
+                { assert snapshot(read_lines.size()).match("test_fastp_single_end_trim_fail_reads_size") },
+                { assert snapshot(failed_read_lines.size()).match("test_fastp_single_end_trim_fail_reads_fail_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { assert snapshot(process.out.json).match("test_fastp_single_end_trim_fail_json") },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_trim_fail") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = true
+                save_merged       = false
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text  = [ "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)", "The input has little adapter percentage (~0.000000%), probably it's trimmed before."]
+            def log_text   = [ "No adapter detected for read1", "Q30 bases: 12281(88.3716%)"]
+            def json_text  = ['"passed_filter_reads": 198']
+            def read1_lines = path(process.out.reads.get(0).get(1).get(0)).linesGzip
+            def failed_read1_lines = path(process.out.reads_fail.get(0).get(1).get(0)).linesGzip
+            def read2_lines = path(process.out.reads.get(0).get(1).get(1)).linesGzip
+            def failed_read2_lines = path(process.out.reads_fail.get(0).get(1).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads1") },
+                { assert snapshot(failed_read1_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads1_fail") },
+                { assert snapshot(read2_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads2") },
+                { assert snapshot(failed_read2_lines[0..1]).match("test_fastp_paired_end_trim_fail_reads2_fail") },
+                { assert snapshot(read1_lines.size()).match("test_fastp_paired_end_trim_fail_reads1_size") },
+                { assert snapshot(failed_read1_lines.size()).match("test_fastp_paired_end_trim_fail_reads1_fail_size") },
+                { assert snapshot(read2_lines.size()).match("test_fastp_paired_end_trim_fail_reads2_size") },
+                { assert snapshot(failed_read2_lines.size()).match("test_fastp_paired_end_trim_fail_reads2_fail_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { json_text.each { json_part ->
+                    { assert path(process.out.json.get(0).get(1)).getText().contains(json_part) }
+                    }
+                },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_merged") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = true
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text         = [ "<div id='After_filtering__merged__quality'>"]
+            def log_text          = [ "Merged and filtered:", "total reads: 75", "total bases: 13683"]
+            def json_text         = ['"merged_and_filtered": {', '"total_reads": 75', '"total_bases": 13683']
+            def read1_lines       = path(process.out.reads.get(0).get(1).get(0)).linesGzip
+            def read2_lines       = path(process.out.reads.get(0).get(1).get(1)).linesGzip
+            def read_merged_lines = path(process.out.reads_merged.get(0).get(1).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_reads1") },
+                { assert snapshot(read2_lines[0..1]).match("test_fastp_paired_end_merged_reads2") },
+                { assert snapshot(read_merged_lines[0..1]).match("test_fastp_paired_end_merged_reads2") },
+                { assert snapshot(read1_lines.size()).match("test_fastp_paired_end_merged_reads1_size") },
+                { assert snapshot(read2_lines.size()).match("test_fastp_paired_end_merged_reads2_size") },
+                { assert snapshot(read_merged_lines.size()).match("test_fastp_paired_end_merged_reads2_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { json_text.each { json_part ->
+                    { assert path(process.out.json.get(0).get(1)).getText().contains(json_part) }
+                    }
+                },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_merged_adapterlist") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/fastp/adapters.fasta", checkIfExists: true)
+                save_trimmed_fail = false
+                save_merged       = true
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text         = [ "<div id='After_filtering__merged__quality'>"]
+            def log_text          = [ "Merged and filtered:", "total reads: 75", "total bases: 13683"]
+            def json_text         = ['"merged_and_filtered": {', '"total_reads": 75', '"total_bases": 13683',"--adapter_fasta"]
+            def read1_lines       = path(process.out.reads.get(0).get(1).get(0)).linesGzip
+            def read2_lines       = path(process.out.reads.get(0).get(1).get(1)).linesGzip
+            def read_merged_lines = path(process.out.reads_merged.get(0).get(1).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(read1_lines[0..1]).match("test_fastp_paired_end_reads1") },
+                { assert snapshot(read2_lines[0..1]).match("test_fastp_paired_end_merged_reads2") },
+                { assert snapshot(read_merged_lines[0..1]).match("test_fastp_paired_end_merged_reads2") },
+                { assert snapshot(read1_lines.size()).match("test_fastp_paired_end_merged_reads1_size") },
+                { assert snapshot(read2_lines.size()).match("test_fastp_paired_end_merged_reads2_size") },
+                { assert snapshot(read_merged_lines.size()).match("test_fastp_paired_end_merged_reads2_size") },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { json_text.each { json_part ->
+                    { assert path(process.out.json.get(0).get(1)).getText().contains(json_part) }
+                    }
+                },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
 }
