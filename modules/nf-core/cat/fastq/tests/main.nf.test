@@ -28,7 +28,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("cat") }
             )
         }
     }
@@ -55,7 +56,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("cat") }
             )
         }
     }
@@ -80,7 +82,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("cat") }
             )
         }
     }
@@ -107,7 +110,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("cat") }
             )
         }
     }
@@ -131,7 +135,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("cat") }
             )
         }
     }
