@@ -16,9 +16,9 @@ process GENRICH {
     path "versions.yml"                                       , emit: versions
 
     tuple val(meta), path("*.pvalues.bedGraph"), optional:true, emit: bedgraph_pvalues
-    tuple val(meta), path("*.pileup.bedGraph"),  optional:true, emit: bedgraph_pileup
-    tuple val(meta), path("*.intervals.bed"),    optional:true, emit: bed_intervals
-    tuple val(meta), path("*.duplicates.txt"),   optional:true, emit: duplicates
+    tuple val(meta), path("*.pileup.bedGraph") ,  optional:true, emit: bedgraph_pileup
+    tuple val(meta), path("*.intervals.bed") ,    optional:true, emit: bed_intervals
+    tuple val(meta), path("*.duplicates.txt") ,   optional:true, emit: duplicates
 
     when:
     task.ext.when == null || task.ext.when
