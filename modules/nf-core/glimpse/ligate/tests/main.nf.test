@@ -4,8 +4,9 @@ nextflow_process {
     script "modules/nf-core/glimpse/ligate/main.nf"
     process "GLIMPSE_LIGATE"
     tag "glimpse"
-    tag "glimpse/ligate"
+    tag "glimpse_ligate"
     tag "modules_nfcore"
+    tag "modules"
 
     test("test_glimpse_ligate") {
         setup {
