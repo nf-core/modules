@@ -1,12 +1,12 @@
 nextflow_process {
 
-    name "Test Process HISAT2_EXTRACTSPLICESITES"
+    name "Test Process ABRICATE_RUN"
     script "../main.nf"
-    process "HISAT2_EXTRACTSPLICESITES"
+    process "ABRICATE_RUN"
     tag "modules"
     tag "modules_nfcore"
-    tag "hisat2"
-    tag "hisat2/extractsplicesites"
+    tag "abricate"
+    tag "abricate/run"
 
     test("Should run without failures") {
 
@@ -16,9 +16,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'],
-                              file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                            ]
                 """
             }
         }
