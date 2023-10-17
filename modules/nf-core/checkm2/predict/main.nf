@@ -9,7 +9,7 @@ process CHECKM2_PREDICT {
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_bins/*")
-    path(db)
+    tuple val(dbmeta), path(db)
 
     output:
     tuple val(meta), path("${prefix}")                   , emit: checkm2_output
@@ -23,13 +23,11 @@ process CHECKM2_PREDICT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    db = db ?: "CheckM2_database/uniref100.KO.1.dmnd"
+    db = dbmeta.compressed ? 'CheckM2_database/uniref100.KO.1.dmnd' : db
     """
-    # download database, hard-coded for now (download option broken in current version https://github.com/chklovski/CheckM2/issues/83)
-    if [ ! -f ${db} ]; then
-        wget https://zenodo.org/records/5571251/files/checkm2_database.tar.gz?download=1 -O checkm2_database.tar.gz
+    if [ '${dbmeta.compressed}' == true ]; then
+        # uncompress database, expects original db URL
         tar -xzf checkm2_database.tar.gz
-        rm checkm2_database.tar.gz
     fi
 
     checkm2 \\

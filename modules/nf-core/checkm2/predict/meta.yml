@@ -23,6 +23,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test' ]`
+  - dbmeta:
+      type: map
+      description: |
+        Groovy Map containing database information (spetially if it is compressed)
+        e.g. `[ compressed:true ]`
   - fasta:
       type: file
       description: One or multiple FASTA files of each bin
