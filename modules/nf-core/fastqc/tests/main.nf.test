@@ -1,10 +1,11 @@
 nextflow_process {
 
     name "Test Process FASTQC"
-    script "modules/nf-core/fastqc/main.nf"
+    script "../main.nf"
     process "FASTQC"
-    tag "fastqc"
+    tag "modules"
     tag "modules_nfcore"
+    tag "fastqc"
 
     test("Single-Read") {
 
