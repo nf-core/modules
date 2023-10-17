@@ -2,14 +2,6 @@ abacas:
   - modules/nf-core/abacas/**
   - tests/modules/nf-core/abacas/**
 
-abricate/run:
-  - modules/nf-core/abricate/run/**
-  - tests/modules/nf-core/abricate/run/**
-
-abricate/summary:
-  - modules/nf-core/abricate/summary/**
-  - tests/modules/nf-core/abricate/summary/**
-
 abritamr/run:
   - modules/nf-core/abritamr/run/**
   - tests/modules/nf-core/abritamr/run/**
@@ -694,6 +686,20 @@ cellranger/vdj:
   - modules/nf-core/cellranger/vdj/**
   - tests/modules/nf-core/cellranger/vdj/**
 
+cellrangeratac/count:
+  - modules/nf-core/cellrangeratac/count/**
+  - tests/modules/nf-core/cellrangeratac/count/**
+  - modules/nf-core/cellrangeratac/mkref/**
+  - tests/modules/nf-core/cellrangeratac/mkref/**
+
+cellrangeratac/mkfastq:
+  - modules/nf-core/cellrangeratac/mkfastq/**
+  - tests/modules/nf-core/cellrangeratac/mkfastq/**
+
+cellrangeratac/mkref:
+  - modules/nf-core/cellrangeratac/mkref/**
+  - tests/modules/nf-core/cellrangeratac/mkref/**
+
 centrifuge/centrifuge:
   - modules/nf-core/centrifuge/centrifuge/**
   - tests/modules/nf-core/centrifuge/centrifuge/**
@@ -898,10 +904,6 @@ csvtk/split:
   - modules/nf-core/csvtk/split/**
   - tests/modules/nf-core/csvtk/split/**
 
-custom/getchromsizes:
-  - modules/nf-core/custom/getchromsizes/**
-  - tests/modules/nf-core/custom/getchromsizes/**
-
 custom/matrixfilter:
   - modules/nf-core/custom/matrixfilter/**
   - tests/modules/nf-core/custom/matrixfilter/**
@@ -961,6 +963,10 @@ deepbgc/pipeline:
 deepcell/mesmer:
   - modules/nf-core/deepcell/mesmer/**
   - tests/modules/nf-core/deepcell/mesmer/**
+
+deeptmhmm:
+  - modules/nf-core/deeptmhmm/**
+  - tests/modules/nf-core/deeptmhmm/**
 
 deeptools/bamcoverage:
   - modules/nf-core/deeptools/bamcoverage/**
@@ -1679,13 +1685,17 @@ gfastats:
   - modules/nf-core/gfastats/**
   - tests/modules/nf-core/gfastats/**
 
+gfatools/gfa2fa:
+  - modules/nf-core/gfatools/gfa2fa/**
+  - tests/modules/nf-core/gfatools/gfa2fa/**
+
+gfatools/stat:
+  - modules/nf-core/gfatools/stat/**
+  - tests/modules/nf-core/gfatools/stat/**
+
 gffcompare:
   - modules/nf-core/gffcompare/**
   - tests/modules/nf-core/gffcompare/**
-
-gffread:
-  - modules/nf-core/gffread/**
-  - tests/modules/nf-core/gffread/**
 
 gget/gget:
   - modules/nf-core/gget/gget/**
@@ -1866,21 +1876,6 @@ hicexplorer/hicpca:
 hifiasm:
   - modules/nf-core/hifiasm/**
   - tests/modules/nf-core/hifiasm/**
-
-hisat2/align:
-  - modules/nf-core/hisat2/align/**
-  - modules/nf-core/hisat2/build/**
-  - modules/nf-core/hisat2/extractsplicesites/**
-  - tests/modules/nf-core/hisat2/align/**
-
-hisat2/build:
-  - modules/nf-core/hisat2/build/**
-  - modules/nf-core/hisat2/extractsplicesites/**
-  - tests/modules/nf-core/hisat2/build_test/**
-
-hisat2/extractsplicesites:
-  - modules/nf-core/hisat2/extractsplicesites/**
-  - tests/modules/nf-core/hisat2/extractsplicesites/**
 
 hlala/preparegraph:
   - modules/nf-core/hlala/preparegraph/**
@@ -2607,6 +2602,10 @@ muscle:
   - modules/nf-core/muscle/**
   - tests/modules/nf-core/muscle/**
 
+muscle5/super5:
+  - modules/nf-core/muscle5/super5/**
+  - tests/modules/nf-core/muscle5/super5/**
+
 mykrobe/predict:
   - modules/nf-core/mykrobe/predict/**
   - tests/modules/nf-core/mykrobe/predict/**
@@ -2719,6 +2718,10 @@ oncocnv:
   - modules/nf-core/oncocnv/**
   - tests/modules/nf-core/oncocnv/**
 
+openms/decoydatabase:
+  - modules/nf-core/openms/decoydatabase/**
+  - tests/modules/nf-core/openms/decoydatabase/**
+
 optitype:
   - modules/nf-core/optitype/**
   - tests/modules/nf-core/optitype/**
@@ -2738,6 +2741,10 @@ pairtools/dedup:
 pairtools/flip:
   - modules/nf-core/pairtools/flip/**
   - tests/modules/nf-core/pairtools/flip/**
+
+pairtools/merge:
+  - modules/nf-core/pairtools/merge/**
+  - tests/modules/nf-core/pairtools/merge/**
 
 pairtools/parse:
   - modules/nf-core/pairtools/parse/**
@@ -3419,6 +3426,10 @@ sentieon/readwriter:
   - modules/nf-core/sentieon/readwriter/**
   - tests/modules/nf-core/sentieon/readwriter/**
 
+sentieon/tnhaplotyper2:
+  - modules/nf-core/sentieon/tnhaplotyper2/**
+  - tests/modules/nf-core/sentieon/tnhaplotyper2/**
+
 sentieon/tnscope:
   - modules/nf-core/sentieon/tnscope/**
   - tests/modules/nf-core/sentieon/tnscope/**
@@ -3919,10 +3930,6 @@ subworkflows/fastq_contam_seqtk_kraken:
 subworkflows/fastq_create_umi_consensus_fgbio:
   - subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
   - tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
-
-subworkflows/fastq_download_prefetch_fasterqdump_sratools:
-  - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
-  - tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
 
 subworkflows/fastq_fastqc_umitools_fastp:
   - subworkflows/nf-core/fastq_fastqc_umitools_fastp/**
