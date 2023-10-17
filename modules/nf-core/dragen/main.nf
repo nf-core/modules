@@ -4,7 +4,7 @@ process DRAGEN {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'registry.hub.docker.com/etycksen/dragen4:4.2.4' }"
+        'registry.hub.docker.com/etycksen/dragen4:4.2.4' }" // somehow the PATH is not containing dragen, when I run it locally it is there
 
     input:
     tuple val(meta), path(fastq)
@@ -20,7 +20,7 @@ process DRAGEN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def enable_variant_caller = task.ext.enable_variant_caller ? '--enable-variant-caller true' : '' // might not be necessary
+    def bin_path = task.ext.bin_path ?: 'dragen'
 
     def input = ''
     // from fastq
@@ -35,19 +35,18 @@ process DRAGEN {
     """
     #dragen_reset
 
-    #dragen \\
+    #$bin_path \\
     echo \\
         $args \\
         $input \\
         -n $task.cpus \\
         -r $reference \\
         --output-file-prefix $prefix \\
-        --output-directory \$(pwd) \\
-        $enable_variant_caller
+        --output-directory \$(pwd)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(dragen --version 2>&1) | sed 's/^dragen Version //' ))
+        dragen: \$(echo \$($bin_path --version 2>&1) | sed 's/^dragen Version //')
     END_VERSIONS
     """
 
@@ -59,7 +58,7 @@ process DRAGEN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(dragen --version 2>&1) | sed 's/^dragen Version //' ))
+        dragen: \$(echo \$($bin_path --version 2>&1) | sed 's/^dragen Version //')
     END_VERSIONS
     """
 }
