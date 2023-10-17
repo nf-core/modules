@@ -1,8 +1,8 @@
 - name: tcoffee alncompare test_tcoffee_alncompare
   command: nextflow run ./tests/modules/nf-core/tcoffee/alncompare -entry test_tcoffee_alncompare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tcoffee/alncompare/nextflow.config
   tags:
-  - tcoffee
-  - tcoffee/alncompare
+    - tcoffee
+    - tcoffee/alncompare
   files:
-  - path: output/famsa/test.aln
-    md5sum: 9394e09dd7f576da794a74de60327324
+    - path: output/famsa/test.aln
+      md5sum: 9394e09dd7f576da794a74de60327324
