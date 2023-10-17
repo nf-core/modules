@@ -8,18 +8,19 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    setup {
-        run("BISMARK_GENOMEPREPARATION") {
-            script "../../genomepreparation/main.nf"
-            process {
-                """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                """
+    test("Should run bismark/align (bowtie2 single end) without failures") {
+        config './nextflow_bowtie2.config'
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
             }
         }
-    }
-
-    test("Should run bismark/align (single end) without failures") {
 
         when {
             params {
@@ -39,13 +40,13 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_se") },
-            { assert snapshot(process.out.unmapped).match("unmapped_se") },
+            { assert snapshot(process.out.bam).match("bam_bt2_se") },
+            { assert snapshot(process.out.unmapped).match("unmapped_bt2_se") },
             { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
-                        assert get(1).endsWith("_SE_report.txt")
+                        assert get(1).endsWith("bt2_SE_report.txt")
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
@@ -54,7 +55,115 @@ nextflow_process {
         }
     }
 
-    test("Should run bismark/align (paired end) without failures") {
+    test("Should run bismark/align (bowtie2 paired end) without failures") {
+        config './nextflow_bowtie2.config'
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            [ 
+                             file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
+                             file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                            ]
+                           ]
+                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out.bam).match("bam_bt2_pe") },
+            { assert snapshot(process.out.unmapped).match("unmapped_bt2_pe") },
+            { assert snapshot(process.out.versions).match("versions") },
+            {
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith("_bt2_PE_report.txt")
+                        assert path(get(1)).readLines().last().contains("Bismark completed in")
+                    }
+                }
+            }
+            )
+        }
+    }
+
+    test("Should run bismark/align (hisat2 single end) without failures") {
+        config './nextflow_hisat2.config'
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:true ],
+                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                           ]
+                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out.bam).match("bam_hisat2_se") },
+            { assert snapshot(process.out.unmapped).match("unmapped_hisat2_se") },
+            { assert snapshot(process.out.versions).match("versions") },
+            {
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith("hisat2_SE_report.txt")
+                        assert path(get(1)).readLines().last().contains("Bismark completed in")
+                    }
+                }
+            }
+            )
+        }
+    }
+
+    test("Should run bismark/align (hisat2 paired end) without failures") {
+        config './nextflow_hisat2.config'
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+        }
 
         when {
             params {
@@ -77,13 +186,13 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_pe") },
-            { assert snapshot(process.out.unmapped).match("unmapped_pe") },
+            { assert snapshot(process.out.bam).match("bam_hisat2_pe") },
+            { assert snapshot(process.out.unmapped).match("unmapped_hisat2_pe") },
             { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
-                        assert get(1).endsWith("_PE_report.txt")
+                        assert get(1).endsWith("hisat2_PE_report.txt")
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
