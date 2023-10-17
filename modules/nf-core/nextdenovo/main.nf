@@ -73,4 +73,17 @@ process NEXTDENOVO {
         nextDenovo : \$(echo \$(nextDenovo --version 2>&1) | sed 's/^.*nextDenovo //; s/Using.*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.cns.fasta.gz
+    touch ${prefix}.asm.fasta.gz
+    touch ${prefix}.asm.fasta.stat
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nextDenovo : \$(echo \$(nextDenovo --version 2>&1) | sed 's/^.*nextDenovo //; s/Using.*\$//' )
+    END_VERSIONS
+    """
 }
