@@ -75,6 +75,11 @@ process NEXTDENOVO {
     """
 
     stub:
+    def args_general = task.ext.args_general ?: ''
+    def args_sort_options = task.ext.args_sort_options ?: ''
+    def args_minimap2_options_raw = task.ext.args_minimap2_options_raw ?: ''
+    def args_minimap2_options_cns = task.ext.args_minimap2_options_cns ?: ''
+    def args_nextgraph_options = task.ext.args_nextgraph_options ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.cns.fasta.gz
