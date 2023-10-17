@@ -36,7 +36,7 @@ process PIGZ_COMPRESS {
     def args = task.ext.args ?: ''
 
     """
-    touch ${prefix}.gz
+    touch ${file}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
