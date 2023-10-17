@@ -76,13 +76,10 @@ nextflow_process {
             { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.summary) {
-                    with(get(0)) {
-                        // ['bismark_summary_report.html', 'bismark_summary_report.txt']
-                        assert size() == 2
-                        assert every { it.contains('bismark_summary_report') }
-                        assert path(get(1)).readLines().first().contains('CpGs')
-                        assert path(get(0)).readLines().last().contains('</html>')
-                    }
+                    assert get(0).size() == 2
+                    assert get(0).every { it.contains('bismark_summary_report') }
+                    assert path(get(0).get(1)).readLines().first().contains('CpGs')
+                    assert path(get(0).get(0)).readLines().last().contains('</html>')
                 }
             }
             )
