@@ -32,15 +32,21 @@ input:
   - maternal_kmer_dump:
       type: file
       description: Yak kmer dump file for maternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
-  - use_parental_kmers:
-      type: logical
-      description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
   - hic_read1:
       type: file
       description: Hi-C data Forward reads.
   - hic_read2:
       type: file
       description: Hi-C data Reverse reads.
+  - ont_ul:
+      type: file
+      description: ONT (Nanopore) ultra-long reads.
+  - ploidy:
+      type: string
+      description: Ploidy for the specie of interest
+  - gen_size_kb:
+      type: string
+      description: Estimated genome size for the specie of interest (in kb)
 
 output:
   - meta:
@@ -68,13 +74,13 @@ output:
       type: file
       description: Alternative contigs
       pattern: "*.asm.a_ctg.gfa"
-  - paternal_contigs:
+  - hap1_contigs:
       type: file
-      description: Paternal contigs
+      description: haplotype 1 contigs (can be apternal)
       pattern: "*.hap1.p_ctg.gfa"
-  - maternal_contigs:
+  - hap2_contigs:
       type: file
-      description: Maternal contigs
+      description: haplotype 2 contigs (can be maternal)
       pattern: "*.hap2.p_ctg.gfa"
   - corrected_reads:
       type: file
