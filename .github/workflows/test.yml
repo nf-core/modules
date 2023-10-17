@@ -131,8 +131,6 @@ jobs:
         exclude:
           - tags: "nf-test"
           - profile: "conda"
-            tags: happy/sompy
-          - profile: "conda"
             tags: annotsv
           - profile: "conda"
             tags: cellpose
@@ -408,8 +406,6 @@ jobs:
         profile: ["docker", "singularity", "conda"]
         exclude:
           - tags: "nf-test"
-          - profile: "conda"
-            tags: happy/sompy
           - profile: "conda"
             tags: annotsv
           - profile: "conda"
