@@ -119,7 +119,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
