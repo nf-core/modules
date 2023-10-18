@@ -1,10 +1,10 @@
-- name: arriba test_arriba_single_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+- name: arriba arriba test_arriba_arriba_single_end
+  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/arriba/nextflow.config
   tags:
     - arriba
   files:
-    - path: output/arriba/test.fusions.discarded.tsv
-    - path: output/arriba/test.fusions.tsv
+    - path: output/arriba/arriba/test.fusions.discarded.tsv
+    - path: output/arriba/arriba/test.fusions.tsv
       md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
     - path: output/star/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -43,13 +43,13 @@
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
 
-- name: arriba test_arriba_paired_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+- name: arriba arriba test_arriba_arriba_paired_end
+  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/arriba/nextflow.config
   tags:
     - arriba
   files:
-    - path: output/arriba/test.fusions.discarded.tsv
-    - path: output/arriba/test.fusions.tsv
+    - path: output/arriba/arriba/test.fusions.discarded.tsv
+    - path: output/arriba/arriba/test.fusions.tsv
       md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
     - path: output/star/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da

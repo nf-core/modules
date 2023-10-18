@@ -1,4 +1,4 @@
-process ARRIBA {
+process ARRIBA_ARRIBA {
     tag "$meta.id"
     label 'process_medium'
 
@@ -50,7 +50,7 @@ process ARRIBA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        arriba_arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """
 
