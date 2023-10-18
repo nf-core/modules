@@ -11,7 +11,7 @@ process PIGZ_UNCOMPRESS {
     path zip
 
     output:
-    path $zip.dropRight(3), emit: file
+    path "${uncompressed_filename}" , emit: file
     path "versions.yml"   , emit: versions
 
     when:
@@ -19,24 +19,24 @@ process PIGZ_UNCOMPRESS {
 
     script:
     def args = task.ext.args ?: ''
-
+    uncompressed_filename = zip.toString() - '.gz'
     // calling pigz -f to make it follow symlinks
     """
     unpigz \\
         -p $task.cpus \\
         -fk \\
         $args \\
-        $zip
+        ${zip}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-
+    uncompressed_filename = zip.toString() - '.gz'
     """
     touch ${zip.dropRight(3)}
 
