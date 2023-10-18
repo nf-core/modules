@@ -1,7 +1,6 @@
 process PIGZ_COMPRESS {
-    tag '$bam'
     label 'process_low'
-    stageInMode 'copy' // pigz will fail on symlinks
+    //stageInMode 'copy' // this directive can be set in case the original input should be kept
 
     conda "conda-forge::pigz"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -21,9 +20,11 @@ process PIGZ_COMPRESS {
     script:
     def args = task.ext.args ?: ''
 
+    // calling pigz -f to make it follow symlinks
     """
     pigz \\
         -p $task.cpus \\
+        -f \\
         $args \\
         $file
 
