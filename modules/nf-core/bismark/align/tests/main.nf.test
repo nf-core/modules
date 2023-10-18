@@ -200,4 +200,51 @@ nextflow_process {
             )
         }
     }
+
+    test("Should run bismark/align (minimap2 single end) without failures") {
+        config './nextflow_minimap2.config'
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:true ],
+                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                           ]
+                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out.bam).match("bam_minimap2_se") },
+            { assert snapshot(process.out.unmapped).match("unmapped_minimap2_se") },
+            { assert snapshot(process.out.versions).match("versions") },
+            {
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith("mm2_SE_report.txt")
+                        assert path(get(1)).readLines().last().contains("Bismark completed in")
+                    }
+                }
+            }
+            )
+        }
+    }
 }
