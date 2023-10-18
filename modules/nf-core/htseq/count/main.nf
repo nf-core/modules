@@ -32,7 +32,7 @@ process HTSEQ_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
+        htseq: \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
     END_VERSIONS
     """
 
