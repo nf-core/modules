@@ -1,6 +1,7 @@
 process PIGZ_COMPRESS {
     tag '$bam'
     label 'process_low'
+    stageInMode 'copy' // pigz will fail on symlinks
 
     conda "conda-forge::pigz"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
