@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process BBMAP_BBSPLIT"
+    script "../main.nf"
+    process "BBMAP_BBSPLIT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/bbsplit"
+
+    test("test_bbmap_bbsplit") {
+
+        setup {
+
+            run("BBMAP_BBSPLIT_INDEX") {
+                script "../main.nf"
+                process {
+                    """
+                    input = [[:],[]]
+                    index = []
+                    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    bbsplit_fasta_list = [
+                        ['human'],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/reference/chr22_23800000-23980000.fa', checkIfExists: true)
+                    ]
+                    only_build_index = true
+
+                    input[0] = input
+                    input[1] = index
+                    input[2] = fasta
+                    input[3] = bbsplit_fasta_list
+                    input[4] = only_build_index
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                    """
+                    input = [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                    index = BBMAP_BBSPLIT_INDEX.out.index
+                    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    bbsplit_fasta_list = [
+                        ['human'],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/reference/chr22_23800000-23980000.fa', checkIfExists: true)
+                    ]
+                    only_build_index = true
+
+                    input[0] = input
+                    input[1] = index
+                    input[2] = fasta
+                    input[3] = bbsplit_fasta_list
+                    input[4] = only_build_index
+                    """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
