@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { STAR_GENOMEGENERATE   } from '../../../../modules/nf-core/star/genomegenerate/main.nf'
 include { STAR_ALIGN            } from '../../../../modules/nf-core/star/align/main.nf'
-include { ARRIBA_ARRIBA                } from '../../../../modules/nf-core/arriba/arriba/main.nf'
+include { ARRIBA_ARRIBA                } from '../../../../../modules/nf-core/arriba/arriba/main.nf'
 
 workflow test_arriba_arriba_single_end {
 
