@@ -1,5 +1,5 @@
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_hmmer
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_hmmer -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_hmmer -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
@@ -8,10 +8,8 @@
     - hmmer/hmmalign
     - hmmer/eslalimask
     - hmmer/eslreformat
-    - mafft
     - epang
     - epang/place
-    - epang/split
     - gappa
     - gappa/examinegraft
     - gappa/examineassign
@@ -47,15 +45,10 @@
       contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_mafft
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_mafft -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_mafft -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
-    - hmmer
-    - hmmer/hmmbuild
-    - hmmer/hmmalign
-    - hmmer/eslalimask
-    - hmmer/eslreformat
     - mafft
     - epang
     - epang/place
@@ -68,7 +61,7 @@
     - path: output/mafft/mafft.fas
       md5sum: 5a41d3443ea56b4b9105d8190043e37e
     - path: output/mafft/versions.yml
-      contains: ["mafft: 7.508"]
+      contains: ["mafft: 7.520"]
     - path: output/epang/mafft.epa_info.log
       contains: ["Query file: mafft.query.fasta.gz", "INFO 3 Sequences done!"]
     - path: output/epang/versions.yml
@@ -87,7 +80,7 @@
       contains: ["gappa: 0.8.0"]
 
 - name: fasta_newick_epang_gappa test_fasta_newick_epang_gappa_nucl_hmmer
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_nucl_hmmer -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_newick_epang_gappa -entry test_fasta_newick_epang_gappa_nucl_hmmer -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_newick_epang_gappa/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fasta_newick_epang_gappa
@@ -96,13 +89,10 @@
     - hmmer/hmmalign
     - hmmer/eslalimask
     - hmmer/eslreformat
-    - mafft
     - epang
     - epang/place
-    - epang/split
     - gappa
     - gappa/examinegraft
-    - gappa/examineassign
     - gappa/examineheattree
   files:
     - path: output/epang/nucl_hmmer.epa_info.log

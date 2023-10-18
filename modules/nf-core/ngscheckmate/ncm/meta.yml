@@ -14,16 +14,29 @@ tools:
       licence: ["MIT"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
   - files:
       type: file
       description: VCF or BAM files for each sample, in a merged channel (possibly gzipped). BAM files require an index too.
       pattern: "*.{vcf,vcf.gz,bam,bai}"
-
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing SNP information
+        e.g. [ id:'test' ]
   - snp_bed:
       type: file
       description: BED file containing the SNPs to analyse
       pattern: "*.{bed}"
-
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference fasta index information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: fasta file for the genome, only used in the bam mode

@@ -1,0 +1,109 @@
+name: "MITOHIFI_MITOHIFI"
+description: A python workflow that assembles mitogenomes from Pacbio HiFi reads
+keywords:
+  - mitochondrion
+  - chloroplast
+  - PacBio
+tools:
+  - "mitohifi.py":
+      description: A python workflow that assembles mitogenomes from Pacbio HiFi reads
+      homepage: https://github.com/marcelauliano/MitoHiFi
+      documentation: https://github.com/marcelauliano/MitoHiFi
+      tool_dev_url: https://github.com/marcelauliano/MitoHiFi
+      doi: "10.1101/2022.12.23.521667"
+      licence: ["MIT"]
+
+input:
+  - reads:
+      type: file
+      description: Path to PacBio HiFi reads
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+  - contigs:
+      type: file
+      description: Path to genome assembly
+      pattern: "*.{fa,fasta}"
+  - ref_fa:
+      type: file
+      description: Reference sequence
+      pattern: "*.{fa,fasta}"
+  - ref_gb:
+      type: file
+      description: Reference annotation
+      pattern: "*.{gb}"
+  - code:
+      type: integer
+      description: Mitochndrial code for annotation
+      pattern: "[0-9]*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Mitochondrial sequence
+      pattern: "*.{fasta,fa}"
+  - gb:
+      type: file
+      description: Genome annotation in case mitofinder was used
+      pattern: "*.gb"
+  - gff:
+      type: file
+      description: Genome annotation in case mitos was used
+      pattern: "*.gff"
+  - all_potential_contigs:
+      type: file
+      description: Contains sequences of all potential contigs
+      pattern: "*all_potential_contigs.fa"
+  - contigs_annotations:
+      type: file
+      description: Graphical representation of annotated genes and tRNAs
+      pattern: "*contigs_annotations.png"
+  - contigs_circularization:
+      type: directory
+      description: Contains circularization reports
+      pattern: "*contigs_circularization"
+  - contigs_filtering:
+      type: directory
+      description: Contains files with initial blast matches
+      pattern: "*contigs_filtering"
+  - coverage_mapping:
+      type: directory
+      description: Contains statistics on coverage mapping
+      pattern: "*coverage_mapping"
+  - coverage_plot:
+      type: file
+      description: Read coverage plot for mitochondrial contigs
+      pattern: "*coverage_plot.png"
+  - final_mitogenome_annotation:
+      type: file
+      description: Graphical representation of annotated genes for the final mito contig
+      pattern: "*final_mitogenome.annotation.png"
+  - final_mitogenome_choice:
+      type: directory
+      description: Files with potential contigs clusterings and alignments
+      pattern: "*final_mitogenome_choice"
+  - final_mitogenome_coverage:
+      type: file
+      description: Graphical representation of reads coverage plot for the final mito contig
+      pattern: "*final_mitogenome.coverage.png"
+  - potential_contigs:
+      type: directory
+      description: Files with sequences and annotations of the potential contigs
+      pattern: "*potential_contigs"
+  - reads_mapping_and_assembly:
+      type: directory
+      description: Read mapping files for run from the raw reads
+      pattern: "*reads_mapping_and_assembly"
+  - shared_genes:
+      type: directory
+      description: Report on genes shared with the reference genome
+      pattern: "*shared_genes.tsv"
+  - versions:
+      type: file
+      description: Software versions used in the run
+      pattern: "versions.yml"
+
+authors:
+  - "@ksenia-krasheninnikova"

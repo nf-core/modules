@@ -29,7 +29,8 @@ process GATK4_FASTQTOSAM {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" FastqToSam \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        FastqToSam \\
         $reads_command \\
         --OUTPUT ${prefix}.bam \\
         --SAMPLE_NAME $prefix \\

@@ -31,6 +31,10 @@ input:
       type: file
       description: The local copy of the taxonomic database used by GTDB-tk (unzipped copy)
       pattern: "*"
+  - mash_db:
+      type: file
+      description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen` mode is used (optional)
+      pattern: "*.msh"
 
 output:
   - meta:

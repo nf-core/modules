@@ -29,7 +29,8 @@ process GATK4_CREATEREADCOUNTPANELOFNORMALS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CreateReadCountPanelOfNormals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CreateReadCountPanelOfNormals \\
         ${args} \\
         ${input_list} \\
         --output ${prefix}.hdf5
