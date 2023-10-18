@@ -21,7 +21,7 @@ process TCOFFEE_ALNCOMPARE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = '-compare_mode tc' + task.ext.args ?: ''
+    def args = task.ext.args ?: '-compare_mode tc'
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
 
