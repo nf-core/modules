@@ -4,7 +4,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "modules"
     tag "medaka"
-    script "modules/nf-core/medaka/main.nf"
+    script "../main.nf"
     process "MEDAKA"
 
     test("Medaka") {
