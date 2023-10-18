@@ -1,0 +1,10 @@
+- name: verkko test_verkko
+  command: nextflow run ./tests/modules/nf-core/verkko -entry test_verkko -c ./tests/config/nextflow.config
+  tags:
+    - verkko
+  files:
+    - path: output/verkko/test_homopolymer-compressed.gfa
+      md5sum: ed3557923d318c239e273fa34a663fc1
+    - path: output/verkko/test_verkko_assembly.fasta
+      md5sum: 9b589355943396a76225077d3fae87b1
+    - path: output/verkko/versions.yml
