@@ -19,4 +19,6 @@ for file in $METAS; do
     echo "$path" $authors >> $output_file
 done
 
+# Generate it from scratch
+cat ".github/manual_CODEOWNERS" > ".github/CODEOWNERS"
 cat $output_file >> ".github/CODEOWNERS"
