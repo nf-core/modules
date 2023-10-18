@@ -1,6 +1,6 @@
 process CHECKQC {
     label 'process_low'
-    stageInMode 'copy'
+    errorStrategy 'ignore'
 
     conda "bioconda::checkqc=3.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
