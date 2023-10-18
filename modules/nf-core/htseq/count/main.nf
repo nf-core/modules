@@ -1,5 +1,3 @@
-
-
 process HTSEQ_COUNT {
     tag "$meta.id"
     label 'process_medium'
@@ -10,8 +8,8 @@ process HTSEQ_COUNT {
         'biocontainers/htseq:2.0.2--py310ha14a713_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    tuple val(meta1), path(gtf)
+    tuple val(meta), path(input), path(index)
+    tuple val(meta2), path(gtf)
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
@@ -26,7 +24,7 @@ process HTSEQ_COUNT {
 
     """
     htseq-count \\
-        ${bam} \\
+        ${input} \\
         ${gtf} \\
         ${args} \\
         > ${prefix}.txt
