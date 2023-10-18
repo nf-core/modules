@@ -23,13 +23,12 @@ process ESTSFS {
     def args = task.ext.args ?: ''
     def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
-    
     """
     est-sfs ${e_config} ${data} ${seed} ${prefix}_sfs.txt ${prefix}_pvalues.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-         est-sfs: $VERSION
+        est-sfs: $VERSION
     END_VERSIONS
     """
 
