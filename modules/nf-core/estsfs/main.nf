@@ -13,7 +13,7 @@ process ESTSFS {
     tuple val(meta), path(e_config), path(data), path(seed)
 
     output:
-    tuple val(meta), path("${prefix}_sfs.txt"), emit: sfs_out
+    tuple val(meta), path("${prefix}_sfs.txt")   , emit: sfs_out
     tuple val(meta), path("${prefix}_pvalues.txt"), emit: pvalues_out
     path "versions.yml", emit: versions
 
