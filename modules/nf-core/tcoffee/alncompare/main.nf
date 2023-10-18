@@ -15,7 +15,7 @@ process TCOFFEE_ALNCOMPARE {
 
     output:
     tuple val(meta), path("*.scores"), emit: scores
-    path "versions.yml"               , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
