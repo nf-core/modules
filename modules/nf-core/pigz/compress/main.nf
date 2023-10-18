@@ -28,7 +28,7 @@ process PIGZ_COMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
