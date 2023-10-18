@@ -15,7 +15,7 @@ workflow test_cellrangerarc_mkref {
 
     UNZIP( fasta )
 
-    CELLRANGERARC_MKREF ( UNZIP.out.unzipped_archive.map { it[1] } + "/chr19.fa",
+    CELLRANGERARC_MKREF ( UNZIP.out.unzipped_archive.map{ it[1] } + "/chr19.fa",
                             gtf,
                             motifs,
                             reference_config,
