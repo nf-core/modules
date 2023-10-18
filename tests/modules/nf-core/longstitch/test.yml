@@ -1,0 +1,20 @@
+- name: longstitch test_longstitch
+  command: nextflow run ./tests/modules/nf-core/longstitch -entry test_longstitch -c ./tests/config/nextflow.config
+  tags:
+    - longstitch
+  files:
+    - path: output/longstitch/assembly.fa.k32.w100.z1000.ntLink.scaffolds.fa
+      md5sum: ef528c9e3b67f8e67a0b944dee02eb89
+    - path: output/longstitch/assembly.fa.k32.w100.z1000.ntLink.scaffolds.renamed.fa
+      md5sum: aeeed50d90f4f4a7715ac63ec90223e8
+    - path: output/longstitch/assembly.fa.k32.w100.z1000.ntLink.scaffolds_c4_m8-10000_cut250_k20_r0.05_e30000_z1000_l4_a0.3.scaffolds.fa
+      md5sum: 7ed094fdbacb299fc3d1167478b13987
+    - path: output/longstitch/assembly.fa.k32.w100.z1000.stitch.abyss-scaffold.fa
+      md5sum: ef528c9e3b67f8e67a0b944dee02eb89
+    - path: output/longstitch/assembly.fa.k32.w100.z1000.trimmed_scafs.fa
+      md5sum: ef528c9e3b67f8e67a0b944dee02eb89
+    - path: output/longstitch/assembly.k32.w100.ntLink-arks.longstitch-scaffolds.fa
+      md5sum: 7ed094fdbacb299fc3d1167478b13987
+    - path: output/longstitch/test_assembly.scaffolds.fa
+      md5sum: 7ed094fdbacb299fc3d1167478b13987
+    - path: output/longstitch/versions.yml

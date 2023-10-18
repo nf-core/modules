@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "longstitch"
+description: A genome assembly correction and scaffolding pipeline using long reads
+keywords:
+  - scaffolding
+  - genome assembly
+  - correction
+tools:
+  - "longstitch":
+      description: "A genome assembly correction and scaffolding pipeline using long reads"
+      homepage: "https://github.com/bcgsc/longstitch"
+      documentation: "https://github.com/bcgsc/longstitch"
+      tool_dev_url: "https://github.com/bcgsc/longstitch"
+      doi: "10.1186/s12859-021-04451-7"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - assembly:
+      type: file
+      description: assembly to correct or improve
+      pattern: "*.{fa}"
+  - reads:
+      type: file
+      description: long reads used to correct or improve the assembly
+      pattern: "*.{fq.gz}"
+  - mode:
+      type: string
+      description: Longstitch mode
+      pattern: "tigmint-ntLink-arks|tigmint-ntLink|ntLink-arks"
+  - genome_size:
+      type: string
+      description: Expected genome size of the genome of interest
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - assembly:
+      type: file
+      description: Improved or scaffolded assembly
+      pattern: "*.{fa}"
+
+authors:
+  - "@scorreard"
