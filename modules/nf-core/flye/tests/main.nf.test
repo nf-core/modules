@@ -13,6 +13,7 @@ nextflow_process {
 
 
     test("flye_pacbio_raw") {
+        tag "flye_pacbio_raw"
 
         when {
             params {
@@ -32,8 +33,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
-                { assert process.out.fasta.get(0).get(1) =~ 'test.assembly.fasta.gz' }
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+                { assert process.out.json.get(0).get(1) ==~ '.*/test.params.json' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ }
+
+
             )
         }
 
