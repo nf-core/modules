@@ -337,6 +337,18 @@ jobs:
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
+      - name: Deprecation Comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Hello! We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
+
+              If you could rewrite these pytest-workflow tests in nf-test we'd appreciate your help!`
+            })
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
