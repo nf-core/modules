@@ -248,6 +248,27 @@ proteinGroups <- readProteinGroups(
     data.cols=proteinColumns
 )
 
+# R object for other processes to use
+
+saveRDS(proteinGroups, file = 'raw_proteingroups.rds')
+
+# Write raw intensities matrix
+
+out_df <- data.frame(
+        round_dataframe_columns(proteinGroups\$tab, digits=opt\$round_digits),
+        check.names = FALSE
+    )
+out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; save these to a separate column
+out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
+write.table(
+    out_df,
+    file = 'raw_proteingroups_tab.tsv',
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
 # Define valid normalization functions
 
 valid_norm_functions <- list("normalizeMedian", "normalizeQuantiles")
@@ -308,15 +329,16 @@ write.table(
     quote = FALSE
 )
 
-# Process and save raw table
+# get log2 table
 
-proteinGroups\$tab <- log2(proteinGroups\$tab)
+proteinGroups.log2 <- proteinGroups
+proteinGroups.log2\$tab <- log2(proteinGroups.log2\$tab)
 
-# Generate raw distribution plot
+# Generate log2 distribution plot
 
-png('raw_distributions.png', width = 5*300, height = 5*300, res = 300, pointsize = 8)
+png('log2_distributions.png', width = 5*300, height = 5*300, res = 300, pointsize = 8)
 print(
-    plotSampleDistributions(proteinGroups, title=paste("Raw sample distributions in contrast", opt\$contrast_variable), fill="condition", method=opt\$plotsd_method)
+    plotSampleDistributions(proteinGroups.log2, title=paste("Log2 sample distributions in contrast", opt\$contrast_variable), fill="condition", method=opt\$plotsd_method)
         + scale_fill_brewer(palette=opt\$palette_name, name=opt\$contrast_variable)
         + theme(plot.title = element_text(size = 12))
     )
@@ -324,22 +346,19 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(proteinGroups, file = 'raw_proteingroups.rds')
-
+saveRDS(proteinGroups.log2, file = 'log2_proteingroups.rds')
 
 # Write raw intensities matrix
 
 out_df <- data.frame(
-        round_dataframe_columns(proteinGroups\$tab, digits=opt\$round_digits),
+        round_dataframe_columns(proteinGroups.log2\$tab, digits=opt\$round_digits),
         check.names = FALSE
     )
-out_df[[opt\$protein_id_col]] <- rownames(proteinGroups\$tab) # proteus saves the IDs as rownames; save these to a separate column
+out_df[[opt\$protein_id_col]] <- rownames(proteinGroups.log2\$tab) # proteus saves the IDs as rownames; save these to a separate column
 out_df <- out_df[c(opt\$protein_id_col, colnames(out_df)[colnames(out_df) != opt\$protein_id_col])] # move ID column to first position
-
-
 write.table(
     out_df,
-    file = 'raw_proteingroups_tab.tsv',
+    file = 'log2_proteingroups_tab.tsv',
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',

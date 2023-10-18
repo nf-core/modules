@@ -44,10 +44,10 @@ output:
       type: file
       description: |
         PNG file; plot of the log-intensity variance vs log-intensity mean of each condition in the normalized samples
-  - raw_dist_plot:
+  - log2_dist_plot:
       type: file
       description: |
-        PNG file; plot of the intensity/ratio distributions of the raw samples
+        PNG file; plot of the intensity/ratio distributions of the log2 samples
   - norm_dist_plot:
       type: file
       description: |
@@ -56,6 +56,10 @@ output:
       type: file
       description: |
         RDS file of a proteinGroups object from Proteus, contains raw protein intensities and additional info
+  - log2_rdata:
+      type: file
+      description: |
+        RDS file of a proteinGroups object from Proteus, contains log2 protein intensities and additional info
   - norm_rdata:
       type: file
       description: |
@@ -64,6 +68,10 @@ output:
       type: file
       description: |
         TSV-format intensities table from Proteus, contains raw protein intensities
+  - log2_tab:
+      type: file
+      description: |
+        TSV-format intensities table from Proteus, contains log2 protein intensities
   - norm_tab:
       type: file
       description: |

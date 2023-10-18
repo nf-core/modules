@@ -13,11 +13,13 @@ process PROTEUS_READPROTEINGROUPS {
     output:
     tuple val(meta), path("*dendrogram.png")                    , emit: dendro_plot
     tuple val(meta), path("*mean_variance_relationship.png")    , emit: mean_var_plot
-    tuple val(meta), path("*raw_distributions.png")             , emit: raw_dist_plot
+    tuple val(meta), path("*log2_distributions.png")            , emit: log2_dist_plot
     tuple val(meta), path("*normalized_distributions.png")      , emit: norm_dist_plot
     tuple val(meta), path("*raw_proteingroups.rds")             , emit: raw_rdata
+    tuple val(meta), path("*log2_proteingroups.rds")            , emit: log2_rdata
     tuple val(meta), path("*normalized_proteingroups.rds")      , emit: norm_rdata
     tuple val(meta), path("*raw_proteingroups_tab.tsv")         , emit: raw_tab
+    tuple val(meta), path("*log2_proteingroups_tab.tsv")        , emit: log2_tab
     tuple val(meta), path("*normalized_proteingroups_tab.tsv")  , emit: norm_tab
     tuple val(meta), path("*R_sessionInfo.log")                 , emit: session_info
     path "versions.yml"                                         , emit: versions
