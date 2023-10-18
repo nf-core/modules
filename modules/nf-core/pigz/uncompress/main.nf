@@ -24,7 +24,7 @@ process PIGZ_UNCOMPRESS {
     """
     unpigz \\
         -p $task.cpus \\
-        -f \\
+        -fk \\
         $args \\
         $zip
 
