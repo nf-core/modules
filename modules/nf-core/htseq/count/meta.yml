@@ -15,11 +15,16 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  - meta:
+  - meta1:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
+  - meta2:
+      type: map
+      description: |
+        .gtf file information
+        e.g. `[ id:'test']`
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
