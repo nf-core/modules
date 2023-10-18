@@ -1,0 +1,19 @@
+- name: clame test_clame
+  command: nextflow run ./tests/modules/nf-core/clame -entry test_clame -c ./tests/config/nextflow.config
+  tags:
+    - clame
+  files:
+    - path: output/clame/test1.binning
+      md5sum: 29c7f5d56ad48796df34d682315aa608
+    - path: output/clame/test1.fm9
+      md5sum: 9ffbb73ad0f8283ff0c920ceeff81ed6
+    - path: output/clame/test1.index
+      md5sum: 1b04aab2077afed7203761d1ec2d98ee
+    - path: output/clame/test1.links
+      md5sum: c21f1d9db75ac76a509ae4eb7c2abeac
+    - path: output/clame/test1.result
+      md5sum: 23e1a9fd7aba2dca46a58588dfd53bed
+    - path: output/clame/versions.yml
+    - path: output/gunzip/test1.contigs.fa
+      md5sum: 80c4d78f2810f6d9e90fa6da9bb9c4f9
+    - path: output/gunzip/versions.yml
