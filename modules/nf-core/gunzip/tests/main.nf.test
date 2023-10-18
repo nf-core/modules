@@ -1,12 +1,11 @@
 nextflow_process {
 
-    name "Test Process HISAT2_EXTRACTSPLICESITES"
+    name "Test Process GUNZIP"
     script "../main.nf"
-    process "HISAT2_EXTRACTSPLICESITES"
-    tag "modules"
+    process "GUNZIP"
+    tag "gunzip"
     tag "modules_nfcore"
-    tag "hisat2"
-    tag "hisat2/extractsplicesites"
+    tag "modules"
 
     test("Should run without failures") {
 
@@ -16,9 +15,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'],
-                              file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = [
+                                [],
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
                 """
             }
         }
