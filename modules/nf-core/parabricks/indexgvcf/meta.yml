@@ -1,0 +1,44 @@
+name: "parabricks_indexgvcf"
+description: NVIDIA Clara Parabricks GPU-accelerated gvcf indexing tool.
+keywords:
+  - vcf
+  - gvcf
+  - tbi
+  - index
+  - GPU-accelerated
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/"
+      licence: "custom"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - gvcf:
+      type: file
+      description: gvcf file to be indexed
+      pattern: "*.{g.vcf,g.vcf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - indexed_gvcf:
+      type: file
+      description: Indexed gvcf file
+      pattern: "*.tbi"
+
+authors:
+  - "@Furentsu"
