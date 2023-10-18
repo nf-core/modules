@@ -1,0 +1,9 @@
+- name: nextdenovo test_nextdenovo
+  command: nextflow run ./tests/modules/nf-core/nextdenovo -entry test_nextdenovo -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/nextdenovo/nextflow.config
+  tags:
+    - nextdenovo
+  files:
+    - path: output/nextdenovo/test_cns.fasta.gz
+    - path: output/nextdenovo/test_nd.asm.fasta.gz
+    - path: output/nextdenovo/test_nd.asm.fasta.stat
+    - path: output/nextdenovo/versions.yml
