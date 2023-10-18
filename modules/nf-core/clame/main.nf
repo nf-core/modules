@@ -34,7 +34,7 @@ process CLAME {
         || test -f ${prefix}.binning
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
+        clame: \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
     END_VERSIONS
     """
 }
