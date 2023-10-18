@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "yak"
+description: k-mer analyzer developped to robustly estimate the base accuracy of CCS reads and assembly contigs and to investigate the systematic error rate of CCS reads.
+keywords:
+  - k-mer analyzer
+  - accuracy estimation
+  - error rate
+tools:
+  - yak:
+      description: Yet another k-mer analyzer
+      homepage: https://github.com/lh3/yak
+      documentation: https://github.com/lh3/yak
+      tool_dev_url: https://github.com/lh3/yak
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - reads:
+      type: file
+      description: Sequencing reads
+      pattern: "*.{fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - yak:
+      type: file
+      description: k-mer counts file
+      pattern: "*.{yak}"
+
+authors:
+  - "@scorreard"

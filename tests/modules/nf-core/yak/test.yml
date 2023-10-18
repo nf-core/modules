@@ -1,0 +1,8 @@
+- name: yak test_yak
+  command: nextflow run ./tests/modules/nf-core/yak -entry test_yak -c ./tests/config/nextflow.config
+  tags:
+    - yak
+  files:
+    - path: output/yak/test.yak
+      md5sum: 2a17b5175ad9cdfeae205024d1480d17
+    - path: output/yak/versions.yml
