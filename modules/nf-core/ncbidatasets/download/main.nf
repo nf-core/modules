@@ -14,7 +14,6 @@ process NCBIDATASETS_DOWNLOAD {
     output:
     // Required output
     tuple val(meta), path("*.zip")   ,             emit: zip
-    path "versions.yml"              ,             emit: versions
     // Optional outputs, depends on tool usage
     tuple val(meta), path("cds.fna.gz"),           emit: cds,        optional: true
     tuple val(meta), path("gene.fna.gz"),          emit: gene,       optional: true
@@ -26,7 +25,8 @@ process NCBIDATASETS_DOWNLOAD {
     tuple val(meta), path("rna.fna.gz"),           emit: rna,        optional: true
     tuple val(meta), path("3p_utr.fna.gz"),        emit: utr_3p,     optional: true
     tuple val(meta), path("5p_utr.fna.gz"),        emit: utr_5p,     optional: true
-
+    path "versions.yml"              ,             emit: versions
+    
     when:
     task.ext.when == null || task.ext.when
 
@@ -35,7 +35,6 @@ process NCBIDATASETS_DOWNLOAD {
     if (!valid_commands.contains(meta.command)) {
         error "Unsupported command: ${meta.command} "
     }
-
 
     def args = task.ext.args ?: ''
     def args_from_csv = meta.extra_args ?: ''
@@ -89,8 +88,6 @@ process NCBIDATASETS_DOWNLOAD {
             ncbi-datasets-cli: \$(echo \$(datasets --version 2>&1) | sed 's/datasets version: //' )
         END_VERSIONS
         """
-
-
 
     stub:
     def args = task.ext.args ?: ''
