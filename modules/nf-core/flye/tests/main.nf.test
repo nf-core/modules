@@ -1,3 +1,7 @@
+// According to the issue https://github.com/fenderglass/Flye/issues/164
+// Some fluctuations are expected because of the heuristics
+// Here we check the that test.assembly_info.txt contains at least one contig
+
 nextflow_process {
 
     name "Test Process FLYE"
@@ -26,8 +30,11 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ }
+
+                )
         }
 
     }
