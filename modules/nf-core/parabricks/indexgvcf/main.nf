@@ -29,7 +29,8 @@ process PARABRICKS_INDEXGVCF {
     pbrun \\
         indexgvcf \\
         --input $gvcf \\
-        $args 
+        $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
@@ -42,6 +43,7 @@ process PARABRICKS_INDEXGVCF {
 
     """
     touch ${prefix}.g.vcf.tbi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
