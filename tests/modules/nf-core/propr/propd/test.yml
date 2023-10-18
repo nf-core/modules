@@ -1,18 +1,3 @@
-- name: propr propd test_propr_propd_default
-  command: nextflow run ./tests/modules/nf-core/propr/propd -entry test_propr_propd_default -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/propd/nextflow.config
-  tags:
-    - propr/propd
-    - propr
-  files:
-    - path: output/propr/test+theta_d+NA.R_sessionInfo.log
-    - path: output/propr/test+theta_d+NA.propd.rds
-    - path: output/propr/test+theta_d+NA.propd.tsv
-      contains_regex:
-        - '^Partner\s+Pair\s+theta\s+theta_e\s+theta_f\s+theta_g'
-        - '^ENSMUSG00000076609\s+ENSMUSG00000038179\s+0.00217991921\d*\s+0.998726029751\d*\s+0.00127397024809\d*\s+0.000905948965482\d*'
-        - '^ENSMUSG00000051\d*\s+ENSMUSG00000095\d*\s+0.00247453583\d*\s+0.998266269824\d*\s+0.00173373017594\d*\s+0.0007408056632\d*'
-    - path: output/propr/versions.yml
-
 - name: propr propd test_propr_propd_default_permutation
   command: nextflow run ./tests/modules/nf-core/propr/propd -entry test_propr_propd_default_permutation -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/propr/propd/nextflow.config
   tags:
