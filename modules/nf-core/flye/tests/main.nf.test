@@ -32,9 +32,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ }
-
-                )
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                { assert process.out.fasta.get(0).get(1) =~ 'test.assembly.fasta.gz' }
+            )
         }
 
     }
