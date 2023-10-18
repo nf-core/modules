@@ -161,6 +161,12 @@ jobs:
           - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
+            tags: cellrangeratac/count
+          - profile: "conda"
+            tags: cellrangeratac/mkfastq
+          - profile: "conda"
+            tags: cellrangeratac/mkref
+          - profile: "conda"
             tags: coreograph
           - profile: "conda"
             tags: deepcell/mesmer
@@ -367,7 +373,7 @@ jobs:
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -389,7 +395,7 @@ jobs:
           token: ""
 
   nf-test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
