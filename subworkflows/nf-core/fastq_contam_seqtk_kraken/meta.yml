@@ -9,31 +9,26 @@ components:
   - kraken2/kraken2
   - seqtk/sample
 input:
-  - meta:
-      type: map
+  - ch_reads:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively
-  - sample_size:
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively
+        Structure: [ val(meta), path(reads) ]
+  - val_sample_size:
       type: string
       description: Number of reads to subsample for contamination detection.
+  - ch_kraken2_db:
+      description: |
+        Path to Kraken2 DB to use for screening
+        Structure: [ path(db) ]
 
 output:
-  - meta:
-      type: map
+  - reports:
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - report:
-      type: file
-      description: Kraken2 contamination report
-      pattern: "*.txt"
+        Kraken2 contamination report
+        Structure: [ val(meta), path(log) ]
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
 authors:
   - "@apeltzer"
