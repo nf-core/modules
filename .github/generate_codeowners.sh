@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Get all of the meta.yaml files
-METAS=$(fd meta.yml -j 1)
+METAS=$(fd meta.yml)
 
 # Define the output file path
 output_file=".github/CODEOWNERS-tmp"
@@ -21,4 +21,5 @@ done
 
 # Generate it from scratch
 cat ".github/manual_CODEOWNERS" > ".github/CODEOWNERS"
-cat $output_file >> ".github/CODEOWNERS"
+# Remove duplicate lines and sort
+sort -u $output_file >> ".github/CODEOWNERS"
