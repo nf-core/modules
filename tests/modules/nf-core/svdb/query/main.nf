@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SVDB_QUERY } from '../../../../../modules/nf-core/svdb/query/main.nf'
+include { SVDB_QUERY as SVDB_QUERY_SINGLE } from '../../../../../modules/nf-core/svdb/query/main.nf'
+include { SVDB_QUERY as SVDB_QUERY_MULTIPLE } from '../../../../../modules/nf-core/svdb/query/main.nf'
 
 workflow test_svdb_query {
 
@@ -14,12 +15,7 @@ workflow test_svdb_query {
                 file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_sv_vcf_gz'], checkIfExists: true)
             ]
 
-    in_occs = ['AC']
-    in_frqs = ['AF']
-    out_occs = ['gnomad_svAC']
-    out_frqs = ['gnomad_svAF']
-
-    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db )
+    SVDB_QUERY_SINGLE ( input, vcf_db )
 }
 
 workflow test_svdb_query_multiple {
@@ -33,10 +29,5 @@ workflow test_svdb_query_multiple {
                 file(params.test_data['homo_sapiens']['genome']['gnomad2_r2_1_1_sv_vcf_gz'], checkIfExists: true)
             ]
 
-    in_occs = ['AC','AC']
-    in_frqs = ['AF','AF']
-    out_occs = ['gnomad_svAC','gnomad_svAC']
-    out_frqs = ['gnomad_svAF','gnomad_svAF']
-
-    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db )
+    SVDB_QUERY_MULTIPLE ( input, vcf_db )
 }
