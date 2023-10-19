@@ -11,9 +11,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
       tool_dev_url: https://gitlab.com/mcfrith/last
-
       licence: ["GPL v3-or-later"]
-
 input:
   - index:
       type: directory
@@ -28,7 +26,6 @@ input:
       type: file
       description: FASTA/FASTQ file
       pattern: "*.{fasta,fastq}"
-
 output:
   - meta:
       type: map
@@ -43,6 +40,7 @@ output:
       type: file
       description: Trained parameter file
       pattern: "*.par"
-
 authors:
+  - "@aleksandrabliznina"
+maintainers:
   - "@aleksandrabliznina"

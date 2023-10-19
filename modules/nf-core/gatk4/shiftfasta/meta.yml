@@ -17,7 +17,6 @@ tools:
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
       type: file
       description: sequence dictionary file
       pattern: "*.{dict}"
-
 output:
   - meta:
       type: map
@@ -77,6 +75,7 @@ output:
       type: file
       description: Intervals file for the shifted fasta file
       pattern: "*.{shifted.intervals}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

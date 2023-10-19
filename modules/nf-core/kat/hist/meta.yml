@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/TGAC/KAT
       doi: 10.1093/bioinformatics/btw663
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-
 output:
   - meta:
       type: map
@@ -59,6 +57,7 @@ output:
       type: file
       description: Jellyfish hash file
       pattern: "*-hist.jf*"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

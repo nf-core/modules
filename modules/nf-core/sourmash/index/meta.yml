@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
       licence: "['BSD-3-clause']"
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: Files containing signature (hash sketches) of reference genomes
       pattern: "*.{sig}"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Database of signatures
       pattern: "*.{sbt.zip}"
-
 authors:
+  - "@emnilsson"
+maintainers:
   - "@emnilsson"

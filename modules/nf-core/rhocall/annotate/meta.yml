@@ -10,9 +10,7 @@ tools:
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
-
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -40,7 +38,6 @@ input:
       type: file
       description: BED file with AZ windows.
       pattern: "*.{bed}"
-
 output:
   - meta:
       type: map
@@ -55,6 +52,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"
