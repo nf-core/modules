@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE   } from '../../../../modules/nf-core/star/genomegenerate/main.nf'
-include { STAR_ALIGN            } from '../../../../modules/nf-core/star/align/main.nf'
-include { ARRIBA                } from '../../../../modules/nf-core/arriba/main.nf'
+include { STAR_GENOMEGENERATE   } from '../../../../../modules/nf-core/star/genomegenerate/main.nf'
+include { STAR_ALIGN            } from '../../../../../modules/nf-core/star/align/main.nf'
+include { ARRIBA_ARRIBA                } from '../../../../../modules/nf-core/arriba/arriba/main.nf'
 
 workflow test_arriba_single_end {
 
@@ -30,7 +30,7 @@ workflow test_arriba_single_end {
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
-    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf , [[],[]], [[],[]], [[],[]], [[],[]], [[],[]])
+    ARRIBA_ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf , [[],[]], [[],[]], [[],[]], [[],[]], [[],[]])
 }
 
 workflow test_arriba_paired_end {
@@ -57,5 +57,5 @@ workflow test_arriba_paired_end {
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
-    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf, [[],[]], [[],[]], [[],[]], [[],[]], [[],[]])
+    ARRIBA_ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf, [[],[]], [[],[]], [[],[]], [[],[]], [[],[]])
 }

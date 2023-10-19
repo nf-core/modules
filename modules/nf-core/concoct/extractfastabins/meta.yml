@@ -10,7 +10,6 @@ keywords:
   - cut up
   - bins
   - merge
-
 tools:
   - "concoct":
       description: "Clustering cONtigs with COverage and ComposiTion"
@@ -19,7 +18,6 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: "['FreeBSD']"
-
 input:
   - meta:
       type: map
@@ -34,7 +32,6 @@ input:
       type: boolean
       description: Output table of merge_cutup_clustering with new cluster assignments
       pattern: ".csv"
-
 output:
   - meta:
       type: map
@@ -49,6 +46,7 @@ output:
       type: file
       description: FASTA files containing CONCOCT predicted bin clusters, named numerically by CONCOCT cluster ID in a directory called `fasta_bins`
       pattern: "*.fa.gz"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

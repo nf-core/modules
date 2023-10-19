@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
       licence: ["https://card.mcmaster.ca/about"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: Nucleotide or protein sequences in FASTA format
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-
 output:
   - meta:
       type: map
@@ -53,5 +51,8 @@ output:
       type: string
       description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
 authors:
+  - "@rpetit3"
+  - "@jfy133"
+maintainers:
   - "@rpetit3"
   - "@jfy133"

@@ -10,7 +10,6 @@ tools:
       documentation: https://bioinf.shenwei.me/seqkit/usage/
       tool_dev_url: https://github.com/shenwei356/seqkit/
       doi: "10.1371/journal.pone.016396"
-
 input:
   - meta:
       type: map
@@ -21,7 +20,6 @@ input:
       type: file
       description: fasta/q file
       pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}*"
-
 output:
   - meta:
       type: map
@@ -36,6 +34,7 @@ output:
       type: file
       description: fasta/q file with replaced values
       pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}*"
-
 authors:
+  - "@mjcipriano"
+maintainers:
   - "@mjcipriano"
