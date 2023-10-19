@@ -1,10 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Get all of the meta.yaml files
 METAS=$(fd meta.yml)
 
 # Define the output file path
 output_file=".github/CODEOWNERS-tmp"
+rm $output_file
 
 # Use yq to extract the "authors" array and convert it to a .gitignore format
 for file in $METAS; do
