@@ -37,7 +37,7 @@ nextflow_process {
     }
 
     test("Paired-Reads") {
-
+        
         when {
             params {
                 outdir   = "$outputDir"
@@ -60,7 +60,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reads != null },
                 { assert process.out.reads.get(0).get(1).get(0) ==~ ".*.1.trim.fastq.gz" },
-                { assert process.out.reads.get(0).get(1).get(1) ==~ ".*2.trim.fastq.gz" },
+                { assert process.out.reads.get(0).get(1).get(1) ==~ ".*.2.trim.fastq.gz" },
                 { assert snapshot(process.out).match() },
                 { assert snapshot(process.out.versions).match("versions") },
             )
