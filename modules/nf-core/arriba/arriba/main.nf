@@ -1,4 +1,4 @@
-process ARRIBA {
+process ARRIBA_ARRIBA {
     tag "$meta.id"
     label 'process_medium'
 
