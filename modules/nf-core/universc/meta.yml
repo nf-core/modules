@@ -29,9 +29,9 @@ input:
 
 output:
   - outs:
-      type: file
-      description: Files containing the outputs of Cell Ranger
-      pattern: "sample-${meta.id}/outs/*"
+      type: directory
+      description: Output of Universc
+      pattern: "${meta.id}/outs/"
   - versions:
       type: file
       description: File containing software version
@@ -40,3 +40,4 @@ output:
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
+  - "@adamrtalbot"

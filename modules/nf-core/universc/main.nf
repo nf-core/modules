@@ -1,18 +1,12 @@
 process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
-
+    
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     container "nf-core/universc:1.2.5.1"
-    if (workflow.containerEngine == 'docker'){
-        containerOptions = "--privileged"
-    }
-    if ( workflow.containerEngine == 'podman'){
-        containerOptions = "--runtime crun --userns=keep-id --systemd=always"
-    }
-    if (workflow.containerEngine == 'singularity'){
-        containerOptions = "-B /var/tmp --writable-tmpfs"
-        params.singularity_autoMounts = true
-    }
 
     input:
     tuple val(meta), path(reads)
@@ -33,26 +27,20 @@ process UNIVERSC {
     }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
-    def reference_name = reference.name
-    def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
+    if ( reads instanceof Path || reads.size() != 2 ) {
+        error "UNIVERSC module only supports 2 paired end read files. Input: ${reads}"
+    }
     """
     universc \\
-        --id 'sample-${meta.id}' \\
-        ${input_reads} \\
-        --technology '${meta.technology}' \\
-        --chemistry '${meta.chemistry}' \\
-        --reference ${reference_name} \\
-        --description ${sample_arg} \\
+        --id ${meta.id} \\
+        --read1 ${reads[0]} --read2 ${reads[1]} \\
+        --reference ${reference} \\
         --jobmode "local" \\
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
-        --per-cell-data \\
-        $args 1> _log 2> _err
+        $args
 
-    # save log files
     echo !! > sample-${meta.id}/outs/_invocation
-    cp _log sample-${meta.id}/outs/_log
-    cp _err sample-${meta.id}/outs/_err
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -61,15 +49,17 @@ process UNIVERSC {
     END_VERSIONS
     """
 
-
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
-    mkdir -p "sample-${meta.id}/outs/"
-    touch sample-${meta.id}/outs/fake_file.txt
+    mkdir -p "${meta.id}/"
+    mkdir -p "${meta.id}/SC_RNA_COUNTER_CS"
+    mkdir -p "${meta.id}/journal"
+    touch ${meta.id}/_log.txt
+    touch ${meta.id}/test.mri.tgz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
