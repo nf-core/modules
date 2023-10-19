@@ -13,26 +13,22 @@ tools:
       documentation: "https://github.com/tseemann/barrnap"
       tool_dev_url: "https://github.com/tseemann/barrnap"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - reads:
       type: file
       description: fastq or fasta file nucleotides (it can be amino acids as well)
       pattern: "*.{fna,fasta,faa,fastq}"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
@@ -41,6 +37,7 @@ output:
       type: file
       description: gff file containing coordinates of genes
       pattern: "*.gff"
-
 authors:
+  - "@danilodileo"
+maintainers:
   - "@danilodileo"

@@ -4,16 +4,13 @@ keywords:
   - merge
   - pairs
   - pairsam
-
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +20,6 @@ input:
   - allpairs:
       type: file
       description: All pair files to merge
-
 output:
   - meta:
       type: map
@@ -38,6 +34,7 @@ output:
       type: file
       description: Merged pairs file
       pattern: "*.{pairs.gz}"
-
 authors:
+  - "@nservant"
+maintainers:
   - "@nservant"
