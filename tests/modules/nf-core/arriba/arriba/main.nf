@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE   } from '../../../../modules/nf-core/star/genomegenerate/main.nf'
-include { STAR_ALIGN            } from '../../../../modules/nf-core/star/align/main.nf'
+include { STAR_GENOMEGENERATE   } from '../../../../../modules/nf-core/star/genomegenerate/main.nf'
+include { STAR_ALIGN            } from '../../../../../modules/nf-core/star/align/main.nf'
 include { ARRIBA_ARRIBA                } from '../../../../../modules/nf-core/arriba/arriba/main.nf'
 
-workflow test_arriba_arriba_single_end {
+workflow test_arriba_single_end {
 
     input = [ [ id:'test', single_end:true ], // meta map
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
@@ -33,7 +33,7 @@ workflow test_arriba_arriba_single_end {
     ARRIBA_ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf , [[],[]], [[],[]], [[],[]], [[],[]], [[],[]])
 }
 
-workflow test_arriba_arriba_paired_end {
+workflow test_arriba_paired_end {
 
     input = [ [ id:'test', single_end:false ], // meta map
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
