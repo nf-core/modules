@@ -22,5 +22,5 @@ done
 
 # Generate it from scratch
 cat ".github/manual_CODEOWNERS" > ".github/CODEOWNERS"
-# Remove duplicate lines and sort
-sort -u $output_file >> ".github/CODEOWNERS"
+# Remove duplicate lines and then sort and only print the line not the common part
+cat "$output_file" | sort | uniq  >> ".github/CODEOWNERS"
