@@ -9,7 +9,7 @@ nextflow_process {
     tag "blast"
     tag "blast/makeblastdb"
 
-    test("Should run without failures") {
+    test("Should build a blast db folder") {
 
         when {
             params {

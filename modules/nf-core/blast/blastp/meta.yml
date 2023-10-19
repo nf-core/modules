@@ -24,7 +24,7 @@ input:
   - fasta:
       type: file
       description: Input fasta file containing queries sequences
-      pattern: "*.{fa,fasta}"
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 
   - db:
       type: directory
@@ -38,15 +38,15 @@ output:
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
 
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - csv:
       type: file
       description: File containing blastp hits
       pattern: "*.csv"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@vagkaratzas"

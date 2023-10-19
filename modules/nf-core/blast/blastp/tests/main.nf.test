@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process BLAST_BLASTP"
+    script "../main.nf"
+    process "BLAST_BLASTP"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/blastp"
+
+    test("Should search for protein hits against a blast db") {
+
+        setup {
+            run("BLAST_MAKEBLASTDB") {
+                script "../../makeblastdb/main.nf"
+                process {
+                    """
+                    input[0] = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assert process.success
+        }
+
+    }
+
+}
