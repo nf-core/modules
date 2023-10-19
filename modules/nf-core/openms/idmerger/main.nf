@@ -22,7 +22,7 @@ process OPENMS_IDMERGER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    IDMerger
+    IDMerger \\
         -in $idxmls \\
         -out ${prefix}.idXML \\
         -threads $task.cpus \\
