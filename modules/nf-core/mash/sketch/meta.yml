@@ -1,7 +1,9 @@
 name: mash_sketch
 description: Creates vastly reduced representations of sequences using MinHash
 keywords:
-  - mash/sketch
+  - mash
+  - sketch
+  - minhash
 tools:
   - mash:
       description: Fast sequence distance estimator that uses MinHash
@@ -17,9 +19,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - input:
       type: file
-      description: List of input paired-end FastQ files
+      description: Input FASTA/FASTQ file that will be sketched
+  - read_sketch:
+      type: boolean
+      description: Boolean value specifying if input file is read fastq file
+  - multi_fasta_sketch:
+      type: boolean
+      description: Boolean value specifying if input file is a multi-fasta file
 
 output:
   - meta:
@@ -42,3 +50,4 @@ output:
 
 authors:
   - "@thanhleviet"
+  - "@margotl9"
