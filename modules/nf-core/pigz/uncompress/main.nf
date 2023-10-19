@@ -4,8 +4,8 @@ process PIGZ_UNCOMPRESS {
 
     conda "conda-forge::pigz"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE': //TODO add when multicontainer has been built
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/pigz:2.3.4':
+        'biocontainers/pigz:2.3.4' }"
 
     input:
     path zip
