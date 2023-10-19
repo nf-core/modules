@@ -1,6 +1,5 @@
 name: "purecn_coverage"
-description: Calculate intervals coverage for each sample.
-  N.B. the tool can not handle staging files with symlinks, stageInMode should be set to 'link'.
+description: Calculate intervals coverage for each sample. N.B. the tool can not handle staging files with symlinks, stageInMode should be set to 'link'.
 keywords:
   - copy number alteration calling
   - intervals coverage
@@ -16,7 +15,6 @@ tools:
       doi: "10.1186/s13029-016-0060-z"
       licence: "Artistic-2.0"
       args_id: "$args"
-
 input:
   - meta:
       type: map
@@ -35,7 +33,6 @@ input:
       type: file
       description: Annotated targets optimized for copy number calling
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -69,5 +66,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@aldosr"
+  - "@lbeltrame"
+maintainers:
   - "@aldosr"
   - "@lbeltrame"

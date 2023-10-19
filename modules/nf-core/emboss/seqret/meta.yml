@@ -16,7 +16,6 @@ tools:
       tool_dev_url: "http://emboss.open-bio.org/"
       doi: "10.1016/s0168-9525(00)02024-2 "
       licence: ["GPL"]
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
   - out_ext:
       type: string
       description: File extension of the output file. Unless otherwise set by a flag in `ext.args`, the extension dictates the output file format.
-
 output:
   - meta:
       type: map
@@ -45,6 +43,7 @@ output:
       type: file
       description: Converted sequence file
       pattern: "*"
-
 authors:
+  - "@MillironX"
+maintainers:
   - "@MillironX"
