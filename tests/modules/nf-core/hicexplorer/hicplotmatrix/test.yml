@@ -1,0 +1,9 @@
+- name: hicexplorer hicplotmatrix test_hicexplorer_hicplotmatrix
+  command: nextflow run ./tests/modules/nf-core/hicexplorer/hicplotmatrix -entry test_hicexplorer_hicplotmatrix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hicexplorer/hicplotmatrix/nextflow.config
+  tags:
+    - hicexplorer/hicplotmatrix
+    - hicexplorer
+  files:
+    - path: output/hicexplorer/test.png
+      md5sum: 57be359c919d807303d0dde9cedea7c5
+    - path: output/hicexplorer/versions.yml
