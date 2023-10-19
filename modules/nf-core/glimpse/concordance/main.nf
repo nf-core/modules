@@ -8,7 +8,7 @@ process GLIMPSE_CONCORDANCE {
         'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), val(region), path(freq), path(truth), path(estimate)
+    tuple val(meta), path(estimate), path(estimate_index), path(freq), path(freq_index), path(truth), path(truth_index), val(region)
     val(min_prob)
     val(min_dp)
     val(bins)
