@@ -1,0 +1,16 @@
+- name: bam_trim_primers_ivar test_bam_trim_primers_ivar
+  command: nextflow run ./tests/subworkflows/nf-core/bam_trim_primers_ivar -entry test_bam_trim_primers_ivar -c ./tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar/trim
+    - subworkflows
+    - subworkflows/bam_sort_stats_samtools
+    - subworkflows/bam_trim_primers_ivar
+  files:
+    - path: output/ivar/test.bam
+    - path: output/ivar/test.ivar.log
+    - path: output/samtools/test.paired_end.sorted.bam
+    - path: output/samtools/test.paired_end.sorted.bam.bai
+    - path: output/samtools/test.paired_end.sorted.bam.flagstat
+    - path: output/samtools/test.paired_end.sorted.bam.idxstats
+    - path: output/samtools/test.paired_end.sorted.bam.stats
