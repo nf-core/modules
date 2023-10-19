@@ -1,7 +1,8 @@
-- name: arriba test_arriba_single_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+- name: arriba arriba test_arriba_single_end
+  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/arriba/nextflow.config
   tags:
     - arriba
+    - arriba/arriba
   files:
     - path: output/arriba/test.fusions.discarded.tsv
     - path: output/arriba/test.fusions.tsv
@@ -43,10 +44,11 @@
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
 
-- name: arriba test_arriba_paired_end
-  command: nextflow run ./tests/modules/nf-core/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/nextflow.config
+- name: arriba arriba test_arriba_paired_end
+  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arriba/arriba/nextflow.config
   tags:
     - arriba
+    - arriba/arriba
   files:
     - path: output/arriba/test.fusions.discarded.tsv
     - path: output/arriba/test.fusions.tsv
