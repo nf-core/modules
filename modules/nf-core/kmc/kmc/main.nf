@@ -20,7 +20,7 @@ process KMC_KMC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def memory = task.memory ?: '2'
+    def memory = task.memory.toGiga() ?: '2'
     def kmer_size = task.ext.kmer_size
     def input_formats = 0
     def format_str =""
@@ -42,9 +42,9 @@ process KMC_KMC {
         -k${kmer_size}  \\
         $format_str \\
         $args  \\
-        input.txt \\
-        ${prefix}.${kmer_size}.kmc\\
-        ${prefix}_out
+        @input.txt \\
+        ${kmer_size}.kmc\\
+        out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
