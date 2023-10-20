@@ -6,13 +6,13 @@ process BIOBAMBAM_BAMSORMADUP {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
-    tuple val(meta),  path(bams, stageAs: "?/*")
+    tuple val(meta) , path(bams, stageAs: "?/*")
     tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam")              ,optional:true, emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
-    tuple val(meta), path("*.cram")             ,optional:true, emit: cram    
+    tuple val(meta), path("*.cram")             ,optional:true, emit: cram
     tuple val(meta), path("*.metrics.txt")      ,emit: metrics
     path "versions.yml"                         ,emit: versions
 
