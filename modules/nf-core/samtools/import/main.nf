@@ -26,11 +26,11 @@ process SAMTOOLS_IMPORT {
                 args.contains("--output-fmt bam") ? "bam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    def input = reads instanceof List && meta.single_end ? reads.join(" -0") :              // multiple single-end files
-                reads instanceof List && !meta.single_end ? "-1 $reads[0] -2 $reads[1]":    // paired end file
-                meta.single_end ? "-0 $reads" :                                             // single single-end file
-                !meta.single_end ? "-s $reads":                                             // interleave paired-end file
-                reads                                                                       // if all else fails, just add the reads without flags
+    def input = reads instanceof List && meta.single_end ? reads.join(" -0") :               // multiple single-end files
+                reads instanceof List && !meta.single_end ? "-1 ${reads[0]} -2 ${reads[1]}": // paired end file
+                meta.single_end ? "-0 $reads" :                                              // single single-end file
+                !meta.single_end ? "-s $reads":                                              // interleave paired-end file
+                reads                                                                        // if all else fails, just add the reads without flags
     """
     samtools \\
         import \\
