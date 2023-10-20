@@ -14,7 +14,6 @@ tools:
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
       licence: "['GPL v3 license', 'GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
   - bins:
       type: directory
       description: Directory file containing bin FASTA files output by vRhyme (each bin having multiple sequences)
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: FASTA file containing all bins that have been linked by N's
       pattern: "*_linked_bins.fasta"
-
 authors:
+  - "@CarsonJM"
+maintainers:
   - "@CarsonJM"

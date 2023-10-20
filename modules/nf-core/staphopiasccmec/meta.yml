@@ -4,7 +4,6 @@ keywords:
   - amr
   - fasta
   - sccmec
-
 tools:
   - staphopiasccmec:
       description: Predicts Staphylococcus aureus SCCmec type based on primers.
@@ -13,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/staphopia/staphopia-sccmec
       doi: 10.7717/peerj.5261
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +22,6 @@ input:
       type: file
       description: FASTA assembly file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -39,6 +36,7 @@ output:
       type: file
       description: Tab-delimited results
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"
