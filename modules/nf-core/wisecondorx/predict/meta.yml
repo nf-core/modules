@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
       licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
-
 input:
   - meta:
       type: map
@@ -42,7 +41,6 @@ input:
       type: file
       description: OPTIONAL - A BED file containing blacklist regions (used mainly when the reference is small)
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -77,6 +75,7 @@ output:
       type: file
       description: OPTIONAL - A plot containing the CNV information of the whole genome
       pattern: "genome_wide.png"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"
