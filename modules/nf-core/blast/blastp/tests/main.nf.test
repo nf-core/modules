@@ -35,7 +35,11 @@ nextflow_process {
         }
 
         then {
-            assert process.success
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.csv.get(0).get(1)).md5 == "19214c68e1a208705dd4d6f0c5dea78b" },
+                { assert process.out.versions }
+            )
         }
 
     }
