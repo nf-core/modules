@@ -13,7 +13,6 @@ tools:
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: string
       description: Picard sort order type
       pattern: "unsorted|queryname|coordinate|duplicate|unknown"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam}"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"
