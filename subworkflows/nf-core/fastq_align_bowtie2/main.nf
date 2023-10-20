@@ -11,7 +11,7 @@ workflow FASTQ_ALIGN_BOWTIE2 {
     ch_index            // channel: [ path(index) ]     (/path/to/bowtie2/index/)
     ch_save_unaligned   // channel: [ val(unaligned)]
     ch_sort_bam         // channel: [ val(bam)]
-    ch_fasta           // channel:[ path(fasta) ]     (/path/to/reference.fasta)
+    ch_fasta            // channel:[ path(fasta) ]     (/path/to/reference.fasta)
 
     main:
 
