@@ -10,7 +10,6 @@ tools:
       homepage: https://github.com/tseemann/prokka
       doi: "10.1093/bioinformatics/btu153"
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - prodigal_tf:
       type: file
       description: Training file to use for Prodigal (optional)
-
 output:
   - meta:
       type: map
@@ -86,6 +84,7 @@ output:
       type: file
       description: tab-separated file of all features (locus_tag,ftype,len_bp,gene,EC_number,COG,product)
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

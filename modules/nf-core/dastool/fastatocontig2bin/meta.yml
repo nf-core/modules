@@ -15,13 +15,11 @@ tools:
         DAS Tool is an automated method that integrates the results
         of a flexible number of binning algorithms to calculate an optimized, non-redundant
         set of bins from a single assembly.
-
       homepage: https://github.com/cmks/DAS_Tool
       documentation: https://github.com/cmks/DAS_Tool
       tool_dev_url: https://github.com/cmks/DAS_Tool
       doi: "10.1038/s41564-018-0171-1"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map
@@ -35,7 +33,6 @@ input:
   - extension:
       type: val
       description: Fasta file extension (fa | fas | fasta | ...), without .gz suffix, if gzipped input.
-
 output:
   - meta:
       type: map
@@ -50,7 +47,9 @@ output:
       type: file
       description: tabular contig2bin file for DAS tool input
       pattern: "*.tsv"
-
 authors:
+  - "@maxibor"
+  - "@jfy133"
+maintainers:
   - "@maxibor"
   - "@jfy133"
