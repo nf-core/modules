@@ -13,7 +13,6 @@ tools:
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
       licence: MIT License
-
 input:
   - meta:
       type: map
@@ -49,7 +48,6 @@ input:
       type: string
       description: String value defining the sequencing technology used.
       pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
-
 output:
   - meta:
       type: map
@@ -64,6 +62,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@flowuenne"
+maintainers:
   - "@flowuenne"

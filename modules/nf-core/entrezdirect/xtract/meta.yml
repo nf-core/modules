@@ -20,7 +20,6 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
-
 input:
   - meta:
       type: map
@@ -39,7 +38,6 @@ input:
   - sep:
       type: value
       description: Separator/delimiter between columns (for instance "," or "\t").
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
       type: file
       description: TXT file containing columns searched from element.
       pattern: "*.txt"
-
 authors:
+  - "@alxndrdiaz"
+maintainers:
   - "@alxndrdiaz"

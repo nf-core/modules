@@ -18,7 +18,6 @@ tools:
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
       licence: "['MIT License']"
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: Ganon database files from build or build-custom
       pattern: "*.{ibf,tax}"
-
 output:
   - meta:
       type: map
@@ -48,6 +46,7 @@ output:
       type: file
       description: Output ganon report containing taxonomic profile information. Formatting of contents depends on --output-format.
       pattern: "*.tre"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

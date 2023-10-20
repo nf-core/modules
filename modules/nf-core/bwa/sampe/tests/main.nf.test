@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process BWA_SAMPE"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "bwa"
+    tag "bwa/sampe"
+    script "../main.nf"
+    process "BWA_SAMPE"
+
+    test("SamPE") {
+
+        setup {
+            run("BWA_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("BWA_ALN") {
+                script "../../aln/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ], // meta map
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = BWA_INDEX.out.index
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromList(
+                        [
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                        ]
+                    )
+                    .collect()
+                    .join(BWA_ALN.out.sai)
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
