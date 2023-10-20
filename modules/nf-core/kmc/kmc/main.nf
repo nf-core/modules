@@ -9,7 +9,7 @@ process KMC_KMC {
 
     input:
     tuple val(meta) , path(reads)
-    
+
     output:
     path "versions.yml"           , emit: versions
     
@@ -22,31 +22,13 @@ process KMC_KMC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def memory = task.memory ?: '2'
     def kmer_size = task.ext.kmer_size
-    def input = []
     def input_formats = 0
     def format_str =""
-    if(fastq){
-        input_formats++
-        input = fastq
-        format_str="-fq"
-    }
-    if(fasta){
-        input_formats++
-        input = fasta
-        format_str="-fa"
-    }
-    if(kmc){
-        input_formats++
-        input = kmc
-        format_str="-fkmc"
-    }
-    if(bam){
-        input_formats++
-        input = bam
-        format_str="-fbam"
-    }
-   
-    input_str = input.join('\n')
+    
+    // def extensions = reads.collect { filename -> filename.split(".")[0] }
+    // println extensions
+
+    def input_str = reads.collect{filename -> filename.toString()}.join('\n')
     
     """
     echo $input_str > input.txt
@@ -58,11 +40,11 @@ process KMC_KMC {
         -t$task.cpus \\
         -m$memory \\
         -k${kmer_size}  \\
-        $format_str
-        $args 
-        input.txt
-        ${prefix}.${kmer_size}
-        ./
+        $format_str \\
+        $args  \\
+        input.txt \\
+        ${prefix}.${kmer_size}.kmc\\
+        ${prefix}_out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

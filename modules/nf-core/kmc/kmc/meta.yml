@@ -26,22 +26,10 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
   
-  - bam:
+  - reads:
       type: file
-      description: BAM file
-      pattern: "*.{bam,cram,sam}"
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fa,fasta}"
-  - fastq:
-      type: file
-      description: fasta file
-      pattern: "*.{fq,fastqq}"
-  - kmc:
-      type: file
-      description: KMC file
-      pattern: "*.kmc"
+      description: File with the reds
+      pattern: "*.{bam,cram,sam,fa,fasta,fastq,fq,kmc}"
   
 
 ## TODO nf-core: Add a description of all of the variables used as output
@@ -60,8 +48,8 @@ output:
   ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: K-mer database
+      pattern: "*.{kmc}"
 
 authors:
   - "@homonecloco"
