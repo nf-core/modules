@@ -13,7 +13,6 @@ tools:
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: http://manpages.ubuntu.com/manpages/impish/man1/ktImportTaxonomy.1.html
       doi: 10.1186/1471-2105-12-385
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: "A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.  Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.  Lines beginning with # will be ignored."
       pattern: "*.{tsv}"
-
 output:
   - versions:
       type: file
@@ -41,6 +39,7 @@ output:
       type: file
       description: A html file containing an interactive krona plot.
       pattern: "*.{html}"
-
 authors:
+  - "@mjakobs"
+maintainers:
   - "@mjakobs"
