@@ -11,9 +11,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
       tool_dev_url: https://gitlab.com/mcfrith/last
-
       licence: ["GPL v3-or-later"]
-
 input:
   - index:
       type: directory
@@ -32,7 +30,6 @@ input:
       type: file
       description: Trained parameter file
       pattern: "*.par"
-
 output:
   - meta:
       type: map
@@ -47,6 +44,7 @@ output:
       type: file
       description: Gzipped MAF (Multiple Alignment Format) file
       pattern: "*.{maf.gz}"
-
 authors:
+  - "@charles-plessy"
+maintainers:
   - "@charles-plessy"

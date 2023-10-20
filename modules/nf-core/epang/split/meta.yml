@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/Pbdas/epa-ng"
       doi: "10.1093/sysbio/syy054"
       licence: "['GNU Affero General Public License v3.0']"
-
 input:
   # Only when we have meta
   - meta:
@@ -28,7 +27,6 @@ input:
       type: file
       description: full alignment in any supported format to split into reference and query alignments
       pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
-
 output:
   - meta:
       type: map
@@ -45,6 +43,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"

@@ -14,7 +14,6 @@ tools:
       tool_dev_url: https://github.com/voutcn/megahit
       doi: "10.1093/bioinformatics/btv033"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively in gzipped or uncompressed FASTQ or FASTA format.
-
 output:
   - meta:
       type: map
@@ -57,6 +55,7 @@ output:
       type: file
       description: Stand-alone contigs for k=K; if local assembly is turned on, the file will be empty
       pattern: "k*.final.contigs.fa.gz"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

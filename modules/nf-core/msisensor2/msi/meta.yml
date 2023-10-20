@@ -8,9 +8,7 @@ tools:
       homepage: "https://github.com/niu-lab/msisensor2"
       documentation: "https://github.com/niu-lab/msisensor2/blob/master/README.md"
       tool_dev_url: "https://github.com/niu-lab/msisensor2"
-
       licence: "GPL-3.0"
-
 input:
   - meta:
       type: map
@@ -33,7 +31,6 @@ input:
       type: file
       description: Folder of MSISensor2 models (available from Github or as a product of msisensor2/scan)
       pattern: "*/*"
-
 output:
   - meta:
       type: map
@@ -53,6 +50,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"
