@@ -14,8 +14,10 @@ process EGGNOGMAPPER {
     path(eggnog_diamond_db)
 
     output:
-    tuple val(meta), path("*.emapper.hits"), emit: csv
-    path "versions.yml",                     emit: versions
+    tuple val(meta), path("*.emapper.annotations")   , emit: annotations
+    tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs
+    tuple val(meta), path("*.emapper.hits")          , emit: hits
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,6 +54,8 @@ process EGGNOGMAPPER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}.emapper.annotations
+    touch ${prefix}.emapper.seed_orthologs
     touch ${prefix}.emapper.hits
 
     cat <<-END_VERSIONS > versions.yml
