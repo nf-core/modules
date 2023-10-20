@@ -8,7 +8,7 @@ process LOFREQ_CALL {
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(intervals)
     path fasta
 
     output:
@@ -21,10 +21,12 @@ process LOFREQ_CALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def options_intervals = intervals ? "-l ${intervals}" : ""
     """
     lofreq \\
         call \\
         $args \\
+        $options_intervals \\
         -f $fasta \\
         -o ${prefix}.vcf.gz \\
         $bam

@@ -2,10 +2,10 @@ process MAFFT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::mafft=7.508"
+    conda "bioconda::mafft=7.520"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mafft:7.508--hec16e2b_0':
-        'biocontainers/mafft:7.508--hec16e2b_0' }"
+        'https://depot.galaxyproject.org/singularity/mafft:7.520--hec16e2b_1':
+        'biocontainers/mafft:7.520--hec16e2b_1' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -1,0 +1,21 @@
+- name: survivor simsv test_survivor_simsv_parameters
+  command: nextflow run ./tests/modules/nf-core/survivor/simsv -entry test_survivor_simsv_parameters -c ./tests/config/nextflow.config
+  tags:
+    - survivor
+    - survivor/simsv
+  files:
+    - path: output/survivor/simSV.txt
+      md5sum: a95bd884130aebbb9fde02184bc7ca81
+    - path: output/survivor/versions.yml
+
+- name: survivor simsv test_survivor_simsv_vcf
+  command: nextflow run ./tests/modules/nf-core/survivor/simsv -entry test_survivor_simsv_vcf -c ./tests/config/nextflow.config
+  tags:
+    - survivor
+    - survivor/simsv
+  files:
+    - path: output/survivor/fasta.bed
+    - path: output/survivor/fasta.fasta
+    - path: output/survivor/fasta.insertions.fa
+    - path: output/survivor/fasta.vcf
+    - path: output/survivor/versions.yml

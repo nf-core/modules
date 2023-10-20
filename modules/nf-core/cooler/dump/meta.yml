@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
   - resolution:
       type: integer
       description: Resolution
-
 output:
   - meta:
       type: map
@@ -41,7 +39,9 @@ output:
       type: file
       description: Output text file
       pattern: "*.bedpe"
-
 authors:
+  - "@jianhong"
+  - "@muffato"
+maintainers:
   - "@jianhong"
   - "@muffato"

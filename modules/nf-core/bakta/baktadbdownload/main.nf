@@ -1,10 +1,10 @@
 process BAKTA_BAKTADBDOWNLOAD {
     label 'process_single'
 
-    conda "bioconda::bakta=1.7.0"
+    conda "bioconda::bakta=1.8.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.7.0--pyhdfd78af_1' :
-        'biocontainers/bakta:1.7.0--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.8.2--pyhdfd78af_0' :
+        'biocontainers/bakta:1.8.2--pyhdfd78af_0' }"
 
     output:
     path "db*"              , emit: db

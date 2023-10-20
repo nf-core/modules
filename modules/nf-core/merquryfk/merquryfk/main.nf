@@ -5,11 +5,6 @@ process MERQURYFK_MERQURYFK {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "MERQURYFK_MERQURYFK module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     tuple val(meta), path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
 
@@ -36,6 +31,10 @@ process MERQURYFK_MERQURYFK {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "MERQURYFK_MERQURYFK module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

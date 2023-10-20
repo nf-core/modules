@@ -12,10 +12,9 @@ workflow test_centrifuge_centrifuge_single_end {
     db    =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true) ]
     save_unaligned = true
     save_aligned = false
-    sam_format = false
 
     UNTAR ( db )
-    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, save_unaligned, save_aligned, sam_format )
+    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, save_unaligned, save_aligned )
 
 }
 
@@ -27,10 +26,9 @@ workflow test_centrifuge_centrifuge_paired_end {
      db    =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true) ]
      save_unaligned = true
      save_aligned = false
-     sam_format = false
 
     UNTAR ( db )
-    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, save_unaligned, save_aligned, sam_format )
+    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, save_unaligned, save_aligned )
 
 
 }
