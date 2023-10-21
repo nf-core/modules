@@ -8,9 +8,7 @@ tools:
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
   - chromsizes:
       type: file
       description: chromosome size file
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: output file of flip
       pattern: "*.{flip.gz}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"
