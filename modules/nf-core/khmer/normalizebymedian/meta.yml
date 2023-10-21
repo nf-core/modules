@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/dib-lab/khmer
       doi: "10.12688/f1000research.6924.1"
       licence: ["BSD License"]
-
 input:
   - pe_reads:
       type: files
@@ -24,7 +23,6 @@ input:
   - name:
       type: string
       description: filename for output file(s); ".fastq.gz" will be appended
-
 output:
   - versions:
       type: file
@@ -34,6 +32,7 @@ output:
       type: file
       description: Interleaved fastq files
       pattern: "*.{fq,fastq}.gz"
-
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"
