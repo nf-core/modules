@@ -1,12 +1,16 @@
 - name: rsem calculateexpression test_rsem_calculateexpression
-  command: nextflow run ./tests/modules/nf-core/rsem/calculateexpression -entry test_rsem_calculateexpression -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rsem/calculateexpression/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rsem/calculateexpression -entry test_rsem_calculateexpression -c ./tests/config/nextflow.config
   tags:
     - rsem
     - rsem/calculateexpression
   files:
+    - path: output/rsem/genome.transcripts.fa
+      md5sum: 050c521a2719c2ae48267c1e65218f29
     - path: output/rsem/rsem/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
     - path: output/rsem/rsem/Log.out
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/rsem/rsem/SA
       md5sum: 8c3edc46697b72c9e92440d4cf43506c
     - path: output/rsem/rsem/SAindex
@@ -56,6 +60,8 @@
     - path: output/rsem/test.isoforms.results
       md5sum: 99f7f80aa505b44ca429fdebbd7dd5d8
     - path: output/rsem/test.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/rsem/test.stat/test.cnt
       md5sum: 76249e6b2f3c104f414aae596ba2c2f4
     - path: output/rsem/test.stat/test.model
@@ -64,3 +70,4 @@
       md5sum: de2e4490c98cc5383a86ae8225fd0a28
     - path: output/rsem/test.transcript.bam
       md5sum: ed681d39f5700ffc74d6321525330d93
+    - path: output/rsem/versions.yml
