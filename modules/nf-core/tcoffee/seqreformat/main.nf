@@ -25,10 +25,10 @@ process TCOFFEE_SEQREFORMAT {
     """
     export TEMP='./'
     t_coffee -other_pg seq_reformat \
-         -in ${infile} \
-         $args \
-         -output=${seq_reformat_type} \
-         > "${prefix}_${seq_reformat_type}.txt"
+        -in ${infile} \
+        $args \
+        -output=${seq_reformat_type} \
+        > "${prefix}_${seq_reformat_type}.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
