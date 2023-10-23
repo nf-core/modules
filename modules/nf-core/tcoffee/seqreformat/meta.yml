@@ -1,41 +1,37 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "tcoffee_seqreformat"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Reformats files with t-coffee
 keywords:
-  - sort
-  - example
+  - reformatting
+  - alignment
   - genomics
 tools:
   - "tcoffee":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "A collection of tools for Multiple Alignments of DNA, RNA, Protein Sequence"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['GPL v2']"
-
-## TODO nf-core: Add a description of all of the variables used as input
+      description: "A collection of tools for Computing, Evaluating and Manipulating Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      homepage: "http://www.tcoffee.org/Projects/tcoffee/"
+      documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
+      tool_dev_url: "https://github.com/cbcrg/tcoffee"
+      doi: "10.1006/jmbi.2000.4042"
+      licence: "['GPL v3']"
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+        e.g. `[ id:'test' ]`
 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input file to be reformatted
+      pattern: "*"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - seq_reformat_type:
+      type: string
+      description: Type of reformatting to be applied 
+      pattern: "*"
+  
+
 output:
-  #Only when we have meta
-  - meta:
       type: map
       description: |
         Groovy Map containing sample information
@@ -45,11 +41,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - formatted_file:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Formatted file
+      pattern: "*"
 
 authors:
   - "@luisas"

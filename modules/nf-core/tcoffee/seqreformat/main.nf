@@ -8,7 +8,7 @@ process TCOFFEE_SEQREFORMAT {
         'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(infile)
     val(seq_reformat_type)
 
     output:
@@ -24,7 +24,7 @@ process TCOFFEE_SEQREFORMAT {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     t_coffee -other_pg seq_reformat \
-         -in ${fasta} \
+         -in ${infile} \
          $args \
          -output=${seq_reformat_type} \
          > "${prefix}_${seq_reformat_type}.txt"
