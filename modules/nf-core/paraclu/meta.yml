@@ -8,9 +8,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/paraclu
       documentation: https://gitlab.com/mcfrith/paraclu
       tool_dev_url: https://gitlab.com/mcfrith/paraclu
-
       licence: ["GPL v3-or-later"]
-
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: integer
       description: Minimum size of cluster
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -40,6 +37,7 @@ output:
       type: file
       description: clustered BED file
       pattern: "*.bed"
-
 authors:
+  - "@mashehu"
+maintainers:
   - "@mashehu"
