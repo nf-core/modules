@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process DIAMOND_BLASTX"
+    script "../main.nf"
+    process "DIAMOND_BLASTX"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/blastx"
+
+    setup {
+        run("DIAMOND_MAKEDB") {
+            script "../../makedb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                """
+            }
+        }
+    }
+
+    test("Should search for transcriptome hits against a DIAMOND db and return the default tab separated output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'tfdfdt' // Nonsense file extension to check default case.
+                input[3] = 'qseqid qlen'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt },
+                { assert path(process.out.txt.get(0).get(1)).md5 == "33dc682dabfa44c7089abbc8fe8b84e4" },
+                { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+
+    test("Should search for transcriptome hits against a DIAMOND db and return the daa format output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'daa'
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.daa },
+                { assert path(process.out.daa.get(0).get(1)).md5 == "9f0eb75de9f63138532dabc56b2074f6" },
+                { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+}
