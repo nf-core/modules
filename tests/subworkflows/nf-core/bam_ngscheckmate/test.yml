@@ -10,9 +10,13 @@
   files:
     - path: output/bcftools/test1.bcftools_stats.txt
     - path: output/bcftools/test1.vcf.gz
+      contains:
+        - "MT192765.1"
     - path: output/bcftools/test1.vcf.gz.tbi
     - path: output/bcftools/test2.bcftools_stats.txt
     - path: output/bcftools/test2.vcf.gz
+      contains:
+        - "MT192765.1"
     - path: output/bcftools/test2.vcf.gz.tbi
     - path: output/bedtools/test_split.bed
     - path: output/ngscheckmate/sarscov2_bed.pdf
@@ -35,9 +39,13 @@
   files:
     - path: output/bcftools/test1.bcftools_stats.txt
     - path: output/bcftools/test1.vcf.gz
+      contains:
+        - "DP=251;VDB"
     - path: output/bcftools/test1.vcf.gz.tbi
     - path: output/bcftools/test2.bcftools_stats.txt
     - path: output/bcftools/test2.vcf.gz
+      contains:
+        - "DP=251;VDB"
     - path: output/bcftools/test2.vcf.gz.tbi
     - path: output/bedtools/test_split.bed
     - path: output/ngscheckmate/homo_sapiens_bed.pdf
