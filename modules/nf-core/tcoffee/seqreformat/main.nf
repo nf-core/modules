@@ -13,7 +13,7 @@ process TCOFFEE_SEQREFORMAT {
 
     output:
     tuple val(meta), path("${prefix}_${seq_reformat_type}.txt"), emit: formatted_file
-    path "versions.yml" , emit: versions
+    path "versions.yml"                                        , emit: versions
 
 
     when:
