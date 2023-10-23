@@ -7,7 +7,7 @@
     - path: output/macs2/test_peaks.narrowPeak
     - path: output/macs2/test_peaks.xls
       md5sum: 762383e3a35e1f9ac3834fd6b2926092
-    - path: output/macs2/test_summits.bed      
+    - path: output/macs2/test_summits.bed
 
 - name: macs2 callpeak test_macs2_callpeak
   command: nextflow run ./tests/modules/nf-core/macs2/callpeak -entry test_macs2_callpeak -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/macs2/callpeak/nextflow.config
