@@ -15,6 +15,6 @@ workflow test_megan_daa2info {
     megan_summary = true
 
     DIAMOND_MAKEDB ( [ [id:'test'], db ] )
-    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
+    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db.map { meta, dmnd -> dmnd }, out_ext, blast_columns )
     MEGAN_DAA2INFO ( DIAMOND_BLASTX.out.daa, megan_summary )
 }
