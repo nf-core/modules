@@ -50,7 +50,7 @@ process DIAMOND_MAKEDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
+        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
     END_VERSIONS
     """
 }

@@ -22,7 +22,7 @@ input:
   - fasta:
       type: file
       description: Input fasta file containing query sequences
-      pattern: "*.{fa,fasta}"
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
   - db:
       type: directory
       description: Directory containing the protein blast database
@@ -77,6 +77,8 @@ output:
 authors:
   - "@spficklin"
   - "@jfy133"
+  - "@vagkaratzas"
 maintainers:
   - "@spficklin"
   - "@jfy133"
+  - "@vagkaratzas"
