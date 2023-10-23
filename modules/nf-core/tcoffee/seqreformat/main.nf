@@ -23,6 +23,7 @@ process TCOFFEE_SEQREFORMAT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export TEMP='./'
     t_coffee -other_pg seq_reformat \
          -in ${infile} \
          $args \
