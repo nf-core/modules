@@ -9,7 +9,6 @@ tools:
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
   - sample_size:
       type: value
       description: Number of reads to sample.
-
 output:
   - meta:
       type: map
@@ -38,8 +36,11 @@ output:
       type: file
       description: Subsampled FastQ files
       pattern: "*.{fastq.gz}"
-
 authors:
+  - "@kaurravneet4123"
+  - "@sidorov-si"
+  - "@adamrtalbot"
+maintainers:
   - "@kaurravneet4123"
   - "@sidorov-si"
   - "@adamrtalbot"

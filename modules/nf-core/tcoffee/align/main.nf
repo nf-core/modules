@@ -2,10 +2,10 @@ process TCOFFEE_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::t-coffee=13.45.0.4846264"
+    conda "bioconda::t-coffee=13.46.0.919e8c6b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.45.0.4846264--hc57179f_5':
-        'biocontainers/t-coffee:13.45.0.4846264--hc57179f_5' }"
+        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
+        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
 
     input:
     tuple val(meta) ,  path(fasta)
@@ -25,6 +25,7 @@ process TCOFFEE_ALIGN {
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     """
+    export TEMP='./'
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \

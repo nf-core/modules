@@ -1,0 +1,9 @@
+- name: purgedups histplot test_purgedups_histplot
+  command: nextflow run ./tests/modules/nf-core/purgedups/histplot -entry test_purgedups_histplot -c ./tests/config/nextflow.config
+  tags:
+    - purgedups/histplot
+    - purgedups
+  files:
+    - path: output/purgedups/test.png
+      # md5sums different under mamba vs container.
+    - path: output/purgedups/versions.yml

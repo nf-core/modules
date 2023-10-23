@@ -156,6 +156,8 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
 
 # Also set up filtering for NAs; use by default minimum_proportion_not_na; only
 # use minimum_samples_not_na if it is provided (default NULL)
+# -->NA test can always use minimum_samples_not_na as this will contain the correct
+# value even if the proportion is to be used
 
 if (is.null(opt\$minimum_samples_not_na)) {
     opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
@@ -164,8 +166,8 @@ if (is.null(opt\$minimum_samples_not_na)) {
 # Define the tests
 
 tests <- list(
-    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples,
-    'na' = function(x) !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_n
+    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
 )
 
 # Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
