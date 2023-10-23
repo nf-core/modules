@@ -70,6 +70,7 @@ process BLAST_BLASTP {
             log.warn("Unknown output file format provided (${out_ext}): selecting BLAST default of tabular BLAST output (tsv)");
             break
     }
+
     """
     touch ${prefix}.${out_ext}
 
