@@ -22,11 +22,11 @@ input:
   - fasta:
       type: file
       description: Input fasta file containing query sequences
-      pattern: "*.{fa,fasta}"
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
   - db:
-      type: directory
-      description: Directory containing the nucelotide blast database
-      pattern: "*"
+      type: file
+      description: File of the indexed DIAMOND database
+      pattern: "*.{dmnd}"
   - out_ext:
       type: string
       description: |
@@ -36,6 +36,11 @@ input:
         taxonomic classification format.
       pattern: "blast|xml|txt|daa|sam|tsv|paf"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - blast:
       type: file
       description: File containing blastp hits
@@ -64,19 +69,21 @@ output:
       type: file
       description: File containing aligned reads in pairwise mapping format format
       pattern: "*.{paf}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - log:
       type: file
       description: Log file containing stdout information
       pattern: "*.{log}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@spficklin"
   - "@jfy133"
   - "@mjamy"
+  - "@vagkaratzas"
 maintainers:
   - "@spficklin"
   - "@jfy133"
   - "@mjamy"
+  - "@vagkaratzas"

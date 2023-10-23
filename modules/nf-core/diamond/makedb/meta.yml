@@ -14,11 +14,21 @@ tools:
       doi: "10.1038/s41592-021-01101-x"
       licence: ["GPL v3.0"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input fasta file
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - db:
       type: file
       description: File of the indexed DIAMOND database

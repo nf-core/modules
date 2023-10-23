@@ -8,13 +8,12 @@ include { MEGAN_DAA2INFO } from '../../../../../modules/nf-core/megan/daa2info/m
 
 workflow test_megan_daa2info {
 
-    db = [ file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true) ]
     out_ext = 'daa'
     blast_columns = []
     megan_summary = true
 
-    DIAMOND_MAKEDB ( db )
+    DIAMOND_MAKEDB ( [ [id:'test'], fasta ] )
     DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
     MEGAN_DAA2INFO ( DIAMOND_BLASTX.out.daa, megan_summary )
 }
