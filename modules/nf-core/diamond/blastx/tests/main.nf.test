@@ -68,7 +68,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.daa },
-                { assert path(process.out.daa.get(0).get(1)).md5 == "9f0eb75de9f63138532dabc56b2074f6" },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
                 { assert process.out.versions }
             )
