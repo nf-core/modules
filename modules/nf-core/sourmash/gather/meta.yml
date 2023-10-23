@@ -18,7 +18,6 @@ tools:
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
       licence: ["BSD-3-clause"]
-
 input:
   - meta:
       type: map
@@ -48,7 +47,6 @@ input:
       type: boolean
       description: |
         If true, output will contain a csv file with the names of all prefetch-matched signatures
-
 output:
   - meta:
       type: map
@@ -87,7 +85,9 @@ output:
       description: |
         The names of all prefetch-matched signatures from the database in CSV format.
       pattern: "*{csv.gz}"
-
 authors:
+  - "@vmikk"
+  - "@taylorreiter"
+maintainers:
   - "@vmikk"
   - "@taylorreiter"

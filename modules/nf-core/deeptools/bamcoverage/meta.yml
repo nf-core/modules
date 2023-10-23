@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/deeptools/deepTools/
       doi: "10.1093/nar/gkw257"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
       type: file
       description: Index of the reference file (optional, but recommended)
       pattern: "*.{fai}"
-
 output:
   - meta:
       type: map
@@ -54,7 +52,9 @@ output:
       type: file
       description: Bedgraph file
       pattern: "*.bedgraph"
-
 authors:
+  - "@FriederikeHanssen"
+  - "@SusiJo"
+maintainers:
   - "@FriederikeHanssen"
   - "@SusiJo"

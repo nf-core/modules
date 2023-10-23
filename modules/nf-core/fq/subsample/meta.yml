@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/stjude-rust-labs/fq"
       documentation: "https://github.com/stjude-rust-labs/fq"
       tool_dev_url: "https://github.com/stjude-rust-labs/fq"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: FASTQ file
       pattern: "*.{fq,fastq}{,.gz}"
-
 output:
   - meta:
       type: map
@@ -37,6 +34,7 @@ output:
       type: file
       description: Randomly sampled FASTQ files.
       pattern: "*_R[12].fastq.gz"
-
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"
