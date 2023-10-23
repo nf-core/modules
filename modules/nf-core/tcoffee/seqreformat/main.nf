@@ -9,11 +9,11 @@ process TCOFFEE_SEQREFORMAT {
 
     input:
     tuple val(meta), path(infile)
-    val(seq_reformat_type)
 
     output:
-    tuple val(meta), path("${prefix}_${seq_reformat_type}.txt"), emit: formatted_file
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("${prefix}.txt"), emit: formatted_file
+    path "versions.yml" , emit: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +26,7 @@ process TCOFFEE_SEQREFORMAT {
     t_coffee -other_pg seq_reformat \
         -in ${infile} \
         $args \
-        -output=${seq_reformat_type} \
-        > "${prefix}_${seq_reformat_type}.txt"
+        > "${prefix}.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

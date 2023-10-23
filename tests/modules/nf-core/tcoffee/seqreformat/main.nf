@@ -11,5 +11,5 @@ workflow test_tcoffee_seqreformat {
         file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
     ]
 
-    TCOFFEE_SEQREFORMAT_SIMID ( input, "sim_idscore")
+    TCOFFEE_SEQREFORMAT_SIMID ( input )
 }
