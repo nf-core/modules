@@ -22,7 +22,7 @@ input:
       description: Genomic gtf file
       pattern: "*.{gtf,gtf.gz}"
   - workflow_mode:
-      type: value
+      type: string
       description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus}"
 output:
