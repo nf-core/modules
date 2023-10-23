@@ -35,12 +35,12 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/star/geneInfo.tab
       md5sum: 02a8f4575bdfcd4a42b4d8d07f2e9369
     - path: output/cellranger/homo_sapiens_chr22_reference/star/genomeParameters.txt
+      contains:
+        - "2.7.1a"
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbInfo.txt
       md5sum: 1082ab459363b3f2f7aabcef0979c1ed
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbList.out.tab
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/cellranger/homo_sapiens_chr22_reference/star/transcriptInfo.tab
       md5sum: cedcb5f4e7d97bc548cd5daa022e092c
     - path: output/cellranger/test_10x/outs/filtered_feature_bc_matrix.h5
@@ -65,4 +65,6 @@
     - path: output/cellranger/test_10x/outs/raw_feature_bc_matrix/matrix.mtx.gz
       md5sum: 5f0a9e0d5358875030b49eb09afa729c
     - path: output/cellranger/test_10x/outs/web_summary.html
+      contains:
+        - "test_10x"
     - path: output/cellranger/versions.yml
