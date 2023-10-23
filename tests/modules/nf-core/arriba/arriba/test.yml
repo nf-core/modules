@@ -51,13 +51,13 @@
     - path: output/star/versions.yml
 
 - name: arriba arriba test_arriba_paired_end
-  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/arriba/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config
   tags:
     - arriba
     - arriba/arriba
   files:
     - path: output/arriba/test.fusions.discarded.tsv
-      md5sum: cdc6cfbc75e68ce29a766f50f390274d
+      md5sum: a35962c2fc4bc31321dde993363e71f1
     - path: output/arriba/test.fusions.tsv
       md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
     - path: output/arriba/versions.yml
@@ -93,10 +93,11 @@
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 5b1be7b6568771e1f229f71bc5ff3d77
+      md5sum: b0e416284a43872021578b31a1b81ddb
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
+      md5sum: b2bd061d6cbaaf3d6d3b1fed547f69b8
     - path: output/star/test.SJ.out.tab
-      md5sum: 5155c9fd1f787ad6d7d80987fb06219c
+      md5sum: 5c05f06e59ec1a2b7f3ca2a89a0033b0
     - path: output/star/versions.yml

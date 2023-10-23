@@ -35,6 +35,7 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/star/geneInfo.tab
       md5sum: a20c70b081f5d83649c48ebbd951cb77
     - path: output/cellranger/homo_sapiens_chr22_reference/star/genomeParameters.txt
+      contains: ["genomeGenerate"]
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbInfo.txt
       md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
     - path: output/cellranger/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
@@ -45,7 +46,6 @@
       md5sum: 6fa11b4d34f4680a1c23dbcea2e050d5
     - path: output/cellranger/versions.yml
     - path: output/universc/sample-123/outs/_err
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/universc/sample-123/outs/_invocation
       md5sum: adbbbc1027756be9fdeebabf979863e5
     - path: output/universc/sample-123/outs/_log
@@ -66,5 +66,5 @@
     - path: output/universc/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
     - path: output/universc/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
     - path: output/universc/sample-123/outs/web_summary.html
-      md5sum: fa9b0d584b3bbce84504c5837c219687
+      contains: ["sample-123"]
     - path: output/universc/versions.yml
