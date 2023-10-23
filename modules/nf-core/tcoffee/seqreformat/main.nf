@@ -32,7 +32,7 @@ process TCOFFEE_SEQREFORMAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process TCOFFEE_SEQREFORMAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
     END_VERSIONS
     """
 
