@@ -4,15 +4,15 @@ process PIGZ_UNCOMPRESS {
 
     conda "conda-forge::pigz"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.3.4':
-        'biocontainers/pigz:2.3.4' }"
+        'https://depot.galaxyproject.org/singularity/pigz:2.8':
+        'biocontainers/pigz:2.8' }"
 
     input:
     path zip
 
     output:
     path "${uncompressed_filename}" , emit: file
-    path "versions.yml"   , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
