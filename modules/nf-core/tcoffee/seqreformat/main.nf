@@ -15,7 +15,6 @@ process TCOFFEE_SEQREFORMAT {
     tuple val(meta), path("${prefix}_${seq_reformat_type}.txt"), emit: formatted_file
     path "versions.yml"                                        , emit: versions
 
-
     when:
     task.ext.when == null || task.ext.when
 
