@@ -27,21 +27,34 @@ input:
       type: directory
       description: Directory containing blast database
       pattern: "*"
+  - out_ext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `xml` corresponds to BLAST xml format.
+        `tsv` corresponds to BLAST tabular format. `csv` corresponds to BLAST comma separated format.
+      pattern: "xml|tsv|csv"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
+  - xml:
+      type: file
+      description: File containing blastp hits in XML format
+      pattern: "*.{xml}"
+  - tsv:
+      type: file
+      description: File containing blastp hits in tabular format
+      pattern: "*.{tsv}"
   - csv:
       type: file
-      description: File containing blastp hits
+      description: File containing blastp hits in comma separated format
       pattern: "*.csv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
   - "@vagkaratzas"
 maintainers:
