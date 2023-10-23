@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process DIAMOND_BLASTP"
+    script "../main.nf"
+    process "DIAMOND_BLASTP"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/blastp"
+
+    setup {
+        run("DIAMOND_MAKEDB") {
+            script "../../makedb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                """
+            }
+        }
+    }
+
+    test("Should search for protein hits against a DIAMOND db and return a tab separated output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'txt'
+                input[3] = 'qseqid qlen'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt },
+                { assert path(process.out.txt.get(0).get(1)).md5 == "8131b1afd717f3d5f2f2417c5b562e6e" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for protein hits against a DIAMOND db and return a daa format file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'daa'
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.daa },
+                { assert path(process.out.daa.get(0).get(1)).md5 == "13fbb1472c2926f072ba71bdd4729202" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}
