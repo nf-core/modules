@@ -47,7 +47,6 @@ process TCOFFEE_SEQREFORMAT {
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
     END_VERSIONS
     """
-
 }
 
 
