@@ -1,19 +1,19 @@
 - name: cellranger count test_cellranger_count
   command: nextflow run ./tests/modules/nf-core/cellranger/count -entry test_cellranger_count -c ./tests/config/nextflow.config
   tags:
-    - cellranger
     - cellranger/count
+    - cellranger
   files:
     - path: output/cellranger/genome.filtered.gtf
-      md5sum: a8b8a7b5039e05d3a9cf9151ea138b5b
+      md5sum: 6adb86eec59d00e503ee961261182066
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa.fai
       md5sum: 3520cd30e1b100e55f578db9c855f685
     - path: output/cellranger/homo_sapiens_chr22_reference/genes/genes.gtf.gz
-      md5sum: d1e05cd46684fa26d852b6bc9f05e31f
+      md5sum: 099bfb9a752ba3015834fd126b5c4c8e
     - path: output/cellranger/homo_sapiens_chr22_reference/reference.json
-      md5sum: ec937ee57f457360ca4969051876c79a
+      md5sum: 97a777de075c250ea88d2eaecabc1755
     - path: output/cellranger/homo_sapiens_chr22_reference/star/Genome
       md5sum: 897cec2d191945335f8b320438bd9135
     - path: output/cellranger/homo_sapiens_chr22_reference/star/SA
@@ -51,7 +51,7 @@
     - path: output/cellranger/test_10x/outs/metrics_summary.csv
       md5sum: c295fe3ccbb6ce118482964ca9c748d4
     - path: output/cellranger/test_10x/outs/molecule_info.h5
-      md5sum: b6bb6307f16a58fab3a00fb575084e1c
+      md5sum: 6204ac0b164b6e06e65954d072afe599
     - path: output/cellranger/test_10x/outs/possorted_genome_bam.bam
       md5sum: 32fe604968326d98e8c0c36ce3c5ee8d
     - path: output/cellranger/test_10x/outs/possorted_genome_bam.bam.bai
