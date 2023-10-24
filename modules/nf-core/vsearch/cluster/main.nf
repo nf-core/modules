@@ -20,7 +20,7 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path('*.blast.tsv.gz')          , optional: true, emit: blast
     tuple val(meta), path('*.uc.tsv.gz')             , optional: true, emit: uc
     tuple val(meta), path('*.centroids.fasta.gz')    , optional: true, emit: centroids
-    tuple val(meta), path('*.clusters.fasta.gz')     , optional: true, emit: clusters
+    tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
     tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
     tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
     path "versions.yml"                              , emit: versions
@@ -58,7 +58,10 @@ process VSEARCH_CLUSTER {
         --threads $task.cpus \\
         $args
 
-    if [[ $args3 != "--samout" ]]
+    if [[ $args3 == "--clusters" ]]
+    then
+        gzip -n ${prefix}.${out_ext}*
+    elif [[ $args3 != "--samout" ]]
     then
         gzip -n ${prefix}.${out_ext}
     else

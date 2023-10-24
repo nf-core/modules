@@ -9,8 +9,7 @@ process KMCP_PROFILE {
 
     input:
     tuple val(meta), path(search_results)
-    path taxdump
-    path taxid
+    path (db)
     val mode
 
     output:
@@ -24,11 +23,13 @@ process KMCP_PROFILE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    taxid=`find -L ${db} -name "*map"`
+    taxdump=`find -L ${db}/*/ -type d  -not -name "R001"`
     kmcp \\
         profile \\
         $args \\
-        -X $taxdump \\
-        -T $taxid \\
+        -X \$taxdump \\
+        -T \$taxid \\
         -m $mode \\
         -j $task.cpus \\
         -o ${prefix}.profile \\

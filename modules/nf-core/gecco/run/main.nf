@@ -2,10 +2,10 @@ process GECCO_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gecco=0.9.2"
+    conda "bioconda::gecco=0.9.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.9.2--pyhdfd78af_0':
-        'biocontainers/gecco:0.9.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gecco:0.9.8--pyhdfd78af_0':
+        'biocontainers/gecco:0.9.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(hmm)

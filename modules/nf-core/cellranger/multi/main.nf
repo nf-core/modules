@@ -4,11 +4,6 @@ process CELLRANGER_MULTI {
 
     container "nf-core/cellranger:7.1.0"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     val meta
     tuple val(meta_gex)        , path (gex_fastqs   , stageAs: "fastqs/gex/*")
@@ -38,6 +33,10 @@ process CELLRANGER_MULTI {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 

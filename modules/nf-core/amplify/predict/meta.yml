@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/bcgsc/AMPlify"
       doi: "10.1186/s12864-022-08310-4"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - model_dir:
       type: directory
       description: Directory of where models are stored (optional)
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: amino acid sequences with prediction (AMP, non-AMP) and probability scores
       pattern: "*.{tsv}"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

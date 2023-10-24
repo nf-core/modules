@@ -39,7 +39,8 @@ process GATK4_VARIANTRECALIBRATOR {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" VariantRecalibrator \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        VariantRecalibrator \\
         --variant $vcf \\
         --output ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
@@ -47,6 +48,20 @@ process GATK4_VARIANTRECALIBRATOR {
         --tmp-dir . \\
         $labels_command \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.recal
+    touch ${prefix}.idx
+    touch ${prefix}.tranches
+    touch ${prefix}plots.R
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
