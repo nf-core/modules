@@ -12,9 +12,7 @@ tools:
       homepage: "https://sites.google.com/site/gvcftools/home"
       documentation: "https://sites.google.com/site/gvcftools/home/configuration-and-analysis"
       tool_dev_url: "https://github.com/sequencing/gvcftools"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: file
       description: GVCF file
       pattern: "*.{g.vcf,gvcf}.gz"
-
 output:
   - meta:
       type: map
@@ -40,6 +37,7 @@ output:
       type: file
       description: Converted variant-only VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

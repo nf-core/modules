@@ -119,7 +119,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -132,6 +132,8 @@ jobs:
           - tags: "nf-test"
           - profile: "conda"
             tags: annotsv
+          - profile: "conda"
+            tags: happy/sompy
           - profile: "conda"
             tags: cellpose
           - profile: "conda"
@@ -147,6 +149,16 @@ jobs:
           - profile: "conda"
             tags: bclconvert
           - profile: "conda"
+            tags: bwa/aln
+          - profile: "conda"
+            tags: bwa/index
+          - profile: "conda"
+            tags: bwa/mem
+          - profile: "conda"
+            tags: bwa/sampe
+          - profile: "conda"
+            tags: bwa/samse
+          - profile: "conda"
             tags: cellranger/count
           - profile: "conda"
             tags: cellranger/mkfastq
@@ -161,6 +173,12 @@ jobs:
           - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
+            tags: cellrangeratac/count
+          - profile: "conda"
+            tags: cellrangeratac/mkfastq
+          - profile: "conda"
+            tags: cellrangeratac/mkref
+          - profile: "conda"
             tags: coreograph
           - profile: "conda"
             tags: deepcell/mesmer
@@ -168,6 +186,8 @@ jobs:
             tags: deepvariant
           - profile: "conda"
             tags: fastk/fastk
+          - profile: "conda"
+            tags: fastani
           - profile: "conda"
             tags: fastk/histex
           - profile: "conda"
@@ -199,6 +219,8 @@ jobs:
           - profile: "conda"
             tags: imputeme/vcftoprs
           - profile: "conda"
+            tags: medaka
+          - profile: "conda"
             tags: merquryfk/katcomp
           - profile: "conda"
             tags: merquryfk/katgc
@@ -210,6 +232,8 @@ jobs:
             tags: mitohifi/mitohifi
           - profile: "conda"
             tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: nanoplot
           - profile: "conda"
             tags: parabricks/applybqsr
           - profile: "conda"
@@ -367,7 +391,7 @@ jobs:
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -389,7 +413,7 @@ jobs:
           token: ""
 
   nf-test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
@@ -402,6 +426,8 @@ jobs:
           - tags: "nf-test"
           - profile: "conda"
             tags: annotsv
+          - profile: "conda"
+            tags: happy/sompy
           - profile: "conda"
             tags: bases2fastq
           - profile: "conda"
