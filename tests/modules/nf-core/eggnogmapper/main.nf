@@ -9,8 +9,9 @@ workflow test_eggnogmapper {
 
     fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
 
-    eggnog_db = file("tests/modules/nf-core/eggnogmapper/data/fixtures/eggnog.db", checkIfExists: true)
-    eggnog_data_dir = eggnog_db.parent
+    eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
+    eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+    eggnog_data_dir = "${workDir}/tmp/"
 
     DIAMOND_MAKEDB ( fasta )
     EGGNOGMAPPER ( [ [id:'test'], fasta ], eggnog_db, eggnog_data_dir, DIAMOND_MAKEDB.out.db )
