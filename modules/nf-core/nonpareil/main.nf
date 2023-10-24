@@ -3,7 +3,7 @@ process NONPAREIL {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::nonpareil=3.4.1"
+    conda 'modules/nf-core/nonpareil/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h9f5acd7_3':
         'biocontainers/nonpareil:3.4.1--r42h9f5acd7_3' }"
