@@ -6,13 +6,11 @@ keywords:
   - chunk
   - phase
   - ligate
-
 components:
   - glimpse/chunk
   - glimpse/phase
   - glimpse/ligate
   - bcftools/index
-
 input:
   - ch_input:
       type: file
@@ -26,14 +24,12 @@ input:
         File containing the genetic map.
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         Structure: [ meta, vcf, csi, txt, region, ref_vcf, ref_csi, gmap ]
-
 output:
   - chunk_chr:
       type: file
       description: |
         Tab delimited output txt file containing buffer and imputation regions.
         Structure: [meta, txt]
-
   - phased_variants:
       type: file
       description: |
@@ -41,18 +37,17 @@ output:
         imputed dosages (DS field), best guess genotypes (GT field),
         sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
         Structure: [ val(meta), bcf ]
-
   - merged_variants:
       type: file
       description: |
         Output VCF/BCF file for the merged regions.
         Phased information (HS field) is updated accordingly for the full region.
         Structure: [ val(meta), bcf ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

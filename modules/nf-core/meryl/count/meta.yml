@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/marbl/meryl"
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
-
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: directory
       description: A Meryl k-mer database
       pattern: "*.meryldb"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"
