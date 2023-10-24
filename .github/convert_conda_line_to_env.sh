@@ -13,5 +13,10 @@ for file in $NF_FILES; do
     # Write the template to the environment.yml
     cat $template > $(dirname "$file")/environment.yml
     # Put the dependencies in a environment.yaml using yq
-    yq -i '.dependencies += ["'"$conda_packages"'"]' $(dirname "$file")/environment.yml
+    for package in $conda_packages; do
+        yq -i '.dependencies += ["'"$package"'"]' $(dirname "$file")/environment.yml
+    done
+
+    # Change the conda line to environment.yml
+    # sed -i 's/^    conda.*$/^    conda $(dirname "$file")/environment.yml/g' "$file"
 done
