@@ -1,0 +1,12 @@
+- name: proteinortho
+  command: nextflow run ./tests/modules/nf-core/proteinortho -entry test_proteinortho -c ./tests/config/nextflow.config
+  tags:
+    - proteinortho
+  files:
+    - path: output/proteinortho/test.proteinortho.tsv
+      md5sum: 1dbd9bc01f9439fcdbf38018ba52977d
+    - path: output/proteinortho/test.proteinortho-graph
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/proteinortho/test.blast-graph
+      md5sum: beee90733460c4e4d177aaaa1b0bae70
+    - path: output/proteinortho/versions.yml
