@@ -3,7 +3,7 @@ process BBMAP_BBSPLIT {
     label 'process_high'
     label 'error_retry'
 
-    conda "bioconda::bbmap=39.01"
+    conda 'modules/nf-core/bbmap/bbsplit/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
         'biocontainers/bbmap:39.01--h5c4e2a8_0' }"

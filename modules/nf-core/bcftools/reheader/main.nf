@@ -2,7 +2,7 @@ process BCFTOOLS_REHEADER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bcftools=1.17"
+    conda 'modules/nf-core/bcftools/reheader/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
         'biocontainers/bcftools:1.17--haef29d1_0' }"

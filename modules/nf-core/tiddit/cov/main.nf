@@ -2,7 +2,7 @@ process TIDDIT_COV {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::tiddit=3.6.1"
+    conda 'modules/nf-core/tiddit/cov/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiddit:3.6.1--py38h24c8ff8_0' :
         'biocontainers/tiddit:3.6.1--py38h24c8ff8_0' }"

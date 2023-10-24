@@ -2,7 +2,7 @@ process VERIFYBAMID_VERIFYBAMID {
     tag "${meta.id}"
     label "process_single"
 
-    conda "bioconda::verifybamid=1.1.3"
+    conda 'modules/nf-core/verifybamid/verifybamid/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid%3A1.1.3--h5b5514e_6':
         'biocontainers/verifybamid:1.1.3--h5b5514e_6' }"

@@ -4,7 +4,7 @@ process FAMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::famsa=2.2.2"
+    conda 'modules/nf-core/famsa/align/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/famsa:2.2.2--h9f5acd7_0':
         'biocontainers/famsa:2.2.2--h9f5acd7_0' }"
