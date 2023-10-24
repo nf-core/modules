@@ -1,8 +1,8 @@
 - name: spaceranger mkgtf test_spaceranger_mkgtf
   command: nextflow run ./tests/modules/nf-core/spaceranger/mkgtf -entry test_spaceranger_mkgtf -c ./tests/config/nextflow.config
   tags:
-    - spaceranger
     - spaceranger/mkgtf
+    - spaceranger
   files:
     - path: output/spaceranger/genome.filtered.gtf
       md5sum: 6adb86eec59d00e503ee961261182066

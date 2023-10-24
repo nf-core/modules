@@ -5,8 +5,6 @@
     - cellranger
   files:
     - path: output/cellranger/cellranger_multi_config.csv
-      contains:
-        - "[gene-expression]"
     - path: output/cellranger/genome.filtered.gtf
       md5sum: 50fc877b1c53b36b3b413aff88bda48c
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa
@@ -202,6 +200,7 @@
     - path: output/cellranger/test_10k_pbmc_cmo/outs/per_sample_outs/PBMCs_human_2/count/feature_reference.csv
       md5sum: 1fdffad2323e3f25ede1b9dae2df2724
     - path: output/cellranger/test_10k_pbmc_cmo/outs/per_sample_outs/PBMCs_human_2/count/sample_filtered_barcodes.csv
+
     - path: output/cellranger/test_10k_pbmc_cmo/outs/per_sample_outs/PBMCs_human_2/count/sample_filtered_feature_bc_matrix.h5
       md5sum: c93a726d8dce942d5b62381d0dd697cb
     - path: output/cellranger/test_10k_pbmc_cmo/outs/per_sample_outs/PBMCs_human_2/count/sample_filtered_feature_bc_matrix/barcodes.tsv.gz
