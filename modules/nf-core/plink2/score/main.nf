@@ -26,9 +26,8 @@ process PLINK2_SCORE {
     plink2 \\
         --threads $task.cpus \\
         --memory $mem_mb \\
-        --pfile ${pgen.baseName} vzs \\
-        --score ${scorefile} \\
-        $args \\
+        --pfile ${pgen.baseName} \\
+        --score ${scorefile} $args \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
