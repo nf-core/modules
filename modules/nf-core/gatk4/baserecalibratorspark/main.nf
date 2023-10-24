@@ -2,7 +2,7 @@ process GATK4_BASERECALIBRATOR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0 conda-forge::openjdk=8.0.312"
+    conda 'modules/nf-core/gatk4/baserecalibratorspark/environment.yml'
     container "nf-core/gatk:4.4.0.0"
 
     input:
