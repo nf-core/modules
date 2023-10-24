@@ -1,17 +1,17 @@
 - name: cellranger mkref test_cellranger_mkref
   command: nextflow run ./tests/modules/nf-core/cellranger/mkref -entry test_cellranger_mkref -c ./tests/config/nextflow.config
   tags:
-    - cellranger/mkref
     - cellranger
+    - cellranger/mkref
   files:
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa.fai
       md5sum: 3520cd30e1b100e55f578db9c855f685
     - path: output/cellranger/homo_sapiens_chr22_reference/genes/genes.gtf.gz
-      md5sum: 6d9b5f409bfea95022bc25b9590e194e
+      md5sum: ae3ab9dbd46e4341fd9018dec1e796be
     - path: output/cellranger/homo_sapiens_chr22_reference/reference.json
-      md5sum: 413e3a660c480b185083c4137cc3829d
+      md5sum: 5fc6835a98143f6765bf77a02110d7b0
     - path: output/cellranger/homo_sapiens_chr22_reference/star/Genome
       md5sum: 22102926fadf5890e905ca71b2da3f35
     - path: output/cellranger/homo_sapiens_chr22_reference/star/SA
@@ -27,7 +27,7 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/star/chrStart.txt
       md5sum: bc73df776dd3d5bb9cfcbcba60880519
     - path: output/cellranger/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab
-      md5sum: d04497f69d6ef889efd4d34fe63edcc4
+      md5sum: 72d4dd88d25e3c5b0bb72b12b4ac99a8
     - path: output/cellranger/homo_sapiens_chr22_reference/star/exonInfo.tab
       md5sum: 0d560290fab688b7268d88d5494bf9fe
     - path: output/cellranger/homo_sapiens_chr22_reference/star/geneInfo.tab
