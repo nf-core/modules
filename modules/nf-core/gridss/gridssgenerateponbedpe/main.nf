@@ -25,9 +25,7 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def vcf = vcf ? "INPUT=${vcf}" : ""
-    if ("$bedpe" == "${prefix}.bedpe") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def bedpe = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
-    if ("$bed" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def bed   = bed ? "INPUT_BED=${bed}" : ""
     def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
     def ref = bwa_index ? "REFERENCE_SEQUENCE=${fasta}" : ""
