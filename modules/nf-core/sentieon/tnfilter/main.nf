@@ -35,12 +35,6 @@ process SENTIEON_TNFILTER {
     def segments_command           = segments                           ? segments.collect{"--tumor_segments $it"}.join(' ')               : ''
     def orientation_priors_command = orientation_priors                 ? orientation_priors.collect{"--orientation_priors $it"}.join(' ') : ''
 
-    def avail_mem = 3072
-    if (!task.memory) {
-        log.info '[GATK FilterMutectCalls] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
-    }
     """
     if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
