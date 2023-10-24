@@ -1,55 +1,46 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "openms_peakpickerhires"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
-  - example
-  - genomics
+  - peak picking
+  - mzml
+  - openms
+  - proteomics
 tools:
   - "openms":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/nmeth.3959"
       licence: "['BSD']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - mzml:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Mass spectrometer output file in mzML format
+      pattern: "*.{mzML}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - mzml:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Peak-picked mass spectrometer output file in mzML format
+      pattern: "*.{mzML}"
 
 authors:
-  - "@jonassceheid"
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
