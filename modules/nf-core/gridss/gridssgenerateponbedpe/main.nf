@@ -50,8 +50,8 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_gridss_pon_breakpoint.bedpe
-    touch ${prefix}_gridss_pon_single_breakend.bed
+    touch ${prefix}.bedpe
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
