@@ -1,4 +1,3 @@
-
 process GRIDSS_GRIDSSGENERATEPONBEDPE {
     tag "$meta.id"
     label 'process_high'
