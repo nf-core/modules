@@ -5,10 +5,10 @@ process VCFANNO {
     conda "bioconda::vcfanno=0.3.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
-        'quay.io/biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
+        'biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(tbi), path(specific_resources)
     path toml
     path lua
     path resources
@@ -26,11 +26,11 @@ process VCFANNO {
     def lua_cmd = lua ? "--lua ${lua}" : ""
     """
     vcfanno \\
-        -p $task.cpus \\
-        $args \\
-        $lua_cmd \\
-        $toml \\
-        $vcf \\
+        -p ${task.cpus} \\
+        ${args} \\
+        ${lua_cmd} \\
+        ${toml} \\
+        ${vcf} \\
         > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml

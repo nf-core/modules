@@ -5,7 +5,7 @@ process CALDER2 {
     conda "bioconda::r-calder2=0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-calder2:0.3--r41hdfd78af_0' :
-        'quay.io/biocontainers/r-calder2:0.3--r41hdfd78af_0' }"
+        'biocontainers/r-calder2:0.3--r41hdfd78af_0' }"
 
 
     input:

@@ -5,7 +5,7 @@ process HMMER_HMMBUILD {
     conda "bioconda::hmmer=3.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h87f3376_2':
-        'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+        'biocontainers/hmmer:3.3.2--h1b792b2_1' }"
 
     input:
     tuple val(meta), path(alignment)

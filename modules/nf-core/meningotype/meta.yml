@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/MDU-PHL/meningotype
       documentation: https://github.com/MDU-PHL/meningotype
       tool_dev_url: https://github.com/MDU-PHL/meningotype
-
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: FASTA assembly file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: Tab-delimited result file
       pattern: "*.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

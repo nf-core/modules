@@ -6,7 +6,7 @@ process HOMER_ANNOTATEPEAKS {
     conda "bioconda::homer=4.11"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
-        'quay.io/biocontainers/homer:4.11--pl526hc9558a2_3' }"
+        'biocontainers/homer:4.11--pl526hc9558a2_3' }"
 
     input:
     tuple val(meta), path(peak)
@@ -15,6 +15,7 @@ process HOMER_ANNOTATEPEAKS {
 
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
+    tuple val(meta), path("*annStats.txt"), emit: stats, optional: true
     path  "versions.yml"                       , emit: versions
 
     when:

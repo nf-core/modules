@@ -5,7 +5,7 @@ process KLEBORATE {
     conda "bioconda::kleborate=2.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1' :
-        'quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
+        'biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fastas)

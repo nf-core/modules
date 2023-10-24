@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_binning_concoct"
 description: Runs the CONCOCT workflow of contig binning
 keywords:
@@ -5,7 +6,7 @@ keywords:
   - binning
   - metagenomics
   - contigs
-modules:
+components:
   - concoct/cutupfasta
   - concoct/concoctcoveragetable
   - concoct/concoct
@@ -21,7 +22,6 @@ input:
         Structure: [ val(meta), path(bam), path(bai) ]
         BAM and associated index files file representing reads mapped against each
         contig in ch_fasta. Meta must be identical between ch_fasta and ch_bam entries.
-
 output:
   - coverage_table:
       description: |
@@ -58,4 +58,6 @@ output:
         Structure: [ path(versions.yml) ]
 
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

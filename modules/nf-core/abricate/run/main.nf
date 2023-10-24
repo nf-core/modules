@@ -5,7 +5,7 @@ process ABRICATE_RUN {
     conda "bioconda::abricate=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abricate%3A1.0.1--ha8f3691_1':
-        'quay.io/biocontainers/abricate:1.0.1--ha8f3691_1' }"
+        'biocontainers/abricate:1.0.1--ha8f3691_1' }"
 
     input:
     tuple val(meta), path(assembly)

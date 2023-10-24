@@ -5,7 +5,7 @@ process MALT_BUILD {
     conda "bioconda::malt=0.61"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'quay.io/biocontainers/malt:0.61--hdfd78af_0' }"
+        'biocontainers/malt:0.61--hdfd78af_0' }"
 
     input:
     path fastas
@@ -22,12 +22,6 @@ process MALT_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-    def avail_mem = 6
-    if (!task.memory) {
-        log.info '[MALT_BUILD] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = task.memory.giga
-    }
 
     def igff = gff ? "-igff ${gff}" : ""
 

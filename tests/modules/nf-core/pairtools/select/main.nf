@@ -7,7 +7,7 @@ include { PAIRTOOLS_SELECT } from '../../../../../modules/nf-core/pairtools/sele
 workflow test_pairtools_select {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file("https://raw.githubusercontent.com/open2c/pairtools/master/tests/data/mock.pairsam", checkIfExists: true) ]
+              file(params.test_data['generic']['pairtools']['mock_pairsam'], checkIfExists: true) ]
 
     PAIRTOOLS_SELECT ( input )
 }

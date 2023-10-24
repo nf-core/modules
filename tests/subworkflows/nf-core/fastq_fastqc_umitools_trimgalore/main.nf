@@ -12,13 +12,14 @@ workflow test_fastq_fastqc_umitools_trimgalore_single {
                 [ id:'test', single_end:true ], // meta map
                 [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
-    skip_fastqc      = false
-    with_umi         = true
-    skip_umi_extract = false
-    skip_trimming    = false
-    umi_discard_read = 1
+    skip_fastqc       = false
+    with_umi          = true
+    skip_umi_extract  = false
+    skip_trimming     = false
+    umi_discard_read  = 1
+    min_trimmed_reads = 1
 
-    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read)
+    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read, min_trimmed_reads)
 }
 
 workflow test_fastq_fastqc_umitools_trimgalore_paired {
@@ -29,13 +30,14 @@ workflow test_fastq_fastqc_umitools_trimgalore_paired {
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                 ]
             ]
-    skip_fastqc      = false
-    with_umi         = true
-    skip_umi_extract = false
-    skip_trimming    = false
-    umi_discard_read = 1
+    skip_fastqc       = false
+    with_umi          = true
+    skip_umi_extract  = false
+    skip_trimming     = false
+    umi_discard_read  = 1
+    min_trimmed_reads = 1
 
-    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read)
+    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read, min_trimmed_reads)
 }
 
 workflow test_fastq_fastqc_umitools_trimgalore_ {
@@ -46,13 +48,14 @@ workflow test_fastq_fastqc_umitools_trimgalore_ {
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                 ]
             ]
-    skip_fastqc      = false
-    with_umi         = false
-    skip_umi_extract = false
-    skip_trimming    = false
-    umi_discard_read = 1
+    skip_fastqc       = false
+    with_umi          = false
+    skip_umi_extract  = false
+    skip_trimming     = false
+    umi_discard_read  = 1
+    min_trimmed_reads = 1
 
-    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read)
+    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read, min_trimmed_reads)
 }
 
 workflow test_fastq_fastqc_umitools_trimgalore_umi {
@@ -63,13 +66,14 @@ workflow test_fastq_fastqc_umitools_trimgalore_umi {
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                 ]
             ]
-    skip_fastqc      = false
-    with_umi         = false
-    skip_umi_extract = false
-    skip_trimming    = false
-    umi_discard_read = 1
+    skip_fastqc       = false
+    with_umi          = false
+    skip_umi_extract  = false
+    skip_trimming     = false
+    umi_discard_read  = 1
+    min_trimmed_reads = 1
 
-    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read)
+    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read, min_trimmed_reads)
 }
 workflow test_fastq_fastqc_umitools_trimgalore_skip {
     input = [
@@ -79,11 +83,12 @@ workflow test_fastq_fastqc_umitools_trimgalore_skip {
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                 ]
             ]
-    skip_fastqc      = true
-    with_umi         = true
-    skip_umi_extract = true
-    skip_trimming    = true
-    umi_discard_read = 0
+    skip_fastqc       = true
+    with_umi          = true
+    skip_umi_extract  = true
+    skip_trimming     = true
+    umi_discard_read  = 0
+    min_trimmed_reads = 1
 
-    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read)
+    FASTQ_FASTQC_UMITOOLS_TRIMGALORE ( input, skip_fastqc, with_umi, skip_umi_extract, skip_trimming, umi_discard_read, min_trimmed_reads)
 }

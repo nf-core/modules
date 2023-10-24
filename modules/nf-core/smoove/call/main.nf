@@ -5,7 +5,7 @@ process SMOOVE_CALL {
     conda "bioconda::smoove=0.2.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
-        'quay.io/biocontainers/smoove:0.2.8--h9ee0642_1' }"
+        'biocontainers/smoove:0.2.8--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(input), path(index), path(exclude_beds)

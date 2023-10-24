@@ -6,7 +6,7 @@ process SALSA2 {
     conda "bioconda::salsa2=2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/salsa2:2.3--py27hee3b9ab_0':
-        'quay.io/biocontainers/salsa2:2.3--py27hee3b9ab_0' }"
+        'biocontainers/salsa2:2.3--py27hee3b9ab_0' }"
 
     input:
     tuple val(meta), path(fasta), path(index)

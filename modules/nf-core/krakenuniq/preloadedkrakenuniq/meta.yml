@@ -13,7 +13,6 @@ tools:
       documentation: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,7 @@ input:
       type: directory
       description: KrakenUniq database
   - ram_chunk_size:
-      type: val
+      type: string
       description: Amount of maximum amount of RAM each chunk of database that should be loaded at any one time
       pattern: "*GB"
   - save_output_fastqs:
@@ -74,5 +73,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@mjamy"
+  - "@Midnighter"
+maintainers:
   - "@mjamy"
   - "@Midnighter"

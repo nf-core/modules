@@ -6,7 +6,7 @@ process HAPPY_PREPY {
     conda "bioconda::hap.py=0.3.14"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'quay.io/biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
 
     input:
     tuple val(meta), path(vcf), path(bed)

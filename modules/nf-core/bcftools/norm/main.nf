@@ -2,29 +2,35 @@ process BCFTOOLS_NORM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bcftools=1.16"
+    conda "bioconda::bcftools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.16--hfe4b78e_1':
-        'quay.io/biocontainers/bcftools:1.16--hfe4b78e_1' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
+        'biocontainers/bcftools:1.17--haef29d1_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.gz") , emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}")  , emit: vcf
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                    "vcf.gz"
+
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.${extension}\\
         $args \\
         --threads $task.cpus \\
         ${vcf}
@@ -36,9 +42,15 @@ process BCFTOOLS_NORM {
     """
 
     stub:
+    def args = task.ext.args ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                    "vcf.gz"
     """
-    touch ${prefix}.vcf.gz
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

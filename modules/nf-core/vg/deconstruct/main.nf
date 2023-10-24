@@ -5,7 +5,7 @@ process VG_DECONSTRUCT {
     conda "bioconda::vg=1.43.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vg:1.43.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.43.0--h9ee0642_0' }"
+        'biocontainers/vg:1.43.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(gfa)

@@ -4,6 +4,7 @@ keywords:
   - add
   - replace
   - read-group
+  - picard
 tools:
   - picard:
       description: |
@@ -13,7 +14,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
       tool_dev_url: https://github.com/broadinstitute/picard
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +24,6 @@ input:
       type: file
       description: Input BAM file
       pattern: "*.{bam}"
-
 output:
   - meta:
       type: map
@@ -43,8 +42,13 @@ output:
       type: file
       description: BAM index file
       pattern: "*.{bai}"
-
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+  - "@cmatKhan"
+  - "@muffato"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
   - "@hseabolt"

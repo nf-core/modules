@@ -1,8 +1,10 @@
 name: cnvkit_reference
-description:
+description: Compile a coverage reference from the given files (normal samples).
 keywords:
   - cnvkit
   - reference
+  - cnv
+  - copy number
 tools:
   - cnvkit:
       description: |
@@ -13,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/etal/cnvkit
       doi: 10.1371/journal.pcbi.1004873
       licence: ["Apache-2.0"]
-
 input:
   - fasta:
       type: file
@@ -27,7 +28,6 @@ input:
       type: file
       description: File containing off-target genomic regions
       pattern: "*.{bed}"
-
 output:
   - meta:
       type: map
@@ -42,6 +42,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@adamrtalbot"
+  - "@priesgo"
+  - "@SusiJo"
+maintainers:
+  - "@adamrtalbot"
+  - "@priesgo"
   - "@SusiJo"

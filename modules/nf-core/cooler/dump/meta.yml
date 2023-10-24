@@ -2,6 +2,8 @@ name: cooler_dump
 description: Dump a cooler’s data to a text stream.
 keywords:
   - dump
+  - text
+  - cooler
 tools:
   - cooler:
       description: Sparse binary format for genomic interaction matrices
@@ -10,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -22,9 +23,8 @@ input:
       description: Path to COOL file
       pattern: "*.{cool,mcool}"
   - resolution:
-      type: value
+      type: integer
       description: Resolution
-
 output:
   - meta:
       type: map
@@ -39,7 +39,9 @@ output:
       type: file
       description: Output text file
       pattern: "*.bedpe"
-
 authors:
+  - "@jianhong"
+  - "@muffato"
+maintainers:
   - "@jianhong"
   - "@muffato"
