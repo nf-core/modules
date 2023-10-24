@@ -47,6 +47,11 @@ process VT_DECOMPOSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+
     def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """

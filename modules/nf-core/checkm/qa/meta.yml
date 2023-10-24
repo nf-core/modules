@@ -22,7 +22,6 @@ tools:
       tool_dev_url: https://github.com/Ecogenomics/CheckM
       doi: "10.1101/gr.186072.114"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -43,7 +42,6 @@ input:
   - exclude_marker_file:
       type: file
       description: File specifying markers to exclude from marker sets
-
 output:
   - meta:
       type: map
@@ -62,6 +60,7 @@ output:
       type: file
       description: Output in fasta format (only if --out_format 9)
       pattern: "*.fasta"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

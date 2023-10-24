@@ -1,29 +1,29 @@
 nextflow_process {
 
     name "Test Process CUSTOM_DUMPSOFTWAREVERSIONS"
-    script "modules/nf-core/custom/dumpsoftwareversions/main.nf"
+    script "../main.nf"
     process "CUSTOM_DUMPSOFTWAREVERSIONS"
+    tag "modules"
+    tag "modules_nfcore"
     tag "custom"
     tag "dumpsoftwareversions"
     tag "custom/dumpsoftwareversions"
-    tag "modules_nfcore"
 
     test("Should run without failures") {
-        setup {
-            run("FASTQC") {
-                script "modules/nf-core/fastqc/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ])
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = FASTQC.out.versions
+                def tool1_version = '''
+                TOOL1:
+                    tool1: 0.11.9
+                '''.stripIndent()
+
+                def tool2_version = '''
+                TOOL2:
+                    tool2: 1.9
+                '''.stripIndent()
+
+                input[0] = Channel.of(tool1_version, tool2_version).collectFile()
                 """
             }
         }
