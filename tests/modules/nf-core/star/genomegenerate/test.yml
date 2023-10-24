@@ -1,8 +1,8 @@
 - name: star genomegenerate test_star_genomegenerate
-  command: nextflow run ./tests/modules/nf-core/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/genomegenerate/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config
   tags:
-    - star
     - star/genomegenerate
+    - star
   files:
     - path: output/star/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -20,7 +20,7 @@
     - path: output/star/star/chrStart.txt
       md5sum: 8d3291e6bcdbe9902fbd7c887494173f
     - path: output/star/star/exonGeTrInfo.tab
-      md5sum: d04497f69d6ef889efd4d34fe63edcc4
+      md5sum: 72d4dd88d25e3c5b0bb72b12b4ac99a8
     - path: output/star/star/exonInfo.tab
       md5sum: 0d560290fab688b7268d88d5494bf9fe
     - path: output/star/star/geneInfo.tab
@@ -35,6 +35,7 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
+    - path: output/star/versions.yml
 
 - name: star genomegenerate test_star_genomegenerate stub
   command: nextflow run ./tests/modules/nf-core/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/genomegenerate/nextflow.config -stub-run

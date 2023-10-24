@@ -1,9 +1,11 @@
 - name: rsem calculateexpression test_rsem_calculateexpression
-  command: nextflow run ./tests/modules/nf-core/rsem/calculateexpression -entry test_rsem_calculateexpression -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rsem/calculateexpression/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rsem/calculateexpression -entry test_rsem_calculateexpression -c ./tests/config/nextflow.config
   tags:
     - rsem
     - rsem/calculateexpression
   files:
+    - path: output/rsem/genome.transcripts.fa
+      md5sum: 050c521a2719c2ae48267c1e65218f29
     - path: output/rsem/rsem/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
     - path: output/rsem/rsem/Log.out
@@ -20,7 +22,7 @@
     - path: output/rsem/rsem/chrStart.txt
       md5sum: 8d3291e6bcdbe9902fbd7c887494173f
     - path: output/rsem/rsem/exonGeTrInfo.tab
-      md5sum: d04497f69d6ef889efd4d34fe63edcc4
+      md5sum: 72d4dd88d25e3c5b0bb72b12b4ac99a8
     - path: output/rsem/rsem/exonInfo.tab
       md5sum: 0d560290fab688b7268d88d5494bf9fe
     - path: output/rsem/rsem/geneInfo.tab
@@ -64,3 +66,4 @@
       md5sum: de2e4490c98cc5383a86ae8225fd0a28
     - path: output/rsem/test.transcript.bam
       md5sum: ed681d39f5700ffc74d6321525330d93
+    - path: output/rsem/versions.yml

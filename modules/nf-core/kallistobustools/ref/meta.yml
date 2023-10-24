@@ -3,6 +3,7 @@ description: index creation for kb count quantification of single-cell data.
 keywords:
   - kallisto-bustools
   - index
+  - single-cell
 tools:
   - kb:
       description: kallisto|bustools (kb) is a tool developed for fast and efficient processing of single-cell OMICS data.
@@ -21,7 +22,7 @@ input:
       description: Genomic gtf file
       pattern: "*.{gtf,gtf.gz}"
   - workflow_mode:
-      type: value
+      type: string
       description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus}"
 output:

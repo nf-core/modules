@@ -1,33 +1,35 @@
 - name: simpleaf index test_simpleaf_index_expanded
-  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_expanded -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/simpleaf/index/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_expanded -c ./tests/config/nextflow.config
   tags:
-    - simpleaf
     - simpleaf/index
+    - simpleaf
   files:
     - path: output/simpleaf/human_genome/index/complete_ref_lens.bin
-      md5sum: 83d53fa7048affe5dfba4ba38f84fd5c
+      md5sum: 137fc2efdd3a8abbc78b2f424cb8424a
+    - path: output/simpleaf/human_genome/index/ctable.bin
     - path: output/simpleaf/human_genome/index/ctg_offsets.bin
       md5sum: c37313b499eb0dc580d962b82ac63f9e
     - path: output/simpleaf/human_genome/index/duplicate_clusters.tsv
       md5sum: c96ca031de4888558eec24fd13bd1c9b
     - path: output/simpleaf/human_genome/index/info.json
-      md5sum: a78d685bed73b8e19feddd1795c1360f
+      md5sum: b9dc394d11ec2cc1eb33f3bea97e65fd
     - path: output/simpleaf/human_genome/index/mphf.bin
       md5sum: c7ae1b883f0987fedc8bb61e139136a7
+    - path: output/simpleaf/human_genome/index/pos.bin
     - path: output/simpleaf/human_genome/index/pre_indexing.log
       contains:
         - "done building index"
     - path: output/simpleaf/human_genome/index/rank.bin
-      md5sum: 3b5c31ce5d3423b15687c59220d8ef3f
+      md5sum: 19bd28aaf850ce7943e75c3fc632b028
     - path: output/simpleaf/human_genome/index/refAccumLengths.bin
-      md5sum: ba84af8bcdfe540fb66a59d623f7dfde
+      md5sum: 89ed35496d5037bed5c24dc39a685ca3
     - path: output/simpleaf/human_genome/index/ref_indexing.log
       contains:
         - "ntHll estimated 54920 distinct k-mers, setting filter size to 2^20"
     - path: output/simpleaf/human_genome/index/reflengths.bin
-      md5sum: 83d53fa7048affe5dfba4ba38f84fd5c
+      md5sum: 137fc2efdd3a8abbc78b2f424cb8424a
     - path: output/simpleaf/human_genome/index/refseq.bin
-      md5sum: 64dc6c4822b648c2f36c7934ea9eeeed
+      md5sum: e379cb63739315ae129017e4aefa56b6
     - path: output/simpleaf/human_genome/index/seq.bin
     - path: output/simpleaf/human_genome/index/simpleaf_index.json
       contains:
@@ -46,7 +48,7 @@
     - path: output/simpleaf/human_genome/ref/roers_make-ref.json
       md5sum: 392af1580ee1cb8689353e66b2438ea1
     - path: output/simpleaf/human_genome/ref/roers_ref.fa
-      md5sum: b75f577627e23bd7708e2c0276a5299b
+      md5sum: 457b2f393d0f6ad8a4edb272bea2bdc6
     - path: output/simpleaf/human_genome/ref/t2g_3col.tsv
       contains:
         - "ENST00000400593"
@@ -56,10 +58,10 @@
     - path: output/simpleaf/versions.yml
 
 - name: simpleaf index test_simpleaf_index_direct
-  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_direct -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/simpleaf/index/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/simpleaf/index -entry test_simpleaf_index_direct -c ./tests/config/nextflow.config
   tags:
-    - simpleaf
     - simpleaf/index
+    - simpleaf
   files:
     - path: output/simpleaf/human_transcriptome/index/complete_ref_lens.bin
       md5sum: 75e3592b2ea434eeadb0ca19d684c206
