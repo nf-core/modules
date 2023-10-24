@@ -10,8 +10,8 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
     input:
     tuple val(meta),  path(vcf), path(bedpe), path(bed)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
-    tuple val(meta2), path(bwa_index)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(bwa_index)
 
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
@@ -25,7 +25,9 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def vcf = vcf ? "INPUT=${vcf}" : ""
+    if ("$bedpe" == "${prefix}.bedpe") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def bedpe = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
+    if ("$bed" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def bed   = bed ? "INPUT_BED=${bed}" : ""
     def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
     def ref = bwa_index ? "REFERENCE_SEQUENCE=${fasta}" : ""
@@ -37,8 +39,8 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
         ${bedpe} \\
         ${bed} \\
         ${ref} \\
-        OUTPUT_BEDPE=${prefix}_gridss_pon_breakpoint.bedpe \\
-        OUTPUT_BED=${prefix}_gridss_pon_single_breakend.bed \\
+        OUTPUT_BEDPE=${prefix}.bedpe \\
+        OUTPUT_BED=${prefix}.bed \\
         THREADS=$task.cpus \\
         $args
 
