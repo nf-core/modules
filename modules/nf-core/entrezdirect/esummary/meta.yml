@@ -21,7 +21,6 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
-
 input:
   - meta:
       type: map
@@ -37,7 +36,6 @@ input:
   - uids_file:
       type: file
       description: Text file containing multiple UIDs. Cannot be used at the same time as uid.
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: Query result in XML format
       pattern: "*.xml"
-
 authors:
+  - "@alxndrdiaz"
+maintainers:
   - "@alxndrdiaz"

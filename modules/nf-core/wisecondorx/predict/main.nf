@@ -30,6 +30,8 @@ process WISECONDORX_PREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = blacklist ? "--blacklist ${blacklist}" : ""
 
+    def plots = args.contains("--plot") ? "mv ${prefix}.plots/* ." : ""
+
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -39,6 +41,8 @@ process WISECONDORX_PREDICT {
         ${prefix} \\
         ${bed} \\
         ${args}
+
+    ${plots}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

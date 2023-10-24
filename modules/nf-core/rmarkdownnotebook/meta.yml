@@ -10,9 +10,7 @@ tools:
       homepage: https://rmarkdown.rstudio.com/
       documentation: https://rmarkdown.rstudio.com/lesson-1.html
       tool_dev_url: https://github.com/rstudio/rmarkdown
-
       licence: GPL-3
-
 params:
   - parametrize:
       type: boolean
@@ -29,7 +27,6 @@ params:
       description: |
         If true, include a parameter `meta` which contains the information specified
         via the `meta` input channel.
-
 input:
   - meta:
       type: map
@@ -49,7 +46,6 @@ input:
       type: file
       description: One or multiple files serving as input data for the notebook.
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -68,6 +64,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@grst"
+maintainers:
   - "@grst"
