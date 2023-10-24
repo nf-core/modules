@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v3
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
@@ -406,7 +406,7 @@ jobs:
         run: cat .github/tags.yml
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: ".github/tags.yml"
