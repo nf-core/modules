@@ -2,7 +2,7 @@ process MINDAGAP_MINDAGAP {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mindagap=0.0.2"
+    conda 'modules/nf-core/mindagap/mindagap/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_0' :
     'biocontainers/mindagap:0.0.2--pyhdfd78af_0' }"
