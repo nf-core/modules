@@ -20,7 +20,7 @@ jobs:
 
       # indication that the linting is being fixed
       - name: React on comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
@@ -52,7 +52,7 @@ jobs:
 
       - name: Post nothing-to-do comment
         if: steps.prettier_status.outputs.result == 'pass'
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
