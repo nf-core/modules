@@ -2,7 +2,7 @@ process PICARD_COLLECTWGSMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=3.1.0 r::r-base"
+    conda 'modules/nf-core/picard/collectwgsmetrics/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
         'biocontainers/picard:3.1.0--hdfd78af_0' }"

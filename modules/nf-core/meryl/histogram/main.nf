@@ -2,7 +2,7 @@ process MERYL_HISTOGRAM {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::meryl=1.3"
+    conda 'modules/nf-core/meryl/histogram/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
         'biocontainers/meryl:1.3--h87f3376_1' }"
