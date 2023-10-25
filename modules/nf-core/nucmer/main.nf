@@ -2,7 +2,7 @@ process NUCMER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mummer=3.23"
+    conda 'modules/nf-core/nucmer/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
         'biocontainers/mummer:3.23--pl5262h1b792b2_12' }"
