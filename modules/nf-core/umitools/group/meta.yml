@@ -9,11 +9,10 @@ keywords:
 tools:
   - umi_tools:
       description: >
-        UMI-tools contains tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs)
-        and single cell RNA-Seq cell barcodes
+        UMI-tools contains tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes
+
       documentation: https://umi-tools.readthedocs.io/en/latest/
       license: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -38,7 +37,6 @@ input:
       type: boolean
       description: |
         Whether or not to generate the flatfile describing the read groups, see docs for complete info of all columns
-
 output:
   - meta:
       type: map
@@ -57,6 +55,7 @@ output:
       type: file
       description: Flatfile describing the read groups, see docs for complete info of all columns
       pattern: "*.{tsv}"
-
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"
