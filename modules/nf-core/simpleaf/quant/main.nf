@@ -2,7 +2,7 @@ process SIMPLEAF_QUANT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::simpleaf=0.14.1"
+    conda 'modules/nf-core/simpleaf/quant/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/simpleaf:0.14.1--h4ac6f70_0':
         'biocontainers/simpleaf:0.14.1--h4ac6f70_0' }"

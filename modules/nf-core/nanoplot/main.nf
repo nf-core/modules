@@ -2,7 +2,7 @@ process NANOPLOT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::nanoplot=1.41.6"
+    conda 'modules/nf-core/nanoplot/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanoplot:1.41.6--pyhdfd78af_0' :
         'biocontainers/nanoplot:1.41.6--pyhdfd78af_0' }"
