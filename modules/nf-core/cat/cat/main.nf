@@ -22,14 +22,13 @@ process CAT_CAT {
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
 
-    // construct output file name using meta.id and file extension of the first input file
-    if ( file_list[0] =~ /^.+?(\.[\w\d]{1,5}\.gz$)/) {
-        // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
-        prefix   = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.', file_list[0].lastIndexOf('.')-1))}"
-    } else {
-        // for regular file extensions, only use a single suffix, e.g. .txt, .gz, etc.
-        prefix   = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
+    // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
+    def getFileSuffix(filename) {
+        def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
+        return match ? match[0][1] : filename.substring(filename.lastIndexOf('.')
     }
+
+    prefix = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
 
     // choose appropriate concatenation tool depending on input and output format
 
