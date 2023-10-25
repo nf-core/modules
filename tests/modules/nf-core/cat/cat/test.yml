@@ -21,7 +21,7 @@
     - cat
     - cat/cat
   files:
-    - path: output/cat/test.gz
+    - path: output/cat/test.gff3.gz
 
 - name: cat zipped zipped stub
   command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
