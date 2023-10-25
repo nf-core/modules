@@ -24,7 +24,7 @@ nextflow_process {
             }
 
             run("RTGTOOLS_VCFEVAL") {
-                script "../../../rtgtools/vcfeval/main.nf"
+                script "modules/nf-core/rtgtools/vcfeval/main.nf"
                 process {
                     """
                     input[0] = [
