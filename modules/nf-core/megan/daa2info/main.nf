@@ -2,7 +2,7 @@ process MEGAN_DAA2INFO {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::megan=6.21.7"
+    conda 'modules/nf-core/megan/daa2info/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/megan:6.21.7--h9ee0642_0':
         'biocontainers/megan:6.21.7--h9ee0642_0' }"
