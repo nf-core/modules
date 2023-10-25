@@ -27,6 +27,7 @@ process KAIJU_MKFMI {
         -o ${prefix} \\
         ${fasta}
     kaiju-mkfmi ${prefix}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
