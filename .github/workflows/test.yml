@@ -105,8 +105,6 @@ jobs:
             "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
             "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
           ]
-        exclude:
-          - tags: "nf-test"
     steps:
       - uses: actions/checkout@v4
 
