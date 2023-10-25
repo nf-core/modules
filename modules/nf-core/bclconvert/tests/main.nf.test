@@ -30,7 +30,7 @@ nextflow_process {
                     process.out.versions,
                     process.out.fastq,
                     process.out.undetermined,
-                    file(process.out.logs.get(0).get(1)).list(),
+                    file(process.out.logs.get(0).get(1)).list().sort(),
                     process.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
