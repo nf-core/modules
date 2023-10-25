@@ -1,0 +1,51 @@
+---
+name: "vcflib_vcfwave"
+description: write your description here
+keywords:
+  - decompose
+  - snps
+  - mnps
+tools:
+  - "vcflib":
+      description: "Command-line tools for manipulating VCF files"
+      homepage: https://github.com/vcflib/vcflib
+      documentation: https://github.com/vcflib/vcflib#USAGE
+      doi: "10.1101/2021.05.21.445151"
+      licence: "['MIT']"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@nvnieuwk"
