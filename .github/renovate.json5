@@ -20,6 +20,14 @@
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
             "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Process conda dependencies",
+            "fileMatch": ["^(?:modules/)?\\w+\\.yaml$"],
+            "matchStrings": [
+                "# renovate datasource=conda\\sdepName=(?<depName>.*?)\\s+- [a-z0-9]+==\"?(?<currentValue>.*)\"?"
+            ],
+            "datasourceTemplate": "conda"
         }
     ],
     "packageRules": [
