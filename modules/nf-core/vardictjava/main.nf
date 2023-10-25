@@ -28,6 +28,7 @@ process VARDICTJAVA {
     def input = somatic ? "-b \"${bams[0]}|${bams[1]}\"" : "-b ${bams}"
     def filter = somatic ? "testsomatic.R" : "teststrandbias.R"
     def convert_to_vcf = somatic ? "var2vcf_paired.pl" : "var2vcf_valid.pl"
+
     """
     export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g" "-Dsamjdk.reference_fasta=${fasta}"'
     vardict-java \\
