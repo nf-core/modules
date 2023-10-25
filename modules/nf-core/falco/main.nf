@@ -3,7 +3,7 @@ process FALCO {
     label 'process_single'
 
 
-    conda "bioconda::falco=1.2.1"
+    conda 'modules/nf-core/falco/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/falco:1.2.1--h867801b_3':
         'biocontainers/falco:1.2.1--h867801b_3' }"

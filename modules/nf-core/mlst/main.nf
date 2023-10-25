@@ -2,7 +2,7 @@ process MLST {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mlst=2.23.0"
+    conda 'modules/nf-core/mlst/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mlst:2.23.0--hdfd78af_0' :
         'biocontainers/mlst:2.23.0--hdfd78af_0' }"
