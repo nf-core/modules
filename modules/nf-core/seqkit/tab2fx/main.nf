@@ -2,7 +2,7 @@ process SEQKIT_TAB2FX {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::seqkit=2.5.1"
+    conda 'modules/nf-core/seqkit/tab2fx/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.5.1--h9ee0642_0' :
         'biocontainers/seqkit:2.5.1--h9ee0642_0' }"

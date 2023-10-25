@@ -2,7 +2,7 @@ process DSHBIO_EXPORTSEGMENTS {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::dsh-bio=2.3"
+    conda 'modules/nf-core/dshbio/exportsegments/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:2.3--hdfd78af_0' :
         'biocontainers/dsh-bio:2.3--hdfd78af_0' }"
