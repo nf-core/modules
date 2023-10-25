@@ -2,7 +2,7 @@ process GATK4_SITEDEPTHTOBAF {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda 'modules/nf-core/gatk4/sitedepthtobaf/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"

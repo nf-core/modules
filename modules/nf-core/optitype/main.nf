@@ -2,7 +2,7 @@ process OPTITYPE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::optitype=1.3.5"
+    conda 'modules/nf-core/optitype/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/optitype:1.3.5--0' :
         'biocontainers/optitype:1.3.5--0' }"
