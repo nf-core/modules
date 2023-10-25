@@ -2,7 +2,7 @@ process ARRIBA_ARRIBA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::arriba=2.4.0"
+    conda 'modules/nf-core/arriba/arriba/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
         'biocontainers/arriba:2.4.0--h0033a41_2' }"

@@ -2,7 +2,7 @@ process BEDTOOLS_BAMTOBED {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bedtools=2.31.0"
+    conda 'modules/nf-core/bedtools/bamtobed/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.31.0--hf5e1c6e_2' :
         'biocontainers/bedtools:2.31.0--hf5e1c6e_2' }"
