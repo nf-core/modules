@@ -2,7 +2,7 @@ process EXPANSIONHUNTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::expansionhunter=5.0.0"
+    conda 'modules/nf-core/expansionhunter/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunter:5.0.0--hf366f20_0' :
         'biocontainers/expansionhunter:5.0.0--hf366f20_0' }"

@@ -2,7 +2,7 @@ process SEQWISH_INDUCE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::seqwish=0.7.9"
+    conda 'modules/nf-core/seqwish/induce/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqwish:0.7.9--h5b5514e_0' :
         'biocontainers/seqwish:0.7.9--h5b5514e_0' }"

@@ -2,7 +2,7 @@ process DESEQ2_DIFFERENTIAL {
     tag "$meta"
     label 'process_medium'
 
-    conda "bioconda::bioconductor-deseq2=1.34.0"
+    conda 'modules/nf-core/deseq2/differential/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-deseq2:1.34.0--r41hc247a5b_3' :
         'biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"

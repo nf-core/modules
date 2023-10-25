@@ -3,7 +3,7 @@ process GTDBTK_CLASSIFYWF {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::gtdbtk=2.3.2"
+    conda 'modules/nf-core/gtdbtk/classifywf/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gtdbtk:2.3.2--pyhdfd78af_0' :
         'biocontainers/gtdbtk:2.3.2--pyhdfd78af_0' }"
