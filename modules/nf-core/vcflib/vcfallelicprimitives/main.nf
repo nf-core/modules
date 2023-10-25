@@ -12,8 +12,8 @@ process VCFLIB_VCFALLELICPRIMITIVES {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
