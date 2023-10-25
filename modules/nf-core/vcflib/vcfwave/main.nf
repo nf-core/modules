@@ -9,11 +9,11 @@ process VCFLIB_VCFWAVE {
         'biocontainers/vcflib:1.0.9--h146fbdb_4' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,7 +42,7 @@ process VCFLIB_VCFWAVE {
     def VERSION = '1.0.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.bam
+    touch ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
