@@ -2,7 +2,7 @@ process TRANSDECODER_LONGORF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::transdecoder=5.5.0"
+    conda 'modules/nf-core/transdecoder/longorf/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/transdecoder:5.5.0--pl5262hdfd78af_4' :
     'quay.io/comp-bio-aging/transdecoder' }"

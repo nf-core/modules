@@ -2,7 +2,7 @@ process SMOOVE_CALL {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::smoove=0.2.8"
+    conda 'modules/nf-core/smoove/call/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
         'biocontainers/smoove:0.2.8--h9ee0642_1' }"

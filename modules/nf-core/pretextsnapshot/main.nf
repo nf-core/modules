@@ -2,7 +2,7 @@ process PRETEXTSNAPSHOT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::pretextsnapshot=0.0.4"
+    conda 'modules/nf-core/pretextsnapshot/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pretextsnapshot:0.0.4--h7d875b9_0':
         'biocontainers/pretextsnapshot:0.0.4--h7d875b9_0' }"
