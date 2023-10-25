@@ -2,7 +2,7 @@ process NANOMONSV_PARSE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::nanomonsv=0.5.0"
+    conda 'modules/nf-core/nanomonsv/parse/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanomonsv:0.5.0--pyhdfd78af_0':
         'biocontainers/nanomonsv:0.5.0--pyhdfd78af_0' }"
