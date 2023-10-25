@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("Nanopore") {
+    test("sarscov2 nanopore [fastq]") {
 
         when {
             params {
@@ -36,7 +36,7 @@ nextflow_process {
     }
 
 
-    test("Nanopore plus Illumina single end") {
+    test("sarscov2 nanopore [fastq] + Illumina single-end [fastq]") {
 
         when {
             params {
@@ -64,7 +64,7 @@ nextflow_process {
     }
 
 
-    test("Nanopore plus Illumina paired end") {
+    test("sarscov2 nanopore [fastq] + Illumina paired-end [fastq]") {
 
         when {
             params {
