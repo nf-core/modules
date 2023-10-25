@@ -2,7 +2,7 @@ process GFAFFIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gfaffix=0.1.5"
+    conda 'modules/nf-core/gfaffix/environment.yml'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5--h031d066_0 ' :
