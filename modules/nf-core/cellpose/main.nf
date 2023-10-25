@@ -2,7 +2,7 @@ process CELLPOSE {
     tag "$meta.id"
     label 'process_medium'
 
-    container "docker.io/biocontainers/cellpose:2.1.1_cv2"
+    container "docker.io/biocontainers/cellpose:2.2.2_cv2"
 
     input:
     tuple val(meta), path(image)
@@ -24,7 +24,7 @@ process CELLPOSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--pretrained_model $model" : ""
-    def VERSION = '2.1.1'
+    def VERSION = '2.2.2'
     """
     cellpose \
     --image_path $image \
