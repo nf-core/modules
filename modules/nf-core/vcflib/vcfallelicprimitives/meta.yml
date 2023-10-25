@@ -1,0 +1,43 @@
+---
+name: "vcflib_vcfallelicprimitives"
+description: Realign reference and alternate alleles with WFA or SW, parsing out the primitive alleles into multiple VCF records. New records have IDs that reference the source record ID.  Genotypes are handled. Deletion alleles will result in haploid (missing allele) genotypes.
+keywords:
+  - decompose
+  - snps
+  - mnps
+tools:
+  - "vcflib":
+      description: "Command-line tools for manipulating VCF files"
+      homepage: https://github.com/vcflib/vcflib
+      documentation: https://github.com/vcflib/vcflib#USAGE
+      doi: "10.1101/2021.05.21.445151"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - vcf:
+      type: file
+      description: A VCF file with variants to be decomposed
+      pattern: "*.{vcf,vcf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: The decomposed VCF file
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@nvnieuwk"
