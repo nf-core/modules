@@ -2,7 +2,7 @@ process AMRFINDERPLUS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ncbi-amrfinderplus=3.11.18"
+    conda 'modules/nf-core/amrfinderplus/run/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.11.18--h283d18e_0':
         'biocontainers/ncbi-amrfinderplus:3.11.18--h283d18e_0' }"
@@ -24,7 +24,7 @@ process AMRFINDERPLUS_RUN {
     script:
     def args = task.ext.args ?: ''
     def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
-    def is_compressed_db = fasta.getName().endsWith(".gz") ? true : false
+    def is_compressed_db = db.getName().endsWith(".gz") ? true : false
     prefix = task.ext.prefix ?: "${meta.id}"
     organism_param = meta.containsKey("organism") ? "--organism ${meta.organism} --mutation_all ${prefix}-mutations.tsv" : ""
     fasta_name = fasta.getName().replace(".gz", "")

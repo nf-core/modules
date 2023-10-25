@@ -2,7 +2,7 @@ process GLIMPSE2_CONCORDANCE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::glimpse-bio=2.0.0"
+    conda 'modules/nf-core/glimpse2/concordance/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
         'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
@@ -56,6 +56,24 @@ process GLIMPSE2_CONCORDANCE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         glimpse2: "\$(GLIMPSE2_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix               = task.ext.prefix                    ?: "${meta.id}"
+    def args                 = task.ext.args                      ?: ""
+    def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "touch ${prefix}_r2_sites.txt.gz" : ""
+    """
+    touch ${prefix}.error.cal.txt.gz
+    touch ${prefix}.error.grp.txt.gz
+    touch ${prefix}.error.spl.txt.gz
+    touch ${prefix}.rsquare.grp.txt.gz
+    touch ${prefix}.rsquare.spl.txt.gz
+    ${rsquare_per_site_cmd}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }
