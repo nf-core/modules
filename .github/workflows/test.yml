@@ -59,9 +59,11 @@ jobs:
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
@@ -397,6 +399,8 @@ jobs:
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       - name: Combine all tags.yml files
         id: get_username
@@ -406,7 +410,7 @@ jobs:
         run: cat .github/tags.yml
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: ".github/tags.yml"
