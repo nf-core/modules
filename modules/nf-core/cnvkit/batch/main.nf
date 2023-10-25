@@ -2,7 +2,7 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
+    conda 'modules/nf-core/cnvkit/batch/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
         'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
