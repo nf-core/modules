@@ -94,7 +94,7 @@ jobs:
     runs-on: self-hosted
     name: nf-core-lint
     needs: [pytest-changes, nf-test-changes]
-    if: needs.pytest-changes.outputs.modules != '[]'
+    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
     strategy:
       fail-fast: false
       matrix:
