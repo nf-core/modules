@@ -2,7 +2,7 @@ process SAMTOOLS_SORT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::samtools=1.17"
+    conda 'modules/nf-core/samtools/sort/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
         'biocontainers/samtools:1.17--h00cdaf9_0' }"
