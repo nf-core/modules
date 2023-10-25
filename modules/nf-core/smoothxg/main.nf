@@ -2,7 +2,7 @@ process SMOOTHXG {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::smoothxg=0.7.1"
+    conda 'modules/nf-core/smoothxg/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoothxg:0.7.1--h40c17d1_0' :
         'biocontainers/smoothxg:0.7.1--h40c17d1_0' }"

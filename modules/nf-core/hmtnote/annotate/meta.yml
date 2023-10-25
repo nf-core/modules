@@ -9,10 +9,8 @@ tools:
       description: Human mitochondrial variants annotation using HmtVar.
       homepage: https://github.com/robertopreste/HmtNote
       documentation: https://hmtnote.readthedocs.io/en/latest/usage.html
-
       doi: "10.1101/600619"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: vcf file
       pattern: "*.vcf"
-
 output:
   - meta:
       type: map
@@ -36,6 +33,7 @@ output:
       type: file
       description: annotated vcf
       pattern: "*_annotated.vcf"
-
 authors:
+  - "@sysbiocoder"
+maintainers:
   - "@sysbiocoder"

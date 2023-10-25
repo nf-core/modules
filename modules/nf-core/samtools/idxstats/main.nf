@@ -2,7 +2,7 @@ process SAMTOOLS_IDXSTATS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::samtools=1.17"
+    conda 'modules/nf-core/samtools/idxstats/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
         'biocontainers/samtools:1.17--h00cdaf9_0' }"

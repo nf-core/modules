@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/Ecogenomics/GTDBTk
       doi: "10.1093/bioinformatics/btz848"
       licence: ["GNU General Public v3 (GPL v3)"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
       type: file
       description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen` mode is used (optional)
       pattern: "*.msh"
-
 output:
   - meta:
       type: map
@@ -83,5 +81,8 @@ output:
       description: A TSV summary of the genomes which GTDB-tk failed to classify.
       pattern: "*.{failed_genomes.tsv}"
 authors:
+  - "@skrakau"
+  - "@abhi18av"
+maintainers:
   - "@skrakau"
   - "@abhi18av"
