@@ -7,7 +7,7 @@ process CHECKM2_DATABASEDOWNLOAD {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkm2:1.0.1--pyh7cba7a3_0':
         'biocontainers/checkm2:1.0.1--pyh7cba7a3_0' }"
-    
+
     output:
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
     path("versions.yml")                                   , emit: versions
@@ -24,7 +24,7 @@ process CHECKM2_DATABASEDOWNLOAD {
     tar -xzf checkm2_database.tar.gz
     db_path=\$(find -name *.dmnd)
     MD5=\$(grep -o '\\.dmnd": "[^"]*"' CONTENTS.json | cut -d '"' -f 3)
-    
+ 
     md5sum -c <<< "\$MD5  \$db_path"
     mv \$db_path checkm2_db_v${db_version}.dmnd
 
