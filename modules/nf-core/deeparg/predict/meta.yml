@@ -17,7 +17,6 @@ tools:
       tool_dev_url: https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
       doi: "10.1186/s40168-018-0401-z"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -36,7 +35,6 @@ input:
       type: directory
       description: Path to a directory containing the deepARG pre-built models
       pattern: "*/"
-
 output:
   - meta:
       type: map
@@ -63,6 +61,7 @@ output:
       type: file
       description: Table containing sequences with an ARG-like probability of less than specified thresholds, and requires manual inspection
       pattern: "*.mapping.potential.ARG"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

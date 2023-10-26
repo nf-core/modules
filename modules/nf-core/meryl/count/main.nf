@@ -2,7 +2,7 @@ process MERYL_COUNT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::meryl=1.3"
+    conda 'modules/nf-core/meryl/count/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
         'biocontainers/meryl:1.3--h87f3376_1' }"

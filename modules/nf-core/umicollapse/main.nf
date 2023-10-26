@@ -2,7 +2,7 @@ process UMICOLLAPSE {
     tag "$meta.id"
     label "process_high_memory"
 
-    conda "bioconda::umicollapse=1.0.0"
+    conda 'modules/nf-core/umicollapse/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/umicollapse:1.0.0--hdfd78af_1' :
         'biocontainers/umicollapse:1.0.0--hdfd78af_1' }"

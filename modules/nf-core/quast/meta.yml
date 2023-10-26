@@ -25,7 +25,6 @@ input:
   - gff:
       type: file
       description: The genome GFF file. Has to contain at least a non-empty string dummy value.
-
 output:
   - quast:
       type: directory
@@ -54,7 +53,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@drpatelh"
+  - "@kevinmenden"
+maintainers:
   - "@drpatelh"
   - "@kevinmenden"
