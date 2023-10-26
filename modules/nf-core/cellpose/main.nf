@@ -26,6 +26,7 @@ process CELLPOSE {
     def model_command = model ? "--pretrained_model $model" : ""
     def VERSION = '2.2.2'
     """
+    export NUMBA_CACHE_DIR=\$(pwd)/tmp_numba
     cellpose \
     --image_path $image \
     --save_tif \
