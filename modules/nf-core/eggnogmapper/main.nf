@@ -2,7 +2,7 @@ process EGGNOGMAPPER {
     tag "$meta.id"
     label 'process_long'
 
-    conda "bioconda::eggnog-mapper=2.1.12"
+    conda 'modules/nf-core/eggnogmapper/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eggnog-mapper:2.1.12--pyhdfd78af_0':
         'biocontainers/eggnog-mapper:2.1.12--pyhdfd78af_0' }"
