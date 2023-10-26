@@ -2,7 +2,7 @@ process DIAMOND_BLASTX {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/diamond/blastp/environment.yml'
+    conda 'modules/nf-core/diamond/blastx/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/diamond:2.1.8--h43eeafb_0' :
         'biocontainers/diamond:2.1.8--h43eeafb_0' }"
