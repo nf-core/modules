@@ -4,10 +4,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "modules"
     tag "checkm2"
+    tag "checkm2/predict"
     script "modules/nf-core/checkm2/predict/main.nf"
     process "CHECKM2_PREDICT"
 
     test("Test CheckM2 Predict") {
+
+        setup {
+            run("CHECKM2_DATABASEDOWNLOAD") {
+                script "../../databasedownload/main.nf"
+            }
+        }
 
         when {
             params {
@@ -16,14 +23,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id: 'test'], [file(params.test_data['sarscov2']['illumina']['contigs_fasta'])] ]
-                input[1] = [ [compressed: true], file('https://zenodo.org/records/5571251/files/checkm2_database.tar.gz') ]
+                input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
                 """
             }
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out.checkm2_tsv, process.out.versions).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.checkm2_tsv, process.out.versions).match() }
+            )
         }
 
     }

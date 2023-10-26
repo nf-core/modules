@@ -16,19 +16,10 @@ process CHECKM2_PREDICT {
     tuple val(meta), path("${prefix}/quality_report.tsv"), emit: checkm2_tsv
     path("versions.yml")                                 , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
-
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    db = dbmeta.compressed ? 'CheckM2_database/uniref100.KO.1.dmnd' : db
     """
-    if [ '${dbmeta.compressed}' == true ]; then
-        # uncompress database, expects original db URL
-        tar -xzf checkm2_database.tar.gz
-    fi
-
     checkm2 \\
         predict \\
         --input ${fasta} \\
