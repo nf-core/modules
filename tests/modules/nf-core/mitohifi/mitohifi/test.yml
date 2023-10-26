@@ -1,5 +1,5 @@
-- name: mitohifi mitohifi test_mitohifi_mitohifi
-  command: nextflow run ./tests/modules/nf-core/mitohifi/mitohifi -entry test_mitohifi_mitohifi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mitohifi/mitohifi/nextflow.config
+- name: mitohifi mitohifi test_mitohifi_mitohifi_contigs
+  command: nextflow run ./tests/modules/nf-core/mitohifi/mitohifi -entry test_mitohifi_mitohifi_contigs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mitohifi/mitohifi/nextflow.config
   tags:
     - mitohifi
     - mitohifi/mitohifi
@@ -8,4 +8,16 @@
       md5sum: b91a09f857626cde2ac3ab0059e4d47b
     - path: output/mitohifi/final_mitogenome.gb
       md5sum: ff58567cd6c7f86d0110a249270dd1d7
+    - path: output/mitohifi/versions.yml
+
+- name: mitohifi mitohifi test_mitohifi_mitohifi_reads
+  command: nextflow run ./tests/modules/nf-core/mitohifi/mitohifi -entry test_mitohifi_mitohifi_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mitohifi/mitohifi/nextflow.config
+  tags:
+    - mitohifi
+    - mitohifi/mitohifi
+  files:
+    - path: output/mitohifi/final_mitogenome.fasta
+      md5sum: f49bee6e046ba58206be0bbb9dc689fd
+    - path: output/mitohifi/final_mitogenome.gb
+      md5sum: 10077fa6938d3da1aa875ff6c5585246
     - path: output/mitohifi/versions.yml
