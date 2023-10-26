@@ -1,0 +1,45 @@
+nextflow_process {
+
+    name "Test Process CHOPPER"
+    script "../main.nf"
+    process "CHOPPER"
+    tag "chopper"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [id:'test_out' ], // meta map
+                                file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+
+            def fastq_content = path(process.out.fastq.get(0).get(1)).linesGzip
+
+            assertAll(
+                { assert process.success },
+                // original pytest checks
+                { assert process.out.fastq.get(0).get(1) ==~ ".*/test_out.fastq.gz" },
+                { assert fastq_content.contains("@2109d790-67ec-4fd1-8931-6c7e61908ff3 runid=97ca62ca093ff43533aa34c38a10b1d6325e7e7b read=52274 ch=243 start_time=2021-02-05T23:27:30Z flow_cell_id=FAP51364 protocol_group_id=data sample_id=RN20097 barcode=barcode01 barcode_alias=barcode01")},
+                // additional nf-test checks
+                // Order of reads is not deterministic, so only assess whether the number of reads is correct
+                { assert snapshot(fastq_content.size()).match("number_of_lines") },
+                { assert snapshot(process.out.versions).match("versions") }
+
+            )
+        }
+
+    }
+
+}

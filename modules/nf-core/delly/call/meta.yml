@@ -5,16 +5,13 @@ keywords:
   - structural
   - variants
   - bcf
-
 tools:
   - delly:
       description: Structural variant discovery by integrated paired-end and split-read analysis
       homepage: https://github.com/dellytools/delly
       documentation: https://github.com/dellytools/delly/blob/master/README.md
-
       doi: "10.1093/bioinformatics/bts378"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -49,7 +46,6 @@ input:
       type: file
       description: Index of reference fasta file to identify split-reads
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -68,7 +64,9 @@ output:
       type: file
       description: A generated csi index that matches the bcf output (not generated for vcf files)
       pattern: "*.{bcf.csi}"
-
 authors:
+  - "@projectoriented"
+  - "@nvnieuwk"
+maintainers:
   - "@projectoriented"
   - "@nvnieuwk"

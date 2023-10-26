@@ -2,7 +2,7 @@ process SEQTK_RENAME {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::seqtk=1.3"
+    conda 'modules/nf-core/seqtk/rename/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
         'biocontainers/seqtk:1.3--h5bf99c6_3' }"

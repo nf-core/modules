@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/pachterlab/kallisto
       doi: "10.1038/nbt.3519"
       licence: "['BSD_2_clause']"
-
 input:
   - meta:
       type: map
@@ -36,7 +35,6 @@ input:
       type: file
       description: Optional tab separated file with chromosome names and lengths.
       pattern: "*.tsv"
-
 output:
   - meta:
       type: map
@@ -65,6 +63,7 @@ output:
       type: file
       description: A json file containing information about the run
       pattern: "run_info.json"
-
 authors:
+  - "@anoronh4"
+maintainers:
   - "@anoronh4"

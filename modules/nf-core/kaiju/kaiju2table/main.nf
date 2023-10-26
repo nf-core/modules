@@ -2,7 +2,7 @@ process KAIJU_KAIJU2TABLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::kaiju=1.8.2"
+    conda 'modules/nf-core/kaiju/kaiju2table/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
         'biocontainers/kaiju:1.8.2--h2e03b76_0' }"
