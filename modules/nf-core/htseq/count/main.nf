@@ -2,7 +2,7 @@ process HTSEQ_COUNT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::htseq=2.0.2"
+    conda 'modules/nf-core/htseq/count/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/htseq:2.0.2--py310ha14a713_0':
         'biocontainers/htseq:2.0.2--py310ha14a713_0' }"
