@@ -24,7 +24,7 @@ process CHECKM2_DATABASEDOWNLOAD {
     tar -xzf checkm2_database.tar.gz
     db_path=\$(find -name *.dmnd)
     MD5=\$(grep -o '\\.dmnd": "[^"]*"' CONTENTS.json | cut -d '"' -f 3)
- 
+
     md5sum -c <<< "\$MD5  \$db_path"
     mv \$db_path checkm2_db_v${db_version}.dmnd
 
