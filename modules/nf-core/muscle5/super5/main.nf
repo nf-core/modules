@@ -1,7 +1,7 @@
 process MUSCLE5_SUPER5 {
     tag "$meta.id"
     label 'process_medium'
-    conda "bioconda::muscle=5.1"
+    conda 'modules/nf-core/muscle5/super5/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/muscle:5.1--h9f5acd7_1':
         'biocontainers/muscle:5.1--h9f5acd7_1' }"
