@@ -4,7 +4,7 @@ process BISMARK_SUMMARY {
     conda 'modules/nf-core/bismark/summary/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
     val(bam)

@@ -5,7 +5,7 @@ process BISMARK_GENOMEPREPARATION {
     conda 'modules/nf-core/bismark/genomepreparation/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
     path fasta, stageAs: "BismarkIndex/*"

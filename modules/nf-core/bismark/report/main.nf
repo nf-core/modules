@@ -5,7 +5,7 @@ process BISMARK_REPORT {
     conda 'modules/nf-core/bismark/report/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
