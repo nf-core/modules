@@ -51,7 +51,7 @@ process VCFLIB_VCFALLELICPRIMITIVES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vcflib: $VERSION
     END_VERSIONS
     """
 }
