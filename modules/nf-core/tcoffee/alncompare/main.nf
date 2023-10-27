@@ -47,7 +47,7 @@ process TCOFFEE_ALNCOMPARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        t_coffee: \$( t_coffee -version | awk -F'ersion_' '{print \$2}' | cut -d ' ' -f 1 )
     END_VERSIONS
     """
 }

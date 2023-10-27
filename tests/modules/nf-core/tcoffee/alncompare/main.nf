@@ -17,8 +17,9 @@ workflow test_tcoffee_alncompare {
     ]
 
     ch_aln=FAMSA_ALIGN ( input , [[:],[]] ).alignment
-    ch_to_eval=ch_aln.combine(input2, by:0)
-
+    ch_ref=Channel.of(input2)
+    ch_to_eval=ch_aln.combine(ch_ref, by:0)
+    TCOFFEE_ALNCOMPARE( ch_to_eval )
 
 }
 
