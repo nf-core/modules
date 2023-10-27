@@ -8,9 +8,9 @@ workflow test_sentieon_tnfilter_base {
 
     input = [
         [ id:'test'], // meta map
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists: true),
+        file(params.niche_test['tnfilter']['vcf'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['tbi'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['stats'], checkIfExists: true),
         [],
         [],
         []
@@ -30,12 +30,12 @@ workflow test_sentieon_tnfilter_with_files {
 
     input = [
         [ id:'test'], // meta map
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists: true),
-        [ file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.contamination_data.tsv', checkIfExists: true) ],
-        [ file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.segments', checkIfExists: true) ],
-        [ file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.orientation_data.tsv', checkIfExists: true) ]
+        file(params.niche_test['tnfilter']['vcf'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['tbi'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['stats'], checkIfExists: true),
+        [ file(params.niche_test['tnfilter']['contamination_data'], checkIfExists: true) ],
+        [ file(params.niche_test['tnfilter']['segments'], checkIfExists: true) ],
+        [ file(params.niche_test['tnfilter']['orientation_data'], checkIfExists: true) ]
     ]
 
     fasta = [ [ id:'genome' ], // meta map
@@ -52,9 +52,9 @@ workflow test_sentieon_tnfilter_base_stubs {
 
     input = [
         [ id:'test'], // meta map
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists: true),
-        file('/home/ubuntu/test_data_tnhaplotyper2/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists: true),
+        file(params.niche_test['tnfilter']['vcf'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['tbi'], checkIfExists: true),
+        file(params.niche_test['tnfilter']['stats'], checkIfExists: true),
         [],
         [],
         []
