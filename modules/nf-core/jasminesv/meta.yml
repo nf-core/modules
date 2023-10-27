@@ -12,9 +12,7 @@ tools:
       homepage: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
       documentation: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
       tool_dev_url: "https://github.com/mkirsche/Jasmine"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -46,7 +44,6 @@ input:
       type: file
       description: Optional - A txt file containing the chromosomes and their aliases for normalization
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -61,6 +58,7 @@ output:
       type: file
       description: The merged VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

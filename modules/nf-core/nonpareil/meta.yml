@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/lmrodriguezr/nonpareil"
       doi: "10.1128/msystems.00039-"
       licence: "['Artistic License 2.0']"
-
 input:
   - meta:
       type: map
@@ -34,7 +33,6 @@ input:
       type: string
       description: Mode of redundancy estimation
       pattern: "kmer|alignment"
-
 output:
   - meta:
       type: map
@@ -61,6 +59,7 @@ output:
       type: file
       description: Redundancy summary file
       pattern: "*.npo"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"
