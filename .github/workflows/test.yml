@@ -79,7 +79,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Combine all tags.yml files
-        id: get_username
+        id: get_tags
         run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
 
       - name: debug
