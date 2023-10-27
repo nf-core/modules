@@ -31,7 +31,7 @@ process PROTEINORTHO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(proteinortho --version 2>&1) ))
+        proteinortho : \$(echo \$(proteinortho --version 2>&1) )
     END_VERSIONS
     """
 
