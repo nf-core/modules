@@ -2,7 +2,7 @@ process SORTMERNA {
     tag "$meta.id"
     label "process_high"
 
-    conda "bioconda::sortmerna=4.3.4"
+    conda 'modules/nf-core/sortmerna/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sortmerna:4.3.4--h9ee0642_0' :
         'biocontainers/sortmerna:4.3.4--h9ee0642_0' }"
