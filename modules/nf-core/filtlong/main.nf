@@ -2,7 +2,7 @@ process FILTLONG {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::filtlong=0.2.1"
+    conda 'modules/nf-core/filtlong/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/filtlong:0.2.1--h9a82719_0' :
         'biocontainers/filtlong:0.2.1--h9a82719_0' }"

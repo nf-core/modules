@@ -4,14 +4,12 @@ keywords:
   - bacterial
   - assembly
   - nanopore
-
 tools:
   - dragonflye:
       description: Microbial assembly pipeline for Nanopore reads
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: Assembly graph produced by Miniasm, or Raven
       pattern: "{miniasm,raven}-unpolished.gfa"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"
