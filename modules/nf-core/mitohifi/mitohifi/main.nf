@@ -42,9 +42,10 @@ process MITOHIFI_MITOHIFI {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def script_input = args2.equals("-r") ? "-r ${input}" :
-                args2.equals("-c") ? "-c ${input}" :
-                error "-r for reads or -c for contigs must be specified"
+    if (! ["-c", "-r"].contains(args2)) {
+        error "-r for reads or -c for contigs must be specified"
+    }
+    def script_input = "${args2} ${input}"
     """
     mitohifi.py ${script_input} \\
         -f ${ref_fa} \\
