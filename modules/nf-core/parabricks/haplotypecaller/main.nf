@@ -7,7 +7,7 @@ process PARABRICKS_HAPLOTYPECALLER {
         exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
 
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
