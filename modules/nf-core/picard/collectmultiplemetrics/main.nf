@@ -2,10 +2,10 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=2.27.4"
+    conda 'modules/nf-core/picard/collectmultiplemetrics/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
+        'biocontainers/picard:3.1.0--hdfd78af_0' }"
 
     input:
     tuple val(meta) , path(bam), path(bai)
@@ -14,7 +14,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
 
     output:
     tuple val(meta), path("*_metrics"), emit: metrics
-    tuple val(meta), path("*.pdf")    , emit: pdf
+    tuple val(meta), path("*.pdf")    , emit: pdf, optional: true
     path  "versions.yml"              , emit: versions
 
     when:
@@ -24,15 +24,15 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard CollectMultipleMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
     picard \\
-        -Xmx${avail_mem}g \\
+        -Xmx${avail_mem}M \\
         CollectMultipleMetrics \\
         $args \\
         --INPUT $bam \\

@@ -31,7 +31,7 @@ parse_args <- function(x){
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -47,7 +47,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
         file,
         sep = separator,
         header = header,
-        row.names = row.names
+        row.names = row.names,
+        check.names = check.names
     )
 }
 
@@ -65,7 +66,10 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+    df[,columns] <- format(
+        data.frame(df[, columns], check.names = FALSE),
+        nsmall = digits
+    )
 
     # Convert columns back to numeric
 
@@ -89,16 +93,20 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 # Set defaults and classes
 
 opt <- list(
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file = '$counts',
     sample_file = '$samplesheet',
-    contrast_variable = NULL,
-    reference_level = NULL,
-    treatment_level = NULL,
+    contrast_variable = '$contrast_variable',
+    reference_level = '$reference',
+    target_level = '$target',
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
     sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
+    subset_to_contrast_samples = FALSE,
+    exclude_samples_col = NULL,
+    exclude_samples_values = NULL,
     test = "Wald",
     fit_type = "parametric",
     sf_type = 'ratio',
@@ -136,7 +144,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -174,7 +182,8 @@ count.table <-
     read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
-        row.names = opt\$gene_id_col
+        row.names = opt\$gene_id_col,
+        check.names = FALSE
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
@@ -249,6 +258,33 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
     }
 }
 
+# Optionally, subset to only the samples involved in the contrast
+
+if (opt\$subset_to_contrast_samples){
+    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    count.table <- count.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
+}
+
+# Optionally, remove samples with specified values in a given field (probably
+# don't use this as well as the above)
+
+if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+    exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
+
+    if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
+        stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
+    }
+
+    print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
+    sample_selector <- ! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values
+
+    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    count.table <- count.table[, selected_samples]
+    sample.sheet <- sample.sheet[selected_samples, ]
+}
+
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
@@ -264,7 +300,8 @@ for (v in c(blocking.vars, contrast_variable)) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
-# Variable of interest goes last, see https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+# Variable of interest goes last, see
+# https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 
 model <- paste(model, contrast_variable, sep = ' + ')
 
@@ -313,7 +350,7 @@ comp.results <-
         minmu = opt\$minmu,
         contrast = c(
             contrast_variable,
-            c(opt\$treatment_level, opt\$reference_level)
+            c(opt\$target_level, opt\$reference_level)
         )
     )
 
@@ -322,7 +359,7 @@ if (opt\$shrink_lfc){
         type = 'ashr',
         contrast = c(
             contrast_variable,
-            c(opt\$treatment_level, opt\$reference_level)
+            c(opt\$target_level, opt\$reference_level)
         )
     )
 }
@@ -333,12 +370,8 @@ if (opt\$shrink_lfc){
 ################################################
 ################################################
 
-prefix_part_names <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
-prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
-
 contrast.name <-
-    paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
+    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of
@@ -347,9 +380,10 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 write.table(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results))
+        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
+        check.names = FALSE
     ),
-    file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -359,7 +393,7 @@ write.table(
 # Dispersion plot
 
 png(
-    file = paste(output_prefix, 'deseq2.dispersion.png', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
     width = 600,
     height = 600
 )
@@ -368,15 +402,19 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
+saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
-sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)))
+sf_df = data.frame(
+    sample = names(sizeFactors(dds)),
+    data.frame(sizeFactors(dds), check.names = FALSE),
+    check.names = FALSE
+)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -386,8 +424,12 @@ write.table(
 # Write specified matrices
 
 write.table(
-    data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
-    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    data.frame(
+        gene_id=rownames(counts(dds)),
+        counts(dds, normalized = TRUE),
+        check.names = FALSE
+    ),
+    file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -408,9 +450,12 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     write.table(
         data.frame(
             gene_id=rownames(counts(dds)),
-            round_dataframe_columns(data.frame(assay(vs_mat)))
+            round_dataframe_columns(
+                data.frame(assay(vs_mat), check.names = FALSE)
+            ),
+            check.names = FALSE
         ),
-        file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
+        file = paste(opt\$output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -424,7 +469,7 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
 print(sessionInfo())
 sink()
 

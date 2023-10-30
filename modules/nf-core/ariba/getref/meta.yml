@@ -11,14 +11,12 @@ tools:
       homepage: "https://sanger-pathogens.github.io/ariba/"
       documentation: "https://sanger-pathogens.github.io/ariba/"
       tool_dev_url: "https://github.com/sanger-pathogens/ariba"
-      doi: "110.1099/mgen.0.000131"
+      doi: "10.1099/mgen.0.000131"
       licence: "['GPL v3']"
-
 input:
   - db_name:
       type: string
       description: A database to setup up for Ariba
-
 output:
   - versions:
       type: file
@@ -28,6 +26,7 @@ output:
       type: file
       description: An Ariba prepared database
       pattern: "*.tar.gz"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

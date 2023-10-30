@@ -2,10 +2,10 @@ process PYDAMAGE_ANALYZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pydamage=0.70"
+    conda 'modules/nf-core/pydamage/analyze/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
-        'quay.io/biocontainers/pydamage:0.70--pyhdfd78af_0' }"
+        'biocontainers/pydamage:0.70--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

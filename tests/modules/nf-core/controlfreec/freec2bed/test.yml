@@ -5,7 +5,8 @@
     - controlfreec
   files:
     - path: output/controlfreec/test.bed
-      md5sum: abe10b7ce94ba903503e697394c17297
+      md5sum: 833920178e4f40a296d8eab029caf086
+    - path: output/controlfreec/versions.yml
 
 - name: controlfreec freec2bed test_controlfreec_freec2bed_single
   command: nextflow run ./tests/modules/nf-core/controlfreec/freec2bed -entry test_controlfreec_freec2bed_single -c ./tests/config/nextflow.config -stub-run
@@ -14,3 +15,4 @@
     - controlfreec
   files:
     - path: output/controlfreec/test.bed
+    - path: output/controlfreec/versions.yml

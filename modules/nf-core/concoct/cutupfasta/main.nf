@@ -3,10 +3,10 @@ process CONCOCT_CUTUPFASTA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::concoct=1.1.0"
+    conda 'modules/nf-core/concoct/cutupfasta/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py38h7be5676_2':
-        'quay.io/biocontainers/concoct:1.1.0--py38h7be5676_2' }"
+        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py311h245ed52_4':
+        'biocontainers/concoct:1.1.0--py311h245ed52_4' }"
 
     input:
     tuple val(meta), path(fasta)

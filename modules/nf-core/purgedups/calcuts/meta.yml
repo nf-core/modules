@@ -10,9 +10,8 @@ tools:
       homepage: "https://github.com/dfguan/purge_dups"
       documentation: "https://github.com/dfguan/purge_dups"
       tool_dev_url: "https://github.com/dfguan/purge_dups"
-      doi: "https://doi.org/10.1093/bioinformatics/btaa025"
+      doi: "10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: Histogram of coverage
       pattern: "*.stat"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: Log file
       pattern: ".calcuts.log"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

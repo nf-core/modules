@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/jkbonfield/crumble"
       doi: "10.1093/bioinformatics/bty608"
       licence: "['multiple BSD style licenses']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,12 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
+  - keepbed:
+      type: file
+      description: BED file defining regions to keep quality
+  - bedout:
+      type: boolean
+      description: set to true to ouput suspicious regions to a BED file
 output:
   - meta:
       type: map
@@ -49,8 +53,9 @@ output:
       pattern: "*.{sam}"
   - bed:
       type: file
-      description: use 'ext.args = "-b ${meta.id}.bed"' to generate optional suspicious regions BED file
+      description: optional suspicious regions BED file
       pattern: "*{bed}"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

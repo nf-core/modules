@@ -10,9 +10,9 @@ tools:
       homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl-convert.html"
       documentation: "https://support-docs.illumina.com/SW/BCL_Convert/Content/SW/FrontPages/BCL_Convert.htm"
       licence: "ILLUMINA"
-
 input:
   - meta:
+      type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
@@ -21,9 +21,10 @@ input:
       description: "Input samplesheet"
       pattern: "*.{csv}"
   - run_dir:
-      type: directory
-      description: "Input run directory containing RunInfo.xml and BCL data"
-
+      type: file
+      description: |
+        Input run directory containing RunInfo.xml and BCL data
+        Could be a directory or a tar of the directory
 output:
   - versions:
       type: file
@@ -58,4 +59,6 @@ output:
       description: Interop files
       pattern: "*.{bin}"
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

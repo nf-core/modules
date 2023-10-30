@@ -8,12 +8,10 @@ keywords:
 tools:
   - deeptools:
       description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
-      homepage:
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -26,7 +24,6 @@ input:
         gzipped matrix file produced by deeptools_
         computematrix deeptools utility
       pattern: "*.{mat.gz}"
-
 output:
   - meta:
       type: map
@@ -48,8 +45,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@emiller88"
+  - "@drpatelh"
+  - "@joseespinosa"
+maintainers:
   - "@emiller88"
   - "@drpatelh"
   - "@joseespinosa"

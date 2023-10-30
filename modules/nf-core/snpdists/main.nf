@@ -2,10 +2,10 @@ process SNPDISTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::snp-dists=0.8.2"
+    conda 'modules/nf-core/snpdists/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0' :
-        'quay.io/biocontainers/snp-dists:0.8.2--h5bf99c6_0' }"
+        'biocontainers/snp-dists:0.8.2--h5bf99c6_0' }"
 
     input:
     tuple val(meta), path(alignment)

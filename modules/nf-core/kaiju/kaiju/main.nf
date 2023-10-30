@@ -2,10 +2,10 @@ process KAIJU_KAIJU {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::kaiju=1.8.2"
+    conda 'modules/nf-core/kaiju/kaiju/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
-        'quay.io/biocontainers/kaiju:1.8.2--h5b5514e_1' }"
+        'biocontainers/kaiju:1.8.2--h5b5514e_1' }"
 
     input:
     tuple val(meta), path(reads)

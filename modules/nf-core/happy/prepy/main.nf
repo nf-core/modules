@@ -3,10 +3,10 @@ process HAPPY_PREPY {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::hap.py=0.3.14"
+    conda 'modules/nf-core/happy/prepy/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'quay.io/biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
 
     input:
     tuple val(meta), path(vcf), path(bed)

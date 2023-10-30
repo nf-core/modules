@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/katholt/genotyphi"
       documentation: "https://github.com/katholt/genotyphi"
       tool_dev_url: "https://github.com/katholt/genotyphi"
-      doi: "https://github.com/katholt/genotyphi"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: JSON formatted file of Mykrobe results
       pattern: "*.json"
-
 output:
   - meta:
       type: map
@@ -37,6 +34,7 @@ output:
       type: file
       description: A tab-delimited file of predicted genotypes
       pattern: "*.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -13,9 +13,7 @@ tools:
       homepage: "https://github.com/Illumina/ExpansionHunterDenovo"
       documentation: "https://github.com/Illumina/ExpansionHunterDenovo/blob/master/documentation/00_Introduction.md"
       tool_dev_url: "https://github.com/Illumina/ExpansionHunterDenovo"
-      doi: ""
       licence: "['Apache License 2.0']"
-
 input:
   - meta:
       type: map
@@ -30,15 +28,24 @@ input:
       type: file
       description: Index of the BAM/CRAM file
       pattern: "*.{bai,crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: The FASTA reference file
       pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta_fai:
       type: file
       description: The index of the FASTA reference file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -61,6 +68,7 @@ output:
       type: file
       description: The JSON file containing the STR profile
       pattern: "*.json"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

@@ -1,16 +1,14 @@
 name: vcftools
 description: A set of tools written in Perl and C++ for working with VCF files
-keywords: VCF
+keywords:
+  - VCF
   - sort
 tools:
   - vcftools:
       description: A set of tools written in Perl and C++ for working with VCF files. This package only contains the C++ libraries whereas the package perl-vcftools-vcf contains the perl libraries
       homepage: http://vcftools.sourceforge.net/
       documentation: http://vcftools.sourceforge.net/man_latest.html
-      tool_dev_url: None
-      doi:
       licence: ["LGPL"]
-
 input:
   - meta:
       type: map
@@ -26,7 +24,6 @@ input:
   - diff_variant_file:
       type: file
       description: secondary variant file which can be used with the 'diff' suite of tools (optional)
-
 output:
   - meta:
       type: map
@@ -289,6 +286,7 @@ output:
       type: file
       description: Switch errors found between sites (optional)
       pattern: "*.diff.switch"
-
 authors:
+  - "@Mark-S-Hill"
+maintainers:
   - "@Mark-S-Hill"

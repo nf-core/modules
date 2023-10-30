@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/kblin/ncbi-genome-download
       documentation: https://github.com/kblin/ncbi-genome-download
       tool_dev_url: https://github.com/kblin/ncbi-genome-download
-      doi: ""
       licence: ["Apache Software License"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: List of accessions (one per line) to download
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -86,6 +83,7 @@ output:
       type: file
       description: Tab-delimited text file reporting statistics for the assembly
       pattern: "*_assembly_stats.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

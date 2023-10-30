@@ -2,10 +2,10 @@ process SEMIBIN_SINGLEEASYBIN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::semibin=1.4.0"
+    conda 'modules/nf-core/semibin/singleeasybin/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/semibin:1.4.0--pyh7cba7a3_0':
-        'quay.io/biocontainers/semibin:1.4.0--pyh7cba7a3_0' }"
+        'biocontainers/semibin:1.4.0--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(fasta), path(bam)

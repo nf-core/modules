@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-params.enable_conda = true
 
 include { GRAPHTYPER_GENOTYPE                               } from '../../../../../modules/nf-core/graphtyper/genotype/main.nf'
 include { GRAPHTYPER_GENOTYPE as GRAPHTYPER_GENOTYPE_REGION } from '../../../../../modules/nf-core/graphtyper/genotype/main.nf'

@@ -2,10 +2,10 @@ process BAMUTIL_TRIMBAM {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bamutil=1.0.15"
+    conda 'modules/nf-core/bamutil/trimbam/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
-        'quay.io/biocontainers/bamutil:1.0.15--h2e03b76_1' }"
+        'biocontainers/bamutil:1.0.15--h2e03b76_1' }"
 
     input:
     tuple val(meta), path(bam), val(trim_left), val(trim_right)

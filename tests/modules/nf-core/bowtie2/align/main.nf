@@ -23,6 +23,42 @@ workflow test_bowtie2_align_single_end {
     BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
 }
 
+workflow test_bowtie2_align_single_end_sam {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [ id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    save_unaligned = false
+    sort = false
+
+    BOWTIE2_BUILD ( fasta )
+    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
+}
+
+workflow test_bowtie2_align_single_end_sam2 {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+        ]
+    ]
+    fasta = [
+        [ id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    save_unaligned = false
+    sort = false
+
+    BOWTIE2_BUILD ( fasta )
+    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort )
+}
+
 workflow test_bowtie2_align_single_end_sorted {
     input = [
         [ id:'test', single_end:true ], // meta map

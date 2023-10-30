@@ -15,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/chhylp123/hifiasm
       doi: "10.1038/s41592-020-01056-5"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,12 @@ input:
   - use_parental_kmers:
       type: logical
       description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
-
+  - hic_read1:
+      type: file
+      description: Hi-C data Forward reads.
+  - hic_read2:
+      type: file
+      description: Hi-C data Reverse reads.
 output:
   - meta:
       type: map
@@ -82,6 +86,9 @@ output:
       type: file
       description: Reverse overlaps
       pattern: "*.ovlp.reverse.bin"
-
 authors:
   - "@sidorov-si"
+  - "@scorreard"
+maintainers:
+  - "@sidorov-si"
+  - "@scorreard"

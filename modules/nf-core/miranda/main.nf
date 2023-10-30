@@ -2,10 +2,10 @@ process MIRANDA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::miranda=3.3a"
+    conda 'modules/nf-core/miranda/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miranda:3.3a--h779adbc_3':
-        'quay.io/biocontainers/miranda:3.3a--h779adbc_3' }"
+        'biocontainers/miranda:3.3a--h779adbc_3' }"
 
     input:
     tuple val(meta), path(query)

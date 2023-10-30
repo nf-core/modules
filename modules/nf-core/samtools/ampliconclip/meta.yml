@@ -12,10 +12,9 @@ tools:
         short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
         These files are generated as output by short read aligners like BWA.
       homepage: http://www.htslib.org/
-      documentation: hhttp://www.htslib.org/doc/samtools.html
+      documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -36,7 +35,6 @@ input:
   - save_clipstats:
       type: value
       description: Save clipping stats to a file
-
 output:
   - meta:
       type: map
@@ -59,6 +57,7 @@ output:
       type: file
       description: Filtered reads BAM file
       pattern: "*.{cliprejects.bam}"
-
 authors:
+  - "@bjohnnyd"
+maintainers:
   - "@bjohnnyd"

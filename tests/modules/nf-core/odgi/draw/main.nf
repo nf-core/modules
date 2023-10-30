@@ -8,8 +8,8 @@ workflow test_odgi_draw {
 
     input = [ [ id:'test' ],
               file(params.test_data['homo_sapiens']['pangenome']['odgi']['pangenome_og'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['pangenome']['odgi']['pangenome_lay'], checkIfExists: true)
             ]
-    layout = [ file(params.test_data['homo_sapiens']['pangenome']['odgi']['pangenome_lay'], checkIfExists: true) ]
 
-    ODGI_DRAW ( input, layout )
+    ODGI_DRAW ( input )
 }

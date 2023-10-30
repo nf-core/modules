@@ -9,9 +9,8 @@ tools:
       homepage: "https://github.com/ExaScience/elprep"
       documentation: "https://github.com/ExaScience/elprep"
       tool_dev_url: "https://github.com/ExaScience/elprep"
-      doi: "10.1371"
+      doi: "10.1371/journal.pone.0244471"
       licence: "['AGPL v3']"
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: file
       description: List of BAM/SAM files
       pattern: "*.{bam,sam}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: List of split BAM/SAM files
       pattern: "*.{bam,sam}"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

@@ -6,8 +6,10 @@ include { KALLISTO_INDEX } from '../../../../../modules/nf-core/kallisto/index/m
 
 workflow test_kallisto_index {
 
-    def input = []
-    input = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test_fasta' ], // meta map
+        [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    ]
 
-    KALLISTO_INDEX ( input )
+    KALLISTO_INDEX ( fasta )
 }

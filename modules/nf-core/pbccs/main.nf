@@ -2,10 +2,10 @@ process PBCCS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pbccs=6.4.0"
+    conda 'modules/nf-core/pbccs/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0' :
-        'quay.io/biocontainers/pbccs:6.4.0--h9ee0642_0' }"
+        'biocontainers/pbccs:6.4.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam), path(pbi)

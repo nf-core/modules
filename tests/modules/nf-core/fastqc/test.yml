@@ -1,13 +1,3 @@
-- name: fastqc test_fastqc_single_end
-  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
-  tags:
-    - fastqc
-  files:
-    - path: output/fastqc/test_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_fastqc.zip
-
 - name: fastqc test_fastqc_paired_end
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:

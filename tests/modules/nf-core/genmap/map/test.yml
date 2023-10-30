@@ -1,0 +1,15 @@
+- name: genmap map test_genmap_map
+  command: nextflow run ./tests/modules/nf-core/genmap/map -entry test_genmap_map -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/genmap/map/nextflow.config
+  tags:
+    - genmap/map
+    - genmap
+  files:
+    - path: output/genmap/test_map.bedgraph
+      md5sum: 27ca54c920f3ff0c5985384e557a40f2
+    - path: output/genmap/test_map.csv
+      md5sum: 4167a6c7ffbecc1a239c5c1e16b2cbc5
+    - path: output/genmap/test_map.txt
+      md5sum: 7f9aeaa3d174bb5e6f552efd4f857b4e
+    - path: output/genmap/test_map.wig
+      md5sum: c940a5c35af6ac1c11ecc87b7662fc2a
+    - path: output/genmap/versions.yml

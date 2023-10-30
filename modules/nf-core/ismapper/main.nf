@@ -2,10 +2,10 @@ process ISMAPPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ismapper=2.0.2"
+    conda 'modules/nf-core/ismapper/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ismapper:2.0.2--pyhdfd78af_1' :
-        'quay.io/biocontainers/ismapper:2.0.2--pyhdfd78af_1' }"
+        'biocontainers/ismapper:2.0.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads), path(reference), path(query)

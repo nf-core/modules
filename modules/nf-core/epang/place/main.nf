@@ -2,10 +2,10 @@ process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::epa-ng=0.3.8"
+    conda 'modules/nf-core/epang/place/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
-        'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
+        'biocontainers/epa-ng:0.3.8--h9a82719_1' }"
 
     input:
     tuple val(meta), path(queryaln), path(referencealn), path(referencetree)

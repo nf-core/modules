@@ -8,16 +8,14 @@ keywords:
   - germline variant calling
   - bacterial variant calling
   - bayesian
-
 tools:
   - freebayes:
       description: Bayesian haplotype-based polymorphism discovery and genotyping
       homepage: https://github.com/freebayes/freebayes
       documentation: https://github.com/freebayes/freebayes
       tool_dev_url: https://github.com/freebayes/freebayes
-      doi: "arXiv:1207.3907"
+      doi: "10.48550/arXiv.1207.3907"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -60,7 +58,6 @@ input:
         or a region-specific format:
         seq_name start end sample_name copy_number
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -75,8 +72,11 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@maxibor"
+  - "@FriederikeHanssen"
+  - "@maxulysse"
+maintainers:
   - "@maxibor"
   - "@FriederikeHanssen"
   - "@maxulysse"

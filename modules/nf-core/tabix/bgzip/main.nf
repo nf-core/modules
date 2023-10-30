@@ -2,10 +2,10 @@ process TABIX_BGZIP {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::tabix=1.11"
+    conda 'modules/nf-core/tabix/bgzip/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'quay.io/biocontainers/tabix:1.11--hdfd78af_0' }"
+        'biocontainers/tabix:1.11--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input)

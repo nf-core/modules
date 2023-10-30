@@ -8,9 +8,7 @@ tools:
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-      doi: ""
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -20,7 +18,6 @@ input:
   - input:
       type: file
       description: pairs file
-
 output:
   - meta:
       type: map
@@ -39,6 +36,7 @@ output:
       type: file
       description: Rest pairs file.
       pattern: "*.{unselected.pairs.gz}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

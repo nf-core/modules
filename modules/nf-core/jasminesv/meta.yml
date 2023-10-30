@@ -12,9 +12,7 @@ tools:
       homepage: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
       documentation: "https://github.com/mkirsche/Jasmine/wiki/Jasmine-User-Manual"
       tool_dev_url: "https://github.com/mkirsche/Jasmine"
-      doi: ""
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -25,8 +23,7 @@ input:
       type: files
       description: |
         The VCF files that need to be merged
-        Only supports unzipped VCFs: https://github.com/mkirsche/Jasmine/issues/31
-      pattern: "*.vcf"
+      pattern: "*.{vcf,vcf.gz}"
   - bams:
       type: files
       description: Optional - The BAM files from which the VCFs were created
@@ -47,7 +44,6 @@ input:
       type: file
       description: Optional - A txt file containing the chromosomes and their aliases for normalization
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -61,7 +57,8 @@ output:
   - vcf:
       type: file
       description: The merged VCF file
-      pattern: "*.vcf"
-
+      pattern: "*.vcf.gz"
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

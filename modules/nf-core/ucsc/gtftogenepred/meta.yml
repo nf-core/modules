@@ -9,12 +9,8 @@ keywords:
 tools:
   - ucsc:
       description: Convert GTF files to GenePred format
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
 input:
   - meta:
       type: map
@@ -25,7 +21,6 @@ input:
       type: file
       description: GTF file
       pattern: "*.{gtf}"
-
 output:
   - meta:
       type: map
@@ -44,7 +39,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@BarryDigby"
+  - "@anoronh4"
+maintainers:
   - "@BarryDigby"
   - "@anoronh4"
