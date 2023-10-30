@@ -30,9 +30,9 @@ process PURECN_COVERAGE {
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
@@ -47,7 +47,6 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 
     stub:
 
@@ -59,9 +58,9 @@ process PURECN_COVERAGE {
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
     touch ${prefix}.txt
     touch ${prefix}.bed
@@ -74,5 +73,4 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 }
