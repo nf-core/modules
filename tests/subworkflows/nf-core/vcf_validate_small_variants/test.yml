@@ -1,0 +1,178 @@
+- name: vcf_validate_small_variants test_vcf_validate_small_variants_happy
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_validate_small_variants -entry test_vcf_validate_small_variants_happy -c ./tests/config/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+    - rtgtools
+    - rtgtools/rocplot
+    - rtgtools/vcfeval
+    - subworkflows
+    - subworkflows/vcf_validate_small_variants
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: 494f93d3a2f5ea5af9debece4b0e4055
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
+    - path: output/happy/test.runinfo.json
+    - path: output/happy/test.summary.csv
+      md5sum: 9365186b70c0bfb71630ba16d7b5089b
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
+
+- name: vcf_validate_small_variants test_vcf_validate_small_variants_vcfeval
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_validate_small_variants -entry test_vcf_validate_small_variants_vcfeval -c ./tests/config/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+    - rtgtools
+    - rtgtools/rocplot
+    - rtgtools/vcfeval
+    - subworkflows
+    - subworkflows/vcf_validate_small_variants
+  files:
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: e77fcb9c4d5681d1a4515092b19abcb6
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: 1f189459a9f850f2eae6b30e05450d1b
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: 6b8c9c1bbb9e006115e7a78a7f251d83
+    - path: output/rtgtools/test.phasing.txt
+      md5sum: 31988234bee208cacb3de90dabe1797f
+    - path: output/rtgtools/test.png
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: f606d23198860311a02095d39bb3b62b
+    - path: output/rtgtools/test.summary.txt
+      md5sum: 8d118b86bc36be68e41e8861e881d259
+    - path: output/rtgtools/test.svg
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 2fa8bd1d29864ede647e40c402298a29
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: c9ddf5f267f9a2377c1be8caa239e9e0
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: e349eb3b68c45456b655ace6735eedde
+    - path: output/untar/genome_sdf/done
+      md5sum: 8b5623b26ee9b8722816afbec270bff0
+    - path: output/untar/genome_sdf/format.log
+      md5sum: af32e927232911267e07eeea79ef4a23
+    - path: output/untar/genome_sdf/mainIndex
+      md5sum: c327fb388c337349ebb84f630641de4e
+    - path: output/untar/genome_sdf/nameIndex0
+      md5sum: 4d998ed1e33bc94fb84f2a83008991cd
+    - path: output/untar/genome_sdf/namedata0
+      md5sum: 007ddfc6239aa830f508b9f689bac780
+    - path: output/untar/genome_sdf/namepointer0
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/untar/genome_sdf/progress
+      md5sum: 1e064b6741287a86851eb239833d0cbb
+    - path: output/untar/genome_sdf/seqdata0
+      md5sum: a0a40de4a24dbdd07f71d438a2b815be
+    - path: output/untar/genome_sdf/seqpointer0
+      md5sum: 2ba36f6f74922ff382d13a62857689a7
+    - path: output/untar/genome_sdf/sequenceIndex0
+      md5sum: 083ed0c4dfff1a9a34f3d5aa6f13f771
+    - path: output/untar/genome_sdf/summary.txt
+      md5sum: 26558005e517f4ff245c32d79395f205
+
+- name: vcf_validate_small_variants test_vcf_validate_small_variants_all
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_validate_small_variants -entry test_vcf_validate_small_variants_all -c ./tests/config/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+    - rtgtools
+    - rtgtools/rocplot
+    - rtgtools/vcfeval
+    - subworkflows
+    - subworkflows/vcf_validate_small_variants
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: 494f93d3a2f5ea5af9debece4b0e4055
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
+    - path: output/happy/test.runinfo.json
+    - path: output/happy/test.summary.csv
+      md5sum: 9365186b70c0bfb71630ba16d7b5089b
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
+    - path: output/rtgtools/test.fn.vcf.gz
+      md5sum: e77fcb9c4d5681d1a4515092b19abcb6
+    - path: output/rtgtools/test.fn.vcf.gz.tbi
+    - path: output/rtgtools/test.fp.vcf.gz
+      md5sum: 1f189459a9f850f2eae6b30e05450d1b
+    - path: output/rtgtools/test.fp.vcf.gz.tbi
+    - path: output/rtgtools/test.non_snp_roc.tsv.gz
+      md5sum: 6b8c9c1bbb9e006115e7a78a7f251d83
+    - path: output/rtgtools/test.phasing.txt
+      md5sum: 31988234bee208cacb3de90dabe1797f
+    - path: output/rtgtools/test.png
+    - path: output/rtgtools/test.snp_roc.tsv.gz
+      md5sum: f606d23198860311a02095d39bb3b62b
+    - path: output/rtgtools/test.summary.txt
+      md5sum: 8d118b86bc36be68e41e8861e881d259
+    - path: output/rtgtools/test.svg
+    - path: output/rtgtools/test.tp-baseline.vcf.gz
+      md5sum: 2fa8bd1d29864ede647e40c402298a29
+    - path: output/rtgtools/test.tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/test.tp.vcf.gz
+      md5sum: c9ddf5f267f9a2377c1be8caa239e9e0
+    - path: output/rtgtools/test.tp.vcf.gz.tbi
+    - path: output/rtgtools/test.weighted_roc.tsv.gz
+      md5sum: e349eb3b68c45456b655ace6735eedde
+    - path: output/untar/genome_sdf/done
+      md5sum: 8b5623b26ee9b8722816afbec270bff0
+    - path: output/untar/genome_sdf/format.log
+      md5sum: af32e927232911267e07eeea79ef4a23
+    - path: output/untar/genome_sdf/mainIndex
+      md5sum: c327fb388c337349ebb84f630641de4e
+    - path: output/untar/genome_sdf/nameIndex0
+      md5sum: 4d998ed1e33bc94fb84f2a83008991cd
+    - path: output/untar/genome_sdf/namedata0
+      md5sum: 007ddfc6239aa830f508b9f689bac780
+    - path: output/untar/genome_sdf/namepointer0
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/untar/genome_sdf/progress
+      md5sum: 1e064b6741287a86851eb239833d0cbb
+    - path: output/untar/genome_sdf/seqdata0
+      md5sum: a0a40de4a24dbdd07f71d438a2b815be
+    - path: output/untar/genome_sdf/seqpointer0
+      md5sum: 2ba36f6f74922ff382d13a62857689a7
+    - path: output/untar/genome_sdf/sequenceIndex0
+      md5sum: 083ed0c4dfff1a9a34f3d5aa6f13f771
+    - path: output/untar/genome_sdf/summary.txt
+      md5sum: 26558005e517f4ff245c32d79395f205
+
+- name: vcf_validate_small_variants test_vcf_validate_small_variants_happy_optional
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_validate_small_variants -entry test_vcf_validate_small_variants_happy_optional -c ./tests/config/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+    - rtgtools
+    - rtgtools/rocplot
+    - rtgtools/vcfeval
+    - subworkflows
+    - subworkflows/vcf_validate_small_variants
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: b2cd467dd57da7d01aac64ee0c127dc2
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
+    - path: output/happy/test.runinfo.json
+    - path: output/happy/test.summary.csv
+      md5sum: f49d2bb1c39a74ff06bb73999868a0a2
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi

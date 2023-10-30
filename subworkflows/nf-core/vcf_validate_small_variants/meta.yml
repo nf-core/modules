@@ -1,0 +1,203 @@
+name: "vcf_validate_small_variants"
+description: Sort SAM/BAM/CRAM file
+keywords:
+  - sort
+  - bam
+  - sam
+  - cram
+modules:
+  - happy/happy
+  - rtgtools/vcfeval
+  - rtgtools/rocplot
+input:
+  - ch_vcf:
+      type: files
+      description: |
+        A channel containing the query VCFs and their truth VCFs to validate on.
+        Structure: [ meta, vcf, tbi, truth_vcf, truth_tbi ]
+  - ch_beds:
+      type: files
+      description: |
+        Optional channel containing several BED files can also be given to restrict what regions should be validated.
+        Structure: [ meta, regions_bed, targets_bed ]
+        The regions_bed is used to check for variants that fall completely or partly within the regions.
+        The targets_bed is used to check for variants that fall exactly in this region.
+  - ch_fasta:
+      type: file
+      description: |
+        Only needed when `happy` will be run. Contains the FASTA genome reference file
+        Structure: [ meta, fasta ]
+  - ch_fasta_fai:
+      type: file
+      description: |
+        Only needed when `happy` will be run. Contains the FASTA genome reference index
+        Structure: [ meta, fasta_fai ]
+  - ch_sdf:
+      type: file
+      description: |
+        Only needed when `vcfeval` will be run. Contains the SDF directory derived from the FASTA genome reference
+        Structure: [ meta, sdf ]
+  - ch_happy_false_positive_regions:
+      type: file
+      description: |
+        Optional input for `happy`. Contains a BED file which can be used to specify regions that possible contain false positives
+        Structure: [ meta, bed ]
+  - ch_happy_stratification_tsv:
+      type: file
+      description: |
+        Optional input for `happy`. Contains a TSV file that specifies which exon belongs to what BED file in `ch_happy_stratification_beds`
+        Structure: [ meta, tsv ]
+  - ch_happy_stratification_beds:
+      type: files
+      description: |
+        Optional input for `happy`. All BED files which are specified in `ch_happy_stratification_tsv`
+        Structure: [ meta, beds ]
+
+output:
+  - happy_vcf:
+      type: file
+      description: |
+        A VCF containing all matching variants detected by `happy`
+        Structure: [ meta, vcf ]
+  - happy_tbi:
+      type: file
+      description: |
+        The index for the VCF containing all matching variants detected by `happy`
+        Structure: [ meta, tbi ]
+  - happy_indel_roc:
+      type: file
+      description: |
+        A CSV file containing positions to create a ROC curve with from the indels detected by `happy`
+        Structure: [ meta, csv ]
+  - happy_indel_roc_pass:
+      type: file
+      description: |
+        A CSV file containing positions to create a ROC curve with from the indels, that passed the filters, detected by `happy`
+        Structure: [ meta, csv ]
+  - happy_snp_roc:
+      type: file
+      description: |
+        A CSV file containing positions to create a ROC curve with from the SNPs detected by `happy`
+        Structure: [ meta, csv ]
+  - happy_snp_roc_pass:
+      type: file
+      description: |
+        A CSV file containing positions to create a ROC curve with from the SNPs, that passed the filters, detected by `happy`
+        Structure: [ meta, csv ]
+  - happy_roc:
+      type: file
+      description: |
+        A CSV file containing positions to create a ROC curve with from all variants detected by `happy`
+        Structure: [ meta, csv ]
+  - happy_summary:
+      type: file
+      description: |
+        A CSV file containing the summary from the `happy` validation
+        Structure: [ meta, csv ]
+  - happy_extended_csv:
+      type: file
+      description: |
+        A CSV file containing the extended summary from the `happy` validation
+        Structure: [ meta, csv ]
+  - vcfeval_true_positive_vcf:
+      type: file
+      description: |
+        A VCF file containing all true positive variants detected by `vcfeval`
+        Structure: [ meta, vcf ]
+  - vcfeval_true_positive_vcf_tbi:
+      type: file
+      description: |
+        The index of the VCF file containing all true positive variants detected by `vcfeval`
+        Structure: [ meta, tbi ]
+  - vcfeval_false_negative_vcf:
+      type: file
+      description: |
+        A VCF file containing all false negative variants detected by `vcfeval`
+        Structure: [ meta, vcf ]
+  - vcfeval_false_negative_vcf_tbi:
+      type: file
+      description: |
+        The index of the VCF file containing all false negative variants detected by `vcfeval`
+        Structure: [ meta, tbi ]
+  - vcfeval_false_positive_vcf:
+      type: file
+      description: |
+        A VCF file containing all false positive variants detected by `vcfeval`
+        Structure: [ meta, vcf ]
+  - vcfeval_false_positive_vcf_tbi:
+      type: file
+      description: |
+        The index of the VCF file containing all false positive variants detected by `vcfeval`
+        Structure: [ meta, tbi ]
+  - vcfeval_true_positive_baseline_vcf:
+      type: file
+      description: |
+        A VCF file containing all true positive baseline variants detected by `vcfeval`
+        Structure: [ meta, vcf ]
+  - vcfeval_true_positive_baseline_vcf_tbi:
+      type: file
+      description: |
+        The index of the VCF file containing all true positive baseline variants detected by `vcfeval`
+        Structure: [ meta, tbi ]
+  - vcfeval_summary:
+      type: file
+      description: |
+        A TXT file containing the summary of the validation with `vcfeval`
+        Structure: [ meta, txt ]
+  - vcfeval_phasing:
+      type: file
+      description: |
+        A TXT file containing the phasing information detected with `vcfeval`
+        Structure: [ meta, txt ]
+  - vcfeval_snp_roc:
+      type: file
+      description: |
+        A TSV file containing the positions to create a ROC curve with all SNPs validated by `vcfeval`
+        Structure: [ meta, tsv ]
+  - vcfeval_non_snp_roc:
+      type: file
+      description: |
+        A TSV file containing the positions to create a ROC curve with all non-SNPs validated by `vcfeval`
+        Structure: [ meta, tsv ]
+  - vcfeval_weighted_roc:
+      type: file
+      description: |
+        A TSV file containing the positions to create a ROC curve with all weighted variants validated by `vcfeval`
+        Structure: [ meta, tsv ]
+  - rtgtools_snp_png_rocplot:
+      type: file
+      description: |
+        A PNG image of the ROC curve with all SNPs validated using `vcfeval`
+        Structure: [ meta, png ]
+  - rtgtools_non_snp_png_rocplot:
+      type: file
+      description: |
+        A PNG image of the ROC curve with all non-SNPs validated using `vcfeval`
+        Structure: [ meta, png ]
+  - rtgtools_weighted_png_rocplot:
+      type: file
+      description: |
+        A PNG image of the ROC curve with all weighted variants validated using `vcfeval`
+        Structure: [ meta, png ]
+  - rtgtools_snp_svg_rocplot:
+      type: file
+      description: |
+        An SVG image of the ROC curve with all SNPs validated using `vcfeval`
+        Structure: [ meta, svg ]
+  - rtgtools_non_snp_svg_rocplot:
+      type: file
+      description: |
+        An SVG image of the ROC curve with all non-SNPs validated using `vcfeval`
+        Structure: [ meta, svg ]
+  - rtgtools_weighted_svg_rocplot:
+      type: file
+      description: |
+        An SVG image of the ROC curve with all weighted variants validated using `vcfeval`
+        Structure: [ meta, svg ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@nvnieuwk"
