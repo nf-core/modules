@@ -3,8 +3,7 @@ description: GRIDSS is a module software suite containing tools useful for the d
 keywords:
   - gridss
   - structural variants
-  - bam
-  - cram
+  - somatic variants
   - vcf
 tools:
   - "gridss":
@@ -24,16 +23,15 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing information for RDS
-        e.g. [ id:'rds']
+        Groovy Map containing information for PONDIR
+        e.g. [ id:'test']
   - vcf:
       type: file
-      description: Output VCF file from gridss run
-      pattern: "*.{vcf}"
-  - vcf:
-      type: file
-      description: Pondir directory output from gridss generatebedpe
-
+      description: Input VCF file, must be generated with GRIDSS
+      pattern: "*.{vcf,vcf.gz}"
+  - pondir:
+      type: directory
+      description: Directory containing Panel Of Normal bed/bedpe used to filter FP somatic events. Use gridss.GeneratePonBedpe to generate the PON.
 output:
   - meta:
       type: map
@@ -46,11 +44,11 @@ output:
       pattern: "versions.yml"
   - high_conf_sv:
       type: file
-      description: VCF file including high confidence SVs
-      pattern: "*.vcf"
+      description: VCF file including high confidence somatic SVs
+      pattern: "*.vcf.bgz"
   - all_sv:
       type: file
-      description: VCF file including all SVs
-      pattern: "*.vcf"
+      description: VCF file including all somatic SVs
+      pattern: "*.vcf.bgz"
 authors:
   - "@kubranarci"

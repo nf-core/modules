@@ -10,16 +10,12 @@ process GRIDSS_GRIDSSSOMATICFILTER {
 
     input:
     tuple val(meta), path(vcf)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(bwa_index)
-    tuple val(meta5), path(pondir)
-    tuple val(meta6), path(rds)
+    tuple val(meta2), path(pondir)
 
     output:
-    tuple val(meta), path("*.high_confidence_somatic.vcf"), emit: high_conf_sv
-    tuple val(meta), path("*.all_somatic.vcf")            , emit: all_sv
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("*.high_confidence_somatic.vcf.bgz")    , emit: high_conf_sv
+    tuple val(meta), path("*.all_somatic.vcf.bgz")                , emit: all_sv
+    path "versions.yml"                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,22 +24,14 @@ process GRIDSS_GRIDSSSOMATICFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def pondir = pondir ? "--pondir ${pondir}" : ""
-    def opts = rds ? "--opts ${rds}" : ""
-    def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
-    def ref = bwa_index ? "--ref ${fasta}" : ""
     def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    ${bwa}
     gridss_somatic_filter \\
         --input $vcf \\
-        $ref \\
-        $pondir \\
-        $opts \\
+        ${pondir} \\
         --output ${prefix}.high_confidence_somatic.vcf \\
         --fulloutput ${prefix}.all_somatic.vcf \\
-        -n 1 \\
-        -t 2 \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -55,8 +43,8 @@ process GRIDSS_GRIDSSSOMATICFILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.high_confidence_somatic.vcf
-    touch ${prefix}.all_somatic.vcf
+    touch ${prefix}.high_confidence_somatic.vcf.bgz
+    touch ${prefix}.all_somatic.vcf.bgz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
