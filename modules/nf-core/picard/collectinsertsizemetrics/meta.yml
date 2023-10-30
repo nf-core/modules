@@ -6,7 +6,6 @@ keywords:
   - insert
   - statistics
   - bam
-
 tools:
   - "picard":
       description: "Java tools for working with NGS data in the BAM format"
@@ -14,7 +13,6 @@ tools:
       documentation: "https://broadinstitute.github.io/picard/"
       tool_dev_url: "https://github.com/broadinstitute/picard"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 output:
   - meta:
       type: map
@@ -45,4 +42,6 @@ output:
       description: Values used by Picard to generate the insert size histograms
       pattern: "*.txt"
 authors:
+  - "@FerriolCalvet"
+maintainers:
   - "@FerriolCalvet"

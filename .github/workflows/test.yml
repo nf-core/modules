@@ -23,10 +23,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
@@ -39,9 +39,9 @@ jobs:
   editorconfig:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
@@ -58,10 +58,12 @@ jobs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
@@ -79,7 +81,7 @@ jobs:
         exclude:
           - tags: "nf-test"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -119,7 +121,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -132,6 +134,8 @@ jobs:
           - tags: "nf-test"
           - profile: "conda"
             tags: annotsv
+          - profile: "conda"
+            tags: happy/sompy
           - profile: "conda"
             tags: cellpose
           - profile: "conda"
@@ -147,6 +151,16 @@ jobs:
           - profile: "conda"
             tags: bclconvert
           - profile: "conda"
+            tags: bwa/aln
+          - profile: "conda"
+            tags: bwa/index
+          - profile: "conda"
+            tags: bwa/mem
+          - profile: "conda"
+            tags: bwa/sampe
+          - profile: "conda"
+            tags: bwa/samse
+          - profile: "conda"
             tags: cellranger/count
           - profile: "conda"
             tags: cellranger/mkfastq
@@ -161,6 +175,12 @@ jobs:
           - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
+            tags: cellrangeratac/count
+          - profile: "conda"
+            tags: cellrangeratac/mkfastq
+          - profile: "conda"
+            tags: cellrangeratac/mkref
+          - profile: "conda"
             tags: coreograph
           - profile: "conda"
             tags: deepcell/mesmer
@@ -168,6 +188,8 @@ jobs:
             tags: deepvariant
           - profile: "conda"
             tags: fastk/fastk
+          - profile: "conda"
+            tags: fastani
           - profile: "conda"
             tags: fastk/histex
           - profile: "conda"
@@ -199,6 +221,8 @@ jobs:
           - profile: "conda"
             tags: imputeme/vcftoprs
           - profile: "conda"
+            tags: medaka
+          - profile: "conda"
             tags: merquryfk/katcomp
           - profile: "conda"
             tags: merquryfk/katgc
@@ -210,6 +234,8 @@ jobs:
             tags: mitohifi/mitohifi
           - profile: "conda"
             tags: mitohifi/findmitoreference
+          - profile: "conda"
+            tags: nanoplot
           - profile: "conda"
             tags: parabricks/applybqsr
           - profile: "conda"
@@ -240,6 +266,8 @@ jobs:
             tags: sentieon/haplotyper
           - profile: "conda"
             tags: sentieon/readwriter
+          - profile: "conda"
+            tags: sentieon/tnfilter
           - profile: "conda"
             tags: sentieon/tnhaplotyper2
           - profile: "conda"
@@ -275,7 +303,7 @@ jobs:
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -353,7 +381,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -367,12 +395,14 @@ jobs:
 
   nf-test-changes:
     name: nf-test-changes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       - name: Combine all tags.yml files
         id: get_username
@@ -382,14 +412,14 @@ jobs:
         run: cat .github/tags.yml
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: ".github/tags.yml"
           token: ""
 
   nf-test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
@@ -402,6 +432,8 @@ jobs:
           - tags: "nf-test"
           - profile: "conda"
             tags: annotsv
+          - profile: "conda"
+            tags: happy/sompy
           - profile: "conda"
             tags: bases2fastq
           - profile: "conda"
@@ -470,7 +502,7 @@ jobs:
       NFTEST_VER: "0.8.1"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-java@v3
         with:

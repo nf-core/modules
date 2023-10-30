@@ -8,10 +8,8 @@ tools:
   - "sickle":
       description: "a tool that determines clipping of reads on 3' end and 5'end based on base quality "
       homepage: "https://github.com/najoshi/sickle"
-
       tool_dev_url: "https://github.com/najoshi/sickle"
       licence: "['MIT License']"
-
 input:
   - meta:
       type: map
@@ -20,15 +18,12 @@ input:
         e.g. [ id:'test', single_end:false]
   - reads:
       type: file
-      description:
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second
-        e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
   - qual_type:
       type: string
       description: sickle needs a base quality values, which could be either illumina, solexa or sanger
       pattern: "illumina or solexa or sanger"
-
 output:
   - meta:
       type: map
@@ -56,4 +51,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@BioInf2305"
+maintainers:
   - "@BioInf2305"

@@ -2,7 +2,7 @@ process CLUSTALO_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::clustalo=1.2.4"
+    conda 'modules/nf-core/clustalo/align/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clustalo:1.2.4--h87f3376_5':
         'biocontainers/clustalo:1.2.4--h87f3376_5' }"

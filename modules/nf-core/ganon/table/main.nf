@@ -2,7 +2,7 @@ process GANON_TABLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::ganon=1.5.1"
+    conda 'modules/nf-core/ganon/table/environment.yml'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ganon:1.5.1--py310h8abeb55_0':
         'biocontainers/ganon:1.5.1--py310h8abeb55_0' }"

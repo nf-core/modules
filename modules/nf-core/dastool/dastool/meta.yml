@@ -15,13 +15,11 @@ tools:
         DAS Tool is an automated method that integrates the results
         of a flexible number of binning algorithms to calculate an optimized, non-redundant
         set of bins from a single assembly.
-
       homepage: https://github.com/cmks/DAS_Tool
       documentation: https://github.com/cmks/DAS_Tool
       tool_dev_url: https://github.com/cmks/DAS_Tool
       doi: "10.1038/s41564-018-0171-1"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map
@@ -43,7 +41,6 @@ input:
   - db_directory:
       type: file
       description: (optional) Directory of single copy gene database.
-
 output:
   - meta:
       type: map
@@ -98,7 +95,9 @@ output:
       type: file
       description: Summary of contig lengths
       pattern: "*.seqlength"
-
 authors:
+  - "@maxibor"
+  - "@jfy133"
+maintainers:
   - "@maxibor"
   - "@jfy133"
