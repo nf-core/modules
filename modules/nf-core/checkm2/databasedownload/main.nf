@@ -12,6 +12,9 @@ process CHECKM2_DATABASEDOWNLOAD {
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
     path("versions.yml")                                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     zenodo_id = 5571251
     def jsonSlurper = new JsonSlurper()

@@ -16,6 +16,9 @@ process CHECKM2_PREDICT {
     tuple val(meta), path("${prefix}/quality_report.tsv"), emit: checkm2_tsv
     path("versions.yml")                                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"

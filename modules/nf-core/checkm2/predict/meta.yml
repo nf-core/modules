@@ -49,7 +49,7 @@ output:
   - checkm_output:
       type: directory
       description: CheckM2 output directory
-      pattern: "*/"
+      pattern: "${prefix}/"
   - checkm_tsv:
       type: file
       description: CheckM2 summary completeness statistics table
