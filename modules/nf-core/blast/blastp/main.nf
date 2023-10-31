@@ -2,7 +2,7 @@ process BLAST_BLASTP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/blast/blastp/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.14.1--pl5321h6f7f691_0':
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
@@ -38,8 +38,8 @@ process BLAST_BLASTP {
     }
 
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
@@ -49,7 +49,7 @@ process BLAST_BLASTP {
         -db \$DB \\
         -num_threads ${task.cpus} \\
         -outfmt ${outfmt} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

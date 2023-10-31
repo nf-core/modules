@@ -45,6 +45,31 @@ nextflow_process {
 
     }
 
+    test("Should search for zipped proteins against a blast db and return the default (tsv) file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tsv.get(0).get(1)).md5 == "dd58eb09f38e6f951aa00c133a18ef5b" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
     test("Should search for proteins against a blast db and return an xml file with hits") {
 
         when {

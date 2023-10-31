@@ -2,7 +2,7 @@ process BLAST_TBLASTN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/blast/tblastn/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.14.1--pl5321h6f7f691_0':
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
@@ -21,13 +21,19 @@ process BLAST_TBLASTN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.name.endsWith(".gz")
+    def fasta_name = fasta.name.replace(".gz", "")
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
+    fi
+
     DB=`find -L ./ -name "*.nsq" | sed 's/\\.nsq\$//'`
     tblastn \\
-        -num_threads $task.cpus \\
+        -num_threads ${task.cpus} \\
         -db \$DB \\
-        -query $fasta \\
-        $args \\
+        -query ${fasta_name} \\
+        ${args} \\
         -out ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
