@@ -3,7 +3,7 @@ process MMSEQS_CREATETSV {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/mmseqs/createtsv/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
         'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"

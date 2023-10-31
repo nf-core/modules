@@ -2,7 +2,7 @@ process GATK_UNIFIEDGENOTYPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/gatk/unifiedgenotyper/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
         'biocontainers/gatk:3.5--hdfd78af_11' }"
