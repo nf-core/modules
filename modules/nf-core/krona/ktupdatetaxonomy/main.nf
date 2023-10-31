@@ -3,7 +3,7 @@ def VERSION='2.7.1' // Version information not provided by tool on CLI
 process KRONA_KTUPDATETAXONOMY {
     label 'process_single'
 
-    conda 'modules/nf-core/krona/ktupdatetaxonomy/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
         'biocontainers/krona:2.7.1--pl526_5' }"
