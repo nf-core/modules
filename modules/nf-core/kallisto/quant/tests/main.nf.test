@@ -14,10 +14,12 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                 """
+                """
                 input[0] = [
-                            [ id:'test_fasta' ], // meta map
-                            [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
                 ]
+                """
                 """
             }
             }
