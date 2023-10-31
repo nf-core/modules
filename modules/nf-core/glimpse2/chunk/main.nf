@@ -11,7 +11,7 @@ process GLIMPSE2_CHUNK {
             exit 1
         fi
     """
-    conda 'modules/nf-core/glimpse2/chunk/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
         'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"

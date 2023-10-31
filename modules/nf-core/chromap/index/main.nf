@@ -2,7 +2,7 @@ process CHROMAP_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda 'modules/nf-core/chromap/index/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/chromap:0.2.4--hd03093a_0' :
         'biocontainers/chromap:0.2.4--hd03093a_0' }"
