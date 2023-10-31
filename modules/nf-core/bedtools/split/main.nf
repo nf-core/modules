@@ -21,7 +21,6 @@ process BEDTOOLS_SPLIT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-
     """
     bedtools \\
         split \\
