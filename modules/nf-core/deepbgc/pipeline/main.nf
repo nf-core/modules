@@ -2,7 +2,7 @@ process DEEPBGC_PIPELINE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::deepbgc=0.1.30"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
         'biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"

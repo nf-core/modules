@@ -2,7 +2,7 @@ process GATK4_APPLYBQSR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312"
+    conda "${moduleDir}/environment.yml"
     container "nf-core/gatk:4.4.0.0"
 
     input:
@@ -32,7 +32,7 @@ process GATK4_APPLYBQSR_SPARK {
     }
     """
     gatk \\
-        --java-options "-Xmx${avail_mem}M" \\
+        --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ApplyBQSRSpark \\
         --input $input \\
         --output ${prefix}.${input.getExtension()} \\

@@ -12,16 +12,11 @@ tools:
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
       licence: ["MIT"]
-
 input:
-  - reads:
+  - input:
       type: file
-      description: Path to PacBio HiFi reads
+      description: Path to PacBio HiFi reads or contigs. Type (-r/-c) is specified in ext.args2
       pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
-  - contigs:
-      type: file
-      description: Path to genome assembly
-      pattern: "*.{fa,fasta}"
   - ref_fa:
       type: file
       description: Reference sequence
@@ -34,7 +29,6 @@ input:
       type: integer
       description: Mitochndrial code for annotation
       pattern: "[0-9]*"
-
 output:
   - versions:
       type: file
@@ -104,6 +98,7 @@ output:
       type: file
       description: Software versions used in the run
       pattern: "versions.yml"
-
 authors:
+  - "@ksenia-krasheninnikova"
+maintainers:
   - "@ksenia-krasheninnikova"

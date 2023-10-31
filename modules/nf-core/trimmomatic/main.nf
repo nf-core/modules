@@ -2,7 +2,7 @@ process TRIMMOMATIC {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::trimmomatic=0.39"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
         'biocontainers/trimmomatic:0.39--hdfd78af_2' }"

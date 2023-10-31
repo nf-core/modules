@@ -2,7 +2,7 @@ process GATK4_APPLYVQSR {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
@@ -33,7 +33,8 @@ process GATK4_APPLYVQSR {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ApplyVQSR \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ApplyVQSR \\
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         $reference_command \\

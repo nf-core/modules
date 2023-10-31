@@ -1,11 +1,11 @@
 name: "gatk4_annotateintervals"
 description: Annotates intervals with GC content, mappability, and segmental-duplication content
 keywords:
-  - gatk
   - annotateintervals
-  - intervals
-  - bed
   - annotation
+  - bed
+  - gatk4
+  - intervals
 tools:
   - gatk4:
       description: |
@@ -16,7 +16,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -92,7 +91,6 @@ input:
       type: file
       description: Optional - The index of the gzipped segmental-duplication track
       pattern: "*.bed.gz.tbi"
-
 output:
   - meta:
       type: map
@@ -107,6 +105,7 @@ output:
       type: file
       description: The output TSV file with a SAM-style header containing the annotated intervals
       pattern: "*.tsv"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

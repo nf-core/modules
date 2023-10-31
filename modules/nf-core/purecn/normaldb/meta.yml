@@ -1,7 +1,5 @@
 name: "purecn_normaldb"
-description: Build a normal database for coverage normalization from all the (GC-normalized) normal coverage files.
-  N.B. as reported in https://www.bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/Quick.html,
-  it is advised to provide a normal panel (VCF format) to precompute mapping bias for faster runtimes.
+description: Build a normal database for coverage normalization from all the (GC-normalized) normal coverage files. N.B. as reported in https://www.bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/Quick.html, it is advised to provide a normal panel (VCF format) to precompute mapping bias for faster runtimes.
 keywords:
   - copy number alteration calling
   - normal database
@@ -18,7 +16,6 @@ tools:
       doi: "10.1186/s13029-016-0060-z"
       licence: "Artistic-2.0"
       args_id: "$args"
-
 input:
   - meta:
       type: map
@@ -41,7 +38,6 @@ input:
   - assay:
       type: string
       description: Assay name
-
 output:
   - rds:
       type: file
@@ -69,7 +65,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@aldosr"
+  - "@lbeltrame"
+maintainers:
   - "@aldosr"
   - "@lbeltrame"

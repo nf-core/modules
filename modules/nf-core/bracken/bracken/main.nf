@@ -4,7 +4,7 @@ process BRACKEN_BRACKEN {
 
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
-    conda "bioconda::bracken=2.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
         'biocontainers/bracken:2.7--py39hc16433a_0' }"
@@ -14,7 +14,8 @@ process BRACKEN_BRACKEN {
     path database
 
     output:
-    tuple val(meta), path(bracken_report), emit: reports
+    tuple val(meta), path(bracken_report)        , emit: reports
+    tuple val(meta), path("*bracken_species.txt"), emit: txt
     path "versions.yml"          , emit: versions
 
     when:

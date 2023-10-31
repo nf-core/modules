@@ -2,7 +2,7 @@ process GATK4_BASERECALIBRATOR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0 conda-forge::openjdk=8.0.312"
+    conda "${moduleDir}/environment.yml"
     container "nf-core/gatk:4.4.0.0"
 
     input:
@@ -33,7 +33,8 @@ process GATK4_BASERECALIBRATOR_SPARK {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" BaseRecalibratorSpark \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        BaseRecalibratorSpark \\
         --input $input \\
         --output ${prefix}.table \\
         --reference $fasta \\
