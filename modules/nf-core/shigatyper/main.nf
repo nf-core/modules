@@ -2,7 +2,7 @@ process SHIGATYPER {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/shigatyper/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shigatyper%3A2.0.1--pyhdfd78af_0':
         'biocontainers/shigatyper:2.0.1--pyhdfd78af_0' }"
