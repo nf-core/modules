@@ -26,7 +26,7 @@
         },
         {
             "description": "Process conda dependencies",
-            "fileMatch": ["^(?:modules/)?\\w+\\.yaml$"],
+            "fileMatch": ["^(?:modules/)?\\w+environment\\.yml$"],
             "matchStrings": [
                 "# renovate datasource=conda\\sdepName=(?<depName>.*?)\\s+- [a-z0-9]+==\"?(?<currentValue>.*)\"?"
             ],
