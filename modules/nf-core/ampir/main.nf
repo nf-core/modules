@@ -2,7 +2,7 @@ process AMPIR {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/ampir/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ampir:1.1.0':
         'biocontainers/r-ampir:1.1.0' }"

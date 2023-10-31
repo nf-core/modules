@@ -3,7 +3,7 @@ process PARAGRAPH_MULTIGRMPY {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda 'modules/nf-core/paragraph/multigrmpy/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
         'biocontainers/paragraph:2.3--h21f15d8_1' }"

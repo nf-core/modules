@@ -1,7 +1,7 @@
 process NGSCHECKMATE_NCM {
     label 'process_low'
 
-    conda 'modules/nf-core/ngscheckmate/ncm/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1':
         'biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
