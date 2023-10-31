@@ -41,10 +41,10 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.abundance).match("se_abundance") },
-            { assert snapshot(process.out.log).match("se_log") },
-            { assert snapshot(process.out.versions).match("se_versions") }
+                { assert process.success },
+                { assert snapshot(process.out.abundance).match("se_abundance") },
+                { assert snapshot(process.out.log).match("se_log") },
+                { assert snapshot(process.out.versions).match("se_versions") }
             )
         }
 
