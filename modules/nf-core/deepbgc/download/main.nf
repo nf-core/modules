@@ -1,7 +1,7 @@
 process DEEPBGC_DOWNLOAD {
     label 'process_single'
 
-    conda 'modules/nf-core/deepbgc/download/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
         'biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"

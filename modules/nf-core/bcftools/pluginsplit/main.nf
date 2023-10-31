@@ -2,7 +2,7 @@ process BCFTOOLS_PLUGINSPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/bcftools/pluginsplit/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
         'biocontainers/bcftools:1.17--haef29d1_0' }"
