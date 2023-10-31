@@ -4,17 +4,17 @@ process PROTEINORTHO {
 
     conda "bioconda::proteinortho=6.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0':
+        'https://depot.galaxyproject.org/singularity/proteinortho%3A6.3.0--h70414c8_0':
         'quay.io/biocontainers/proteinortho:6.3.0--h70414c8_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta_files, stageAs: "?/*")
 
     output:
-    tuple val(meta), path("${prefix}.proteinortho.tsv")                     , emit: orthologgroups
-    tuple val(meta), path("${prefix}.proteinortho-graph")                   , emit: orthologgraph
-    tuple val(meta), path("${prefix}.blast-graph")                          , emit: blastgraph
-    path "versions.yml"                                                     , emit: versions
+    tuple val(meta), path("${meta.id}.proteinortho.tsv")                     , emit: orthologgroups
+    tuple val(meta), path("${meta.id}.proteinortho-graph")                   , emit: orthologgraph
+    tuple val(meta), path("${meta.id}.blast-graph")                          , emit: blastgraph
+    path "versions.yml"                                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,16 @@ process PROTEINORTHO {
     """
     proteinortho \\
         $args \\
-        -cpus $task.cpus \\
-        -project $prefix \\
-        $fasta
+        -cpus=$task.cpus \\
+        -project=$prefix \\
+        $fasta_files
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         proteinortho : \$(echo \$(proteinortho --version 2>&1) )
+        diamond: \$(echo \$( (diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;' ) || echo "404 not installed") )
+        blast: \$(echo \$( (blastp -version 2>/dev/null |head -n1 | sed 's/^.*: //;'  ) || echo "404 not installed") )
+        mmseq: \$(echo \$( (mmseqp version 2>/dev/null ) || echo "404 not installed") )
     END_VERSIONS
     """
 
@@ -45,7 +48,7 @@ process PROTEINORTHO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(proteinortho --version 2>&1) ))
+        : \$(echo \$(proteinortho --version 2>&1) )
     END_VERSIONS
     """
 }
