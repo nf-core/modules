@@ -3,15 +3,15 @@ nextflow_workflow {
     name "Test Workflow FASTQ_TRIM_FASTP_FASTQC"
     script "subworkflows/nf-core/fastq_trim_fastp_fastqc/main.nf"
     workflow "FASTQ_TRIM_FASTP_FASTQC"
+    tag "subworkflows"
+    tag "subworkflow_nfcore"
     tag "subworkflows/fastq_trim_fastp_fastqc"
+    tag "fastq_trim_fastp_fastqc"
 
     test("test_fastq_trim_fastp_fastqc_single_end") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
+
             workflow {
                 """
                 Channel.fromPath(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
@@ -34,22 +34,25 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert workflow.trace.succeeded().size() == 3
-            assert snapshot(
-                workflow.out.reads, 
-                workflow.out.trim_json, 
-                workflow.out.trim_reads_fail, 
-                workflow.out.trim_reads_merged, 
-                workflow.out.versions
-            ).match()
-            assert workflow.out.trim_json.size() == 1
-            assert workflow.out.trim_html.size() == 1
-            assert workflow.out.trim_log.size() == 1
-            assert workflow.out.fastqc_raw_html.size() == 1
-            assert workflow.out.fastqc_raw_zip.size() == 1
-            assert workflow.out.fastqc_trim_html.size() == 1
-            assert workflow.out.fastqc_trim_zip.size() == 1
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.succeeded().size() == 3 },
+                { assert snapshot(
+                    workflow.out.reads, 
+                    workflow.out.trim_json, 
+                    workflow.out.trim_reads_fail, 
+                    workflow.out.trim_reads_merged, 
+                    workflow.out.versions
+                ).match() },
+                { assert workflow.out.trim_json.size() == 1 },
+                { assert workflow.out.trim_html.size() == 1 },
+                { assert workflow.out.trim_log.size() == 1 },
+                { assert workflow.out.fastqc_raw_html.size() == 1 },
+                { assert workflow.out.fastqc_raw_zip.size() == 1 },
+                { assert workflow.out.fastqc_trim_html.size() == 1 },
+                { assert workflow.out.fastqc_trim_zip.size() == 1 }
+
+            )
         }
 
     }
@@ -58,10 +61,7 @@ nextflow_workflow {
     test("test_fastq_trim_fastp_fastqc_paired_end") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
+
             workflow {
                 """
                 in_1 = Channel.fromPath(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
@@ -86,30 +86,25 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert workflow.trace.succeeded().size() == 3
-            assert snapshot(
-                workflow.out.reads, 
-                workflow.out.trim_json, 
-                workflow.out.trim_reads_fail, 
-                workflow.out.trim_reads_merged, 
-                workflow.out.versions
-            ).match()
-            assert workflow.out.trim_json.size() == 1
-            assert workflow.out.trim_html.size() == 1
-            assert workflow.out.trim_log.size() == 1
-            assert workflow.out.fastqc_raw_html.size() == 1
-            assert workflow.out.fastqc_raw_zip.size() == 1
-            assert workflow.out.fastqc_trim_html.size() == 1
-            assert workflow.out.fastqc_trim_zip.size() == 1
-            /*
-            def expectedVersions =             [
-                "versions.yml:md5,54e38ebe354c705a56c06a11c0ccf68e",
-                "versions.yml:md5,712d34b9d3e3703d173d6422327e6f9e",
-                "versions.yml:md5,2da05fb640ca6106be6412bd32e8003f"
-            ]
-            assertContainsInAnyOrder(workflow.out.versions, expected)
-            */
+
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.succeeded().size() == 3 },
+                { assert snapshot(
+                    workflow.out.reads, 
+                    workflow.out.trim_json, 
+                    workflow.out.trim_reads_fail, 
+                    workflow.out.trim_reads_merged, 
+                    workflow.out.versions
+                ).match() },
+                { assert workflow.out.trim_json.size() == 1 },
+                { assert workflow.out.trim_html.size() == 1 },
+                { assert workflow.out.trim_log.size() == 1 },
+                { assert workflow.out.fastqc_raw_html.size() == 1 },
+                { assert workflow.out.fastqc_raw_zip.size() == 1 },
+                { assert workflow.out.fastqc_trim_html.size() == 1 },
+                { assert workflow.out.fastqc_trim_zip.size() == 1 }
+            )
         }
 
     }
@@ -144,22 +139,25 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert workflow.trace.succeeded().size() == 3
-            assert snapshot(
-                workflow.out.reads, 
-                workflow.out.trim_json, 
-                workflow.out.trim_reads_fail, 
-                workflow.out.trim_reads_merged, 
-                workflow.out.versions
-            ).match()
-            assert workflow.out.trim_json.size() == 1
-            assert workflow.out.trim_html.size() == 1
-            assert workflow.out.trim_log.size() == 1
-            assert workflow.out.fastqc_raw_html.size() == 1
-            assert workflow.out.fastqc_raw_zip.size() == 1
-            assert workflow.out.fastqc_trim_html.size() == 1
-            assert workflow.out.fastqc_trim_zip.size() == 1
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.succeeded().size() == 3 },
+                { assert snapshot(
+                    workflow.out.reads, 
+                    workflow.out.trim_json, 
+                    workflow.out.trim_reads_fail, 
+                    workflow.out.trim_reads_merged, 
+                    workflow.out.versions
+                ).match() },
+                { assert workflow.out.trim_json.size() == 1 },
+                { assert workflow.out.trim_html.size() == 1 },
+                { assert workflow.out.trim_log.size() == 1 },
+                { assert workflow.out.fastqc_raw_html.size() == 1 },
+                { assert workflow.out.fastqc_raw_zip.size() == 1 },
+                { assert workflow.out.fastqc_trim_html.size() == 1 },
+                { assert workflow.out.fastqc_trim_zip.size() == 1 }
+
+            )
         }
 
     }
