@@ -3,7 +3,7 @@ process PLINK_INDEPPAIRWISE {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/plink/indeppairwise/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1':
         'biocontainers/plink:1.90b6.21--h779adbc_1' }"

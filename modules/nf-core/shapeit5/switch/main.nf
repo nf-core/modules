@@ -2,7 +2,7 @@ process SHAPEIT5_SWITCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/shapeit5/switch/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
         'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"

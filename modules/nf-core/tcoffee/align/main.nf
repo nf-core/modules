@@ -2,7 +2,7 @@ process TCOFFEE_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/tcoffee/align/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
         'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"

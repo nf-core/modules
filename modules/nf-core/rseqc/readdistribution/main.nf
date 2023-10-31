@@ -2,7 +2,7 @@ process RSEQC_READDISTRIBUTION {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/rseqc/readdistribution/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rseqc:3.0.1--py37h516909a_1' :
         'biocontainers/rseqc:3.0.1--py37h516909a_1' }"
