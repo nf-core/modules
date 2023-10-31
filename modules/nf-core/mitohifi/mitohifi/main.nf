@@ -42,7 +42,6 @@ process MITOHIFI_MITOHIFI {
     }
 
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     if ( ! input_mode or ! (input_mode in [ '-r', '-c' ]) ) {
         error "-r for reads or -c for contigs must be specified"
     }
