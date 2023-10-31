@@ -46,6 +46,33 @@ nextflow_process {
 
     }
 
+    test("Should search for zipped protein hits against a DIAMOND db and return a tab separated output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db.map { meta, dmnd -> dmnd }
+                input[2] = 'txt'
+                input[3] = 'qseqid qlen'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt },
+                { assert path(process.out.txt.get(0).get(1)).md5 == "8131b1afd717f3d5f2f2417c5b562e6e" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
     test("Should search for protein hits against a DIAMOND db and return a daa format file of hits") {
 
         when {

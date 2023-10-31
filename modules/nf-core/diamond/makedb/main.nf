@@ -2,7 +2,7 @@ process DIAMOND_MAKEDB {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/diamond/makedb/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/diamond:2.1.8--h43eeafb_0' :
         'biocontainers/diamond:2.1.8--h43eeafb_0' }"
@@ -33,7 +33,7 @@ process DIAMOND_MAKEDB {
         --threads ${task.cpus} \\
         --in  ${fasta_name} \\
         -d ${prefix} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

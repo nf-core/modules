@@ -8,7 +8,7 @@ nextflow_process {
     tag "diamond"
     tag "diamond/makedb"
 
-    test("Should build a DIAMOND db file") {
+    test("Should build a DIAMOND db file from a fasta file") {
 
         when {
             params {
@@ -17,6 +17,30 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.db },
+                { assert path(process.out.db.get(0).get(1)).md5 == "6039420745dd4db6e761244498460ae1" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should build a DIAMOND db file from a zipped fasta file") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ] ]
                 """
             }
         }

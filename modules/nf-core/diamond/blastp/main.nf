@@ -2,7 +2,7 @@ process DIAMOND_BLASTP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/diamond/blastp/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/diamond:2.1.8--h43eeafb_0' :
         'biocontainers/diamond:2.1.8--h43eeafb_0' }"
@@ -59,7 +59,7 @@ process DIAMOND_BLASTP {
         --db \$DB \\
         --query ${fasta_name} \\
         --outfmt ${outfmt} ${columns} \\
-        $args \\
+        ${args} \\
         --out ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
