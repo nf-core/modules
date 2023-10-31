@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/gymreklab/GangSTR"
       doi: "10.1093/nar/gkz501"
       licence: "['GPL v3-or-later']"
-
 input:
   - meta:
       type: map
@@ -47,7 +46,6 @@ input:
       type: file
       description: The index of the reference FASTA file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -66,6 +64,7 @@ output:
       type: file
       description: A tab-delimited file containing statistics for each sample
       pattern: "*.tab"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

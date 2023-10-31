@@ -14,7 +14,6 @@ tools:
       documentation: "https://github.com/pha4ge/hAMRonization/"
       tool_dev_url: "https://github.com/pha4ge/hAMRonization"
       licence: "['GNU Lesser General Public v3 (LGPL v3)']"
-
 input:
   - meta:
       type: map
@@ -37,7 +36,6 @@ input:
       type: value
       description: Database version of ncbi_AMRfinder used
       pattern: "[0-9]-[0-9]-[0-9].[0-9]"
-
 output:
   - meta:
       type: map
@@ -56,6 +54,7 @@ output:
       type: file
       description: hAMRonised report in TSV format
       pattern: "*.tsv"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

@@ -15,7 +15,6 @@ tools:
       documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: https://github.com/broadinstitute/picard/
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -48,6 +47,7 @@ output:
       type: file
       description: Metrics created by crosscheckfingerprints
       pattern: "*.{crosscheck_metrics.txt}"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

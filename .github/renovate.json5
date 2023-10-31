@@ -1,33 +1,45 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:recommended"],
-    "platform": "github",
-    "onboarding": false,
-    "dependencyDashboard": true,
-    "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-    "suppressNotifications": ["prIgnoreNotification"],
-    "rebaseWhen": "conflicted",
-    "reviewers": ["team:maintainers"],
-    "regexManagers": [
+    $schema: "https://docs.renovatebot.com/renovate-schema.json",
+    extends: ["config:best-practices"],
+    vulnerabilityAlerts: {
+        labels: ["security"],
+        schedule: "at any time",
+    },
+    prHourlyLimit: 3,
+    platform: "github",
+    onboarding: false,
+    dependencyDashboard: true,
+    dependencyDashboardTitle: "Renovate Dashboard 🤖",
+    suppressNotifications: ["prIgnoreNotification"],
+    rebaseWhen: "conflicted",
+    reviewers: ["team:modules"],
+    "pre-commit": {
+        enabled: true,
+    },
+    customManagers: [
         {
-            "customType": "regex",
-            "description": "Process Conda dependencies",
-            "fileMatch": ["(^|/)main\\.nf$"],
-            "matchStrings": ["\\s+conda\\s+\"(?<registryUrl>\\S+)::(?<depName>\\S+)=(?<currentValue>.*\\-.*)'\"\n"],
-            "datasourceTemplate": "conda"
+            customType: "regex",
+            description: "Process Containers dependencies",
+            fileMatch: ["(^|/)main\\.nf$"],
+            matchStrings: [
+                "\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n",
+            ],
+            datasourceTemplate: "docker",
         },
         {
-            "customType": "regex",
-            "description": "Process Containers dependencies",
-            "fileMatch": ["(^|/)main\\.nf$"],
-            "matchStrings": ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
-            "datasourceTemplate": "docker"
-        }
+            customType: "regex",
+            description: "Process conda dependencies",
+            fileMatch: ["^(?:modules/)?\\w+environment\\.yml$"],
+            matchStrings: [
+                '# renovate datasource=conda\\sdepName=(?<depName>.*?)\\s+- [a-z0-9]+=="?(?<currentValue>.*)"?',
+            ],
+            datasourceTemplate: "conda",
+        },
     ],
-    "packageRules": [
+    packageRules: [
         {
-            "matchDatasources": ["docker"],
-            "registryUrls": ["quay.io", "registry.hub.docker.com"]
-        }
-    ]
+            matchDatasources: ["docker"],
+            registryUrls: ["quay.io", "registry.hub.docker.com"],
+        },
+    ],
 }

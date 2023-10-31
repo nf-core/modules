@@ -2,7 +2,7 @@ process CNVNATOR_CNVNATOR {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::cnvnator=0.4.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvnator:0.4.1--py310h2dce045_7':
         'biocontainers/cnvnator:0.4.1--py310h2dce045_7' }"

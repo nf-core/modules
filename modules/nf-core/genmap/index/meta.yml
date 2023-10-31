@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: fasta file to index
       pattern: "*.{fasta,fa,fna}"
-
 output:
   - meta:
       type: map
@@ -37,7 +35,9 @@ output:
   - index:
       type: directory
       description: Genmap index directory
-
 authors:
+  - "@jianhong"
+  - "@nvnieuwk"
+maintainers:
   - "@jianhong"
   - "@nvnieuwk"
