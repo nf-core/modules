@@ -523,7 +523,7 @@ jobs:
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash -s 0.8.0-rc1
+          wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
       - name: Setup apptainer
