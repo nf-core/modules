@@ -2,7 +2,7 @@ process CANU {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/canu/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/canu:2.2--ha47f30e_0':
         'biocontainers/canu:2.2--ha47f30e_0' }"

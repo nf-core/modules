@@ -2,7 +2,7 @@ process BEDTOOLS_MAKEWINDOWS {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/bedtools/makewindows/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h7d7f7ad_1' :
         'biocontainers/bedtools:2.30.0--h7d7f7ad_1' }"

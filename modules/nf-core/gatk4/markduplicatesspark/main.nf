@@ -2,7 +2,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/gatk4/markduplicatesspark/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "nf-core/gatk:4.4.0.0"
 
     input:

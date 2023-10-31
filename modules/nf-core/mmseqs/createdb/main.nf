@@ -2,7 +2,7 @@ process MMSEQS_CREATEDB {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/mmseqs/createdb/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
         'biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
