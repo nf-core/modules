@@ -2,7 +2,7 @@ process EPANG_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/epang/split/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
         'biocontainers/epa-ng:0.3.8--h9a82719_1' }"
