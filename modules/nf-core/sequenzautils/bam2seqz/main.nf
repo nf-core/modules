@@ -2,7 +2,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/sequenzautils/bam2seqz/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
         'biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
