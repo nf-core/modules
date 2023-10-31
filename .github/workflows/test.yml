@@ -267,6 +267,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnfilter
+          - profile: "conda"
             tags: sentieon/tnhaplotyper2
           - profile: "conda"
             tags: sentieon/tnscope
@@ -379,7 +381,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
