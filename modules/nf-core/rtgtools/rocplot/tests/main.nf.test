@@ -37,6 +37,7 @@ nextflow_process {
                         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
                     ]
                     input[1] = UNTAR.out.untar
+                    println(projectDir)
                     """
                 }
             }
