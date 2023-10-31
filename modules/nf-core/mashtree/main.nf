@@ -2,7 +2,7 @@ process MASHTREE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/mashtree/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mashtree:1.2.0--pl526h516909a_0' :
         'biocontainers/mashtree:1.2.0--pl526h516909a_0' }"

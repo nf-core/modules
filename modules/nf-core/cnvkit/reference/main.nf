@@ -2,7 +2,7 @@ process CNVKIT_REFERENCE {
     tag "$fasta"
     label 'process_low'
 
-    conda 'modules/nf-core/cnvkit/reference/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvkit:0.9.10--pyhdfd78af_0':
         'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
