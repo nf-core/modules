@@ -69,17 +69,42 @@ jobs:
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
+  nf-test-changes:
+    name: nf-test-changes
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose matched filters as job 'modules' output variable
+      modules: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Combine all tags.yml files
+        id: get_tags
+        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
+
+      - name: debug
+        run: cat .github/tags.yml
+
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: frouioui/paths-filter@main
+        id: filter
+        with:
+          filters: ".github/tags.yml"
+          token: ""
+
   nf-core-lint:
     runs-on: self-hosted
     name: nf-core-lint
-    needs: [pytest-changes]
-    if: needs.pytest-changes.outputs.modules != '[]'
+    needs: [pytest-changes, nf-test-changes]
+    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.pytest-changes.outputs.modules) }}"]
-        exclude:
-          - tags: "nf-test"
+        tags:
+          [
+            "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+          ]
     steps:
       - uses: actions/checkout@v4
 
@@ -267,6 +292,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/readwriter
           - profile: "conda"
+            tags: sentieon/tnfilter
+          - profile: "conda"
             tags: sentieon/tnhaplotyper2
           - profile: "conda"
             tags: sentieon/tnscope
@@ -379,7 +406,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -390,31 +417,6 @@ jobs:
             !/home/runner/pytest_workflow_*/*/work/conda
             !/home/runner/pytest_workflow_*/*/work/singularity
             !${{ github.workspace }}/.singularity
-
-  nf-test-changes:
-    name: nf-test-changes
-    runs-on: ubuntu-latest
-    outputs:
-      # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2 # To retrieve the preceding commit.
-
-      - name: Combine all tags.yml files
-        id: get_username
-        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
-
-      - name: debug
-        run: cat .github/tags.yml
-
-      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: mirpedrol/paths-filter@main
-        id: filter
-        with:
-          filters: ".github/tags.yml"
-          token: ""
 
   nf-test:
     runs-on: ubuntu-latest

@@ -2,7 +2,7 @@ process GAPPA_EXAMINEASSIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/gappa/examineassign/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
         'biocontainers/gappa:0.8.0--h9a82719_0' }"
