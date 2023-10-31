@@ -1,27 +1,36 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:recommended"],
+    "extends": ["config:best-practices"],
+    "vulnerabilityAlerts": {
+        "labels": ["security"],
+        "schedule": "at any time"
+    },
+    "prHourlyLimit": 3,
     "platform": "github",
     "onboarding": false,
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate Dashboard 🤖",
     "suppressNotifications": ["prIgnoreNotification"],
     "rebaseWhen": "conflicted",
-    "reviewers": ["team:maintainers"],
+    "reviewers": ["team:modules"],
+    "pre-commit": {
+        "enabled": true
+    },
     "regexManagers": [
-        {
-            "customType": "regex",
-            "description": "Process Conda dependencies",
-            "fileMatch": ["(^|/)main\\.nf$"],
-            "matchStrings": ["\\s+conda\\s+\"(?<registryUrl>\\S+)::(?<depName>\\S+)=(?<currentValue>.*\\-.*)'\"\n"],
-            "datasourceTemplate": "conda"
-        },
         {
             "customType": "regex",
             "description": "Process Containers dependencies",
             "fileMatch": ["(^|/)main\\.nf$"],
             "matchStrings": ["\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n"],
             "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Process conda dependencies",
+            "fileMatch": ["^(?:modules/)?\\w+environment\\.yml$"],
+            "matchStrings": [
+                "# renovate datasource=conda\\sdepName=(?<depName>.*?)\\s+- [a-z0-9]+==\"?(?<currentValue>.*)\"?"
+            ],
+            "datasourceTemplate": "conda"
         }
     ],
     "packageRules": [
