@@ -2,16 +2,11 @@ process PARABRICKS_MUTECTCALLER {
     tag "$meta.id"
     label 'process_high'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index),  path(normal_bam), path(normal_bam_index), path(interval_file)
-    tuple val(meta2), path(fasta)
+    tuple val(ref_meta), path(fasta)
     path panel_of_normals
     path panel_of_normals_index
 
@@ -24,6 +19,12 @@ process PARABRICKS_MUTECTCALLER {
     task.ext.when == null || task.ext.when
 
     script:
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""

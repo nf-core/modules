@@ -9,10 +9,8 @@ keywords:
 tools:
   - "parabricks":
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
-      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
-      documentation: "https://docs.nvidia.com/clara/parabricks/4.0.1/index.html"
-      tool_dev_url: ""
-      doi: ""
+      homepage: https://www.nvidia.com/en-us/clara/genomics/
+      documentation: https://docs.nvidia.com/clara/parabricks/4.0.1/index.html
       licence: "custom"
 
 input:
@@ -41,7 +39,7 @@ input:
       type: file
       description: (Optional) file or files containing genomic intervals for use in base quality score recalibration.
       pattern: "*.{bed,interval_list,picard,list,intervals}"
-  - meta2:
+  - ref_meta:
       type: map
       description: |
         Groovy Map containing reference information
@@ -70,7 +68,7 @@ output:
       description: Compressed variants file. Will include an annoted vcf file if pannel of normals is used.
       pattern: "*.vcf.gz"
   - stats:
-      type: dir
+      type: file
       description: Variant statistics.
       pattern: "*.vcf.gz.stats"
   - versions:
