@@ -12,8 +12,9 @@ workflow test_mitohifi_mitohifi_contigs {
     data_contigs = Channel.of([[id:"ilDeiPorc1"],file(params.test_data['deilephila_porcellus']['mito']['contigs'], checkIfExists: true)])
     ref_gb = file(params.test_data['deilephila_porcellus']['mito']['ref_gb'], checkIfExists: true)
     ref_fa = file(params.test_data['deilephila_porcellus']['mito']['ref_fa'], checkIfExists: true)
+    input_mode = Channel.of('-c')
     code = 5
-    MITOHIFI_MITOHIFI_CONTIGS ( data_contigs, ref_fa, ref_gb, code )
+    MITOHIFI_MITOHIFI_CONTIGS ( data_contigs, ref_fa, ref_gb, input_mode, code )
 }
 
 
@@ -24,6 +25,7 @@ workflow test_mitohifi_mitohifi_reads {
     data_reads = Channel.of([[id:"ilDeiPorc1"],file(params.test_data['deilephila_porcellus']['mito']['hifi_reads'], checkIfExists: true)])
     ref_gb = file(params.test_data['deilephila_porcellus']['mito']['ref_gb'], checkIfExists: true)
     ref_fa = file(params.test_data['deilephila_porcellus']['mito']['ref_fa'], checkIfExists: true)
+    input_mode = Channel.of('-r')
     code = 5
-    MITOHIFI_MITOHIFI_READS ( data_reads, ref_fa, ref_gb, code )
+    MITOHIFI_MITOHIFI_READS ( data_reads, ref_fa, ref_gb, input_mode, code )
 }

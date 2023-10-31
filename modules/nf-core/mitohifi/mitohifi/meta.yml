@@ -25,6 +25,10 @@ input:
       type: file
       description: Reference annotation
       pattern: "*.{gb}"
+  - input_mode:
+      type: string
+      description: Specifies type of input - reads or contigs
+      pattern: "{-r,-c}"
   - code:
       type: integer
       description: Mitochndrial code for annotation
