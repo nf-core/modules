@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process KALLISTO_QUANT"
+    script "../main.nf"
+    process "KALLISTO_QUANT"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kallisto"
+    tag "kallisto/quant"
+
+    setup {
+            run("KALLISTO_INDEX") {
+                script "../../index/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
+                ]
+                """
+            }
+            }
+        }
+
+    test("sarscov2 single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.abundance).match("se_abundance") },
+                { assert snapshot(process.out.log).match("se_log") },
+                { assert snapshot(process.out.versions).match("se_versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.abundance).match("pe_abundance") },
+                { assert snapshot(process.out.log).match("pe_log") },
+                { assert snapshot(process.out.versions).match("pe_versions") }
+            )
+        }
+
+    }
+
+}
