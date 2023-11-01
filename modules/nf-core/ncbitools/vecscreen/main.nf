@@ -37,7 +37,7 @@ process NCBITOOLS_VECSCREEN {
 
     stub:
     """
-    touch vecscreen.out
+    touch ${prefix}.vecscreen.out
 
     cat <<-END_VERSIONS > versions.yml
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, the name of the container that contains VecScreen is used here to indicate version
