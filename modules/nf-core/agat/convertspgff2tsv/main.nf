@@ -29,7 +29,7 @@ process AGAT_CONVERTSPGFF2TSV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed '4!d; s/.*v//')
+        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed '3!d; s/.*v//' | sed 's/ .*//')
     END_VERSIONS
     """
 }

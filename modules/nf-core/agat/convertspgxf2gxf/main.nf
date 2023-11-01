@@ -30,7 +30,7 @@ process AGAT_CONVERTSPGXF2GXF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gxf2gxf.pl --help | sed '4!d; s/.*v//')
+        agat: \$(agat_convert_sp_gxf2gxf.pl --help | sed '3!d; s/.*v//' | sed 's/ .*//')
     END_VERSIONS
     """
 }
