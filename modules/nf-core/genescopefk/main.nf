@@ -15,6 +15,7 @@ process GENESCOPEFK {
     tuple val(meta), path("*_summary.txt")                , emit: summary
     tuple val(meta), path("*_transformed_linear_plot.png"), emit: transformed_linear_plot
     tuple val(meta), path("*_transformed_log_plot.png")   , emit: transformed_log_plot
+    tuple val(meta), env(KMERCOV)                         , emit: kmer_cov
     path "versions.yml"                                   , emit: versions
 
     when:
@@ -35,6 +36,8 @@ process GENESCOPEFK {
         --input $fastk_histex_histogram \\
         --output . \\
         --name_prefix ${prefix}
+
+    printf -v KMERCOV "%.2f\\n" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -54,6 +54,10 @@ output:
       type: file
       description: GeneScope histogram summary
       pattern: "*_summary.txt"
+  - kmer_cov:
+      type: string
+      description: Average kmer coverage value extracted from summary file
+      pattern: "[0-9.]+"
 authors:
   - "@mahesh-panchal"
 maintainers:
