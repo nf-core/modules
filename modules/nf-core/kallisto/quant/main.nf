@@ -40,7 +40,7 @@ process KALLISTO_QUANT {
     if [ -f $prefix/run_info.json ]; then
         cp $prefix/run_info.json "${prefix}_run_info.json"
     fi
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
