@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process KALLISTO_QUANT"
     script "../main.nf"
     process "KALLISTO_QUANT"
-    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "kallisto"
@@ -52,6 +51,7 @@ nextflow_process {
     }
 
     test("sarscov2 paired-end") {
+    	config "./paired_end.config"
 
         when {
             process {
