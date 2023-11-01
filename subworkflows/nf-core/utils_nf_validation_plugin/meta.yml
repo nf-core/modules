@@ -1,50 +1,45 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "utils_nf_validation_plugin"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+name: "UTILS_NF_VALIDATION_PLUGIN"
+description: Use nf-validation to initiate and validate a pipeline
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
-components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - utility
+  - pipeline
+  - initialise
+  - validation
+components: []
 input:
-  - ch_bam:
-      type: file
+  - print_help:
+      type: boolean
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Print help message and exit
+  - workflow_command:
+      type: string
+      description: |
+        The command to run the workflow e.g. "nextflow run main.nf"
+  - pre_help_text:
+      type: string
+      description: |
+        Text to print before the help message
+  - post_help_text:
+      type: string
+      description: |
+        Text to print after the help message
+  - validate_params:
+      type: boolean
+      description: |
+        Validate the parameters and error if invalid.
+  - schema_filename:
+      type: string
+      description: |
+        The filename of the schema to validate against.
+
 output:
-  - bam:
+  - summary_params:
       type: file
       description: |
-        Channel containing BAM files
+        A Groovy map constructed from parameters.
         Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
 maintainers:
