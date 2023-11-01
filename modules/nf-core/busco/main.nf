@@ -9,6 +9,7 @@ process BUSCO {
 
     input:
     tuple val(meta), path('tmp_input/*')
+    val mode                              // Required:    One of genome, proteins, or transcriptome
     val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
     path config_file                      // Optional:    busco configuration file
@@ -29,6 +30,9 @@ process BUSCO {
     task.ext.when == null || task.ext.when
 
     script:
+    if ( mode !in [ 'genome', 'proteins', 'transcriptome' ] ) {
+        error "Mode must be one of 'genome', 'proteins', or 'transcriptome'."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
     def busco_config = config_file ? "--config $config_file" : ''
@@ -69,6 +73,7 @@ process BUSCO {
         --cpu $task.cpus \\
         --in "\$INPUT_SEQS" \\
         --out ${prefix}-busco \\
+        --mode $mode \\
         $busco_lineage \\
         $busco_lineage_dir \\
         $busco_config \\
