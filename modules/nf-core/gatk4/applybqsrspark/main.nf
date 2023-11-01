@@ -2,7 +2,7 @@ process GATK4_APPLYBQSR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/gatk4/applybqsrspark/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "nf-core/gatk:4.4.0.0"
 
     input:

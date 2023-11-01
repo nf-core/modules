@@ -2,7 +2,7 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/picard/crosscheckfingerprints/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.1.0--hdfd78af_0' :
         'biocontainers/picard:3.1.0--hdfd78af_0' }"
