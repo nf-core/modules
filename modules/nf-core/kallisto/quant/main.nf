@@ -9,7 +9,7 @@ process KALLISTO_QUANT {
 
     input:
     tuple val(meta), path(reads)
-    path index
+    tuple val(meta2), path(index)
     path gtf
     path chromosomes
 
@@ -24,7 +24,7 @@ process KALLISTO_QUANT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
     """
