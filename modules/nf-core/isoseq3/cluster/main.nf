@@ -5,7 +5,7 @@ process ISOSEQ3_CLUSTER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/isoseq3:3.8.1--h9ee0642_0' :
-        'biocontainers/isoseq3:3.8.1--h9ee0642_0' }"
+        'biocontainers/isoseq3:3.8.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
