@@ -43,7 +43,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.abundance).match("se_abundance") },
+                { assert snapshot(process.out.results).match("se_abundance") },
                 { assert snapshot(process.out.log).match("se_log") },
                 { assert snapshot(process.out.versions).match("se_versions") }
             )
@@ -73,7 +73,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.abundance).match("pe_abundance") },
+                { assert snapshot(process.out.results).match("pe_abundance") },
                 { assert snapshot(process.out.log).match("pe_log") },
                 { assert snapshot(process.out.versions).match("pe_versions") }
             )
