@@ -24,6 +24,7 @@ nextflow_process {
         }
 
     test("sarscov2 single-end") {
+        config "./single_end.config"
 
         when {
             process {
@@ -32,7 +33,7 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
                 ]
-                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[1] = KALLISTO_INDEX.out.index
                 input[2] = []
                 input[3] = []
                 """
@@ -62,7 +63,7 @@ nextflow_process {
                         file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
-                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[1] = KALLISTO_INDEX.out.index
                 input[2] = []
                 input[3] = []
                 """
