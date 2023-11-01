@@ -32,7 +32,7 @@ process GENESCOPEFK {
     def GENESCOPE_VERSION = '380815c420f50171f9234a0fd1ff426b39829b91' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     #! /usr/bin/env bash
-    
+
     GeneScopeFK.R \\
         $args \\
         --input $fastk_histex_histogram \\
