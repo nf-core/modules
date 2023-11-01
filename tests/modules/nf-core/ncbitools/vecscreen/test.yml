@@ -1,13 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /vecscreen
 - name: "ncbitools vecscreen"
   command: nextflow run ./tests/modules/nf-core/ncbitools/vecscreen -entry test_ncbitools_vecscreen -c ./tests/config/nextflow.config
   tags:
     - "ncbitools"
     - "ncbitools/vecscreen"
   files:
-    - path: "output/ncbitools/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/ncbitools/test.vecscreen.out"
+      md5sum: 9710d2cf0adca38f15251ab8fbe439ca
     - path: "output/ncbitools/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 0df898e88aceaca9ca36c07bb580a4a2
     
