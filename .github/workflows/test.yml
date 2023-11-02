@@ -51,12 +51,13 @@ jobs:
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
 
-  pytest-changes:
-    name: pytest-changes
+  changes:
+    name: changes
     runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      pytest_modules: ${{ steps.pytest-filter.outputs.changes }}
+      nftest_modules: ${{ steps.nftest-filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,20 +65,12 @@ jobs:
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
       - uses: mirpedrol/paths-filter@main
-        id: filter
+        id: pytest-filter
         with:
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
-  nf-test-changes:
-    name: nf-test-changes
-    runs-on: ubuntu-latest
-    outputs:
-      # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v4
-
+        ## nf-test
       - name: Combine all tags.yml files
         id: get_tags
         run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
@@ -87,7 +80,7 @@ jobs:
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
       - uses: frouioui/paths-filter@main
-        id: filter
+        id: nftest-filter
         with:
           filters: ".github/tags.yml"
           token: ""
@@ -148,8 +141,8 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     name: pytest
-    needs: [pytest-changes]
-    if: needs.pytest-changes.outputs.modules != '[]'
+    needs: [changes]
+    if: needs.changes.outputs.pytest_modules != '[]'
     strategy:
       fail-fast: false
       matrix:
@@ -417,8 +410,8 @@ jobs:
   nf-test:
     runs-on: ubuntu-latest
     name: nf-test
-    needs: [nf-test-changes]
-    if: needs.nf-test-changes.outputs.modules != '[]'
+    needs: [changes]
+    if: needs.changes.outputs.nftest_modules != '[]'
     strategy:
       fail-fast: false
       matrix:
