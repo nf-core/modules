@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: "${{ needs.gen-matrix.outputs.matrix }}"
+        image: ["${{ fromJson(needs.gen-matrix.outputs.matrix) }}"]
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
