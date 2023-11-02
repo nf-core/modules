@@ -23,7 +23,6 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           json: true
-          json_raw_format: true
           # TODO Add Dockerfiles
           files: |
             modules/**/environment.yml
