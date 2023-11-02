@@ -25,10 +25,10 @@ jobs:
           json: true
           json_raw_format: true
       - name: Debug
-        run: echo ${{ steps.diff.outputs.modified_files }}
+        run: echo ${{ steps.diff.outputs.all_changed_files }}
 
     outputs:
-      matrix: ${{ steps.diff.outputs.modified_files }}
+      matrix: ${{ steps.diff.outputs.all_changed_files }}
 
   build:
     if: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
