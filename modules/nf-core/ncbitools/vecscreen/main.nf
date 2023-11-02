@@ -30,7 +30,7 @@ process NCBITOOLS_VECSCREEN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
+        vecscreen: 1.0 ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process NCBITOOLS_VECSCREEN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
+        vecscreen: 1.0 ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
     END_VERSIONS
     """
 }
