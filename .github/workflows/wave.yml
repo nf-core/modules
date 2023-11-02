@@ -33,7 +33,7 @@ jobs:
       matrix: ${{ steps.diff.outputs.all_changed_files }}
 
   build:
-    if: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
+    # if: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
     needs: gen-matrix
     name: build
     runs-on: ubuntu-latest
@@ -44,8 +44,6 @@ jobs:
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.nf_core_bot_auth_token }}
 
       - name: Install wave-cli
         run: |
@@ -54,7 +52,7 @@ jobs:
 
       - name: Build container
         run: |
-          wave --conda-file "${{ matrix.file }}"
+          wave --conda-file "${{ matrix }}"
 
       # - name: Build Singularity
       #   run: |
