@@ -1,0 +1,60 @@
+name: Build containers
+# When environment.yml is changed
+on:
+  pull_request:
+    paths:
+      - "**/Dockerfile"
+      - "**/environment.yml"
+
+env:
+  WAVE_VER: "1.0.0"
+
+jobs:
+  gen-matrix:
+    name: generate-matrix
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Calculate file differences
+        id: diff
+        uses: tj-actions/changed-files@v35
+        with:
+          json: true
+          json_raw_format: true
+      - name: Debug
+        run: echo ${{ steps.diff.outputs.modified_files }}
+
+    outputs:
+      matrix: ${{ steps.diff.outputs.modified_files }}
+
+  build:
+    if: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
+    needs: gen-matrix
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
+    steps:
+      # Use the @nf-core-bot token to check out so we can push later
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.nf_core_bot_auth_token }}
+
+      - name: Install wave-cli
+        run: |
+          wget -qO- https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
+          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+
+      - name: Build container
+        run: |
+          wave --conda-file "${{ matrix.file }}"
+
+      # - name: Build Singularity
+      #   run: |
+      #     container=$(wave --singularity --conda-package bamtools=2.5.2 --build-repo docker.io/user/repo --freeze --await)
+      #     singularity exec $container bamtools --version
