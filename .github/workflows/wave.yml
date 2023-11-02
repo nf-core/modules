@@ -23,14 +23,17 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           json: true
+          quotepath: false
           # TODO Add Dockerfiles
           files: |
             modules/**/environment.yml
       - name: Debug
         run: echo ${{ steps.diff.outputs.all_changed_files }}
+      - id: set-matrix
+        run: echo "matrix={\"files\":${{ steps.diff.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
 
     outputs:
-      matrix: ${{ steps.diff.outputs.all_changed_files }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
   build:
     # if: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
@@ -40,8 +43,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix:
-        image: ["${{ fromJson(needs.gen-matrix.outputs.matrix) }}"]
+      matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
@@ -53,7 +55,7 @@ jobs:
 
       - name: Build container
         run: |
-          wave --conda-file "${{ matrix.image }}"
+          wave --conda-file "${{ matrix.files }}"
 
       # - name: Build Singularity
       #   run: |
