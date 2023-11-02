@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process KALLISTO_QUANT"
     script "../main.nf"
     process "KALLISTO_QUANT"
-    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "kallisto"
@@ -24,15 +23,20 @@ nextflow_process {
         }
 
     test("sarscov2 single-end") {
+        config "./single_end.config"
 
         when {
+            params{
+                outdir = "$outputDir"
+            }
+
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ],
                     [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
                 ]
-                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[1] = KALLISTO_INDEX.out.index
                 input[2] = []
                 input[3] = []
                 """
@@ -42,17 +46,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.abundance).match("se_abundance") },
+                { assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_single") },
                 { assert snapshot(process.out.log).match("se_log") },
                 { assert snapshot(process.out.versions).match("se_versions") }
             )
         }
-
     }
 
     test("sarscov2 paired-end") {
+        config "./paired_end.config"
 
         when {
+            params{
+                outdir = "$outputDir"
+            }
+
             process {
                 """
                 input[0] = [
@@ -62,22 +70,19 @@ nextflow_process {
                         file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
-                input[1] = KALLISTO_INDEX.out.index.map{ meta, index -> index }
+                input[1] = KALLISTO_INDEX.out.index
                 input[2] = []
                 input[3] = []
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.abundance).match("pe_abundance") },
+                { assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_paired") },
                 { assert snapshot(process.out.log).match("pe_log") },
                 { assert snapshot(process.out.versions).match("pe_versions") }
             )
         }
-
     }
-
 }
