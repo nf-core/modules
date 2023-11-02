@@ -56,7 +56,7 @@ jobs:
 
       - name: Build container
         run: |
-          wave --conda-file "${{ matrix.files }}" --freeze --build-repo ghcr.io/nf-core/modules/bowtie
+          wave --conda-file "${{ matrix.files }}" --freeze --build-repo ghcr.io/nf-core/modules/bowtie --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
       # - name: Build Singularity
       #   run: |
