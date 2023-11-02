@@ -26,6 +26,9 @@ nextflow_process {
         config "./single_end.config"
 
         when {
+            params{
+                outdir = "$outputDir"
+            }
             process {
                 """
                 input[0] = [
@@ -42,7 +45,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-		{ assert snapshot(process.out.results.get(0).get(1)).match("abundance_tsv_single") },
+		{ assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_single") },
                 { assert snapshot(process.out.log).match("se_log") },
                 { assert snapshot(process.out.versions).match("se_versions") }
             )
