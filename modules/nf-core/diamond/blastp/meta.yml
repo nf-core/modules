@@ -26,7 +26,7 @@ input:
   - db:
       type: file
       description: File of the indexed DIAMOND database
-      pattern: "*.{dmnd}"
+      pattern: "*.dmnd"
   - out_ext:
       type: string
       description: |
@@ -39,8 +39,8 @@ input:
       type: string
       description: |
         Optional space separated list of DIAMOND tabular BLAST output keywords
-        used for in conjunction with the 'txt' out_ext option (--outfmt 6). See
-        DIAMOND documnetation for more information.
+        used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
+        qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
   - meta:
       type: map

@@ -30,8 +30,8 @@ process DIAMOND_BLASTX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
+    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     def columns = blast_columns ? "${blast_columns}" : ''
     switch ( out_ext ) {
         case "blast": outfmt = 0; break

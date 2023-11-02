@@ -6,7 +6,7 @@ include { DIAMOND_MAKEDB } from '../../../../../modules/nf-core/diamond/makedb/m
 
 workflow test_diamond_makedb {
 
-    input = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
 
     DIAMOND_MAKEDB ( [ [id:'test'], input ] )
 }
