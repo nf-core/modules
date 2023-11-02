@@ -50,8 +50,9 @@ jobs:
 
       - name: Install wave-cli
         run: |
-          wget -qO- https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
           sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          chmod +x /usr/local/bin/wave
 
       - name: Build container
         run: |
