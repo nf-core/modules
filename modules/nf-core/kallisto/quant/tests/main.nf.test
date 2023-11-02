@@ -29,6 +29,7 @@ nextflow_process {
             params{
                 outdir = "$outputDir"
             }
+
             process {
                 """
                 input[0] = [
@@ -45,11 +46,43 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-		{ assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_single") },
+                { assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_single") },
                 { assert snapshot(process.out.log).match("se_log") },
                 { assert snapshot(process.out.versions).match("se_versions") }
             )
         }
+    }
 
+    test("sarscov2 paired-end") {
+        config "./paired_end.config"
+
+        when {
+            params{
+                outdir = "$outputDir"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = KALLISTO_INDEX.out.index
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path("$outputDir/kallisto/test/abundance.tsv")).match("abundance_tsv_paired") },
+                { assert snapshot(process.out.log).match("pe_log") },
+                { assert snapshot(process.out.versions).match("pe_versions") }
+            )
+        }
     }
 }
