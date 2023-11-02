@@ -40,7 +40,8 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix: "${{ needs.gen-matrix.outputs.matrix }}"
+      matrix:
+        image: "${{ needs.gen-matrix.outputs.matrix }}"
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
@@ -52,7 +53,7 @@ jobs:
 
       - name: Build container
         run: |
-          wave --conda-file "${{ matrix }}"
+          wave --conda-file "${{ matrix.image }}"
 
       # - name: Build Singularity
       #   run: |
