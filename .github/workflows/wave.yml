@@ -24,6 +24,9 @@ jobs:
         with:
           json: true
           json_raw_format: true
+          # TODO Add Dockerfiles
+          files: |
+            modules/**/environment.yml
       - name: Debug
         run: echo ${{ steps.diff.outputs.all_changed_files }}
 
