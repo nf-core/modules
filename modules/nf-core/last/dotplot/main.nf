@@ -2,7 +2,7 @@ process LAST_DOTPLOT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/last/dotplot/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/last:1453--h5b5514e_0' :
         'biocontainers/last:1453--h5b5514e_0' }"

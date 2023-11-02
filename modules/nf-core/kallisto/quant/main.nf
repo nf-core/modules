@@ -2,7 +2,7 @@ process KALLISTO_QUANT {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/kallisto/quant/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kallisto:0.48.0--h15996b6_2':
         'biocontainers/kallisto:0.48.0--h15996b6_2' }"

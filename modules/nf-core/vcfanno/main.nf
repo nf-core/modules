@@ -2,7 +2,7 @@ process VCFANNO {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/vcfanno/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
         'biocontainers/vcfanno:0.3.3--h9ee0642_0' }"

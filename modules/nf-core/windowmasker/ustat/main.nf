@@ -2,7 +2,7 @@ process WINDOWMASKER_USTAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/windowmasker/ustat/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.14.0--h7d5a4b4_1':
         'biocontainers/blast:2.14.0--h7d5a4b4_1' }"

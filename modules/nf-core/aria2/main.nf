@@ -3,7 +3,7 @@ process ARIA2 {
     tag "$source_url"
     label 'process_single'
 
-    conda 'modules/nf-core/aria2/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
         'biocontainers/aria2:1.36.0' }"
