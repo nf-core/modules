@@ -93,8 +93,9 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 
     df <- data.frame(df, check.names = FALSE)   # make data.frame from vector as otherwise, the format will get messed up
     if (is.null(columns)) {
-        columns <- colnames(df)
+        columns <- colnames(df)[(unlist(lapply(df, is.numeric), use.names=F))]    # extract only numeric columns for rounding
     }
+
     df[,columns] <- round(
         data.frame(df[, columns], check.names = FALSE),
         digits = digits
@@ -121,23 +122,27 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 
 # Set defaults and classes
 opt <- list(
-    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     de_file = '$de_file',
     de_id_column = 'gene_id',
+    contrast_variable = NULL,
+    reference_level = NULL,
+    target_level = NULL,
+    blocking_variables = NULL,
     organism = NULL,
     significant = T,
     measure_underrepresentation = F,
     correction_method = 'gSCS',
     sources = NULL,
     evcodes = F,
-    pval_threshold = '0.05',
+    pval_threshold = 0.05,
     gmt_file = NULL,
-    gost_id = NULL,
+    gost_token = NULL,
     background_file = '$background_file',
+    background_column = NULL,
     domain_scope = 'annotated',
     min_diff = 1,
     round_digits = -1,
-    enrich_colors = '#132B43,#56B1F7'
+    palette_name = 'Blues'
 )
 
 opt_types <- lapply(opt, class)
@@ -159,8 +164,7 @@ for ( ao in names(args_opt)) {
 }
 
 # Check if required parameters have been provided
-
-required_opts <- c('output_prefix', 'organism', 'sources')
+required_opts <- c('organism', 'sources', 'contrast_variable', 'reference_level', 'target_level')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
@@ -213,33 +217,38 @@ query <- de.genes[[opt\$de_id_column]]
 
 set.seed(1) # This will ensure that reruns have the same plot colors
 
-output_prefix <- opt\$output_prefix
-dir.create(output_prefix)
+# Create prefix from contrast var, reference and target as well as blocking (if provided)
+output_prefix <- paste(opt\$contrast_variable, opt\$reference_level, opt\$target_level, sep = '_')
+if (!is.null(opt\$blocking_variables)) {
+    blocking_variables <- paste(make.names(unlist(strsplit(opt\$blocking_variables, split = ','))), collapse = '_')
+    output_prefix <- paste(output_prefix, blocking_variables, sep= '_')
+}
+contrast_name <- output_prefix # Save for renaming query
+output_prefix <- paste('gprofiler2', output_prefix, sep = '.')
 
 # Create empty output table in case no enriched pathways are found
-file.create(paste(output_prefix, 'gprofiler2', 'all_enriched_pathways_tab', 'tsv', sep = '.'))
+file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
 
 sources <-  strsplit(opt\$sources, split = ",")[[1]]
-enrich_colors <- strsplit(opt\$enrich_colors, split = ",")[[1]]
+#enrich_colors <- strsplit(opt\$enrich_colors, split = ",")[[1]]
 
-if (!is.null(opt\$gost_id)) {
+if (!is.null(opt\$gost_token)) {
 
-#   First check if a gost_id was provided
-    gost_id <- opt\$gost_id
+#   First check if a gost_token was provided
+    gost_token <- opt\$gost_token
 } else if (!is.null(opt\$gmt_file)){
 
     # Next check if custom GMT file was provided; extract only requested datasources (gprofiler will NOT filter automatically!)
     gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
     gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
     writeLines(gmt, gmt_path)
-    gost_id <- upload_GMT_file(gmt_path)
+    gost_token <- upload_GMT_file(gmt_path)
     
     # Add gost ID to output GMT name so that it can be reused in future runs
-    file.rename(gmt_path, paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_gostID_", gost_id, "_filtered.gmt"))
+    file.rename(gmt_path, paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_gostID_", gost_token, "_filtered.gmt"))
 } else {
 
     # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-    # TODO: Should this GMT also be filtered?
     gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
     tryCatch(
         {
@@ -264,44 +273,53 @@ if (!is.null(opt\$gost_id)) {
             print("For reproducibility reasons, please try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'. Then provide it to the pipeline with the parameter `--gmt_file`")
         }
     )
-    gost_id <- opt\$organism
+    gost_token <- opt\$organism
 }
-
-capture.output(opt\$background_file, file="/home-link/iivow01/git/modules/error_gpro/ext_null")
-capture.output("is.null(optbackground_file)", file="/home-link/iivow01/git/modules/error_gpro/ext_null", append=T)
-capture.output((""==opt\$background_file), file="/home-link/iivow01/git/modules/error_gpro/ext_null", append=T)
 
 # If custom background_file was provided, read it
 if (opt\$background_file != "") {
-    ext <- basename(opt\$background_file)
-    capture.output(ext, file="/home-link/iivow01/git/modules/error_gpro/ext")
-    ext <- strsplit(basename(opt\$background_file), split = "\\\\.")
-    capture.output(ext, file="/home-link/iivow01/git/modules/error_gpro/ext", append=T)
-#    ext <- tolower(tail(strsplit(basename(opt\$background_file), split = "\\\\.")[[1]], 1))
-    if (ext == "txt") {
-        background <- readLines(opt\$background_file)
-    }
-
-    # Check if tsv/csv or if second line contains tab or comma (in txt files); if so, the file is a table
-    if (ext %in% c("csv", "tsv") || grepl("\\t|,", background[2]))
-        intensities_table <- read_delim_flexible(
-        file = opt\$background_file,
-        row.names = 1
+    intensities_table <- read_delim_flexible(
+        file = opt\$background_file
     )
+    # If only 1 col, it is a list, not a matrix
+    if (ncol(intensities_table) == 1) {
+        background <- intensities_table[,1]                                 # Extract first column from df
+        background <- append(background, colnames(intensities_table)[1])    # First entry was put into header, add it to vector
+    } else {
+        # Otherwise it's a matrix
+        # Set rownames to background_column if param was set
+        if (!is.null(opt\$background_column)) {
+            if (opt\$background_column %in% colnames(intensities_table)) {
+                rownames(intensities_table) <- intensities_table[[opt\$background_column]]
+                intensities_table[[opt\$background_column]] <- NULL
+            } else {
+                stop(paste0("Invalid background_column argument: ", opt\$background_column,
+                            ". Valid columns are: ", paste(colnames(intensities_table), collapse=", "), "."))
+            }
+        } else {
 
-    # Keep only numeric columns
-    nums <- unlist(lapply(intensities_table, is.numeric), use.names = FALSE)
-    intensities_table <- intensities_table[, nums]
+        # Otherwise set rownames to first column
+            rownames(intensities_table) <- intensities_table[,1]
+            intensities_table <- intensities_table[,-1]
+        }
 
-    # Keep only rownames which have abundance
-    background <- rownames(subset(intensities_table, rowSums(intensities_table, na.rm = TRUE)>0))
+        # Rownames are set, now remove non-numeric columns
+        nums <- unlist(lapply(intensities_table, is.numeric), use.names = FALSE)
+        intensities_table <- intensities_table[, nums]
+        # Keep only rownames which have abundance
+        background <- rownames(subset(intensities_table, rowSums(intensities_table, na.rm = TRUE)>0))
+    }
 } else {
     background <- NULL
 }
 
+# Name the query as it will otherwise be called 'query_1' which will also determine the gostplot title
+q <- list(query)
+names(q) <- c(contrast_name)
+
 gost_results <- gost(
-    query=query,
-    organism=gost_id,
+    query=q,
+    organism=gost_token,
     significant=opt\$significant,
     measure_underrepresentation=opt\$measure_underrepresentation,
     correction_method=opt\$correction_method,
@@ -313,19 +331,18 @@ gost_results <- gost(
 )
 
 if (!is.null(gost_results)) {
-
     # Create interactive plot and save to HTML
     interactive_plot <- gostplot(gost_results, capped=T, interactive=T)
 
     # Save interactive plot as HTML
     htmlwidgets::saveWidget(
                 widget = interactive_plot,
-                file = paste(output_prefix, 'gprofiler2', 'gostplot', 'html', sep = '.')
+                file = paste(output_prefix, 'gostplot', 'html', sep = '.')
                 )
 
     # Create a static plot and save to PNG
     static_plot <- gostplot(gost_results, capped=T, interactive=F)
-    ggsave(plot = static_plot, filename = paste(output_prefix, 'gprofiler2', 'gostplot', 'png', sep = '.'), width = 10, height = 7)
+    ggsave(plot = static_plot, filename = paste(output_prefix, 'gostplot', 'png', sep = '.'), width = 10, height = 7)
 
     # Subset gost results to those pathways with a min. number of differential features
     gost_results\$result <- gost_results\$result[which(gost_results\$result\$intersection_size>=opt\$min_diff),]
@@ -335,7 +352,7 @@ if (!is.null(gost_results)) {
 
     # R object for other processes to use
 
-    saveRDS(gost_results, file = paste(output_prefix, 'gprofiler2.gost_results.rds', sep = '.'))
+    saveRDS(gost_results, file = paste(opt\$contrast_variable, 'gprofiler2.gost_results.rds', sep = '.'))
 
     # Write full enrichment table (except parents column as that one throws an error)
 
@@ -346,7 +363,7 @@ if (!is.null(gost_results)) {
 
     write.table(
         gost_results\$results,
-        file = paste(output_prefix, 'gprofiler2', 'all_enriched_pathways_tab', 'tsv', sep = '.'),
+        file = paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -356,10 +373,8 @@ if (!is.null(gost_results)) {
     # Iterate over the enrichment results by source and save separate tables
     for (df in split(gost_results\$result, gost_results\$result\$source)){
         db_source <- df\$source[1]
-        df\$short_name <- sapply(df\$term_name, substr, start=1, stop=50)
-
         df_subset <- data.frame(
-            Pathway_name = df\$short_name,
+            Pathway_name = df\$term_name,
             Pathway_code = df\$term_id,
             DE_genes = df\$intersection_size,
             Pathway_size = df\$term_size,
@@ -373,23 +388,32 @@ if (!is.null(gost_results)) {
         )
         write.table(
             df_subset,
-            file = paste(output_prefix, 'gprofiler2', db_source, 'sub_enriched_pathways', 'tsv', sep = '.'),
+            file = paste(output_prefix, db_source, 'sub_enriched_pathways', 'tsv', sep = '.'),
             col.names = TRUE,
             row.names = FALSE,
             sep = '\t',
             quote = FALSE
         )
 
+        # For plot, shorten pathway names as they can get quite long (full name can be looked up in the table)
+        df_subset\$Pathway_name <- sapply(df_subset\$Pathway_name, substr, start=1, stop=50)
+
+        # Extract 3 colors from the chosen palette (2 are sufficient, but brewer.pal has a minimum of 3); first and last will be used for plot
+        colors <- RColorBrewer::brewer.pal(3, opt\$palette_name)
+
         # Enriched pathways horizontal barplots of padj values
         p <- ggplot(df_subset, aes(x=reorder(Pathway_name, Fraction_DE), y=Fraction_DE)) +
             geom_bar(aes(fill=Padj), stat="identity", width = 0.7) +
             geom_text(aes(label=paste0(df_subset\$DE_genes, "/", df_subset\$Pathway_size)), vjust=0.4, hjust=-0.2, size=3) +
+            theme(plot.title.position = "plot") +
             coord_flip() +
             scale_y_continuous(limits = c(0.00, 1.24), breaks = seq(0, 1.24, by = 0.25)) +
-            scale_fill_continuous(high = enrich_colors[1], low = enrich_colors[2]) +
-            ggtitle(paste("Enriched pathways in", output_prefix)) +
-            xlab("") + ylab("Enriched fraction (DE features / Pathway size)")
-        ggsave(p, filename = paste(output_prefix, 'gprofiler2', db_source, 'sub_enriched_pathways', 'png', sep = '.'), device = "png", dpi = 300, width=10, limitsize=F)   # Set width to ensure there is enough space for the labels
+            ggtitle(paste("Enriched", db_source, "pathways")) +
+            xlab("") + ylab("Enriched fraction (DE features / Pathway size)") +
+            scale_fill_continuous(high = colors[1], low = colors[3])
+
+        # Save plot with set width to ensure there is enough space for the labels; adapt height to nrow but limit it to 100 as there will be an error for too high values
+        ggsave(p, filename = paste(output_prefix, db_source, 'sub_enriched_pathways', 'png', sep = '.'), device = "png", width=10, height=min(100, 1.5+nrow(df_subset)*0.15), limitsize=F)
     }
 }
 

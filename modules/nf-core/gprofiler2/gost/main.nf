@@ -12,13 +12,15 @@ process GPROFILER2_GOST {
     path(background_file)
 
     output:
-    tuple val(meta), path("*.gprofiler2.all_enriched_pathways_tab.tsv") , emit: all_enrich
-    tuple val(meta), path("*.gprofiler2.gost_results.rds")              , emit: rds         , optional: true
-    tuple val(meta), path("*.gprofiler2.gostplot.png")                  , emit: plot_png    , optional: true
-    tuple val(meta), path("*.gprofiler2.gostplot.html")                 , emit: plot_html   , optional: true
-    tuple val(meta), path("*.gprofiler2.sub_enriched_pathways_tab.tsv") , emit: sub_enrich  , optional: true
-    tuple val(meta), path("*.gprofiler2.sub_enriched_pathways_tab.png") , emit: sub_plot    , optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val(meta), path("*gprofiler2.*all_enriched_pathways.tsv") , emit: all_enrich
+    tuple val(meta), path("*gprofiler2.*gost_results.rds")          , emit: rds         , optional: true
+    tuple val(meta), path("*gprofiler2.*gostplot.png")              , emit: plot_png    , optional: true
+    tuple val(meta), path("*gprofiler2.*gostplot.html")             , emit: plot_html   , optional: true
+    tuple val(meta), path("*gprofiler2.*sub_enriched_pathways.tsv") , emit: sub_enrich  , optional: true
+    tuple val(meta), path("*gprofiler2.*sub_enriched_pathways.png") , emit: sub_plot    , optional: true
+    tuple val(meta), path("*ENSG_filtered.gmt")                     , emit: filtered_gmt, optional: true
+    tuple val(meta), path("*R_sessionInfo.log")                     , emit: session_info
+    path "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

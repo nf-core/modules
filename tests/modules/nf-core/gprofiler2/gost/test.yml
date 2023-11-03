@@ -1,12 +1,40 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /gost
-- name: "gprofiler2 gost"
-  command: nextflow run ./tests/modules/nf-core/gprofiler2/gost -entry test_gprofiler2_gost -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gprofiler2/gost/nextflow.config
+- name: gprofiler2 gost test_gprofiler2_gost
+  command: nextflow run ./tests/modules/nf-core/gprofiler2/gost -entry test_gprofiler2_gost -c ./tests/config/nextflow.config
   tags:
-    - "gprofiler2"
-    - "gprofiler2/gost"
+    - gprofiler2
+    - gprofiler2/gost
   files:
-    - path: "output/gprofiler2/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/gprofiler2/versions.yml"
-    
+    - path: output/gprofiler2/R_sessionInfo.log
+      contains: ["ggplot2_3.4.3", "gprofiler2_0.2.2"]
+    - path: output/gprofiler2/gprofiler2.test_r_t.all_enriched_pathways.tsv
+      md5sum: e229ebe27ff221928d3c746e321a7085
+    - path: output/gprofiler2/gprofiler2.test_r_t.gostplot.html
+      contains: ["1.027e-08", "3.283e-03", "3.512e-02"]
+    - path: output/gprofiler2/gprofiler2.test_r_t.gostplot.png
+      md5sum: 84b1a561cd6f2ef4ec0d29885c5b756f
+    - path: output/gprofiler2/gprofiler2.test_r_t.gprofiler_full_mmusculus.CORUM_REAC_filtered.sub_enriched_pathways.png
+      md5sum: aa85ca640d75d1cc532df9c472203678
+    - path: output/gprofiler2/gprofiler2.test_r_t.gprofiler_full_mmusculus.CORUM_REAC_filtered.sub_enriched_pathways.tsv
+      md5sum: dbe8a55eeefb661ed0213458874ec62a
+    - path: output/gprofiler2/test.gprofiler2.gost_results.rds
+    - path: output/gprofiler2/versions.yml
+
+- name: gprofiler2 gost test_gprofiler2_gost_backgroundmatrix
+  command: nextflow run ./tests/modules/nf-core/gprofiler2/gost -entry test_gprofiler2_gost_backgroundmatrix -c ./tests/config/nextflow.config
+  tags:
+    - gprofiler2
+    - gprofiler2/gost
+  files:
+    - path: output/gprofiler2/R_sessionInfo.log
+      contains: ["ggplot2_3.4.3", "gprofiler2_0.2.2"]
+    - path: output/gprofiler2/gprofiler2.test_r_t.all_enriched_pathways.tsv
+      md5sum: 38abca74c342af4f6f60871a4cae8b01
+    - path: output/gprofiler2/gprofiler2.test_r_t.gostplot.html # This plot is empty, so I won't add a contains
+    - path: output/gprofiler2/gprofiler2.test_r_t.gostplot.png
+      md5sum: c79416acef20f20ebb0abcede0fa9b8e
+    - path: output/gprofiler2/gprofiler2.test_r_t.gprofiler_full_mmusculus.CORUM_REAC_filtered.sub_enriched_pathways.png
+      md5sum: 3cdc120b34d6327a1bb0e11a760d562e
+    - path: output/gprofiler2/gprofiler2.test_r_t.gprofiler_full_mmusculus.CORUM_REAC_filtered.sub_enriched_pathways.tsv
+      md5sum: 69ce5b47ae7d976392130f17fc86a536
+    - path: output/gprofiler2/test.gprofiler2.gost_results.rds
+    - path: output/gprofiler2/versions.yml
