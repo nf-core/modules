@@ -39,6 +39,16 @@
             ],
             datasourceTemplate: "conda"
         },
+        {
+            customType: "regex",
+            description: "Upgrade pypi dependencies inside conda environment files",
+            fileMatch: ["(^|/)environment(.*).ya?ml$"],
+            matchStrings: [
+                "# renovate datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)",
+                "# renovate: datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)"
+            ],
+            datasourceTemplate: "pypi"
+        },
     ],
     packageRules: [
         {
