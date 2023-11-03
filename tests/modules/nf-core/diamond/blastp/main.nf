@@ -12,7 +12,7 @@ workflow test_diamond_blastp {
     blast_columns = 'qseqid qlen'
 
     DIAMOND_MAKEDB ( [ [id:'test'], fasta ] )
-    DIAMOND_BLASTP ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db.map { meta, dmnd -> dmnd }, out_ext, blast_columns )
+    DIAMOND_BLASTP ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
 
 workflow test_diamond_blastp_daa {
@@ -22,5 +22,5 @@ workflow test_diamond_blastp_daa {
     blast_columns = []
 
     DIAMOND_MAKEDB ( [ [id:'test'], fasta ] )
-    DIAMOND_BLASTP ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db.map { meta, dmnd -> dmnd }, out_ext, blast_columns )
+    DIAMOND_BLASTP ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
