@@ -11,7 +11,7 @@ import groovy.json.JsonOutput
 ========================================================================================
 */
 
-workflow NEXTFLOW_PIPELINE_UTILS {
+workflow UTILS_NEXTFLOW_PIPELINE {
 
     take:
     print_version        // bool
