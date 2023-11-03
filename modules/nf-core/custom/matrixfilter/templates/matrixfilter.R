@@ -183,6 +183,8 @@ keep <- apply(boolean_matrix, 1, all)
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
 
+prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
     file = paste0(
