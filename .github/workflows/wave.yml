@@ -29,8 +29,8 @@ jobs:
             modules/**/environment.yml
       - name: Debug
         run: echo ${{ steps.diff.outputs.all_changed_files }}
-      - id: set-matrix
-        run: echo "matrix={\"files\":${{ steps.diff.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
+      # - id: set-matrix
+      #   run: echo "matrix={\"files\":${{ steps.diff.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
 
     outputs:
       files: ${{ steps.diff.outputs.all_changed_files }}
