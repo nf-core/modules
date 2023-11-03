@@ -2,7 +2,7 @@ process GPROFILER2_GOST {
     tag "$meta.id"
     label 'process_single'
 
-    conda "r-ggplot2=3.4.3 r-gprofiler2=0.2.2"
+    conda "conda-forge::r-ggplot2=3.4.3 conda-forge::r-gprofiler2=0.2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0':
         'biocontainers/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0' }"
