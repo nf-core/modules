@@ -12,13 +12,11 @@ tools:
       tool_dev_url: https://github.com/amkozlov/raxml-ng
       doi: 10.1093/bioinformatics/btz305
       licence: ["GPL v2-or-later"]
-
 input:
   - alignment:
       type: file
       description: A FASTA format multiple sequence alignment file
       pattern: "*.{fasta,fas,fa,mfa}"
-
 output:
   - versions:
       type: file
@@ -32,7 +30,9 @@ output:
       type: file
       description: A phylogeny in Newick format with bootstrap values
       pattern: "*.{raxml.support}"
-
 authors:
+  - "@avantonder"
+  - "@aunderwo"
+maintainers:
   - "@avantonder"
   - "@aunderwo"

@@ -2,7 +2,7 @@ process GGET_GGET {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gget=0.27.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gget:0.27.2--pyh4a94de4_2':
         'biocontainers/gget:0.27.2--pyh4a94de4_2' }"

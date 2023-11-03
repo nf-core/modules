@@ -2,7 +2,7 @@ process BLAST_BLASTN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::blast=2.14.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.14.1--pl5321h6f7f691_0':
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
@@ -22,7 +22,7 @@ process BLAST_BLASTN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    DB=`find -L ./ -name "*.ndb" | sed 's/\\.ndb\$//'`
+    DB=`find -L ./ -name "*.nin" | sed 's/\\.nin\$//'`
     blastn \\
         -num_threads $task.cpus \\
         -db \$DB \\

@@ -2,7 +2,7 @@ process HMMER_HMMSEARCH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::hmmer=3.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
         'biocontainers/hmmer:3.3.2--h1b792b2_1' }"

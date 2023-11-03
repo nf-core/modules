@@ -2,7 +2,7 @@ process STITCH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::r-stitch=1.6.10"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-stitch:1.6.10--r43h06b5641_0':
         'biocontainers/r-stitch:1.6.10--r43h06b5641_0' }"

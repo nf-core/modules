@@ -2,7 +2,7 @@ process ICHORCNA_CREATEPON {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::r-ichorcna=0.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
         'biocontainers/r-ichorcna:0.3.2--r41hdfd78af_0' }"
