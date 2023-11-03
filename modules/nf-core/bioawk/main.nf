@@ -2,7 +2,7 @@ process BIOAWK {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bioawk=1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6':
         'biocontainers/bioawk:1.0--h5bf99c6_6' }"

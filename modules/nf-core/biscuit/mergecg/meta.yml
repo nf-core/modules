@@ -14,9 +14,7 @@ tools:
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
       tool_dev_url: https://github.com/huishenlab/biscuit
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -31,7 +29,6 @@ input:
       type: directory
       description: Biscuit genome index directory (generated with 'biscuit index')
       pattern: "BiscuitIndex"
-
 output:
   - meta:
       type: map
@@ -46,6 +43,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@njspix"
+maintainers:
   - "@njspix"
