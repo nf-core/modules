@@ -59,6 +59,7 @@ jobs:
         run: |
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
+              --await \
               --build-repo ghcr.io/nf-core/modules/bowtie \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
@@ -68,6 +69,7 @@ jobs:
         run: |
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
+              --await \
               --build-repo ghcr.io/nf-core/modules/bowtie \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
