@@ -30,7 +30,7 @@ jobs:
       - name: Debug
         run: echo ${{ steps.diff.outputs.all_changed_files }}
       - id: set-matrix
-        run: echo "matrix={\"profiles\":[\"docker\", \"singularity\"],\"files\":${{ steps.diff.outputs.all_changed_files }} }" >> "$GITHUB_OUTPUT"
+        run: echo "matrix={\"profile\":[\"docker\", \"singularity\"],\"files\":${{ steps.diff.outputs.all_changed_files }} }" >> "$GITHUB_OUTPUT"
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -55,12 +55,22 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Build container
+        if: matrix.profile == 'docker'
+        run: |
+          wave --conda-file "${{ matrix.files }}" \
+              --freeze \
+              --build-repo ghcr.io/nf-core/modules/bowtie \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+
+      - name: Build Singularity
+        if: matrix.profile == 'singularity'
         run: |
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
               --build-repo ghcr.io/nf-core/modules/bowtie \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
-              ${[ "${{ matrix.profile }}" == "singularity" ]:+--singularity}
+              --singularity
 
     # TODO Build from Dockerfiles
