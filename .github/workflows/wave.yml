@@ -29,23 +29,21 @@ jobs:
             modules/**/environment.yml
       - name: Debug
         run: echo ${{ steps.diff.outputs.all_changed_files }}
-      # - id: set-matrix
-      #   run: echo "matrix={\"files\":${{ steps.diff.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
+      - id: set-matrix
+        run: echo "matrix={\"profiles\":[\"docker\", \"singularity\"],\"files\":${{ steps.diff.outputs.all_changed_files }} }" >> "$GITHUB_OUTPUT"
 
     outputs:
-      files: ${{ steps.diff.outputs.all_changed_files }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
 
   build:
-    if: "${{ fromJson(needs.gen-matrix.outputs.files) }}"
+    if: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
     needs: gen-matrix
     name: build
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix:
-        files: "${{ fromJson(needs.gen-matrix.outputs.files) }}"
-        profile: ["docker", "singularity"]
+      matrix: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
