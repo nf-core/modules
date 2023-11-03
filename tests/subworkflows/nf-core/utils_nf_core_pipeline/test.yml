@@ -1,0 +1,8 @@
+- name: utils_nf_core_pipeline test_utils_nf_core_pipeline
+  command: nextflow run ./tests/subworkflows/nf-core/utils_nf_core_pipeline -entry test_utils_nf_core_pipeline -c ./tests/config/nextflow.config
+  tags:
+    - utils
+    - subworkflows
+    - subworkflows/utils_nf_core_pipeline
+  files:
+    - path: output/
