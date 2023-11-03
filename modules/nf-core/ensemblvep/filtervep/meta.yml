@@ -13,7 +13,6 @@ tools:
       homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
       documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - feature_file:
       type: file
       description: File containing features on separate lines. To be used with --filter option.
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: VCF/TAB file
       pattern: "*.{vcf,tab,txt,tsv}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

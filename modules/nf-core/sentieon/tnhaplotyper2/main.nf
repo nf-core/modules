@@ -43,8 +43,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     def args3                     = task.ext.args3                     ?: ''  // options for the OrientationBias algorithm. It could be something like "--tumor_sample <tumour_id>"
     def args4                     = task.ext.args4                     ?: ''  // options for the ContaminationModel algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
     def prefix                    = task.ext.prefix                    ?: "${meta.id}"
-    def pon_command               = panel_of_normals                   ? "--pon $panel_of_normals"           : ""
     def gr_command                = germline_resource                  ? "--germline_vcf $germline_resource" : ""
+    def interval_command          = intervals                          ? "--interval $intervals"             : ""
+    def pon_command               = panel_of_normals                   ? "--pon $panel_of_normals"           : ""
     def inputs                    = input.collect{ "-i $it"}.join(" ")
     def orientation_bias_cmd      = ""
     def contamination_cmd         = ""
@@ -79,6 +80,7 @@ process SENTIEON_TNHAPLOTYPER2 {
         -r $fasta \\
         $args \\
         $inputs \\
+        $interval_command \\
         --algo TNhaplotyper2 \\
         $args2 \\
         $gr_command \\

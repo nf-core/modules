@@ -4,10 +4,10 @@ process PURECN_COVERAGE {
     stageInMode "link"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -30,9 +30,9 @@ process PURECN_COVERAGE {
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
@@ -47,7 +47,6 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 
     stub:
 
@@ -59,9 +58,9 @@ process PURECN_COVERAGE {
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
     touch ${prefix}.txt
     touch ${prefix}.bed
@@ -74,5 +73,4 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 }

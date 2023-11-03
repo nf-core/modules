@@ -2,7 +2,7 @@ process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::learnmsa=1.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/learnmsa:1.3.2--pyhdfd78af_0':
         'biocontainers/learnmsa:1.3.2--pyhdfd78af_0' }"

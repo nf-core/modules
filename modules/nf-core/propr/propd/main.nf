@@ -2,7 +2,7 @@ process PROPR_PROPD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "conda-forge::r-propr=4.2.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-propr:4.2.6':
         'biocontainers/r-propr:4.2.6' }"
