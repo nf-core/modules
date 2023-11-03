@@ -243,7 +243,7 @@ if (!is.null(opt\$gost_token)) {
     gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
     writeLines(gmt, gmt_path)
     gost_token <- upload_GMT_file(gmt_path)
-    
+
     # Add gost ID to output GMT name so that it can be reused in future runs
     file.rename(gmt_path, paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_gostID_", gost_token, "_filtered.gmt"))
 } else {
