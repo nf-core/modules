@@ -45,6 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         files: "${{ fromJson(needs.gen-matrix.outputs.files) }}"
+        profile: ["docker", "singularity"]
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
@@ -57,9 +58,11 @@ jobs:
 
       - name: Build container
         run: |
-          wave --conda-file "${{ matrix.files }}" --freeze --build-repo ghcr.io/nf-core/modules/bowtie --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+          wave --conda-file "${{ matrix.files }}" \
+              --freeze \
+              --build-repo ghcr.io/nf-core/modules/bowtie \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
+              ${[ "${{ matrix.profile }}" == "singularity" ]:+--singularity}
 
-      # - name: Build Singularity
-      #   run: |
-      #     container=$(wave --singularity --conda-package bamtools=2.5.2 --build-repo docker.io/user/repo --freeze --await)
-      #     singularity exec $container bamtools --version
+    # TODO Build from Dockerfiles
