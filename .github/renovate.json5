@@ -32,7 +32,7 @@
         {
             customType: "regex",
             description: "Process conda dependencies",
-            fileMatch: ["^(?:modules/)?\\w+environment\\.yml$"],
+            fileMatch: ["(^|/)environment\\.yml$"],
             matchStrings: [
                 '# renovate datasource=conda\\sdepName=(?<depName>.*?)\\s+- [a-z0-9]+=="?(?<currentValue>.*)"?',
             ],
