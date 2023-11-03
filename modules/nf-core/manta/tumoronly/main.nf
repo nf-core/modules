@@ -3,7 +3,7 @@ process MANTA_TUMORONLY {
     label 'process_medium'
     label 'error_retry'
 
-    conda "bioconda::manta=1.6.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
         'biocontainers/manta:1.6.0--h9ee0642_1' }"

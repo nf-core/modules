@@ -1,5 +1,4 @@
 name: allelecounter
-
 description: Generates a count of coverage of alleles
 keywords:
   - allele
@@ -10,9 +9,7 @@ tools:
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
-
       licence: A-GPL 3.0
-
 input:
   - meta:
       type: map
@@ -34,7 +31,6 @@ input:
   - fasta:
       type: file
       description: Input genome fasta file. Required when passing CRAM files.
-
 output:
   - meta:
       type: map
@@ -49,7 +45,9 @@ output:
       type: file
       description: Allele count file
       pattern: "*.{alleleCount}"
-
 authors:
+  - "@fullama"
+  - "@fbdtemme"
+maintainers:
   - "@fullama"
   - "@fbdtemme"

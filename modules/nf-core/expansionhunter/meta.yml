@@ -14,7 +14,6 @@ tools:
       documentation: https://github.com/Illumina/ExpansionHunter/blob/master/docs/01_Introduction.md
       doi: "10.1093/bioinformatics/btz431"
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -52,7 +51,6 @@ input:
       type: file
       description: JSON file with repeat expansion sites to genotype
       pattern: "*.json"
-
 output:
   - meta:
       type: map
@@ -71,6 +69,7 @@ output:
       type: file
       description: JSON with repeat expansions
       pattern: "*.json.gz"
-
 authors:
+  - "@jemten"
+maintainers:
   - "@jemten"

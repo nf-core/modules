@@ -3,16 +3,13 @@ description: Beagle v5.2 is a software package for phasing genotypes and for imp
 keywords:
   - phasing
   - imputation
-
 tools:
   - "beagle5":
       description: "Beagle is a software package for phasing genotypes and for imputing ungenotyped markers."
       homepage: "https://faculty.washington.edu/browning/beagle/b5_2.html"
       documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.2_13Oct21.pdf"
-
       doi: "10.1016/j.ajhg.2021.08.005; doi:10.1016/j.ajhg.2018.07.015"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -39,7 +36,6 @@ input:
       type: file
       description: text file containing markers one marker per line to be excluded from the analysis
       pattern: "*.*"
-
 output:
   - meta:
       type: map
@@ -58,6 +54,7 @@ output:
       type: file
       description: a summary of the analysis that includes the Beagle version, the command line arguments, and compute time.
       pattern: "*.log"
-
 authors:
+  - "@ashotmarg"
+maintainers:
   - "@ashotmarg"

@@ -2,7 +2,7 @@ process CADD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::cadd-scripts=1.6 anaconda::conda=4.14.0 conda-forge::mamba=1.4.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-8d145e7b16a8ca4bf920e6ca464763df6f0a56a2:d4e457a2edecb2b10e915c01d8f46e29e236b648-0':
         'biocontainers/mulled-v2-8d145e7b16a8ca4bf920e6ca464763df6f0a56a2:d4e457a2edecb2b10e915c01d8f46e29e236b648-0' }"

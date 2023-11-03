@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
       doi: "10.1038/nmeth.3959"
       licence: "['BSD']"
-
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
       type: file
       description: Fasta file containing protein sequences
       pattern: "*.{fasta}"
-
 output:
   - meta:
       type: map
@@ -40,6 +38,7 @@ output:
       type: file
       description: Fasta file containing proteins and decoy proteins
       pattern: "*.{fasta}"
-
 authors:
+  - "@jonasscheid"
+maintainers:
   - "@jonasscheid"

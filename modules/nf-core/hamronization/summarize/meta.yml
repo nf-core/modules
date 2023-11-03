@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/pha4ge/hAMRonization/
       documentation: https://github.com/pha4ge/hAMRonization/
       tool_dev_url: https://github.com/pha4ge/hAMRonization
-
       licence: ["GNU Lesser General Public v3 (LGPL v3)"]
-
 input:
   - reports:
       type: file
@@ -22,7 +20,6 @@ input:
       type: value
       description: Type of final combined report file to be produced
       pattern: "tsv|json|interactive"
-
 output:
   - versions:
       type: file
@@ -40,6 +37,7 @@ output:
       type: file
       description: hAMRonised summary in HTML format
       pattern: "*.html"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

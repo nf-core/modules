@@ -2,7 +2,7 @@ process DEEPARG_PREDICT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::deeparg=1.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"

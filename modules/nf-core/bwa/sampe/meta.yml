@@ -19,7 +19,6 @@ tools:
       documentation: http://bio-bwa.sourceforge.net/
       doi: "10.1093/bioinformatics/btp324"
       licence: ["GPL-3.0-or-later"]
-
 input:
   - meta:
       type: map
@@ -43,7 +42,6 @@ input:
       type: directory
       description: Directory containing BWA index files (amb,ann,bwt,pac,sa) from BWA_INDEX
       pattern: "bwa/"
-
 output:
   - meta:
       type: map
@@ -58,6 +56,7 @@ output:
       type: file
       description: BAM file
       pattern: "*.bam"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"
