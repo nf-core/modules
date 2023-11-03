@@ -8,7 +8,7 @@
 ========================================================================================
 */
 
-workflow UTILS_NF_CORE_PIPELINE {
+workflow UTILS_NFCORE_PIPELINE {
 
     main:
     checkConfigProvided()

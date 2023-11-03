@@ -16,7 +16,7 @@ include { paramsHelp; paramsSummaryLog; paramsSummaryMap; validateParameters } f
 ========================================================================================
 */
 
-workflow UTILS_NF_VALIDATION_PLUGIN {
+workflow UTILS_NFVALIDATION_PLUGIN {
 
     take:
         print_help        // bool
