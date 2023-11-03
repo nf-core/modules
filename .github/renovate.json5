@@ -14,6 +14,9 @@
     rebaseWhen: "conflicted",
     reviewers: ["team:modules"],
     "pre-commit": {
+    assigneesFromCodeOwners: true,
+    gitAuthor: "nf-core-bot <renovate@nf-co.re>",
+    prHeader: "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
         enabled: true,
     },
     customManagers: [

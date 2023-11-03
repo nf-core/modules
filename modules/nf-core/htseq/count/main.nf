@@ -4,7 +4,7 @@ process HTSEQ_COUNT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/htseq:2.0.2--py310ha14a713_0':
+        'https://depot.galaxyproject.org/singularity/htseq:2.0.3--py310ha14a713_0':
         'biocontainers/htseq:2.0.3--py310ha14a713_0' }"
 
     input:
