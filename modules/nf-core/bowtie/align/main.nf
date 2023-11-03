@@ -3,7 +3,7 @@ process BOWTIE_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/bowtie:bowtie-1.3.0_samtools-1.16.1--82705d624eee2198"
+    container "nf-core/modules/bowtie:bowtie-1.3.0_samtools-1.16.1--2c2a8138b83d6d1d"
 
     input:
     tuple val(meta), path(reads)
