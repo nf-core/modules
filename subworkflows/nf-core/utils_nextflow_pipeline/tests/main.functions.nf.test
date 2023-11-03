@@ -2,11 +2,11 @@
 nextflow_function {
 
     name "Test Functions"
-    script "subworkflows/nf-core/nextflowpipelineutils/main.nf"
-    config "subworkflows/nf-core/nextflowpipelineutils/tests/nextflow.config"
+    script "subworkflows/nf-core/utils_nextflow_pipeline/main.nf"
+    config "subworkflows/nf-core/utils_nextflow_pipeline/tests/nextflow.config"
     tag 'subworkflows'
-    tag 'nextflowpipelineutils'
-    tag 'subworkflows/nextflowpipelineutils'
+    tag 'utils_nextflow_pipeline'
+    tag 'subworkflows/utils_nextflow_pipeline'
 
     test("Test Function getWorkflowVersion") {
 

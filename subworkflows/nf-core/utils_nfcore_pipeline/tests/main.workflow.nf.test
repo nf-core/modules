@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Workflow NFCORE_PIPELINE_UTILS"
+    name "Test Workflow UTILS_NFCORE_PIPELINE"
     script "../main.nf"
-    config "subworkflows/nf-core/nfcore_pipeline_utils/tests/nextflow.config"
-    workflow "NFCORE_PIPELINE_UTILS"
+    config "subworkflows/nf-core/utils_nfcore_pipeline/tests/nextflow.config"
+    workflow "UTILS_NFCORE_PIPELINE"
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "nfcorepipelineutils"
-    tag "subworkflows/nfcorepipelineutils"
+    tag "utils_nfcore_pipeline"
+    tag "subworkflows/utils_nfcore_pipeline"
 
     test("Should run without failures") {
 
