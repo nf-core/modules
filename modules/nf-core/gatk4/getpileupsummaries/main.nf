@@ -27,6 +27,7 @@ process GATK4_GETPILEUPSUMMARIES {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals ? "--intervals $intervals" : "--intervals $variants"
     def reference_command = fasta ? "--reference $fasta" : ''
+    def variants_command = variants ? "--variant $variants" : ''
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -38,7 +39,7 @@ process GATK4_GETPILEUPSUMMARIES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         GetPileupSummaries \\
         --input $input \\
-        --variant $variants \\
+        $variants_command \\
         --output ${prefix}.pileups.table \\
         $reference_command \\
         $interval_command \\
