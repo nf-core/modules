@@ -33,17 +33,18 @@ jobs:
         run: echo "matrix={\"files\":${{ steps.diff.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
 
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      files: ${{ steps.diff.outputs.all_changed_files }}
 
   build:
-    if: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
+    if: "${{ fromJson(needs.gen-matrix.outputs.files) }}"
     needs: gen-matrix
     name: build
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
+      matrix:
+        files: "${{ fromJson(needs.gen-matrix.outputs.files) }}"
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
