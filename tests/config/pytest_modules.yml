@@ -1237,10 +1237,6 @@ gatk4/applybqsr:
   - modules/nf-core/gatk4/applybqsr/**
   - tests/modules/nf-core/gatk4/applybqsr/**
 
-gatk4/applybqsrspark:
-  - modules/nf-core/gatk4/applybqsrspark/**
-  - tests/modules/nf-core/gatk4/applybqsrspark/**
-
 gatk4/applyvqsr:
   - modules/nf-core/gatk4/applyvqsr/**
   - tests/modules/nf-core/gatk4/applyvqsr/**
@@ -1252,10 +1248,6 @@ gatk4/asereadcounter:
 gatk4/baserecalibrator:
   - modules/nf-core/gatk4/baserecalibrator/**
   - tests/modules/nf-core/gatk4/baserecalibrator/**
-
-gatk4/baserecalibratorspark:
-  - modules/nf-core/gatk4/baserecalibratorspark/**
-  - tests/modules/nf-core/gatk4/baserecalibratorspark/**
 
 gatk4/bedtointervallist:
   - modules/nf-core/gatk4/bedtointervallist/**
@@ -1385,10 +1377,6 @@ gatk4/markduplicates:
   - modules/nf-core/gatk4/markduplicates/**
   - tests/modules/nf-core/gatk4/markduplicates/**
 
-gatk4/markduplicatesspark:
-  - modules/nf-core/gatk4/markduplicatesspark/**
-  - tests/modules/nf-core/gatk4/markduplicatesspark/**
-
 gatk4/mergebamalignment:
   - modules/nf-core/gatk4/mergebamalignment/**
   - tests/modules/nf-core/gatk4/mergebamalignment/**
@@ -1476,6 +1464,18 @@ gatk4/variantfiltration:
 gatk4/variantrecalibrator:
   - modules/nf-core/gatk4/variantrecalibrator/**
   - tests/modules/nf-core/gatk4/variantrecalibrator/**
+
+gatk4spark/applybqsr:
+  - modules/nf-core/gatk4spark/applybqsr/**
+  - tests/modules/nf-core/gatk4spark/applybqsr/**
+
+gatk4spark/baserecalibrator:
+  - modules/nf-core/gatk4spark/baserecalibrator/**
+  - tests/modules/nf-core/gatk4spark/baserecalibrator/**
+
+gatk4spark/markduplicates:
+  - modules/nf-core/gatk4spark/markduplicates/**
+  - tests/modules/nf-core/gatk4spark/markduplicates/**
 
 gawk:
   - modules/nf-core/gawk/**
@@ -1872,10 +1872,6 @@ instrain/profile:
   - modules/nf-core/instrain/profile/**
   - tests/modules/nf-core/instrain/profile/**
 
-interproscan:
-  - modules/nf-core/interproscan/**
-  - tests/modules/nf-core/interproscan/**
-
 iphop/addtodb:
   - modules/nf-core/iphop/addtodb/**
   - tests/modules/nf-core/iphop/addtodb/**
@@ -1947,14 +1943,6 @@ kaiju/mkfmi:
 kalign/align:
   - modules/nf-core/kalign/align/**
   - tests/modules/nf-core/kalign/align/**
-
-kallisto/index:
-  - modules/nf-core/kallisto/index/**
-  - tests/modules/nf-core/kallisto/index/**
-
-kallisto/quant:
-  - modules/nf-core/kallisto/quant/**
-  - tests/modules/nf-core/kallisto/quant/**
 
 kallistobustools/count:
   - modules/nf-core/kallistobustools/count/**
@@ -3799,6 +3787,14 @@ subworkflows/multiple_impute_glimpse2:
   - subworkflows/nf-core/multiple_impute_glimpse2/**
   - tests/subworkflows/nf-core/multiple_impute_glimpse2/**
 
+subworkflows/utils_nextflow_pipeline:
+  - subworkflows/nf-core/utils_nextflow_pipeline/**
+  - tests/subworkflows/nf-core/utils_nextflow_pipeline/**
+
+subworkflows/utils_nfcore_pipeline:
+  - subworkflows/nf-core/utils_nfcore_pipeline/**
+  - tests/subworkflows/nf-core/utils_nfcore_pipeline/**
+
 subworkflows/vcf_annotate_ensemblvep:
   - subworkflows/nf-core/vcf_annotate_ensemblvep/**
   - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
@@ -3939,10 +3935,6 @@ ucsc/bedclip:
   - modules/nf-core/ucsc/bedclip/**
   - tests/modules/nf-core/ucsc/bedclip/**
 
-ucsc/bedgraphtobigwig:
-  - modules/nf-core/ucsc/bedgraphtobigwig/**
-  - tests/modules/nf-core/ucsc/bedgraphtobigwig/**
-
 ucsc/bedtobigbed:
   - modules/nf-core/ucsc/bedtobigbed/**
   - tests/modules/nf-core/ucsc/bedtobigbed/**
@@ -3985,7 +3977,6 @@ umicollapse:
 
 umitools/dedup:
   - modules/nf-core/umitools/dedup/**
-  - modules/nf-core/umitools/extract/**
   - tests/modules/nf-core/umitools/dedup/**
 
 umitools/extract:
