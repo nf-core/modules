@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
-name: "vecscreen"
+name: "NCBITOOLS_VECSCREEN"
 description: NCBI tool for detecting vector contamination in nucleic acid sequences. This tool is older than NCBI's FCS-adaptor, which is for the same purpose
 keywords:
   - assembly
@@ -29,7 +29,7 @@ input:
       description: FASTA file that will be screened for contaminants
   - adapters_database_file:
       type: file
-      description: Path to an NCBI BLAST database file with vector sequences
+      description: Path to a nucleotide BLAST database file with vector sequences
 
 output:
   - meta:

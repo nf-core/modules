@@ -2,7 +2,6 @@ process NCBITOOLS_VECSCREEN {
     tag "$meta.id"
     label 'process_single'
 
-    //container "docker.io/biocontainers/ncbi-tools-bin:v6.1.20170106-6-deb_cv1"
     container "quay.io/sanger-tol/ascc_main:0.001-c1"
 
     input:
@@ -23,25 +22,25 @@ process NCBITOOLS_VECSCREEN {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, the name of the container that contains VecScreen is used here to indicate version
+    // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, 1.0 plus the name of the container that contains VecScreen is used here to indicate version
     """
     DB=`find -L ${adapters_database_directory} -name "*.nin" | sed 's/\\.nin\$//'`
     vecscreen -d \$DB ${args} -i ${fasta_file} -o ${prefix}.vecscreen.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: 1.0 ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
+        vecscreen: 1.0 quay.io/sanger-tol/ascc_main:0.001-c1
     END_VERSIONS
     """
 
     stub:
-    // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, the name of the container that contains VecScreen is used here to indicate version
+    // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, 1.0 plus the name of the container that contains VecScreen is used here to indicate version
     """
     touch ${prefix}.vecscreen.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: 1.0 ncbi-tools-bin_v6.1.20170106-6-deb_cv1.img
+        vecscreen: 1.0 quay.io/sanger-tol/ascc_main:0.001-c1
     END_VERSIONS
     """
 }
