@@ -24,10 +24,10 @@ process SRATOOLS_PREFETCH {
 
     if (certificate){
         if (certificate.toString().endsWith('.jwt')){
-            args += " --perm ${certificate}" 
+            args += " --perm ${certificate}"
             }
         else if (certificate.toString().endsWith('.ngc')){
-            args += " --ngc ${certificate}" 
+            args += " --ngc ${certificate}"
         }
     }
 

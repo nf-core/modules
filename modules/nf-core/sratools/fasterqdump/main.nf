@@ -28,12 +28,13 @@ process SRATOOLS_FASTERQDUMP {
 
     if (certificate){
         if (certificate.toString().endsWith('.jwt')){
-            key_file += " --perm ${certificate}" 
+            key_file += " --perm ${certificate}"
             }
         else if (certificate.toString().endsWith('.ngc')){
-            key_file += " --ngc ${certificate}" 
+            key_file += " --ngc ${certificate}"
         }
     }
+
     """
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
