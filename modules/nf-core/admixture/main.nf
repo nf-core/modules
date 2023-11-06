@@ -3,7 +3,7 @@ process ADMIXTURE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/admixture/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/admixture:1.3.0--0':
         'biocontainers/admixture:1.3.0--0' }"

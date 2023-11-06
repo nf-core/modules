@@ -10,6 +10,7 @@ process MITOHIFI_MITOHIFI {
     tuple val(meta), path(input)
     path ref_fa
     path ref_gb
+    val input_mode
     val mito_code
 
     output:
@@ -37,16 +38,15 @@ process MITOHIFI_MITOHIFI {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
+        error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
     }
 
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    def script_input = args2.equals("-r") ? "-r ${input}" :
-                args2.equals("-c") ? "-c ${input}" :
-                exit("-r for reads or -c for contigs must be specified")
+    if (! ["c", "r"].contains(input_mode)) {
+        error "r for reads or c for contigs must be specified"
+    }
     """
-    mitohifi.py ${script_input} \\
+    mitohifi.py -${input_mode} ${input} \\
         -f ${ref_fa} \\
         -g ${ref_gb} \\
         -o ${mito_code} \\

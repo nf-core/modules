@@ -2,10 +2,10 @@ process SEQKIT_FX2TAB {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/seqkit/fx2tab/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.5.0--h9ee0642_0' :
-        'biocontainers/seqkit:2.5.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.5.1--h9ee0642_0' :
+        'biocontainers/seqkit:2.5.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastx)
