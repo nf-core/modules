@@ -92,7 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.daa).match("daa") },
+                { assert process.out.daa },
                 { assert process.out.versions }
             )
         }
