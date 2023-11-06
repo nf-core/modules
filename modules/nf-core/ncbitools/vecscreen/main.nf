@@ -2,7 +2,7 @@ process NCBITOOLS_VECSCREEN {
     tag "$meta.id"
     label 'process_single'
 
-    container "quay.io/sanger-tol/ascc_main:0.001-c1"
+    container "sanger-tol/ascc_main:0.001-c1"
 
     input:
     tuple val(meta), path(fasta_file)
