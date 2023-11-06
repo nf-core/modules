@@ -26,6 +26,10 @@ agat/convertspgff2gtf:
   - modules/nf-core/agat/convertspgff2gtf/**
   - tests/modules/nf-core/agat/convertspgff2gtf/**
 
+agat/convertspgff2tsv:
+  - modules/nf-core/agat/convertspgff2tsv/**
+  - tests/modules/nf-core/agat/convertspgff2tsv/**
+
 agat/convertspgxf2gxf:
   - modules/nf-core/agat/convertspgxf2gxf/**
   - tests/modules/nf-core/agat/convertspgxf2gxf/**
@@ -113,6 +117,10 @@ ariba/run:
 arriba/arriba:
   - modules/nf-core/arriba/arriba/**
   - tests/modules/nf-core/arriba/arriba/**
+
+arriba/download:
+  - modules/nf-core/arriba/download/**
+  - tests/modules/nf-core/arriba/download/**
 
 artic/guppyplex:
   - modules/nf-core/artic/guppyplex/**
@@ -3775,6 +3783,14 @@ subworkflows/multiple_impute_glimpse2:
   - subworkflows/nf-core/multiple_impute_glimpse2/**
   - tests/subworkflows/nf-core/multiple_impute_glimpse2/**
 
+subworkflows/utils_nextflow_pipeline:
+  - subworkflows/nf-core/utils_nextflow_pipeline/**
+  - tests/subworkflows/nf-core/utils_nextflow_pipeline/**
+
+subworkflows/utils_nfcore_pipeline:
+  - subworkflows/nf-core/utils_nfcore_pipeline/**
+  - tests/subworkflows/nf-core/utils_nfcore_pipeline/**
+
 subworkflows/vcf_annotate_ensemblvep:
   - subworkflows/nf-core/vcf_annotate_ensemblvep/**
   - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
@@ -3915,10 +3931,6 @@ ucsc/bedclip:
   - modules/nf-core/ucsc/bedclip/**
   - tests/modules/nf-core/ucsc/bedclip/**
 
-ucsc/bedgraphtobigwig:
-  - modules/nf-core/ucsc/bedgraphtobigwig/**
-  - tests/modules/nf-core/ucsc/bedgraphtobigwig/**
-
 ucsc/bedtobigbed:
   - modules/nf-core/ucsc/bedtobigbed/**
   - tests/modules/nf-core/ucsc/bedtobigbed/**
@@ -3961,7 +3973,6 @@ umicollapse:
 
 umitools/dedup:
   - modules/nf-core/umitools/dedup/**
-  - modules/nf-core/umitools/extract/**
   - tests/modules/nf-core/umitools/dedup/**
 
 umitools/extract:
