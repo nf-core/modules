@@ -20,7 +20,7 @@ process NCBITOOLS_VECSCREEN {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "The VecScreen module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, 1.0 plus the name of the container that contains VecScreen is used here to indicate version
     """

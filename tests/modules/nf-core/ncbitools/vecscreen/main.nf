@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BLAST_MAKEBLASTDB } from '../../../../../modules/nf-core/blast/makeblastdb/main.nf'
+include { BLAST_MAKEBLASTDB   } from '../../../../../modules/nf-core/blast/makeblastdb/main.nf'
 include { NCBITOOLS_VECSCREEN } from '../../../../../modules/nf-core/ncbitools/vecscreen/main.nf'
 
 workflow test_ncbitools_vecscreen {
