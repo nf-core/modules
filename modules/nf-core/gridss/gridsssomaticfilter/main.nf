@@ -1,4 +1,3 @@
-
 process GRIDSS_GRIDSSSOMATICFILTER {
     tag "$meta.id"
     label 'process_high'
