@@ -24,7 +24,16 @@ process SRATOOLS_FASTERQDUMP {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outfile = meta.single_end ? "${prefix}.fastq" : prefix
-    def key_file = certificate ? "--perm ${certificate}" : ''
+    def key_file = ''
+
+    if (certificate){
+        if (certificate.toString().endsWith('.jwt')){
+            key_file += " --perm ${certificate}" 
+            }
+        else if (certificate.toString().endsWith('.ngc')){
+            key_file += " --ngc ${certificate}" 
+        }
+    }
     """
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
