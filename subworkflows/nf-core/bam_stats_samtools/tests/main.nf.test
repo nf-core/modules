@@ -3,13 +3,14 @@ nextflow_workflow {
     name "Test Workflow BAM_STATS_SAMTOOLS"
     script "../main.nf"
     workflow "BAM_STATS_SAMTOOLS"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bam_stats_samtools"
+    tag "subworkflows/bam_stats_samtools"
     tag "samtools"
     tag "samtools/flagstat"
     tag "samtools/idxstats"
     tag "samtools/stats"
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "bam_stats_samtools"
 
     test("test_bam_stats_samtools_single_end") {
 
@@ -33,9 +34,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(process.out.stats.getText()).match("test_bam_stats_samtools_single_end_stats")},
-                { assert snapshot(process.out.idxstats.getText()).match("test_bam_stats_samtools_single_end_idxstats")},
-                { assert snapshot(process.out.flagstat.getText()).match("test_bam_stats_samtools_single_end_flagstat")}
+                { assert snapshot(workflow.out.stats).match("test_bam_stats_samtools_single_end_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_stats_samtools_single_end_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_stats_samtools_single_end_idxstats") }
             )
         }
     }
@@ -62,9 +63,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(process.out.stats.getText()).match("test_bam_stats_samtools_paired_end_stats")},
-                { assert snapshot(process.out.flagstat.getText()).match("test_bam_stats_samtools_paired_end_flagstat")}
-                { assert snapshot(process.out.idxstats.getText()).match("test_bam_stats_samtools_paired_end_idxstats")},
+                { assert snapshot(workflow.out.stats).match("test_bam_stats_samtools_paired_end_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_stats_samtools_paired_end_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_stats_samtools_paired_end_idxstats") }
             )
         }
     }
@@ -91,9 +92,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(process.out.stats.getText()).match("test_bam_stats_samtools_paired_end_cram_stats")},
-                { assert snapshot(process.out.flagstat.getText()).match("test_bam_stats_samtools_paired_end_cram_flagstat")}
-                { assert snapshot(process.out.idxstats.getText()).match("test_bam_stats_samtools_paired_end_cram_idxstats")},
+                { assert snapshot(workflow.out.stats).match("test_bam_stats_samtools_paired_end_cram_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_stats_samtools_paired_end_cram_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_stats_samtools_paired_end_cram_idxstats") }
             )
         }
     }
