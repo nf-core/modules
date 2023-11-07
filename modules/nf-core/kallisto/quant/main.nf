@@ -29,7 +29,7 @@ process KALLISTO_QUANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
-    def single_end_params = meta.single_end ? "--fragment-length=$fragment_length --sd $fragment_length_sd" : ''
+    def single_end_params = meta.single_end ? "--single --fragment-length=$fragment_length --sd=$fragment_length_sd" : ''
     def strandedness = (meta.strandedess == 'forward' ? '--fr-stranded': (meta.strandedness == 'reverse' ? '--rf-stranded' : ''))
     """
     kallisto quant \\
