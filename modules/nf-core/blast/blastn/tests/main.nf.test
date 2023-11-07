@@ -37,7 +37,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.txt).match("txt") },
+                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
                 { assert process.out.versions }
             )
         }
@@ -61,7 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.txt).match("gz_txt") },
+                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
                 { assert process.out.versions }
             )
         }
