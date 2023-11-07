@@ -38,7 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tsv.get(0).get(1)).md5 == "dd58eb09f38e6f951aa00c133a18ef5b" },
+                { assert snapshot(process.out.tsv).match("tsv") },
                 { assert process.out.versions }
             )
         }
@@ -63,7 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tsv.get(0).get(1)).md5 == "dd58eb09f38e6f951aa00c133a18ef5b" },
+                { assert snapshot(process.out.tsv).match("gz_tsv") },
                 { assert process.out.versions }
             )
         }
@@ -88,7 +88,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.xml.get(0).get(1)).md5 == "e0119340bba8b434c250ffb599eb33a2" },
+                { assert snapshot(process.out.xml).match("xml") },
                 { assert process.out.versions }
             )
         }
