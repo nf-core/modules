@@ -30,6 +30,7 @@ process KALLISTO_QUANT {
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
     def single_end_params = meta.single_end ? "--fragment-length=$fragment_length --sd $fragment_length_sd" : ''
+    def strandedness = (meta.strandedess == 'forward' ? '--fr-stranded': (meta.strandedness == 'reverse' ? '--rf-stranded' : ''))
     """
     kallisto quant \\
             --threads ${task.cpus} \\
@@ -37,6 +38,7 @@ process KALLISTO_QUANT {
             ${gtf_input} \\
             ${chromosomes_input} \\
             ${single_end_params} \\
+            ${strandedness} \\
             ${args} \\
             -o $prefix \\
             ${reads} 2> >(tee -a ${prefix}.log.txt >&2)
