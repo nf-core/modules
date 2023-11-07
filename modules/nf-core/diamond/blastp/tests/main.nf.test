@@ -13,7 +13,7 @@ nextflow_process {
             script "../../makedb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                input[0] = [ [id:'test2'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
                 """
             }
         }
@@ -38,8 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert path(process.out.txt.get(0).get(1)).md5 == "8131b1afd717f3d5f2f2417c5b562e6e" },
+                { assert snapshot(process.out.txt).match("txt") },
                 { assert process.out.versions }
             )
         }
@@ -65,8 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert path(process.out.txt.get(0).get(1)).md5 == "8131b1afd717f3d5f2f2417c5b562e6e" },
+                { assert snapshot(process.out.txt).match("gz_txt") },
                 { assert process.out.versions }
             )
         }
@@ -92,7 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.daa },
+                { assert snapshot(process.out.daa).match("daa") },
                 { assert process.out.versions }
             )
         }

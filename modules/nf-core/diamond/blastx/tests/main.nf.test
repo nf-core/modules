@@ -13,7 +13,7 @@ nextflow_process {
             script "../../makedb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                input[0] = [ [id:'test2'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
                 """
             }
         }
@@ -38,8 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert path(process.out.txt.get(0).get(1)).md5 == "33dc682dabfa44c7089abbc8fe8b84e4" },
+                { assert snapshot(process.out.txt).match("txt") },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
                 { assert process.out.versions }
             )
@@ -66,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.daa },
+                { assert snapshot(process.out.daa).match("daa") },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
                 { assert process.out.versions }
             )

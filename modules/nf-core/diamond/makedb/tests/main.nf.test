@@ -24,8 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db },
-                { assert path(process.out.db.get(0).get(1)).md5 == "6039420745dd4db6e761244498460ae1" },
+                { assert snapshot(process.out.db).match("db") },
                 { assert process.out.versions }
             )
         }
@@ -48,8 +47,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db },
-                { assert path(process.out.db.get(0).get(1)).md5 == "6039420745dd4db6e761244498460ae1" },
+                { assert snapshot(process.out.db).match("gz_db") },
                 { assert process.out.versions }
             )
         }

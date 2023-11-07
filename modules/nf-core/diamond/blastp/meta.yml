@@ -23,6 +23,11 @@ input:
       type: file
       description: Input fasta file containing query sequences
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing db information
+        e.g. [ id:'test2', single_end:false ]
   - db:
       type: file
       description: File of the indexed DIAMOND database
@@ -82,7 +87,6 @@ output:
 authors:
   - "@spficklin"
   - "@jfy133"
-  - "@vagkaratzas"
 maintainers:
   - "@spficklin"
   - "@jfy133"
