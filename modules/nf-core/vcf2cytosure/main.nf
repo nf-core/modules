@@ -1,6 +1,6 @@
 process VCF2CYTOSURE {
     tag "$meta.id"
-    label 'low'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -43,10 +43,10 @@ process VCF2CYTOSURE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.*cytosure //;' ))
+        vcf2cytosure: \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.* cytosure //' )
     END_VERSIONS
     """
-
+    
     stub:
     def args = task.ext.args ?: ''
     def coverage = coverage_bed ? "--coverage ${coverage_bed}" : ''
@@ -60,7 +60,7 @@ process VCF2CYTOSURE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.*cytosure //;' ))
+        vcf2cytosure: \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.* cytosure //' )
     END_VERSIONS
     """
 }
