@@ -29,19 +29,10 @@ process KALLISTO_QUANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
-
-    def strandedness = ''
-    if (meta.strandedness == 'forward') {
-        strandedness = '--fr-stranded'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = '--rf-stranded'
-    }
-
     """
     kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
-            ${strandedness} \\
             ${gtf_input} \\
             ${chromosomes_input} \\
             ${args} \\
