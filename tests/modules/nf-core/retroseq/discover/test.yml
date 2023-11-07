@@ -1,0 +1,8 @@
+- name: retroseq discover test_retroseq_discover
+  command: nextflow run ./tests/modules/nf-core/retroseq/discover -entry test_retroseq_discover -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/retroseq/discover/nextflow.config
+  tags:
+    - retroseq/discover
+    - retroseq
+  files:
+    - path: output/retroseq/test.tab
+    - path: output/retroseq/versions.yml
