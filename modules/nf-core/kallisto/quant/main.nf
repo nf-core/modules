@@ -29,12 +29,14 @@ process KALLISTO_QUANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
+    def single_end_params = meta.single_end ? "--fragment-length=$fragment_length --sd $fragment_length_sd" : ''
     """
     kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
             ${gtf_input} \\
             ${chromosomes_input} \\
+            ${single_end_params} \\
             ${args} \\
             -o $prefix \\
             ${reads} 2> >(tee -a ${prefix}.log.txt >&2)
