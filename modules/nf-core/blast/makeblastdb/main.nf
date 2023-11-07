@@ -1,5 +1,5 @@
 process BLAST_MAKEBLASTDB {
-    tag "$fasta"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -8,19 +8,20 @@ process BLAST_MAKEBLASTDB {
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path 'blast_db'    , emit: db
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${meta.id}"), emit: db
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -29,8 +30,8 @@ process BLAST_MAKEBLASTDB {
     makeblastdb \\
         -in ${fasta_name} \\
         ${args}
-    mkdir blast_db
-    mv ${fasta_name}* blast_db
+    mkdir ${prefix}
+    mv ${fasta_name}* ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +41,9 @@ process BLAST_MAKEBLASTDB {
 
     stub:
     def args = task.ext.args ?: ''
-    def fasta_name = fasta.name.replace(".gz", "")
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     """
     touch ${fasta_name}.fasta
     touch ${fasta_name}.fasta.ndb
@@ -51,8 +54,8 @@ process BLAST_MAKEBLASTDB {
     touch ${fasta_name}.fasta.nsq
     touch ${fasta_name}.fasta.ntf
     touch ${fasta_name}.fasta.nto
-    mkdir blast_db
-    mv ${fasta_name}* blast_db
+    mkdir ${prefix}
+    mv ${fasta_name}* ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -8,8 +8,8 @@ process BLAST_BLASTP {
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
 
     input:
-    tuple val(meta), path(fasta)
-    path db
+    tuple val(meta) , path(fasta)
+    tuple val(meta2), path(db)
     val out_ext
 
     output:
@@ -24,8 +24,8 @@ process BLAST_BLASTP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
+    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     switch ( out_ext ) {
         case "xml": outfmt = 5; break
         case "tsv": outfmt = 6; break

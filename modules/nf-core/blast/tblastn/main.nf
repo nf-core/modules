@@ -8,8 +8,8 @@ process BLAST_TBLASTN {
         'biocontainers/blast:2.14.1--pl5321h6f7f691_0' }"
 
     input:
-    tuple val(meta), path(fasta)
-    path  db
+    tuple val(meta) , path(fasta)
+    tuple val(meta2), path(db)
 
     output:
     tuple val(meta), path('*.txt'), emit: txt
@@ -21,8 +21,8 @@ process BLAST_TBLASTN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
+    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
