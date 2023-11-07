@@ -9,6 +9,6 @@ workflow test_blast_blastn {
 
     input = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
-    BLAST_MAKEBLASTDB ( input )
+    BLAST_MAKEBLASTDB ( [ [id:'test2'], input ] )
     BLAST_BLASTN ( [ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db )
 }
