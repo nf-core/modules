@@ -26,7 +26,7 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir >> checkqc_report.json || test -f "checkqc_report.json"
+        $run_dir > checkqc_report.json || test -f "checkqc_report.json"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
