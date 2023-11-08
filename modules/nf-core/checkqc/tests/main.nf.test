@@ -1,18 +1,18 @@
 nextflow_process {
 
     name "Test Process CHECKQC"
-    script "modules/nf-core/checkqc/main.nf"
+    script "../main.nf"
     process "CHECKQC"
     tag "checkqc"
     tag "modules"
     tag "modules_nfcore"
 
-    test("Run checkqc without error") {
+    test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell") {
         config "./test_checkqc.config"
 
         setup {
             run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
+                script "../../untar/main.nf"
                 process {
                     """
                     input[0] = Channel.of([ [], file(params.test_data['homo_sapiens']['illumina']['test_interop_bcl2fastqstats_flowcell'], checkIfExists: true)])
@@ -31,8 +31,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+          )
         }
 
     }
