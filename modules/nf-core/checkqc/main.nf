@@ -1,5 +1,5 @@
 process CHECKQC {
-    label 'process_low'
+    label 'process_single'
     errorStrategy 'ignore'
 
     conda "bioconda::checkqc=3.6.1"

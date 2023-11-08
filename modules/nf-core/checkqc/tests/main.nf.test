@@ -3,9 +3,9 @@ nextflow_process {
     name "Test Process CHECKQC"
     script "../main.nf"
     process "CHECKQC"
-    tag "checkqc"
     tag "modules"
     tag "modules_nfcore"
+    tag "checkqc"
 
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell") {
         config "./test_checkqc.config"
