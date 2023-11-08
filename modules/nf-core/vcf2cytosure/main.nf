@@ -27,9 +27,9 @@ process VCF2CYTOSURE {
     def cnvkit = cns ? ( coverage_bed ? '' : "--cn ${cns}" ) : ''
     def snv = snv_vcf ? ( coverage_bed ? '' : "--snv ${snv_vcf}" ) : ''
     def blacklist = blacklist_bed ? "--blacklist ${blacklist_bed}" : ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: sv_vcf ? "${meta.id}" : "${meta3.id}"
 
-    if ( cns && coverage_bed || snv_vcf && coverage ) error "Coverage_bed input is not compatible with cns and snv"
+    if ( cns && coverage_bed || snv_vcf && coverage_bed ) error "Coverage_bed input is not compatible with cns and snv"
 
     """
     vcf2cytosure \\
@@ -46,7 +46,7 @@ process VCF2CYTOSURE {
         vcf2cytosure: \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.* cytosure //' )
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def coverage = coverage_bed ? "--coverage ${coverage_bed}" : ''
