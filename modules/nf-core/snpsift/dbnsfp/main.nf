@@ -2,7 +2,7 @@ process SNPSIFT_DBNSFP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snpsift=5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:5.1d--hdfd78af_0' :
         'biocontainers/snpsift:5.1d--hdfd78af_0' }"

@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/rwdavies/quilt"
       doi: "10.1038/s41588-021-00877-0"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -82,7 +81,6 @@ input:
       type: file
       description: (Optional) File with reference genome.
       pattern: "*.{txt.gz}"
-
 output:
   - meta:
       type: map
@@ -104,6 +102,7 @@ output:
   - RData:
       type: directory
       description: Optional directory path to prepared RData file with reference objects (useful with --save_prepared_reference=TRUE).
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

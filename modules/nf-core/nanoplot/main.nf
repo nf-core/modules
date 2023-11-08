@@ -2,10 +2,10 @@ process NANOPLOT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::nanoplot=1.41.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanoplot:1.41.0--pyhdfd78af_0' :
-        'biocontainers/nanoplot:1.41.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/nanoplot:1.41.6--pyhdfd78af_0' :
+        'biocontainers/nanoplot:1.41.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(ontfile)
@@ -29,6 +29,7 @@ process NANOPLOT {
         $args \\
         -t $task.cpus \\
         $input_file
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         nanoplot: \$(echo \$(NanoPlot --version 2>&1) | sed 's/^.*NanoPlot //; s/ .*\$//')

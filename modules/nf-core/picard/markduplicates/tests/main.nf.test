@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process PICARD_MARKDUPLICATES"
+    script "../main.nf"
+    process "PICARD_MARKDUPLICATES"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/markduplicates"
+
+    test("test_picard_markduplicates_sorted_bam") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                bam = [ [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                        ]
+                fasta = [ [ id:'genome' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                fai   = [ [ id:'genome' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                        ]
+                input[0] = bam
+                input[1] = fasta
+                input[2] = fai
+                """
+            }
+        }
+
+        then {
+            def metrics_text = "1.0	97	97"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match() },
+                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+            )
+        }
+    }
+
+    test("test_picard_markduplicates_unsorted_bam") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                bam = [ [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                        ]
+                fasta = [ [ id:'genome' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                fai   = [ [ id:'genome' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                        ]
+                input[0] = bam
+                input[1] = fasta
+                input[2] = fai
+                """
+            }
+        }
+
+        then {
+            def metrics_text = "1.0	97	97"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match() },
+                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+            )
+        }
+    }
+
+    test("test_picard_markduplicates_sorted_cram") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                bam = [ [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                        ]
+                fasta = [ [ id:'genome' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                fai   = [ [ id:'genome' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                        ]
+                input[0] = bam
+                input[1] = fasta
+                input[2] = fai
+                """
+            }
+        }
+
+        then {
+            def metrics_text = "1.0	0.999986	1178"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match() },
+                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+            )
+        }
+    }
+
+}
