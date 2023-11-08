@@ -124,9 +124,9 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 opt <- list(
     de_file = '$de_file',
     de_id_column = 'gene_id',
-    contrast_variable = NULL,
-    reference_level = NULL,
-    target_level = NULL,
+    contrast_variable = '$contrast_variable',
+    reference_level = '$reference',
+    target_level = '$target',
     blocking_variables = NULL,
     organism = NULL,
     significant = T,
