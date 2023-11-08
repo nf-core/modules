@@ -13,6 +13,6 @@ workflow test_eggnogmapper {
     eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
     eggnog_data_dir = "${workDir}/tmp/"
 
-    DIAMOND_MAKEDB ( fasta )
+    DIAMOND_MAKEDB ( [ [id:'test2'], fasta ] )
     EGGNOGMAPPER ( [ [id:'test'], fasta ], eggnog_db, eggnog_data_dir, DIAMOND_MAKEDB.out.db )
 }

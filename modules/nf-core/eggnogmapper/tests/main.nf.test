@@ -14,7 +14,7 @@ nextflow_process {
                 script "../../diamond/makedb/main.nf"
                 process {
                     """
-                    input[0] = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                    input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
                     """
                 }
             }
@@ -40,12 +40,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.annotations },
                 { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
-                { assert process.out.orthologs },
                 { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
-                { assert process.out.hits },
-                { assert path(process.out.hits.get(0).get(1)).md5 == "864b7a1f902893d8aee6621baeab7be8" },
+                { assert snapshot(process.out.hits).match("hits") },
                 { assert process.out.versions }
             )
         }

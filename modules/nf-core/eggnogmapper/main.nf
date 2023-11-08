@@ -11,7 +11,7 @@ process EGGNOGMAPPER {
     tuple val(meta), path(fasta)
     path(eggnog_db)
     path(eggnog_data_dir)
-    path(eggnog_diamond_db)
+    tuple val(meta2), path(eggnog_diamond_db)
 
     output:
     tuple val(meta), path("*.emapper.annotations")   , emit: annotations

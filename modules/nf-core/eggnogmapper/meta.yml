@@ -26,15 +26,15 @@ input:
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
   - eggnog_db:
       type: file
-      description: The eggnog database file
+      description: The eggnog database file (e.g. eggnog-mapper/data/eggnog.db)
       pattern: "*.db"
   - eggnog_data_dir:
       type: directory
-      description: Directory containing eggnog database files
+      description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
       pattern: "*"
   - eggnog_diamond_db:
       type: file
-      description: The eggnog Diamond protein database file
+      description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
       pattern: "*.dmnd"
 output:
   - meta:
