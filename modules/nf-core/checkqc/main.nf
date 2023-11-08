@@ -10,7 +10,7 @@ process CHECKQC {
     input:
     path(run_dir)
     path(checkqc_config)
-    
+
     output:
     path "*checkqc_report.json", emit: report
     path "versions.yml"        , emit: versions
