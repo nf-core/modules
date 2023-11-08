@@ -2,7 +2,7 @@ process CNVPYTOR_CALLCNVS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/cnvpytor/callcnvs/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
         'biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"

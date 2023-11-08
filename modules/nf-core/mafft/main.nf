@@ -2,7 +2,7 @@ process MAFFT {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/mafft/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mafft:7.520--hec16e2b_1':
         'biocontainers/mafft:7.520--hec16e2b_1' }"

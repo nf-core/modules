@@ -2,7 +2,7 @@ process PBCCS {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/pbccs/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0' :
         'biocontainers/pbccs:6.4.0--h9ee0642_0' }"
