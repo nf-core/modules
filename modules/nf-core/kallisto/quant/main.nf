@@ -29,8 +29,20 @@ process KALLISTO_QUANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
-    def single_end_params = meta.single_end ? "--single --fragment-length=$fragment_length --sd=$fragment_length_sd" : ''
-    def strandedness = (meta.strandedess == 'forward' ? '--fr-stranded': (meta.strandedness == 'reverse' ? '--rf-stranded' : ''))
+
+    def single_end_params = ''
+    if (meta.single_end) {
+        if (!(fragment_length =~ /^\d+$/)) {
+            error "fragment_length must be set and numeric for single-end data"
+        }
+        if (!(fragment_length_sd =~ /^\d+$/)) {
+            error "fragment_length_sd must be set and numeric for single-end data"
+        }
+        single_end_params = "--single --fragment-length=${fragment_length} --sd=${fragment_length_sd}"
+    }
+
+    def strandedness =  (meta.strandedness == 'forward') ? '--fr-stranded' :
+                        (meta.strandedness == 'reverse') ? '--rf-stranded' : ''
     """
     kallisto quant \\
             --threads ${task.cpus} \\
