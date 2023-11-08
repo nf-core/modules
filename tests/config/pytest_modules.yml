@@ -26,6 +26,10 @@ agat/convertspgff2gtf:
   - modules/nf-core/agat/convertspgff2gtf/**
   - tests/modules/nf-core/agat/convertspgff2gtf/**
 
+agat/convertspgff2tsv:
+  - modules/nf-core/agat/convertspgff2tsv/**
+  - tests/modules/nf-core/agat/convertspgff2tsv/**
+
 agat/convertspgxf2gxf:
   - modules/nf-core/agat/convertspgxf2gxf/**
   - tests/modules/nf-core/agat/convertspgxf2gxf/**
@@ -113,6 +117,10 @@ ariba/run:
 arriba/arriba:
   - modules/nf-core/arriba/arriba/**
   - tests/modules/nf-core/arriba/arriba/**
+
+arriba/download:
+  - modules/nf-core/arriba/download/**
+  - tests/modules/nf-core/arriba/download/**
 
 artic/guppyplex:
   - modules/nf-core/artic/guppyplex/**
@@ -916,18 +924,6 @@ deseq2/differential:
   - modules/nf-core/deseq2/differential/**
   - tests/modules/nf-core/deseq2/differential/**
 
-diamond/blastp:
-  - modules/nf-core/diamond/blastp/**
-  - tests/modules/nf-core/diamond/blastp/**
-
-diamond/blastx:
-  - modules/nf-core/diamond/blastx/**
-  - tests/modules/nf-core/diamond/blastx/**
-
-diamond/makedb:
-  - modules/nf-core/diamond/makedb/**
-  - tests/modules/nf-core/diamond/makedb/**
-
 dragmap/align:
   - modules/nf-core/dragmap/align/**
   - tests/modules/nf-core/dragmap/align/**
@@ -1237,10 +1233,6 @@ gatk4/applybqsr:
   - modules/nf-core/gatk4/applybqsr/**
   - tests/modules/nf-core/gatk4/applybqsr/**
 
-gatk4/applybqsrspark:
-  - modules/nf-core/gatk4/applybqsrspark/**
-  - tests/modules/nf-core/gatk4/applybqsrspark/**
-
 gatk4/applyvqsr:
   - modules/nf-core/gatk4/applyvqsr/**
   - tests/modules/nf-core/gatk4/applyvqsr/**
@@ -1252,10 +1244,6 @@ gatk4/asereadcounter:
 gatk4/baserecalibrator:
   - modules/nf-core/gatk4/baserecalibrator/**
   - tests/modules/nf-core/gatk4/baserecalibrator/**
-
-gatk4/baserecalibratorspark:
-  - modules/nf-core/gatk4/baserecalibratorspark/**
-  - tests/modules/nf-core/gatk4/baserecalibratorspark/**
 
 gatk4/bedtointervallist:
   - modules/nf-core/gatk4/bedtointervallist/**
@@ -1385,10 +1373,6 @@ gatk4/markduplicates:
   - modules/nf-core/gatk4/markduplicates/**
   - tests/modules/nf-core/gatk4/markduplicates/**
 
-gatk4/markduplicatesspark:
-  - modules/nf-core/gatk4/markduplicatesspark/**
-  - tests/modules/nf-core/gatk4/markduplicatesspark/**
-
 gatk4/mergebamalignment:
   - modules/nf-core/gatk4/mergebamalignment/**
   - tests/modules/nf-core/gatk4/mergebamalignment/**
@@ -1476,6 +1460,18 @@ gatk4/variantfiltration:
 gatk4/variantrecalibrator:
   - modules/nf-core/gatk4/variantrecalibrator/**
   - tests/modules/nf-core/gatk4/variantrecalibrator/**
+
+gatk4spark/applybqsr:
+  - modules/nf-core/gatk4spark/applybqsr/**
+  - tests/modules/nf-core/gatk4spark/applybqsr/**
+
+gatk4spark/baserecalibrator:
+  - modules/nf-core/gatk4spark/baserecalibrator/**
+  - tests/modules/nf-core/gatk4spark/baserecalibrator/**
+
+gatk4spark/markduplicates:
+  - modules/nf-core/gatk4spark/markduplicates/**
+  - tests/modules/nf-core/gatk4spark/markduplicates/**
 
 gawk:
   - modules/nf-core/gawk/**
@@ -1629,9 +1625,17 @@ graphtyper/vcfconcatenate:
   - modules/nf-core/graphtyper/vcfconcatenate/**
   - tests/modules/nf-core/graphtyper/vcfconcatenate/**
 
+grids/gridsssomaticfilter:
+  - modules/nf-core/grids/gridsssomaticfilter/**
+  - tests/modules/nf-core/grids/gridsssomaticfilter/**
+
 gridss/gridss:
   - modules/nf-core/gridss/gridss/**
   - tests/modules/nf-core/gridss/gridss/**
+
+gridss/gridssgenerateponbedpe:
+  - modules/nf-core/gridss/gridssgenerateponbedpe/**
+  - tests/modules/nf-core/gridss/gridssgenerateponbedpe/**
 
 gsea/gsea:
   - modules/nf-core/gsea/gsea/**
@@ -1872,10 +1876,6 @@ instrain/profile:
   - modules/nf-core/instrain/profile/**
   - tests/modules/nf-core/instrain/profile/**
 
-interproscan:
-  - modules/nf-core/interproscan/**
-  - tests/modules/nf-core/interproscan/**
-
 iphop/addtodb:
   - modules/nf-core/iphop/addtodb/**
   - tests/modules/nf-core/iphop/addtodb/**
@@ -1947,14 +1947,6 @@ kaiju/mkfmi:
 kalign/align:
   - modules/nf-core/kalign/align/**
   - tests/modules/nf-core/kalign/align/**
-
-kallisto/index:
-  - modules/nf-core/kallisto/index/**
-  - tests/modules/nf-core/kallisto/index/**
-
-kallisto/quant:
-  - modules/nf-core/kallisto/quant/**
-  - tests/modules/nf-core/kallisto/quant/**
 
 kallistobustools/count:
   - modules/nf-core/kallistobustools/count/**
@@ -3062,10 +3054,6 @@ rtgtools/pedfilter:
   - modules/nf-core/rtgtools/pedfilter/**
   - tests/modules/nf-core/rtgtools/pedfilter/**
 
-rtgtools/rocplot:
-  - modules/nf-core/rtgtools/rocplot/**
-  - tests/modules/nf-core/rtgtools/rocplot/**
-
 rtgtools/vcfeval:
   - modules/nf-core/rtgtools/vcfeval/**
   - tests/modules/nf-core/rtgtools/vcfeval/**
@@ -3647,10 +3635,6 @@ subworkflows/bam_create_som_pon_gatk:
   - subworkflows/nf-core/bam_create_som_pon_gatk/**
   - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
 
-subworkflows/bam_dedup_stats_samtools_umitools:
-  - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
-  - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
-
 subworkflows/bam_docounts_contamination_angsd:
   - subworkflows/nf-core/bam_docounts_contamination_angsd/**
   - tests/subworkflows/nf-core/bam_docounts_contamination_angsd/**
@@ -3803,6 +3787,14 @@ subworkflows/multiple_impute_glimpse2:
   - subworkflows/nf-core/multiple_impute_glimpse2/**
   - tests/subworkflows/nf-core/multiple_impute_glimpse2/**
 
+subworkflows/utils_nextflow_pipeline:
+  - subworkflows/nf-core/utils_nextflow_pipeline/**
+  - tests/subworkflows/nf-core/utils_nextflow_pipeline/**
+
+subworkflows/utils_nfcore_pipeline:
+  - subworkflows/nf-core/utils_nfcore_pipeline/**
+  - tests/subworkflows/nf-core/utils_nfcore_pipeline/**
+
 subworkflows/vcf_annotate_ensemblvep:
   - subworkflows/nf-core/vcf_annotate_ensemblvep/**
   - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
@@ -3943,10 +3935,6 @@ ucsc/bedclip:
   - modules/nf-core/ucsc/bedclip/**
   - tests/modules/nf-core/ucsc/bedclip/**
 
-ucsc/bedgraphtobigwig:
-  - modules/nf-core/ucsc/bedgraphtobigwig/**
-  - tests/modules/nf-core/ucsc/bedgraphtobigwig/**
-
 ucsc/bedtobigbed:
   - modules/nf-core/ucsc/bedtobigbed/**
   - tests/modules/nf-core/ucsc/bedtobigbed/**
@@ -3989,7 +3977,6 @@ umicollapse:
 
 umitools/dedup:
   - modules/nf-core/umitools/dedup/**
-  - modules/nf-core/umitools/extract/**
   - tests/modules/nf-core/umitools/dedup/**
 
 umitools/extract:

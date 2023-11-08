@@ -2,7 +2,7 @@ process DRAGONFLYE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/dragonflye/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dragonflye:1.0.11--hdfd78af_0' :
         'biocontainers/dragonflye:1.0.11--hdfd78af_0' }"
