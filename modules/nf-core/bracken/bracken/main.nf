@@ -4,7 +4,7 @@ process BRACKEN_BRACKEN {
 
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
-    conda 'modules/nf-core/bracken/bracken/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
         'biocontainers/bracken:2.7--py39hc16433a_0' }"

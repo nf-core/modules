@@ -2,7 +2,7 @@ process WFMASH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/wfmash/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wfmash:0.10.5--h94f6cfe_0':
         'biocontainers/wfmash:0.10.5--h94f6cfe_0' }"

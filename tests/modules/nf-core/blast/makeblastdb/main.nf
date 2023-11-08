@@ -8,5 +8,5 @@ workflow test_blast_makeblastdb {
 
     input =  [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
-    BLAST_MAKEBLASTDB ( input )
+    BLAST_MAKEBLASTDB ( [ [id:'test'], input ] )
 }

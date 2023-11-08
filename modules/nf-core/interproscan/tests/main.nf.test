@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process INTERPROSCAN"
+    script "../main.nf"
+    process "INTERPROSCAN"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "interproscan"
+
+    test("Annotates set of input proteins in an output tsv file") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+                ]
+                input[1] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Annotates set of zipped input proteins in an output xml file") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
+                ]
+                input[1] = 'xml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.xml).match("xml") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}
