@@ -2,7 +2,8 @@ process NCBITOOLS_VECSCREEN {
     tag "$meta.id"
     label 'process_single'
 
-    container "sanger-tol/ascc_main:0.001-c1"
+    container "docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2"
+                         
 
     input:
     tuple val(meta), path(fasta_file)
@@ -24,12 +25,12 @@ process NCBITOOLS_VECSCREEN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. Because of this, 1.0 plus the name of the container that contains VecScreen is used here to indicate version
     """
-    DB=`find -L ${adapters_database_directory} -name "*.nin" | sed 's/\\.nin\$//'`
+    DB=`find -L ${adapters_database_directory} -maxdepth 1 -name "*.nin" | sed 's/\\.nin\$//'`
     vecscreen -d \$DB ${args} -i ${fasta_file} -o ${prefix}.vecscreen.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: 1.0 quay.io/sanger-tol/ascc_main:0.001-c1
+        vecscreen: 1.0 docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2
     END_VERSIONS
     """
 
@@ -40,7 +41,7 @@ process NCBITOOLS_VECSCREEN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vecscreen: 1.0 quay.io/sanger-tol/ascc_main:0.001-c1
+        vecscreen: 1.0 docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2
     END_VERSIONS
     """
 }
