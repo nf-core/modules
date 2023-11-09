@@ -1,0 +1,72 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTA_DOMAINANNOTATION"
+    script "../main.nf"
+    workflow "FASTA_DOMAINANNOTATION"
+    config "./nextflow.config"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_domainannotation"
+    tag "blast"
+    tag "blast/makeblastdb"
+    tag "blast/blastp"
+    tag "diamond"
+    tag "diamond/makedb"
+    tag "diamond/blastp"
+    tag "interproscan"
+
+    test("Should perform protein domain annotation with interproscan and diamond/blastp") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = Channel.of( [ [id:'test'], fasta ] )
+                input[1] = Channel.of( [ [id:'test2'], fasta ] )
+                input[2] = "diamond"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.blastp_tsv).match("diamond_blastp_tsv") },
+                { assert path(workflow.out.inteproscan_tsv.get(0).get(1)).getText().contains("'ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil\tCoil\t") },
+                { assert workflow.out.versions }
+            )
+        }
+
+    }
+
+    test("Should perform protein domain annotation with interproscan and blast/blastp") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = Channel.of( [ [id:'test'], fasta ] )
+                input[1] = Channel.of( [ [id:'test2'], fasta ] )
+                input[2] = "blast"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.blastp_tsv).match("blast_blastp_tsv") },
+                { assert path(workflow.out.inteproscan_tsv.get(0).get(1)).getText().contains("ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil") },
+                { assert workflow.out.versions }
+            )
+        }
+
+    }
+
+}

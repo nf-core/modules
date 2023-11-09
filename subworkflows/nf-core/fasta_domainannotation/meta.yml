@@ -26,14 +26,14 @@ input:
       pattern: "*.{fa/fasta/fa.gz/fasta.gz}"
   - val_blastp_mode:
       type: value
-      description: Type of database search against the reference db (e.g. UniprotSP)
+      description: Type of database search (sensitive vs fast) against the reference db (e.g. UniprotSP)
       pattern: "blast|diamond"
 output:
   - blastp_tsv:
       type: file
       description: |
-        Channel containing TSV domain annotation output from blastp
-        Structure: [ val(meta), path(csv) ]
+        Channel containing tab separated domain annotation output from blastp (from either blast or diamond)
+        Structure: [ val(meta), path(tsv|txt) ]
       pattern: "*.tsv"
   - inteproscan_tsv:
       type: file

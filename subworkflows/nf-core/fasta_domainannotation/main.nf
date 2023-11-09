@@ -36,7 +36,7 @@ workflow FASTA_DOMAINANNOTATION {
     ch_versions = ch_versions.mix(INTERPROSCAN.out.versions)
 
     emit:
-    blastp_tsv      = blastp_tsv // channel: [ val(meta), [ tsv ] ]
+    blastp_tsv      = blastp_tsv // channel: [ val(meta), [ tsv|txt ] ]
     inteproscan_tsv = INTERPROSCAN.out.tsv // channel: [ val(meta), [ tsv ] ]
     versions        = ch_versions // channel: [ versions.yml ]
 }
