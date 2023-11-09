@@ -30,10 +30,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.npa.get(0).get(1) ==~ ".*/test.npa" },
-                { assert process.out.npc.get(0).get(1) ==~ ".*/test.npc" },
-                { assert path(process.out.npo.get(0).get(1)).getText().contains("# @impl: Nonpareil") },
-                { assert snapshot(path(process.out.npl.get(0).get(1))).match() },
+                { assert snapshot(
+                        file(process.out.npa[0][1]).name,
+                        file(process.out.npc[0][1]).name,
+                        path(process.out.npo[0][1]).readLines()[0],
+                        path(process.out.npl[0][1])
+                    ).match()
+                },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
@@ -74,10 +77,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.npa.get(0).get(1) ==~ ".*/test.npa" },
-                { assert process.out.npc.get(0).get(1) ==~ ".*/test.npc" },
-                { assert path(process.out.npo.get(0).get(1)).getText().contains("# @impl: Nonpareil") },
-                { assert snapshot(path(process.out.npl.get(0).get(1))).match() },
+                { assert snapshot(
+                        file(process.out.npa[0][1]).name,
+                        file(process.out.npc[0][1]).name,
+                        path(process.out.npo[0][1]).readLines()[0],
+                        path(process.out.npl[0][1])
+                    ).match()
+                },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
