@@ -3,7 +3,6 @@ process NCBITOOLS_VECSCREEN {
     label 'process_single'
 
     container "docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2"
-                         
 
     input:
     tuple val(meta), path(fasta_file)
