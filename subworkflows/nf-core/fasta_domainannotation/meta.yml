@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_domainannotation"
+description: Protein domain annotation with interproscan and blastp (through either diamond or blast)
+keywords:
+  - protein
+  - domain
+  - annotation
+components:
+  - blast/makeblastdb
+  - blast/blastp
+  - diamond/makedb
+  - diamond/blastp
+  - interproscan
+input:
+  - ch_fasta:
+      type: list
+      description: |
+        The input channel containing the meta id and the fasta with the proteins to annotate
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa/fasta/fa.gz/fasta.gz}"
+  - val_blastp_fasta:
+      type: file
+      description: |
+        The input file containing the fasta with the protein database (UniprotSP is recommended) including their annotations, which blastp will be used against
+        Structure: path(fasta)
+      pattern: "*.{fa/fasta/fa.gz/fasta.gz}"
+  - val_blastp_mode:
+      type: value
+      description: Type of database search against the reference db (e.g. UniprotSP)
+      pattern: "blast|diamond"
+output:
+  - blastp_tsv:
+      type: file
+      description: |
+        Channel containing TSV domain annotation output from blastp
+        Structure: [ val(meta), path(csv) ]
+      pattern: "*.tsv"
+  - inteproscan_tsv:
+      type: file
+      description: |
+        Channel containing TSV domain annotation output from InterProScan
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"

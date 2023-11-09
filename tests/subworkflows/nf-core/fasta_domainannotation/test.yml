@@ -1,0 +1,37 @@
+- name: fasta_domainannotation_diamond
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_domainannotation/main.nf -entry test_fasta_domainannotation_diamond -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_domainannotation/nextflow.config
+  tags:
+    - blast
+    - blast/makeblastdb
+    - blast/blastp
+    - diamond
+    - diamond/makedb
+    - diamond/blastp
+    - interproscan
+    - subworkflows
+    - subworkflows/fasta_domainannotation
+  files:
+    - path: output/diamond/test.txt
+      md5sum: 2515cf88590afa32356497e79a51fce9
+    - path: output/interproscan/test.tsv
+      contains:
+        - "ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil"
+
+- name: fasta_domainannotation_blast
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_domainannotation/main.nf -entry test_fasta_domainannotation_blast -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fasta_domainannotation/nextflow.config
+  tags:
+    - blast
+    - blast/makeblastdb
+    - blast/blastp
+    - diamond
+    - diamond/makedb
+    - diamond/blastp
+    - interproscan
+    - subworkflows
+    - subworkflows/fasta_domainannotation
+  files:
+    - path: output/blast/test.tsv
+      md5sum: dd58eb09f38e6f951aa00c133a18ef5b
+    - path: output/interproscan/test.tsv
+      contains:
+        - "ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil"
