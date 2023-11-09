@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process FOLDSEEK_EASYSEARCH"
+    script "../main.nf"
+    process "FOLDSEEK_EASYSEARCH"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "foldseek"
+    tag "foldseek/easysearch"
+
+    test("Should search for protein structural hits against a protein structures database") {
+
+        setup {
+            run("FOLDSEEK_CREATEDB") {
+                script "../../createdb/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test_db' ], [ file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ] ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test_search' ], [ file(params.test_data['proteomics']['pdb']['tim8_pdb'], checkIfExists: true) ] ]
+                input[1] = FOLDSEEK_CREATEDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.aln.get(0).get(1)).readLines().contains("8tim.pdb_A\t1tim.pdb_A\t0.967\t247\t8\t0\t1\t247\t1\t247\t1.152E-43\t1523") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}
