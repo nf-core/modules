@@ -8,7 +8,7 @@ workflow test_pyrodigal {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-          file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     PYRODIGAL ( input )
