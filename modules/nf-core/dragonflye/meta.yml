@@ -18,7 +18,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: Input Nanopore FASTQ file
+      description: Input Nanopore FASTQ file. Optional, additional Illumina FASTQ files can be provided to perform short reads polishing
       pattern: "*.fastq.gz"
 output:
   - meta:
@@ -33,7 +33,7 @@ output:
   - contigs:
       type: file
       description: The final assembly produced by Dragonflye
-      pattern: "contigs.fa"
+      pattern: "*.contigs.fa"
   - log:
       type: file
       description: Full log file for bug reporting
@@ -49,7 +49,7 @@ output:
   - gfa:
       type: file
       description: Assembly graph produced by Miniasm, or Raven
-      pattern: "{miniasm,raven}-unpolished.gfa"
+      pattern: "{flye,miniasm,raven}-unpolished.gfa"
 authors:
   - "@rpetit3"
 maintainers:
