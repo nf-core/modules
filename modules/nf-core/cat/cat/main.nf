@@ -2,7 +2,7 @@ process CAT_CAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/cat/cat/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
         'biocontainers/pigz:2.3.4' }"

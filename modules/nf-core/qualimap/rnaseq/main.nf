@@ -2,7 +2,7 @@ process QUALIMAP_RNASEQ {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/qualimap/rnaseq/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1' :
         'biocontainers/qualimap:2.2.2d--1' }"

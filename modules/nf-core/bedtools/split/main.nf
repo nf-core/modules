@@ -2,7 +2,7 @@ process BEDTOOLS_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/bedtools/split/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
         'biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
