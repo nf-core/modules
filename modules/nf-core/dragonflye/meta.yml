@@ -18,7 +18,12 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: Input Nanopore FASTQ file. Optional, additional Illumina FASTQ files can be provided to perform short reads polishing
+      description: |
+        Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
+      pattern: "*.fastq.gz"
+  - reads:
+      type: file
+      description: Input Nanopore FASTQ file
       pattern: "*.fastq.gz"
 output:
   - meta:
