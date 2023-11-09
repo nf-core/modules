@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.out.npa.get(0).get(1) ==~ ".*/test.npa" },
                 { assert process.out.npc.get(0).get(1) ==~ ".*/test.npc" },
                 { assert path(process.out.npo.get(0).get(1)).getText().contains("# @impl: Nonpareil") },
-                { assert path(process.out.npl.get(0).get(1)).md5 == "be95453a272a9f685d5695d2b391fde8" },
+                { assert snapshot(path(process.out.npl.get(0).get(1)).md5).match() },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
@@ -77,7 +77,7 @@ nextflow_process {
                 { assert process.out.npa.get(0).get(1) ==~ ".*/test.npa" },
                 { assert process.out.npc.get(0).get(1) ==~ ".*/test.npc" },
                 { assert path(process.out.npo.get(0).get(1)).getText().contains("# @impl: Nonpareil") },
-                { assert path(process.out.npl.get(0).get(1)).md5 == "be95453a272a9f685d5695d2b391fde8" },
+                { assert snapshot(path(process.out.npl.get(0).get(1)).md5).match() },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
