@@ -29,6 +29,8 @@ process PARABRICKS_INDEXGVCF {
     pbrun \\
         indexgvcf \\
         --input $gvcf \\
+        --num-threads $task.cpus \\
+        --num-gpus $task.accellerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
