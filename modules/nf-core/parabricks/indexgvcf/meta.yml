@@ -22,7 +22,7 @@ input:
   - gvcf:
       type: file
       description: gvcf file to be indexed
-      pattern: "*.{g.vcf,g.vcf.gz}"
+      pattern: "*.vcf.gz"
 
 output:
   - meta:
@@ -38,7 +38,7 @@ output:
   - indexed_gvcf:
       type: file
       description: Indexed gvcf file
-      pattern: "*.tbi"
+      pattern: "*.vcf.tbi"
 
 authors:
   - "@Furentsu"
