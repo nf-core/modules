@@ -23,8 +23,8 @@ input:
         e.g. `[ id:'test', single_end:false ]`
   - reads:
       type: file
-      description: Uncompressed FASTQ or FASTA file
-      pattern: "*.{fasta,fna,fas,fa,fastq,fq}"
+      description: FASTQ or FASTA file (ideally uncompressed, but not required)
+      pattern: "*.{fasta,fna,fas,fa,fastq,fq,fasta.gz,fna.gz,fas.gz,fa.gz,fastq.gz,fq.gz}"
   - format:
       type: string
       description: File format of input file
