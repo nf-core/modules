@@ -25,10 +25,6 @@ input:
       pattern: "*.{csv,tsv}"
       description: |
         CSV or TSV-format tabular file with differential analysis outputs
-  - de_id_column:
-      type: string
-      description: |
-        The column in the differential expression file that should be used as ID for the DE genes; default: "gene_id"
   - contrast_variable:
       type: string
       description: |
@@ -41,74 +37,19 @@ input:
       type: string
       description: |
         The contrast level of the target samples, e.g. "treated"
-  - blocking_variables:
-      type: string
-      description: |
-        The (comma-separated) variables in the experiment that were blocked in DE analysis, e.g. "batch"
   - organism:
       type: string
       description: |
         The name of the analyzed organism consisting of the first letter of the genus and the entire species name, e.g. for homo sapiens: hsapiens
-  - significant:
-      type: boolean
-      description: |
-        Whether the pathway enrichment results should be restricted to significant ones (default: true); if false, all results will be returned
-  - measure_underrepresentation:
-      type: boolean
-      description: |
-        Whether the genes should be tested for underrepresentation in pathways instead of for overrepresentation; default: false
-  - correction_method:
-      type: string
-      description: |
-        Which method to use for multiple testing correction, one of "gSCS" (synonyms: "analytical", "g_SCS"), "fdr" (synonym: "false_discovery_rate"), "bonferroni"; default: "gSCS"
-      pattern: "gSCS|analytical|g_SCS|fdr|false_discovery_rate|bonferroni"
   - sources:
       type: string
       description: |
         Comma-separated list of data sources to search for pathways, e.g. 'GO,REAC'. Check https://rdrr.io/cran/gprofiler2/man/gost.html for a list of available sources
-  - evcodes:
-      type: boolean
-      description: |
-        Whether to include evidence codes in the results, may decrease performance; default: false. Check https://rdrr.io/cran/gprofiler2/man/gost.html for more info
-  - pval_threshold:
-      type: string
-      description: |
-        p value threshold for determining which results are significant; default: 0.05
-  - gmt_file:
-      type: file
-      pattern: "*.{gmt}"
-      description: |
-        Path to a GMT file that should be used as a custom datasource instead of online databases
-  - gost_token:
-      type: string
-      description: |
-        Token/ID of a previous gprofiler query that should be used as a custom datasource instead of online databases
   - background_file:
       type: file
       pattern: "*.{csv,tsv,txt}"
       description: |
         Path to a CSV/TSV/TXT file listing gene IDs that should be used as the background (will override count_file). This can be an expression matrix (see also background_column parameter); if so, will only consider those genes with an expression value > 0 in at least one sample. Alternatively, this can be a TXT file containing only a list of gene IDs.
-  - background_column:
-      type: string
-      description: |
-        Which column to use as gene ID info in the background_file if it is a matrix; if this is not set (and the file is a matrix), will use the first column as IDs
-  - domain_scope:
-      type: string
-      description: |
-        How to define statistical domain, one of "annotated", "known", "custom" or "custom_annotated"; default: "annotated". Check https://rdrr.io/cran/gprofiler2/man/gost.html for more info
-      pattern: "annotated|known|custom|custom_annotated"
-  - min_diff:
-      type: integer
-      description: |
-        How many enriched differential genes a pathway should contain to be considered in the results; default: 1
-  - round_digits:
-      type: integer
-      description: |
-        Number of digits to which to round the values in the output tables; default: -1 (will not round)
-  - palette_name:
-      type: string
-      description: |
-        RColorBrewer palette name to use for the enrichment plot; default: Blues
 
 output:
   - meta:

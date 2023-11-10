@@ -124,18 +124,18 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 opt <- list(
     de_file = '$de_file',
     de_id_column = 'gene_id',
+    organism = '$organism',
+    sources = '$sources',
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
     blocking_variables = NULL,
-    organism = NULL,
     significant = T,
     measure_underrepresentation = F,
     correction_method = 'gSCS',
-    sources = NULL,
     evcodes = F,
     pval_threshold = 0.05,
-    gmt_file = NULL,
+    gmt_file = '$gmt_file',
     gost_token = NULL,
     background_file = '$background_file',
     background_column = NULL,
@@ -230,13 +230,12 @@ output_prefix <- paste('gprofiler2', output_prefix, sep = '.')
 file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
 
 sources <-  strsplit(opt\$sources, split = ",")[[1]]
-#enrich_colors <- strsplit(opt\$enrich_colors, split = ",")[[1]]
 
 if (!is.null(opt\$gost_token)) {
 
-#   First check if a gost_token was provided
+    # First check if a gost_token was provided
     gost_token <- opt\$gost_token
-} else if (!is.null(opt\$gmt_file)){
+} else if (opt\$gmt_file != "") {
 
     # Next check if custom GMT file was provided; extract only requested datasources (gprofiler will NOT filter automatically!)
     gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
@@ -252,16 +251,15 @@ if (!is.null(opt\$gost_token)) {
     gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
     tryCatch(
         {
-            wget_command <- paste0("wget ", gmt_url)
-            sys_return <- system(wget_command)
-            if (sys_return != 0 && !("saved" %in% sys_return)) {
+            gmt_path <- paste0("gprofiler_full_", opt\$organism, ".", paste(sources, collapse="_"), ".ENSG_filtered.gmt")
+            download <- download.file(gmt_url, gmt_path)
+            if (download != 0) {
                 print("Failed to fetch the GMT file from gprofiler with this URL:")
                 print(gmt_url)
                 print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
             } else {
-                gmt_path <- paste0("gprofiler_full_", opt\$organism, ".ENSG.gmt")
                 gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(gmt_path))
-                gmt_path <- paste0("gprofiler_full_", opt\$organism, ".", paste(sources, collapse="_"), ".ENSG_filtered.gmt")
+                print(paste0("GMT file successfully downloaded and filtered. Please note that for some sources, the GMT file may not contain any entries as these cannot be retrieved from gprofiler; in this case, the GMT file may be completely empty."))
                 writeLines(gmt, gmt_path)
             }
         },
@@ -275,6 +273,7 @@ if (!is.null(opt\$gost_token)) {
     )
     gost_token <- opt\$organism
 }
+
 
 # If custom background_file was provided, read it
 if (opt\$background_file != "") {
