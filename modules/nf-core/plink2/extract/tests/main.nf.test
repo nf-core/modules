@@ -5,7 +5,8 @@ nextflow_process {
     process "PLINK2_EXTRACT"
     tag "modules"
     tag "modules_nfcore"
-    tag "plink2_extract"
+    tag "plink2"
+    tag "plink2/extract"
 
     test("plink2_extract") {
         config "./nextflow.config"
