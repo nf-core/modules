@@ -37,7 +37,6 @@
         "input": {
             "type": "array",
             "description": "Input channels for the module",
-
             "items": {
                 "type": "object",
                 "patternProperties": {
@@ -75,7 +74,6 @@
                 }
             }
         },
-
         "output": {
             "type": "array",
             "description": "Output channels for the module",
@@ -159,15 +157,27 @@
                                 "items": {
                                     "type": "string"
                                 },
-                                "uniqueItems": true
+                                "uniqueItems": true,
+                                "minItems": 2,
+                                "message": {
+                                    "minItems": "Licence must either be a string, e.g. \"MIT\" or have at least 2 items otherwise"
+                                }
                             }
                         },
                         "required": ["description"],
                         "anyOf": [
-                            { "required": ["homepage"] },
-                            { "required": ["documentation"] },
-                            { "required": ["tool_dev_url"] },
-                            { "required": ["doi"] }
+                            {
+                                "required": ["homepage"]
+                            },
+                            {
+                                "required": ["documentation"]
+                            },
+                            {
+                                "required": ["tool_dev_url"]
+                            },
+                            {
+                                "required": ["doi"]
+                            }
                         ]
                     }
                 }
