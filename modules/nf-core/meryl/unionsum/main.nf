@@ -2,7 +2,7 @@ process MERYL_UNIONSUM {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/meryl/unionsum/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
         'biocontainers/meryl:1.3--h87f3376_1' }"

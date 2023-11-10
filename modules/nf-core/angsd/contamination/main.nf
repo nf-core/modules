@@ -2,7 +2,7 @@ process ANGSD_CONTAMINATION {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/angsd/contamination/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
         'biocontainers/angsd:0.939--h468462d_0' }"

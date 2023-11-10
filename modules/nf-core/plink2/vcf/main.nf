@@ -2,7 +2,7 @@ process PLINK2_VCF {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/plink2/vcf/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
         'biocontainers/plink2:2.00a2.3--h712d239_1' }"

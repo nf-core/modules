@@ -2,7 +2,7 @@ process GENMOD_MODELS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/genmod/models/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
         'biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
