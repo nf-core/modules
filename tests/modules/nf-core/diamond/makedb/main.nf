@@ -8,5 +8,5 @@ workflow test_diamond_makedb {
 
     input = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
 
-    DIAMOND_MAKEDB ( input )
+    DIAMOND_MAKEDB ( [ [id:'test'], input ] )
 }
