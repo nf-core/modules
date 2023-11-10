@@ -27,9 +27,15 @@ process NONPAREIL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mem_mb = task.memory.toMega()
+    def is_compressed = reads.getExtension() == "gz" ? true : false
+    def reads_name = is_compressed ? reads.getBaseName() : reads
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${reads} > ${reads_name}
+    fi
+
     nonpareil \\
-        -s $reads \\
+        -s $reads_name \\
         -f $format \\
         -T ${mode} \\
         -t $task.cpus \\
