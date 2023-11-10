@@ -16,12 +16,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - shortreads:
       type: file
       description: |
         Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
       pattern: "*.fastq.gz"
-  - reads:
+  - longreads:
       type: file
       description: Input Nanopore FASTQ file
       pattern: "*.fastq.gz"
@@ -38,7 +38,7 @@ output:
   - contigs:
       type: file
       description: The final assembly produced by Dragonflye
-      pattern: "*.contigs.fa"
+      pattern: "*.fa"
   - log:
       type: file
       description: Full log file for bug reporting

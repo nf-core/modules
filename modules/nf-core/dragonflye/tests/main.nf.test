@@ -33,7 +33,7 @@ nextflow_process {
                 { assert snapshot(process.out.gfa).match("miniasm_gfa") },
                 { assert snapshot(process.out.versions).match("versions") },
                 // MD5sum not reproducible (timestamp, contig order)
-                { assert new File("${outputDir}/dragonflye/test.contigs.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
                 { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() }
 
             )
@@ -66,7 +66,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
                 // MD5sum not reproducible (timestamp, contig order)
-                { assert new File("${outputDir}/dragonflye/test.contigs.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
                 { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() },
                 { assert new File("${outputDir}/dragonflye/raven.fasta").exists() },
                 { assert new File("${outputDir}/dragonflye/raven-unpolished.gfa").exists() },
@@ -102,7 +102,7 @@ nextflow_process {
                 { assert snapshot(process.out.gfa).match("hybrid_gfa") },
                 { assert snapshot(process.out.versions).match("versions") },
                 // MD5sum not reproducible (timestamp, contig order)
-                { assert new File("${outputDir}/dragonflye/test.contigs.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
                 { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() }
 
             )

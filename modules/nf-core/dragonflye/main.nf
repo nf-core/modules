@@ -11,7 +11,7 @@ process DRAGONFLYE {
     tuple val(meta), path(shortreads), path(longreads)
 
     output:
-    tuple val(meta), path("*.contigs.fa")                                       , emit: contigs
+    tuple val(meta), path("*.fa")                                               , emit: contigs
     tuple val(meta), path("dragonflye.log")                                     , emit: log
     tuple val(meta), path("{flye,miniasm,raven}.fasta")                         , emit: raw_contigs
     tuple val(meta), path("{flye,miniasm,raven}-unpolished.gfa"), optional:true , emit: gfa
@@ -31,7 +31,7 @@ process DRAGONFLYE {
         --reads ${longreads} \\
         $shortreads_polishing \\
         $args \\
-        --prefix ${prefix}.contigs \\
+        --prefix ${prefix} \\
         --cpus $task.cpus \\
         --ram $memory \\
         --outdir ./ \\
