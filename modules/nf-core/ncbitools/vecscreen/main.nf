@@ -6,7 +6,7 @@ process NCBITOOLS_VECSCREEN {
 
     input:
     tuple val(meta), path(fasta_file)
-    path adapters_database_directory
+    tuple val(adapters_database_meta), path(adapters_database_directory)
 
     output:
     tuple val(meta), path("${meta.id}.vecscreen.out")    , emit: vecscreen_output

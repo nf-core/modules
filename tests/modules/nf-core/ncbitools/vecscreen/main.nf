@@ -7,6 +7,6 @@ include { NCBITOOLS_VECSCREEN } from '../../../../../modules/nf-core/ncbitools/v
 
 workflow test_ncbitools_vecscreen {
     input = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
-    BLAST_MAKEBLASTDB ( input )
-    NCBITOOLS_VECSCREEN (  [ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db )
+    BLAST_MAKEBLASTDB   (  [[id:'test'], input] )
+    NCBITOOLS_VECSCREEN (  [ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db)
 }
