@@ -1,0 +1,23 @@
+name: pre-commit
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""

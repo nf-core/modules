@@ -26,6 +26,10 @@ agat/convertspgff2gtf:
   - modules/nf-core/agat/convertspgff2gtf/**
   - tests/modules/nf-core/agat/convertspgff2gtf/**
 
+agat/convertspgff2tsv:
+  - modules/nf-core/agat/convertspgff2tsv/**
+  - tests/modules/nf-core/agat/convertspgff2tsv/**
+
 agat/convertspgxf2gxf:
   - modules/nf-core/agat/convertspgxf2gxf/**
   - tests/modules/nf-core/agat/convertspgxf2gxf/**
@@ -113,6 +117,10 @@ ariba/run:
 arriba/arriba:
   - modules/nf-core/arriba/arriba/**
   - tests/modules/nf-core/arriba/arriba/**
+
+arriba/download:
+  - modules/nf-core/arriba/download/**
+  - tests/modules/nf-core/arriba/download/**
 
 artic/guppyplex:
   - modules/nf-core/artic/guppyplex/**
@@ -916,18 +924,6 @@ deseq2/differential:
   - modules/nf-core/deseq2/differential/**
   - tests/modules/nf-core/deseq2/differential/**
 
-diamond/blastp:
-  - modules/nf-core/diamond/blastp/**
-  - tests/modules/nf-core/diamond/blastp/**
-
-diamond/blastx:
-  - modules/nf-core/diamond/blastx/**
-  - tests/modules/nf-core/diamond/blastx/**
-
-diamond/makedb:
-  - modules/nf-core/diamond/makedb/**
-  - tests/modules/nf-core/diamond/makedb/**
-
 dragmap/align:
   - modules/nf-core/dragmap/align/**
   - tests/modules/nf-core/dragmap/align/**
@@ -1629,9 +1625,17 @@ graphtyper/vcfconcatenate:
   - modules/nf-core/graphtyper/vcfconcatenate/**
   - tests/modules/nf-core/graphtyper/vcfconcatenate/**
 
+grids/gridsssomaticfilter:
+  - modules/nf-core/grids/gridsssomaticfilter/**
+  - tests/modules/nf-core/grids/gridsssomaticfilter/**
+
 gridss/gridss:
   - modules/nf-core/gridss/gridss/**
   - tests/modules/nf-core/gridss/gridss/**
+
+gridss/gridssgenerateponbedpe:
+  - modules/nf-core/gridss/gridssgenerateponbedpe/**
+  - tests/modules/nf-core/gridss/gridssgenerateponbedpe/**
 
 gsea/gsea:
   - modules/nf-core/gsea/gsea/**
@@ -2509,10 +2513,6 @@ ngscheckmate/patterngenerator:
 ngscheckmate/vafncm:
   - modules/nf-core/ngscheckmate/vafncm/**
   - tests/modules/nf-core/ngscheckmate/vafncm/**
-
-nonpareil:
-  - modules/nf-core/nonpareil/**
-  - tests/modules/nf-core/nonpareil/**
 
 nucmer:
   - modules/nf-core/nucmer/**
@@ -3631,10 +3631,6 @@ subworkflows/bam_create_som_pon_gatk:
   - subworkflows/nf-core/bam_create_som_pon_gatk/**
   - tests/subworkflows/nf-core/bam_create_som_pon_gatk/**
 
-subworkflows/bam_dedup_stats_samtools_umitools:
-  - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
-  - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
-
 subworkflows/bam_docounts_contamination_angsd:
   - subworkflows/nf-core/bam_docounts_contamination_angsd/**
   - tests/subworkflows/nf-core/bam_docounts_contamination_angsd/**
@@ -3787,6 +3783,14 @@ subworkflows/multiple_impute_glimpse2:
   - subworkflows/nf-core/multiple_impute_glimpse2/**
   - tests/subworkflows/nf-core/multiple_impute_glimpse2/**
 
+subworkflows/utils_nextflow_pipeline:
+  - subworkflows/nf-core/utils_nextflow_pipeline/**
+  - tests/subworkflows/nf-core/utils_nextflow_pipeline/**
+
+subworkflows/utils_nfcore_pipeline:
+  - subworkflows/nf-core/utils_nfcore_pipeline/**
+  - tests/subworkflows/nf-core/utils_nfcore_pipeline/**
+
 subworkflows/vcf_annotate_ensemblvep:
   - subworkflows/nf-core/vcf_annotate_ensemblvep/**
   - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
@@ -3927,10 +3931,6 @@ ucsc/bedclip:
   - modules/nf-core/ucsc/bedclip/**
   - tests/modules/nf-core/ucsc/bedclip/**
 
-ucsc/bedgraphtobigwig:
-  - modules/nf-core/ucsc/bedgraphtobigwig/**
-  - tests/modules/nf-core/ucsc/bedgraphtobigwig/**
-
 ucsc/bedtobigbed:
   - modules/nf-core/ucsc/bedtobigbed/**
   - tests/modules/nf-core/ucsc/bedtobigbed/**
@@ -4022,6 +4022,10 @@ varlociraptor/estimatealignmentproperties:
 varlociraptor/preprocess:
   - modules/nf-core/varlociraptor/preprocess/**
   - tests/modules/nf-core/varlociraptor/preprocess/**
+
+vcf2cytosure:
+  - modules/nf-core/vcf2cytosure/**
+  - tests/modules/nf-core/vcf2cytosure/**
 
 vcf2db:
   - modules/nf-core/vcf2db/**
