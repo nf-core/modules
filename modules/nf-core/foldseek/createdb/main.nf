@@ -2,7 +2,7 @@ process FOLDSEEK_CREATEDB {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::foldseek=8.ef4e960"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/foldseek:8.ef4e960--pl5321hb365157_0':
         'biocontainers/foldseek:8.ef4e960--pl5321hb365157_0' }"
@@ -20,7 +20,6 @@ process FOLDSEEK_CREATEDB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     mkdir -p ${prefix}
     foldseek \\
