@@ -2,10 +2,10 @@ process LIMMA_DIFFERENTIAL {
     tag "$meta"
     label 'process_medium'
 
-    conda "bioconda::bioconductor-limma=3.54.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-limma:3.54.0--r42hc0cfd56_0' :
-        'quay.io/biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
+        'biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)

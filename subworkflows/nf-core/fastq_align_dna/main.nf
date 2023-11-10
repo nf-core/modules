@@ -31,7 +31,7 @@ workflow FASTQ_ALIGN_DNA {
         switch (aligner) {
             case 'bowtie2':
                 BOWTIE2_ALIGN(ch_reads, ch_aligner_index, false, sort) // if aligner is bowtie2
-                ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
+                ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.aligned)
                 ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
                 break
             case 'bwamem':
@@ -57,7 +57,7 @@ workflow FASTQ_ALIGN_DNA {
                 ch_versions = ch_versions.mix(SNAP_ALIGN.out.versions)
                 break
             default:
-                exit 1, "Unknown aligner: ${aligner}"
+                error "Unknown aligner: ${aligner}"
         }
 
     emit:

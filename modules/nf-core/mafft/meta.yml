@@ -1,6 +1,7 @@
 name: mafft
 description: Multiple sequence alignment using MAFFT
 keywords:
+  - fasta
   - msa
   - multiple sequence alignment
 tools:
@@ -11,7 +12,6 @@ tools:
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
       doi: "10.1093/nar/gkf436"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map
@@ -26,7 +26,6 @@ input:
       type: file
       description: FASTA file containing sequences to align to the sequences in `fasta`
       pattern: "*.{fa,fasta}"
-
 output:
   - meta:
       type: map
@@ -41,6 +40,7 @@ output:
       type: file
       description: Aligned sequences in FASTA format
       pattern: "*.{fas}"
-
 authors:
+  - "@MillironX"
+maintainers:
   - "@MillironX"

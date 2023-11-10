@@ -1,12 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_subsample_fq_salmon"
 description: Subsample fastq
 keywords:
   - fastq
   - subsample
   - strandedness
-modules:
+components:
   - fq/subsample
   - salmon/quant
+  - salmon/index
 input:
   - meta:
       type: map
@@ -37,7 +39,6 @@ input:
   - make_index:
       type: boolean
       description: Whether to create salmon index before running salmon quant
-
 output:
   - index:
       type: directory
@@ -62,5 +63,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@robsyme"
+  - "@drpatelh"
+maintainers:
   - "@robsyme"
   - "@drpatelh"

@@ -14,7 +14,7 @@ workflow test_hlala_preparegraph {
     UNZIP( input )
 
     UNZIP.out.unzipped_archive.map { id, path ->
-                                        [ id, "$path/${path.toString().split("/").last()}" ] 
+                                        [ id, "$path/PRG_${path.toString().split("/").last()}" ] 
                                      }
                                      .set { hla_preparegraph_test_in }
 

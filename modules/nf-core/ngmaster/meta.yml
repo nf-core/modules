@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/MDU-PHL/ngmaster
       doi: "10.1099/mgen.0.000076"
       licence: ["GPL v3 only"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: FASTA assembly file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: Tab-delimited result file
       pattern: "*.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

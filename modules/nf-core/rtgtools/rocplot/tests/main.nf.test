@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process RTGTOOLS_ROCPLOT"
+    script "../main.nf"
+    process "RTGTOOLS_ROCPLOT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtgtools"
+    tag "rtgtools/rocplot"
+
+    test("homo_sapiens - tsv") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_sdf'])
+                    ]
+                    """
+                }
+            }
+
+            run("RTGTOOLS_VCFEVAL") {
+                script "modules/nf-core/rtgtools/vcfeval/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                    ]
+                    input[1] = UNTAR.out.untar
+                    println(projectDir)
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = RTGTOOLS_VCFEVAL.out.weighted_roc
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.png[0][1]).name,
+                    file(process.out.svg[0][1]).name,
+                    file(process.out.versions[0]).name
+                ).match()}
+            )
+        }
+
+    }
+
+}
