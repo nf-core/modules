@@ -35,7 +35,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out.blastp_tsv).match("diamond_blastp_tsv") },
-                { assert path(workflow.out.inteproscan_tsv.get(0).get(1)).getText().contains("'ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil\tCoil\t") },
+                { assert path(workflow.out.inteproscan_tsv.get(0).get(1)).getText().contains("ENSSASP00005000004.1\t4c35f09aac2f7be4f3cffd30c6aecac8\t1273\tCoils\tCoil\tCoil\t") },
                 { assert workflow.out.versions }
             )
         }
