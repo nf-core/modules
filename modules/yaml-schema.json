@@ -152,16 +152,27 @@
                                 ]
                             },
                             "licence": {
-                                "type": ["array", "string"],
+                                "anyOf": [
+                                    {
+                                        "type": "array",
+                                        "minItems": 2,
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "uniqueItems": true
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^[^\\[\\]]+$"
+                                    }
+                                ],
                                 "description": "Licence of the tool",
                                 "items": {
                                     "type": "string"
                                 },
                                 "uniqueItems": true,
                                 "minItems": 2,
-                                "message": {
-                                    "minItems": "Licence must either be a string, e.g. \"MIT\" or have at least 2 items otherwise"
-                                }
+                                "message": "Licence must either be a string, e.g. \"MIT\" or have at least 2 items otherwise"
                             }
                         },
                         "required": ["description"],
