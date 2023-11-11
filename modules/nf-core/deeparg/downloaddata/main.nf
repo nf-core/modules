@@ -5,12 +5,6 @@ process DEEPARG_DOWNLOADDATA {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
-    /*
-    We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
-    Original report: https://github.com/nf-core/funcscan/issues/23
-    */
-    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
-
 
     input:
 
@@ -23,12 +17,12 @@ process DEEPARG_DOWNLOADDATA {
 
     script:
     def args = task.ext.args ?: ''
+    def DATA_URL='https://zenodo.org/records/8280582/files/deeparg.zip' // As per https://github.com/gaarangoa/deeparg/blob/537f0394daf4de85858a390e82a3d833febe280d/deeparg/entry.py#L77
     def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    deeparg \\
-        download_data \\
-        $args \\
-        -o db/
+    wget -O deeparg.zip $DATA_URL
+    unzip deeparg.zip
+    mv deeparg db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
