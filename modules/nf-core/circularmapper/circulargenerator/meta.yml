@@ -1,0 +1,42 @@
+name: "circularmapper_circulargenerator"
+description: Create a modified reference genome with elongation
+keywords:
+  - fasta
+  - genome
+  - reference
+  - circular
+tools:
+  - "circularmapper":
+      description: "A method to improve mappings on circular genomes such as Mitochondira."
+      homepage: "https://circularmapper.readthedocs.io/en/latest/index.html"
+      documentation: "https://circularmapper.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/apeltzer/CircularMapper/"
+      doi: "10.1186/s13059-016-0918-z"
+      licence: "['GPL v3']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information. Requires circularextension and circulartarget to function
+        e.g. `[ id:'test', circularextension:500, circulartarget:'chrMT' ]`  
+  - fasta:
+      type: file
+      description: Input genome fasta file
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'test', circularextension:500, circulartarget:'chrMT' ]`
+  - fasta:
+      type: file
+      description: Output elongated genome fasta file
+  - elongated:
+      type: file
+      description: Output containing elongated contig name
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"  
+authors:
+  - "@shyama-mama"
