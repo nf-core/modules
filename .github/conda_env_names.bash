@@ -7,6 +7,6 @@ ENV_FILES=$(fd "^environment.yml$" modules/)
 for file in $ENV_FILES; do
     # Get the "name" field from the meta.yml next to the file
     name=$(yq -r '.name' $(dirname "$file")/meta.yml)
-    # Set the name field in the enviroment.yml at the top of the file
-    yq -i ".name = \"$name\"" "$file"
+    # Add a name field in the enviroment.yml at the top of the file
+    sed -i "1s|^|name: $name\n|" "$file"
 done
