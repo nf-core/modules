@@ -1,0 +1,34 @@
+nextflow_process {
+
+    name "Test Process FOLDSEEK_CREATEDB"
+    script "../main.nf"
+    process "FOLDSEEK_CREATEDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "foldseek"
+    tag "foldseek/createdb"
+
+    test("Should build a protein structures database") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("db") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}
