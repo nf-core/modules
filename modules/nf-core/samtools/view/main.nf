@@ -34,6 +34,9 @@ process SAMTOOLS_VIEW {
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     input.getExtension()
+    def index_type = task.ext.index_type ?: ''
+    def output_name = args.contains("--write-index") ?  "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_type}" :
+                    "${prefix}.${file_type}"
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
@@ -42,7 +45,7 @@ process SAMTOOLS_VIEW {
         ${reference} \\
         ${readnames} \\
         $args \\
-        -o ${prefix}.${file_type} \\
+        -o ${output_name}\\
         $input \\
         $args2
 
