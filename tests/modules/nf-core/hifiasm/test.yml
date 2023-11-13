@@ -1,5 +1,5 @@
 - name: hifiasm test_hifiasm_hifi_only
-  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_hifi_only -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_hifi_only -c ./tests/config/nextflow.config
   tags:
     - hifiasm
   files:
@@ -7,6 +7,8 @@
       md5sum: 1206beee1cda7b39e48e0a080fde0801
     - path: output/hifiasm/test.asm.bp.hap2.p_ctg.gfa
       md5sum: 7bbec1988f296dd0930b0b619cc0a096
+    - path: output/hifiasm/test.asm.bp.p_ctg.gfa
+      md5sum: c83aba621a6ae5a5b5b39dbdc1a0ba9d
     - path: output/hifiasm/test.asm.bp.p_utg.gfa
       md5sum: 3e2b4815145b06bb74f1b74876e767dc
     - path: output/hifiasm/test.asm.bp.r_utg.gfa
@@ -17,7 +19,7 @@
     - path: output/hifiasm/versions.yml
 
 - name: hifiasm test_hifiasm_with_parental_reads
-  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config
   tags:
     - hifiasm
   files:
@@ -35,7 +37,7 @@
     - path: output/hifiasm/versions.yml
 
 - name: hifiasm test_hifiasm_with_hic
-  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_hic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_hic -c ./tests/config/nextflow.config
   tags:
     - hifiasm
   files:
