@@ -1,10 +1,10 @@
 process METAPHLAN_MAKEDB {
     label 'process_medium'
 
-    conda "bioconda::metaphlan=4.0.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.0.6--pyhca03a8a_0' :
-        'quay.io/biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
+        'biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
 
     output:
     path "metaphlan_db_latest"      , emit: db

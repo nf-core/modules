@@ -1,0 +1,15 @@
+- name: mmseqs createdb test_mmseqs_createdb
+  command: nextflow run ./tests/modules/nf-core/mmseqs/createdb -entry test_mmseqs_createdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/createdb/nextflow.config
+  tags:
+    - mmseqs
+    - mmseqs/createdb
+  files:
+    - path: output/mmseqs/test/test
+    - path: output/mmseqs/test/test.dbtype
+    - path: output/mmseqs/test/test.index
+    - path: output/mmseqs/test/test.lookup
+    - path: output/mmseqs/test/test.source
+    - path: output/mmseqs/test/test_h
+    - path: output/mmseqs/test/test_h.dbtype
+    - path: output/mmseqs/test/test_h.index
+    - path: output/mmseqs/versions.yml

@@ -2,10 +2,10 @@ process SNPEFF_DOWNLOAD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snpeff=5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.1--hdfd78af_2' :
-        'quay.io/biocontainers/snpeff:5.1--hdfd78af_2' }"
+        'biocontainers/snpeff:5.1--hdfd78af_2' }"
 
     input:
     tuple val(meta), val(genome), val(cache_version)

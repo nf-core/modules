@@ -1,0 +1,21 @@
+- name: clustalo align test_clustalo_align
+  command: nextflow run ./tests/modules/nf-core/clustalo/align -entry test_clustalo_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/clustalo/align/nextflow.config
+  tags:
+    - clustalo/align
+    - clustalo
+  files:
+    - path: output/clustalo/test.aln
+      md5sum: 74bb9a2820a91cf68db94dbd46787722
+    - path: output/clustalo/versions.yml
+
+- name: clustalo align test_clustalo_align_with_tree
+  command: nextflow run ./tests/modules/nf-core/clustalo/align -entry test_clustalo_align_with_tree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/clustalo/align/nextflow.config
+  tags:
+    - clustalo/align
+    - clustalo
+  files:
+    - path: output/clustalo/test.aln
+      md5sum: 74bb9a2820a91cf68db94dbd46787722
+    - path: output/clustalo/test.dnd
+      md5sum: 5428bad500a0a0bd985744bec1a12a70
+    - path: output/clustalo/versions.yml

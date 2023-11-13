@@ -3,13 +3,13 @@ description: Print SHA256 (256-bit) checksums.
 keywords:
   - checksum
   - sha256
+  - 256 bit
 tools:
   - "md5sum":
       description: Create an SHA256 (256-bit) checksum.
       homepage: "https://www.gnu.org"
       documentation: "https://linux.die.net/man/1/shasum"
       licence: GPLv3+
-
 input:
   - meta:
       type: map
@@ -20,7 +20,6 @@ input:
       type: file
       description: Any file
       pattern: "*.*"
-
 output:
   - meta:
       type: map
@@ -35,6 +34,7 @@ output:
       type: file
       description: File containing checksum
       pattern: "*.sha256"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

@@ -2,10 +2,10 @@ process GSEA_GSEA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gsea=4.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gsea:4.3.2--hdfd78af_0':
-        'quay.io/biocontainers/gsea:4.3.2--hdfd78af_0' }"
+        'biocontainers/gsea:4.3.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)

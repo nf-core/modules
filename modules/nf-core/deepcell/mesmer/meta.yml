@@ -10,9 +10,8 @@ tools:
       homepage: "https://github.com/vanvalenlab/deepcell-tf"
       documentation: "https://github.com/vanvalenlab/intro-to-deepcell/tree/master/pretrained_models"
       tool_dev_url: "https://githu/b.com/vanvalenlab/deepcell-tf"
-      doi: "https://doi.org/10.1038/s41587-021-01094-0"
+      doi: 10.1038/s41587-021-01094-0
       licence: "APACHE2"
-
 input:
   # Only when we have meta
   - meta:
@@ -25,7 +24,6 @@ input:
       type: file
       description: Multichannel image file
       pattern: "*.{tiff,tif,h5,hdf5}"
-
 output:
   #Only when we have meta
   - meta:
@@ -38,12 +36,13 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - mask:
       type: file
       description: File containing the mask.
       pattern: "*.{tif, tiff}"
-
 authors:
+  - "@migueLib"
+  - "@chiarasch"
+maintainers:
   - "@migueLib"
   - "@chiarasch"
