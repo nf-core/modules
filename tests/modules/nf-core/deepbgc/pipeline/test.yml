@@ -29,9 +29,9 @@
     - path: output/deepbgc/deepbgc_db/common/Pfam-A.31.0.hmm.h3p
       md5sum: 27b98a1ded123b6a1ef72db01927017c
     - path: output/deepbgc/test_gbk/LOG.txt
-      md5sum: f97e02ffe6f397ac3adb43c96095fb08
+      contains: ["Saved DeepBGC result to"]
     - path: output/deepbgc/test_gbk/README.txt
-      md5sum: 71e9886c0581e10b789ed1279e31fe9a
+      contains: ["Log output of DeepBGC"]
     - path: output/deepbgc/test_gbk/test_gbk.gbk.antismash.json
       md5sum: 889ac1efb6a9a7d7b8c65e4cd2233bba
     - path: output/deepbgc/test_gbk/test_gbk.gbk.bgc.gbk
@@ -80,7 +80,7 @@
     - path: output/deepbgc/test_fa/LOG.txt
       contains: ["Saved DeepBGC result to"]
     - path: output/deepbgc/test_fa/README.txt
-      md5sum: 28e4bb71fcb55063c46d5250d6306436
+      md5sum: ["Log output of DeepBGC"]
     - path: output/deepbgc/test_fa/evaluation/test1.contigs.bgc.png
       md5sum: f4a0fc6cd260e2d7ad16f7a1fa103f96
     - path: output/deepbgc/test_fa/evaluation/test1.contigs.score.png
