@@ -43,8 +43,8 @@ process KALLISTO_QUANT {
 
     def strandedness = ''
     if (!args.contains('--fr-stranded') && !args.contains('--rf-stranded')) {
-        strandedness = (meta.strandedness == 'forward') ? '--fr-stranded' :
-                       (meta.strandedness == 'reverse') ? '--rf-stranded' : ''
+        strandedness =  (meta.strandedness == 'forward') ? '--fr-stranded' :
+                        (meta.strandedness == 'reverse') ? '--rf-stranded' : ''
     }
 
     """
