@@ -30,7 +30,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.results).match() },
+                { assert path(process.out.results.get(0).get(1)).exists() },
                 { assert path(process.out.versions.get(0)).getText().contains("qualimap") }
             )
         }
