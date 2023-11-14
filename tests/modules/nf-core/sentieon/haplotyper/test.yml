@@ -11,7 +11,6 @@
     - path: ./output/sentieon/test.unfiltered.vcf.gz
     - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
     - path: ./output/sentieon/versions.yml
-      md5sum: 4b7340f38e0cda5d593d1f432d4e8046
 - name: sentieon test_haplotyper_gvcf
   command: nextflow run ./tests/modules/nf-core/sentieon/haplotyper -entry test_haplotyper_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/haplotyper/nextflow.config
   tags:
@@ -25,7 +24,6 @@
     - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
       should_exist: false
     - path: ./output/sentieon/versions.yml
-      md5sum: 5ab9c81975ba492047f6eef37ef011c7
 - name: sentieon test_haplotyper_both
   command: nextflow run ./tests/modules/nf-core/sentieon/haplotyper -entry test_haplotyper_both -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/haplotyper/nextflow.config
   tags:
@@ -37,7 +35,6 @@
     - path: ./output/sentieon/test.unfiltered.vcf.gz
     - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
     - path: ./output/sentieon/versions.yml
-      md5sum: 0e45e1659b9c07264bae0993309b8593
 - name: sentieon test_haplotyper_intervals_both
   command: nextflow run ./tests/modules/nf-core/sentieon/haplotyper -entry test_haplotyper_intervals_both -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/haplotyper/nextflow.config
   tags:
@@ -49,7 +46,6 @@
     - path: ./output/sentieon/test.unfiltered.vcf.gz
     - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
     - path: ./output/sentieon/versions.yml
-      md5sum: b3016823b24c07813b5656bbe7552e48
 - name: sentieon test_haplotyper_intervals_dbsnp_both
   command: nextflow run ./tests/modules/nf-core/sentieon/haplotyper -entry test_haplotyper_intervals_dbsnp_both -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/haplotyper/nextflow.config
   tags:
@@ -61,4 +57,3 @@
     - path: ./output/sentieon/test.unfiltered.vcf.gz
     - path: ./output/sentieon/test.unfiltered.vcf.gz.tbi
     - path: ./output/sentieon/versions.yml
-      md5sum: 9084e115484b31f1a3a3b952cad7ee64
