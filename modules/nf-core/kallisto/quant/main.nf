@@ -48,7 +48,7 @@ process KALLISTO_QUANT {
     }
 
     """
-    kallisto quant \\
+    mkdir -p $prefix && kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
             ${gtf_input} \\
