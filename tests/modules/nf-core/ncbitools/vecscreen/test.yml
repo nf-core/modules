@@ -1,0 +1,9 @@
+- name: "ncbitools vecscreen"
+  command: nextflow run ./tests/modules/nf-core/ncbitools/vecscreen -entry test_ncbitools_vecscreen -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ncbitools/vecscreen/nextflow.config
+  tags:
+    - "ncbitools"
+    - "ncbitools/vecscreen"
+  files:
+    - path: "output/ncbitools/test.vecscreen.out"
+      md5sum: b1e5bff88cbc6195bf730e13dc7f5873
+    - path: "output/ncbitools/versions.yml"
