@@ -23,7 +23,7 @@ workflow test_dnamodelapply {
 
     SENTIEON_DNASCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], ml_model, emit_vcf, emit_gvcf )
 
-    ch_applyin = SENTIEON_DNASCOPE.out.vcf.join(SENTIEON_DNASCOPE.out.index)
+    ch_applyin = SENTIEON_DNASCOPE.out.vcf.join(SENTIEON_DNASCOPE.out.vcf_tbi)
 
     SENTIEON_DNAMODELAPPLY (ch_applyin, fasta, fai, ml_model)
 }
