@@ -90,6 +90,10 @@ output:
       type: file
       description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
       pattern: "variance_stabilised_counts.tsv"
+  - model:
+      type: file
+      description: TXT-format DESeq2 model
+      pattern: "deseq2.model.tsv"
   - versions:
       type: file
       description: File containing software versions
