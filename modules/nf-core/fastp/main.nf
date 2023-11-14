@@ -10,6 +10,7 @@ process FASTP {
     input:
     tuple val(meta), path(reads)
     path  adapter_fasta
+    val   save_trimmed_pass
     val   save_trimmed_fail
     val   save_merged
 
@@ -30,6 +31,9 @@ process FASTP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
     def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
+    def out_fq  = save_trimmed_pass ? "${prefix}.fastp.fastq.gz" : '/dev/null'
+    def out_fq1 = save_trimmed_pass ? ( meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_1.fastp.fastq.gz" ) : ''
+    def out_fq2 = save_trimmed_pass ? "--out2 ${prefix}_2.fastp.fastq.gz" : ''
     // Added soft-links to original fastqs for consistent naming in MultiQC
     // Use single ended for interleaved. Add --interleaved_in in config.
     if ( task.ext.args?.contains('--interleaved_in') ) {
@@ -46,7 +50,7 @@ process FASTP {
             $fail_fastq \\
             $args \\
             2> ${prefix}.fastp.log \\
-        | gzip -c > ${prefix}.fastp.fastq.gz
+        | gzip -c > $out_fq
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -59,7 +63,7 @@ process FASTP {
 
         fastp \\
             --in1 ${prefix}.fastq.gz \\
-            --out1  ${prefix}.fastp.fastq.gz \\
+            $out_fq1 \\
             --thread $task.cpus \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
@@ -81,8 +85,8 @@ process FASTP {
         fastp \\
             --in1 ${prefix}_1.fastq.gz \\
             --in2 ${prefix}_2.fastq.gz \\
-            --out1 ${prefix}_1.fastp.fastq.gz \\
-            --out2 ${prefix}_2.fastp.fastq.gz \\
+            $out_fq1 \\
+            $out_fq2 \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $adapter_list \\

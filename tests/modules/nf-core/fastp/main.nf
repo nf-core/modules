@@ -11,10 +11,11 @@ workflow test_fastp_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -25,10 +26,11 @@ workflow test_fastp_paired_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -38,10 +40,11 @@ workflow test_fastp_interleaved {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -51,10 +54,11 @@ workflow test_fastp_single_end_trim_fail {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = true
     save_merged       = false
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -65,10 +69,11 @@ workflow test_fastp_paired_end_trim_fail {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = true
     save_merged       = false
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -79,10 +84,11 @@ workflow test_fastp_paired_end_merged {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
+    save_trimmed_pass = true
     save_trimmed_fail = false
     save_merged       = true
 
-    FASTP ( input, [], save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
 
 //
@@ -94,8 +100,52 @@ workflow test_fastp_paired_end_merged_adapterlist {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
     adapter_fasta = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/fastp/adapters.fasta", checkIfExists: true)
+    save_trimmed_pass = true
     save_trimmed_fail = false
     save_merged       = true
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, adapter_fasta, save_trimmed_pass, save_trimmed_fail, save_merged )
+}
+
+//
+// Test with single-end data without saving trimmed fastqs
+//
+workflow test_fastp_single_end_omit_trimmed {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_pass = false
+    save_trimmed_fail = false
+    save_merged       = false
+
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
+}
+
+//
+// Test with paired-end data without saving trimmed fastqs
+//
+workflow test_fastp_paired_end_omit_trimmed {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_pass = false 
+    save_trimmed_fail = false
+    save_merged       = false
+
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
+}
+
+//
+// Test with interleaved data without saving trimmed fastqs
+//
+workflow test_fastp_interleaved_omit_trimmed {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_pass = false 
+    save_trimmed_fail = false
+    save_merged       = false
+
+    FASTP ( input, [], save_trimmed_pass, save_trimmed_fail, save_merged )
 }
