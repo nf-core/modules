@@ -32,7 +32,7 @@ process BEDGOVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' ))
+        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process BEDGOVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' ))
+        bedgovcf: \$(echo \$(bedgovcf --version 2>&1) | sed 's/^bedgovcf version //' )
     END_VERSIONS
     """
 }
