@@ -18,7 +18,7 @@ workflow test_dnamodelapply {
 
     ml_model = [[:], file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists: true)]
 
-    emit_vcf = "variant"
+    emit_vcf = ""
     emit_gvcf = false
 
     SENTIEON_DNASCOPE ( input, fasta, fai, [[:],[]], [[:],[]], [[:],[]], ml_model, emit_vcf, emit_gvcf )
