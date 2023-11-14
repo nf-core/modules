@@ -14,15 +14,25 @@ tools:
       doi: "10.1038/s41592-021-01101-x"
       licence: ["GPL v3.0"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input fasta file
-      pattern: "*.{fa,fasta}"
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - db:
       type: file
       description: File of the indexed DIAMOND database
-      pattern: "*.{dmnd}"
+      pattern: "*.dmnd"
   - versions:
       type: file
       description: File containing software versions
@@ -31,3 +41,4 @@ authors:
   - "@spficklin"
 maintainers:
   - "@spficklin"
+  - "@vagkaratzas"
