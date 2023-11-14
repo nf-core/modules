@@ -9,6 +9,8 @@ nextflow_process {
 
     test("homo_sapiens - [bed, config] - fai") {
 
+        // WARNING: md5sum between local tests and GHA tests differ
+        // Please change them manually after every snapshot update
         when {
             params {
                 outdir = $outputDir
