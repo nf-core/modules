@@ -2,7 +2,7 @@ process RSEQC_TIN {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/rseqc/tin/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rseqc:3.0.1--py37h516909a_1' :
         'biocontainers/rseqc:3.0.1--py37h516909a_1' }"

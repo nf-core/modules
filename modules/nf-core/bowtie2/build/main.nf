@@ -2,10 +2,10 @@ process BOWTIE2_BUILD {
     tag "$fasta"
     label 'process_high'
 
-    conda 'modules/nf-core/bowtie2/build/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bowtie2:2.4.4--py39hbb4e92a_0' :
-        'biocontainers/bowtie2:2.4.4--py39hbb4e92a_0' }"
+        'https://depot.galaxyproject.org/singularity/bowtie2:2.4.5--py39hbb4e92a_0' :
+        'biocontainers/bowtie2:2.4.5--py39hbb4e92a_0' }"
 
     input:
     tuple val(meta), path(fasta)
