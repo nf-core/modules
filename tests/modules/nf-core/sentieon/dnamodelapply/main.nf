@@ -19,7 +19,7 @@ workflow test_dnamodelapply {
 
     pcr_indel_model = 'CONSERVATIVE'
     ml_model        = Channel.of([[:], file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists: true)])
-    emit_vcf        = ''
+    emit_vcf        = 'variant'
     emit_gvcf       = false
 
     SENTIEON_DNASCOPE (
