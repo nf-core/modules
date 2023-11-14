@@ -16,10 +16,10 @@ process KALLISTO_QUANT {
     val fragment_length_sd
 
     output:
-    tuple val(meta), path("${prefix}")          , emit: results
-    tuple val(meta), path("run_info.json")      , emit: json_info
-    tuple val(meta), path("kallisto_quant.log") , emit: log
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}")        , emit: results
+    tuple val(meta), path("*.run_info.json")  , emit: json_info
+    tuple val(meta), path("*.log")            , emit: log
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -59,7 +59,8 @@ process KALLISTO_QUANT {
             -o $prefix \\
             ${reads} 2> >(tee -a ${prefix}/kallisto_quant.log >&2)
 
-    cp ${prefix}/kallisto_quant.log ${prefix}/run_info.json .
+    cp ${prefix}/kallisto_quant.log ${prefix}.log 
+    cp ${prefix}/run_info.json ${prefix}.run_info.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
