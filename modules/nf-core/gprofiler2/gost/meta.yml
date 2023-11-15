@@ -29,11 +29,11 @@ input:
       type: string
       description: |
         The contrast variable that is being investigated in DE analysis, e.g. "treatment".
-  - reference_level:
+  - reference:
       type: string
       description: |
         The contrast level of the reference samples, e.g. "control"
-  - target_level:
+  - target:
       type: string
       description: |
         The contrast level of the target samples, e.g. "treated"
@@ -50,6 +50,11 @@ input:
       pattern: "*.{csv,tsv,txt}"
       description: |
         Path to a CSV/TSV/TXT file listing gene IDs that should be used as the background (will override count_file). This can be an expression matrix (see also background_column parameter); if so, will only consider those genes with an expression value > 0 in at least one sample. Alternatively, this can be a TXT file containing only a list of gene IDs.
+  - gmt_file:
+      type: file
+      pattern: "*.{gmt}"
+      description: |
+        Path to a GMT file downloaded from g:profiler that should be queried instead of the online databases
 
 output:
   - meta:
@@ -86,6 +91,16 @@ output:
       description: |
         PNG file; bar plot showing the fraction of genes that were found enriched in each pathway
       pattern: "*gprofiler2.*sub_enriched_pathways.png"
+  - filtered_gmt:
+      type: file
+      description: |
+        GMT file that was provided as input or that was downloaded from g:profiler if no input GMT file was given; filtered for the selected datasources
+      pattern: "*ENSG_filtered.gmt"
+  - session_info:
+      type: file
+      description: |
+        Log file containing information about the R session that was run for this module
+      pattern: "*R_sessionInfo.log"
   - versions:
       type: file
       description: File containing software versions
