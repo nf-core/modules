@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP } from '../../../../modules/nf-core/gunzip/main.nf'
-include { NONPAREIL } from '../../../../modules/nf-core/nonpareil/main.nf'
+include { GUNZIP              } from '../../../../modules/nf-core/gunzip/main.nf'
+include { NONPAREIL_NONPAREIL } from '../../../../modules/nf-core/nonpareil/nonpareil/main.nf'
 
 workflow test_nonpareil {
 
@@ -14,7 +14,7 @@ workflow test_nonpareil {
 
     GUNZIP (input)
 
-    NONPAREIL ( GUNZIP.out.gunzip, 'fastq', 'kmer' )
+    NONPAREIL_NONPAREIL ( GUNZIP.out.gunzip, 'fastq', 'kmer' )
 }
 
 workflow test_nonpareil_nogunzip {
@@ -24,5 +24,5 @@ workflow test_nonpareil_nogunzip {
         file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
 
-    NONPAREIL ( input, 'fastq', 'kmer' )
+    NONPAREIL_NONPAREIL ( input, 'fastq', 'kmer' )
 }
