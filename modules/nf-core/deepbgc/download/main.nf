@@ -3,8 +3,8 @@ process DEEPBGC_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
-        'biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
+        'https://depot.galaxyproject.org/singularity/deepbgc:0.1.31--pyhca03a8a_0':
+        'biocontainers/deepbgc:0.1.31--pyhca03a8a_0' }"
 
     output:
     path "deepbgc_db/"  , emit: db
