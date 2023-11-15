@@ -5,7 +5,7 @@ process SENTIEON_DNAMODELAPPLY {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    container 'nf-core/sentieon:202112.06'
+    container 'nf-core/sentieon:202308'
 
     input:
     tuple val(meta), path(vcf), path(idx)
