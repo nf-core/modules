@@ -5,9 +5,10 @@ nextflow_process {
     process "QUALIMAP_RNASEQ"
     tag "modules"
     tag "modules_nfcore"
+    tag "qualimap"
     tag "qualimap/rnaseq"
 
-    test("BAM") {
+    test("homo_sapiens [BAM]") {
 
         when {
             params {
