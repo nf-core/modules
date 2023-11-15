@@ -348,11 +348,12 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
+out_df <- data.frame(comp.results)
+out_df[[opt\$probe_id]] <- rownames(comp.results)
+out_df <- out_df[c(opt\$probe_id, colnames(out_df)[colnames(out_df) != opt\$probe_id])] # move ID column to first position
+
 write.table(
-    data.frame(
-        probe_id = rownames(comp.results),
-        comp.results
-    ),
+    out_df,
     file = paste(opt\$output_prefix, 'limma.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
