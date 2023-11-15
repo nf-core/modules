@@ -1,8 +1,8 @@
 - name: deepbgc download test_deepbgc_download
-  command: nextflow run ./tests/modules/nf-core/deepbgc/download -entry test_deepbgc_download -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/deepbgc/download/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/download -entry test_deepbgc_download -c ./tests/config/nextflow.config
   tags:
-    - deepbgc
     - deepbgc/download
+    - deepbgc
   files:
     - path: output/deepbgc/deepbgc_db/0.1.0/classifier/product_activity.pkl
       md5sum: 90f0c010460e9df882cb057664a49f30
