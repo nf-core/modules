@@ -2,7 +2,7 @@ process SOURMASH_GATHER {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/sourmash/gather/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sourmash:4.8.4--hdfd78af_0':
         'biocontainers/sourmash:4.8.4--hdfd78af_0' }"

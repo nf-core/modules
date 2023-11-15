@@ -3,7 +3,7 @@ process NONPAREIL {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/nonpareil/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h9f5acd7_3':
         'biocontainers/nonpareil:3.4.1--r42h9f5acd7_3' }"
@@ -27,9 +27,15 @@ process NONPAREIL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mem_mb = task.memory.toMega()
+    def is_compressed = reads.getExtension() == "gz" ? true : false
+    def reads_name = is_compressed ? reads.getBaseName() : reads
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${reads} > ${reads_name}
+    fi
+
     nonpareil \\
-        -s $reads \\
+        -s $reads_name \\
         -f $format \\
         -T ${mode} \\
         -t $task.cpus \\

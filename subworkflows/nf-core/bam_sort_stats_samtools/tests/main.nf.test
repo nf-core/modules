@@ -5,7 +5,9 @@ nextflow_workflow {
     workflow "BAM_SORT_STATS_SAMTOOLS"
     tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows/bam_sort_stats_samtools"
     tag "bam_sort_stats_samtools"
+    tag "subworkflows/bam_stats_samtools"
     tag "bam_stats_samtools"
     tag "samtools"
     tag "samtools/index"
@@ -35,7 +37,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
+                { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
+                { assert snapshot(workflow.out.stats).match("test_bam_sort_stats_samtools_single_end_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_sort_stats_samtools_single_end_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_sort_stats_samtools_single_end_idxstats") }
             )
         }
     }
@@ -61,7 +67,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
+                { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
+                { assert snapshot(workflow.out.stats).match("test_bam_sort_stats_samtools_paired_end_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_sort_stats_samtools_paired_end_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_sort_stats_samtools_paired_end_idxstats") }
             )
         }
     }

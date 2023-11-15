@@ -2,7 +2,7 @@ process ISLANDPATH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/islandpath/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/islandpath:1.0.6--hdfd78af_0':
         'biocontainers/islandpath:1.0.6--hdfd78af_0' }"

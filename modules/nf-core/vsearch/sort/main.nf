@@ -2,7 +2,7 @@ process VSEARCH_SORT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/vsearch/sort/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
         'biocontainers/vsearch:2.21.1--h95f258a_0' }"
