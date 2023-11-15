@@ -15,6 +15,7 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.limma.results.tsv")          , emit: results
     tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
     tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
+    tuple val(meta), path("*.limma.model.txt")            , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
     path "versions.yml"                                   , emit: versions
 
