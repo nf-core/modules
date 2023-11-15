@@ -377,12 +377,15 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
+out_df <- data.frame(
+    round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
+    check.names = FALSE
+)
+out_df[[opt\$gene_id_col]] <- rownames(comp.results)
+out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
+
 write.table(
-    data.frame(
-        gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
-        check.names = FALSE
-    ),
+    out_df,
     file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -423,12 +426,15 @@ write.table(
 
 # Write specified matrices
 
+out_df <- data.frame(
+    counts(dds, normalized = TRUE),
+    check.names = FALSE
+)
+out_df[[opt\$gene_id_col]] <- rownames(counts(dds))
+out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
+
 write.table(
-    data.frame(
-        gene_id=rownames(counts(dds)),
-        counts(dds, normalized = TRUE),
-        check.names = FALSE
-    ),
+    out_df,
     file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -447,15 +453,18 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
 
     # Again apply the slight rounding and then restore numeric
 
-    write.table(
-        data.frame(
-            gene_id=rownames(counts(dds)),
-            round_dataframe_columns(
-                data.frame(assay(vs_mat), check.names = FALSE)
-            ),
-            check.names = FALSE
+    out_df <- data.frame(
+        round_dataframe_columns(
+            data.frame(assay(vs_mat), check.names = FALSE)
         ),
-        file = paste(opt\$output_prefix, vs_method_name,'tsv', sep = '.'),
+        check.names = FALSE
+    )
+    out_df[[opt\$gene_id_col]] <- rownames(counts(dds))
+    out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
+
+    write.table(
+        out_df,
+        file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -463,9 +472,6 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     )
 }
 
-# Save model to file
-
-write(model, file=paste(opt\$output_prefix, 'deseq2.model.txt', sep = '.'))
 
 ################################################
 ################################################
