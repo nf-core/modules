@@ -463,6 +463,10 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     )
 }
 
+# Save model to file
+
+write(model, file=paste(opt\$output_prefix, 'deseq2.model.txt', sep = '.'))
+
 ################################################
 ################################################
 ## R SESSION INFO                             ##

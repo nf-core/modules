@@ -20,6 +20,7 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
     tuple val(meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
     tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
+    tuple val(meta), path("*.deseq2.model.txt")                , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
     path "versions.yml"                                        , emit: versions
 
