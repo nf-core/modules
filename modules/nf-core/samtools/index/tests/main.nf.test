@@ -5,9 +5,10 @@ nextflow_process {
     process "SAMTOOLS_INDEX"
     tag "modules"
     tag "modules_nfcore"
+    tag "samtools"
     tag "samtools/index"
 
-    test("BAI") {
+    test("sarscov2 [BAI]") {
 
         when {
             params {
@@ -32,7 +33,7 @@ nextflow_process {
         }
     }
 
-    test("CRAI") {
+    test("homo_sapiens [CRAI]") {
 
         when {
             params {
@@ -57,7 +58,7 @@ nextflow_process {
         }
     }
 
-    test("CSI") {
+    test("homo_sapiens [CSI]") {
 
         config "./csi.nextflow.config"
 
