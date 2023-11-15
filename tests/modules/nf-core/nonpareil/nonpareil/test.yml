@@ -13,8 +13,8 @@
         - "# @impl: Nonpareil"
     - path: output/nonpareil/versions.yml
 
-- name: nonpareil nonpareil test_nonpareil_nogunzip
-  command: nextflow run ./tests/modules/nf-core/nonpareil/nonpareil -entry test_nonpareil_nogunzip -c ./tests/config/nextflow.config
+- name: nonpareil nonpareil test_nonpareil_nonpareil_nogunzip
+  command: nextflow run ./tests/modules/nf-core/nonpareil/nonpareil -entry test_nonpareil_nonpareil_nogunzip -c ./tests/config/nextflow.config
   tags:
     - nonpareil
     - nonpareil/nonpareil
