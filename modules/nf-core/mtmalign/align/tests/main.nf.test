@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process MTMALIGN_ALIGN"
-    script "modules/nf-core/mtmalign/align/main.nf"
+    script "../main.nf"
     process "MTMALIGN_ALIGN"
 
     test("Should run without failures") {
