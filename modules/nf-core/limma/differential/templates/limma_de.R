@@ -374,6 +374,10 @@ dev.off()
 
 saveRDS(fit2, file = paste(opt\$output_prefix, 'MArrayLM.limma.rds', sep = '.'))
 
+# Save model to file
+
+write(model, file=paste(opt\$output_prefix, 'limma.model.txt', sep = '.'))
+
 ################################################
 ################################################
 ## R SESSION INFO                             ##
