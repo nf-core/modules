@@ -5,7 +5,7 @@ process SENTIEON_BWAMEM {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    conda "bioconda::sentieon=202308"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sentieon:202308--h43eeafb_0' :
         'biocontainers/sentieon:202308--h43eeafb_0' }"
