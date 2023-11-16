@@ -2,7 +2,7 @@ process NONPAREIL_CURVE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::nonpareil=3.4.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h9f5acd7_2':
         'biocontainers/nonpareil:3.4.1--r42h9f5acd7_2' }"
