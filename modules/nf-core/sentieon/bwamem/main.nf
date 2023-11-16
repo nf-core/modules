@@ -7,7 +7,7 @@ process SENTIEON_BWAMEM {
 
     conda "bioconda::sentieon=202308"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sentieon%3A202308--h43eeafb_0' :
+        'https://depot.galaxyproject.org/singularity/sentieon:202308--h43eeafb_0' :
         'biocontainers/sentieon:202308--h43eeafb_0' }"
 
 
