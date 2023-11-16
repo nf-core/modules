@@ -10,7 +10,6 @@ process SENTIEON_BWAMEM {
         'https://depot.galaxyproject.org/singularity/sentieon:202308--h43eeafb_0' :
         'biocontainers/sentieon:202308--h43eeafb_0' }"
 
-
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
