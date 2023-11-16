@@ -5,7 +5,11 @@ process SENTIEON_BWAMEM {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    container 'nf-core/sentieon:202308'
+    conda "bioconda::sentieon=202308"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sentieon%3A202308--h43eeafb_0' :
+        'biocontainers/sentieon:202308--h43eeafb_0' }"
+
 
     input:
     tuple val(meta), path(reads)
@@ -21,10 +25,6 @@ process SENTIEON_BWAMEM {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
@@ -46,6 +46,9 @@ process SENTIEON_BWAMEM {
         export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
+
+    LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
