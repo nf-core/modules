@@ -11,7 +11,6 @@ process MUDSKIPPER_INDEX {
     path gtf 
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     path "index/"      , emit: index 
     path "versions.yml", emit: versions
 
