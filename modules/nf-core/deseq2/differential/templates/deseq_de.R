@@ -377,12 +377,12 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
-out_df <- data.frame(
-    round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
-    check.names = FALSE
+out_df <- cbind(
+  setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
+  round_dataframe_columns(
+    data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
+  )
 )
-out_df[[opt\$gene_id_col]] <- rownames(comp.results)
-out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
 
 write.table(
     out_df,
