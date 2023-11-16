@@ -122,7 +122,8 @@ opt <- list(
     shrink_lfc = TRUE,
     cores = 1,
     vs_blind = TRUE,
-    vst_nsub = 1000
+    vst_nsub = 1000,
+    round_digits = 8
 )
 opt_types <- lapply(opt, class)
 
@@ -378,10 +379,11 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 out_df <- cbind(
-  setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
-  round_dataframe_columns(
-    data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
-  )
+    setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
+    round_dataframe_columns(
+        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
+        digits = opt\$round_digits
+    )
 )
 
 write.table(
@@ -426,12 +428,13 @@ write.table(
 
 # Write specified matrices
 
-out_df <- data.frame(
-    counts(dds, normalized = TRUE),
-    check.names = FALSE
+out_df <- cbind(
+  setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
+  round_dataframe_columns(
+    data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE),
+    digits = opt\$round_digits
+  )
 )
-out_df[[opt\$gene_id_col]] <- rownames(counts(dds))
-out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
 
 write.table(
     out_df,
@@ -453,15 +456,13 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
 
     # Again apply the slight rounding and then restore numeric
 
-    out_df <- data.frame(
+    out_df <- cbind(
+        setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
         round_dataframe_columns(
-            data.frame(assay(vs_mat), check.names = FALSE)
-        ),
-        check.names = FALSE
+            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE),
+            digits = opt\$round_digits
+        )
     )
-    out_df[[opt\$gene_id_col]] <- rownames(counts(dds))
-    out_df <- out_df[c(opt\$gene_id_col, colnames(out_df)[colnames(out_df) != opt\$gene_id_col])] # move ID column to first position
-
     write.table(
         out_df,
         file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
