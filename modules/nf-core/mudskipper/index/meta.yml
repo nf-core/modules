@@ -1,9 +1,9 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mudskipper_index"
-description: Build and store a gtf index, which is useful for converting genomic BAM/SAM files to transcriptomic BAM/SAM files. 
+description: Build and store a gtf index, which is useful for converting genomic BAM/SAM files to transcriptomic BAM/SAM files.
 keywords:
-  - bam 
+  - bam
   - transcriptome
   - transcriptomic
   - index
@@ -15,7 +15,7 @@ tools:
       homepage: "https://github.com/OceanGenomics/mudskipper"
       documentation: "https://github.com/OceanGenomics/mudskipper"
       tool_dev_url: "https://github.com/OceanGenomics/mudskipper"
-      licence: ['BSD 3-clause']
+      licence: ["BSD 3-clause"]
 
 input:
   - gtf:
@@ -29,8 +29,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - index:
-      type: directory 
-      description: Mudskipper index for running mudskipper conversion tools 
+      type: directory
+      description: Mudskipper index for running mudskipper conversion tools
       pattern: "*/"
 
 authors:
