@@ -30,6 +30,12 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
+    if (workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container) {
+        fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
+    } else {
+        fix_ld_library_path = ''
+    }
+
     """
     if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
@@ -47,8 +53,7 @@ process SENTIEON_BWAMEM {
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
-    LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH
+    $fix_ld_library_path
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
