@@ -1,3 +1,5 @@
+include { UNTAR } from '../../../../../modules/nf-core/untar/main.nf'
+
 nextflow_process {
 
     name "Test Process MTMALIGN_ALIGN"
@@ -10,12 +12,10 @@ nextflow_process {
             params {
             }
             process {
-                """
-                input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                            ]
-                """
+                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                ch_structures = UNTAR ( [ [id:'test'], archive ] ).untar.collect()
+                print(ch_structures)
+                input[0] = [[id:'test'], ch_structures]
             }
         }
 

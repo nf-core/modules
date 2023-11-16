@@ -10,7 +10,7 @@ process MTMALIGN_ALIGN {
         'biocontainers/mtm-align:20220104--h4ac6f70_0' }"
 
     input:
-    tuple val(meta), path(pdbs, name='*.pdb', arity: '1..*')
+    tuple val(meta), path('*.pdb', arity: '2..*')
 
     output:
     tuple val(meta), path("./mTM_result/result.fasta")  , emit: alignment
@@ -22,13 +22,13 @@ process MTMALIGN_ALIGN {
 
     script:
     """
-    ls *.pdb | sed s/\ /\n/ > input_list.txt
+    ls *.pdb | sed s/\\ /\\n/ > input_list.txt
     mtm-align -i input_list.txt
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mTM-align: \$( mtm-align -h | grep -e "\(Version [[:digit:]]*\)" | grep -oe "[[:digit:]]*" )
+        mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
     END_VERSIONS
     """
 
@@ -40,7 +40,7 @@ process MTMALIGN_ALIGN {
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mTM-align: \$( mtm-align -h | grep -e "\(Version [[:digit:]]*\)" | grep -oe "[[:digit:]]*" )
+        mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
     END_VERSIONS
     """
 }
