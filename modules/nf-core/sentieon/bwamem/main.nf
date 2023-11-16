@@ -30,7 +30,7 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
-    if (workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container) {
+    if (workflow.containerEngine == 'singularity') {
         fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
     } else {
         fix_ld_library_path = ''
