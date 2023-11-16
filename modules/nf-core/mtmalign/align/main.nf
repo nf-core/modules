@@ -21,7 +21,6 @@ process MTMALIGN_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '' // unused, as mtmalign does not have any optional arguments
     """
     ls *.pdb | sed s/\ /\n/ > input_list.txt
     mtm-align -i input_list.txt
@@ -34,7 +33,6 @@ process MTMALIGN_ALIGN {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mTM_result
     touch mTM_result/result.fasta
