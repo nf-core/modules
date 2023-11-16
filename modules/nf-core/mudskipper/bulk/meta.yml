@@ -14,9 +14,8 @@ tools:
       description: "mudskipper is a tool for converting genomic BAM/SAM files to transcriptomic BAM/RAD files."
       homepage: "https://github.com/OceanGenomics/mudskipper"
       documentation: "https://github.com/OceanGenomics/mudskipper"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['BSD 3-clause']"
+      tool_dev_url: "https://github.com/OceanGenomics/mudskipper"
+      licence: ['BSD 3-clause']
 
 input:
   - meta:
@@ -33,7 +32,7 @@ input:
       description: Annotation file
       pattern: "*.{gtf,gff,gff3}"
   - index:
-      type: folder
+      type: directory
       description: Annotation index created by mudskipper/index
 
 output:
