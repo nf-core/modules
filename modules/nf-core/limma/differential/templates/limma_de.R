@@ -378,11 +378,11 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 out_df <- cbind(
-  setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
-  round_dataframe_columns(
-    data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
-    digits = opt\$round_digits
-  )
+    setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
+    round_dataframe_columns(
+        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
+        digits = opt\$round_digits
+    )
 )
 write.table(
     out_df,

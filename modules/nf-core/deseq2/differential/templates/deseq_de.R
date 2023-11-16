@@ -429,11 +429,11 @@ write.table(
 # Write specified matrices
 
 out_df <- cbind(
-  setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
-  round_dataframe_columns(
-    data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE),
-    digits = opt\$round_digits
-  )
+    setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
+    round_dataframe_columns(
+        data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE),
+        digits = opt\$round_digits
+    )
 )
 
 write.table(
