@@ -2,7 +2,7 @@ process MUDSKIPPER_INDEX {
     tag '$gtf'
     label 'process_single'
 
-    conda "bioconda::mudskipper=0.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mudskipper:0.1.0--h9f5acd7_1':
         'biocontainers/mudskipper:0.1.0--h9f5acd7_1' }"
