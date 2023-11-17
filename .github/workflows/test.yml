@@ -567,6 +567,7 @@ jobs:
       # Test the module
       - name: Run nf-test
         run: |
+          NXF_TEST_DIR=~ \
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
