@@ -4,12 +4,16 @@ process MAFFT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mafft:7.520--hec16e2b_1':
-        'biocontainers/mafft:7.520--hec16e2b_1' }"
+        'https://depot.galaxyproject.org/singularity/mafft:7.520--h031d066_3':
+        'biocontainers/mafft:7.520--h031d066_3' }"
 
     input:
     tuple val(meta), path(fasta)
-    path  addsequences
+    tuple val(meta2),path(add)
+    tuple val(meta3),path(addfragments)
+    tuple val(meta4),path(addfull)
+    tuple val(meta5),path(addprofile)
+    tuple val(meta6),path(addlong)
 
     output:
     tuple val(meta), path("*.fas"), emit: fas
@@ -19,16 +23,23 @@ process MAFFT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: '--add'
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def add = addsequences ? "${args2} ${addsequences}" : ''
-    if ("$fasta" == "${prefix}.fas" || "${addsequences}" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def args         = task.ext.args   ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def add          = add             ? "--add ${add}"                   : ''
+    def addfragments = addfragments    ? "--addfragments ${addfragments}" : ''
+    def addfull      = addfull         ? "--addfull ${addfull}"           : ''
+    def addprofile   = addprofile      ? "--addprofile ${addprofile}"     : ''
+    def addlong      = addlong         ? "--addlong ${addlong}"           : ''
+    if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
         --thread ${task.cpus} \\
-        ${args} \\
         ${add} \\
+        ${addfragments} \\
+        ${addfull} \\
+        ${addprofile} \\
+        ${addlong} \\
+        ${args} \\
         ${fasta} \\
         > ${prefix}.fas
 
@@ -39,11 +50,14 @@ process MAFFT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: '--add'
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def add = addsequences ? "${args2} ${addsequences}" : ''
-    if ("$fasta" == "${prefix}.fas" || "${addsequences}" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def args         = task.ext.args   ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def add          = add             ? "--add ${add}"                   : ''
+    def addfragments = addfragments    ? "--addfragments ${addfragments}" : ''
+    def addfull      = addfull         ? "--addfull ${addfull}"           : ''
+    def addprofile   = addprofile      ? "--addprofile ${addprofile}"     : ''
+    def addlong      = addlong         ? "--addlong ${addlong}"           : ''
+    if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.fas
 
