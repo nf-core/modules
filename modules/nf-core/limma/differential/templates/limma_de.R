@@ -52,34 +52,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
-#' Round numeric dataframe columns to fixed decimal places by applying
-#' formatting and converting back to numerics
-#'
-#' @param dataframe A data frame
-#' @param columns Which columns to round (assumes all of them by default)
-#' @param digits How many decimal places to round to?
-#'
-#' @return output Data frame
-
-round_dataframe_columns <- function(df, columns = NULL, digits = 8){
-    if (is.null(columns)){
-        columns <- colnames(df)
-    }
-
-    df[,columns] <- format(
-        data.frame(df[, columns], check.names = FALSE),
-        nsmall = digits
-    )
-
-    # Convert columns back to numeric
-
-    for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
-        df[[c]] <- as.numeric(df[[c]])
-    }
-    df
-}
-
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -118,8 +90,7 @@ opt <- list(
     adjust.method = "BH",        # topTable
     p.value = 1,                 # topTable
     lfc = 0,                     # topTable
-    confint = FALSE,             # topTable
-    round_digits = 8
+    confint = FALSE              # topTable
 )
 opt_types <- lapply(opt, class)
 
@@ -378,11 +349,8 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 out_df <- cbind(
-    setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
-    round_dataframe_columns(
-        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
-        digits = opt\$round_digits
-    )
+    setNames(data.frame(rownames(comp.results)), opt\$probe_id_col),
+    data.frame(comp.results[, !(colnames(comp.results) %in% opt\$probe_id_col)], check.names = FALSE)
 )
 write.table(
     out_df,

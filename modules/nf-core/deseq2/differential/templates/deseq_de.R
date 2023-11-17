@@ -126,8 +126,7 @@ opt <- list(
     shrink_lfc = TRUE,
     cores = 1,
     vs_blind = TRUE,
-    vst_nsub = 1000,
-    round_digits = -1
+    vst_nsub = 1000
 )
 opt_types <- lapply(opt, class)
 
@@ -385,11 +384,9 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 out_df <- cbind(
     setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
     round_dataframe_columns(
-        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
-        digits = opt\$round_digits
+        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
     )
 )
-
 write.table(
     out_df,
     file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
@@ -434,12 +431,8 @@ write.table(
 
 out_df <- cbind(
     setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
-    round_dataframe_columns(
-        data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE),
-        digits = opt\$round_digits
-    )
+    data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE)
 )
-
 write.table(
     out_df,
     file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
@@ -463,8 +456,7 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     out_df <- cbind(
         setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
         round_dataframe_columns(
-            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE),
-            digits = opt\$round_digits
+            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE)
         )
     )
     write.table(
