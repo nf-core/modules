@@ -20,8 +20,10 @@ process MAFFT {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: '--add'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def add = addsequences ? "--add $addsequences" : ''
+    def add = addsequences ? "${args2} ${addsequences}" : ''
+    if ("$fasta" == "${prefix}.fas") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
         --thread ${task.cpus} \\
@@ -35,4 +37,20 @@ process MAFFT {
         mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: '--add'
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def add = addsequences ? "${args2} ${addsequences}" : ''
+    if ("$fasta" == "${prefix}.fas") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    touch ${prefix}.fas
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
+    END_VERSIONS
+    """
+
 }

@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process MAFFT"
+    script "../main.nf"
+    process "MAFFT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mafft"
+
+    test("SARS-CoV-2 scaffolds fasta") {
+        when {
+            params {
+                outdir   = "${outputDir}"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                    ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match("SARS-CoV-2 scaffolds fasta")
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add normal") {
+
+        when {
+            params {
+                outdir   = "${outputDir}"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[1] = file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match("SARS-CoV-2 scaffolds fasta - add normal")
+        }
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add fragments") {
+
+        config "./nextflow_addfragments.config"
+
+        when {
+            params {
+                outdir   = "${outputDir}"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[1] = file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match("SARS-CoV-2 scaffolds fasta - add fragments")
+        }
+    }
+
+}
