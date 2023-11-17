@@ -27,6 +27,9 @@ input:
   - fold_coverage:
       type: integer
       description: The fold of read coverage to be simulated or number of reads/read pairs generated for each amplicon
+  - read_count:
+      type: integer
+      description: Total number of reads/read pairs to be generated [per amplicon if for amplicon simulation](not be used together with -f/--fcov)
   - read_length:
       type: integer
       description: The length of reads to be simulated

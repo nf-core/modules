@@ -13,6 +13,7 @@ process ART_ILLUMINA {
     tuple val(meta), path(fasta)
     val(sequencing_system)
     val(fold_coverage)
+    val(read_count)
     val(read_length)
 
     output:
@@ -29,25 +30,47 @@ process ART_ILLUMINA {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    """
-    art_illumina \\
-        -ss $sequencing_system \\
-        -i $fasta \\
-        -l $read_length \\
-        -f $fold_coverage \\
-        -o $prefix \\
-        $args
+    if (fold_coverage) {
+        """
+        art_illumina \\
+            -ss $sequencing_system \\
+            -i $fasta \\
+            -l $read_length \\
+            -f $fold_coverage \\
+            -o $prefix \\
+            $args
 
-    gzip \\
-        --no-name \\
-        $args2 \\
-        $prefix*.fq
+        gzip \\
+            --no-name \\
+            $args2 \\
+            $prefix*.fq
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        art: $VERSION
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            art: $VERSION
+        END_VERSIONS
+        """
+    } else {
+        """
+        art_illumina \\
+            -ss $sequencing_system \\
+            -i $fasta \\
+            -l $read_length \\
+            -c $read_count \\
+            -o $prefix \\
+            $args
+
+        gzip \\
+            --no-name \\
+            $args2 \\
+            $prefix*.fq
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            art: $VERSION
+        END_VERSIONS
+        """
+    }
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
