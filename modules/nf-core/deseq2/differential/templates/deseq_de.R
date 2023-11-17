@@ -62,6 +62,10 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 #' @return output Data frame
 
 round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (digits == -1) {
+        return(df)                              # if -1, return df without rounding
+    }
+
     if (is.null(columns)){
         columns <- colnames(df)
     }
@@ -123,7 +127,7 @@ opt <- list(
     cores = 1,
     vs_blind = TRUE,
     vst_nsub = 1000,
-    round_digits = 8
+    round_digits = -1
 )
 opt_types <- lapply(opt, class)
 
