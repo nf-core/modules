@@ -15,11 +15,11 @@ workflow test_krakenuniq_preloadedkrakenuniq_paired {
     ]
     db = []
     ram_chunk_size = '8GB'
-    save_output_fastqs = true
+    save_output_fasta = true
     report_file = true
     save_output = true
 
-    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input, db, ram_chunk_size, save_output_fastqs, report_file, save_output )
+    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input, db, ram_chunk_size, save_output_fasta, report_file, save_output )
 }
 
 workflow test_krakenuniq_preloadedkrakenuniq_single {
@@ -33,9 +33,9 @@ workflow test_krakenuniq_preloadedkrakenuniq_single {
     ]
     db = []
     ram_chunk_size = '8GB'
-    save_output_fastqs = true
+    save_output_fasta = true
     report_file = true
     save_output = true
 
-    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input, db, ram_chunk_size, save_output_fastqs, report_file, save_output )
+    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input, db, ram_chunk_size, save_output_fasta, report_file, save_output )
 }

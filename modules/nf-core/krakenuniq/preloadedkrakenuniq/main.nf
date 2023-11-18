@@ -11,17 +11,16 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path(fastqs)
     path  db
     val ram_chunk_size
-    val save_output_fastqs
+    val save_output_fasta
     val report_file
     val save_output
 
     output:
-    tuple val(meta), path('*.classified{.,_}*')     , optional:true, emit: classified_reads_fastq
-    tuple val(meta), path('*.unclassified{.,_}*')   , optional:true, emit: unclassified_reads_fastq
-    tuple val(meta), path('*classified.txt')        , optional:true, emit: classified_assignment
-    tuple val(meta), path('*report.txt')                           , emit: report
-
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path('*.classified.fasta.gz')      , optional:true, emit: classified_reads_fasta
+    tuple val(meta), path('*.unclassified.fasta.gz')    , optional:true, emit: unclassified_reads_fasta
+    tuple val(meta), path('*.krakenuniq.classified.txt'), optional:true, emit: classified_assignment
+    tuple val(meta), path('*.krakenuniq.report.txt')                   , emit: report
+    path "versions.yml"                                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,13 +29,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fastq"' : '"\${PREFIX}.unclassified#.fastq"'
-    def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ''
+    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
+    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
+    def classified_option = save_output_fasta ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_fasta ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fastqs ? 'gzip --no-name *.fastq' : ''
+    def compress_reads_command = save_output_fasta ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -62,7 +61,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 $args2 \\
                 "\${FASTQ}"
         done
@@ -102,7 +100,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 --paired \\
                 $args2 \\
                 "\${FASTQ[@]}"
@@ -121,13 +118,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fastq"' : '"\${PREFIX}.unclassified#.fastq"'
-    def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ''
+    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
+    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
+    def classified_option = save_output_fasta ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_fasta ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fastqs ? 'gzip --no-name *.fastq' : ''
+    def compress_reads_command = save_output_fasta ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
@@ -155,14 +152,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 $args2 \\
                 "\${FASTQ}"
 
-            touch "\${PREFIX}.classified.fastq.gz"
             touch "\${PREFIX}.krakenuniq.classified.txt"
             touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.unclassified.fastq.gz"
+            touch "\${PREFIX}.classified.fasta.gz"
+            touch "\${PREFIX}.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command
@@ -202,15 +198,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 --paired \\
                 $args2 \\
                 "\${FASTQ[@]}"
 
-            touch "\${PREFIX}.classified_1.fastq.gz" "\${PREFIX}.classified_2.fastq.gz"
             touch "\${PREFIX}.krakenuniq.classified.txt"
             touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.unclassified_1.fastq.gz" "\${PREFIX}.unclassified_2.fastq.gz"
+            touch "\${PREFIX}.merged.classified.fasta.gz"
+            touch "\${PREFIX}.merged.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command
