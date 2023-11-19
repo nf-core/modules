@@ -8,12 +8,12 @@ process MAFFT {
         'biocontainers/mafft:7.520--h031d066_3' }"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta2),path(add)
-    tuple val(meta3),path(addfragments)
-    tuple val(meta4),path(addfull)
-    tuple val(meta5),path(addprofile)
-    tuple val(meta6),path(addlong)
+    tuple val(meta),  path(fasta)
+    tuple val(meta2), path(add)
+    tuple val(meta3), path(addfragments)
+    tuple val(meta4), path(addfull)
+    tuple val(meta5), path(addprofile)
+    tuple val(meta6), path(addlong)
 
     output:
     tuple val(meta), path("*.fas"), emit: fas
