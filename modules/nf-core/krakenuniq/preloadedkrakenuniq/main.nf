@@ -11,7 +11,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path(fastqs)
     path  db
     val ram_chunk_size
-    val save_output_fasta
+    val save_output_reads
     val report_file
     val save_output
 
@@ -31,11 +31,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
     def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
-    def classified_option = save_output_fasta ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fasta ? "--unclassified-out ${unclassified}" : ''
+    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fasta ? 'gzip --no-name *.fasta' : ''
+    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -120,11 +120,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
     def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
-    def classified_option = save_output_fasta ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fasta ? "--unclassified-out ${unclassified}" : ''
+    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fasta ? 'gzip --no-name *.fasta' : ''
+    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
