@@ -17,24 +17,21 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
+        Groovy Map containing gvcf information
   - gvcf:
       type: file
       description: gvcf file to be indexed
-      pattern: "*.vcf.gz"
+      pattern: "*.{vcf,vcf.gz}"
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
+        Groovy Map containing output information
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - indexed_gvcf:
       type: file
       description: Indexed gvcf file
