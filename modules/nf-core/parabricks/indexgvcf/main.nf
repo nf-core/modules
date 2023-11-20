@@ -34,7 +34,7 @@ process PARABRICKS_INDEXGVCF {
         indexgvcf \\
         --input $gvcf \\
         --num-threads $task.cpus \\
-        --num-gpus $task.accellerator.request \\
+        --num-gpus $task.accelerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
