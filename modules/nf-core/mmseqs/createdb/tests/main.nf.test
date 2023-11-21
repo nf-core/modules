@@ -34,9 +34,6 @@ nextflow_process {
     test("Should build an mmseqs db from a zipped amino acid sequence file") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
 
