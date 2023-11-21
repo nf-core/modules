@@ -39,11 +39,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     if (meta.single_end) {
         """
         krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result=\$1
@@ -75,11 +75,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     } else {
         """
         krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result
