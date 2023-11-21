@@ -33,6 +33,12 @@ process DEEPARG_PREDICT {
     """
     DATABASE=`find -L $db -type d -name "database" | sed 's/database//'`
 
+    # Theano needs a writable space and uses the home directory by default,
+    # but the latter is not always writable, for instance when Singularity
+    # is run in --no-home mode
+    mkdir -p theano
+    export THEANO_FLAGS="base_compiledir=\$PWD/theano"
+
     deeparg \\
         predict \\
         $args \\
