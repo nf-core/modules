@@ -1,0 +1,44 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_LINCLUST"
+    script "../main.nf"
+    process "MMSEQS_LINCLUST"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/linclust"
+
+    test("Should cluster an mmseqs database") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db_cluster).match("db_cluster") },
+                { assert process.out.versions }
+            )
+        }
+    }
+}
