@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_createdb"
-description: Create a MMseqs database from an existing FASTA/Q file
+description: Create an MMseqs database from an existing FASTA/Q file
 keywords:
   - protein sequence
   - databases
@@ -25,8 +25,8 @@ input:
         e.g. `[ id:'test', single_end:false ]`
   - sequence:
       type: file
-      description: Input sequences in FASTA/Q format to be indexed
-      pattern: "*.{fasta,fa,fna,fastq,fq}"
+      description: Input sequences in FASTA/Q (zipped or unzipped) format to parse into an mmseqs database
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,fastq,fastq.gz,fq,fq.gz}"
 output:
   - meta:
       type: map
@@ -44,3 +44,4 @@ authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+  - "@vagkaratzas"
