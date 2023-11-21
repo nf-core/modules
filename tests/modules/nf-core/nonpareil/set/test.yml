@@ -1,0 +1,32 @@
+- name: nonpareil set test_nonpareil_set
+  command: nextflow run ./tests/modules/nf-core/nonpareil/set -entry test_nonpareil_set -c ./tests/config/nextflow.config
+  tags:
+    - nonpareil
+    - nonpareil/set
+  files:
+    - path: output/nonpareil/test.npa
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test.npc
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test.npl
+      md5sum: be95453a272a9f685d5695d2b391fde8
+    - path: output/nonpareil/test.npo
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test.png
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test2.npa
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test2.npc
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/test2.npl
+      md5sum: be95453a272a9f685d5695d2b391fde8
+    - path: output/nonpareil/test2.npo
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/nonpareil/versions.yml
