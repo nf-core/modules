@@ -11,9 +11,6 @@ nextflow_process {
     test("Should build an mmseqs db from a contigs fasta file") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
