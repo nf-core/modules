@@ -101,6 +101,7 @@ opt <- list(
     target_level = '$target',
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
+    transcript_lengths_file = '$transcript_lengths_file',
     sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
@@ -323,6 +324,22 @@ dds <- DESeqDataSetFromMatrix(
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+# Build in transcript lengths. Copying what tximport does here:
+# https://github.com/thelovelab/DESeq2/blob/6947d5bc629015fb8ffb2453a91b71665a164483/R/AllClasses.R#L409
+
+if (opt\$transcript_lengths_file != ''){
+    lengths <-
+        read_delim_flexible(
+            file = opt\$transcript_lengths_file,
+            header = TRUE,
+            row.names = opt\$gene_id_col,
+            check.names = FALSE
+        )
+    lengths <- lengths[rownames(count.table), colnames(count.table)]
+    dimnames(lengths) <- dimnames(dds)
+    assays(dds)[["avgTxLength"]] <- lengths
+}
 
 if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
     print(paste('Estimating size factors using', length(control_genes), 'control genes'))
