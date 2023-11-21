@@ -13,7 +13,8 @@ process SVDB_QUERY {
     val(in_frqs)
     val(out_occs)
     val(out_frqs)
-    path (vcf_dbs)
+    path(vcf_dbs)
+    path(bedpedbs)
 
     output:
     tuple val(meta), path("*_query.vcf")    , emit: vcf
@@ -29,6 +30,8 @@ process SVDB_QUERY {
     def in_frq  = ""
     def out_occ = ""
     def out_frq = ""
+    def dbs     = vcf_dbs  ? "--db ${vcf_dbs.join(',')}" : ''
+    def bedpeds = bedpedbs ? "--bedpedb ${bedpedbs.join(',')}" : ''
     if (in_occs) {
         in_occ  = "--in_occ ${in_occs.join(',')}"
     }
@@ -50,7 +53,8 @@ process SVDB_QUERY {
         $out_occ \\
         $out_frq \\
         $args \\
-        --db ${vcf_dbs.join(',')} \\
+        $dbs \\
+        $bedpeds \\
         --query_vcf $vcf \\
         --prefix ${prefix}
 
