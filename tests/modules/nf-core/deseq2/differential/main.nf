@@ -40,6 +40,7 @@ process spoof_spikes {
     """
 }
 ch_empty_spikes = [[],[]]
+ch_empty_lengths = [[],[]]
 
 workflow test_deseq2_differential {
 
@@ -61,7 +62,8 @@ workflow test_deseq2_differential {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -89,7 +91,8 @@ workflow test_deseq2_differential_noblocking {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -125,7 +128,8 @@ workflow test_deseq2_differential_spikes {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_spikes
+        ch_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -160,7 +164,8 @@ workflow test_deseq2_differential_strip_spikes {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_spikes
+        ch_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -189,7 +194,8 @@ workflow test_deseq2_differential_csv {
     DESEQ2_DIFFERENTIAL(
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -215,7 +221,8 @@ workflow test_deseq2_differential_vst_nsub {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -241,7 +248,8 @@ workflow test_deseq2_differential_subset_to_contrast {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
 
@@ -267,6 +275,7 @@ workflow test_deseq2_differential_exclude_samples {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+	ch_empty_lengths
     )
 }
