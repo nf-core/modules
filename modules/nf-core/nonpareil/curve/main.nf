@@ -20,12 +20,13 @@ process NONPAREIL_CURVE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_cmd = args != '' ? ", ${args}" : ""
     """
     #!/usr/bin/env Rscript
     library(Nonpareil)
 
     png(file='${prefix}.png')
-    Nonpareil.curve('${npo}')
+    Nonpareil.curve('${npo}'${args_cmd})
     dev.off()
 
     version_file_path <- "versions.yml"
