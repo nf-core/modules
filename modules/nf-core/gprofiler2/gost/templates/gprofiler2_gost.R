@@ -313,7 +313,7 @@ if (opt\$background_file != "") {
 
 # Name the query as it will otherwise be called 'query_1' which will also determine the gostplot title
 q <- list(query)
-names(q) <- c(contrast_name)
+names(q) <- c(paste0(contrast_name, ifelse(!is.null(opt\$blocking_variables), paste0("_", blocking_variables), "")))
 
 gost_results <- gost(
     query=q,
