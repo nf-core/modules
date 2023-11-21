@@ -33,7 +33,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db_cluster).match("db_cluster") },
+                { assert process.out.db_cluster.size() == 1 },
+                {
+                    with(process.out.db_cluster) {
+                        File folder = new File(get(0).get(1))
+                        File[] listOfFiles = folder.listFiles()
+                        listOfFiles = listOfFiles.sort { it.name }
+                        assert listOfFiles.length == 4
+                        assert snapshot("${get(0).get(1)}/${listOfFiles[0].name}").match("test_output_cluster.0")
+                        assert snapshot("${get(0).get(1)}/${listOfFiles[2].name}").match("test_output_cluster.dbtype")
+                        assert snapshot("${get(0).get(1)}/${listOfFiles[3].name}").match("test_output_cluster.index")
+                    }
+                },
                 { assert process.out.versions }
             )
         }
