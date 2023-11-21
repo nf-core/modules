@@ -25,10 +25,6 @@ nextflow_process {
 
     test("sarscov2 illumina single end [fastq]") {
         when {
-            params {
-                outdir   = "$outputDir"
-            }
-
             process {
                 """
                 input[0] = [
