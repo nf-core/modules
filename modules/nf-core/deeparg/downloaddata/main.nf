@@ -25,6 +25,13 @@ process DEEPARG_DOWNLOADDATA {
     def args = task.ext.args ?: ''
     def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+
+    # Theano needs a writable space and uses the home directory by default,
+    # but the latter is not always writable, for instance when Singularity
+    # is run in --no-home mode
+    mkdir -p theano
+    export THEANO_FLAGS="base_compiledir=\$PWD/theano"
+
     deeparg \\
         download_data \\
         $args \\
