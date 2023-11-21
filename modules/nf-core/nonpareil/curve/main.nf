@@ -45,8 +45,7 @@ process NONPAREIL_CURVE {
     touch ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}": Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))'
-        ""
+    "${task.process}": \$(Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))')
     END_VERSIONS
     """
 }
