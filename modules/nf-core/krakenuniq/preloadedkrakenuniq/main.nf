@@ -128,16 +128,24 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     if (meta.single_end) {
         """
         echo krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result=\$1
             # Strip any file extensions.
             echo "\${result%%.*}"
+        }
+
+        create_file() {
+            echo '<3 nf-core' > "\$1"
+        }
+
+        create_gzip_file() {
+            echo '<3 nf-core' | gzip -n > "\$1"
         }
 
         printf "%s\\n" ${fastqs} | while read FASTQ; do \\
@@ -155,10 +163,10 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $args2 \\
                 "\${FASTQ}"
 
-            touch "\${PREFIX}.krakenuniq.classified.txt"
-            touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.classified.fasta.gz"
-            touch "\${PREFIX}.unclassified.fasta.gz"
+            create_file "\${PREFIX}.krakenuniq.classified.txt"
+            create_file "\${PREFIX}.krakenuniq.report.txt"
+            create_gzip_file "\${PREFIX}.classified.fasta.gz"
+            create_gzip_file "\${PREFIX}.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command
@@ -171,11 +179,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     } else {
         """
         echo krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result
@@ -183,6 +191,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             # Strip any trailing dot or underscore.
             result="\${result%_}"
             echo "\${result%.}"
+        }
+
+        create_file() {
+            echo '<3 nf-core' > "\$1"
+        }
+
+        create_gzip_file() {
+            echo '<3 nf-core' | gzip -n > "\$1"
         }
 
         printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
@@ -202,10 +218,10 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $args2 \\
                 "\${FASTQ[@]}"
 
-            touch "\${PREFIX}.krakenuniq.classified.txt"
-            touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.merged.classified.fasta.gz"
-            touch "\${PREFIX}.merged.unclassified.fasta.gz"
+            create_file "\${PREFIX}.krakenuniq.classified.txt"
+            create_file "\${PREFIX}.krakenuniq.report.txt"
+            create_gzip_file "\${PREFIX}.merged.classified.fasta.gz"
+            create_gzip_file "\${PREFIX}.merged.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command
