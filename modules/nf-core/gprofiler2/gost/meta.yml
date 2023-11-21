@@ -52,7 +52,7 @@ input:
         Path to a CSV/TSV/TXT file listing gene IDs that should be used as the background (will override count_file). This can be an expression matrix (see also background_column parameter); if so, will only consider those genes with an expression value > 0 in at least one sample. Alternatively, this can be a TXT file containing only a list of gene IDs.
   - gmt_file:
       type: file
-      pattern: "*.{gmt}"
+      pattern: "*.gmt"
       description: |
         Path to a GMT file downloaded from g:profiler that should be queried instead of the online databases
 
