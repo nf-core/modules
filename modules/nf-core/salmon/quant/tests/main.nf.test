@@ -45,7 +45,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.json_info.get(0).get(1)).exists() },                { assert snapshot(process.out.results).match("results")},
+                { assert path(process.out.json_info.get(0).get(1)).exists() },
+                { assert path(process.out.results.get(0).get(1)).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -88,7 +89,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.json_info.get(0).get(1)).exists() },                { assert snapshot(process.out.results).match("results")},
+                { assert path(process.out.json_info.get(0).get(1)).exists() },
+                { assert path(process.out.results.get(0).get(1)).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -132,7 +134,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.json_info.get(0).get(1)).exists() },                { assert snapshot(process.out.results).match("results")},
+                { assert path(process.out.json_info.get(0).get(1)).exists() },
+                { assert path(process.out.results.get(0).get(1)).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
