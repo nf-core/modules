@@ -63,7 +63,7 @@ workflow test_deseq2_differential {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -92,7 +92,7 @@ workflow test_deseq2_differential_noblocking {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -129,7 +129,7 @@ workflow test_deseq2_differential_spikes {
         ch_contrasts,
         ch_matrix,
         ch_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -165,7 +165,7 @@ workflow test_deseq2_differential_strip_spikes {
         ch_contrasts,
         ch_matrix,
         ch_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -195,7 +195,7 @@ workflow test_deseq2_differential_csv {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -222,7 +222,7 @@ workflow test_deseq2_differential_vst_nsub {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -249,7 +249,7 @@ workflow test_deseq2_differential_subset_to_contrast {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
 
@@ -276,6 +276,6 @@ workflow test_deseq2_differential_exclude_samples {
         ch_contrasts,
         ch_matrix,
         ch_empty_spikes,
-	ch_empty_lengths
+        ch_empty_lengths
     )
 }
