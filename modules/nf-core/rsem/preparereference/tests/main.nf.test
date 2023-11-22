@@ -25,8 +25,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.index).match()},
-                { assert snapshot(process.out.transcript_fasta).match()},
+                { assert snapshot(process.out.index).match("index")},
+                { assert snapshot(process.out.transcript_fasta).match("transcript_fasta")},
                 { assert path(process.out.versions.get(0)).getText().contains("rsem") },
                 { assert path(process.out.versions.get(0)).getText().contains("star") }
             )
