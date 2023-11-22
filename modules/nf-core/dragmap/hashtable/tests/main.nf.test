@@ -35,6 +35,34 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.hashmap[0][1]).name,
+                        file(process.out.versions[0]).name
+                    ).match() 
+                }
+            )
+        }
+
+    }
+
     // TODO Add test using alt-masked bed file
     // https://github.com/Illumina/dragmap#build-hash-table-using-an-alt-masked-bed-file
 
