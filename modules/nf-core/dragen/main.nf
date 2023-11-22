@@ -114,6 +114,9 @@ process DRAGEN {
             input = '-b ' + bam
         }
     }
+    // set RGID and RGSM
+    def rgid = args.contains("--RGID") ? "" : "--RGID ${meta.id}"
+    def rgsm = args.contains("--RGSM") ? "" : "--RGSM ${meta.id}"
 
     """
     ${bin_path}_reset
@@ -121,6 +124,8 @@ process DRAGEN {
     $bin_path \\
         $args \\
         $input \\
+        $rgid \\
+        $rgsm \\
         -n $task.cpus \\
         -r $reference \\
         --output-file-prefix $prefix \\
