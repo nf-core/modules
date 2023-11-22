@@ -31,10 +31,10 @@ input:
       type: file
       description: path to a database vcf, or a comma separated list of vcfs
       pattern: "*.{vcf,vcf.gz}"
-  - bedpeds:
+  - bedpe_dbs:
       type: file
       description: path to a SV database of the following format chrA-posA-chrB-posB-type-count-frequency, or a comma separated list of files
-      pattern: "*.{bedped,bedped.gz}"
+      pattern: "*.{bedpe}"
 
 output:
   - meta:
