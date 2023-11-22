@@ -47,8 +47,7 @@ nextflow_process {
                 { assert snapshot(process.out.counts_transcript).match("counts_transcript") },
                 { assert snapshot(process.out.stat).match("stat") },
                 { assert path(process.out.logs.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).getText().contains("rsem") },
-                { assert path(process.out.versions.get(0)).getText().contains("star") }
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
