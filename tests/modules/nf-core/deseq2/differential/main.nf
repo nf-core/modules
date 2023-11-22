@@ -67,6 +67,36 @@ workflow test_deseq2_differential {
     )
 }
 
+// Test with transcript lengths
+
+workflow test_deseq2_differential_with_lengths {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+    Channel.fromPath(expression_contrasts)
+        .splitCsv ( header:true, sep:',' )
+        .map{
+            tuple(it, it.variable, it.reference, it.target)
+        }
+        .set{
+            ch_contrasts
+        }
+
+    ch_matrix = [[id: 'test'], expression_sample_sheet, expression_matrix_file]
+
+    // Just because I'm too lazy to add actual lengths to the test data
+    ch_lengths = [[id: 'test'], expression_sample_sheet]
+
+    DESEQ2_DIFFERENTIAL (
+        ch_contrasts,
+        ch_matrix,
+        ch_empty_spikes,
+        ch_lengths
+    )
+}
+
 // Not including blocking column in contrasts file shouldn't be lethal
 
 workflow test_deseq2_differential_noblocking {
