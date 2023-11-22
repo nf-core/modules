@@ -1,4 +1,4 @@
-process NONPAREIL_CURVE {
+process NONPAREIL_SET {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,7 +8,7 @@ process NONPAREIL_CURVE {
         'biocontainers/nonpareil:3.4.1--r42h9f5acd7_2' }"
 
     input:
-    tuple val(meta), path(npo)
+    tuple val(meta), path(npos)
 
     output:
     tuple val(meta), path("*.png"), emit: png
@@ -26,7 +26,7 @@ process NONPAREIL_CURVE {
     library(Nonpareil)
 
     png(file='${prefix}.png')
-    Nonpareil.curve('${npo}'${args_cmd})
+    Nonpareil.set(list.files(pattern='*.npo')${args_cmd})
     dev.off()
 
     version_file_path <- "versions.yml"
