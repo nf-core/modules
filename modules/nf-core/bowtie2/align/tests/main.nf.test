@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process BOWTIE2_ALIGN"
+    script "../main.nf"
+    process "BOWTIE2_ALIGN"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bowtie2"
+    tag "bowtie2/align"
+
+    test("sarscov2 - fastq, index, false, false") {
+
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = false //save_unaligned
+                input[3] = false //sort
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
