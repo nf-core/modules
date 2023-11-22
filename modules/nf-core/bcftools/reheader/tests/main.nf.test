@@ -32,10 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.versions[0]).name,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -43,7 +40,7 @@ nextflow_process {
 
     test("sarscov2 - [vcf, [], []], fai - vcf.gz output") {
 
-        config "./vcf_bgzipped.config"
+        config "./vcf.gz.config"
         when {
 
             process {
@@ -65,10 +62,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.versions[0]).name,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -76,7 +70,7 @@ nextflow_process {
 
     test("sarscov2 - [vcf, [], []], fai - bcf output") {
 
-        config "./output_bcf.config"
+        config "./bcf.config"
         when {
 
             process {
@@ -98,10 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.versions[0]).name,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -131,10 +122,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.versions[0]).name,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -166,10 +154,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf,
-                    file(process.out.versions[0]).name,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -202,7 +187,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
-                    file(process.out.versions[0]).name,
+                    process.out.versions,
                 ).match() }
             )
         }
