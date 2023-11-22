@@ -3,7 +3,7 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/bowtie:bowtie-1.3.0_samtools-1.16.1--2c2a8138b83d6d1d"
+    container "nf-core/modules/bowtie:bowtie_build--df26d88a69745299"
 
     input:
     path fasta
