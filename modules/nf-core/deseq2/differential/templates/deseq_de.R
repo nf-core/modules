@@ -19,7 +19,7 @@
 #' is_valid_string(NULL)          # Returns FALSE
 
 is_valid_string <- function(input) {
-  !is.null(input) && nzchar(trimws(input))
+    !is.null(input) && nzchar(trimws(input))
 }
 
 #' Parse out options from a string without recourse to optparse
