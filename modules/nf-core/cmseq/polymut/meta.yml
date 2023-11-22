@@ -18,7 +18,6 @@ tools:
       documentation: https://github.com/SegataLab/cmseq
       tool_dev_url: https://github.com/SegataLab/cmseq
       licence: ["MIT License"]
-
 input:
   - meta:
       type: map
@@ -41,7 +40,6 @@ input:
       type: file
       description: Optional fasta file to run on a subset of references in the BAM file.
       pattern: .{fa,fasta,fas,fna}
-
 output:
   - meta:
       type: map
@@ -56,6 +54,7 @@ output:
       type: file
       description: Polymut report in `.txt` format.
       pattern: "*.txt"
-
 authors:
+  - "@maxibor"
+maintainers:
   - "@maxibor"

@@ -12,7 +12,6 @@ tools:
       description: KrakenTools is a suite of scripts to be used for post-analysis of Kraken/KrakenUniq/Kraken2/Bracken results. Please cite the relevant paper if using KrakenTools with any of the listed programs.
       homepage: https://github.com/jenniferlu717/KrakenTools
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: List of kraken-style report files
       pattern: "*.{txt,kreport}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: Combined kreport file of all input files
       pattern: "*.txt"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

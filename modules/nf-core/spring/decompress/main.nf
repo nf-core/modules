@@ -2,7 +2,7 @@ process SPRING_DECOMPRESS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::spring=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spring:1.1.1--h4ac6f70_2' :
         'biocontainers/spring:1.1.1--h4ac6f70_2' }"

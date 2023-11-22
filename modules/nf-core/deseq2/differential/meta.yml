@@ -5,7 +5,6 @@ keywords:
   - expression
   - rna-seq
   - deseq2
-
 tools:
   - "deseq2":
       description: "Differential gene expression analysis based on the negative binomial distribution"
@@ -13,8 +12,7 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: "10.1186/s13059-014-0550-8"
-      licence: "['LGPL >=3']"
-
+      licence: ["LGPL >=3"]
 input:
   - meta:
       type: map
@@ -67,7 +65,6 @@ input:
         prevent bias in conventional normalisation (default), or used to
         generate the size factors (supplied via task.ext.args like
         '--sizefactors_from_controls TRUE').
-
 output:
   - results:
       type: file
@@ -93,10 +90,15 @@ output:
       type: file
       description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
       pattern: "variance_stabilised_counts.tsv"
+  - model:
+      type: file
+      description: TXT-format DESeq2 model
+      pattern: "deseq2.model.tsv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

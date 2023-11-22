@@ -1,10 +1,10 @@
 nextflow_process {
-
     name "Test Process SRATOOLS_PREFETCH"
-    script "modules/nf-core/sratools/prefetch/main.nf"
+    script "../main.nf"
     process "SRATOOLS_PREFETCH"
-    tag "sratools/prefetch"
+    tag "modules"
     tag "modules_nfcore"
+    tag "sratools/prefetch"
 
     test("sratools/prefetch") {
 
@@ -14,8 +14,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], 'DRR000774' ]
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'])
+                input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -24,7 +24,7 @@ nextflow_process {
         then {
             assertAll (
             { assert process.success },
-            { assert snapshot(process).match() }
+            { assert snapshot(process.out).match() }
             )
         }
     }
@@ -37,8 +37,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], 'SRR1170046' ]
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'])
+                input[0] = Channel.of([ [ id:'test', single_end:false ], 'SRR1170046' ])
+                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -47,7 +47,7 @@ nextflow_process {
         then {
             assertAll (
             { assert process.success },
-            { assert snapshot(process).match() }
+            { assert snapshot(process.out).match() }
             )
         }
     }
