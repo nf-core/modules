@@ -377,12 +377,14 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
+out_df <- cbind(
+    setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
+    round_dataframe_columns(
+        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
+    )
+)
 write.table(
-    data.frame(
-        gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
-        check.names = FALSE
-    ),
+    out_df,
     file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -423,12 +425,12 @@ write.table(
 
 # Write specified matrices
 
+out_df <- cbind(
+    setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
+    data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE)
+)
 write.table(
-    data.frame(
-        gene_id=rownames(counts(dds)),
-        counts(dds, normalized = TRUE),
-        check.names = FALSE
-    ),
+    out_df,
     file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -447,21 +449,25 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
 
     # Again apply the slight rounding and then restore numeric
 
+    out_df <- cbind(
+        setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
+        round_dataframe_columns(
+            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE)
+        )
+    )
     write.table(
-        data.frame(
-            gene_id=rownames(counts(dds)),
-            round_dataframe_columns(
-                data.frame(assay(vs_mat), check.names = FALSE)
-            ),
-            check.names = FALSE
-        ),
-        file = paste(opt\$output_prefix, vs_method_name,'tsv', sep = '.'),
+        out_df,
+        file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
         quote = FALSE
     )
 }
+
+# Save model to file
+
+write(model, file=paste(opt\$output_prefix, 'deseq2.model.txt', sep = '.'))
 
 ################################################
 ################################################

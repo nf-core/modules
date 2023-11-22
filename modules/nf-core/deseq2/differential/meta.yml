@@ -12,7 +12,7 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: "10.1186/s13059-014-0550-8"
-      licence: "['LGPL >=3']"
+      licence: ["LGPL >=3"]
 input:
   - meta:
       type: map
@@ -90,6 +90,10 @@ output:
       type: file
       description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
       pattern: "variance_stabilised_counts.tsv"
+  - model:
+      type: file
+      description: TXT-format DESeq2 model
+      pattern: "deseq2.model.tsv"
   - versions:
       type: file
       description: File containing software versions
