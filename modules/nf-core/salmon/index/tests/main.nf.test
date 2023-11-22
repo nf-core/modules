@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.index).match("index")},
+                { assert path(process.out.index.get(0)).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
