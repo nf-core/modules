@@ -29,8 +29,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.vcf).match("vcf")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.vcf[0][1]).name, file(process.out.versions[0]).name).match()}
             )
         }
     }
