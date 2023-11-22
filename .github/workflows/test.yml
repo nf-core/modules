@@ -14,6 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  NXF_WORK: ${RUNNER_TEMP}/work
+  NXF_HOME: ${RUNNER_TEMP}/home
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -396,17 +398,23 @@ jobs:
 
               We would appreciate this test being rewritten in nf-test. We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test). If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
             })
+            
+      - name: Create working dirs
+        run: |
+          mkdir -p $NXF_WORK
+          mkdir -p $NXF_HOME
+            
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=$HOME PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
+          batcat --decorations=always --color=always ${PYTEST_TMP}/*/*/log.{out,err}
 
       - name: Setting global variables
         uses: actions/github-script@v6
@@ -422,12 +430,12 @@ jobs:
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
-            /home/runner/pytest_workflow_*/*/.nextflow.log
-            /home/runner/pytest_workflow_*/*/log.out
-            /home/runner/pytest_workflow_*/*/log.err
-            /home/runner/pytest_workflow_*/*/work
-            !/home/runner/pytest_workflow_*/*/work/conda
-            !/home/runner/pytest_workflow_*/*/work/singularity
+            ${{ env.HOME }}/pytest_workflow_*/*/.nextflow.log
+            ${{ env.HOME }}/pytest_workflow_*/*/log.out
+            ${{ env.HOME }}/pytest_workflow_*/*/log.err
+            ${{ env.NXF_WORK }}
+            !${{ env.RUNNER_TEMP}}/work/conda
+            !${{ env.RUNNER_TEMP}}/work/singularity
             !${{ github.workspace }}/.singularity
 
   nf-test:
@@ -542,7 +550,7 @@ jobs:
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-apptainer@main
 
-      - name: Set up Singularity
+      - name: Create Singularity cache directory
         if: matrix.profile == 'singularity'
         run: |
           mkdir -p $NXF_SINGULARITY_CACHEDIR
@@ -575,6 +583,11 @@ jobs:
           SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
+
+      - name: Create working dirs
+        run: |
+          mkdir -p $NXF_WORK
+          mkdir -p $NXF_HOME
 
       # Test the module
       - name: Run nf-test

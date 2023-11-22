@@ -28,6 +28,8 @@ process SAMTOOLS_INDEX {
         $args \\
         $input
 
+    exit 1 # Kill the test for demo purposes DO NOT MERGE
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')

@@ -43,6 +43,8 @@ process PARABRICKS_FQ2BAM {
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
+    # Fake stuff
+
     pbrun \\
         fq2bam \\
         --ref $fasta \\
