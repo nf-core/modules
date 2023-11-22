@@ -308,7 +308,7 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 model <- '~ 0'
 
 if (is_valid_string(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = '+'), sep='+')
+    model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
 }
 
 # Make sure all the appropriate variables are factors
