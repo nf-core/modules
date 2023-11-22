@@ -7,7 +7,7 @@ process DRAGEN {
         'registry.hub.docker.com/etycksen/dragen4:4.2.4' }" // somehow the PATH is not containing dragen, when I run it locally it is there
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq), path(bam)
     path reference
 
     output:
@@ -38,12 +38,18 @@ process DRAGEN {
     def bin_path = task.ext.bin_path ?: 'dragen'
 
     def input = ''
-    // from fastq
+    // from fastq or bam
     if (fastq) {
         if (fastq.size() > 2) {
             error "Error: cannot have more than 2 fastq files as input."
         } else {
             input = '-1 ' + fastq.join(' -2 ')
+        }
+    } else if (bam) {
+        if (bam.size() > 1) {
+            error "Error: cannot have more than 1 bam as input."
+        } else {
+            input = '-b ' + bam
         }
     }
 
