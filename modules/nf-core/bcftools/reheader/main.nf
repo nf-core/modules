@@ -8,7 +8,7 @@ process BCFTOOLS_REHEADER {
         'biocontainers/bcftools:1.17--haef29d1_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(header)
+    tuple val(meta), path(vcf), path(header), path(samples)
     tuple val(meta2), path(fai)
 
     output:
@@ -21,8 +21,9 @@ process BCFTOOLS_REHEADER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def update_sequences = fai ? "-f $fai" : ""
-    def new_header       = header ? "-h $header" : ""
+    def update_sequences = fai ? "--fai $fai" : ""
+    def new_header       = header ? "--header $header" : ""
+    def rename_samples   = samples ? "--samples $samples" : ""
 
     def args2 = task.ext.args2 ?: '--output-type z'
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
@@ -35,6 +36,7 @@ process BCFTOOLS_REHEADER {
         reheader \\
         $update_sequences \\
         $new_header \\
+        $rename_samples \\
         $args \\
         --threads $task.cpus \\
         $vcf \\
