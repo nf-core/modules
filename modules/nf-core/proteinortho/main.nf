@@ -2,7 +2,7 @@ process PROTEINORTHO {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::proteinortho=6.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0':
         'quay.io/biocontainers/proteinortho:6.3.0--h70414c8_0' }"
