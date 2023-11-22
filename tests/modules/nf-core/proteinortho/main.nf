@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PROTEINORTHO } from '../../../../modules/nf-core/proteinortho/main.nf' addParams( options: [args: '-e=10'] )
+include { PROTEINORTHO } from '../../../../modules/nf-core/proteinortho/main.nf'
 
 workflow test_proteinortho {
     
