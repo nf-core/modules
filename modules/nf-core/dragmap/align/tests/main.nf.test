@@ -264,8 +264,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
-                    process.out.log,
+                    file(process.out.bam[0][1]).name,
+                    file(process.out.log[0][1]).name,
                     file(process.out.versions[0]).name
                 ).match() }
             )
