@@ -150,6 +150,9 @@ jobs:
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
+    # Needed for Deprecation comment
+    permissions:
+      pull-requests: write
     strategy:
       fail-fast: false
       matrix:
