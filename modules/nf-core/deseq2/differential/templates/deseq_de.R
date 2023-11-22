@@ -381,6 +381,14 @@ if (opt\$shrink_lfc){
     )
 }
 
+# See https://support.bioconductor.org/p/97676/
+
+if (opt\$transcript_lengths_file != ''){
+    size_factors = estimateSizeFactorsForMatrix(counts(dds) / assays(dds)[["avgTxLength"]])
+}else {
+    size_factors = sizeFactors(dds)
+}
+
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -426,8 +434,8 @@ saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
 # Size factors
 
 sf_df = data.frame(
-    sample = names(sizeFactors(dds)),
-    data.frame(sizeFactors(dds), check.names = FALSE),
+    sample = names(size_factors),
+    data.frame(size_factors, check.names = FALSE),
     check.names = FALSE
 )
 colnames(sf_df) <- c('sample', 'sizeFactor')
