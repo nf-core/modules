@@ -388,14 +388,24 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            github.rest.issues.createComment({
+            const existingComments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Hello! We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
+            });
 
-              We would appreciate this test being rewritten in nf-test. We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test). If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
-            })
+            const commentExists = existingComments.data.some(comment => {
+              return comment.body.includes("We're in the process of migrating to nf-test");
+            });
+
+            if (!commentExists) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "Hello!\nWe're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀\n\nWe would appreciate this test being rewritten in nf-test.\nWe have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).\nIf you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).",
+              });
+            }
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
