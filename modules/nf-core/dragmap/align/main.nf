@@ -4,8 +4,8 @@ process DRAGMAP_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0':
-        'biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:bb7e33c2ede38421063b8379a5fb3453645bb047-0':
+        'biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:bb7e33c2ede38421063b8379a5fb3453645bb047-0' }"
 
     input:
     tuple val(meta) , path(reads)
