@@ -2,7 +2,7 @@ process GANGSTR {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gangstr=2.5.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gangstr:2.5.0--h48cf4b7_4':
         'biocontainers/gangstr:2.5.0--h48cf4b7_4' }"
