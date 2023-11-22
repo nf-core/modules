@@ -219,11 +219,11 @@ set.seed(1) # This will ensure that reruns have the same plot colors
 
 # Create prefix from contrast var, reference and target as well as blocking (if provided)
 contrast_name <- paste(opt\$contrast_variable, opt\$reference_level, opt\$target_level, sep = '_')
+output_prefix <- paste('gprofiler2', contrast_name, sep = '.')
 if (!is.null(opt\$blocking_variables)) {
     blocking_variables <- paste(make.names(unlist(strsplit(opt\$blocking_variables, split = ','))), collapse = '_')
-    output_prefix <- paste(contrast_name, blocking_variables, sep= '_')
+    output_prefix <- paste(output_prefix, blocking_variables, sep= '_')
 }
-output_prefix <- paste('gprofiler2', contrast_name, sep = '.')
 
 # Create empty output table in case no enriched pathways are found
 file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
@@ -313,7 +313,7 @@ if (opt\$background_file != "") {
 
 # Name the query as it will otherwise be called 'query_1' which will also determine the gostplot title
 q <- list(query)
-names(q) <- c(contrast_name)
+names(q) <- c(paste0(contrast_name, ifelse(!is.null(opt\$blocking_variables), paste0("_", blocking_variables), "")))
 
 gost_results <- gost(
     query=q,
