@@ -4,7 +4,7 @@ process PROTEINORTHO {
 
     conda "bioconda::proteinortho=6.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/proteinortho%3A6.3.0--h70414c8_0':
+        'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0':
         'quay.io/biocontainers/proteinortho:6.3.0--h70414c8_0' }"
 
     input:
