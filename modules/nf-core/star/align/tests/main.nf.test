@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process STAR_ALIGN"
+    script "../main.nf"
+    process "STAR_ALIGN"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "star"
+    tag "star/align"
+
+    test("homo_sapiens - single_end") {
+        config "./nextflow.config"
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test_fasta' ],
+                        [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
+                    ])
+                    input[1] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true) ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)]
+                ])
+                input[3] = false
+                input[4] = 'illumina'
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match("bam") },
+                { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("bedgraph") },
+                { assert snapshot(process.out.fastq).match("fastq") },
+                { assert snapshot(process.out.junction).match("junction") },
+                { assert snapshot(process.out.log_final).match("log_final") },
+                { assert snapshot(process.out.log_out).match("log_out") },
+                { assert snapshot(process.out.log_progress).match("log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("tab") },
+                { assert snapshot(process.out.wig).match("wig") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}
