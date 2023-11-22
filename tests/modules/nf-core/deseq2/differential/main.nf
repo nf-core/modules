@@ -49,6 +49,7 @@ workflow test_deseq2_differential_with_lengths {
     expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
     expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
     expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+    transcript_lengths = file(params.test_data['mus_musculus']['genome']['rnaseq_lengths'], checkIfExists: true)
 
     Channel.fromPath(expression_contrasts)
         .splitCsv ( header:true, sep:',' )
@@ -60,9 +61,7 @@ workflow test_deseq2_differential_with_lengths {
         }
 
     ch_matrix = [[id: 'test'], expression_sample_sheet, expression_matrix_file]
-
-    // Just because I'm too lazy to add actual lengths to the test data
-    ch_lengths = [[id: 'test'], file('/workspace/modules/spoofed_lengths.tsv')]
+    ch_lengths = [[id: 'test'], transcript_lengths]
 
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
