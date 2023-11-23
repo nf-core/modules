@@ -3,12 +3,12 @@ nextflow_process {
     name "Test Process RSEQC_INNERDISTANCE"
     script "../main.nf"
     process "RSEQC_INNERDISTANCE"
-config "./nextflow.config"
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "rseqc"
     tag "rseqc/innerdistance"
-    
 
     test("sarscov2 - [[meta] - bam] - bed") {
 
