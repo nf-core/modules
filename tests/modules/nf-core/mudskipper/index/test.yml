@@ -1,0 +1,14 @@
+- name: mudskipper index test_mudskipper_index
+  command: nextflow run ./tests/modules/nf-core/mudskipper/index -entry test_mudskipper_index -c ./tests/config/nextflow.config
+  tags:
+    - mudskipper/index
+    - mudskipper
+  files:
+    - path: output/mudskipper/index/gtf.exon
+      md5sum: 9102737fe58e50ef4b814f7c049126fa
+    - path: output/mudskipper/index/gtf.len
+      md5sum: 9c61d4b51e5b27dc8a5abb5c097901ba
+    - path: output/mudskipper/index/gtf.map
+    - path: output/mudskipper/index/gtf.name
+      md5sum: 47c1afeee312d6225d016a10db33c7d7
+    - path: output/mudskipper/versions.yml
