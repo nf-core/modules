@@ -51,22 +51,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.log_final[0][1]).name).match("log_final") },
-                { assert snapshot(file(process.out.log_out[0][1]).name).match("log_out") },
-                { assert snapshot(process.out.bam).match("bam") },
-                { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
-                { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
-                { assert snapshot(process.out.bam_unsorted).match("bam_unsorted") },
-                { assert snapshot(process.out.bedgraph).match("bedgraph") },
-                { assert snapshot(process.out.fastq).match("fastq") },
-                { assert snapshot(process.out.junction).match("junction") },
-                { assert snapshot(process.out.log_progress).match("log_progress") },
-                { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
-                { assert snapshot(process.out.sam).match("sam") },
-                { assert snapshot(process.out.spl_junc_tab).match("spl_junc_tab") },
-                { assert snapshot(process.out.tab).match("tab") },
-                { assert snapshot(process.out.wig).match("wig") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("homo_sapiens - single_end - log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("homo_sapiens - single_end - log_out") },
+                { assert snapshot(process.out.bam).match("homo_sapiens - single_end - bam") },
+                { assert snapshot(process.out.bam_sorted).match("homo_sapiens - single_end - bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("homo_sapiens - single_end - bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("homo_sapiens - single_end - bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("homo_sapiens - single_end - bedgraph") },
+                { assert snapshot(process.out.fastq).match("homo_sapiens - single_end - fastq") },
+                { assert snapshot(process.out.junction).match("homo_sapiens - single_end - junction") },
+                { assert snapshot(process.out.log_progress).match("homo_sapiens - single_end - log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("homo_sapiens - single_end - read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("homo_sapiens - single_end - sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("homo_sapiens - single_end - spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("homo_sapiens - single_end - tab") },
+                { assert snapshot(process.out.wig).match("homo_sapiens - single_end - wig") },
+                { assert snapshot(process.out.versions).match("homo_sapiens - single_end - versions") }
             )
         }
     }
@@ -117,22 +117,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.log_final[0][1]).name).match("log_final") },
-                { assert snapshot(file(process.out.log_out[0][1]).name).match("log_out") },
-                { assert snapshot(process.out.bam).match("bam") },
-                { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
-                { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
-                { assert snapshot(process.out.bam_unsorted).match("bam_unsorted") },
-                { assert snapshot(process.out.bedgraph).match("bedgraph") },
-                { assert snapshot(process.out.fastq).match("fastq") },
-                { assert snapshot(process.out.junction).match("junction") },
-                { assert snapshot(process.out.log_progress).match("log_progress") },
-                { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
-                { assert snapshot(process.out.sam).match("sam") },
-                { assert snapshot(process.out.spl_junc_tab).match("spl_junc_tab") },
-                { assert snapshot(process.out.tab).match("tab") },
-                { assert snapshot(process.out.wig).match("wig") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("homo_sapiens - paired_end - log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("homo_sapiens - paired_end - log_out") },
+                { assert snapshot(process.out.bam).match("homo_sapiens - paired_end - bam") },
+                { assert snapshot(process.out.bam_sorted).match("homo_sapiens - paired_end - bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("homo_sapiens - paired_end - bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("homo_sapiens - paired_end - bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("homo_sapiens - paired_end - bedgraph") },
+                { assert snapshot(process.out.fastq).match("homo_sapiens - paired_end - fastq") },
+                { assert snapshot(process.out.junction).match("homo_sapiens - paired_end - junction") },
+                { assert snapshot(process.out.log_progress).match("homo_sapiens - paired_end - log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("homo_sapiens - paired_end - read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("homo_sapiens - paired_end - sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("homo_sapiens - paired_end - spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("homo_sapiens - paired_end - tab") },
+                { assert snapshot(process.out.wig).match("homo_sapiens - paired_end - wig") },
+                { assert snapshot(process.out.versions).match("homo_sapiens - paired_end - versions") }
             )
         }
     }
@@ -178,6 +178,28 @@ nextflow_process {
                 input[5] = false
                 """
             }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("homo_sapiens - paired_end - arriba - log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("homo_sapiens - paired_end - arriba - log_out") },
+                { assert snapshot(process.out.bam).match("homo_sapiens - paired_end - arriba - bam") },
+                { assert snapshot(process.out.bam_sorted).match("homo_sapiens - paired_end - arriba - bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("homo_sapiens - paired_end - arriba - bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("homo_sapiens - paired_end - arriba - bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("homo_sapiens - paired_end - arriba - bedgraph") },
+                { assert snapshot(process.out.fastq).match("homo_sapiens - paired_end - arriba - fastq") },
+                { assert snapshot(process.out.junction).match("homo_sapiens - paired_end - arriba - junction") },
+                { assert snapshot(process.out.log_progress).match("homo_sapiens - paired_end - arriba - log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("homo_sapiens - paired_end - arriba - read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("homo_sapiens - paired_end - arriba - sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("homo_sapiens - paired_end - arriba - spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("homo_sapiens - paired_end - arriba - tab") },
+                { assert snapshot(process.out.wig).match("homo_sapiens - paired_end - arriba - wig") },
+                { assert snapshot(process.out.versions).match("homo_sapiens - paired_end - arriba - versions") }
+            )
         }
     }
 
@@ -227,22 +249,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.log_final[0][1]).name).match("log_final") },
-                { assert snapshot(file(process.out.log_out[0][1]).name).match("log_out") },
-                { assert snapshot(process.out.bam).match("bam") },
-                { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
-                { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
-                { assert snapshot(process.out.bam_unsorted).match("bam_unsorted") },
-                { assert snapshot(process.out.bedgraph).match("bedgraph") },
-                { assert snapshot(process.out.fastq).match("fastq") },
-                { assert snapshot(process.out.junction).match("junction") },
-                { assert snapshot(process.out.log_progress).match("log_progress") },
-                { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
-                { assert snapshot(process.out.sam).match("sam") },
-                { assert snapshot(process.out.spl_junc_tab).match("spl_junc_tab") },
-                { assert snapshot(process.out.tab).match("tab") },
-                { assert snapshot(process.out.wig).match("wig") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("homo_sapiens - paired_end - starfusion - log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("homo_sapiens - paired_end - starfusion - log_out") },
+                { assert snapshot(process.out.bam).match("homo_sapiens - paired_end - starfusion - bam") },
+                { assert snapshot(process.out.bam_sorted).match("homo_sapiens - paired_end - starfusion - bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("homo_sapiens - paired_end - starfusion - bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("homo_sapiens - paired_end - starfusion - bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("homo_sapiens - paired_end - starfusion - bedgraph") },
+                { assert snapshot(process.out.fastq).match("homo_sapiens - paired_end - starfusion - fastq") },
+                { assert snapshot(process.out.junction).match("homo_sapiens - paired_end - starfusion - junction") },
+                { assert snapshot(process.out.log_progress).match("homo_sapiens - paired_end - starfusion - log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("homo_sapiens - paired_end - starfusion - read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("homo_sapiens - paired_end - starfusion - sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("homo_sapiens - paired_end - starfusion - spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("homo_sapiens - paired_end - starfusion - tab") },
+                { assert snapshot(process.out.wig).match("homo_sapiens - paired_end - starfusion - wig") },
+                { assert snapshot(process.out.versions).match("homo_sapiens - paired_end - starfusion - versions") }
             )
         }
     }
@@ -295,22 +317,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.log_final[0][1]).name).match("log_final") },
-                { assert snapshot(file(process.out.log_out[0][1]).name).match("log_out") },
-                { assert snapshot(process.out.bam).match("bam") },
-                { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
-                { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
-                { assert snapshot(process.out.bam_unsorted).match("bam_unsorted") },
-                { assert snapshot(process.out.bedgraph).match("bedgraph") },
-                { assert snapshot(process.out.fastq).match("fastq") },
-                { assert snapshot(process.out.junction).match("junction") },
-                { assert snapshot(process.out.log_progress).match("log_progress") },
-                { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
-                { assert snapshot(process.out.sam).match("sam") },
-                { assert snapshot(process.out.spl_junc_tab).match("spl_junc_tab") },
-                { assert snapshot(process.out.tab).match("tab") },
-                { assert snapshot(process.out.wig).match("wig") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("homo_sapiens - paired_end - multiple - log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("homo_sapiens - paired_end - multiple - log_out") },
+                { assert snapshot(process.out.bam).match("homo_sapiens - paired_end - multiple - bam") },
+                { assert snapshot(process.out.bam_sorted).match("homo_sapiens - paired_end - multiple - bam_sorted") },
+                { assert snapshot(process.out.bam_transcript).match("homo_sapiens - paired_end - multiple - bam_transcript") },
+                { assert snapshot(process.out.bam_unsorted).match("homo_sapiens - paired_end - multiple - bam_unsorted") },
+                { assert snapshot(process.out.bedgraph).match("homo_sapiens - paired_end - multiple - bedgraph") },
+                { assert snapshot(process.out.fastq).match("homo_sapiens - paired_end - multiple - fastq") },
+                { assert snapshot(process.out.junction).match("homo_sapiens - paired_end - multiple - junction") },
+                { assert snapshot(process.out.log_progress).match("homo_sapiens - paired_end - multiple - log_progress") },
+                { assert snapshot(process.out.read_per_gene_tab).match("homo_sapiens - paired_end - multiple - read_per_gene_tab") },
+                { assert snapshot(process.out.sam).match("homo_sapiens - paired_end - multiple - sam") },
+                { assert snapshot(process.out.spl_junc_tab).match("homo_sapiens - paired_end - multiple - spl_junc_tab") },
+                { assert snapshot(process.out.tab).match("homo_sapiens - paired_end - multiple - tab") },
+                { assert snapshot(process.out.wig).match("homo_sapiens - paired_end - multiple - wig") },
+                { assert snapshot(process.out.versions).match("homo_sapiens - paired_end - multiple - versions") }
             )
         }
     }
