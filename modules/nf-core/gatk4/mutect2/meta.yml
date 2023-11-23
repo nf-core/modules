@@ -2,8 +2,10 @@ name: gatk4_mutect2
 description: Call somatic SNVs and indels via local assembly of haplotypes.
 keywords:
   - gatk4
-  - mutect2
   - haplotype
+  - indels
+  - mutect2
+  - snvs
   - somatic
 tools:
   - gatk4:
@@ -15,7 +17,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -77,7 +78,6 @@ input:
       type: file
       description: Index for the panel of normals.
       pattern: "*.vcf.gz.tbi"
-
 output:
   - vcf:
       type: file
@@ -99,7 +99,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@GCJMackenzie"
+  - "@ramprasadn"
+maintainers:
   - "@GCJMackenzie"
   - "@ramprasadn"

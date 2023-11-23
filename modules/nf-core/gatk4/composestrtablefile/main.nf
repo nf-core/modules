@@ -2,7 +2,7 @@ process GATK4_COMPOSESTRTABLEFILE {
     tag "$fasta"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
@@ -29,7 +29,8 @@ process GATK4_COMPOSESTRTABLEFILE {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ComposeSTRTableFile \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ComposeSTRTableFile \\
         --reference $fasta \\
         --output ${fasta.baseName}.zip \\
         --tmp-dir . \\

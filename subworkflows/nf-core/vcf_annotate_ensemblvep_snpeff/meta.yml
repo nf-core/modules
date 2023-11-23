@@ -7,12 +7,13 @@ keywords:
   - annotation
   - ensemblvep
   - snpeff
-modules:
+components:
   - ensemblvep/vep
   - snpeff/snpeff
   - tabix/tabix
   - bcftools/pluginscatter
   - bcftools/concat
+  - bcftools/sort
 input:
   - ch_vcf:
       description: |
@@ -68,6 +69,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@maxulysse"
+  - "@matthdsm"
+  - "@nvnieuwk"
+maintainers:
   - "@maxulysse"
   - "@matthdsm"
   - "@nvnieuwk"

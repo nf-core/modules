@@ -57,7 +57,7 @@ workflow FASTQ_ALIGN_DNA {
                 ch_versions = ch_versions.mix(SNAP_ALIGN.out.versions)
                 break
             default:
-                exit 1, "Unknown aligner: ${aligner}"
+                error "Unknown aligner: ${aligner}"
         }
 
     emit:
