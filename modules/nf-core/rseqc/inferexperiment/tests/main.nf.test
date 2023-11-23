@@ -3,13 +3,12 @@ nextflow_process {
     name "Test Process RSEQC_INFEREXPERIMENT"
     script "../main.nf"
     process "RSEQC_INFEREXPERIMENT"
+    config "./nextflow.config"
     
     tag "modules"
     tag "modules_nfcore"
     tag "rseqc"
     tag "rseqc/inferexperiment"
-    
-    config "./nextflow.config"
 
     test("sarscov2 - [[meta] - bam] - bed") {
 
