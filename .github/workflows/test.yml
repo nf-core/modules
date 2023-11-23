@@ -77,6 +77,8 @@ jobs:
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       - name: Combine all tags.yml files
         id: get_tags
@@ -86,7 +88,7 @@ jobs:
         run: cat .github/tags.yml
 
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: frouioui/paths-filter@main
+      - uses: mirpedrol/paths-filter@main
         id: filter
         with:
           filters: ".github/tags.yml"
@@ -144,6 +146,27 @@ jobs:
       - name: Lint subworkflow ${{ matrix.tags }}
         run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
+
+  migration:
+    runs-on: ubuntu-latest
+    name: nf-test Migration Notice
+    needs: [pytest-changes]
+    if: needs.pytest-changes.outputs.modules != '[]'
+    # Needed for Deprecation comment
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Migration Comment
+        uses: mshick/add-pr-comment@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          message: |
+            Hello!
+            We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
+
+            We would appreciate this test being rewritten in nf-test.
+            We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).
+            If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
 
   pytest:
     runs-on: ubuntu-latest
@@ -384,28 +407,6 @@ jobs:
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
-      - name: Deprecation Comment
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const existingComments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-
-            const commentExists = existingComments.data.some(comment => {
-              return comment.body.includes("We're in the process of migrating to nf-test");
-            });
-
-            if (!commentExists) {
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: "Hello!\nWe're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀\n\nWe would appreciate this test being rewritten in nf-test.\nWe have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).\nIf you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).",
-              });
-            }
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.

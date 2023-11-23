@@ -6,6 +6,22 @@
 ################################################
 ################################################
 
+#' Check for Non-Empty, Non-Whitespace String
+#'
+#' This function checks if the input is non-NULL and contains more than just whitespace.
+#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
+#'
+#' @param input A variable to check.
+#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
+#' @examples
+#' is_valid_string("Hello World") # Returns TRUE
+#' is_valid_string("   ")         # Returns FALSE
+#' is_valid_string(NULL)          # Returns FALSE
+
+is_valid_string <- function(input) {
+    !is.null(input) && nzchar(trimws(input))
+}
+
 #' Parse out options from a string without recourse to optparse
 #'
 #' @param x Long-form argument list like --opt1 val1 --opt2 val2
@@ -101,6 +117,7 @@ opt <- list(
     target_level = '$target',
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
+    transcript_lengths_file = '$transcript_lengths_file',
     sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
@@ -145,7 +162,7 @@ for ( ao in names(args_opt)){
 # Check if required parameters have been provided
 
 required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
-missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
 
 if (length(missing) > 0){
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
@@ -154,7 +171,7 @@ if (length(missing) > 0){
 # Check file inputs are valid
 
 for (file_input in c('count_file', 'sample_file')){
-    if (is.null(opt[[file_input]])) {
+    if (! is_valid_string(opt[[file_input]])) {
         stop(paste("Please provide", file_input), call. = FALSE)
     }
 
@@ -245,7 +262,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt\$blocking_variables)) {
+} else if (is_valid_string(opt\$blocking_variables)) {
     blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
@@ -270,7 +287,7 @@ if (opt\$subset_to_contrast_samples){
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
-if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude_samples_values))){
     exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
 
     if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
@@ -288,10 +305,10 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-model <- '~ 0 +'
+model <- '~ 0'
 
-if (!is.null(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = '+'))
+if (is_valid_string(opt\$blocking_variables)) {
+    model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
 }
 
 # Make sure all the appropriate variables are factors
@@ -323,6 +340,22 @@ dds <- DESeqDataSetFromMatrix(
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+# Build in transcript lengths. Copying what tximport does here:
+# https://github.com/thelovelab/DESeq2/blob/6947d5bc629015fb8ffb2453a91b71665a164483/R/AllClasses.R#L409
+
+if (opt\$transcript_lengths_file != ''){
+    lengths <-
+        read_delim_flexible(
+            file = opt\$transcript_lengths_file,
+            header = TRUE,
+            row.names = opt\$gene_id_col,
+            check.names = FALSE
+        )
+    lengths <- lengths[rownames(count.table), colnames(count.table)]
+    dimnames(lengths) <- dimnames(dds)
+    assays(dds)[["avgTxLength"]] <- lengths
+}
 
 if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
     print(paste('Estimating size factors using', length(control_genes), 'control genes'))
@@ -362,6 +395,14 @@ if (opt\$shrink_lfc){
             c(opt\$target_level, opt\$reference_level)
         )
     )
+}
+
+# See https://support.bioconductor.org/p/97676/
+
+if (opt\$transcript_lengths_file != ''){
+    size_factors = estimateSizeFactorsForMatrix(counts(dds) / assays(dds)[["avgTxLength"]])
+}else {
+    size_factors = sizeFactors(dds)
 }
 
 ################################################
@@ -409,8 +450,8 @@ saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
 # Size factors
 
 sf_df = data.frame(
-    sample = names(sizeFactors(dds)),
-    data.frame(sizeFactors(dds), check.names = FALSE),
+    sample = names(size_factors),
+    data.frame(size_factors, check.names = FALSE),
     check.names = FALSE
 )
 colnames(sf_df) <- c('sample', 'sizeFactor')
