@@ -77,6 +77,8 @@ jobs:
       modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
 
       - name: Combine all tags.yml files
         id: get_tags
