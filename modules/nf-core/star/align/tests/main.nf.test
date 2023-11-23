@@ -51,6 +51,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(file(process.out.log_final[0][1]).name).match("log_final") },
+                { assert snapshot(file(process.out.log_out[0][1]).name).match("log_out") },
                 { assert snapshot(process.out.bam).match("bam") },
                 { assert snapshot(process.out.bam_sorted).match("bam_sorted") },
                 { assert snapshot(process.out.bam_transcript).match("bam_transcript") },
@@ -58,8 +60,6 @@ nextflow_process {
                 { assert snapshot(process.out.bedgraph).match("bedgraph") },
                 { assert snapshot(process.out.fastq).match("fastq") },
                 { assert snapshot(process.out.junction).match("junction") },
-                { assert snapshot(process.out.log_final).match("log_final") },
-                { assert snapshot(process.out.log_out).match("log_out") },
                 { assert snapshot(process.out.log_progress).match("log_progress") },
                 { assert snapshot(process.out.read_per_gene_tab).match("read_per_gene_tab") },
                 { assert snapshot(process.out.sam).match("sam") },
