@@ -145,14 +145,32 @@ jobs:
         run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
-  pytest:
+  migration:
     runs-on: ubuntu-latest
-    name: pytest
+    name: nf-test Migration Notice
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
     # Needed for Deprecation comment
     permissions:
       pull-requests: write
+    steps:
+      - name: Migration Comment
+        uses: mshick/add-pr-comment@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          message: |
+            Hello!
+            We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
+
+            We would appreciate this test being rewritten in nf-test.
+            We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).
+            If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
+
+  pytest:
+    runs-on: ubuntu-latest
+    name: pytest
+    needs: [pytest-changes]
+    if: needs.pytest-changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
@@ -386,18 +404,6 @@ jobs:
           SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
           SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
           nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
-
-      - name: Deprecation Comment
-        uses: mshick/add-pr-comment@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          message: |
-            Hello!
-            We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
-
-            We would appreciate this test being rewritten in nf-test.
-            We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).
-            If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
 
       # Test the module
       - name: Run pytest-workflow
