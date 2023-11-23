@@ -5,7 +5,10 @@ process SENTIEON_DATAMETRICS {
 
     secret 'SENTIEON_LICENSE_BASE64'
 
-    container 'nf-core/sentieon:202308'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sentieon:202308.01--h43eeafb_0' :
+        'biocontainers/sentieon:202308.01--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
