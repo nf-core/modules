@@ -76,12 +76,17 @@ process BOWTIE2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
     def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
+    def create_unmapped = ""
+    if (meta.single_end) {
+        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped.fastq.gz" : ""
+    } else {
+        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
+    }
 
     """
     touch ${prefix}.${extension}
     touch ${prefix}.bowtie2.log
-    touch ${prefix}.unmapped_1.fastq.gz
-    touch ${prefix}.unmapped_2.fastq.gz
+    ${create_unmapped}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
