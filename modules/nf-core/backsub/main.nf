@@ -1,9 +1,6 @@
 process BACKSUB {
     tag "$meta.id"
     label 'process_single'
-    tag "modules"
-    tag "modules_nfcore"
-    tag "backsub"
 
     container "ghcr.io/schapirolabor/background_subtraction:v0.4.1"
 
