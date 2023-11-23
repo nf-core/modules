@@ -42,7 +42,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[2..4],
+                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     file(process.out.versions[0]).name
                 ).match() }
             )
@@ -84,7 +84,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[2..4],
+                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     file(process.out.versions[0]).name
                 ).match() }
             )
@@ -129,7 +129,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[2..4],
+                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     file(process.out.versions[0]).name
                 ).match() }
             )
@@ -174,7 +174,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[2..4],
+                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     file(process.out.versions[0]).name
                 ).match() }
             )
@@ -219,7 +219,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[2..4],
+                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     file(process.out.versions[0]).name
                 ).match() }
             )
