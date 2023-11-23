@@ -29,9 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.index.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).getText().contains("star") },
-                { assert path(process.out.versions.get(0)).getText().contains("samtools") },
-                { assert path(process.out.versions.get(0)).getText().contains("gawk") }
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
