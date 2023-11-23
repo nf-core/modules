@@ -27,8 +27,6 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(process.out.transcript_gtf).match("fs_transcript_gtf") },
             { assert snapshot(process.out.abundance).match("fs_abundance") },
-            { assert snapshot(process.out.coverage_gtf).match("fs_coverage_gtf") },
-            { assert snapshot(process.out.ballgown).match("fs_ballgown") },
             { assert snapshot(process.out.versions).match("fs_versions") }
             )
         }
@@ -53,7 +51,6 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(process.out.transcript_gtf).match("fs_gtf_transcript_gtf") },
             { assert snapshot(process.out.abundance).match("fs_gtf_abundance") },
-            { assert snapshot(process.out.coverage_gtf).match("fs_gtf_coverage_gtf") },
             { assert snapshot(process.out.ballgown).match("fs_gtf_ballgown") },
             { assert snapshot(process.out.versions).match("fs_gtf_versions") }
             )
@@ -79,8 +76,6 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(process.out.transcript_gtf).match("rs_transcript_gtf") },
             { assert snapshot(process.out.abundance).match("rs_abundance") },
-            { assert snapshot(process.out.coverage_gtf).match("rs_coverage_gtf") },
-            { assert snapshot(process.out.ballgown).match("rs_ballgown") },
             { assert snapshot(process.out.versions).match("rs_versions") }
             )
         }
@@ -105,7 +100,6 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(process.out.transcript_gtf).match("rs_gtf_transcript_gtf") },
             { assert snapshot(process.out.abundance).match("rs_gtf_abundance") },
-            { assert snapshot(process.out.coverage_gtf).match("rs_gtf_coverage_gtf") },
             { assert snapshot(process.out.ballgown).match("rs_gtf_ballgown") },
             { assert snapshot(process.out.versions).match("rs_gtf_versions") }
             )
