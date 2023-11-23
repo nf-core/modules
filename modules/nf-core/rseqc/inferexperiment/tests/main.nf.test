@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process RSEQC_INFEREXPERIMENT"
+    script "../main.nf"
+    process "RSEQC_INFEREXPERIMENT"
+    
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rseqc"
+    tag "rseqc/inferexperiment"
+    
+    config "./nextflow.config"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+		input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
