@@ -37,6 +37,8 @@ nextflow_process {
                 { assert snapshot(process.out.mean).match("mean") },
                 { assert snapshot(process.out.freq).match("rscript") },
                 { assert snapshot(process.out.versions).match("pe_versions") }
+                { assert process.out.pdf }
+                { assert process.out.versions }
             )
         }
 
