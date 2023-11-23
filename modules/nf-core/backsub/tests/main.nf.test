@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.backsub_tif },
                 { assert snapshot(process.out.markerout).match("markerout") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
