@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process SORTMERNA"
+    script "../main.nf"
+    process "SORTMERNA"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sortmerna"
+
+    test("sarscov2 single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.reads).match("se_reads") },
+                { assert process.out.log },
+                { assert snapshot(process.out.versions).match("se_versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 paired_end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.reads).match("pe_reads") },
+                { assert process.out.log },
+                { assert snapshot(process.out.versions).match("pe_versions") }
+            )
+        }
+
+    }
+
+}
