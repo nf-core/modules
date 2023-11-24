@@ -13,10 +13,6 @@ nextflow_process {
     test("sarscov2 - [[meta] - bam] - bed") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
             process {
                 """
                 input[0] = [ 
