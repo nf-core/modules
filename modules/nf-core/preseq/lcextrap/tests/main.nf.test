@@ -8,13 +8,13 @@ nextflow_process {
     tag "preseq"
     tag "preseq/lcextrap"
 
-    test("SRR1003759 - single_end") {
+    test("sarscov2 - single_end") {
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true) ]
+                    [ file(params.test_data['sarscov2']['genome']['lc_extrap_mr'], checkIfExists: true) ]
                 ])
                 """
             }
@@ -30,13 +30,13 @@ nextflow_process {
         }
     }
 
-    test("SRR1003759 - paired_end") {
+    test("sarscov2 - paired_end") {
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true) ]
+                    [ file(params.test_data['sarscov2']['genome']['lc_extrap_mr'], checkIfExists: true) ]
                 ])
                 """
             }
