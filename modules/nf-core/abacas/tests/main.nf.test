@@ -28,7 +28,8 @@ nextflow_process {
                     file(it).name != "test.abacas.bin" &&
                     file(it).name != "test.abacas.nucmer.delta" &&
                     file(it).name != "test.abacas.unused.contigs.out" &&
-                    file(it).name != "test.abacas.nucmer.filtered.delta"  }).match()}
+                    file(it).name != "test.abacas.nucmer.filtered.delta"  }).match()},
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
