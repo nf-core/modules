@@ -6,7 +6,10 @@ include { MITOHIFI_FINDMITOREFERENCE } from '../../../../../modules/nf-core/mito
 
 workflow test_mitohifi_findmitoreference {
 
-    species = "Phalera flavescens"
+    input = [
+        [ id:'test' ],       // meta map
+        "Phalera flavescens" // species
+    ]
 
-    MITOHIFI_FINDMITOREFERENCE ( species )
+    MITOHIFI_FINDMITOREFERENCE ( input )
 }

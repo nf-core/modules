@@ -2,7 +2,7 @@ process TOPAS_GENCONS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::topas=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/topas:1.0.1--hdfd78af_1':
         'biocontainers/topas:1.0.1--hdfd78af_1' }"
