@@ -29,6 +29,14 @@ nextflow_process {
                     file(it).name != "test.abacas.nucmer.delta" &&
                     file(it).name != "test.abacas.unused.contigs.out" &&
                     file(it).name != "test.abacas.nucmer.filtered.delta"  }).match()},
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.bin" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.nucmer.delta" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.unused.contigs.out" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.nucmer.filtered.delta" }).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
