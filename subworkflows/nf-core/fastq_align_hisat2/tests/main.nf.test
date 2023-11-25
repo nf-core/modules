@@ -1,0 +1,130 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_ALIGN_HISAT2"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_HISAT2"
+    config "./nextflow.config"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_hisat2"
+    tag "fastq_align_hisat2"
+    tag "bam_sort_stats_samtools"
+    tag "hisat2"
+    tag "hisat2/align"
+    tag "hisat2/build"
+    tag "hisat2/extractsplicesites"
+
+    setup {
+        run("HISAT2_EXTRACTSPLICESITES") {
+            script "../../../../modules/nf-core/hisat2/extractsplicesites/main.nf"
+            process {
+            """
+            input[0] = [ [id:'test'],
+                         file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                       ]
+            """
+            }
+        }
+
+        run("HISAT2_BUILD") {
+            script "../../../../modules/nf-core/hisat2/build/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ],
+                        [
+                          file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                       ]
+            input[1] = [ [id:'test'],
+                         file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                       ]
+            input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+            """
+            }
+        }
+    }
+
+    test("Single-End") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:true ], // meta map
+                            [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
+                           ]
+                input[1] = HISAT2_BUILD.out.index
+                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                input[3] = [
+                            [ id:'test' ],
+                            [
+                              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            ]
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.summary).match("se_summary") },
+                { assert snapshot(workflow.out.fastq).match("se_fastq") },
+                { assert snapshot(workflow.out.bai).match("se_bai") },
+                { assert snapshot(workflow.out.csi).match("se_csi") },
+                { assert snapshot(workflow.out.stats).match("se_stats") },
+                { assert snapshot(workflow.out.flagstat).match("se_flagstat") },
+                { assert snapshot(workflow.out.idxstats).match("se_idxstats") },
+                { assert snapshot(workflow.out.versions).match("se_versions") },
+
+                { assert workflow.out.orig_bam },
+                { assert workflow.out.bam },
+          )
+        }
+    }
+
+    test("Paired-End") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                              file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                              file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                           ]
+                input[1] = HISAT2_BUILD.out.index
+                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                input[3] = [
+                            [ id:'test' ],
+                            [
+                              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            ]
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.summary).match("pe_summary") },
+                { assert snapshot(workflow.out.fastq).match("pe_fastq") },
+                { assert snapshot(workflow.out.bai).match("pe_bai") },
+                { assert snapshot(workflow.out.csi).match("pe_csi") },
+                { assert snapshot(workflow.out.stats).match("pe_stats") },
+                { assert snapshot(workflow.out.flagstat).match("pe_flagstat") },
+                { assert snapshot(workflow.out.idxstats).match("pe_idxstats") },
+                { assert snapshot(workflow.out.versions).match("pe_versions") },
+
+                { assert workflow.out.orig_bam },
+                { assert workflow.out.bam },
+          )
+        }
+    }
+}
