@@ -31,7 +31,7 @@ workflow BAM_RSEQC {
     bamstat_txt = Channel.empty()
     if ('bam_stat' in rseqc_modules) {
         RSEQC_BAMSTAT ( ch_bam )
-        bamstat_txt = RSEQC_BAMSTAT.out.txt
+        ch_bamstat = RSEQC_BAMSTAT.out.txt
         ch_versions = ch_versions.mix(RSEQC_BAMSTAT.out.versions.first())
     }
 
@@ -50,6 +50,7 @@ workflow BAM_RSEQC {
         innerdistance_mean     = RSEQC_INNERDISTANCE.out.mean
         innerdistance_pdf      = RSEQC_INNERDISTANCE.out.pdf
         innerdistance_rscript  = RSEQC_INNERDISTANCE.out.rscript
+        ch_inner_distance      = innerdistance_distance.mix(innerdistance_freq, innerdistance_mean, innerdistance_pdf, innerdistance_rscript)
         ch_versions = ch_versions.mix(RSEQC_INNERDISTANCE.out.versions.first())
     }
 
@@ -59,7 +60,7 @@ workflow BAM_RSEQC {
     inferexperiment_txt = Channel.empty()
     if ('infer_experiment' in rseqc_modules) {
         RSEQC_INFEREXPERIMENT ( ch_bam, ch_bed )
-        inferexperiment_txt = RSEQC_INFEREXPERIMENT.out.txt
+        ch_inferexperiment = RSEQC_INFEREXPERIMENT.out.txt
         ch_versions = ch_versions.mix(RSEQC_INFEREXPERIMENT.out.versions.first())
     }
 
@@ -82,6 +83,7 @@ workflow BAM_RSEQC {
         junctionannotation_events_pdf   = RSEQC_JUNCTIONANNOTATION.out.events_pdf
         junctionannotation_rscript      = RSEQC_JUNCTIONANNOTATION.out.rscript
         junctionannotation_log          = RSEQC_JUNCTIONANNOTATION.out.log
+        ch_junction_annotation          = junctionannotation_bed.mix(junctionannotation_interact_bed, junctionannotation_xls, junctionannotation_pdf, junctionannotation_events_pdf, junctionannotation_rscript, junctionannotation_log)
         ch_versions = ch_versions.mix(RSEQC_JUNCTIONANNOTATION.out.versions.first())
     }
 
@@ -94,6 +96,7 @@ workflow BAM_RSEQC {
         RSEQC_JUNCTIONSATURATION ( ch_bam, ch_bed )
         junctionsaturation_pdf     = RSEQC_JUNCTIONSATURATION.out.pdf
         junctionsaturation_rscript = RSEQC_JUNCTIONSATURATION.out.rscript
+        ch_junction_saturation     = junctionsaturation_pdf.mix(junctionsaturation_rscript)
         ch_versions = ch_versions.mix(RSEQC_JUNCTIONSATURATION.out.versions.first())
     }
 
@@ -103,7 +106,7 @@ workflow BAM_RSEQC {
     readdistribution_txt = Channel.empty()
     if ('read_distribution' in rseqc_modules) {
         RSEQC_READDISTRIBUTION ( ch_bam, ch_bed )
-        readdistribution_txt = RSEQC_READDISTRIBUTION.out.txt
+        ch_readdistribution = RSEQC_READDISTRIBUTION.out.txt
         ch_versions = ch_versions.mix(RSEQC_READDISTRIBUTION.out.versions.first())
     }
 
@@ -120,6 +123,7 @@ workflow BAM_RSEQC {
         readduplication_pos_xls = RSEQC_READDUPLICATION.out.pos_xls
         readduplication_pdf     = RSEQC_READDUPLICATION.out.pdf
         readduplication_rscript = RSEQC_READDUPLICATION.out.rscript
+        ch_read_duplication     = readduplication_seq_xls.mix(readduplication_pos_xls, readduplication_pdf, readduplication_rscript)
         ch_versions = ch_versions.mix(RSEQC_READDUPLICATION.out.versions.first())
     }
 
@@ -129,21 +133,23 @@ workflow BAM_RSEQC {
     tin_txt = Channel.empty()
     if ('tin' in rseqc_modules) {
         RSEQC_TIN ( ch_bam_bai, ch_bed )
-        tin_txt     = RSEQC_TIN.out.txt
+        ch_tin     = RSEQC_TIN.out.txt
         ch_versions = ch_versions.mix(RSEQC_TIN.out.versions.first())
     }
 
     emit:
-    bamstat_txt                     // channel: [ val(meta), txt ]
+    ch_bamstat                     // channel: [ val(meta), txt ]
 
+    ch_inner_distance
     innerdistance_distance          // channel: [ val(meta), txt ]
     innerdistance_freq              // channel: [ val(meta), txt ]
     innerdistance_mean              // channel: [ val(meta), txt ]
     innerdistance_pdf               // channel: [ val(meta), pdf ]
     innerdistance_rscript           // channel: [ val(meta), r   ]
 
-    inferexperiment_txt             // channel: [ val(meta), txt ]
+    ch_inferexperiment             // channel: [ val(meta), txt ]
 
+    ch_junction_annotation
     junctionannotation_bed          // channel: [ val(meta), bed ]
     junctionannotation_interact_bed // channel: [ val(meta), bed ]
     junctionannotation_xls          // channel: [ val(meta), xls ]
@@ -152,17 +158,19 @@ workflow BAM_RSEQC {
     junctionannotation_rscript      // channel: [ val(meta), r   ]
     junctionannotation_log          // channel: [ val(meta), log ]
 
+    ch_junction_saturation
     junctionsaturation_pdf          // channel: [ val(meta), pdf ]
     junctionsaturation_rscript      // channel: [ val(meta), r   ]
 
-    readdistribution_txt            // channel: [ val(meta), txt ]
+    ch_readdistribution            // channel: [ val(meta), txt ]
 
+    ch_read_duplication
     readduplication_seq_xls         // channel: [ val(meta), xls ]
     readduplication_pos_xls         // channel: [ val(meta), xls ]
     readduplication_pdf             // channel: [ val(meta), pdf ]
     readduplication_rscript         // channel: [ val(meta), r   ]
 
-    tin_txt                         // channel: [ val(meta), txt ]
+    ch_tin                         // channel: [ val(meta), txt ]
 
     versions = ch_versions          // channel: [ versions.yml ]
 }
