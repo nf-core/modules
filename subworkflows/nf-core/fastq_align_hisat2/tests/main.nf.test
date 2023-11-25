@@ -73,7 +73,6 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(workflow.out.summary).match("se_summary") },
                 { assert snapshot(workflow.out.fastq).match("se_fastq") },
-                { assert snapshot(workflow.out.bai).match("se_bai") },
                 { assert snapshot(workflow.out.csi).match("se_csi") },
                 { assert snapshot(workflow.out.stats).match("se_stats") },
                 { assert snapshot(workflow.out.flagstat).match("se_flagstat") },
@@ -82,6 +81,7 @@ nextflow_workflow {
 
                 { assert workflow.out.orig_bam },
                 { assert workflow.out.bam },
+                { assert workflow.out.bai },
           )
         }
     }
@@ -115,7 +115,6 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(workflow.out.summary).match("pe_summary") },
                 { assert snapshot(workflow.out.fastq).match("pe_fastq") },
-                { assert snapshot(workflow.out.bai).match("pe_bai") },
                 { assert snapshot(workflow.out.csi).match("pe_csi") },
                 { assert snapshot(workflow.out.stats).match("pe_stats") },
                 { assert snapshot(workflow.out.flagstat).match("pe_flagstat") },
@@ -124,6 +123,7 @@ nextflow_workflow {
 
                 { assert workflow.out.orig_bam },
                 { assert workflow.out.bam },
+                { assert workflow.out.bai },
           )
         }
     }
