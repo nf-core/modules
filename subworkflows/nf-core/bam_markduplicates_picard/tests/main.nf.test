@@ -1,0 +1,93 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_MARKDUPLICATES_PICARD"
+    script "../main.nf"
+    workflow "BAM_MARKDUPLICATES_PICARD"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_markduplicates_picard"
+    tag "bam_markduplicates_picard"
+    tag "subworkflows/bam_stats_samtools"
+    tag "bam_stats_samtools"
+    tag "samtools"
+    tag "samtools/index"
+    tag "samtools/sort"
+    tag "samtools/stats"
+    tag "samtools/idxstats"
+    tag "samtools/flagstat"
+    tag "picard/markduplicates"
+
+    test("sarscov2 paired-end [bam]") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = [
+                            [ id:'genome' ],
+                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [
+                            [ id:'genome' ],
+                            file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.csi).match("bam_csi") },
+                { assert snapshot(workflow.out.stats).match("bam_stats") },
+                { assert snapshot(workflow.out.flagstat).match("bam_flagstat") },
+                { assert snapshot(workflow.out.idxstats).match("bam_idxstats") },
+                { assert snapshot(workflow.out.versions).match("bam_versions") },
+
+                { assert workflow.out.bam },
+                { assert workflow.out.bai },
+                { assert workflow.out.metrics }
+          )
+        }
+    }
+
+    test("homo_sapiens paired-end [cram]") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                ]
+                input[1] = [
+                            [ id:'genome' ],
+                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [
+                            [ id:'genome' ],
+                            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.csi).match("cram_csi") },
+                { assert snapshot(workflow.out.stats).match("cram_stats") },
+                { assert snapshot(workflow.out.flagstat).match("cram_flagstat") },
+                { assert snapshot(workflow.out.idxstats).match("cram_idxstats") },
+                { assert snapshot(workflow.out.versions).match("cram_versions") },
+
+                { assert workflow.out.bam },
+                { assert workflow.out.bai },
+                { assert workflow.out.metrics }
+          )
+        }
+    }
+}
