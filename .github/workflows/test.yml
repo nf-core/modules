@@ -440,9 +440,9 @@ jobs:
 
       - name: Install Singularity
         if: matrix.profile == 'singularity'
-        uses: singularityhub/install-singularity@main
-        with:
-          singularity-version: 4.0.2
+        run: |
+          wget https://github.com/sylabs/singularity/releases/download/v4.0.2/singularity-ce_4.0.2-jammy_amd64.deb
+          sudo dpkg -i singularity-ce_4.0.2-jammy_amd64.deb
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
