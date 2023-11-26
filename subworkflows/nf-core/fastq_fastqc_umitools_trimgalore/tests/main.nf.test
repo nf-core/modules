@@ -1,0 +1,153 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE"
+    script "../main.nf"
+    workflow "FASTQ_FASTQC_UMITOOLS_TRIMGALORE"
+    config "./nextflow.config"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_fastqc_umitools_trimgalore"
+    tag "fastq_fastqc_umitools_trimgalore"
+    tag "fastqc"
+    tag "umitools/extract"
+    tag "trimgalore"
+
+    test("sarscov2 single-end [fastq]") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:true ], // meta map
+                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = false // skip_fastqc
+                input[2] = true  // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.reads).match("se_reads") },
+                { assert snapshot(workflow.out.trim_unpaired).match("se_trim_unpaired") },
+                { assert snapshot(workflow.out.trim_read_count).match("se_trim_read_count") },
+                { assert snapshot(workflow.out.versions).match("se_versions") },
+
+                { assert workflow.out.fastqc_html },
+                { assert workflow.out.fastqc_zip },
+                { assert workflow.out.trim_log },
+                { assert workflow.out.umi_log }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq]") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                ]
+                input[1] = false // skip_fastqc
+                input[2] = true  // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.reads).match("pe_reads") },
+                { assert snapshot(workflow.out.trim_unpaired).match("pe_trim_unpaired") },
+                { assert snapshot(workflow.out.trim_read_count).match("pe_trim_read_count") },
+                { assert snapshot(workflow.out.versions).match("pe_versions") },
+
+                { assert workflow.out.fastqc_html },
+                { assert workflow.out.fastqc_zip },
+                { assert workflow.out.trim_log },
+                { assert workflow.out.umi_log }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq] without-umi") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                ]
+                input[1] = false // skip_fastqc
+                input[2] = false  // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.reads).match("pe_reads_without_umi") },
+                { assert snapshot(workflow.out.trim_read_count).match("pe_trim_read_count_without_umi") },
+                { assert snapshot(workflow.out.versions).match("pe_versions_without_umi") },
+
+                { assert workflow.out.fastqc_html },
+                { assert workflow.out.fastqc_zip },
+                { assert workflow.out.trim_log }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq] skip_fastqc skip_umi_extract skip_trimming") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                ]
+                input[1] = true // skip_fastqc
+                input[2] = true  // with_umi
+                input[3] = true // skip_umi_extract
+                input[4] = true // skip_trimming
+                input[5] = 0     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.reads).match("pe_reads_skip") }
+            )
+        }
+    }
+}
