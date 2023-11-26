@@ -1,0 +1,9 @@
+- name: panacus visualize test_panacus_visualize
+  command: nextflow run ./tests/modules/nf-core/panacus/visualize -entry test_panacus_visualize -c ./tests/config/nextflow.config
+  tags:
+    - panacus/visualize
+    - panacus
+  files:
+    - path: output/panacus/test.png
+      md5sum: b13aec323bb853a0d878b5f2d5ecfda2
+    - path: output/panacus/versions.yml
