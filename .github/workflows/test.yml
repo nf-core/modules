@@ -438,6 +438,10 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
+        # For OCI containers
+      - name: Set XDG_RUNTIME_DIR
+        run: echo "XDG_RUNTIME_DIR=/run/user/$UID" >> $GITHUB_ENV
+
       - name: Install Singularity
         if: matrix.profile == 'singularity'
         run: |
