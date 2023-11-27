@@ -3,7 +3,7 @@ process SVANALYZER_SVBENCHMARK {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::svanalyzer=0.35"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svanalyzer:0.35--pl526_0':
         'biocontainers/svanalyzer:0.35--pl526_0' }"
