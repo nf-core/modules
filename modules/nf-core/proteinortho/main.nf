@@ -5,7 +5,7 @@ process PROTEINORTHO {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0':
-        'quay.io/biocontainers/proteinortho:6.3.0--h70414c8_0' }"
+        'biocontainers/proteinortho:6.3.0--h70414c8_0' }"
 
     input:
     tuple val(meta), path(fasta_files, stageAs: "?/*")
