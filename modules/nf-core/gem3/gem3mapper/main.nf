@@ -25,7 +25,7 @@ process GEM3_GEM3MAPPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samtools_command = sort_bam ? 'sort' : 'view'
     """
-    gem-mapper -F 'SAM' -I $index -i $fastq -t $task.cpus | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam - 
+    gem-mapper -F 'SAM' -I $index -i $fastq -t $task.cpus | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
