@@ -9,7 +9,6 @@ nextflow_process {
     tag "clustalo"
     tag "clustalo/align"
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
     test("sarscov2 - contigs-fasta") {
 
         when {
@@ -36,7 +35,7 @@ nextflow_process {
     test("sarscov2 - contigs-fasta - guide_tree") {
 
         setup {
- 
+
             run("CLUSTALO_GUIDETREE") {
                 script "../../guidetree/main.nf"
                 process {
