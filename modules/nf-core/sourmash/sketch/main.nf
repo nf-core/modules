@@ -1,11 +1,11 @@
 process SOURMASH_SKETCH {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
-    conda "bioconda::sourmash=4.6.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sourmash:4.6.1--hdfd78af_0':
-        'biocontainers/sourmash:4.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sourmash:4.8.4--hdfd78af_0':
+        'biocontainers/sourmash:4.8.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sequence)

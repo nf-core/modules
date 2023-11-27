@@ -9,7 +9,6 @@ tools:
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
       licence: ["MIT"]
-
 input:
   - sequences:
       type: file
@@ -19,7 +18,6 @@ input:
       type: file
       description: BED file or a text file with a list of sequence names
       pattern: "*.{bed,lst}"
-
 output:
   - versions:
       type: file
@@ -29,6 +27,7 @@ output:
       type: file
       description: FASTQ/FASTA file
       pattern: "*.{fq.gz,fa.gz}"
-
 authors:
+  - "@sidorov-si"
+maintainers:
   - "@sidorov-si"

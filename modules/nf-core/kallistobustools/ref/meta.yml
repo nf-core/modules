@@ -1,7 +1,11 @@
 name: kallistobustools_ref
 description: index creation for kb count quantification of single-cell data.
 keywords:
-  - kallisto-bustools
+  - scRNA-seq
+  - count
+  - single-cell
+  - kallisto
+  - bustools
   - index
 tools:
   - kb:
@@ -11,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/pachterlab/kb_python
       doi: "10.22002/D1.1876"
       licence: MIT License
-
 input:
   - fasta:
       type: file
@@ -22,10 +25,9 @@ input:
       description: Genomic gtf file
       pattern: "*.{gtf,gtf.gz}"
   - workflow_mode:
-      type: value
+      type: string
       description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus}"
-
 output:
   - versions:
       type: file
@@ -55,6 +57,7 @@ output:
       type: file
       description: intron transcript to capture file
       pattern: "*intron_t2c.{txt}"
-
 authors:
+  - "@flowuenne"
+maintainers:
   - "@flowuenne"

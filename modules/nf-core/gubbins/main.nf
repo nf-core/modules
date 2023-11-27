@@ -1,7 +1,7 @@
 process GUBBINS {
     label 'process_medium'
 
-    conda "bioconda::gubbins=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gubbins:3.0.0--py39h5bf99c6_0' :
         'biocontainers/gubbins:3.0.0--py39h5bf99c6_0' }"
