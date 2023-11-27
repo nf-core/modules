@@ -9,7 +9,7 @@ process FASTAVALIDATOR {
 
     input:
     tuple val(meta), path(fasta)
-    
+
     output:
     tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
@@ -25,19 +25,19 @@ process FASTAVALIDATOR {
         -f $fasta \\
         2> "${prefix}.error.log" \\
         || echo "Errors from fasta_validate printed to ${prefix}.error.log"
-    
+
     if [ \$(cat "${prefix}.error.log" | wc -l) -gt 0 ]; then
         echo "Validation failed..."
-        
+
         cat \\
             "${prefix}.error.log"
     else
         echo "Validation successful..."
-        
+
         mv \\
             "${prefix}.error.log" \\
             fasta_validate.stderr
-        
+
         echo "Validation successful..." \\
             > "${prefix}.success.log"
     fi
@@ -47,7 +47,7 @@ process FASTAVALIDATOR {
         py_fasta_validator: \$(py_fasta_validator -v | sed 's/.* version //')
     END_VERSIONS
     """
-    
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
