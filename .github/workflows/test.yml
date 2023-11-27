@@ -4,6 +4,8 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  pull_request_target:
+    branches: [master]
   merge_group:
     types: [checks_requested]
     branches: [master]
@@ -158,7 +160,7 @@ jobs:
     steps:
       - name: Migration Comment
         uses: mshick/add-pr-comment@v2
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request_target' }}
         with:
           message: |
             Hello!
