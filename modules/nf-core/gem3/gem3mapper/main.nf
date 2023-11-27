@@ -10,6 +10,7 @@ process GEM3_GEM3MAPPER {
     input:
     tuple val(meta), path(index)
     tuple val(meta2), path(fastq)
+    val   sort_bam
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -20,9 +21,11 @@ process GEM3_GEM3MAPPER {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def samtools_command = sort_bam ? 'sort' : 'view'
     """
-    gem-mapper -F 'SAM' -I $index -i $fastq -t $task.cpus | samtools view -bS -o ${prefix}.bam -
+    gem-mapper -F 'SAM' -I $index -i $fastq -t $task.cpus | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam - 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,11 +35,9 @@ process GEM3_GEM3MAPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gem-mapper: \$(echo \$(gem-mapper --version 2>&1))

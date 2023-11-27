@@ -23,7 +23,7 @@ workflow test_gem3_gem3mapper_single_end {
         ]
     ]
 
-    GEM3_GEM3MAPPER ( GEM3_GEM3INDEXER.out.index, fastq )
+    GEM3_GEM3MAPPER ( GEM3_GEM3INDEXER.out.index, fastq, false)
 }
 
 workflow test_gem3_gem3mapper_paired_end {
@@ -46,5 +46,5 @@ workflow test_gem3_gem3mapper_paired_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    GEM3_GEM3MAPPER ( GEM3_GEM3INDEXER.out.index, fastq )
+    GEM3_GEM3MAPPER ( GEM3_GEM3INDEXER.out.index, fastq, true)
 }
