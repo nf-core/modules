@@ -35,15 +35,4 @@ process ARIA2 {
         aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
     END_VERSIONS
     """
-
-    stub:
-    downloaded_file = source_url.split("/")[-1]
-    """
-    touch ${downloaded_file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \\\$(echo \\\$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
-    """
 }
