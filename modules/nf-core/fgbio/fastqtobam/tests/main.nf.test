@@ -28,9 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -56,9 +58,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.bam,
+                    file(process.out.cram[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -84,9 +88,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -108,9 +114,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -136,9 +144,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -164,9 +174,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -192,9 +204,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam")},
-                { assert snapshot(process.out.cram).match("cram")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
             )
         }
 
