@@ -39,8 +39,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.fns).match("fns") },
+                { assert snapshot(process.out.fps).match("fps") },
+                { assert snapshot(process.out.distances).match("distances") },
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
+
         }
 
     }
@@ -76,7 +81,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.fns).match("bed_fns") },
+                { assert snapshot(process.out.fps).match("bed_fps") },
+                { assert snapshot(process.out.distances).match("bed_distances") },
+                { assert snapshot(process.out.report).match("bed_report") },
+                { assert snapshot(process.out.versions).match("bed_versions") }
             )
         }
 
