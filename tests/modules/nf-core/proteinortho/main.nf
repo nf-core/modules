@@ -14,7 +14,7 @@ workflow test_proteinortho {
     input = [
         [ id:'test', single_end:false ], // meta map
         [ 
-            file_a,
+            file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true).renameTo("prot1.fasta")
             file_b,
         ]
     ]
