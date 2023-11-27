@@ -10,18 +10,18 @@ process SVANALYZER_SVBENCHMARK {
 
     input:
     tuple val(meta), path(test)
-    tuple val(meta2), path(truth)
-    path(fasta)
-    path(fai)
-    path(bed)
+    tuple val(meta2),path(truth)
+    tuple val(meta3),path(fasta)
+    tuple val(meta4),path(fai)
+    tuple val(meta5),path(bed)
 
     output:
-    tuple val(meta), path("*.falsenegatives.vcf"), emit: fns
-    tuple val(meta), path("*.falsepositives.vcf"), emit: fps
-    tuple val(meta), path("*.distances")         , emit: distances
-    tuple val(meta), path("*.log")               , emit: log
-    tuple val(meta), path("*.report")            , emit: report
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.falsenegatives.vcf.gz"), emit: fns
+    tuple val(meta), path("*.falsepositives.vcf.gz"), emit: fps
+    tuple val(meta), path("*.distances")            , emit: distances
+    tuple val(meta), path("*.log")                  , emit: log
+    tuple val(meta), path("*.report")               , emit: report
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,6 +42,9 @@ process SVANALYZER_SVBENCHMARK {
         --prefix $prefix \\
         $bed
 
+    bgzip -c ${prefix}.falsenegatives.vcf > ${prefix}.falsenegatives.vcf.gz
+    bgzip -c ${prefix}.falsepositives.vcf > ${prefix}.falsepositives.vcf.gz
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         svanalyzer: ${VERSION}
@@ -54,8 +57,8 @@ process SVANALYZER_SVBENCHMARK {
     def VERSION = '0.35' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.falsenegatives.vcf
-    touch ${prefix}.falsepositives.vcf
+    touch ${prefix}.falsenegatives.vcf.gz
+    touch ${prefix}.falsepositives.vcf.gz
     touch ${prefix}.distances
     touch ${prefix}.log
     touch ${prefix}.report

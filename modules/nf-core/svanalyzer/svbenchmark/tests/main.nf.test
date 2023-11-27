@@ -26,12 +26,14 @@ nextflow_process {
                         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
                         ]
                     input[2] = [
+                        [ id:'test3' ], // meta map
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
                         ]
                     input[3] = [
+                        [ id:'test4' ], // meta map
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
-                    input[4] = []
+                    input[4] = [[],[]]
                 """
             }
         }
@@ -66,12 +68,15 @@ nextflow_process {
                         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
                         ]
                     input[2] = [
+                        [ id:'test3' ], // meta map
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
                         ]
                     input[3] = [
+                        [ id:'test4' ], // meta map
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
                     input[4] = [
+                        [ id:'test5' ], // meta map
                         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
                         ]
                 """

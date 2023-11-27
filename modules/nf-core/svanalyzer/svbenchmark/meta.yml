@@ -59,11 +59,11 @@ output:
   - fns:
       type: file
       description: VCF file with False Negatives
-      pattern: "*.{vcf}"
+      pattern: "*.{vcf.gz}"
   - fps:
       type: file
       description: VCF file with False Positives
-      pattern: "*.{vcf}"
+      pattern: "*.{vcf.gz}"
   - distances:
       type: file
       description: TSV file with genomic distances and size differences between structural variants compared
@@ -75,6 +75,6 @@ output:
   - report:
       type: file
       description: Text file reporting RECALL, PRECISION and F1.
-      pattern: "*.{log}"
+      pattern: "*.{report}"
 authors:
   - "@kubranarci"
