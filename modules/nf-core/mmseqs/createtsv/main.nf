@@ -29,9 +29,9 @@ process MMSEQS_CREATETSV {
     db_target = db_target ?: "${db_query}" // optional argument db_target as in many cases, it's the same as db_query
     """
     # Extract files with specified args based suffix | remove suffix | isolate longest common substring of files
-    DB_RESULT_PATH_NAME=\$(find -L "$db_result/" -maxdepth 1 -name "$args2" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
-    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -maxdepth 1 -name "$args3" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
-    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args4" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_RESULT_PATH_NAME=\$(find -L "$db_result/" -maxdepth 1 -name "$args2" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -maxdepth 1 -name "$args3" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args4" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         createtsv \\
