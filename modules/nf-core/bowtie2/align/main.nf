@@ -4,8 +4,8 @@ process BOWTIE2_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:a0ffedb52808e102887f6ce600d092675bf3528a-0' :
-        'biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:a0ffedb52808e102887f6ce600d092675bf3528a-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' :
+        'biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -76,12 +76,17 @@ process BOWTIE2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
     def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
+    def create_unmapped = ""
+    if (meta.single_end) {
+        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped.fastq.gz" : ""
+    } else {
+        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
+    }
 
     """
     touch ${prefix}.${extension}
     touch ${prefix}.bowtie2.log
-    touch ${prefix}.unmapped_1.fastq.gz
-    touch ${prefix}.unmapped_2.fastq.gz
+    ${create_unmapped}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
