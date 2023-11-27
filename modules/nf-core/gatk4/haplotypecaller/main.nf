@@ -8,12 +8,12 @@ process GATK4_HAPLOTYPECALLER {
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model)
-    path  fasta
-    path  fai
-    path  dict
-    path  dbsnp
-    path  dbsnp_tbi
+    tuple val(meta),  path(input), path(input_index), path(intervals), path(dragstr_model)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(dbsnp)
+    tuple val(meta6), path(dbsnp_tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
