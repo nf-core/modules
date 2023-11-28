@@ -1,0 +1,88 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test bam_qc_picard
+nextflow_workflow {
+
+    name "Test Workflow BAM_QC_PICARD"
+    script "../main.nf"
+    workflow "BAM_QC_PICARD"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bam_qc_picard"
+    tag "subworkflows/bam_qc_picard"
+    tag "picard/collectmultiplemetrics"
+    tag "picard/collectwgsmetrics"
+    tag "picard/collecthsmetrics"
+
+    test("sascov2_wgs - [bam,bai]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ],
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                [],
+                []
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+    }
+
+    test("sascov2_targetted - [bam,bai]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ],
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:'genome'],
+                    file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+    }
+}
