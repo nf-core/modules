@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "prokka"
 
-    test("prokka - fasta") {
+    test("prokka - sarscov2 - fasta") {
         when {
             process {
                 """
