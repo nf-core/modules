@@ -1,0 +1,44 @@
+name: modkit_pileup
+description: A bioinformatics tool for working with modified bases 
+keywords:
+  - based
+  - ont
+  - modified
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://github.com/nanoporetech/modkit
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ['Oxford Nanopore Technologies PLC. Public License Version 1.0']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: bedMethyl output file
+      pattern: "*.bed"
+  - log:
+      type: file
+      description: Log file containing modkit pileup runtim information
+      pattern: "*.log"
+authors:
+  - "@Michal-Babins"
