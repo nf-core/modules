@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "presto_filterseq"
+description: Filter reads by quality score.
+keywords:
+  - immcantation
+  - airrseq
+  - genomics
+  - immunoinformatics
+tools:
+  - "presto":
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte receptor sequencing data."
+      homepage: "https://immcantation.readthedocs.io"
+      documentation: "https://presto.readthedocs.io"
+      tool_dev_url: "https://bitbucket.org/kleinstein/presto"
+      doi: ""
+      licence: "['AGPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - R1:
+      type: file
+      description: R1 fastq file
+      pattern: "*.{fastq}"
+  - R2:
+      type: file
+      description: R2 fastq file
+      pattern: "*.{fastq}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - R1_filtered:
+      type: file
+      description: R1 fastq file
+      pattern: "*.{fastq}"
+  - R2_filtered:
+      type: file
+      description: R2 fastq file
+      pattern: "*.{fastq}"
+  - logs:
+      type: file
+      description: command logs
+      pattern: "*.txt"
+  - R1_log:
+      type: file
+      description: individual unparsed log for R1 file
+      pattern: "*.txt"
+  - R2_log:
+      type: file
+      description: individual unparsed log for R2 file
+      pattern: "*.txt"
+  - log_tab:
+      type: file
+      description: parsed log table
+
+authors:
+  - "@ggabernet"
