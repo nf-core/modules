@@ -64,8 +64,7 @@ process BAMSTATS_GENERALSTATS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}": 
-       bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats == version://; s/Using.*\$//' | sed 's*built at:*//'
-))
+       bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats == version:// | 's/built.*//; s/Using.*\$//' ))
     END_VERSIONS
     """
 
