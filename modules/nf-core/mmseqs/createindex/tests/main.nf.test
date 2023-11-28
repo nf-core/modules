@@ -79,6 +79,7 @@ nextflow_process {
                         file.getName().endsWith(excludeName)
                     }
                 }
+                .sort{ it.getName()}
 
             assertAll(
                 { assert process.success },
