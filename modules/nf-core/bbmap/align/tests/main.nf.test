@@ -14,7 +14,6 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -39,4 +38,43 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - [fastq,BBMAP_INDEX] -  bam") {
+
+        setup {
+            run("BBMAP_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file( params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file( params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = BBMAP_INDEX.out.index.collect{ meta, index -> index }.map{ index -> [[ id: 'test_index'], index]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(process.out.bam.get(0).get(1))).match() },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.log.get(0).get(1) ==~ ".*/test.bbmap.log" }
+            )
+        }
+    }
 }
