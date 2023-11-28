@@ -1,13 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /allelecall
+
 - name: "chewbbaca allelecall"
   command: nextflow run ./tests/modules/nf-core/chewbbaca/allelecall -entry test_chewbbaca_allelecall -c ./tests/config/nextflow.config
   tags:
     - "chewbbaca"
     - "chewbbaca/allelecall"
   files:
-    - path: "output/chewbbaca/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/chewbbaca/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/chewbbaca/test_results_statistics.tsv
+    - path: output/chewbbaca/test_results_contigsInfo.tsv
+    - path: output/chewbbaca/test_results_alleles.tsv
+    - path: output/chewbbaca/test_paralogous_counts.tsv
+    - path: output/chewbbaca/test_paralogous_loci.tsv
+    - path: output/chewbbaca/test_logging_info.txt
+    - path: output/chewbbaca/test_cds_coordinates.tsv
     
