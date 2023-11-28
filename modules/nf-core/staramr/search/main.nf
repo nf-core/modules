@@ -2,7 +2,7 @@ process STARAMR_SEARCH {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::staramr=0.9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staramr:0.10.0--pyhdfd78af_0':
         'biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
@@ -19,7 +19,7 @@ process STARAMR_SEARCH {
     tuple val(meta), path("*_results/mlst.tsv")            , emit: mlst_tsv
     tuple val(meta), path("*_results/settings.txt")        , emit: settings_txt
     tuple val(meta), path("*_results/pointfinder.tsv")     , emit: pointfinder_tsv, optional: true
-    path "versions.yml"                                    , emit: versions
+    path "versions.yml"
 
     when:
     task.ext.when == null || task.ext.when

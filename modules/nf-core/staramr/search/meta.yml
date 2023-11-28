@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "staramr_search"
 description: "Scans genome contigs against the ResFinder, PlasmidFinder, and PointFinder databases"
 keywords:
@@ -14,22 +14,23 @@ tools:
       homepage: "https://github.com/phac-nml/staramr"
       documentation: "https://github.com/phac-nml/staramr"
       tool_dev_url: "https://github.com/phac-nml/staramr"
-      doi: "10.5281/zenodo.7262331"
-      licence: "['Apache Software License']"
-      args_id: "$args"
+      doi: "10.3390/microorganisms10020292"
+      licence: ['Apache Software License']
 
+## TODO nf-core: Add a description of all of the variables used as input
 input:
+  # Only when we have meta
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information.
-        e.g. `[ id:'test', single_end:false ]`
-
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  
   - genome_fasta:
       type: file
       description: |
         Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
-      pattern: "*.{fasta,fna,fsa,fa}"
+      pattern: "*.{fasta,fna,fsa,fa,fasta.gz,fna.gz,fsa.gz,fa.gz}"
 
 output:
   - meta:
@@ -81,5 +82,8 @@ output:
       type: file
       description: An optional tabular file of each AMR point mutation and additional BLAST information from the PointFinder database, one gene per line.
       pattern: "*_results/pointfinder.tsv"
+
 authors:
+  - "@apetkau"
+maintainers:
   - "@apetkau"
