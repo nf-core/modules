@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "chewbbaca_allelecall"
+## TODO nf-core: Add a description of the module and list keywords
+description: Determine the allelic profiles of a genome using a pre-defined schema
+keywords:
+  - cgMLST
+  - WGS
+  - genomics
+tools:
+  - "chewbbaca":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "A complete suite for gene-by-gene schema creation and strain identification."
+      homepage: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
+      doi: "10.1099/mgen.0.000166"
+      licence: ["GPL v3"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:true ]`
+  
+  ## TODO nf-core: Delete / customise this example input
+  - fasta:
+      type: file
+      description: Assembled genome in FASTA format
+      pattern: "*.{fasta,fa,fna}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: file contains the total number of exact matches 
+      pattern: "*_results_statistics.tsv"
+  - tsv:
+      type: file
+      description: file contains the loci coordinates in the genomes analyzed
+      pattern: "*_results_contigsInfo.tsv"
+  - tsv:
+      type: file
+      description: file contains the allelic profiles determined for the input sample.
+      pattern: "*_results_alleles.tsv"
+  - tsv:
+      type: file
+      description: file contains the list of paralogous loci and the number of times those loci matched a CDS that was also similar to other loci in the schema.
+      pattern: "*_paralogous_counts.tsv"
+  - tsv:
+      type: file
+      description: file contains the sets of paralogous loci identified in the input sample
+      pattern: "*_paralogous_loci.tsv"
+  - txt:
+      type: file
+      description: file contains the log information
+      pattern: "*_logging_info.txt"
+  - tsv:
+      type: file
+      description: file contains the coordinates of the CDS in the input sample
+      pattern: "*_cds_coordinates.tsv"
+  - txt:
+      type: file
+      description:  file contains the list of alleles predicted by Prodigal that were excluded 
+      pattern: "*_invalid_cds.txt"
+authors:
+  - "@anwarMZ"
