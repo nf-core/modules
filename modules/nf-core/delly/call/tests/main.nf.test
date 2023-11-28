@@ -1,0 +1,142 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test delly/call
+nextflow_process {
+
+    name "Test Process DELLY_CALL"
+    script "../main.nf"
+    process "DELLY_CALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "delly"
+    tag "delly/call"
+
+    test("homo_sapiens - [bam,bai]") {
+
+        when {
+            process {
+                """
+
+                input = [
+                    [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                        [],
+                        [],
+                        [],
+                        ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [cram,crai]") {
+
+        config "./nextflow_call_cram.config"
+
+        when {
+            process {
+                """
+
+                input = [
+                    [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                        [],
+                        [],
+                        [],
+                        ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [cram,crai] - exclude_regions - bed") {
+
+        when {
+            process {
+                """
+
+                input = [
+                    [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                        [],
+                        [],
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true),
+                        ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [cram,crai] - genotype [vcf.gz, vcf.gz.tbi]") {
+
+        config "./nextflow_call_genotype.config"
+
+        when {
+            process {
+                """
+
+                input = [
+                    [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true),
+                        []
+                        ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
