@@ -63,8 +63,8 @@ process BAMSTATS_GENERALSTATS {
         
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-       bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats //; s/Using.*\$//' ))
+    "${task.process}": 
+       bamstats : \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats //; s/Using.*\$//' ))
     END_VERSIONS
     """
 
@@ -79,8 +79,8 @@ process BAMSTATS_GENERALSTATS {
     touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-       bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats //; s/Using.*\$//' ))
+    "${task.process}": 
+       bamstats : \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
