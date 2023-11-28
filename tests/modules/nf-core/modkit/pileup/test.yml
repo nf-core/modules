@@ -1,0 +1,12 @@
+- name: modkit pileup test_modkit_pileup
+  command: nextflow run ./tests/modules/nf-core/modkit/pileup -entry test_modkit_pileup -c ./tests/config/nextflow.config
+  tags:
+    - modkit/pileup
+    - modkit
+  files:
+    - path: output/modkit/test.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/modkit/test.paired_end.methylated.sorted_pileup.log
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/modkit/versions.yml
