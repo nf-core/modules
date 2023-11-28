@@ -30,11 +30,6 @@ input:
       pattern: "*.{fasta,fna,fsa,fa,fasta.gz,fna.gz,fsa.gz,fa.gz}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - results_xlsx:
       type: file
       description: Excel spreadsheet containing summary of StarAMR results.
