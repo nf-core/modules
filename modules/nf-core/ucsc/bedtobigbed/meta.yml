@@ -12,7 +12,6 @@ tools:
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       documentation: https://genome.ucsc.edu/goldenPath/help/bigBed.html
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: autoSql file to describe the columns of the BED file
       pattern: "*.{as}"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: bigBed file
       pattern: "*.{bigBed}"
-
 authors:
+  - "@drpatelh"
+maintainers:
   - "@drpatelh"

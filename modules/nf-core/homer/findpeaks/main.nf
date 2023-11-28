@@ -3,7 +3,7 @@ process HOMER_FINDPEAKS {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::homer=4.11=pl526hc9558a2_3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
         'biocontainers/homer:4.11--pl526hc9558a2_3' }"

@@ -2,7 +2,7 @@ process GATK4_PREPROCESSINTERVALS {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
@@ -35,7 +35,8 @@ process GATK4_PREPROCESSINTERVALS {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" PreprocessIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        PreprocessIntervals \\
         $include_command \\
         $exclude_command \\
         --reference $fasta \\
