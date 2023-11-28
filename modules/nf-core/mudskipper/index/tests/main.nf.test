@@ -33,9 +33,9 @@ nextflow_process {
                 { assert snapshot(file(process.out.index[0]).name).match("index") },
                 { assert snapshot(process.out.versions).match() },
                 { assert snapshot(list[0].name).match("gtf.map") },
-                { assert snapshot(list[1].name).match("gtf.name") },
-                { assert snapshot(list[1].name).match("gtf.len") },
-                { assert snapshot(list[1].name).match("gtf.exon") }
+                { assert snapshot(list[1]).match("gtf.name") },
+                { assert snapshot(list[2]).match("gtf.len") },
+                { assert snapshot(list[3]).match("gtf.exon") }
 
             )
 
