@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test bbmap/align
 nextflow_process {
 
     name "Test Process BBMAP_ALIGN"
@@ -11,7 +9,6 @@ nextflow_process {
     tag "bbmap"
     tag "bbmap/align"
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
     test("sarscov2 - [fasta,fastq] -  bam") {
 
         when {
@@ -35,11 +32,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.get(0).get(1)).match() },
-                { assert snapshot(path(process.out.bam.get(0).get(1))).match() }
+                { assert snapshot(path(process.out.bam.get(0).get(1))).match() },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.log.get(0).get(1) ==~ ".*/test.bbmap.log" }
             )
         }
-
     }
 
 }
