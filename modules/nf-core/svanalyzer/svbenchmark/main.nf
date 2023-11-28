@@ -42,8 +42,8 @@ process SVANALYZER_SVBENCHMARK {
         --prefix $prefix \\
         $bed
 
-    bgzip -c ${prefix}.falsenegatives.vcf > ${prefix}.falsenegatives.vcf.gz
-    bgzip -c ${prefix}.falsepositives.vcf > ${prefix}.falsepositives.vcf.gz
+    bgzip ${args2} --threads ${task.cpus} -c ${prefix}.falsenegatives.vcf > ${prefix}.falsenegatives.vcf.gz
+    bgzip ${args2} --threads ${task.cpus} -c ${prefix}.falsepositives.vcf > ${prefix}.falsepositives.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
