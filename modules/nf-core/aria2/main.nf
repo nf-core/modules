@@ -1,6 +1,6 @@
 
 process ARIA2 {
-    tag "$source_url"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -9,11 +9,11 @@ process ARIA2 {
         'biocontainers/aria2:1.36.0' }"
 
     input:
-    val source_url
+    tuple val(meta), val(source_url)
 
     output:
-    path ("$downloaded_file"), emit: downloaded_file
-    path "versions.yml"      , emit: versions
+    tuple val(meta), path("$downloaded_file"), emit: downloaded_file
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
