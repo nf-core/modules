@@ -13,10 +13,10 @@ nextflow_process {
         when {
             process {
                 """                
-                input = [[
+                input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
-                ]]
+                ]
                 """
             }
         }
