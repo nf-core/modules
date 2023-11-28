@@ -26,7 +26,7 @@ process GETORGANELLE_CONFIG {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$get_organelle_config.py --version | sed 's/^GetOrganelle v//g'))
+        : \$(echo \$(get_organelle_config.py --version | sed 's/^GetOrganelle v//g'))
     END_VERSIONS
     """
 
@@ -38,7 +38,7 @@ process GETORGANELLE_CONFIG {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(get_organelle_config.py --version | sed 's/^GetOrganelle v//g' ))
+        : \$(echo \$(get_organelle_config.py --version | sed 's/^GetOrganelle v//g'))
     END_VERSIONS
     """
 }
