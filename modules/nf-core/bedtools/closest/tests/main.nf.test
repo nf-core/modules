@@ -8,7 +8,7 @@ nextflow_process {
     tag "bedtools"
     tag "bedtools/closest"
 
-    test("test_bedtools_closest") {
+    test("homo_sapiens") {
         when {
             process {
                 """                
@@ -34,7 +34,7 @@ nextflow_process {
 
     }
 
-    test("test_bedtools_closest_fasta_fai") {
+    test("homo_sapiens - fai") {
         when {
             process {
                 """                
@@ -57,7 +57,7 @@ nextflow_process {
 
     }
 
-    test("test_bedtools_closest_vcf") {
+    test("homo_sapiens - vcf") {
         when {
             process {
                 """                
