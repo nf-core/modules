@@ -8,7 +8,9 @@ process MODKIT_PILEUP {
         'biocontainers/ont-modkit:0.2.2--hdcf5f25_0' }"
 
     input:
-    tuple val(meta), path(bam), val(out_bed)
+    tuple val(meta), path(bam)
+    path bai
+    path out_bed
 
     output:
     tuple val(meta), path(out_bed), emit: bed
@@ -21,14 +23,17 @@ process MODKIT_PILEUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def filename = "${bam}"[0..<"${bam}".lastIndexOf('.')]
     
     """
+    mkdir -p tmp/ &&
+    cp $bam $bai tmp/ &&
     modkit \\
         pileup \\
-        $bam \\
+        tmp/$bam \\
         $out_bed \\
         --threads $task.cpus \\
-        --log-filepath ${prefix}_pileup.log \\
+        --log-filepath ${filename}_pileup.log \\
         $args
 
 
@@ -41,9 +46,10 @@ process MODKIT_PILEUP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def filename = "${bam}"[0..<"${bam}".lastIndexOf('.')]
     """
     touch $out_bed
-    touch ${prefix}_pileup.log
+    touch ${filename}_pileup.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
