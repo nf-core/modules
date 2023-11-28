@@ -22,7 +22,7 @@ process BAMSTATS_GENERALSTATS {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "bioconda::bamstats=0.3.5"
+    conda "bioconda:bamstats=0.3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0':
         'biocontainers/bamstats:0.3.5--he881be0_0' }"
