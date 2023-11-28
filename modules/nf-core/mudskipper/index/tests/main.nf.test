@@ -20,19 +20,19 @@ nextflow_process {
         }
 
         then {
-            def list = []
+            def map = [:]
             file(process.out.index[0]).eachFileRecurse  { f ->
-                list << f
+                map[f.name] = f
             }
 
             assertAll(
                 { assert process.success },
                 { assert snapshot(file(process.out.index[0]).name).match("index") },
                 { assert snapshot(process.out.versions).match() },
-                { assert snapshot(list[0].name).match("gtf.map") },
-                { assert snapshot(list[1]).match("gtf.name") },
-                { assert snapshot(list[2]).match("gtf.len") },
-                { assert snapshot(list[3]).match("gtf.exon") }
+                { assert snapshot(map["gtf.map"].name).match("gtf.map") },
+                { assert snapshot(map["gtf.name"]).match("gtf.name") },
+                { assert snapshot(map["gtf.len"]).match("gtf.len") },
+                { assert snapshot(map["gtf.exon"]).match("gtf.exon") }
 
             )
 
