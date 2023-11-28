@@ -26,14 +26,14 @@ nextflow_process {
                 { assert process.success },
 
                 // md5 for these outputs change on each run (they contain dates) and so I can only compare filename
-                { assert snapshot(file(process.out.results_xlsx.get(0).get(1)).name).match("test_results.xlsx") },
-                { assert snapshot(file(process.out.settings_txt.get(0).get(1)).name).match("test_settings.txt") },
+                { assert snapshot(file(process.out.results_xlsx.get(0).get(1)).name).match("test_results_xlsx") },
+                { assert snapshot(file(process.out.settings_txt.get(0).get(1)).name).match("test_settings_txt") },
 
-                { assert snapshot(path(process.out.summary_tsv.get(0).get(1))).match("test_summary.tsv") },
-                { assert snapshot(path(process.out.detailed_summary_tsv.get(0).get(1))).match("test_detailed_summary.tsv") },
-                { assert snapshot(path(process.out.resfinder_tsv.get(0).get(1))).match("test_resfinder.tsv") },
-                { assert snapshot(path(process.out.plasmidfinder_tsv.get(0).get(1))).match("test_plasmidfinder.tsv") },
-                { assert snapshot(path(process.out.mlst_tsv.get(0).get(1))).match("test_mlst.tsv") }
+                { assert snapshot(path(process.out.summary_tsv.get(0).get(1))).match("test_summary_tsv") },
+                { assert snapshot(path(process.out.detailed_summary_tsv.get(0).get(1))).match("test_detailed_summary_tsv") },
+                { assert snapshot(path(process.out.resfinder_tsv.get(0).get(1))).match("test_resfinder_tsv") },
+                { assert snapshot(path(process.out.plasmidfinder_tsv.get(0).get(1))).match("test_plasmidfinder_tsv") },
+                { assert snapshot(path(process.out.mlst_tsv.get(0).get(1))).match("test_mlst_tsv") }
             )
         }
     }
