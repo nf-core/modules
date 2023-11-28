@@ -46,10 +46,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - json:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: json containing sample information
+      pattern: "*.json"
 
 authors:
   - "@johnoooh"
