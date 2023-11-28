@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process MUDSKIPPER_INDEX"
+    script "../main.nf"
+    process "MUDSKIPPER_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mudskipper"
+    tag "mudskipper/index"
+
+    test("homo_sapiens gtf") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            println process.out.index[0]
+            println process.out.index[0].getClass()
+
+            def list = []
+            file(process.out.index[0]).eachFileRecurse  { f ->
+                list << f
+            }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.index[0]).name).match("index") },
+                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(list[0].name).match("gtf.map") },
+                { assert snapshot(list[1].name).match("gtf.name") },
+                { assert snapshot(list[1].name).match("gtf.len") },
+                { assert snapshot(list[1].name).match("gtf.exon") }
+
+            )
+
+
+
+        }
+
+    }
+
+}
