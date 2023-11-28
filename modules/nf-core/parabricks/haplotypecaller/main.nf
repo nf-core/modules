@@ -44,7 +44,7 @@ process PARABRICKS_HAPLOTYPECALLER {
         $interval_command \\
         --out-variants ${prefix}.vcf.gz
         --num-threads $task.cpus \\
-        --num-gpus $task.accellerator.request \\
+        --num-gpus $task.accelerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
