@@ -9,7 +9,6 @@ include { SENTIEON_HAPLOTYPER as SENTIEON_HAPLOTYPER_INTERVALS_BOTH        } fro
 include { SENTIEON_HAPLOTYPER as SENTIEON_HAPLOTYPER_INTERVALS_DBSNP_BOTH  } from '../../../../../modules/nf-core/sentieon/haplotyper/main.nf'
 
 workflow test_haplotyper_vcf {
-    emit_mode = 'vcf'
 
     input     = [ [ id:'test' ], // meta map
                   file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -19,11 +18,10 @@ workflow test_haplotyper_vcf {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    SENTIEON_HAPLOTYPER_VCF ( emit_mode, input, fasta, fai, [], [])
+    SENTIEON_HAPLOTYPER_VCF ( input, fasta, fai, [], [], 'variant', false)
 }
 
 workflow test_haplotyper_gvcf {
-    emit_mode = 'gvcf'
 
     input     = [ [ id:'test' ], // meta map
                   file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -33,11 +31,10 @@ workflow test_haplotyper_gvcf {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    SENTIEON_HAPLOTYPER_VCF ( emit_mode, input, fasta, fai, [], [])
+    SENTIEON_HAPLOTYPER_VCF ( input, fasta, fai, [], [], '', true)
 }
 
 workflow test_haplotyper_both {
-    emit_mode = 'both'
 
     input     = [ [ id:'test' ], // meta map
                   file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -47,11 +44,10 @@ workflow test_haplotyper_both {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    SENTIEON_HAPLOTYPER_BOTH ( emit_mode, input, fasta, fai, [], [])
+    SENTIEON_HAPLOTYPER_BOTH ( input, fasta, fai, [], [], 'variant', true)
 }
 
 workflow test_haplotyper_intervals_both {
-    emit_mode = 'both'
 
     input     = [ [ id:'test' ], // meta map
                   file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -61,11 +57,10 @@ workflow test_haplotyper_intervals_both {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    SENTIEON_HAPLOTYPER_INTERVALS_BOTH ( emit_mode, input, fasta, fai, [], [])
+    SENTIEON_HAPLOTYPER_INTERVALS_BOTH ( input, fasta, fai, [], [], 'variant', true)
 }
 
 workflow test_haplotyper_intervals_dbsnp_both {
-    emit_mode = 'both'
 
     input     = [ [ id:'test' ], // meta map
                   file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -78,5 +73,5 @@ workflow test_haplotyper_intervals_dbsnp_both {
     dbsnp = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     dbsnp_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
 
-    SENTIEON_HAPLOTYPER_INTERVALS_DBSNP_BOTH ( emit_mode, input, fasta, fai, dbsnp, dbsnp_tbi)
+    SENTIEON_HAPLOTYPER_INTERVALS_DBSNP_BOTH (input, fasta, fai, dbsnp, dbsnp_tbi, 'variant', true)
 }

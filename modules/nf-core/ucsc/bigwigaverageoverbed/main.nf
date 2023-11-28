@@ -3,7 +3,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-bigwigaverageoverbed=377"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bigwigaverageoverbed:377--h0b8a92a_2' :
         'biocontainers/ucsc-bigwigaverageoverbed:377--h0b8a92a_2' }"
@@ -30,6 +30,18 @@ process UCSC_BIGWIGAVERAGEOVERBED {
         $bigwig \\
         $bed \\
         ${prefix}.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ucsc: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

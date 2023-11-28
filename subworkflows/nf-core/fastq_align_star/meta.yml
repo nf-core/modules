@@ -6,13 +6,14 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
   - star/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - ch_reads:
       description: |
@@ -45,7 +46,6 @@ input:
       type: file
       description: Reference genome fasta file
       pattern: "*.{fasta,fa,fna}"
-
 output:
   - orig_bam:
       description: |
@@ -104,4 +104,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@JoseEspinosa"
+maintainers:
   - "@JoseEspinosa"

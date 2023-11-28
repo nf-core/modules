@@ -2,12 +2,7 @@ process CELLRANGER_VDJ {
     tag "${meta.id}"
     label 'process_high'
 
-    container "docker.io/nfcore/cellranger:7.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/cellranger:7.1.0"
 
     input:
     tuple val(meta), path(reads)
@@ -21,6 +16,10 @@ process CELLRANGER_VDJ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
@@ -41,6 +40,10 @@ process CELLRANGER_VDJ {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${meta.id}/outs/"

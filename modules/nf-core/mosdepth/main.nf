@@ -2,10 +2,10 @@ process MOSDEPTH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::mosdepth=0.3.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.3--hdfd78af_1' :
-        'biocontainers/mosdepth:0.3.3--hdfd78af_1'}"
+        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.6--hd299d5a_0' :
+        'biocontainers/mosdepth:0.3.6--hd299d5a_0'}"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(bed)
@@ -35,10 +35,10 @@ process MOSDEPTH {
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
     if (bed && args.contains("--by")) {
-        exit 1, "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
+        error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
     if (!bed && args.contains("--thresholds")) {
-        exit 1, "'--thresholds' can only be specified in conjunction with '--by'"
+        error "'--thresholds' can only be specified in conjunction with '--by'"
     }
 
     """

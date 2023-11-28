@@ -2,7 +2,7 @@ process DASTOOL_DASTOOL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::das_tool=1.1.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.6--r42hdfd78af_0' :
         'biocontainers/das_tool:1.1.6--r42hdfd78af_0' }"
