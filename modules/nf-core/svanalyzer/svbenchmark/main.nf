@@ -3,6 +3,7 @@ process SVANALYZER_SVBENCHMARK {
     tag "$meta.id"
     label 'process_single'
 
+    //Conda is not supported at the moment: https://github.com/bioconda/bioconda-recipes/issues/37646
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svanalyzer:0.36--pl526_0':
@@ -27,6 +28,10 @@ process SVANALYZER_SVBENCHMARK {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SVANALYZER_SVBENCHMARK module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args   = task.ext.args ?: ''
     def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -53,6 +58,10 @@ process SVANALYZER_SVBENCHMARK {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SVANALYZER_SVBENCHMARK module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.36' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
