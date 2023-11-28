@@ -1,0 +1,37 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test presto/filterseq
+nextflow_process {
+
+    name "Test Process PRESTO_FILTERSEQ"
+    script "../main.nf"
+    process "PRESTO_FILTERSEQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "presto"
+    tag "presto/filterseq"
+
+    test("homo_sapiens - fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_2_fastq_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+
+    }
+
+}
