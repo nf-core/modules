@@ -19,7 +19,7 @@ process STARAMR_SEARCH {
     tuple val(meta), path("*_results/mlst.tsv")            , emit: mlst_tsv
     tuple val(meta), path("*_results/settings.txt")        , emit: settings_txt
     tuple val(meta), path("*_results/pointfinder.tsv")     , emit: pointfinder_tsv, optional: true
-    path "versions.yml"
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
