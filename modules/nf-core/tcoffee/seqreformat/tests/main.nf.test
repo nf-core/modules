@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process TCOFFEE_SEQREFORMAT"
+    script "../main.nf"
+    process "TCOFFEE_SEQREFORMAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tcoffee"
+    tag "tcoffee/seqreformat"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.formatted_file).match("formatted_file")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}
