@@ -32,3 +32,31 @@ workflow test_gatk4_markduplicates_multiple_cram_output {
 
     GATK4_MARKDUPLICATES_CRAM ( input, fasta, fai )
 }
+
+workflow test_gatk4_markduplicates_stub {
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+            ]
+
+    GATK4_MARKDUPLICATES ( input, [], [] )
+}
+
+workflow test_gatk4_markduplicates_multiple_bams_stub {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
+            ] ]
+
+    GATK4_MARKDUPLICATES ( input, [], [] )
+}
+
+workflow test_gatk4_markduplicates_multiple_cram_output_stub {
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
+            ] ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    GATK4_MARKDUPLICATES_CRAM ( input, fasta, fai )
+}

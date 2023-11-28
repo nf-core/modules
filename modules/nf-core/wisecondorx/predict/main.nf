@@ -3,7 +3,7 @@ process WISECONDORX_PREDICT {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::wisecondorx=1.2.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.5--pyh5e36f6f_0':
         'biocontainers/wisecondorx:1.2.5--pyh5e36f6f_0' }"
@@ -30,6 +30,8 @@ process WISECONDORX_PREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = blacklist ? "--blacklist ${blacklist}" : ""
 
+    def plots = args.contains("--plot") ? "mv ${prefix}.plots/* ." : ""
+
     def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -39,6 +41,8 @@ process WISECONDORX_PREDICT {
         ${prefix} \\
         ${bed} \\
         ${args}
+
+    ${plots}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

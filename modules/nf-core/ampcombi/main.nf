@@ -2,7 +2,7 @@ process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ampcombi=0.1.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ampcombi:0.1.7--pyhdfd78af_0':
         'biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"

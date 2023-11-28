@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process DIAMOND_MAKEDB"
+    script "../main.nf"
+    process "DIAMOND_MAKEDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/makedb"
+
+    test("Should build a DIAMOND db file from a fasta file") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("db") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should build a DIAMOND db file from a zipped fasta file") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("gz_db") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}

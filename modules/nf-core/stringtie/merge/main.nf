@@ -2,7 +2,7 @@ process STRINGTIE_MERGE {
     label 'process_medium'
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
-    conda "bioconda::stringtie=2.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2' :
         'biocontainers/stringtie:2.2.1--hecb563c_2' }"

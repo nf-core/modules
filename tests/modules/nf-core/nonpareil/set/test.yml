@@ -1,0 +1,8 @@
+- name: nonpareil set test_nonpareil_set
+  command: nextflow run ./tests/modules/nf-core/nonpareil/set -entry test_nonpareil_set -c ./tests/config/nextflow.config
+  tags:
+    - nonpareil
+    - nonpareil/set
+  files:
+    - path: output/nonpareil/test.png
+    - path: output/nonpareil/versions.yml

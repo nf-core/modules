@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/TCLamnidis/Sex.DetERRmine"
       doi: "10.1038/s41467-018-07483-5"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: Output from samtools depth (with header)
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: TSV table of relative coverages on the X and Y, with associated error bars.
       pattern: "*.tsv"
-
 authors:
+  - "@TCLamnidis"
+maintainers:
   - "@TCLamnidis"
