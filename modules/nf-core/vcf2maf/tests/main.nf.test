@@ -25,7 +25,8 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out).match() }
+            { assert snapshot(process.out).match() },
+            { assert path(process.out.maf[0][1]).readLines().size() == 132 }
             )
         }
     }
@@ -62,7 +63,8 @@ nextflow_process {
         then{
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out).match() }
+            { assert snapshot(process.out).match() },
+            { assert path(process.out.maf[0][1]).readLines().size() == 2 } // no variants, only header lines
             )
         }
     }
