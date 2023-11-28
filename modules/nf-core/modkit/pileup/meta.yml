@@ -22,6 +22,14 @@ input:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: Associated index file for BAM
+      pattern: "*.bai"
+  - out_bed:
+      type: file
+      description: Expected output bed file
+      pattern: "*.bed"
 output:
   - meta:
       type: map
