@@ -5,8 +5,8 @@ process SVANALYZER_SVBENCHMARK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svanalyzer:0.35--pl526_0':
-        'biocontainers/svanalyzer:0.35--pl526_0' }"
+        'https://depot.galaxyproject.org/singularity/svanalyzer:0.36--pl526_0':
+        'biocontainers/svanalyzer:0.36--pl526_0' }"
 
     input:
     tuple val(meta), path(test)
@@ -31,7 +31,7 @@ process SVANALYZER_SVBENCHMARK {
     def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = bed ? "-includebed $bed" : ""
-    def VERSION = '0.35' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '0.36' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     svanalyzer \\
@@ -55,7 +55,7 @@ process SVANALYZER_SVBENCHMARK {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.35' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '0.36' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.falsenegatives.vcf.gz
