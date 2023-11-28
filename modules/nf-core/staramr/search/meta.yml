@@ -36,10 +36,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - results_xlsx:
       type: file
       description: Excel spreadsheet containing summary of StarAMR results.
@@ -80,6 +76,10 @@ output:
       type: file
       description: An optional tabular file of each AMR point mutation and additional BLAST information from the PointFinder database, one gene per line.
       pattern: "*_results/pointfinder.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@apetkau"
