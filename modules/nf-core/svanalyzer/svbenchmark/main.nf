@@ -27,7 +27,8 @@ process SVANALYZER_SVBENCHMARK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = bed ? "-includebed $bed" : ""
     def VERSION = '0.35' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
