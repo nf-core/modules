@@ -9,13 +9,13 @@ nextflow_process {
     tag "staramr"
     tag "staramr/search"
 
-    test("staramr_search - haemophilus_influenzae - genome_fna_gz") {
+    test("staramr_search - bacteroides_fragilis - genome_fna_gz") {
         when {
             process {
                 """                
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
                 ]
                 """
             }
