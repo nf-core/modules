@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.aln).match("aln")},
+                { assert snapshot(process.out.alignment).match("alignment")},
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
