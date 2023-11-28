@@ -26,7 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(file(process.out.gfa.get(0).get(1)).name).match("output/miniasm/test.gfa.gz") },
+                { assert snapshot(file(process.out.assembly.get(0).get(1)).name).match("output/miniasm/test.fasta.gz") },
+                { assert snapshot(process.out.versions).match("versions") }
+                // Unstable hashes { assert snapshot(process.out).match() }
             )
         }
 
