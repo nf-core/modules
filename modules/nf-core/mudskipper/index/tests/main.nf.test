@@ -20,9 +20,6 @@ nextflow_process {
         }
 
         then {
-            println process.out.index[0]
-            println process.out.index[0].getClass()
-
             def list = []
             file(process.out.index[0]).eachFileRecurse  { f ->
                 list << f
