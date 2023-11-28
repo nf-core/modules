@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bamstats_generalstats"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - bam
@@ -9,7 +8,6 @@ keywords:
   - genomics
 tools:
   - "bamstats":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A command line tool to compute mapping statistics from a BAM file"
       homepage: "https://github.com/guigolab/bamstats/"
       documentation: "https://github.com/guigolab/bamstats/"
@@ -17,7 +15,6 @@ tools:
       doi: ""
       licence: "['BSD-3-clause']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -32,7 +29,6 @@ input:
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -48,7 +44,7 @@ output:
   ## TODO nf-core: Delete / customise this example output
   - json:
       type: file
-      description: json containing sample information
+      description: json containing bam statistics
       pattern: "*.json"
 
 authors:
