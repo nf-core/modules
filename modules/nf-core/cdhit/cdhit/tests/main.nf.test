@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process CDHIT_CDHIT"
+    script "../main.nf"
+    process "CDHIT_CDHIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cdhit"
+    tag "cdhit/cdhit"
+
+    test("proteomics db yeast_ups") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
