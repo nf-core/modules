@@ -32,10 +32,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out.fastq).match("fastq") },
-                { assert snapshot(workflow.out.interop).match("interop") },
-                { assert snapshot(workflow.out.reports).match("reports") },
-                { assert snapshot(workflow.out.versions).match("versions") },
+                { assert snapshot(workflow.out.fastq).match("fastq_bclconvert") },
+                { assert snapshot(workflow.out.interop).match("interop_bclconvert") },
+                { assert snapshot(workflow.out.reports).match("reports_bclconvert") },
+                { assert snapshot(workflow.out.versions).match("versions_bclconvert") },
             )
         }
     }
@@ -61,10 +61,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out.fastq).match("fastq") },
-                { assert snapshot(workflow.out.interop).match("interop") },
-                { assert snapshot(workflow.out.reports).match("reports") },
-                { assert snapshot(workflow.out.versions).match("versions") },
+                { assert snapshot(workflow.out.fastq).match("fastq_bcl2fastq") },
+                { assert snapshot(workflow.out.interop).match("interop_bcl2fastq") },
+                { assert snapshot(workflow.out.reports).match("reports_bcl2fastq") },
+                { assert snapshot(workflow.out.versions).match("versions_bcl2fastq") },
             )
         }
     }
