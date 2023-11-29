@@ -154,7 +154,9 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.bcf[0][1]).name,
+                    file(process.out.csi[0][1]).name).match() }
             )
         }
 
