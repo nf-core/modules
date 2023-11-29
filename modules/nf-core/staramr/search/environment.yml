@@ -1,10 +1,10 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-name: "staramr_search"
+name: staramr_search
+
 channels:
   - conda-forge
   - bioconda
   - defaults
+
 dependencies:
-  - "bioconda::staramr=0.10.0"
-  - "bioconda::mlst=2.23.0"
+  - bioconda::mlst=2.23.0
+  - bioconda::staramr=0.10.0
