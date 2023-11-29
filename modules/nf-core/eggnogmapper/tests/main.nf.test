@@ -1,0 +1,52 @@
+nextflow_process {
+
+    name "Test Process EGGNOGMAPPER"
+    script "../main.nf"
+    process "EGGNOGMAPPER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eggnogmapper"
+
+    test("Should search for protein annotations against the eggnogmapper db") {
+
+        setup {
+            run("DIAMOND_MAKEDB") {
+                script "../../diamond/makedb/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
+                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+                eggnog_data_dir = "${workDir}/tmp/"
+                input[1] = eggnog_db
+                input[2] = eggnog_data_dir
+                input[3] = DIAMOND_MAKEDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
+                { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
+                { assert snapshot(process.out.hits).match("hits") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}
