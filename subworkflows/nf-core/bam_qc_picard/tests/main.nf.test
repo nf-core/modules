@@ -42,9 +42,27 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
-            )
+                { assert snapshot(
+                    workflow.out.coverage_metrics[0].get(0),
+                    file(workflow.out.coverage_metrics[0].get(1)).name,
+                    path(workflow.out.coverage_metrics[0].get(1)).readLines()[0..2],
+                    workflow.out.multiple_metrics[0].get(0),
+                    file(workflow.out.multiple_metrics[0].get(1).get(0)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(0)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(1)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(1)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(2)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(2)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(3)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(3)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(4)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(4)).readLines()[0..2],
+                    workflow.out.versions
+                    ).match()
+                }
+
+
+                )
         }
     }
 
@@ -76,11 +94,31 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
+             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
-            )
+                { assert snapshot(
+                    workflow.out.coverage_metrics[0].get(0),
+                    file(workflow.out.coverage_metrics[0].get(1)).name,
+                    path(workflow.out.coverage_metrics[0].get(1)).readLines()[0..2],
+                    workflow.out.multiple_metrics[0].get(0),
+                    file(workflow.out.multiple_metrics[0].get(1).get(0)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(0)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(1)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(1)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(2)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(2)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(3)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(3)).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0].get(1).get(4)).name,
+                    path(workflow.out.multiple_metrics[0].get(1).get(4)).readLines()[0..2],
+                    workflow.out.versions
+                    ).match()
+                }
+
+
+                )
+
         }
     }
+
 }
