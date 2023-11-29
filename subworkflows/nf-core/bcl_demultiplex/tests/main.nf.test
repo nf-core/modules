@@ -1,0 +1,67 @@
+nextflow_workflow {
+
+    name "Test Workflow BCL_DEMULTIPLEX"
+    script "../main.nf"
+    workflow "BCL_DEMULTIPLEX"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bcl_demultiplex"
+    tag "subworkflows/bcl_demultiplex"
+    tag "bclconvert"
+    tag "bcl2fastq"
+
+
+    test("homo_sapiens - bclconvert") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                            [id:'test', lane:1 ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
+                            file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
+                            ])
+
+                input[1] = ['bclconvert']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.fastq).match("fastq") },
+                { assert snapshot(workflow.out.interop).match("interop") },
+                { assert snapshot(workflow.out.reports).match("reports") },
+                { assert snapshot(workflow.out.versions).match("versions") },
+            )
+        }
+    }
+
+    test("homo_sapiens - bcl2fastq") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                            [id:'test', lane:1 ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
+                            file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
+                            ])
+
+                input[1] = ['bcl2fastq']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.fastq).match("fastq") },
+                { assert snapshot(workflow.out.interop).match("interop") },
+                { assert snapshot(workflow.out.reports).match("reports") },
+                { assert snapshot(workflow.out.versions).match("versions") },
+            )
+        }
+    }
+}
