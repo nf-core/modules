@@ -35,12 +35,15 @@ process DRAGEN {
     tuple val(meta), path("${prefix}.improper.pairs.bw")            , optional: true, emit: improper_pairs_bw
     tuple val(meta), path("${prefix}.insert-stats.tab")             , optional: true, emit: insert_stats_tab
     tuple val(meta), path("${prefix}.mapping_metrics.csv")          , optional: true, emit: mapping_metrics_csv
-    tuple val(meta), path("${prefix}.pcr-model.log")                , optional: true, emit: pcr_model_log
+    tuple val(meta), path("${prefix}.pcr-mode*.log")                , optional: true, emit: pcr_model_log
     tuple val(meta), path("${prefix}.ploidy.vcf")                   , optional: true, emit: ploidy_vcf
     tuple val(meta), path("${prefix}.ploidy.vcf.gz.md5sum")         , optional: true, emit: ploidy_vcf_gz_md5sum
     tuple val(meta), path("${prefix}.ploidy.vcf.gz.tbi")            , optional: true, emit: ploidy_vcf_gz_tbi
     tuple val(meta), path("${prefix}.ploidy_estimation_metrics.csv"), optional: true, emit: ploidy_estimation_metrics_csv
     tuple val(meta), path("${prefix}-replay.json")                  , optional: true, emit: replay_json
+    tuple val(meta), path("${prefix}.repeats.bam")                  , optional: true, emit: repeats_bam
+    tuple val(meta), path("${prefix}.repeats.vcf.gz")               , optional: true, emit: repeats_vcf_gz
+    tuple val(meta), path("${prefix}.repeats.vcf.gz.tbi")           , optional: true, emit: repeats_vcf_gz_tbi
     tuple val(meta), path("${prefix}.roh.bed")                      , optional: true, emit: roh_bed
     tuple val(meta), path("${prefix}.roh_metrics.csv")              , optional: true, emit: roh_metrics_csv
     tuple val(meta), path("${prefix}.seg.bw")                       , optional: true, emit: seg_bw
@@ -69,6 +72,7 @@ process DRAGEN {
     tuple val(meta), path("${prefix}.wgs_coverage_metrics.csv")     , optional: true, emit: wgs_coverage_metrics_csv
     tuple val(meta), path("${prefix}.wgs_hist.csv")                 , optional: true, emit: wgs_hist_csv
     tuple val(meta), path("${prefix}.wgs_overall_mean_cov.csv")     , optional: true, emit: wgs_overall_mean_cov_csv
+    path "./sort_spill/partitions.txt"                              , optional: true, emit: partitions_txt
     path "./sv/results/stats/alignmentStatsSummary.txt"             , optional: true, emit: alignmentStatsSummary_txt
     path "./sv/results/stats/candidate_metrics.csv"                 , optional: true, emit: candidate_metrics_csv
     path "./sv/results/stats/diploidSV.sv_metrics.csv"              , optional: true, emit: diploidSV_sv_metrics_csv
@@ -89,6 +93,7 @@ process DRAGEN {
     path "body.txt"                                                 , emit: body_txt
     path "dragen.time_metrics.csv"                                  , emit: dragen_time_metrics_csv
     path "header.txt"                                               , emit: header_txt
+    path "streaming_log_*.csv"                                      , emit: streaming_log_csv
     path "versions.yml"                                             , emit: versions
 
     when:
