@@ -155,3 +155,80 @@
     - path: output/chewbbaca/results/test/short/genome-protein1_short.fasta
       md5sum: c1b28842a7e89e3bcc7d655afe51c609
     - path: output/chewbbaca/versions.yml
+
+- name: chewbbaca createschema test_chewbbaca_createschema_gz
+  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema_gz -c ./tests/config/nextflow.config
+  tags:
+    - chewbbaca
+    - chewbbaca/createschema
+  files:
+    - path: output/chewbbaca/results/cds_coordinates.tsv
+      md5sum: e62f4e808939f97ccdbe4d17c1521b6c
+    - path: output/chewbbaca/results/invalid_cds.txt
+      md5sum: d0afbd9996054d8838e62dc3e852fa07
+    - path: output/chewbbaca/results/test/.genes_list
+      contains:
+        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+    - path: output/chewbbaca/results/test/.schema_config
+      md5sum: 92b512f65fde7dce321ada54e5c431e9
+    - path: output/chewbbaca/results/test/contigs-protein1.fasta
+      md5sum: 79f1e1c7105c0b34195e18c34960d2d4
+    - path: output/chewbbaca/results/test/contigs-protein10.fasta
+      md5sum: 9fd40f7247cb3ed93f66828dbbfbac22
+    - path: output/chewbbaca/results/test/contigs-protein14.fasta
+      md5sum: 2a8023e86fb119834f2d050daee33958
+    - path: output/chewbbaca/results/test/contigs-protein16.fasta
+      md5sum: e006bb0da17f845c1672caed826d4ab7
+    - path: output/chewbbaca/results/test/contigs-protein17.fasta
+      md5sum: 58f2501c0a7e48aaa86a87d01740b5c4
+    - path: output/chewbbaca/results/test/contigs-protein18.fasta
+      md5sum: 6b4f385dc954df1fd2057a1c57872338
+    - path: output/chewbbaca/results/test/contigs-protein19.fasta
+      md5sum: 3614c079d0b08f0c59bdaac9dcea0409
+    - path: output/chewbbaca/results/test/contigs-protein2.fasta
+      md5sum: 0b982a66a0f001f11a86cc1b5a4ef80d
+    - path: output/chewbbaca/results/test/contigs-protein20.fasta
+      md5sum: 75b2492e5db0848079faafe6f60fe9fd
+    - path: output/chewbbaca/results/test/contigs-protein4.fasta
+      md5sum: 4ce5090bf2547bc588f0f8d00ae4a59d
+    - path: output/chewbbaca/results/test/contigs-protein6.fasta
+      md5sum: ffebf19b61285767a14f486af7181c30
+    - path: output/chewbbaca/results/test/contigs-protein7.fasta
+      md5sum: ee06d9303c5b7844b003daa42b7a1869
+    - path: output/chewbbaca/results/test/contigs-protein8.fasta
+      md5sum: 2a00efc36b036ab7f6c30f85533963cf
+    - path: output/chewbbaca/results/test/contigs-protein9.fasta
+      md5sum: ad9372b812030db327fa12d1e1731e85
+    - path: output/chewbbaca/results/test/genome-protein1.fasta
+      md5sum: c1b28842a7e89e3bcc7d655afe51c609
+    - path: output/chewbbaca/results/test/short/contigs-protein10_short.fasta
+      md5sum: 9fd40f7247cb3ed93f66828dbbfbac22
+    - path: output/chewbbaca/results/test/short/contigs-protein14_short.fasta
+      md5sum: 2a8023e86fb119834f2d050daee33958
+    - path: output/chewbbaca/results/test/short/contigs-protein16_short.fasta
+      md5sum: e006bb0da17f845c1672caed826d4ab7
+    - path: output/chewbbaca/results/test/short/contigs-protein17_short.fasta
+      md5sum: 58f2501c0a7e48aaa86a87d01740b5c4
+    - path: output/chewbbaca/results/test/short/contigs-protein18_short.fasta
+      md5sum: 6b4f385dc954df1fd2057a1c57872338
+    - path: output/chewbbaca/results/test/short/contigs-protein19_short.fasta
+      md5sum: 3614c079d0b08f0c59bdaac9dcea0409
+    - path: output/chewbbaca/results/test/short/contigs-protein1_short.fasta
+      md5sum: 79f1e1c7105c0b34195e18c34960d2d4
+    - path: output/chewbbaca/results/test/short/contigs-protein20_short.fasta
+      md5sum: 75b2492e5db0848079faafe6f60fe9fd
+    - path: output/chewbbaca/results/test/short/contigs-protein2_short.fasta
+      md5sum: 0b982a66a0f001f11a86cc1b5a4ef80d
+    - path: output/chewbbaca/results/test/short/contigs-protein4_short.fasta
+      md5sum: 4ce5090bf2547bc588f0f8d00ae4a59d
+    - path: output/chewbbaca/results/test/short/contigs-protein6_short.fasta
+      md5sum: ffebf19b61285767a14f486af7181c30
+    - path: output/chewbbaca/results/test/short/contigs-protein7_short.fasta
+      md5sum: ee06d9303c5b7844b003daa42b7a1869
+    - path: output/chewbbaca/results/test/short/contigs-protein8_short.fasta
+      md5sum: 2a00efc36b036ab7f6c30f85533963cf
+    - path: output/chewbbaca/results/test/short/contigs-protein9_short.fasta
+      md5sum: ad9372b812030db327fa12d1e1731e85
+    - path: output/chewbbaca/results/test/short/genome-protein1_short.fasta
+      md5sum: c1b28842a7e89e3bcc7d655afe51c609
+    - path: output/chewbbaca/versions.yml

@@ -30,7 +30,7 @@ process CHEWBBACA_CREATESCHEMA {
     def cds = cds ? "--cds ${cds}" : ""
 
     """
-    
+    find ./input_genomes/ -name "*.gz" | sed 's/.gz//' | xargs -I {} bash -c 'gzip -cdf {}.gz > {}'
 
     chewie \\
         CreateSchema \\
