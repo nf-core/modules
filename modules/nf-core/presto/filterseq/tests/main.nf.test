@@ -12,14 +12,26 @@ nextflow_process {
     tag "presto/filterseq"
 
     test("homo_sapiens - fastq") {
+
+        setup {
+
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_1_fastq_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_2_fastq_gz'], checkIfExists: true)
-                ]
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }

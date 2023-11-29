@@ -22,13 +22,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  - R1:
+  - reads:
       type: file
-      description: R1 fastq file
-      pattern: "*.{fastq}"
-  - R2:
-      type: file
-      description: R2 fastq file
+      description: fastq file
       pattern: "*.{fastq}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
@@ -42,29 +38,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - R1_filtered:
+  - reads:
       type: file
-      description: R1 fastq file
-      pattern: "*.{fastq}"
-  - R2_filtered:
-      type: file
-      description: R2 fastq file
+      description: filtered fastq file
       pattern: "*.{fastq}"
   - logs:
       type: file
       description: command logs
       pattern: "*.txt"
-  - R1_log:
-      type: file
-      description: individual unparsed log for R1 file
-      pattern: "*.txt"
-  - R2_log:
-      type: file
-      description: individual unparsed log for R2 file
-      pattern: "*.txt"
   - log_tab:
       type: file
       description: parsed log table
+      pattern: "*.tab"
 
 authors:
   - "@ggabernet"
