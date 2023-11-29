@@ -13,7 +13,7 @@ process TCOFFEE_ALIGN {
     tuple val(meta3),  path(template), path(accessory_informations)
 
     output:
-    tuple val (meta), path ("*.aln"), emit: msa
+    tuple val (meta), path ("*.aln"), emit: alignment
     path "versions.yml" , emit: versions
 
     when:
