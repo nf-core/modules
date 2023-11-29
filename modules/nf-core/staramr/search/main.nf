@@ -41,7 +41,8 @@ process STARAMR_SEARCH {
         -o ${prefix}_results \\
         $genome_uncompressed_name
 
-    gzip "${prefix}_results"/*.{tsv,txt}
+    # Use -n to not store original filename/timestamp so output is stable for testing
+    gzip -n "${prefix}_results"/*.{tsv,txt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
