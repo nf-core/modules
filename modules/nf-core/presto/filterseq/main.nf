@@ -21,6 +21,7 @@ process PRESTO_FILTERSEQ {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     FilterSeq.py quality \\
@@ -30,7 +31,7 @@ process PRESTO_FILTERSEQ {
     --nproc ${task.cpus} \\
     $args > ${meta.id}_command_log.txt
 
-    ParseLog.py -l ${reads.baseName}.log -f ID QUALITY
+    ParseLog.py -l ${reads.baseName}.log $args2 -f ID QUALITY
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
