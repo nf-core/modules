@@ -10,7 +10,7 @@ process MUSCLE5_SUPER5 {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.aln"), emit: aligned_fasta
+    tuple val(meta), path("*.aln"), emit: alignment
     path "versions.yml"           , emit: versions
 
     when:
