@@ -4,8 +4,8 @@ process BEDTOOLS_CLOSEST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h7d7f7ad_2':
-        'biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0
+        'biocontainers/bedtools:2.31.1--hf5e1c6e_0
 
     input:
     tuple val(meta), path(input_1), path(input_2)
