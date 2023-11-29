@@ -63,8 +63,11 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(workflow.out.fastq).match("fastq_bcl2fastq") },
                 { assert snapshot(workflow.out.interop).match("interop_bcl2fastq") },
+                { assert snapshot(workflow.out.interop[0][1].findAll {
+                    file(it).name != "IndexMetricsOut.bin" }).match() },
                 { assert snapshot(workflow.out.reports).match("reports_bcl2fastq") },
                 { assert snapshot(workflow.out.versions).match("versions_bcl2fastq") },
+
             )
         }
     }
