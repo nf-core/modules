@@ -21,6 +21,7 @@ process GETORGANELLE_CONFIG {
     def args = task.ext.args ?: ''
     """
     get_organelle_config.py \\
+        $args \\
         -a ${organelle_type} \\
         --config-dir getorganelle
 
