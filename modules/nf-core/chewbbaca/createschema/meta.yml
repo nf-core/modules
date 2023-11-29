@@ -1,0 +1,57 @@
+---
+name: "chewbbaca_createschema"
+description: write your description here
+keywords:
+  - cgMLST
+  - WGS
+  - genomics
+tools:
+  - "chewbbaca":
+      description: "A complete suite for gene-by-gene schema creation and strain identification."
+      homepage: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
+      doi: "10.1099/mgen.0.000166"
+      licence: ["GPL v3"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - fasta:
+      type: directory
+      description: One or multiple FASTA files to create schema from
+      pattern: "*.{fasta,fa,fas,fna,fasta.gz,fa.gz,fas.gz,fna.gz}"
+  
+  - prodigal_tf:
+      type: file
+      description: File containing the prodigal training file
+      pattern: "*.ptf"
+
+  - cds:
+      type: file
+      description: File containing the prodigal cds file
+      pattern: "*.cds"  
+
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  
+  - schema_dir:
+      type: directory
+      description: schema directory
+      pattern: "*/"
+  
+
+authors:
+  - "@anwarMZ"
