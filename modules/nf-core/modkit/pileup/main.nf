@@ -24,7 +24,6 @@ process MODKIT_PILEUP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def filename = "${bam}"[0..<"${bam}".lastIndexOf('.')]
-    
     """
     mkdir -p tmp/ &&
     cp $bam $bai tmp/ &&
