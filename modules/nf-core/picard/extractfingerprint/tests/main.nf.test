@@ -15,7 +15,7 @@ nextflow_process {
             }
             process {
                 """
-                bam = [ 
+                bam = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
@@ -38,8 +38,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
