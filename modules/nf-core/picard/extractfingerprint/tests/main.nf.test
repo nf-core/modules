@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process PICARD_EXTRACTFINGERPRINT"
+    script "../main.nf"
+    process "PICARD_EXTRACTFINGERPRINT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard_extractfingerprint"
+
+    test("Single-Read") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.test_data['homo_sapiens']['illumina']['bam']['test.paired_end.markduplicates.sorted.bam'], checkIfExists: true)]
+                ],
+                input[1] = [ file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true) ],
+                input[2] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ],
+                input[3] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta.fai'], checkIfExists: true) ],
+                input[4] = [ file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success }
+            )
+        }
+    }
+}
