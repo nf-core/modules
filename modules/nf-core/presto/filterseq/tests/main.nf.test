@@ -37,7 +37,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.versions).match() },
+                { assert path(process.out.log_tab.get(0)).getText().contains("QUALITY") },
+                { assert path(process.out.logs.get(0)).getText().contains("PASS") },
+                { assert process.out.reads.size() == 1 }
             )
         }
 
