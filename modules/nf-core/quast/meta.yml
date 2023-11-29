@@ -1,0 +1,61 @@
+name: quast
+description: Quality Assessment Tool for Genome Assemblies
+keywords:
+  - quast
+  - assembly
+  - quality
+  - contig
+  - scaffold
+tools:
+  - quast:
+      description: |
+        QUAST calculates quality metrics for genome assemblies
+      homepage: http://bioinf.spbau.ru/quast
+      doi: 10.1093/bioinformatics/btt086
+      licence: ["GPL-2.0-only"]
+input:
+  - consensus:
+      type: file
+      description: |
+        Fasta file containing the assembly of interest
+  - fasta:
+      type: file
+      description: |
+        The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
+  - gff:
+      type: file
+      description: The genome GFF file. Has to contain at least a non-empty string dummy value.
+output:
+  - quast:
+      type: directory
+      description: Directory containing complete quast report
+      pattern: "{prefix}/"
+  - report:
+      type: file
+      description: tab-separated version of the summary, suitable for spreadsheets and mqc
+      pattern: "${prefix}.tsv"
+  - misassemblies:
+      type: file
+      description: |
+        Report containing misassemblies, only when a reference fasta is provided
+      pattern: "${prefix}_misassemblies.tsv"
+  - transcriptome:
+      type: file
+      description: |
+        Report containing all the alignments of transcriptome to the assembly, only when a reference fasta is provided
+      pattern: "${prefix}_transcriptome.tsv"
+  - unaligned:
+      type: file
+      description: |
+        Report containing unaligned contigs, only when a reference fasta is provided
+      pattern: "${prefix}_unaligned.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@drpatelh"
+  - "@kevinmenden"
+maintainers:
+  - "@drpatelh"
+  - "@kevinmenden"

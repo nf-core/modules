@@ -1,0 +1,9 @@
+- name: diamond makedb test_diamond_makedb
+  command: nextflow run ./tests/modules/nf-core/diamond/makedb -entry test_diamond_makedb -c ./tests/config/nextflow.config
+  tags:
+    - diamond/makedb
+    - diamond
+  files:
+    - path: output/diamond/test.dmnd
+      md5sum: 6039420745dd4db6e761244498460ae1
+    - path: output/diamond/versions.yml

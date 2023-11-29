@@ -1,0 +1,121 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Meta yaml",
+    "description": "Validate the meta yaml file for an nf-core subworkflow",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of the subworkflow"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the subworkflow"
+        },
+        "authors": {
+            "type": "array",
+            "description": "Authors of the subworkflow",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers": {
+            "type": "array",
+            "description": "Maintainers of the subworkflow",
+            "items": {
+                "type": "string"
+            }
+        },
+        "components": {
+            "type": "array",
+            "description": "Modules and subworkflows used in the subworkflow",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 0
+        },
+        "keywords": {
+            "type": "array",
+            "description": "Keywords for the module",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 3
+        },
+        "input": {
+            "type": "array",
+            "description": "Input channels for the subworkflow",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the input channel"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the input channel"
+                            },
+                            "pattern": {
+                                "type": "string",
+                                "description": "Pattern of the input channel, given in Java glob syntax"
+                            },
+                            "default": {
+                                "type": ["string", "number", "boolean", "array", "object"],
+                                "description": "Default value for the input channel"
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the input channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
+                            }
+                        },
+                        "required": ["description"]
+                    }
+                }
+            }
+        },
+        "output": {
+            "type": "array",
+            "description": "Output channels for the subworkflow",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the output channel"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the output channel"
+                            },
+                            "pattern": {
+                                "type": "string",
+                                "description": "Pattern of the input channel, given in Java glob syntax"
+                            },
+                            "enum": {
+                                "type": "array",
+                                "description": "List of allowed values for the output channel",
+                                "items": {
+                                    "type": ["string", "number", "boolean", "array", "object"]
+                                },
+                                "uniqueItems": true
+                            }
+                        },
+                        "required": ["description"]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["name", "description", "keywords", "authors", "output", "components"]
+}

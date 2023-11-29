@@ -1,0 +1,40 @@
+name: "gappa_examinegraft"
+description: grafts query sequences from phylogenetic placement on the reference tree
+keywords:
+  - sort
+tools:
+  - "gappa":
+      description: "Genesis Applications for Phylogenetic Placement Analysis"
+      homepage: "https://github.com/lczech/gappa"
+      documentation: "https://github.com/lczech/gappa/wiki"
+      tool_dev_url: "https://github.com/lczech/gappa"
+      doi: "10.1093/bioinformatics/btaa070"
+      licence: "['GPL v3']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - jplace:
+      type: file
+      description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
+      pattern: "*.{jplace,jplace.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - newick:
+      type: file
+      description: phylogenetic tree file in newick format
+      pattern: "*.newick"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

@@ -1,0 +1,49 @@
+name: "epang_split"
+description: splits an alignment into reference and query parts
+keywords:
+  - phylogeny
+  - phylogenetic placement
+  - sequences
+tools:
+  - "epang":
+      description: "Massively parallel phylogenetic placement of genetic sequences"
+      homepage: "https://github.com/Pbdas/epa-ng"
+      documentation: "https://github.com/Pbdas/epa-ng/wiki/Full-Stack-Example"
+      tool_dev_url: "https://github.com/Pbdas/epa-ng"
+      doi: "10.1093/sysbio/syy054"
+      licence: "['GNU Affero General Public License v3.0']"
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - refaln:
+      type: file
+      description: reference alignment in any supported format including phylip and fasta, may be gzipped
+      pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+  - fullaln:
+      type: file
+      description: full alignment in any supported format to split into reference and query alignments
+      pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - query:
+      type: file
+      description: query sequence alignment in gzipped fasta format
+  - reference:
+      type: file
+      description: reference sequence alignment in gzipped fasta format
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

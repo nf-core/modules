@@ -1,0 +1,16 @@
+- name: glimpse concordance test_glimpse_concordance
+  command: nextflow run ./tests/modules/nf-core/glimpse/concordance -entry test_glimpse_concordance -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/glimpse/concordance/nextflow.config
+  tags:
+    - glimpse
+    - glimpse/concordance
+  files:
+    - path: output/bcftools/input_chr21_16600000-16800000.vcf.gz.csi
+    - path: output/bcftools/versions.yml
+    - path: output/glimpse/input.error.cal.txt.gz
+    - path: output/glimpse/input.error.grp.txt.gz
+    - path: output/glimpse/input.error.spl.txt.gz
+    - path: output/glimpse/input.rsquare.grp.txt.gz
+    - path: output/glimpse/input.rsquare.spl.txt.gz
+    - path: output/glimpse/input.vcf.gz
+    - path: output/glimpse/input_chr21_16600000-16800000.vcf.gz
+    - path: output/glimpse/versions.yml

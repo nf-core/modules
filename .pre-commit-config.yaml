@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v3.0.3"
+    hooks:
+      - id: prettier
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.27.0
+    hooks:
+      - id: check-jsonschema
+        # match meta.ymls in one of the subdirectories of modules/nf-core
+        files: ^modules/nf-core/.*/meta\.yml$
+        args: ["--schemafile", "modules/yaml-schema.json"]
+      - id: check-jsonschema
+        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        files: ^subworkflows/nf-core/.*/meta\.yml$
+        args: ["--schemafile", "subworkflows/yaml-schema.json"]
+      - id: check-github-workflows
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 37.43.4
+    hooks:
+      - id: renovate-config-validator

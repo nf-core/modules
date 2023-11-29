@@ -1,7 +1,0 @@
-- name: lissero test_lissero
-  command: nextflow run ./tests/modules/lissero -entry test_lissero -c ./tests/config/nextflow.config -c ./tests/modules/lissero/nextflow.config
-  tags:
-    - lissero
-  files:
-    - path: output/lissero/test.tsv
-      contains: ["ID", "SEROTYPE", "FULL"]

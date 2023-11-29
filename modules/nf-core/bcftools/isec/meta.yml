@@ -1,0 +1,52 @@
+name: bcftools_isec
+description: Apply set operations to VCF files
+keywords:
+  - variant calling
+  - intersect
+  - union
+  - complement
+  - VCF
+tools:
+  - isec:
+      description: |
+        Computes intersections, unions and complements of VCF files.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcfs:
+      type: list
+      description: |
+        List containing 2 or more vcf files
+        e.g. [ 'file1.vcf', 'file2.vcf' ]
+  - tbis:
+      type: list
+      description: |
+        List containing the tbi index files corresponding to the vcfs input files
+        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - results:
+      type: directory
+      description: Folder containing the set operations results perform on the vcf files
+      pattern: "${prefix}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
+  - "@joseespinosa"
+  - "@drpatelh"

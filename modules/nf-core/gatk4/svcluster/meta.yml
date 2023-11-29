@@ -1,0 +1,69 @@
+name: "gatk4_svcluster"
+description: Clusters structural variants based on coordinates, event type, and supporting algorithms
+keywords:
+  - gatk4
+  - structural variants
+  - svcluster
+  - vcf
+tools:
+  - "gatk4":
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://github.com/broadinstitute/gatk
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcfs:
+      type: file
+      description: One or more VCF files created with a structural variant caller
+      pattern: "*.vcf.gz"
+  - indices:
+      type: file
+      description: Index files for the VCFs
+      pattern: "*.vcf.gz.tbi"
+  - ploidy_table:
+      type: file
+      description: The sample ploidy table
+      pattern: "*.tsv"
+  - fasta:
+      type: file
+      description: Reference FASTA file needed when the input is a CRAM file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Index of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: Sequence dictionary of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.dict"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - clustered_vcf:
+      type: file
+      description: The VCF containing the clustered VCFs
+      pattern: "*.vcf.gz"
+  - clustered_vcf_index:
+      type: file
+      description: The index of the VCF containing the clustered VCFs
+      pattern: "*.vcf.gz.tbi"
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

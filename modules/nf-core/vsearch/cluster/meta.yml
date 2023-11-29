@@ -1,0 +1,68 @@
+name: "vsearch_cluster"
+description: Cluster sequences using a single-pass, greedy centroid-based clustering algorithm.
+keywords:
+  - vsearch
+  - clustering
+  - microbiome
+tools:
+  - vsearch:
+      description: VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)
+      homepage: https://github.com/torognes/vsearch
+      documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
+      tool_dev_url: https://github.com/torognes/vsearch
+      doi: 10.7717/peerj.2584
+      licence: ["GPL v3-or-later OR BSD-2-clause"]
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: Sequences to cluster in FASTA format
+      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - aln:
+      type: file
+      description: Results in pairwise alignment format
+      pattern: "*.aln.gz"
+  - biom:
+      type: file
+      description: Results in an OTU table in the biom version 1.0 file format
+      pattern: "*.biom.gz"
+  - mothur:
+      type: file
+      description: Results in an OTU table in the mothur ’shared’ tab-separated plain text file format
+      pattern: "*.mothur.tsv.gz"
+  - otu:
+      type: file
+      description: Results in an OTU table in the classic tab-separated plain text format
+      pattern: "*.otu.tsv.gz"
+  - bam:
+      type: file
+      description: Results written in bam format
+      pattern: "*.bam"
+  - out:
+      type: file
+      description: Results in tab-separated output, columns defined by user
+      pattern: "*.out.tsv.gz"
+  - blast:
+      type: file
+      description: Tab delimited results in blast-like tabular format
+      pattern: "*.blast.tsv.gz"
+  - uc:
+      type: file
+      description: Tab delimited results in a uclust-like format with 10 columns
+      pattern: "*.uc.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@mirpedrol"
+maintainers:
+  - "@mirpedrol"

@@ -1,0 +1,68 @@
+name: "flye"
+description: De novo assembler for single molecule sequencing reads
+keywords:
+  - assembly
+  - genome
+  - de novo
+  - genome assembler
+  - single molecule
+tools:
+  - "flye":
+      description: "Fast and accurate de novo assembler for single molecule sequencing reads"
+      homepage: "https://github.com/fenderglass/Flye"
+      documentation: "https://github.com/fenderglass/Flye/blob/flye/docs/USAGE.md"
+      tool_dev_url: "https://github.com/fenderglass/Flye"
+      doi: "10.1038/s41592-020-00971-x"
+      licence: "['BSD-3-clause']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - reads:
+      type: file
+      description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ format.
+      pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+  - mode:
+      type: string
+      description: Flye mode depending on the input data (source and error rate)
+      pattern: "--pacbio-raw|--pacbio-corr|--pacbio-hifi|--nano-raw|--nano-corr|--nano-hq"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Assembled FASTA file
+      pattern: "*.fasta.gz"
+  - gfa:
+      type: file
+      description: Repeat graph in gfa format
+      pattern: "*.gfa.gz"
+  - gv:
+      type: file
+      description: Repeat graph in gv format
+      pattern: "*.gv.gz"
+  - txt:
+      type: file
+      description: Extra information and statistics about resulting contigs
+      pattern: "*.txt"
+  - log:
+      type: file
+      description: Flye log file
+      pattern: "*.log"
+  - json:
+      type: file
+      description: Flye parameters
+      pattern: "*.json"
+authors:
+  - "@mirpedrol"
+maintainers:
+  - "@mirpedrol"

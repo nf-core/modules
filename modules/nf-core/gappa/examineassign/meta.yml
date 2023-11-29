@@ -1,0 +1,54 @@
+name: "gappa_examineassign"
+description: assigns taxonomy to query sequences in phylogenetic placement output
+keywords:
+  - phylogeny
+  - phylogenetic placement
+  - classification
+  - taxonomy
+tools:
+  - "gappa":
+      description: "Genesis Applications for Phylogenetic Placement Analysis"
+      homepage: "https://github.com/lczech/gappa"
+      documentation: "https://github.com/lczech/gappa/wiki"
+      tool_dev_url: "https://github.com/lczech/gappa"
+      doi: "10.1093/bioinformatics/btaa070"
+      licence: "['GPL v3']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - jplace:
+      type: file
+      description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
+      pattern: "*.{jplace,jplace.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - examineassign:
+      type: directory
+      description: Execution directory
+  - profile:
+      type: file
+      description: profile tsv file
+      pattern: "*profile.tsv"
+  - labelled_tree:
+      type: file
+      description: labelled tree in newick format
+      pattern: "*labelled_tree.newick"
+  - per_query:
+      type: file
+      description: per query taxonomy assignments in tsv format
+      pattern: "*per_query.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

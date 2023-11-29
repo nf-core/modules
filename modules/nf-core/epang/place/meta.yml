@@ -1,0 +1,65 @@
+name: "epang_place"
+description: phylogenetic placement of query sequences in a reference tree
+keywords:
+  - phylogeny
+  - phylogenetic placement
+  - sequences
+tools:
+  - "epang":
+      description: "Massively parallel phylogenetic placement of genetic sequences"
+      homepage: "https://github.com/Pbdas/epa-ng"
+      documentation: "https://github.com/Pbdas/epa-ng/wiki/Full-Stack-Example"
+      tool_dev_url: "https://github.com/Pbdas/epa-ng"
+      doi: "10.1093/sysbio/syy054"
+      licence: "['GNU Affero General Public License v3.0']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - queryaln:
+      type: file
+      description: aligned query sequences in any supported format including phylip and fasta, may be gzipped
+      pattern: "*"
+  - referencealn:
+      type: file
+      description: reference alignment in any supported format including phylip and fasta, may be gzipped
+      pattern: "*"
+  - referencetree:
+      type: file
+      description: newick file containing the reference tree in which query sequences will be placed
+      pattern: "*"
+  - bfastfile:
+      type: file
+      description: file argument to the --bfast parameter
+      pattern: "*"
+  - binaryfile:
+      type: file
+      description: file argument to the --binary parameter
+      pattern: "*"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - epang:
+      type: directory
+      description: directory in which EPA-NG was run
+  - jplace:
+      type: file
+      description: gzipped file with placement information
+      pattern: "*.jplace.gz"
+  - log:
+      type: file
+      description: log file from placement
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

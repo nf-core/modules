@@ -1,0 +1,39 @@
+name: "hmmer_eslreformat"
+description: reformats sequence files, see HMMER documentation for details. The module requires that the format is specified in ext.args in a config file, and that this comes last. See the tools help for possible values.
+keywords:
+  - sort
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD-3-Clause"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - seqfile:
+      type: file
+      description: Sequences, aligned or not, in any supported format
+      pattern: "*"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - seqreformated:
+      type: file
+      description: Reformated sequence file
+      pattern: "*.*.gz"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

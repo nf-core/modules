@@ -1,0 +1,50 @@
+name: bbmap_align
+description: Align short or PacBio reads to a reference genome using BBMap
+keywords:
+  - align
+  - map
+  - fasta
+  - fastq
+  - genome
+  - reference
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      licence: ["UC-LBL license (see package)"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - ref:
+      type: file
+      description: |
+        Either "ref" a directory containing an index, the name of another directory
+        with a "ref" subdirectory containing an index or the name of a fasta formatted
+        nucleotide file containg the reference to map to.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
