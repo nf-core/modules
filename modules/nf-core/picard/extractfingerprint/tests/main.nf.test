@@ -7,28 +7,37 @@ nextflow_process {
     tag "modules_nfcore"
     tag "picard_extractfingerprint"
 
-    test("Single-Read") {
+    test("extract_fingerprint") {
         when {
             params {
                 outdir   = "$outputDir"
             }
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['bam']['test.paired_end.markduplicates.sorted.bam'], checkIfExists: true)]
-                ],
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true) ],
-                input[2] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ],
-                input[3] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta.fai'], checkIfExists: true) ],
-                input[4] = [ file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true) ]
+                bam = [ [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                        ]
+                fasta = [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
+                fai   = [file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                dict  = [file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]
+                haplotype_map  = [file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true)]
+
+                input[0] = bam
+                input[1] = haplotype_map
+                input[2] = fasta
+                input[3] = fai
+                input[4] = dict
                 """
             }
         }
 
         then {
             assertAll (
-                { assert process.success }
+                { assert process.success },
+                { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out).match() }
             )
         }
     }
