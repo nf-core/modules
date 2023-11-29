@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process BBMAP_BBDUK"
+    script "../main.nf"
+    process "BBMAP_BBDUK"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/bbduk"
+
+    test("sarscov2 - single end fastq - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [  file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).getText().contains("Input is being processed as unpaired")},
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("bbmap") }
+
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired end fastq - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [  file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).getText().contains("Input is being processed as paired")},
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("bbmap") }
+
+            )
+        }
+    }
+
+    test("sarscov2 - single end w/ contams [fastq,fasta] - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [  file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = [
+                    file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).getText().contains("Input is being processed as unpaired")},
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("bbmap") }
+
+            )
+        }
+    }
+
+    test("sarscov2 - paired end w/ contams [fastq,fasta] - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [  file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = [
+                    file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).getText().contains("Input is being processed as paired")},
+                { assert snapshot(process.out.reads).match() },
+                { assert path(process.out.versions.get(0)).getText().contains("bbmap") }
+
+            )
+        }
+    }
+}

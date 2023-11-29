@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process BBMAP_ALIGN"
     script "../main.nf"
     process "BBMAP_ALIGN"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -45,9 +46,9 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of(
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    )
+                    input[0] = [
+                        file( params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -63,7 +64,7 @@ nextflow_process {
                         file( params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
-                input[1] = BBMAP_INDEX.out.index.collect{ meta, index -> index }.map{ index -> [[ id: 'test_index'], index]}
+                input[1] = BBMAP_INDEX.out.index.collect { it }
                 """
             }
         }
@@ -74,6 +75,48 @@ nextflow_process {
                 { assert snapshot(path(process.out.bam.get(0).get(1))).match() },
                 { assert snapshot(process.out.versions).match("versions") },
                 { assert process.out.log.get(0).get(1) ==~ ".*/test.bbmap.log" }
+
+            )
+        }
+    }
+
+    test("sarscov2 single end - [fastq,BBMAP_INDEX] -  bam") {
+
+        setup {
+            run("BBMAP_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        file( params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file( params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = BBMAP_INDEX.out.index.collect { it }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(process.out.bam.get(0).get(1))).match() },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.log.get(0).get(1) ==~ ".*/test.bbmap.log" }
+
             )
         }
     }
