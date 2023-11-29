@@ -27,7 +27,7 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(process.out).match() },
             { assert path(process.out.maf[0][1]).readLines().size() == 132 },
-            { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21'] }
+            { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
             )
         }
     }
