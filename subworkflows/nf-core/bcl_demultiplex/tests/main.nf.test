@@ -13,6 +13,8 @@ nextflow_workflow {
 
     test("homo_sapiens - bclconvert") {
 
+        config "./nextflow_bclconvert.config"
+
         when {
             workflow {
                 """
@@ -22,7 +24,7 @@ nextflow_workflow {
                             file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
                             ])
 
-                input[1] = ['bclconvert']
+                input[1] = "bclconvert"
                 """
             }
         }
@@ -40,6 +42,8 @@ nextflow_workflow {
 
     test("homo_sapiens - bcl2fastq") {
 
+        config "./nextflow_bcl2fastq.config"
+
         when {
             workflow {
                 """
@@ -49,7 +53,7 @@ nextflow_workflow {
                             file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
                             ])
 
-                input[1] = ['bcl2fastq']
+                input[1] = "bcl2fastq"
                 """
             }
         }
