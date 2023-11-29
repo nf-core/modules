@@ -2,127 +2,107 @@
     "sascov2_targetted - [bam,bai]": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.CollectHsMetrics.coverage_metrics:md5,593040a26ccd7d2eaa7aadae019ed667"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.CollectMultipleMetrics.alignment_summary_metrics:md5,9cabf698c216c1ac8b00a02825b4e78e",
-                            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics:md5,b008716fb8d401b6a0d13e2030bead68",
-                            "test.CollectMultipleMetrics.insert_size_metrics:md5,6ba9579b61948bc763ccde1dfbe9ef6a",
-                            "test.CollectMultipleMetrics.quality_by_cycle_metrics:md5,f7a31889752c4702dde46a3d0db01764",
-                            "test.CollectMultipleMetrics.quality_distribution_metrics:md5,faf81dae64cff3934ad84a7abd774cbf"
-                        ]
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba",
-                    "versions.yml:md5,e0ec5ed2685f50270d45602c891fad3b"
-                ],
-                "coverage_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.CollectHsMetrics.coverage_metrics:md5,593040a26ccd7d2eaa7aadae019ed667"
-                    ]
-                ],
-                "multiple_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.CollectMultipleMetrics.alignment_summary_metrics:md5,9cabf698c216c1ac8b00a02825b4e78e",
-                            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics:md5,b008716fb8d401b6a0d13e2030bead68",
-                            "test.CollectMultipleMetrics.insert_size_metrics:md5,6ba9579b61948bc763ccde1dfbe9ef6a",
-                            "test.CollectMultipleMetrics.quality_by_cycle_metrics:md5,f7a31889752c4702dde46a3d0db01764",
-                            "test.CollectMultipleMetrics.quality_distribution_metrics:md5,faf81dae64cff3934ad84a7abd774cbf"
-                        ]
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba",
-                    "versions.yml:md5,e0ec5ed2685f50270d45602c891fad3b"
-                ]
-            }
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectHsMetrics.coverage_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectHsMetrics --BAIT_INTERVALS baits.interval_list --TARGET_INTERVALS targets.interval_list --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectHsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --METRIC_ACCUMULATION_LEVEL ALL_READS --NEAR_DISTANCE 250 --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --CLIP_OVERLAPPING_READS true --INCLUDE_INDELS false --COVERAGE_CAP 200 --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectMultipleMetrics.alignment_summary_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.insert_size_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_distribution_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba",
+                "versions.yml:md5,e0ec5ed2685f50270d45602c891fad3b"
+            ]
         ],
-        "timestamp": "2023-11-28T22:05:18.617691625"
+        "timestamp": "2023-11-29T16:12:22.722593087"
     },
     "sascov2_wgs - [bam,bai]": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.CollectWgsMetrics.coverage_metrics:md5,82dfeba9785a75df219acebbcc90f628"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.CollectMultipleMetrics.alignment_summary_metrics:md5,054004ac17c2cdece85f00c8e26007c8",
-                            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics:md5,4bae16d71612a0ce9695a87e36d718e0",
-                            "test.CollectMultipleMetrics.insert_size_metrics:md5,38d529451ab1be7f082a9532782169f1",
-                            "test.CollectMultipleMetrics.quality_by_cycle_metrics:md5,3d8af049feea0a3107964687cae8890b",
-                            "test.CollectMultipleMetrics.quality_distribution_metrics:md5,675da62119f794956dc8ad5a23c94a33"
-                        ]
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,600deaee68c6f78bbdf023b794d7b4fe",
-                    "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba"
-                ],
-                "coverage_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.CollectWgsMetrics.coverage_metrics:md5,82dfeba9785a75df219acebbcc90f628"
-                    ]
-                ],
-                "multiple_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.CollectMultipleMetrics.alignment_summary_metrics:md5,054004ac17c2cdece85f00c8e26007c8",
-                            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics:md5,4bae16d71612a0ce9695a87e36d718e0",
-                            "test.CollectMultipleMetrics.insert_size_metrics:md5,38d529451ab1be7f082a9532782169f1",
-                            "test.CollectMultipleMetrics.quality_by_cycle_metrics:md5,3d8af049feea0a3107964687cae8890b",
-                            "test.CollectMultipleMetrics.quality_distribution_metrics:md5,675da62119f794956dc8ad5a23c94a33"
-                        ]
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,600deaee68c6f78bbdf023b794d7b4fe",
-                    "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba"
-                ]
-            }
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectWgsMetrics.coverage_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectWgsMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectWgsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --COVERAGE_CAP 250 --LOCUS_ACCUMULATION_CAP 100000 --STOP_AFTER -1 --INCLUDE_BQ_HISTOGRAM false --COUNT_UNPAIRED false --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --USE_FAST_ALGORITHM false --READ_LENGTH 150 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectMultipleMetrics.alignment_summary_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.insert_size_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_distribution_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,600deaee68c6f78bbdf023b794d7b4fe",
+                "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba"
+            ]
         ],
-        "timestamp": "2023-11-28T22:04:43.446595753"
+        "timestamp": "2023-11-29T16:12:03.124767616"
     }
 }
