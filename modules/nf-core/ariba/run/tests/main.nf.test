@@ -39,25 +39,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.results[0][1].findAll {
-                    file(it).name != "report.tsv" &&
-                    file(it).name != "assembled_genes.fa.gz" &&
-                    file(it).name != "assembled_seqs.fa.gz" &&
-                    file(it).name != "assemblies.fa.gz"  &&
-                    file(it).name != "debug.report.tsv" &&
-                    file(it).name != "version_info.txt"}).match()},
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "report.tsv" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "assembled_genes.fa.gz" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "assembled_seqs.fa.gz" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "assemblies.fa.gz" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "debug.report.tsv" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "version_info.txt" }).exists() },
+                { assert snapshot(file(process.out.results[0][1][0]).name).match("assembled_genes.fa.gz") },
+                { assert snapshot(file(process.out.results[0][1][1]).name).match("assembled_seqs.fa.gz") },
+                { assert snapshot(file(process.out.results[0][1][2]).name).match("assemblies.fa.gz") },
+                { assert path(process.out.results[0][1][3]).getText().contains("ariba_ref_name") },
+                { assert path(process.out.results[0][1][3]).getText().contains("reads") },
+                { assert path(process.out.results[0][1][3]).getText().contains("free_text") },
+                { assert path(process.out.results[0][1][3]).getText().contains("known_var_change") },
+                { assert path(process.out.results[0][1][4]).getText().contains("ariba_ref_name") },
+                { assert path(process.out.results[0][1][4]).getText().contains("reads") },
+                { assert path(process.out.results[0][1][4]).getText().contains("free_text") },
+                { assert path(process.out.results[0][1][4]).getText().contains("known_var_change") },
+                { assert path(process.out.results[0][1][5]).getText().contains("ARIBA") },
+                { assert path(process.out.results[0][1][5]).getText().contains("Python") },
+                { assert path(process.out.results[0][1][5]).getText().contains("OK") },
+                { assert path(process.out.results[0][1][5]).getText().contains("True") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
