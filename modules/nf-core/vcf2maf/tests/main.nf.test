@@ -24,7 +24,9 @@ nextflow_process {
         }
         then {
             // NOTE: need this for debugging but remove for the PR when ready
-            println path(process.out.maf[0][1]).readLines()
+            for (line in path(process.out.maf[0][1]).readLines()){
+                println line
+            }
             assertAll(
             { assert process.success },
             { assert snapshot(process.out).match() },
