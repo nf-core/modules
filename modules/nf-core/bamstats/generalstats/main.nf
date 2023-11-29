@@ -4,7 +4,7 @@ process BAMSTATS_GENERALSTATS {
     conda "bioconda::bamstats=0.3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0':
-        'biocontainers/bamstats:0.3.5--he881be0_0' }"
+        'biocontainers/bamstats:0.3.5--he881be0_0' }"   
 
     input:
 
@@ -29,8 +29,6 @@ process BAMSTATS_GENERALSTATS {
         $args \\
         -c $task.cpus \\
         -o ${prefix}.json
-        
-        
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -46,7 +44,7 @@ process BAMSTATS_GENERALSTATS {
     touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}": 
+    "${task.process}":
         bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats //; s/Using.*\$//' ))
     END_VERSIONS
     """
