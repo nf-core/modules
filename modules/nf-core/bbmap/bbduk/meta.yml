@@ -27,11 +27,6 @@ input:
       description: |
         Reference files containing adapter and/or contaminant sequences for sequence kmer matching
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: The trimmed/modified fastq reads
