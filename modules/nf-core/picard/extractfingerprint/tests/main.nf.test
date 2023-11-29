@@ -5,7 +5,8 @@ nextflow_process {
     process "PICARD_EXTRACTFINGERPRINT"
     tag "modules"
     tag "modules_nfcore"
-    tag "picard_extractfingerprint"
+    tag "picard"
+    tag "picard/extractfingerprint"
 
     test("extract_fingerprint") {
         when {
