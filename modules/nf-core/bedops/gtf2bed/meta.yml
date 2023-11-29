@@ -11,14 +11,13 @@ tools:
       documentation: https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/gtf2bed.html
       tool_dev_url: https://github.com/bedops/bedops
       doi: 10.1093/bioinformatics/bts277
-      licence: ['GPL v2']
+      licence: ["GPL v2"]
 
 input:
   - gtf:
       type: file
       description: A reference file in GTF format
       pattern: "*.{gtf,gtf.gz}"
-
 
 output:
   - bed:
