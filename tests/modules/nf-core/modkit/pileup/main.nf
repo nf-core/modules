@@ -8,10 +8,10 @@ workflow test_modkit_pileup {
     
     bam_input = [
         [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true)
     ]
     bai_input = [
-    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
+    file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam.bai', checkIfExists: true) ]
     output_bed = [ file("test.bed") ]
 
     MODKIT_PILEUP ( bam_input, bai_input, output_bed )

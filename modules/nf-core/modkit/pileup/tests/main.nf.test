@@ -15,9 +15,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    [ file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
+                    [ file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true) ]
                 ]
-                input[1] = file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true) 
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam.bai', checkIfExists: true) 
                 input[2] = file("test.bed") 
                 """
             }
