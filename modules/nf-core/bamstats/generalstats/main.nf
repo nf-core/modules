@@ -7,7 +7,6 @@ process BAMSTATS_GENERALSTATS {
         'biocontainers/bamstats:0.3.5--he881be0_0' }"
 
     input:
-
     tuple val(meta), path(bam)
 
     output:
