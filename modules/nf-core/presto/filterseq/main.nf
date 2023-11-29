@@ -2,7 +2,7 @@ process PRESTO_FILTERSEQ {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::presto=0.7.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/presto:0.7.1--pyhdfd78af_0':
         'biocontainers/presto:0.7.1--pyhdfd78af_0' }"
@@ -23,7 +23,13 @@ process PRESTO_FILTERSEQ {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    FilterSeq.py quality -s $reads --outname ${meta.id} --log ${reads.baseName}.log --nproc ${task.cpus} $args > ${meta.id}_command_log.txt
+    FilterSeq.py quality \\
+    -s $reads \\
+    --outname ${meta.id} \\
+    --log ${reads.baseName}.log \\
+    --nproc ${task.cpus} \\
+    $args > ${meta.id}_command_log.txt
+
     ParseLog.py -l ${reads.baseName}.log -f ID QUALITY
 
     cat <<-END_VERSIONS > versions.yml
