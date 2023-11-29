@@ -18,7 +18,6 @@ nextflow_workflow {
     tag "samtools/index"
     tag "samtools/stats"
     
-
     test("homo_sapiens - bam") {
 
         when {
@@ -43,7 +42,12 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(path(workflow.out.bam.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.bai.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.flagstat.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.idxstats.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.stats.get(0).get(1))).match() },
+                { assert path(workflow.out.metrics.get(0).get(1)).getText().contains("97") }
             )
         }
     }
@@ -71,7 +75,12 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(path(workflow.out.bam.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.bai.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.flagstat.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.idxstats.get(0).get(1))).match() },
+                { assert snapshot(path(workflow.out.stats.get(0).get(1))).match() },
+                { assert path(workflow.out.metrics.get(0).get(1)).getText().contains("0.999986") }
             )
         }
     }
