@@ -11,8 +11,7 @@ process CHEWBBACA_CREATESCHEMA {
     tuple val(meta), path(fasta, stageAs: "input_genomes/*")
     path prodigal_tf
     path cds
-    
-    
+
     output:
     path 'results/*'                                   , emit: schema
     path "results/cds_coordinates.tsv"                 , emit: cds_coordinates
@@ -41,7 +40,6 @@ process CHEWBBACA_CREATESCHEMA {
         $prodigal_tf \\
         $cds \\
         --cpu $task.cpus
-        
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -53,11 +51,9 @@ process CHEWBBACA_CREATESCHEMA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def schema = "--n ${prefix}"
-    
 
     """
     mkdir -p results/$schema
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
