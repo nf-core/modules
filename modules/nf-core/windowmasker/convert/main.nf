@@ -2,10 +2,10 @@ process WINDOWMASKER_CONVERT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::blast=2.13.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0':
-        'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
+        'biocontainers/blast:2.13.0--hf3cf87c_0' }"
 
     input:
     tuple val(meta), path(counts)

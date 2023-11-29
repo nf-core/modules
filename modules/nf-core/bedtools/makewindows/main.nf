@@ -2,10 +2,10 @@ process BEDTOOLS_MAKEWINDOWS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bedtools=2.30.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h7d7f7ad_1' :
-        'quay.io/biocontainers/bedtools:2.30.0--h7d7f7ad_1' }"
+        'biocontainers/bedtools:2.30.0--h7d7f7ad_1' }"
 
     input:
     tuple val(meta), path(regions)

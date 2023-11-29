@@ -22,9 +22,9 @@ workflow test_gatk4_svcluster {
         []
     ])
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta     = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)])
+    fasta_fai = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)])
+    dict      = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)])
 
     MANTA_GERMLINE(
         input,
@@ -41,8 +41,8 @@ workflow test_gatk4_svcluster {
     GATK4_SVCLUSTER (
         svcluster_input,
         ploidy,
-        fasta,
-        fasta_fai,
-        dict
+        fasta.map{ meta, fasta -> [fasta] },
+        fasta_fai.map{ meta, fasta_fai -> [fasta_fai] },
+        dict.map{ meta, dict -> [dict] }
     )
 }

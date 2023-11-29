@@ -10,7 +10,8 @@ include { BWA_MEM as BWA_MEM_COV2   } from '../../../../modules/nf-core/bwa/mem/
 include { SAMTOOLS_SORT } from '../../../../modules/nf-core/samtools/sort/main.nf'
 include { SAMTOOLS_SORT as SAMTOOLS_SORT_COV2   } from '../../../../modules/nf-core/samtools/sort/main.nf'
 
-include { BAMCMP } from '../../../../modules/nf-core/bamcmp/main.nf'
+include { BAMCMP as BAMCMP_DEFAULT} from '../../../../modules/nf-core/bamcmp/main.nf'
+include { BAMCMP as BAMCMP_PREFIXES } from '../../../../modules/nf-core/bamcmp/main.nf'
 
 workflow test_bamcmp {
 
@@ -32,11 +33,11 @@ workflow test_bamcmp {
     BWA_MEM ( input, BWA_INDEX.out.index, false )
     SAMTOOLS_SORT (BWA_MEM.out.bam)
 
-
     BWA_INDEX_COV2 ( fasta2 )
     BWA_MEM_COV2 ( input, BWA_INDEX_COV2.out.index, false )
     SAMTOOLS_SORT_COV2 (BWA_MEM_COV2.out.bam)
 
-    BAMCMP (SAMTOOLS_SORT.out.bam.join(SAMTOOLS_SORT_COV2.out.bam, by: [0]))
+    BAMCMP_DEFAULT (SAMTOOLS_SORT.out.bam.join(SAMTOOLS_SORT_COV2.out.bam, by: [0]))
+    BAMCMP_PREFIXES (SAMTOOLS_SORT.out.bam.join(SAMTOOLS_SORT_COV2.out.bam, by: [0]))
 
 }

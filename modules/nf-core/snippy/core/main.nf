@@ -2,10 +2,10 @@ process SNIPPY_CORE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snippy=4.6.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
-        'quay.io/biocontainers/snippy:4.6.0--hdfd78af_1' }"
+        'biocontainers/snippy:4.6.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf), path(aligned_fa)

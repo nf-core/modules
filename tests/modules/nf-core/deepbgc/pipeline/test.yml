@@ -1,8 +1,8 @@
 - name: deepbgc pipeline test_deepbgc_pipeline_gbk
-  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config
   tags:
-    - deepbgc
     - deepbgc/pipeline
+    - deepbgc
   files:
     - path: output/deepbgc/deepbgc_db/0.1.0/classifier/product_activity.pkl
       md5sum: 90f0c010460e9df882cb057664a49f30
@@ -32,26 +32,26 @@
       contains: ["Saved DeepBGC result to"]
     - path: output/deepbgc/test_gbk/README.txt
       contains: ["Log output of DeepBGC"]
-    - path: output/deepbgc/test_gbk/test_gbk.antismash.json
-      md5sum: 7dba3996cf38756b05e7612de8433c23
-    - path: output/deepbgc/test_gbk/test_gbk.bgc.gbk
-    - path: output/deepbgc/test_gbk/test_gbk.full.gbk
+    - path: output/deepbgc/test_gbk/test_gbk.gbk.antismash.json
+      md5sum: 889ac1efb6a9a7d7b8c65e4cd2233bba
+    - path: output/deepbgc/test_gbk/test_gbk.gbk.bgc.gbk
+    - path: output/deepbgc/test_gbk/test_gbk.gbk.full.gbk
     - path: output/gunzip/test1.contigs.fa
       md5sum: 80c4d78f2810f6d9e90fa6da9bb9c4f9
-    - path: output/prodigal/test_gbk.faa
-      md5sum: b140ca303ff9ee32e615bfcc4b05038c
-    - path: output/prodigal/test_gbk.fna
-      md5sum: 28232dd696754fb95308874c9528296f
-    - path: output/prodigal/test_gbk.gbk
-      md5sum: b5c309b0296e7cdc21d1e71f33400f20
-    - path: output/prodigal/test_gbk_all.txt
-      md5sum: 8fe56fcf4d9e839e83be7523cd3efa02
+    - path: output/prodigal/test_gbk.faa.gz
+      md5sum: 8a2832d85059efcb149dcd2d14bc651f
+    - path: output/prodigal/test_gbk.fna.gz
+      md5sum: 5b133b324b74014493e1593eea92bec4
+    - path: output/prodigal/test_gbk.gbk.gz
+      md5sum: 55590a69e40c018fdecbfcd7dea70b2a
+    - path: output/prodigal/test_gbk_all.txt.gz
+      md5sum: cb797d3b99b269d1c0e10e0937633df2
 
 - name: deepbgc pipeline test_deepbgc_pipeline_fa
-  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config
   tags:
-    - deepbgc
     - deepbgc/pipeline
+    - deepbgc
   files:
     - path: output/deepbgc/deepbgc_db/0.1.0/classifier/product_activity.pkl
       md5sum: 90f0c010460e9df882cb057664a49f30

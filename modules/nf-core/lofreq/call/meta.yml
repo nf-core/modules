@@ -12,7 +12,6 @@ tools:
       documentation: https://csb5.github.io/lofreq/commands/
       doi: "10.1093/nar/gks918 "
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,10 +22,13 @@ input:
       type: file
       description: BAM input file
       pattern: "*.{bam}"
+  - intervals:
+      type: file
+      description: BED file containing target regions for variant calling
+      pattern: "*.{bed}"
   - fasta:
       type: file
       description: The reference fasta file
-
 output:
   - meta:
       type: map
@@ -41,6 +43,7 @@ output:
       type: file
       description: VCF output file
       pattern: "*.{vcf}"
-
 authors:
+  - "@bjohnnyd"
+maintainers:
   - "@bjohnnyd"

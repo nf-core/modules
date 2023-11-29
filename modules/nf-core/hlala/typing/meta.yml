@@ -11,9 +11,8 @@ tools:
       homepage: "https://github.com/DiltheyLab/HLA-LA"
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
-      doi: "https://doi.org/10.1093/bioinformatics/btz235"
+      doi: "10.1093/bioinformatics/btz235"
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -25,9 +24,8 @@ input:
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
   - graph:
-      type: path
+      type: directory
       description: Path to prepared graph with hla-la --acton prepareGraph
-
 output:
   - meta:
       type: map
@@ -39,10 +37,9 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - folder:
-      type: path
+      type: directory
       description: Folder containing the HLA typing output
-
 authors:
-  - "@WackerO"
-  - "@mirpedrol"
-  - "@louperelo"
+  - "@mapo9"
+maintainers:
+  - "@mapo9"

@@ -30,6 +30,11 @@ input:
       description: |
         An optional index of the VCF file (for when the VCF is compressed)
       pattern: "*.vcf.gz.tbi"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: FASTA reference file
@@ -50,3 +55,7 @@ output:
       pattern: "versions.yml"
 authors:
   - "@abhi18av"
+  - "@ramprasadn"
+maintainers:
+  - "@abhi18av"
+  - "@ramprasadn"

@@ -4,21 +4,24 @@ keywords:
   - bacterial
   - assembly
   - nanopore
-
 tools:
   - dragonflye:
       description: Microbial assembly pipeline for Nanopore reads
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - shortreads:
+      type: file
+      description: |
+        Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
+      pattern: "*.fastq.gz"
+  - longreads:
       type: file
       description: Input Nanopore FASTQ file
       pattern: "*.fastq.gz"
@@ -35,7 +38,7 @@ output:
   - contigs:
       type: file
       description: The final assembly produced by Dragonflye
-      pattern: "contigs.fa"
+      pattern: "*.fa"
   - log:
       type: file
       description: Full log file for bug reporting
@@ -51,7 +54,8 @@ output:
   - gfa:
       type: file
       description: Assembly graph produced by Miniasm, or Raven
-      pattern: "{miniasm,raven}-unpolished.gfa"
-
+      pattern: "{flye,miniasm,raven}-unpolished.gfa"
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

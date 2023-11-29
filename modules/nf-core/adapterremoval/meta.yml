@@ -11,7 +11,6 @@ tools:
       homepage: https://github.com/MikkelSchubert/adapterremoval
       documentation: https://adapterremoval.readthedocs.io
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -26,11 +25,7 @@ input:
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
   - adapterlist:
       type: file
-      description: Optional text file containing list of adapters to look for for removal
-        with one adapter per line. Otherwise will look for default adapters (see
-        AdapterRemoval man page), or can be modified to remove user-specified
-        adapters via ext.args.
-
+      description: Optional text file containing list of adapters to look for for removal with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval man page), or can be modified to remove user-specified adapters via ext.args.
 output:
   - meta:
       type: map
@@ -84,7 +79,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@maxibor"
+  - "@jfy133"
+maintainers:
   - "@maxibor"
   - "@jfy133"

@@ -12,8 +12,8 @@ workflow test_diamond_blastx {
     out_ext = 'tfdfdt'  // Nonsense file extension to check default case.
     blast_columns = 'qseqid qlen'
 
-    DIAMOND_MAKEDB ( db )
-    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
+    DIAMOND_MAKEDB ( [ [id:'test'], db ] )
+    DIAMOND_BLASTX ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
 
 workflow test_diamond_blastx_daa {
@@ -23,6 +23,6 @@ workflow test_diamond_blastx_daa {
     out_ext = 'daa'
     blast_columns = []
 
-    DIAMOND_MAKEDB ( db )
-    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
+    DIAMOND_MAKEDB ( [ [id:'test'], db ] )
+    DIAMOND_BLASTX ( [ [id:'test2'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
