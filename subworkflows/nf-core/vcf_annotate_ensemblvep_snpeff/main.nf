@@ -142,7 +142,8 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             .map { it + [[]] }
 
         BCFTOOLS_CONCAT(
-            ch_concat_input
+            ch_concat_input,
+            []
         )
         ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
 

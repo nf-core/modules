@@ -4,25 +4,40 @@ nextflow.enable.dsl = 2
 
 include { BCFTOOLS_CONCAT } from '../../../../../modules/nf-core/bcftools/concat/main.nf'
 
-workflow test_bcftools_concat_tbi {
+workflow test_bcftools_concat {
     
-    input = [ [ id:'test3' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true) ],
-              [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true) ]
-            ]
+    input = [ 
+        [ id:'test' ], // meta map
+        [
+          file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+          file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) 
+        ],
+        [
+          file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+          file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+        ]
+    ]
 
-    BCFTOOLS_CONCAT ( input )
+    bed = []
+
+    BCFTOOLS_CONCAT ( input, bed )
 }
 
-workflow test_bcftools_concat_no_tbi {
+workflow test_bcftools_concat_bed {
     
-    input = [ [ id:'test3' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true) ],
-              []
-            ]
+    input = [ 
+        [ id:'test' ], // meta map
+        [
+          file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+          file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) 
+        ],
+        [
+          file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+          file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+        ]
+    ]
 
-    BCFTOOLS_CONCAT ( input )
+    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+
+    BCFTOOLS_CONCAT ( input, bed )
 }
