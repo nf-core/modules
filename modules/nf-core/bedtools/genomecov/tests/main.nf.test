@@ -87,4 +87,32 @@ nextflow_process {
 
     }
 
+    test("stub") {
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                    1
+                ]
+                // sizes
+                input[1] = []
+                // extension
+                input[2] = 'txt'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+
+    }
+
 }
