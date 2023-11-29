@@ -12,7 +12,6 @@ tools:
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/"
       licence: "custom"
-
 input:
   - meta:
       type: map
@@ -27,15 +26,10 @@ input:
       type: file
       description: bai or crai index corresponding to input bam or cram files. Only necessary if intervals are provided.
       pattern: "*.{bai, crai}"
-  - interval_file:
-      type: file
-      description: File or files containing genomic intervals for use in base quality score recalibration.
-      pattern: "*.{bed,interval_list,picard,list,intervals}"
   - fasta:
       type: file
       description: Reference fasta - must be unzipped.
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
