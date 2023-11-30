@@ -38,7 +38,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
-                { assert snapshot(process.out.tbi).match() }
+                { assert process.out.tbi.get(0).get(1) ==~ ".*.vcf.gz.tbi" },
+                { assert snapshot(process.out.vcf).match() }
             )
         }
     }
