@@ -12,7 +12,7 @@ process MINDAGAP_DUPLICATEFINDER {
 
     output:
     tuple val(meta), path("*markedDups.txt"), emit: marked_dups_spots
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
