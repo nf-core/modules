@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM2FASTX_BAM2FASTQ } from '../../../../modules/bam2fastx/bam2fastq/main.nf'
+include { BAM2FASTX_BAM2FASTQ } from '../../../../../modules/nf-core/bam2fastx/bam2fastq/main.nf'
 
 workflow test_bam2fastx_bam2fastq {
     
