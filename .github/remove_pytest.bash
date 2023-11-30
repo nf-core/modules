@@ -7,5 +7,5 @@ tested=$(fd main.nf.test modules/)
 
 for module in $tested; do
     clean=$(dirname $module | sed 's|tests||')
-    rmdir "tests/${clean}"
+    rm -rf "tests/${clean}"
 done
