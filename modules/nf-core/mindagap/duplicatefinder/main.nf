@@ -4,7 +4,11 @@ process MINDAGAP_DUPLICATEFINDER {
 
     conda "bioconda::mindagap=0.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+<<<<<<< HEAD
         'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_1':
+=======
+        'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_0':
+>>>>>>> a7f8974e1 (First working version.)
         'quay.io/biocontainers/mindagap:0.0.2--pyhdfd78af_1' }"
 
     input:
