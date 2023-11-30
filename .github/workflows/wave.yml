@@ -54,13 +54,21 @@ jobs:
           sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
+      - name: Create a registry name
+        uses: actions/github-script@v7
+        id: registry-name
+        with:
+          result-encoding: string
+          script: |
+            return '${{ matrix.files }}'.replace('modules/nf-core', '').replace('/environment.yml', '');
+
       - name: Build container
         if: matrix.profile == 'docker'
         run: |
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
               --await \
-              --build-repo quay.io/nf-core/modules/bowtie \
+              --build-repo ${{steps.registry-name.outputs.result}} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
@@ -70,7 +78,7 @@ jobs:
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
               --await \
-              --build-repo quay.io/nf-core/modules/bowtie \
+              --build-repo ${{steps.registry-name.outputs.result}}/singularity \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
