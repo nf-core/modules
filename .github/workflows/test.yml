@@ -147,27 +147,6 @@ jobs:
         run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
-  migration:
-    runs-on: ubuntu-latest
-    name: nf-test Migration Notice
-    needs: [pytest-changes]
-    if: needs.pytest-changes.outputs.modules != '[]'
-    # Needed for Deprecation comment
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Migration Comment
-        uses: mshick/add-pr-comment@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          message: |
-            Hello!
-            We're in the process of migrating to [nf-test](https://code.askimed.com/nf-test)!🚀
-
-            We would appreciate this test being rewritten in nf-test.
-            We have documented a step-by-step process to do so [here](https://nf-co.re/docs/contributing/modules#migrating-from-pytest-to-nf-test).
-            If you aren't able to do that right now [raise an issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
-
   pytest:
     runs-on: ubuntu-latest
     name: pytest
@@ -228,6 +207,8 @@ jobs:
             tags: cellrangeratac/mkfastq
           - profile: "conda"
             tags: cellrangeratac/mkref
+          - profile: "conda"
+            tags: controlfreec/makegraph2
           - profile: "conda"
             tags: coreograph
           - profile: "conda"
@@ -330,6 +311,8 @@ jobs:
             tags: spaceranger/mkgtf
           - profile: "conda"
             tags: spaceranger/mkref
+          - profile: "conda"
+            tags: svanalyzer/svbenchmark
           - profile: "conda"
             tags: universc
           - profile: "singularity"
@@ -513,6 +496,8 @@ jobs:
             tags: sentieon/bwaindex
           - profile: "conda"
             tags: sentieon/bwamem
+          - profile: "conda"
+            tags: svanalyzer/svbenchmark
           - profile: "conda"
             tags: universc
           - profile: "singularity"
