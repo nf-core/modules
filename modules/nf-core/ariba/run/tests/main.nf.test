@@ -10,7 +10,7 @@ nextflow_process {
     tag "ariba"
     tag "ariba/run"
 
-    test("illumina - fatsq") {
+    test("sarscov2 illumina  paired-end [fastq]") {
 
         setup {
             run("ARIBA_GETREF") {
