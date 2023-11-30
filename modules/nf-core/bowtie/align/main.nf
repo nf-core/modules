@@ -3,7 +3,9 @@ process BOWTIE_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/bowtie:bowtie_align--6c5b9c93546643d8"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'nf-core/modules/bowtie/align/singularity:bowtie_align--9c6a06ebc094e52a' :
+        'nf-core/modules/bowtie/align:bowtie_align--adc5d68fc5834323' }"
 
     input:
     tuple val(meta), path(reads)
