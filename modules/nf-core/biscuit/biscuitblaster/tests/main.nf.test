@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process BISCUIT_BLASTER"
+    script "../main.nf"
+    process "BISCUIT_BLASTER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/biscuitblaster"
+
+    setup {
+        run("BISCUIT_INDEX") {
+            script "../../index/main.nf"
+            process {
+            """
+            input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            """
+            }
+        }
+    }
+
+    // single end test
+    test("sarscov2 - single") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                                [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true) ]
+                            ]
+
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match("se_bam") },
+                { assert snapshot(process.out.bai).match("se_bam_index") },
+                { assert snapshot(process.out.versions).match("se_versions") }
+            )
+        }
+
+    }
+
+    // paired end test
+    test("sarscov2 - paired-end") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                                [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
+                                  file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true) ]
+                            ]
+
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match("pe_bam") },
+                { assert snapshot(process.out.bai).match("pe_bam_index") },
+                { assert snapshot(process.out.versions).match("pe_versions") }
+            )
+        }
+
+    }
+
+}
