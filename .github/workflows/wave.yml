@@ -68,6 +68,7 @@ jobs:
               --freeze \
               --await \
               --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
+              --cache-repository quay.io/nf-core/wave-cache \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
@@ -78,6 +79,7 @@ jobs:
               --freeze \
               --await \
               --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}}/singularity \
+              --cache-repository quay.io/nf-core/wave-cache/singularity \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
