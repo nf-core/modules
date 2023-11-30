@@ -59,7 +59,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/environment.yml', '');
+            return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/environment.yml', '').replace('/', '_');
 
       - name: Build container
         if: matrix.profile == 'docker'
