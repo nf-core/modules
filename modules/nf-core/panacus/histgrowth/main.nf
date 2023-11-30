@@ -26,7 +26,7 @@ process PANACUS_HISTGROWTH {
     def extension = args.contains("--output-format table") || args.contains("-o table") ? "tsv" :
                     args.contains("--output-format html") || args.contains("-o html") ? "html" :
                     "tsv"
-    def subset_query = bed_subset ? "--subset ${bed_subset}" : ""
+    def subset_query  = bed_subset ? "--subset ${bed_subset}" : ""
     def exclude_query = bed_exclude ? "--exclude ${bed_exclude}" : ""
     def groupby_query = tsv_groupby ? "--groupby ${tsv_groupby}" : ""
     """
