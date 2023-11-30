@@ -12,7 +12,7 @@ process PANACUS_VISUALIZE {
 
     output:
     tuple val(meta), path("*.{eps,jpg,jpeg,pdf,pgf,png,ps,raw,rgba,svg,svgz,tif,tiff,webp}"), emit: image
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
