@@ -5,8 +5,8 @@ process MANTA_CONVERTINVERSION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0':
-        'biocontainers/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:90f6a20ea1654feeadb9507e8cbaf9957aef3810-0':
+        'biocontainers/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:90f6a20ea1654feeadb9507e8cbaf9957aef3810-0' }"
 
     input:
     tuple val(meta), path(vcf)
