@@ -5,7 +5,7 @@ process BAM2FASTX_BAM2FASTQ {
     conda (params.enable_conda ? "bioconda::bam2fastx=1.3.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bam2fastx:1.3.1--hf05d43a_1':
-        'quay.io/biocontainers/bam2fastx:1.3.1--hf05d43a_1' }"
+        'biocontainers/bam2fastx:1.3.1--hf05d43a_1' }"
 
     input:
     tuple val(meta), path(bam), path(index)
