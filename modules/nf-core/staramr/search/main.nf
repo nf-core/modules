@@ -11,15 +11,15 @@ process STARAMR_SEARCH {
     tuple val(meta), path(genome_fasta) // genome as a fasta file
 
     output:
-    tuple val(meta), path("*_results/results.xlsx")           , emit: results_xlsx
-    tuple val(meta), path("*_results/summary.tsv.gz")         , emit: summary_tsv
-    tuple val(meta), path("*_results/detailed_summary.tsv.gz"), emit: detailed_summary_tsv
-    tuple val(meta), path("*_results/resfinder.tsv.gz")       , emit: resfinder_tsv
-    tuple val(meta), path("*_results/plasmidfinder.tsv.gz")   , emit: plasmidfinder_tsv
-    tuple val(meta), path("*_results/mlst.tsv.gz")            , emit: mlst_tsv
-    tuple val(meta), path("*_results/settings.txt.gz")        , emit: settings_txt
-    tuple val(meta), path("*_results/pointfinder.tsv.gz")     , emit: pointfinder_tsv, optional: true
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*_results/results.xlsx")        , emit: results_xlsx
+    tuple val(meta), path("*_results/summary.tsv")         , emit: summary_tsv
+    tuple val(meta), path("*_results/detailed_summary.tsv"), emit: detailed_summary_tsv
+    tuple val(meta), path("*_results/resfinder.tsv")       , emit: resfinder_tsv
+    tuple val(meta), path("*_results/plasmidfinder.tsv")   , emit: plasmidfinder_tsv
+    tuple val(meta), path("*_results/mlst.tsv")            , emit: mlst_tsv
+    tuple val(meta), path("*_results/settings.txt")        , emit: settings_txt
+    tuple val(meta), path("*_results/pointfinder.tsv")     , emit: pointfinder_tsv, optional: true
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,9 +40,6 @@ process STARAMR_SEARCH {
         --nprocs $task.cpus \\
         -o ${prefix}_results \\
         $genome_uncompressed_name
-
-    # Use -n to not store original filename/timestamp so output is stable for testing
-    gzip -n "${prefix}_results"/*.{tsv,txt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
