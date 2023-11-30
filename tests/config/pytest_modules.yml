@@ -94,10 +94,6 @@ arcashla/extract:
   - modules/nf-core/arcashla/extract/**
   - tests/modules/nf-core/arcashla/extract/**
 
-aria2:
-  - modules/nf-core/aria2/**
-  - tests/modules/nf-core/aria2/**
-
 ariba/getref:
   - modules/nf-core/ariba/getref/**
   - tests/modules/nf-core/ariba/getref/**
@@ -251,14 +247,6 @@ bcftools/annotate:
   - modules/nf-core/bcftools/annotate/**
   - tests/modules/nf-core/bcftools/annotate/**
 
-bcftools/call:
-  - modules/nf-core/bcftools/call/**
-  - tests/modules/nf-core/bcftools/call/**
-
-bcftools/concat:
-  - modules/nf-core/bcftools/concat/**
-  - tests/modules/nf-core/bcftools/concat/**
-
 bcftools/consensus:
   - modules/nf-core/bcftools/consensus/**
   - tests/modules/nf-core/bcftools/consensus/**
@@ -275,17 +263,9 @@ bcftools/index:
   - modules/nf-core/bcftools/index/**
   - tests/modules/nf-core/bcftools/index**
 
-bcftools/isec:
-  - modules/nf-core/bcftools/isec/**
-  - tests/modules/nf-core/bcftools/isec/**
-
 bcftools/merge:
   - modules/nf-core/bcftools/merge/**
   - tests/modules/nf-core/bcftools/merge/**
-
-bcftools/mpileup:
-  - modules/nf-core/bcftools/mpileup/**
-  - tests/modules/nf-core/bcftools/mpileup/**
 
 bcftools/norm:
   - modules/nf-core/bcftools/norm/**
@@ -298,10 +278,6 @@ bcftools/pluginscatter:
 bcftools/pluginsplit:
   - modules/nf-core/bcftools/pluginsplit/**
   - tests/modules/nf-core/bcftools/pluginsplit/**
-
-bcftools/query:
-  - modules/nf-core/bcftools/query/**
-  - tests/modules/nf-core/bcftools/query/**
 
 bcftools/roh:
   - modules/nf-core/bcftools/roh/**
@@ -318,10 +294,6 @@ bcftools/split:
 bcftools/stats:
   - modules/nf-core/bcftools/stats/**
   - tests/modules/nf-core/bcftools/stats/**
-
-bcftools/view:
-  - modules/nf-core/bcftools/view/**
-  - tests/modules/nf-core/bcftools/view/**
 
 beagle5/beagle:
   - modules/nf-core/beagle5/beagle/**
@@ -527,10 +499,6 @@ cat/fastq:
   - modules/nf-core/cat/fastq/**
   - tests/modules/nf-core/cat/fastq/**
 
-cdhit/cdhit:
-  - modules/nf-core/cdhit/cdhit/**
-  - tests/modules/nf-core/cdhit/cdhit/**
-
 cdhit/cdhitest:
   - modules/nf-core/cdhit/cdhitest/**
   - tests/modules/nf-core/cdhit/cdhitest/**
@@ -643,10 +611,6 @@ clonalframeml:
   - modules/nf-core/clonalframeml/**
   - tests/modules/nf-core/clonalframeml/**
 
-clustalo/align:
-  - modules/nf-core/clustalo/align/**
-  - tests/modules/nf-core/clustalo/align/**
-
 cmseq/polymut:
   - modules/nf-core/cmseq/polymut/**
   - tests/modules/nf-core/cmseq/polymut/**
@@ -734,6 +698,10 @@ controlfreec/freec2circos:
 controlfreec/makegraph:
   - modules/nf-core/controlfreec/makegraph/**
   - tests/modules/nf-core/controlfreec/makegraph/**
+
+controlfreec/makegraph2:
+  - modules/nf-core/controlfreec/makegraph2/**
+  - tests/modules/nf-core/controlfreec/makegraph2/**
 
 cooler/balance:
   - modules/nf-core/cooler/balance/**
@@ -1022,10 +990,6 @@ expansionhunterdenovo/profile:
 falco:
   - modules/nf-core/falco/**
   - tests/modules/nf-core/falco/**
-
-famsa/align:
-  - modules/nf-core/famsa/align/**
-  - tests/modules/nf-core/famsa/align/**
 
 famsa/guidetree:
   - modules/nf-core/famsa/guidetree/**
@@ -2355,14 +2319,6 @@ mtnucratio:
   - modules/nf-core/mtnucratio/**
   - tests/modules/nf-core/mtnucratio/**
 
-mudskipper/bulk:
-  - modules/nf-core/mudskipper/bulk/**
-  - tests/modules/nf-core/mudskipper/bulk/**
-
-mudskipper/index:
-  - modules/nf-core/mudskipper/index/**
-  - tests/modules/nf-core/mudskipper/index/**
-
 multivcfanalyzer:
   - modules/nf-core/multivcfanalyzer/**
   - tests/modules/nf-core/multivcfanalyzer/**
@@ -2374,10 +2330,6 @@ mummer:
 muscle:
   - modules/nf-core/muscle/**
   - tests/modules/nf-core/muscle/**
-
-muscle5/super5:
-  - modules/nf-core/muscle5/super5/**
-  - tests/modules/nf-core/muscle5/super5/**
 
 mykrobe/predict:
   - modules/nf-core/mykrobe/predict/**
@@ -3476,10 +3428,6 @@ subworkflows/bam_qc_picard:
   - subworkflows/nf-core/bam_qc_picard/**
   - tests/subworkflows/nf-core/bam_qc_picard/**
 
-subworkflows/bam_rseqc:
-  - subworkflows/nf-core/bam_rseqc/**
-  - tests/subworkflows/nf-core/bam_rseqc/**
-
 subworkflows/bam_sort_samtools:
   - subworkflows/nf-core/bam_sort_samtools/**
   - tests/subworkflows/nf-core/bam_sort_samtools/**
@@ -3511,10 +3459,6 @@ subworkflows/bcl_demultiplex:
 subworkflows/bed_scatter_bedtools:
   - subworkflows/nf-core/bed_scatter_bedtools/**
   - tests/subworkflows/nf-core/bed_scatter_bedtools/**
-
-subworkflows/bedgraph_bedclip_bedgraphtobigwig:
-  - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
-  - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
 
 subworkflows/fasta_binning_concoct:
   - subworkflows/nf-core/fasta_binning_concoct/**
@@ -3572,17 +3516,9 @@ subworkflows/fastq_create_umi_consensus_fgbio:
   - subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
   - tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
 
-subworkflows/fastq_fastqc_umitools_fastp:
-  - subworkflows/nf-core/fastq_fastqc_umitools_fastp/**
-  - tests/subworkflows/nf-core/fastq_fastqc_umitools_fastp/**
-
 subworkflows/fastq_fastqc_umitools_trimgalore:
   - subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
   - tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
-
-subworkflows/fastq_subsample_fq_salmon:
-  - subworkflows/nf-core/fastq_subsample_fq_salmon/**
-  - tests/subworkflows/nf-core/fastq_subsample_fq_salmon/**
 
 subworkflows/fastq_trim_fastp_fastqc:
   - subworkflows/nf-core/fastq_trim_fastp_fastqc/**
