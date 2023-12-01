@@ -12,9 +12,7 @@ tools:
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: "https://github.com/broadinstitute/picard"
-
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
-
 output:
   - meta:
       type: map
@@ -40,6 +37,7 @@ output:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
-
 authors:
+  - "@Lucpen"
+maintainers:
   - "@Lucpen"
