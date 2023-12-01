@@ -2,7 +2,7 @@ process PANACUS_VISUALIZE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::panacus=0.2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/panacus:0.2.3--h031d066_0':
         'biocontainers/panacus:0.2.3--h031d066_0' }"
