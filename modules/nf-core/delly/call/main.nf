@@ -9,8 +9,8 @@ process DELLY_CALL {
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
-    path fasta
-    path fai
+    tuple val(meta), path(fasta)
+    tuple val(meta), path(fai)
 
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
