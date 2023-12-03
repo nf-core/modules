@@ -1,9 +1,11 @@
 - name: rsem preparereference test_rsem_preparereference
-  command: nextflow run ./tests/modules/nf-core/rsem/preparereference -entry test_rsem_preparereference -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rsem/preparereference/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rsem/preparereference -entry test_rsem_preparereference -c ./tests/config/nextflow.config
   tags:
-    - rsem
     - rsem/preparereference
+    - rsem
   files:
+    - path: output/rsem/genome.transcripts.fa
+      md5sum: 050c521a2719c2ae48267c1e65218f29
     - path: output/rsem/rsem/genome.chrlist
       md5sum: b190587cae0531f3cf25552d8aa674db
     - path: output/rsem/rsem/genome.fasta
@@ -20,3 +22,4 @@
       md5sum: c9e4ae8d4d13a504eec2acf1b8589a66
     - path: output/rsem/rsem/genome.transcripts.fa
       md5sum: 050c521a2719c2ae48267c1e65218f29
+    - path: output/rsem/versions.yml

@@ -1,8 +1,8 @@
 - name: ultra index test_ultra_index
-  command: nextflow run ./tests/modules/nf-core/ultra/index -entry test_ultra_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ultra/index/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ultra/index -entry test_ultra_index -c ./tests/config/nextflow.config
   tags:
-    - ultra/index
     - ultra
+    - ultra/index
   files:
     - path: output/gnu/genome_sorted.gtf
       md5sum: 5cc4a890e302e08c88c8645e62be50d6
