@@ -12,7 +12,7 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     take:
     ch_bam   // channel: [ val(meta), [ bam ] ]
-    ch_fasta // channel: /path/to/fasta
+    ch_fasta // channel: [ val(meta), [ fasta ] ]
 
 
     main:
