@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process AMPCOMBI"
+    script "../main.nf"
+    process "AMPCOMBI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ampcombi"
+
+    test("AMPcombi with filepath option") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'sample_1'],
+                    [file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv', checkIfExists: true)]
+                ]
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa/sample_1.faa', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.faa).match("faa") },
+                { assert snapshot(process.out.csv).match("csv") },
+                { assert snapshot(process.out.txt).match("txt") }
+            )
+        }
+
+    }
+
+}
