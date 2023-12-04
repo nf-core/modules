@@ -53,14 +53,11 @@ process PICARD_EXTRACTFINGERPRINT {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    prefix = task.ext.prefix ?: "${meta.id}"
     prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
     """
-    touch ${prefix_no_suffix}.bam
-    touch ${prefix_no_suffix}.cram
-    touch ${prefix_no_suffix}.cram.crai
-    touch ${prefix_no_suffix}.bai
-    touch ${prefix}.metrics
+    touch ${prefix_no_suffix}.vcf
+    touch ${prefix_no_suffix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
