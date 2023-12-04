@@ -24,7 +24,7 @@ process PICARD_EXTRACTFINGERPRINT {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def bam_name = bam.simpleName
@@ -48,20 +48,19 @@ process PICARD_EXTRACTFINGERPRINT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(picard --version 2>&1) | sed 's/^.*(PICARD) v//; s/ .*\$//')
+        picard: \$(echo \$(picard ExtractFingerprint --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix_no_suffix}.vcf
-    touch ${prefix_no_suffix}.vcf.gz.tbi
+    touch ${prefix}.vcf
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(picard --version 2>&1) | sed 's/^.*(PICARD) v//; s/ .*\$//')
+        picard: \$(echo \$(picard ExtractFingerprint --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
