@@ -29,8 +29,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fastq[0][1].collect { path(it).linesGzip[0..6] },
                     process.out.interleaved,
-                    process.out.singleton,
-                    process.out.other,
+                    file(process.out.singleton[0][1]).name,
+                    file(process.out.other[0][1]).name,
                     process.out.versions
                 ).match() }
             )
@@ -59,7 +59,7 @@ nextflow_process {
                     process.out.fastq,
                     path(process.out.interleaved[0][1]).readLines()[0..6],
                     process.out.singleton,
-                    process.out.other,
+                    file(process.out.other[0][1]).name,
                     process.out.versions
                 ).match() }
             )
