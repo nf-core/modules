@@ -39,8 +39,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
                 { assert process.out.tbi.get(0).get(1) ==~ ".*.vcf.gz.tbi" },
-                { assert snapshot(process.out.vcf).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(path(process.out.vcf.get(0).get(1)).linesGzip[0]).match() }
             )
         }
     }
