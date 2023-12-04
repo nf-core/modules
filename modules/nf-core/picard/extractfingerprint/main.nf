@@ -65,7 +65,6 @@ process PICARD_EXTRACTFINGERPRINT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(echo \$(picard --version 2>&1) | sed 's/^.*(PICARD) v//; s/ .*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
