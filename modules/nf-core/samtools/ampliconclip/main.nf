@@ -14,10 +14,10 @@ process SAMTOOLS_AMPLICONCLIP {
     val save_clipstats
 
     output:
-    tuple val(meta), path("*.bam")            , emit: bam
-    tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
-    tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.clipallowed.bam")  , emit: bam
+    tuple val(meta), path("*.clipstats.txt")    , optional:true, emit: stats
+    tuple val(meta), path("*.cliprejects.bam")  , optional:true, emit: rejects_bam
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +36,7 @@ process SAMTOOLS_AMPLICONCLIP {
         $rejects \\
         $stats \\
         -b $bed \\
-        -o ${prefix}.bam \\
+        -o ${prefix}.clipallowed.bam \\
         $bam
 
     cat <<-END_VERSIONS > versions.yml
