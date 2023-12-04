@@ -12,14 +12,14 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     take:
     ch_bam   // channel: [ val(meta), [ bam ] ]
-    ch_fasta // channel: [ val(meta), [ fasta ] ]
+    ch_fasta // channel: /path/to/fasta
 
 
     main:
     ch_versions = Channel.empty()
 
 
-    SAMTOOLS_COLLATE ( ch_bam, ch_fasta )
+    SAMTOOLS_COLLATE ( ch_bam, ch_fasta.map { [[], it] } )
     ch_versions = ch_versions.mix(SAMTOOLS_COLLATE.out.versions.first())
 
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
