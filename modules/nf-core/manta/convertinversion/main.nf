@@ -10,7 +10,7 @@ process MANTA_CONVERTINVERSION {
 
     input:
     tuple val(meta), path(vcf)
-    path fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
