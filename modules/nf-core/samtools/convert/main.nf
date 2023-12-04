@@ -9,8 +9,8 @@ process SAMTOOLS_CONVERT {
 
     input:
     tuple val(meta), path(input), path(index)
-    path  fasta
-    path  fai
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.{cram,bam}"), path("*.{crai,bai}") , emit: alignment_index
