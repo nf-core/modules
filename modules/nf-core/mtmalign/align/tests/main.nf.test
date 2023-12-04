@@ -1,4 +1,3 @@
-
 //include { UNTAR } from '../../../../../modules/nf-core/untar/main.nf'
 
 nextflow_process {
@@ -18,11 +17,11 @@ nextflow_process {
                     script "../../../../../modules/nf-core/untar/main.nf"
                         process {
                             """
-                                input[0] = tuple([id:'test'], file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true))
-                                """
+                                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                input[0] = Channel.of(tuple([id:'test'], archive))
+                            """
                         }
                 }
-
             }
 
             when {
@@ -30,10 +29,8 @@ nextflow_process {
                 }
                 process {
                     """
-                        path = UNTAR.out.untar.collect()[0]
-                        print(path)
-                        input[0] = tuple([id:'test'], file(path + "/*.pdb"))
-                        """
+                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                    """
                 }
             }
 
