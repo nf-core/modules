@@ -20,7 +20,7 @@ env:
 
 jobs:
   prettier:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
         run: prettier --check .
 
   editorconfig:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -53,7 +53,7 @@ jobs:
 
   pytest-changes:
     name: pytest-changes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -95,7 +95,7 @@ jobs:
           token: ""
 
   nf-core-lint:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: nf-core-lint
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
@@ -208,6 +208,8 @@ jobs:
           - profile: "conda"
             tags: cellrangeratac/mkref
           - profile: "conda"
+            tags: controlfreec/makegraph2
+          - profile: "conda"
             tags: coreograph
           - profile: "conda"
             tags: deepcell/mesmer
@@ -309,6 +311,8 @@ jobs:
             tags: spaceranger/mkgtf
           - profile: "conda"
             tags: spaceranger/mkref
+          - profile: "conda"
+            tags: svanalyzer/svbenchmark
           - profile: "conda"
             tags: universc
           - profile: "singularity"
@@ -493,6 +497,8 @@ jobs:
           - profile: "conda"
             tags: sentieon/bwamem
           - profile: "conda"
+            tags: svanalyzer/svbenchmark
+          - profile: "conda"
             tags: universc
           - profile: "singularity"
             tags: universc
@@ -503,7 +509,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.1"
+      NFTEST_VER: "0.8.2"
 
     steps:
       - uses: actions/checkout@v4
@@ -584,7 +590,7 @@ jobs:
             test.tap
 
   confirm-pass:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
     if: always()
     steps:
