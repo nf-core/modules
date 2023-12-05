@@ -14,7 +14,7 @@ workflow test_samtools_markdup {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
-    SAMTOOLS_COLLATE ( input, [] )
+    SAMTOOLS_COLLATE ( input, [[],[]] )
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
     SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam )
     SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, [] )
