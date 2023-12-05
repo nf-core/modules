@@ -14,16 +14,15 @@ nextflow_process {
                 outdir = "$outputDir"
             }
             process {
+                """
                 file_a = file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
                 file_a.copyTo("${workDir}/tmp/prot1.fasta")
                 file_a = file("${workDir}/tmp/prot1.fasta", checkIfExists:true)
                 file_b = file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
-
-                """
                 input[0] = [ 
                     [ id:'test' ], // meta map
                     [ 
-                        file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true).renameTo("prot1.fasta")
+                        file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true).renameTo("prot1.fasta"),
                         file_b,
                     ] 
                 ]
