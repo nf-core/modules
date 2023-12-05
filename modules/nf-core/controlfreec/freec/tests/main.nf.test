@@ -3,8 +3,9 @@
 nextflow_process {
 
     name "Test Process CONTROLFREEC_FREEC"
-    script "/workspace/modules/modules/nf-core/controlfreec/freec/main.nf"
+    script "./main.nf"
     process "CONTROLFREEC_FREEC"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -17,10 +18,10 @@ nextflow_process {
         setup {
 
             run("UNTAR"){
-                script "/workspace/modules/modules/nf-core/untar/main.nf"
+                script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] = [ [], file(params.test_data['homo_sapiens']['genome']['genome_21_chromosomes_dir'], checkIfExists: true) ]
+                    input[0] = [ [id:'archive'], file(params.test_data['homo_sapiens']['genome']['genome_21_chromosomes_dir'], checkIfExists: true) ]
                     """
                 }
             }
