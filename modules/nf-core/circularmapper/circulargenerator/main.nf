@@ -26,7 +26,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     circulargenerator \\
         -Xmx${task.memory.toGiga()}g \\
         $args \\
-        -i $fasta    
+        -i $fasta
     mv ${fasta}_${prefix}_elongated ${fasta.baseName}_${prefix}.${fasta.extension}_${prefix}_elongated
 
     cat <<-END_VERSIONS > versions.yml
