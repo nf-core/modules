@@ -25,17 +25,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test' ]`
-  - fasta:
+  - fasta_files:
       type: file
       description: Input fasta files (proteomes or transcriptomes), at least 2 are needed
       pattern: "*.{fa,fasta,faa,fna,fn}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - versions:
       type: file
       description: File containing software versions

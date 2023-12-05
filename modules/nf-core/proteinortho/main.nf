@@ -8,7 +8,7 @@ process PROTEINORTHO {
         'biocontainers/proteinortho:6.3.0--h70414c8_0' }"
 
     input:
-    tuple val(meta), path(fasta_files, stageAs: "?/*")
+    tuple val(meta), path(fasta_files, stageAs: "?/*") as fasta_files
 
     output:
     tuple val(meta), path("${meta.id}.proteinortho.tsv")                     , emit: orthologgroups
