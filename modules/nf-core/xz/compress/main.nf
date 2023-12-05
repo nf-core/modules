@@ -1,6 +1,6 @@
 process XZ_COMPRESS {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -25,7 +25,7 @@ process XZ_COMPRESS {
 
     # needs --stdout for xz to avoid the following issue:
     # xz: ${raw_file}: Is a symbolic link, skipping
-    xz --stdout ${args} ${raw_file} > ${archive}
+    xz -T $task.cpus --stdout ${args} ${raw_file} > ${archive}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
