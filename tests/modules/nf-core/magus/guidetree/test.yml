@@ -1,0 +1,10 @@
+- name: magus guidetree test_magus_guidetree
+  command: nextflow run ./tests/modules/nf-core/magus/guidetree -entry test_magus_guidetree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/magus/guidetree/nextflow.config
+  tags:
+    - magus/guidetree
+    - magus
+  files:
+    - path: output/magus/test.tree
+      contains:
+        - "NODE_3_length"
+    - path: output/magus/versions.yml
