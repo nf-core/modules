@@ -42,8 +42,7 @@ process DIAMOND_MAKEDB {
         ${args} \\
         ${insert_taxonmap} \\
         ${insert_taxonnodes} \\
-        ${insert_taxonnames} \\
-        --verbose
+        ${insert_taxonnames}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

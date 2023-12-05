@@ -68,10 +68,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ] ]
-                input[1] = file('/home/james/Downloads/createtaxdb/prot.accession2taxid.gz')
-                input[2] = file(params.test_data['sarscov2']['metagenome']['nodes_dmp'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['metagenome']['names_dmp'], checkIfExists: true)
+                input[0] = [ [id:'test'], [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)  ] ]
+                input[1] = [ file(params.test_data['sarscov2']['metagenome']['prot_accession2taxid_gz'], checkIfExists: true) ]
+                input[2] = [ file(params.test_data['sarscov2']['metagenome']['prot_nodes_dmp'], checkIfExists: true) ]
+                input[3] = [ file(params.test_data['sarscov2']['metagenome']['prot_names_dmp'], checkIfExists: true) ]
                 """
             }
         }
@@ -79,7 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db).match("db") },
+                { assert snapshot(process.out.db).match("db_tax") },
                 { assert process.out.versions }
             )
         }
