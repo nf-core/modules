@@ -125,7 +125,7 @@ opt <- list(
     de_file = '$de_file',
     de_id_column = 'gene_id',
     organism = '$organism',
-    sources = '$sources',
+    sources = NULL,
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
@@ -164,7 +164,7 @@ for ( ao in names(args_opt)) {
 }
 
 # Check if required parameters have been provided
-required_opts <- c('organism', 'sources', 'contrast_variable', 'reference_level', 'target_level')
+required_opts <- c('organism', 'contrast_variable', 'reference_level', 'target_level')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
@@ -228,7 +228,10 @@ if (!is.null(opt\$blocking_variables)) {
 # Create empty output table in case no enriched pathways are found
 file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
 
-sources <-  strsplit(opt\$sources, split = ",")[[1]]
+sources <- opt\$sources
+if (!is.null(sources)) {
+    sources <-  strsplit(opt\$sources, split = ",")[[1]]
+}
 
 if (!is.null(opt\$gost_token)) {
 
@@ -236,10 +239,16 @@ if (!is.null(opt\$gost_token)) {
     gost_token <- opt\$gost_token
 } else if (opt\$gmt_file != "") {
 
-    # Next check if custom GMT file was provided; extract only requested datasources (gprofiler will NOT filter automatically!)
-    gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
-    gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
-    writeLines(gmt, gmt_path)
+    # Next check if custom GMT file was provided
+    gmt_path <- opt\$gmt_file
+
+    # If sources are set, extract only requested entries (gprofiler will NOT filter automatically!)
+    if (!is.null(sources)) {
+        gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
+        gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
+        writeLines(gmt, gmt_path)
+    }
+
     gost_token <- upload_GMT_file(gmt_path)
 
     # Add gost ID to output GMT name so that it can be reused in future runs
@@ -250,16 +259,21 @@ if (!is.null(opt\$gost_token)) {
     gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
     tryCatch(
         {
-            gmt_path <- paste0("gprofiler_full_", opt\$organism, ".", paste(sources, collapse="_"), ".ENSG_filtered.gmt")
+            gmt_path <- paste0("gprofiler_full_", opt\$organism, ".ENSG.gmt")
+            if (!is.null(sources)) {
+                gmt_path <- paste0("gprofiler_full_", opt\$organism, ".", paste(sources, collapse="_"), ".ENSG_filtered.gmt")
+            }
             download <- download.file(gmt_url, gmt_path)
             if (download != 0) {
                 print("Failed to fetch the GMT file from gprofiler with this URL:")
                 print(gmt_url)
                 print("For reproducibility reasons, try to download the GMT file manually by visiting https://biit.cs.ut.ee/gprofiler/gost, then selecting the correct organism and, in datasources, clicking 'combined ENSG.gmt'.")
             } else {
-                gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(gmt_path))
-                print(paste0("GMT file successfully downloaded and filtered. Please note that for some sources, the GMT file may not contain any entries as these cannot be retrieved from gprofiler; in this case, the GMT file may be completely empty."))
-                writeLines(gmt, gmt_path)
+                if (!is.null(sources)) {
+                    gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(gmt_path))
+                    print(paste0("GMT file successfully downloaded and filtered. Please note that for some sources, the GMT file may not contain any entries as these cannot be retrieved from gprofiler; in this case, the GMT file may be completely empty."))
+                    writeLines(gmt, gmt_path)
+                }
             }
         },
         error=function(gost_error) {
