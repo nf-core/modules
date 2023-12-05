@@ -9,6 +9,9 @@ process DIAMOND_MAKEDB {
 
     input:
     tuple val(meta), path(fasta)
+    path taxonmap
+    path taxonnodes
+    path taxonnames
 
     output:
     tuple val(meta), path("*.dmnd"), emit: db
@@ -18,10 +21,13 @@ process DIAMOND_MAKEDB {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.getExtension() == "gz" ? true : false
-    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
+    def args              = task.ext.args ?: ''
+    def prefix            = task.ext.prefix ?: "${meta.id}"
+    def is_compressed     = fasta.getExtension() == "gz" ? true : false
+    def fasta_name        = is_compressed ? fasta.getBaseName() : fasta
+    def insert_taxonmap   = taxonmap ? "--taxonmap $taxonmap" : ""
+    def insert_taxonnodes = taxonnodes ? "--taxonnodes $taxonnodes" : ""
+    def insert_taxonnames = taxonnames ? "--taxonnames $taxonnames" : ""
 
     """
     if [ "${is_compressed}" == "true" ]; then
@@ -33,7 +39,11 @@ process DIAMOND_MAKEDB {
         --threads ${task.cpus} \\
         --in  ${fasta_name} \\
         -d ${prefix} \\
-        ${args}
+        ${args} \\
+        ${insert_taxonmap} \\
+        ${insert_taxonnodes} \\
+        ${insert_taxonnames} \\
+        --verbose
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
