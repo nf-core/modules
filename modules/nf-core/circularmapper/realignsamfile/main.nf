@@ -2,7 +2,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::circularmapper=1.93.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
         'biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
@@ -26,7 +26,6 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     realignsamfile \\
         -Xmx${task.memory.toGiga()}g \\
         ${args} \\
-        -e ${meta2.circularextension} \\
         -i ${bam} \\
         -r ${fasta}
 

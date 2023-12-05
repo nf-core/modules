@@ -17,8 +17,8 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing reference information. Requires circularextension and circulartarget to function
-        e.g. `[ id:'test', circularextension:500, circulartarget:'chrMT' ]`  
+        Groovy Map containing reference information.
+        e.g. `[ id:'test' ]`
   - fasta:
       type: file
       description: Input genome fasta file
@@ -27,7 +27,7 @@ output:
       type: map
       description: |
         Groovy Map containing reference information
-        e.g. `[ id:'test', circularextension:500, circulartarget:'chrMT' ]`
+        e.g. `[ id:'test' ]`
   - fasta:
       type: file
       description: Output elongated genome fasta file
@@ -37,6 +37,6 @@ output:
   - versions:
       type: file
       description: File containing software versions
-      pattern: "versions.yml"  
+      pattern: "versions.yml"
 authors:
   - "@shyama-mama"

@@ -7,7 +7,7 @@ include { CIRCULARMAPPER_CIRCULARGENERATOR } from '../../../../../modules/nf-cor
 workflow test_circularmapper_circulargenerator {
     
     input = [
-        [ id:'test', circularextension:500, circulartarget:'MT192765.1' ], // meta map
+        [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 

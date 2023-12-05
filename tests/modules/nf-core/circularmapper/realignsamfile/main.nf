@@ -21,7 +21,7 @@ workflow test_circularmapper_realignsamfile {
         .set { input }
     
     fasta = [
-        [ id:'test', circularextension:500, circulartarget:'MT192765.1' ], // meta map
+        [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
