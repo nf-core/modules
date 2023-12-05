@@ -24,7 +24,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.archive != null },
                 { assert process.out.archive.get(0).get(1) ==~ ".*/genome.fasta.xz"  },
-                { assert snapshot(process.out.archive).match("archive")},
+                // the checksum of the output archive may depend on the number of cores used, do not check the snapshot
+                //{ assert snapshot(process.out.archive).match("archive")},
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
