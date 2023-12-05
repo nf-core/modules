@@ -2,7 +2,7 @@ process GATK4_COLLECTREADCOUNTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
@@ -37,7 +37,8 @@ process GATK4_COLLECTREADCOUNTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CollectReadCounts \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CollectReadCounts \\
         --input $input \\
         --intervals $intervals \\
         --output ${prefix}.$extension \\

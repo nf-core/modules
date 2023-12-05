@@ -2,7 +2,7 @@ process CLONALFRAMEML {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::clonalframeml=1.12"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1' :
         'biocontainers/clonalframeml:1.12--h7d875b9_1' }"

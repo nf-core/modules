@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/jimmyliu1326/SsuisSero
       documentation: https://github.com/jimmyliu1326/SsuisSero
       tool_dev_url: https://github.com/jimmyliu1326/SsuisSero
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: Assembly in FASTA format
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: Tab-delimited serotype prediction
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -13,6 +13,7 @@ workflow test_busco_genome_single_fasta {
 
     BUSCO (
         input,
+        'genome',
         'bacteria_odb10', // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
         [], // Download busco lineage
         [] // No config
@@ -32,6 +33,7 @@ workflow test_busco_genome_multi_fasta {
 
     BUSCO (
         input,
+        'genome',
         'bacteria_odb10',
         [], // Download busco lineage
         [] // No config
@@ -48,6 +50,7 @@ workflow test_busco_eukaryote_metaeuk {
 
     BUSCO (
         input,
+        'genome',
         'eukaryota_odb10',
         [], // Download busco lineage
         [] // No config
@@ -64,6 +67,7 @@ workflow test_busco_eukaryote_augustus {
 
     BUSCO (
         input,
+        'genome',
         'eukaryota_odb10',
         [], // Download busco lineage
         [] // No config
@@ -80,6 +84,7 @@ workflow test_busco_protein {
 
     BUSCO (
         input,
+        'proteins',
         'bacteria_odb10',
         [], // Download busco lineage
         [] // No config
@@ -96,6 +101,7 @@ workflow test_busco_transcriptome {
 
     BUSCO (
         input,
+        'transcriptome',
         'bacteria_odb10',
         [], // Download busco lineage
         [] // No config

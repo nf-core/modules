@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/trinityrnaseq/trinityrnaseq/"
       doi: "10.1038/nbt.1883"
       licence: "['BSD-3-clause']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: fasta/fastq file of reads to be assembled into a transcriptome
       pattern: "*.{fa|fasta|fq|fastq}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: de novo assembled transcripts fasta file compressed
       pattern: "*.fa.gz"
-
 authors:
+  - "@timslittle"
+maintainers:
   - "@timslittle"

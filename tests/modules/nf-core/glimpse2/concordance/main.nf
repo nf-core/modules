@@ -2,19 +2,21 @@
 
 nextflow.enable.dsl = 2
 
+include { BCFTOOLS_INDEX       } from '../../../../../modules/nf-core/bcftools/index/main.nf'
 include { GLIMPSE2_PHASE       } from '../../../../../modules/nf-core/glimpse2/phase/main.nf'
 include { GLIMPSE_LIGATE       } from '../../../../../modules/nf-core/glimpse/ligate/main.nf'
 include { GLIMPSE2_CONCORDANCE } from '../../../../../modules/nf-core/glimpse2/concordance/main.nf'
-include { BCFTOOLS_INDEX       } from '../../../../../modules/nf-core/bcftools/index/main.nf'
+include {
+    GLIMPSE2_CONCORDANCE as GLIMPSE2_CONCORDANCE_R2_PER_SITE
+                               } from '../../../../../modules/nf-core/glimpse2/concordance/main.nf'
 
-workflow test_glimpse2_concordance {
-
+workflow preprocessing {
     samples_infos = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
     region        = Channel.of(["chr21:16600000-16800000","chr21:16650000-16750000"])
     input_vcf     = Channel.of([
         [ id:'input'], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)        
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
     ])
 
     input_vcf_with_samples_infos = input_vcf.combine(samples_infos).combine(region)
@@ -54,9 +56,39 @@ workflow test_glimpse2_concordance {
                         .combine( Channel.of([[]]) )
                         .combine( Channel.of(["chr21"]) )
 
+    emit:
+    list_inputs
+}
+
+
+workflow test_glimpse2_concordance {
+    list_inputs = preprocessing()
     GLIMPSE2_CONCORDANCE ( list_inputs,
                         Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5",[],[]]),
                         0.9999,
-                        8) // [meta, Region, Frequencies, Truth, Estimate], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
+                        8) // [meta, estimate, estimate_index, truth, truth_index, freq, freq_index, samples, region], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
+}
 
+
+workflow test_list_region {
+    list_inputs_list_region = preprocessing().map{
+        def reg = it[8]
+        def ret = it.clone()
+        ret[8] = [reg, reg]
+        return ( ret )
+    }
+
+    GLIMPSE2_CONCORDANCE ( list_inputs_list_region,
+                        Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5",[],[]]),
+                        0.9999,
+                        8) // [meta, estimate, estimate_index, truth, truth_index, freq, freq_index, samples, region], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
+}
+
+
+workflow test_r2_per_site {
+    list_inputs = preprocessing()
+    GLIMPSE2_CONCORDANCE_R2_PER_SITE ( list_inputs,
+                        Channel.of([[id:"params"],[],"0 0.01 0.05 0.1 0.2 0.5",[],[]]),
+                        0.9999,
+                        8) // [meta, estimate, estimate_index, truth, truth_index, freq, freq_index, samples, region], [meta, group, bins, ac_bins, allele_count], min-val-gl, min-val-dp
 }

@@ -10,6 +10,7 @@
     - path: output/rmarkdownnotebook/test_rmd.html
       contains:
         - "n_iter = 10"
+    - path: output/rmarkdownnotebook/versions.yml
 
 - name: rmarkdownnotebook test_rmarkdown_parametrize
   command: nextflow run ./tests/modules/nf-core/rmarkdownnotebook -entry test_rmarkdown_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rmarkdownnotebook/nextflow.config
@@ -25,3 +26,6 @@
     - path: output/rmarkdownnotebook/test_rmd.html
       contains:
         - "n_iter = 12"
+    - path: output/rmarkdownnotebook/test_rmd.parameterised.Rmd
+      md5sum: 59e184e50aadb66a821a2acce6a7c27c
+    - path: output/rmarkdownnotebook/versions.yml
