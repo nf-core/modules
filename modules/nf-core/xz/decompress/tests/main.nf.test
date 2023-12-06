@@ -2,6 +2,7 @@ nextflow_process {
     name "Test Process XZ_DECOMPRESS"
     script "../main.nf"
     process "XZ_DECOMPRESS"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"

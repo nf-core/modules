@@ -21,10 +21,12 @@ process XZ_DECOMPRESS {
     def args = task.ext.args ?: ''
     decompressed_file = archive.toString().replaceAll(".xz\$", "")
     """
-    # needs --stdout for xz --decompress to avoid two issues:
-    # 1. xz: ${archive}: Is a symbolic link, skipping
-    # 2. xz: ${archive}: Cannot set the file group: Operation not permitted
-    xz --decompress --stdout ${args} ${archive} > ${decompressed_file}
+    # Note 1: needs --stdout for xz --decompress to avoid two issues:
+    #   1. xz: ${archive}: Is a symbolic link, skipping
+    #   2. xz: ${archive}: Cannot set the file group: Operation not permitted
+    # Note 2: using several threads in xz --decompress will only work on files that contain multiple blocks with size
+    # information in block headers.  All files compressed in multi-threaded mode meet this condition.
+    xz -T ${task.cpus} --decompress --stdout ${args} ${archive} > ${decompressed_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
