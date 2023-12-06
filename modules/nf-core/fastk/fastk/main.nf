@@ -26,11 +26,13 @@ process FASTK_FASTK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    mkdir tmp
     FastK \\
         $args \\
         -T$task.cpus \\
         -M${task.memory.toGiga()} \\
         -N${prefix}_fk \\
+        -Ptmp \\
         $reads
 
     cat <<-END_VERSIONS > versions.yml
