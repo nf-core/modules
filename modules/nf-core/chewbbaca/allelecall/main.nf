@@ -29,36 +29,37 @@ process CHEWBBACA_ALLELECALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
-    chewie \
-      AlleleCall \
-      --cpu ${task.cpus} \
-      --input-files ${fasta} \
-      --schema-directory ${scheme} \
+    chewie \\
+      AlleleCall \\
+      --cpu ${task.cpus} \\
+      $args \\
+      --input-files ${fasta} \\
+      --schema-directory ${scheme} \\
       --output-directory results
 
-    mv results/${prefix}_results_statistics.tsv ${prefix}_results_statistics.tsv
-    mv results/${prefix}_results_contigsInfo.tsv ${prefix}_results_contigsInfo.tsv
-    mv results/${prefix}_results_alleles.tsv ${prefix}_results_alleles.tsv
-    mv results/${prefix}_paralogous_counts.tsv ${prefix}_paralogous_counts.tsv
-    mv results/${prefix}_paralogous_loci.tsv ${prefix}_paralogous_loci.tsv
-    mv results/${prefix}_logging_info.txt ${prefix}_logging_info.txt
-    mv results/${prefix}_cds_coordinates.tsv ${prefix}_cds_coordinates.tsv
-    mv results/${prefix}_invalid_cds.txt ${prefix}_invalid_cds.txt
-    mv results/${prefix}_loci_summary_stats.tsv ${prefix}_loci_summary_stats.tsv
+    mv results/results_statistics.tsv ${prefix}_results_statistics.tsv
+    mv results/results_contigsInfo.tsv ${prefix}_results_contigsInfo.tsv
+    mv results/results_alleles.tsv ${prefix}_results_alleles.tsv
+    mv results/paralogous_counts.tsv ${prefix}_paralogous_counts.tsv
+    mv results/paralogous_loci.tsv ${prefix}_paralogous_loci.tsv
+    mv results/logging_info.txt ${prefix}_logging_info.txt
+    mv results/cds_coordinates.tsv ${prefix}_cds_coordinates.tsv
+    mv results/invalid_cds.txt ${prefix}_invalid_cds.txt
+    mv results/loci_summary_stats.tsv ${prefix}_loci_summary_stats.tsv
 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(chewie --version 2>&1) | sed 's/^.*chewie //; s/Using.*\$//' ))
+        chewbbaca: \$(echo \$(chewie --version 2>&1 | sed 's/^.*chewBBACA version: //g; s/Using.*\$//' ))
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     touch ${prefix}_results_statistics.tsv
     touch ${prefix}_results_contigsInfo.tsv
@@ -70,10 +71,9 @@ process CHEWBBACA_ALLELECALL {
     touch ${prefix}_invalid_cds.txt
     touch ${prefix}_loci_summary_stats.tsv
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(chewie --version 2>&1) | sed 's/^.*chewie //; s/Using.*\$//' ))
+        chewbbaca: \$(echo \$(chewie --version 2>&1 | sed 's/^.*chewBBACA version: //g; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
