@@ -13,12 +13,10 @@ tools:
       documentation: https://csb5.github.io/lofreq/commands/
       doi: 10.1093/nar/gks918
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
-      description: Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - meta2:
       type: map
       description: Groovy Map containing reference information
@@ -53,7 +51,6 @@ input:
       type: file
       description: BED file containing target regions for variant calling
       pattern: "*.{bed}"
-
 output:
   - meta:
       type: map
@@ -68,6 +65,7 @@ output:
       type: file
       description: Gzipped VCF file containing variants
       pattern: "*.{vcf.gz}"
-
 authors:
+  - "@nevinwu"
+maintainers:
   - "@nevinwu"

@@ -29,7 +29,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file, must be sorted by name, not coordinate
       pattern: "*.{bam,cram,sam}"
-
 output:
   - meta:
       type: map
@@ -44,6 +43,7 @@ output:
       type: file
       description: A BAM/CRAM/SAM file with mate information added and/or proper pairs recalled
       pattern: "*.{bam,cram,sam}"
-
 authors:
+  - "@sppearce"
+maintainers:
   - "@sppearce"

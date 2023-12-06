@@ -2,7 +2,7 @@ process ALLELECOUNTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cancerit-allelecount=4.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
         'biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"

@@ -1,8 +1,0 @@
-- name: bismark report test workflow
-  command: nextflow run ./tests/modules/nf-core/bismark/report -entry test_bismark_report -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bismark/report/nextflow.config
-  tags:
-    - bismark
-    - bismark/report
-  files:
-    - path: output/bismark/test.methylated_1_bismark_bt2_PE_report.html
-    - path: output/bismark/test.methylated_1_bismark_bt2_PE_report.txt
