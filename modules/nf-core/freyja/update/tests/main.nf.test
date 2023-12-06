@@ -20,11 +20,12 @@ nextflow_process {
         }
 
         then {
+            println(process.out.barcodes)
             assertAll(
                 { assert process.success },
-                { assert path(process.out.barcodes).exists() },
-                { assert path(process.out.lineages_meta).exists() },
-                { assert path(process.out.lineages_topology).exists() },
+                { assert path(process.out.barcodes.get(0)).exists() },
+                { assert path(process.out.lineages_meta.get(0)).exists() },
+                { assert path(process.out.lineages_topology.get(0)).exists() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
