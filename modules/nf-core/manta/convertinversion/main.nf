@@ -10,7 +10,7 @@ process MANTA_CONVERTINVERSION {
 
     input:
     tuple val(meta), path(vcf)
-    path fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
@@ -30,7 +30,7 @@ process MANTA_CONVERTINVERSION {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         manta: \$( configManta.py --version )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
     END_VERSIONS
     """
 }
