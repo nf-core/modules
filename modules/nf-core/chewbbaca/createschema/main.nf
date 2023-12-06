@@ -13,7 +13,7 @@ process CHEWBBACA_CREATESCHEMA {
     path cds
 
     output:
-    path 'results/*'                                   , emit: schema
+    tuple val(meta), path("results/$meta.id")         , emit: schema
     path "results/cds_coordinates.tsv"                 , emit: cds_coordinates
     path "results/invalid_cds.txt"                     , emit: invalid_cds
     path "versions.yml"                                , emit: versions

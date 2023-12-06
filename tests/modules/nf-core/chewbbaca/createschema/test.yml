@@ -1,8 +1,8 @@
 - name: chewbbaca createschema test_chewbbaca_createschema
-  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chewbbaca/createschema/nextflow.config
   tags:
-    - chewbbaca
     - chewbbaca/createschema
+    - chewbbaca
   files:
     - path: output/chewbbaca/results/cds_coordinates.tsv
       md5sum: 7fef49207aa024b68f465e986f4c7444
@@ -10,7 +10,7 @@
       md5sum: d0afbd9996054d8838e62dc3e852fa07
     - path: output/chewbbaca/results/test/.genes_list
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - '00000000'
     - path: output/chewbbaca/results/test/.schema_config
       md5sum: 92b512f65fde7dce321ada54e5c431e9
     - path: output/chewbbaca/results/test/contigs-protein1.fasta
@@ -80,10 +80,10 @@
     - path: output/chewbbaca/versions.yml
 
 - name: chewbbaca createschema test_chewbbaca_createschema_multi
-  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema_multi -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema_multi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chewbbaca/createschema/nextflow.config
   tags:
-    - chewbbaca
     - chewbbaca/createschema
+    - chewbbaca
   files:
     - path: output/chewbbaca/results/cds_coordinates.tsv
       md5sum: e62f4e808939f97ccdbe4d17c1521b6c
@@ -91,7 +91,7 @@
       md5sum: d0afbd9996054d8838e62dc3e852fa07
     - path: output/chewbbaca/results/test/.genes_list
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - '00000000'
     - path: output/chewbbaca/results/test/.schema_config
       md5sum: 92b512f65fde7dce321ada54e5c431e9
     - path: output/chewbbaca/results/test/contigs-protein1.fasta
@@ -157,10 +157,10 @@
     - path: output/chewbbaca/versions.yml
 
 - name: chewbbaca createschema test_chewbbaca_createschema_gz
-  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema_gz -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chewbbaca/createschema -entry test_chewbbaca_createschema_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chewbbaca/createschema/nextflow.config
   tags:
-    - chewbbaca
     - chewbbaca/createschema
+    - chewbbaca
   files:
     - path: output/chewbbaca/results/cds_coordinates.tsv
       md5sum: e62f4e808939f97ccdbe4d17c1521b6c
@@ -168,7 +168,7 @@
       md5sum: d0afbd9996054d8838e62dc3e852fa07
     - path: output/chewbbaca/results/test/.genes_list
       contains:
-        - "# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead "
+        - '00000000'
     - path: output/chewbbaca/results/test/.schema_config
       md5sum: 92b512f65fde7dce321ada54e5c431e9
     - path: output/chewbbaca/results/test/contigs-protein1.fasta
