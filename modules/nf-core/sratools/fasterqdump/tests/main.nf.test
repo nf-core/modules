@@ -22,7 +22,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_single_end', single_end:true ], files]}
+                input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
                 input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """
@@ -53,7 +53,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_paired_end', single_end:false ], files]}
+                input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
                 input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """
