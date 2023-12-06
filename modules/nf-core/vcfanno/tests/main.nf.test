@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process VCFANNO"
+    script "../main.nf"
+    process "VCFANNO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcfanno"
+
+    test("sarscov2 - [vcf(gz), tbi, vcf], [], toml, [vcf, tbi]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_compressed', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[2] = []
+                input[3] = [
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz.tbi",checkIfExists: true)
+                ]              
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, [], vcf], [], toml, [vcf, tbi]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_uncompressed', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                    [],
+                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[2] = []
+                input[3] = [
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz.tbi",checkIfExists: true)
+                ]              
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf(gz), tbi, vcf], [], toml, [vcf, tbi] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_compressed', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[2] = []
+                input[3] = [
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),
+                    file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz.tbi",checkIfExists: true)
+                ]              
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}
