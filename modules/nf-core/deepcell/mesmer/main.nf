@@ -1,6 +1,6 @@
 process DEEPCELL_MESMER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     container "docker.io/vanvalenlab/deepcell-applications:0.4.1"
 
