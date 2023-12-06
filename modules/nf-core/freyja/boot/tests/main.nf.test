@@ -1,14 +1,13 @@
-
 nextflow_process {
 
-    name "Test Process FREYJA_DEMIX"
+    name "Test Process FREYJA_BOOT"
     script "../main.nf"
-    process "FREYJA_DEMIX"
+    process "FREYJA_BOOT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "freyja"
-    tag "freyja/demix"
+    tag "freyja/boot"
     tag "freyja/variants"
     tag "freyja/updatedb"
 
@@ -41,8 +40,9 @@ nextflow_process {
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
-                input[1] = FREYJA_UPDATE.out.barcodes
-                input[2] = FREYJA_UPDATE.out.lineages_meta
+                input[1] = 10
+                input[2] = FREYJA_UPDATE.out.barcodes
+                input[3] = FREYJA_UPDATE.out.lineages_meta
                 """
             }
         }
@@ -50,7 +50,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.json.get(0).get(1)).getText().contains("summarized") },
+                { assert path(process.out.summarized.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(process.out.lineages.get(0).get(1)).getText().contains("0.025,") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
