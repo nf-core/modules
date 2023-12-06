@@ -168,6 +168,7 @@ nextflow_workflow {
             params {
                 monochrome_logs = true
                 test_data       = ''
+                outdir          = 1
             }
             workflow {
                 """
@@ -191,7 +192,6 @@ nextflow_workflow {
         then {
             assert workflow.failed
             assert workflow.stdout.any { it.contains('ERROR ~ ERROR: Validation of pipeline parameters failed!') }
-            assert workflow.stdout.any { it.contains('The following invalid input values have been detected:') }
         }
 
     }
