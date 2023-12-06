@@ -10,12 +10,10 @@ workflow test_gprofiler2_gost {
         [ id:'test', reference:'r', target:'t' ], // meta map
         file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true)
     ]
-    organism = 'mmusculus'
 
     GPROFILER2_GOST (
         contrasts,
         input,
-        organism,
         [],
         []
     )
@@ -27,13 +25,11 @@ workflow test_gprofiler2_gost_backgroundmatrix {
         [ id:'test', reference:'r', target:'t' ], // meta map
         file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true)
     ]
-    organism = 'mmusculus'
     ch_background = Channel.from(file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true))
 
     GPROFILER2_GOST (
         contrasts,
         input,
-        organism,
         [],
         ch_background
     )

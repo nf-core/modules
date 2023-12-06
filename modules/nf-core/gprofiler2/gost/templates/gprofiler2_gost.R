@@ -124,7 +124,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = -1) {
 opt <- list(
     de_file = '$de_file',
     de_id_column = 'gene_id',
-    organism = '$organism',
+    organism = NULL,
     sources = NULL,
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
@@ -164,11 +164,15 @@ for ( ao in names(args_opt)) {
 }
 
 # Check if required parameters have been provided
-required_opts <- c('organism', 'contrast_variable', 'reference_level', 'target_level')
+required_opts <- c('contrast_variable', 'reference_level', 'target_level')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
+}
+
+if (is.null(opt\$organism) && opt\$gmt_file == "" && is.null(opt\$gost_token)) {
+    stop('Please provide organism, gmt_file or gost_token.')
 }
 
 # Check file inputs are valid
