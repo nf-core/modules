@@ -51,8 +51,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.config.get(1).find {
-                    file(it).name == "config.txt" }).exists() },
                 { assert snapshot(
                     process.out.bedgraph,
                     process.out.control_cpn,
@@ -62,7 +60,8 @@ nextflow_process {
                     process.out.CNV,
                     process.out.info,
                     process.out.ratio,
-                    process.out.versions).match() }
+                    process.out.versions).match() },
+                 { assert process.out.config }
             )
         }
 
