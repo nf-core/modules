@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process ABACAS"
+    script "../main.nf"
+    process "ABACAS"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "abacas"
+
+    test("sarscov2 [scaffolds_fasta] [genome_fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results[0][1].findAll {
+                    file(it).name != "test.abacas.bin" &&
+                    file(it).name != "test.abacas.nucmer.delta" &&
+                    file(it).name != "test.abacas.unused.contigs.out" &&
+                    file(it).name != "test.abacas.nucmer.filtered.delta"  }).match()},
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.bin" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.nucmer.delta" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.unused.contigs.out" }).exists() },
+                { assert file(process.out.results[0][1].find {
+                    file(it).name == "test.abacas.nucmer.filtered.delta" }).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}
