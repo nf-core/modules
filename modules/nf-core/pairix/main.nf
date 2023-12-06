@@ -2,7 +2,7 @@ process PAIRIX {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/pairix/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairix:0.3.7--py36h30a8e3e_3' :
         'biocontainers/pairix:0.3.7--py36h30a8e3e_3' }"

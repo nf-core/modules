@@ -2,7 +2,7 @@ process YAHS {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/yahs/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yahs:1.2a.2--h7132678_0':
         'biocontainers/yahs:1.2a.2--h7132678_0' }"

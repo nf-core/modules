@@ -9,18 +9,18 @@ nextflow_process {
     tag "blast"
     tag "blast/blastn"
 
-    test("Should search for nucleotide hits against a blast db") {
-
-        setup {
-            run("BLAST_MAKEBLASTDB") {
-                script "../../makeblastdb/main.nf"
-                process {
-                    """
-                    input[0] = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                    """
-                }
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../makeblastdb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
             }
         }
+    }
+
+    test("Should search for nucleotide hits against a blast db") {
 
         when {
             params {
@@ -29,6 +29,30 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for zipped nucleotide hits against a blast db") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }

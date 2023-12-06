@@ -3,7 +3,7 @@ process FREYJA_BOOT {
     label 'process_high'
 
 
-    conda 'modules/nf-core/freyja/boot/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/freyja:1.4.7--pyhdfd78af_0':
         'biocontainers/freyja:1.4.7--pyhdfd78af_0' }"
