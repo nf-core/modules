@@ -48,7 +48,10 @@ process PROTEINORTHO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(proteinortho --version 2>&1) )
+        proteinortho : \$(echo \$(proteinortho --version 2>&1) )
+        \$(echo \$( "diamond:"(diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;' ) || echo "") )
+        \$(echo \$( "blast:"(blastp -version 2>/dev/null |head -n1 | sed 's/^.*: //;'  ) || echo "") )
+        \$(echo \$( "mmseqs:"(mmseqp version 2>/dev/null ) || echo "") )
     END_VERSIONS
     """
 }
