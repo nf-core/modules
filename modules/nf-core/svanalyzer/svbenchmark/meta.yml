@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "svanalyzer_svbenchmark"
+description: "SVbenchmark compares a set of “test” structural variants in VCF format to a known truth set (also in VCF format) and outputs estimates of sensitivity and specificity."
+keywords:
+  - structural variant
+  - sv
+  - benchmarking
+tools:
+  - "svanalyzer":
+      description: "SVanalyzer: tools for the analysis of structural variation in genomes"
+      homepage: "https://svanalyzer.readthedocs.io/en/latest/index.html"
+      documentation: "https://svanalyzer.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/nhansen/SVanalyzer"
+      license: "['CC0']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing test sample information
+        e.g. `[ id:'test' ]`
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing truth sample information
+        e.g. `[ id:'test2' ]`
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference genome information
+        e.g. `[ id:'test3' ]`
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing bed file information
+        e.g. `[ id:'test4' ]`
+  - test:
+      type: file
+      description: A VCF-formatted file of structural variants to test (required)
+      pattern: "*.{vcf,vcf.gz}"
+  - truth:
+      type: file
+      description: A VCF-formatted file of variants to compare against (required)
+      pattern: "*.{vcf,vcf.gz}"
+  - fasta:
+      type: file
+      description: The reference FASTA file for the supplied VCF file or files (required)
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - bed:
+      type: file
+      description: BED File of regions from which to include variants. Used to filter both test and truth variants.
+      pattern: "*.{bed}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information inherited from test vcf
+        e.g. `[ id:'test']`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fns:
+      type: file
+      description: VCF file with False Negatives
+      pattern: "*.{vcf.gz}"
+  - fps:
+      type: file
+      description: VCF file with False Positives
+      pattern: "*.{vcf.gz}"
+  - distances:
+      type: file
+      description: TSV file with genomic distances and size differences between structural variants compared
+      pattern: "*.{distances}"
+  - log:
+      type: file
+      description: LOG file of the run
+      pattern: "*.{log}"
+  - report:
+      type: file
+      description: Text file reporting RECALL, PRECISION and F1.
+      pattern: "*.{report}"
+authors:
+  - "@kubranarci"

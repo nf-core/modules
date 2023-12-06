@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process ARIA2"
+    script "../main.nf"
+    process "ARIA2"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aria2"
+
+    test("sarscov2 Illumina single end [bam]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test_https' ], // meta map
+                             params.test_data['sarscov2']['illumina']['test_single_end_bam']  // https URL
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.downloaded_file != null },
+                { assert process.out.downloaded_file.get(0).get(1) ==~ ".*.bam"  },
+                { assert snapshot(process.out.downloaded_file).match("downloaded_file")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}
