@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process FARGENE"
+    script "../main.nf"
+    process "FARGENE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fargene"
+
+    test("fargene - bacteroides fragilis - contigs.fa.gz") {
+
+        setup {
+ 
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test', single_end:false ], // meta map
+                        file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'class_a'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.txt).match("txt") },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+            )
+        }
+
+    }
+
+}
