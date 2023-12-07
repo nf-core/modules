@@ -134,11 +134,11 @@ nextflow_workflow {
                             ]
                 ]
                 input[1] = true // skip_fastqc
-                input[2] = true  // with_umi
+                input[2] = true // with_umi
                 input[3] = true // skip_umi_extract
                 input[4] = true // skip_trimming
-                input[5] = 0     // umi_discard_read
-                input[6] = 1     // min_trimmed_reads
+                input[5] = 0    // umi_discard_read
+                input[6] = 1    // min_trimmed_reads
                 """
             }
         }
