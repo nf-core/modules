@@ -20,7 +20,6 @@ nextflow_process {
         }
 
         then {
-            println(process.out.barcodes)
             assertAll(
                 { assert process.success },
                 { assert path(process.out.barcodes.get(0)).exists() },
