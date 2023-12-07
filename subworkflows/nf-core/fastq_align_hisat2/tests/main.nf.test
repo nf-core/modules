@@ -6,6 +6,7 @@ nextflow_workflow {
     config "./nextflow.config"
     tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "fastq_align_hisat2"
     tag "subworkflows/fastq_align_hisat2"
     tag "subworkflows/bam_sort_stats_samtools"
     tag "hisat2"
@@ -44,7 +45,7 @@ nextflow_workflow {
         }
     }
 
-    test("Single-End") {
+    test("Single-End sarscov2 [fastq]") {
 
         when {
             workflow {
@@ -85,7 +86,7 @@ nextflow_workflow {
         }
     }
 
-    test("Paired-End") {
+    test("Paired-End sarscov2 [fastq]") {
 
         when {
             workflow {
