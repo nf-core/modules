@@ -19,23 +19,11 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  pre-commit:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-      - uses: pre-commit/action@v3.0.0
-        # FIXME Flip this off once we get to less than a couple hundred. Adding
-        # this so it will only run against changed files. It'll make it much
-        # easier to fix these as they come up rather than everything at once.
-        with:
-          extra_args: ""
-
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
 
       - name: Install NodeJS
         uses: actions/setup-node@v4
@@ -45,20 +33,18 @@ jobs:
       - name: Install Prettier
         run: npm install -g prettier
 
-      - name: Run Prettier --check
-        run: prettier --check .
-
-  editorconfig:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
       - name: Install editorconfig-checker
         run: npm install -g editorconfig-checker
+
+      - uses: pre-commit/action@v3.0.0
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""
+
+      - name: Run Prettier --check
+        run: prettier --check .
 
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
