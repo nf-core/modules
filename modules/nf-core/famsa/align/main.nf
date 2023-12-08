@@ -21,7 +21,7 @@ process FAMSA_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '-gz'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def options_tree = tree ? "-gt import $tree" : ""
     """
@@ -29,7 +29,7 @@ process FAMSA_ALIGN {
         $args \\
         -t ${task.cpus} \\
         ${fasta} \\
-        ${prefix}.aln
+        ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
