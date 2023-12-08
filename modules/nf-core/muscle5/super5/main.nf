@@ -10,7 +10,7 @@ process MUSCLE5_SUPER5 {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.aln"), emit: alignment
+    tuple val(meta), path("*.aln.gz"), emit: alignment
     path "versions.yml"           , emit: versions
 
     when:
@@ -27,9 +27,12 @@ process MUSCLE5_SUPER5 {
         ${args} \\
         -threads ${task.cpus}
 
+    pigz -p ${task.cpus} ${prefix}.aln
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         muscle: \$(muscle -version | head -n 1 | cut -d ' ' -f 2 | sed 's/.linux64//')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -37,11 +40,12 @@ process MUSCLE5_SUPER5 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln
+    touch ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         muscle: \$(muscle -version | head -n 1 | cut -d ' ' -f 2 | sed 's/.linux64//')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
