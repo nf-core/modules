@@ -12,7 +12,7 @@ process CLUSTALO_ALIGN {
     tuple val(meta2), path(tree)
 
     output:
-    tuple val(meta), path("*.aln"), emit: alignment
+    tuple val(meta), path("*.aln.gz"), emit: alignment
     path "versions.yml"           , emit: versions
 
     when:
@@ -26,11 +26,12 @@ process CLUSTALO_ALIGN {
         -i ${fasta} \\
         --threads=${task.cpus} \\
         $args \\
-        -o ${prefix}.aln
+        | pigz -p ${task.cpus} -c > ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clustalo: \$( clustalo --version )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -38,11 +39,12 @@ process CLUSTALO_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln
+    touch ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clustalo: \$( clustalo --version )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
