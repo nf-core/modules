@@ -4,8 +4,8 @@ process DRAGMAP_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0':
-        'biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:7eed251370ac7f3537c3d9472cdb2f9f5d8da1c5-0':
+        'biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:7eed251370ac7f3537c3d9472cdb2f9f5d8da1c5-0' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -35,6 +35,20 @@ process DRAGMAP_ALIGN {
         $reads_command \\
         2> >(tee ${prefix}.dragmap.log >&2) \\
         | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dragmap: \$(echo \$(dragen-os --version 2>&1))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
