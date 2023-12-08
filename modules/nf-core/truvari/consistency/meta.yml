@@ -1,0 +1,57 @@
+name: "truvari_consistency"
+description: Over multiple vcfs, calculate their intersection/consistency.
+keywords:
+  - structural variants
+  - sv
+  - vcf
+  - intersection
+  - comparison
+tools:
+  - "truvari":
+      description: "Structural variant comparison tool for VCFs"
+      homepage: "https://github.com/ACEnglish/truvari"
+      documentation: "https://github.com/acenglish/truvari/wiki"
+      tool_dev_url: "https://github.com/ACEnglish/truvari"
+      doi: "10.1186/s13059-022-02840-6"
+      licence: ['MIT']
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - vcf1:
+      type: file
+      description: VCF file 1 to compare
+      pattern: "*.{vcf}"
+  - vcf2:
+      type: file
+      description: VCF file 2 to compare
+      pattern: "*.{vcf}"
+  - vcf3:
+      type: file
+      description: VCF file 3 to compare
+      pattern: "*.{vcf}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Output report in txt format
+      pattern: "*.{txt}"
+  - json:
+      type: file
+      description: Output report in json format
+      pattern: "*.{json}"
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"
