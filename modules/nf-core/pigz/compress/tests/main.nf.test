@@ -2,7 +2,6 @@ nextflow_process {
     name "Test Process PIGZ_COMPRESS"
     script "../main.nf"
     process "PIGZ_COMPRESS"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -21,11 +20,12 @@ nextflow_process {
             }
         }
         then {
+            def lines = path(process.out.archive.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
                 { assert process.out.archive != null },
                 { assert process.out.archive.get(0).get(1) ==~ ".*/genome.fasta.gz"  },
-                { assert snapshot(process.out.archive).match("archive")},
+                { assert snapshot(lines).match("uncompressed_file")},
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
