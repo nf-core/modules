@@ -21,7 +21,8 @@ process CHECKM2_DATABASEDOWNLOAD {
     db_version = jsonSlurper.parseText(file("https://zenodo.org/api/records/${zenodo_id}").text).metadata.version
     meta = [id: 'checkm2_db', version: db_version]
     """
-    # currently (v1.0.2) database download command is broken, so this manually downloads the database from fixed url
+    # Automatic download is broken when using singularity/apptainer (https://github.com/chklovski/CheckM2/issues/73)
+    # So we download the database manually
     wget https://zenodo.org/records/${zenodo_id}/files/checkm2_database.tar.gz
 
     tar -xzf checkm2_database.tar.gz
