@@ -16,7 +16,7 @@ process MAFFT {
     tuple val(meta6), path(addlong)
 
     output:
-    tuple val(meta), path("*.fas"), emit: fas
+    tuple val(meta), path("*.fas.gz"), emit: fas
     path "versions.yml"           , emit: versions
 
     when:
@@ -41,11 +41,12 @@ process MAFFT {
         ${addlong} \\
         ${args} \\
         ${fasta} \\
-        > ${prefix}.fas
+        | pigz -p ${task.cpus} -c > ${prefix}.fas.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -59,11 +60,12 @@ process MAFFT {
     def addlong      = addlong         ? "--addlong ${addlong}"           : ''
     if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.fas
+    touch ${prefix}.fas.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
