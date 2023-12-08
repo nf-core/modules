@@ -34,22 +34,47 @@ input:
       type: file
       description: Optional - Limit analysis to targets listed in this BED-format FILE.
       pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: reference fasta file
       pattern: ".{fa,fa.gz,fasta,fasta.gz}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - fasta_fai:
       type: file
       description: reference fasta file index
       pattern: "*.{fa,fasta}.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing meta information for the samples file.
+        e.g. [ id:'test', single_end:false ]
   - samples:
       type: file
       description: Optional - Limit analysis to samples listed (one per line) in the FILE.
       pattern: "*.txt"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing meta information for the populations file.
+        e.g. [ id:'test', single_end:false ]
   - populations:
       type: file
       description: Optional - Each line of FILE should list a sample and a population which it is part of.
       pattern: "*.txt"
+  - meta6:
+      type: map
+      description: |
+        Groovy Map containing meta information for the cnv file.
+        e.g. [ id:'test', single_end:false ]
   - cnv:
       type: file
       description: |
