@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process PLINK2_EXTRACT"
+    script "../main.nf"
+    process "PLINK2_EXTRACT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/extract"
+
+    test("plink2_extract") {
+        config "./nextflow.config"
+        setup {
+            run("PLINK2_VCF") {
+                script "../../vcf/main.nf"
+                process {
+                        """
+                    input[0] = [
+                        [ id: 'test', single_end:false ],
+                        [
+                            file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = PLINK2_VCF.out.pgen.concat(PLINK2_VCF.out.psam, PLINK2_VCF.out.pvar.concat(PLINK2_VCF.out.pvar.splitText(file: 'variants.keep', keepHeader: false, by: 10).last())).groupTuple().map{ meta, paths -> [meta, paths[0], paths[1], paths[2], paths[3]] }
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.extract_pgen.get(0).get(1) ==~ ".*.pgen" },
+                { assert process.out.extract_psam.get(0).get(1) ==~ ".*.psam" },
+                { assert process.out.extract_pvar.get(0).get(1) ==~ ".*.pvar.zst" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -2,7 +2,7 @@ process ATLAS_RECAL {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/atlas/recal/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
         'biocontainers/atlas:0.9.9--h082e891_0' }"

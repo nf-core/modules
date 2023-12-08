@@ -1,9 +1,0 @@
-- name: samtools cat test_samtools_cat
-  command: nextflow run ./tests/modules/nf-core/samtools/cat -entry test_samtools_cat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/cat/nextflow.config
-  tags:
-    - samtools/cat
-    - samtools
-  files:
-    - path: output/samtools/test.bam
-      md5sum: b233caec3e6c327f60453a8596cd52eb
-    - path: output/samtools/versions.yml
