@@ -12,8 +12,7 @@ tools:
       documentation: "https://sanger-pathogens.github.io/ariba/"
       tool_dev_url: "https://github.com/sanger-pathogens/ariba"
       doi: "10.1099/mgen.0.000131"
-      licence: "['GPL v3']"
-
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -28,13 +27,7 @@ input:
       type: file
       description: An Ariba prepared database
       pattern: "*.tar.gz"
-
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -43,6 +36,7 @@ output:
       type: file
       description: A directory of Ariba analysis outputs
       pattern: "*"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

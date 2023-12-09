@@ -2,10 +2,10 @@ process FASTP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::fastp=0.23.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastp:0.23.2--h79da9fb_0' :
-        'quay.io/biocontainers/fastp:0.23.2--h79da9fb_0' }"
+        'https://depot.galaxyproject.org/singularity/fastp:0.23.4--h5f740d0_0' :
+        'biocontainers/fastp:0.23.4--h5f740d0_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -45,7 +45,7 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $args \\
-            2> ${prefix}.fastp.log \\
+            2> >(tee ${prefix}.fastp.log >&2) \\
         | gzip -c > ${prefix}.fastp.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
@@ -66,7 +66,7 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $args \\
-            2> ${prefix}.fastp.log
+            2> >(tee ${prefix}.fastp.log >&2)
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -91,7 +91,7 @@ process FASTP {
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
             $args \\
-            2> ${prefix}.fastp.log
+            2> >(tee ${prefix}.fastp.log >&2)
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

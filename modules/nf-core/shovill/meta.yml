@@ -4,14 +4,12 @@ keywords:
   - bacterial
   - assembly
   - illumina
-
 tools:
   - shovill:
       description: Microbial assembly pipeline for Illumina paired-end reads
       homepage: https://github.com/tseemann/shovill
       documentation: https://github.com/tseemann/shovill/blob/master/README.md
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
@@ -21,7 +19,6 @@ input:
   - reads:
       type: file
       description: List of input paired-end FastQ files
-
 output:
   - meta:
       type: map
@@ -52,6 +49,7 @@ output:
       type: file
       description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
       pattern: "contigs.{fastg,gfa,LastGraph}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -20,7 +20,6 @@ tools:
       documentation: https://pydamage.readthedocs.io/
       tool_dev_url: https://github.com/maxibor/pydamage
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: csv file from pydamage analyze
       pattern: "*.csv"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: PyDamage filtered results as csv file
       pattern: "*.csv"
-
 authors:
+  - "@maxibor"
+maintainers:
   - "@maxibor"

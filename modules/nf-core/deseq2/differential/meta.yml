@@ -5,7 +5,6 @@ keywords:
   - expression
   - rna-seq
   - deseq2
-
 tools:
   - "deseq2":
       description: "Differential gene expression analysis based on the negative binomial distribution"
@@ -13,8 +12,7 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: "10.1186/s13059-014-0550-8"
-      licence: "['LGPL >=3']"
-
+      licence: ["LGPL >=3"]
 input:
   - meta:
       type: map
@@ -43,7 +41,7 @@ input:
       description: |
         Groovy map containing study-wide metadata related to the sample sheet
         and matrix
-  - sample:
+  - samplesheet:
       type: file
       description: |
         CSV or TSV format sample sheet with sample metadata
@@ -52,21 +50,25 @@ input:
       description: |
         Raw TSV or CSV format expression matrix as output from the nf-core
         RNA-seq workflow
-  - control_genes:
-      type: file
-      description: |
-        Text file listing control genes, one per line
-  - control_genes_meta:
+  - meta3:
       type: file
       description: |
         Meta map describing control genes, e.g. [ id: 'ERCC' ]
-  - sizefactors_from_controls:
-      type: boolean
+  - control_genes_file:
+      type: file
       description: |
-        Specify if any supplied control genes should just be stripped to
-        prevent bias in conventional normalisation (default), or used to
-        generate the size factors (supplied via task.ext.args like
-        '--sizefactors_from_controls TRUE').
+        Text file listing control genes, one per line
+  - meta4:
+      type: map
+      description: |
+        Groovy map containing study-wide metadata related to the transcript
+        lengths file
+  - transcript_lengths_file:
+      type: file
+      description: |
+        Optional file of transcript lengths, with the same sample columns as
+        counts. If supplied, lengths will be supplied to DESeq2 to correct for
+        differences in average transcript lengths across samples.
 
 output:
   - results:
@@ -93,10 +95,15 @@ output:
       type: file
       description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
       pattern: "variance_stabilised_counts.tsv"
+  - model:
+      type: file
+      description: TXT-format DESeq2 model
+      pattern: "deseq2.model.tsv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

@@ -19,7 +19,7 @@ workflow test_align_bowtie2_single_end {
     sort = false
 
     BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [ ] )
+    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [[],[]] )
 }
 
 workflow test_align_bowtie2_paired_end {
@@ -39,6 +39,6 @@ workflow test_align_bowtie2_paired_end {
     sort = false
 
     BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [ ] )
+    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [[],[]] )
 }
 

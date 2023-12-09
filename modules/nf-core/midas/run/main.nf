@@ -3,10 +3,10 @@ process MIDAS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::midas=1.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/midas:1.3.2--pyh5e36f6f_6':
-        'quay.io/biocontainers/midas:1.3.2--pyh5e36f6f_6' }"
+        'biocontainers/midas:1.3.2--pyh5e36f6f_6' }"
 
     input:
     tuple val(meta), path(reads)

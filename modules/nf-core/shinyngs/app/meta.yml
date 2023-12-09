@@ -5,7 +5,6 @@ keywords:
   - expression
   - rna-seq
   - deseq2
-
 tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
@@ -13,7 +12,6 @@ tools:
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: "['AGPL v3']"
-
 input:
   - meta:
       type: map
@@ -34,7 +32,7 @@ input:
       description: |
         TSV-format feature (e.g. gene) metadata
   - assay_files:
-      type: list
+      type: file
       description: |
         List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
   - contrasts:
@@ -42,10 +40,9 @@ input:
       description: |
         CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
   - differential_results:
-      type: list
+      type: file
       description: |
         List of TSV-format differential analysis outputs, one per row of the contrasts file
-
 output:
   - meta:
       type: map
@@ -67,6 +64,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

@@ -5,7 +5,8 @@
     - controlfreec/freec2circos
   files:
     - path: output/controlfreec/test.circos.txt
-      md5sum: 19cf35f2c36b46f717dc8342b8a5a645
+      md5sum: 92ce5ce97b27a7214dfa9c2cb20cf854
+    - path: output/controlfreec/versions.yml
 
 - name: controlfreec freec2circos test_controlfreec_freec2circos_single
   command: nextflow run ./tests/modules/nf-core/controlfreec/freec2circos -entry test_controlfreec_freec2circos_single -c ./tests/config/nextflow.config -stub-run
@@ -14,3 +15,4 @@
     - controlfreec/freec2circos
   files:
     - path: output/controlfreec/test.circos.txt
+    - path: output/controlfreec/versions.yml
