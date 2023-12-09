@@ -10,10 +10,10 @@ process PARABRICKS_DEEPVARIANT {
     If you change this setting be careful.
     */
     stageInMode "copy"
-    
+
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
-    tuple val(ref_meta), path(fasta) 
+    tuple val(ref_meta), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
