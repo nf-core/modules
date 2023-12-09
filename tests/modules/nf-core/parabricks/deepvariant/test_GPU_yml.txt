@@ -6,6 +6,7 @@
   files:
     - path: output/parabricks/test.vcf
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks deepvariant test_parabricks_deepvariant_intervals
   command: nextflow run ./tests/modules/nf-core/parabricks/deepvariant -entry test_parabricks_deepvariant_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/deepvariant/nextflow.config
@@ -15,6 +16,7 @@
   files:
     - path: output/parabricks/test.vcf
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks deepvariant test_parabricks_deepvariant_gvcf
   command: nextflow run ./tests/modules/nf-core/parabricks/deepvariant -entry test_parabricks_deepvariant_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/deepvariant/nextflow.config
@@ -24,3 +26,4 @@
   files:
     - path: output/parabricks/test.g.vcf
       should_exist: true
+    - path: output/parabricks/versions.yml
