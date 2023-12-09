@@ -3,6 +3,13 @@ process PARABRICKS_HAPLOTYPECALLER {
     label 'process_high'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
+    
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful.
+    */
+    stageInMode "copy"
 
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
@@ -26,10 +33,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = args =~ "gvcf" ? "${prefix}.g.vcf" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
-    def copy_index_command = input_index ? "cp -L $input_index `readlink -f $input`.bai" : ""
     """
-    # parabricks needs the index file to exist as a regular file in the same dir as fasta
-    $copy_index_command
 
     pbrun \\
         haplotypecaller \\
