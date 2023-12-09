@@ -2,7 +2,7 @@ process STARSOLO {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::star=2.7.10b"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/star:2.7.10b--h9ee0642_0':
         'biocontainers/star:2.7.10b--h9ee0642_0' }"

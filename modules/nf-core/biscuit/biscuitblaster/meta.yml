@@ -1,5 +1,4 @@
 name: biscuit_blaster
-
 description: A fast, compact one-liner to produce duplicate-marked, sorted, and indexed BAM files using Biscuit
 keywords:
   - biscuit
@@ -9,14 +8,12 @@ keywords:
   - bisulfite sequencing
   - aligner
   - bam
-
 tools:
   - biscuit:
       description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/biscuitblaster/
       tool_dev_url: https://github.com/huishenlab/biscuit
-
       licence: ["MIT"]
   - samblaster:
       description: |
@@ -24,7 +21,6 @@ tools:
         It can also optionally output discordant read pairs and/or split read mappings to separate SAM files,
         and/or unmapped/clipped reads to a separate FASTQ file.
         By default, samblaster reads SAM input from stdin and writes SAM to stdout.
-
       documentation: https://github.com/GregoryFaust/samblaster
       tool_dev_url: https://github.com/GregoryFaust/samblaster
       doi: "10.1093/bioinformatics/btu314"
@@ -38,7 +34,6 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -54,7 +49,6 @@ input:
       type: directory
       description: Biscuit genome index directory (generated with 'biscuit index')
       pattern: "BiscuitIndex"
-
 output:
   - meta:
       type: map
@@ -73,6 +67,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@njspix"
+maintainers:
   - "@njspix"

@@ -2,7 +2,7 @@ process HAPIBD {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::hap-ibd=1.0.rev20May22.818"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
         'biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"

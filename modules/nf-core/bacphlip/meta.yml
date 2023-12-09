@@ -14,8 +14,7 @@ tools:
       documentation: https://github.com/adamhockenberry/bacphlip
       tool_dev_url: https://github.com/adamhockenberry/bacphlip
       doi: 10.7717/peerj.11396
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: FASTA file containing phage contigs/scaffolds/chromosomes (if it is a multi-FASTA file be sure to add the `--multi_fasta` argument)
       pattern: "*.{fasta,fna,fa}"
-
 output:
   - meta:
       type: map
@@ -45,6 +43,7 @@ output:
       type: file
       description: TSV file containing binary output indicating gene presence/absence based on hmmsearch results
       pattern: "*.hmmsearch.tsv"
-
 authors:
+  - "@CarsonJM"
+maintainers:
   - "@CarsonJM"

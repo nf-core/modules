@@ -2,9 +2,9 @@ process FAQCS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::faqcs=2.10"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/faqcs%3A2.10--r41h9a82719_2' :
+        'https://depot.galaxyproject.org/singularity/faqcs:2.10--r41h9a82719_2' :
         'biocontainers/faqcs:2.10--r41h9a82719_2' }"
 
     input:
@@ -36,7 +36,7 @@ process FAQCS {
             --prefix ${prefix} \\
             -t $task.cpus \\
             $args \\
-            2> ${prefix}.fastp.log
+            2> >(tee ${prefix}.fastp.log >&2)
 
 
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
@@ -63,7 +63,7 @@ process FAQCS {
             --prefix ${meta.id} \\
             -t $task.cpus \\
             $args \\
-            2> ${prefix}.fastp.log
+            2> >(tee ${prefix}.fastp.log >&2)
 
         # Unpaired
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
