@@ -3,7 +3,7 @@ process UCSC_WIGTOBIGWIG {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-wigtobigwig=447"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-wigtobigwig:447--h2a80c09_1' :
         'biocontainers/ucsc-wigtobigwig:447--h2a80c09_1' }"

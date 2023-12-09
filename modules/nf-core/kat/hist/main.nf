@@ -2,7 +2,7 @@ process KAT_HIST {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kat=2.4.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
         'biocontainers/kat:2.4.2--py38hfc5f9d8_2' }"

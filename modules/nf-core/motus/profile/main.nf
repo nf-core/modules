@@ -2,7 +2,7 @@ process MOTUS_PROFILE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::motus=3.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
         'biocontainers/motus:3.0.3--pyhdfd78af_0' }"
@@ -38,7 +38,7 @@ process MOTUS_PROFILE {
         -t $task.cpus \\
         -n $prefix \\
         -o ${prefix}.out \\
-        2> ${prefix}.log
+        2> >(tee ${prefix}.log >&2)
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.

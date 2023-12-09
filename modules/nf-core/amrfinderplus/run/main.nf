@@ -2,7 +2,7 @@ process AMRFINDERPLUS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ncbi-amrfinderplus=3.11.18"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.11.18--h283d18e_0':
         'biocontainers/ncbi-amrfinderplus:3.11.18--h283d18e_0' }"

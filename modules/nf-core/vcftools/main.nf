@@ -2,7 +2,7 @@ process VCFTOOLS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::vcftools=0.1.16"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4' :
         'biocontainers/vcftools:0.1.16--he513fc3_4' }"
@@ -91,10 +91,14 @@ process VCFTOOLS {
 
     def bed_arg  = (args.contains('--bed')) ? "--bed ${bed}" :
         (args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
-        (args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
+        (args.contains('--hapcount')) ? "--hapcount ${bed}" :
+        (args.contains('--positions')) ? "--positions ${bed}" :
+        (args.contains('--exclude-positions')) ? "--exclude-positions ${bed}"  : ''
     args_list.removeIf { it.contains('--bed') }
     args_list.removeIf { it.contains('--exclude-bed') }
     args_list.removeIf { it.contains('--hapcount') }
+    args_list.removeIf { it.contains('--positions') }
+    args_list.removeIf { it.contains('--exclude-positions') }
 
     def diff_variant_arg = (args.contains('--diff')) ? "--diff ${diff_variant_file}" :
         (args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :

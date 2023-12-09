@@ -2,7 +2,7 @@ process MUSCLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::muscle=3.8.1551"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/muscle:3.8.1551--h7d875b9_6' :
         'biocontainers/muscle:3.8.1551--h7d875b9_6' }"

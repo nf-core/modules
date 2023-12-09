@@ -2,7 +2,7 @@ process PURGEDUPS_CALCUTS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::purge_dups=1.2.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--h7132678_0':
         'biocontainers/purge_dups:1.2.6--h7132678_0' }"
@@ -22,7 +22,7 @@ process PURGEDUPS_CALCUTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    calcuts $args $stat > ${prefix}.cutoffs 2> ${prefix}.calcuts.log
+    calcuts $args $stat > ${prefix}.cutoffs 2> >(tee ${prefix}.calcuts.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

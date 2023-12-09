@@ -2,7 +2,7 @@ process INTERPROSCAN {
     tag "$meta.id"
     label 'process_long'
 
-    conda "bioconda::interproscan=5.59_91.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/interproscan:5.59_91.0--hec16e2b_1' :
         'biocontainers/interproscan:5.59_91.0--hec16e2b_1' }"
@@ -12,11 +12,11 @@ process INTERPROSCAN {
     val(out_ext)
 
     output:
-    tuple val(meta), path('*.tsv'), optional: true, emit: tsv
-    tuple val(meta), path('*.xml'), optional: true, emit: xml
+    tuple val(meta), path('*.tsv') , optional: true, emit: tsv
+    tuple val(meta), path('*.xml') , optional: true, emit: xml
     tuple val(meta), path('*.gff3'), optional: true, emit: gff3
     tuple val(meta), path('*.json'), optional: true, emit: json
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,6 +24,8 @@ process INTERPROSCAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.name.endsWith(".gz")
+    def fasta_name = fasta.name.replace(".gz", "")
 
     def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
     if ( args.contains("-appl") ) {
@@ -42,9 +44,13 @@ process INTERPROSCAN {
 
     //  -dp (disable precalculation) is on so no online dependency
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
+    fi
+
     interproscan.sh \\
-        -cpu $task.cpus \\
-        -i $fasta \\
+        -cpu ${task.cpus} \\
+        -i ${fasta_name} \\
         -f ${out_ext} \\
         -dp \\
         ${appl} \\

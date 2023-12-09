@@ -12,13 +12,11 @@ tools:
       tool_dev_url: https://github.com/iqtree/iqtree2
       doi: 10.1093/molbev/msaa015
       licence: ["GPL v2-or-later"]
-
 input:
   - alignment:
       type: file
       description: A FASTA format multiple sequence alignment file
       pattern: "*.{fasta,fas,fa,mfa}"
-
 output:
   - versions:
       type: file
@@ -28,7 +26,9 @@ output:
       type: file
       description: A phylogeny in Newick format
       pattern: "*.{treefile}"
-
 authors:
+  - "@avantonder"
+  - "@aunderwo"
+maintainers:
   - "@avantonder"
   - "@aunderwo"
