@@ -38,7 +38,7 @@ process PARABRICKS_MUTECTCALLER {
     def prepon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
     """
-    
+
     # if panel of normals specified, run prepon
     $prepon_command
 
