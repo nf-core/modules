@@ -19,6 +19,18 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""
+
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -201,6 +213,10 @@ jobs:
             tags: cellranger/multi
           - profile: "conda"
             tags: cellranger/vdj
+          - profile: "conda"
+            tags: checkm2/databasedownload
+          - profile: "conda"
+            tags: checkm2/predict
           - profile: "conda"
             tags: cellrangeratac/count
           - profile: "conda"
@@ -460,6 +476,8 @@ jobs:
             tags: cellranger/mkref
           - profile: "conda"
             tags: custom/dumpsoftwareversions
+          - profile: "conda"
+            tags: deepcell/mesmer
           - profile: "conda"
             tags: deepvariant
           - profile: "conda"
