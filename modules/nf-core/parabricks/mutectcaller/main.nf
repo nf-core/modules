@@ -4,6 +4,13 @@ process PARABRICKS_MUTECTCALLER {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
 
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful.
+    */
+    stageInMode "copy"
+
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index),  path(normal_bam), path(normal_bam_index), path(interval_file)
     tuple val(ref_meta), path(fasta)
@@ -28,16 +35,10 @@ process PARABRICKS_MUTECTCALLER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
-    def copy_tumor_index_command = tumor_bam_index ? "cp -L $tumor_bam_index `readlink -f $tumor_bam`.bai" : ""
-    def copy_normal_index_command = normal_bam_index ? "cp -L $normal_bam_index `readlink -f $normal_bam`.bai" : ""
     def prepon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
     """
-    # parabricks complains when index is not a regular file in the same directory as the bam
-    # copy the index to this path.
-    $copy_tumor_index_command
-    $copy_normal_index_command
-
+    
     # if panel of normals specified, run prepon
     $prepon_command
 
