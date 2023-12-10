@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "./main.nf"
 
     tag "fastqc"
+    tag "bowtie2/align"
 
     test("Single-Read") {
 
