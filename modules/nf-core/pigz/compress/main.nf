@@ -21,8 +21,6 @@ process PIGZ_COMPRESS {
     def args = task.ext.args ?: ''
     archive = raw_file.toString() + ".gz"
     """
-    set -e
-
     # Note: needs --stdout for pigz to avoid the following issue:
     #   pigz: skipping: ${raw_file} is a symbolic link
     pigz --processes $task.cpus --stdout ${args} ${raw_file} > ${archive}
