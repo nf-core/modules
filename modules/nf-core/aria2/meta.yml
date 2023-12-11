@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/aria2/aria2/"
       licence: ["GPL v2"]
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -25,12 +24,6 @@ input:
       description: Source URL to be downloaded
       pattern: "{http,https}*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
   - downloaded_file:
       type: file
       description: Downloaded file from source
