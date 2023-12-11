@@ -25,21 +25,15 @@ input:
       pattern: "*.*"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+  - archive:
+      type: file
+      description: The compressed file
+      pattern: "*.gz"
 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
-  - archive:
-      type: file
-      description: The compressed file
-      pattern: "*.gz"
 
 authors:
   - "@leoisl"
