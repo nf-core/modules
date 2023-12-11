@@ -20,14 +20,29 @@ nextflow_process {
             }
         }
         then {
-            def lines = path(process.out.archive.get(0).get(1)).linesGzip
             assertAll(
                 { assert process.success },
-                { assert process.out.archive != null },
-                { assert process.out.archive.get(0).get(1) ==~ ".*/genome.fasta.gz"  },
-                { assert snapshot(lines[0..4]).match("uncompressed_file_first_5_lines")},
-                { assert snapshot(lines[369..373]).match("uncompressed_file_last_5_lines")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.archive[0][1]).name).match() }
             )
         }
     }
