@@ -27,7 +27,7 @@ process MASH_SKETCH {
         -p $task.cpus \\
         -o ${prefix} \\
         -r $reads \\
-        2> ${prefix}.mash_stats
+        2> >(tee ${prefix}.mash_stats >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
