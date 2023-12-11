@@ -8,6 +8,32 @@ nextflow_process {
     tag "cat"
     tag "cat/cat"
 
+    test("test_cat_name_conflict") {
+        when {
+            params {
+                outdir   = "${outputDir}"
+            }
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'genome', single_end:true ],
+                        [
+                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("CAT_CAT prefix genome.fasta is conflicted with an input file name") }
+            )
+        }
+    }
+
     test("test_cat_unzipped_unzipped") {
         when {
             params {
