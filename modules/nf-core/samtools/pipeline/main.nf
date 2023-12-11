@@ -47,17 +47,15 @@ process SAMTOOLS_PIPELINE {
         def is_last_command = (index == (n_commands - 1))
 
         pipeline_command += """
-        samtools ${this_command} ${all_args[index]} -@ $task.cpus \\
+        samtools ${this_command} ${all_args[index]} \\
         """
 
-        if (is_last_command) {
-            // All commands support --reference, except reheader
-            if (! ["reheader"].contains(this_command)) {
+        // The reheader has no useful option
+        if (! ["reheader"].contains(this_command)) {
+            pipeline_command += " -@ $task.cpus"
+            if (is_last_command) {
                 pipeline_command += fasta ? " --reference ${fasta}" : ""
-            }
-        } else {
-            // All commands support uncompressed output, except reheader
-            if (! ["reheader"].contains(this_command)) {
+            } else {
                 pipeline_command += " -u"
             }
         }
