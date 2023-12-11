@@ -38,8 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.downloaded_file[0][1] ==~ ".*.bam" },
-                { assert path(process.out.downloaded_file[0][1]).exists() }
+                { assert snapshot(file(process.out.downloaded_file[0][1]).name).match() }
             )
         }
     }
