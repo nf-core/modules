@@ -59,25 +59,32 @@ process SAMTOOLS_PIPELINE {
         if (!is_last_command) {
             pipeline_command += "-u "
         }
-        this_input = (is_first_command ? "$input" : "-")
-        if (["collate", "sort"].contains(this_command)) {
-            if (is_last_command) {
-                pipeline_command += "-o ${prefix}.${extension} "
-            } else {
-                if (this_command != "sort") {
-                    pipeline_command += "-O "
-                }
-            }
+        this_input = (is_first_command ? " $input" : " -")
+
+        // samtools commands have slightly different syntax
+        if (["collate"].contains(this_command)) {
+            // [-o OUTPUT|-O] [INPUT|-]
+            pipeline_command += is_last_command ? " -o ${prefix}.${extension}" : " -O"
             pipeline_command += this_input
+
+        } else if (["addreplacerg", "sort", "view"].contains(this_command)) {
+            // [-o OUTPUT] [INPUT|-]
+            pipeline_command += is_last_command ? " -o ${prefix}.${extension}" : ""
+            pipeline_command += this_input
+
+        } else if (["reheader"].contains(this_command)) {
+            // [INPUT|-]
+            pipeline_command += this_input
+
+        } else if (["fixmate", "markdup"].contains(this_command)) {
+            // [INPUT|-] [OUTPUT|-]
+            pipeline_command += this_input
+            pipeline_command += is_last_command ? " ${prefix}.${extension}" : " -"
+
         } else {
-            // e.g. fixmate, markdup
-            pipeline_command += this_input
-            if (is_last_command) {
-                pipeline_command += " ${prefix}.${extension}"
-            } else {
-                pipeline_command += " -"
-            }
+            error "${this_command} is not supported"
         }
+
         if (!is_last_command) {
             pipeline_command += " | \\"
         }
