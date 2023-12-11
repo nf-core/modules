@@ -27,7 +27,19 @@ process PIGZ_COMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz:\$(pigz --version | sed 's/^.*pigz\w*//')
+        pigz:\$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    archive = raw_file.toString() + ".gz"
+    """
+    touch ${archive}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pigz:\$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }
