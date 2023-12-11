@@ -1,0 +1,29 @@
+- name: samtools pipeline test_samtools_pipeline_complete_sormadup
+  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_complete_sormadup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/pipeline/nextflow.config
+  tags:
+    - samtools/pipeline
+    - samtools
+  files:
+    - path: output/samtools/test.bam
+      md5sum: d505badd610ef5a32d28db3ec8e6aea1
+    - path: output/samtools/versions.yml
+
+- name: samtools pipeline test_samtools_pipeline_collate_fixmate_sort
+  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_collate_fixmate_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/pipeline/nextflow.config
+  tags:
+    - samtools/pipeline
+    - samtools
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 543221828943029864db75bd617b79d1
+    - path: output/samtools/versions.yml
+
+- name: samtools pipeline test_samtools_pipeline_collate_fixmate
+  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_collate_fixmate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/pipeline/nextflow.config
+  tags:
+    - samtools/pipeline
+    - samtools
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 37f2c0f510aff13bc73c7ddd6989c1f7
+    - path: output/samtools/versions.yml
