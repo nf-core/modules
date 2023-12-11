@@ -8,6 +8,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_se_default
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_se_default -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -19,6 +20,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_noqc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_noqc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -32,6 +34,7 @@
       should_exist: true
     - path: output/parabricks/duplicate-metrics.txt
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_nomkdup_noqc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_nomkdup_noqc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -43,6 +46,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_qc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_qc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -58,6 +62,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_nomkdup_qc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_nomkdup_qc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -71,6 +76,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -84,6 +90,7 @@
       should_exist: true
     - path: output/parabricks/test.table
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr2
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr2 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
@@ -97,6 +104,7 @@
       should_exist: true
     - path: output/parabricks/test.table
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr_intervals
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config -stub-run
