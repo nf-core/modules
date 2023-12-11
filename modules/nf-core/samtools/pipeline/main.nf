@@ -34,7 +34,6 @@ process SAMTOOLS_PIPELINE {
 
     // Output file
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--reference ${fasta}" : ""
     def extension = last_args.contains("--output-fmt sam") ? "sam" :
                     last_args.contains("--output-fmt bam") ? "bam" :
                     last_args.contains("--output-fmt cram") ? "cram" :
@@ -52,12 +51,17 @@ process SAMTOOLS_PIPELINE {
             ${all_args[index]} \\
             -@ $task.cpus \\
         """
-        if (this_command != "fixmate") {
-            pipeline_command += "    -T ${prefix}.tmp.${this_command} \\\n"
-        }
-        pipeline_command += "    "
-        if (!is_last_command) {
-            pipeline_command += "-u "
+
+        if (is_last_command) {
+            // All commands support --reference, except reheader
+            if (! ["reheader"].contains(this_command)) {
+                pipeline_command += fasta ? " --reference ${fasta}" : ""
+            }
+        } else {
+            // All commands support uncompressed output, except reheader
+            if (! ["reheader"].contains(this_command)) {
+                pipeline_command += " -u"
+            }
         }
         this_input = (is_first_command ? " $input" : " -")
 
