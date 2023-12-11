@@ -42,7 +42,9 @@ process SAMTOOLS_PIPELINE {
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def pipeline_command = ""
-    for (int index = 0; index < commands.size(); index++) {
+    for (int index = 0; index < n_commands; index++) {
+        def is_first_command = (index == 0)
+        def is_last_command = (index == (n_commands - 1))
         def this_command = """
         samtools \\
             ${commands[index]} \\
@@ -53,12 +55,12 @@ process SAMTOOLS_PIPELINE {
             this_command += "    -T ${prefix}.tmp.${commands[index]} \\\n"
         }
         this_command += "    "
-        if (index < (n_commands - 1)) {
+        if (!is_last_command) {
             this_command += "-u "
         }
-        this_input = (index ? "-" : "$input")
+        this_input = (is_first_command ? "$input" : "-")
         if (["collate", "sort"].contains(commands[index])) {
-            if (index == (n_commands - 1)) {
+            if (is_last_command) {
                 this_command += "-o ${prefix}.${extension} "
             } else {
                 if (commands[index] != "sort") {
@@ -69,14 +71,14 @@ process SAMTOOLS_PIPELINE {
         } else {
             // e.g. fixmate, markdup
             this_command += this_input
-            if (index == (n_commands - 1)) {
+            if (is_last_command) {
                 this_command += " ${prefix}.${extension}"
             } else {
                 this_command += " -"
             }
         }
         pipeline_command += this_command
-        if (index < (n_commands - 1)) {
+        if (!is_last_command) {
             pipeline_command += " | \\"
         }
     }
