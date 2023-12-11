@@ -4,8 +4,8 @@ process NONPAREIL_CURVE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h9f5acd7_2':
-        'biocontainers/nonpareil:3.4.1--r42h9f5acd7_2' }"
+        'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h4ac6f70_4':
+        'biocontainers/nonpareil:3.4.1--r42h4ac6f70_4' }"
 
     input:
     tuple val(meta), path(npo)
@@ -20,12 +20,13 @@ process NONPAREIL_CURVE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_cmd = args != '' ? ", ${args}" : ""
     """
     #!/usr/bin/env Rscript
     library(Nonpareil)
 
     png(file='${prefix}.png')
-    Nonpareil.curve('${npo}')
+    Nonpareil.curve('${npo}'${args_cmd})
     dev.off()
 
     version_file_path <- "versions.yml"
@@ -44,8 +45,7 @@ process NONPAREIL_CURVE {
     touch ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}": Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))'
-        ""
+    "${task.process}": \$(Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))')
     END_VERSIONS
     """
 }
