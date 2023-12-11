@@ -45,11 +45,9 @@ process SAMTOOLS_PIPELINE {
         def this_command = commands[index]
         def is_first_command = (index == 0)
         def is_last_command = (index == (n_commands - 1))
+
         pipeline_command += """
-        samtools \\
-            ${this_command} \\
-            ${all_args[index]} \\
-            -@ $task.cpus \\
+        samtools ${this_command} ${all_args[index]} -@ $task.cpus \\
         """
 
         if (is_last_command) {
@@ -90,7 +88,7 @@ process SAMTOOLS_PIPELINE {
         }
 
         if (!is_last_command) {
-            pipeline_command += " | \\"
+            pipeline_command += " |"
         }
     }
 
