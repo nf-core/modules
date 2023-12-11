@@ -29,6 +29,7 @@ nextflow_process {
     }
 
     test("sarscov2 - genome - fasta - stub") {
+        options "-stub-run"
         when {
             process {
                 """
@@ -39,7 +40,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
