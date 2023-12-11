@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process BLAST_BLASTN"
+    script "../main.nf"
+    process "BLAST_BLASTN"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/blastn"
+
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../makeblastdb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("Should search for nucleotide hits against a blast db") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("Should search for zipped nucleotide hits against a blast db") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions_zipped") }
+            )
+        }
+
+    }
+
+}

@@ -2,7 +2,7 @@ process IQTREE {
     tag "$alignment"
     label 'process_medium'
 
-    conda "bioconda::iqtree=2.1.4_beta"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
         'biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"

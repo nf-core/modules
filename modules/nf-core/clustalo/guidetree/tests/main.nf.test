@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process CLUSTALO_GUIDETREE"
+    script "../main.nf"
+    process "CLUSTALO_GUIDETREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clustalo"
+    tag "clustalo/guidetree"
+
+    test("sarscov2 - contigs-fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tree).match("tree")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+}
