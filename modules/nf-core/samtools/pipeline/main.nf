@@ -21,7 +21,7 @@ process SAMTOOLS_PIPELINE {
 
     script:
 
-    // Check that we are asked to run a pipeline
+    // Check that we are asked to run more than 1 command
     def n_commands = commands.size()
     if (n_commands < 2) error "SAMTOOLS_PIPELINE is used to chain 2 or more samtools commands"
 
