@@ -1,17 +1,17 @@
 process MITOHIFI_FINDMITOREFERENCE {
     tag "$species"
-    label 'process_low'
+    label 'process_single'
 
     // Docker image available at the project github repository
     container 'ghcr.io/marcelauliano/mitohifi:master'
 
     input:
-    val species
+    tuple val(meta), val(species)
 
     output:
-    path "*.fasta",                 emit: fasta
-    path "*.gb",                    emit: gb
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("*.gb")   , emit: gb
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

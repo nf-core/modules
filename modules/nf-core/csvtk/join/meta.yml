@@ -10,9 +10,7 @@ tools:
       homepage: http://bioinf.shenwei.me/csvtk
       documentation: http://bioinf.shenwei.me/csvtk
       tool_dev_url: https://github.com/shenwei356/csvtk
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: CSV/TSV formatted files
       pattern: "*.{csv,tsv}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: Joined CSV/TSV file
       pattern: "*.{csv,tsv}"
-
 authors:
+  - "@anoronh4"
+maintainers:
   - "@anoronh4"

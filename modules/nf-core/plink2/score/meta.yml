@@ -3,6 +3,7 @@ description: Apply a scoring system to each sample in a plink 2 fileset
 keywords:
   - plink2
   - score
+  - scoring
 tools:
   - plink2:
       description: |
@@ -10,10 +11,8 @@ tools:
         of basic, large-scale analyses in a computationally efficient manner
       homepage: http://www.cog-genomics.org/plink/2.0/
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
-
       doi: "10.1186/s13742-015-0047-8"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -36,7 +35,6 @@ input:
       type: file
       description: A text file containing variant identifiers and weights
       pattern: "*.{scores,txt,scorefile}"
-
 output:
   - meta:
       type: map
@@ -51,6 +49,7 @@ output:
       type: file
       description: A text file containing sample scores, in plink 2 .sscore format
       pattern: "*.{sscore}"
-
 authors:
+  - "@nebfield"
+maintainers:
   - "@nebfield"

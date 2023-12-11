@@ -2,7 +2,7 @@ process GENOTYPHI_PARSE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::genotyphi=1.9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1':
         'biocontainers/genotyphi:1.9.1--hdfd78af_1' }"

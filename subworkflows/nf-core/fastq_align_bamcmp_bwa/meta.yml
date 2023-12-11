@@ -40,7 +40,6 @@ input:
       description: |
         Optional reference fasta file for the primary genome. This only needs to be given if val_sort_bam = true
         Structure: [ path(fasta) ]
-
 output:
   - bam:
       description: |
@@ -75,4 +74,6 @@ output:
         Files containing software versions
         Structure: [ path(versions.yml) ]
 authors:
+  - "@sppearce"
+maintainers:
   - "@sppearce"

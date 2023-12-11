@@ -2,7 +2,7 @@ process BOWTIE_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::bowtie=1.3.0 bioconda::samtools=1.16.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:c84c7c55c45af231883d9ff4fe706ac44c479c36-0' :
         'biocontainers/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:c84c7c55c45af231883d9ff4fe706ac44c479c36-0' }"
@@ -36,7 +36,7 @@ process BOWTIE_ALIGN {
         $unaligned \\
         $args \\
         $endedness \\
-        2> ${prefix}.out \\
+        2> >(tee ${prefix}.out >&2) \\
         | samtools view $args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then

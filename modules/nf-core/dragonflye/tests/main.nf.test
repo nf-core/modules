@@ -1,0 +1,112 @@
+nextflow_process {
+
+    name "Test Process DRAGONFLYE"
+    script "../main.nf"
+    process "DRAGONFLYE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dragonflye"
+
+
+    test("Dragonflye with miniasm") {
+        config "./nextflow.miniasm.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [],
+                             file("https://github.com/nf-core/test-datasets/raw/bacass/nanopore/subset15000.fq.gz", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.raw_contigs).match("miniasm_raw_contigs") },
+                { assert snapshot(process.out.gfa).match("miniasm_gfa") },
+                { assert snapshot(process.out.versions).match("versions") },
+                // MD5sum not reproducible (timestamp, contig order)
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() }
+
+            )
+        }
+
+    }
+
+
+
+    test("Dragonflye with raven") {
+        config "./nextflow.raven.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [],
+                             file("https://github.com/nf-core/test-datasets/raw/bacass/nanopore/subset15000.fq.gz", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                // MD5sum not reproducible (timestamp, contig order)
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() },
+                { assert new File("${outputDir}/dragonflye/raven.fasta").exists() },
+                { assert new File("${outputDir}/dragonflye/raven-unpolished.gfa").exists() },
+
+            )
+        }
+
+    }
+
+
+    test("Dragonflye hybrid") {
+        config "./nextflow.hybrid.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file("https://github.com/nf-core/test-datasets/raw/bacass/A1403KPN_R1.fastq.gz"), file("https://github.com/nf-core/test-datasets/raw/bacass/A1403KPN_R2.fastq.gz") ], // short reads for polishing
+                             file("https://github.com/nf-core/test-datasets/raw/bacass/nanopore/A1403KPN.fq.gz", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.raw_contigs).match("hybrid_raw_contigs") },
+                { assert snapshot(process.out.gfa).match("hybrid_gfa") },
+                { assert snapshot(process.out.versions).match("versions") },
+                // MD5sum not reproducible (timestamp, contig order)
+                { assert new File("${outputDir}/dragonflye/test.fa").exists() },
+                { assert new File("${outputDir}/dragonflye/dragonflye.log").exists() }
+
+            )
+        }
+
+    }
+}

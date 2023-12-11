@@ -1,9 +1,10 @@
 nextflow_process {
     name "Test Process SRATOOLS_FASTERQDUMP"
-    script "modules/nf-core/sratools/fasterqdump/main.nf"
+    script "../main.nf"
     process "SRATOOLS_FASTERQDUMP"
-    tag "sratools/fasterqdump"
+    tag "modules"
     tag "modules_nfcore"
+    tag "sratools/fasterqdump"
 
     test("Single-end") {
 
@@ -21,7 +22,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_single_end', single_end:true ], files]}
+                input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
                 input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """
@@ -52,7 +53,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.collect{ meta, files -> files }.map{ files -> [ [ id:'test_paired_end', single_end:false ], files]}
+                input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
                 input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
                 input[2] = []
                 """

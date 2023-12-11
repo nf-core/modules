@@ -2,7 +2,7 @@ process SICKLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::sickle-trim=1.33"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sickle-trim:1.33--h7132678_7':
         'biocontainers/sickle-trim:1.33--h5bf99c6_6' }"

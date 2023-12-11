@@ -25,6 +25,11 @@ input:
       description: |
         List of input FASTA or FASTQ files of size 1 and 2 for single-end
         and paired-end data, respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test_ref']
   - reference:
       type: file
       description: |
@@ -59,6 +64,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@heuermh"
+  - "@sofstam"
+  - "@sateeshperi"
+  - "@jfy133"
+maintainers:
   - "@heuermh"
   - "@sofstam"
   - "@sateeshperi"
