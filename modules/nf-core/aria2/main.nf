@@ -23,12 +23,22 @@ process ARIA2 {
     downloaded_file = source_url.split("/")[-1]
 
     """
-    set -e
-
     aria2c \\
         --check-certificate=false \\
         $args \\
         $source_url
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    downloaded_file = source_url.split("/")[-1]
+
+    """
+    touch ${downloaded_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
