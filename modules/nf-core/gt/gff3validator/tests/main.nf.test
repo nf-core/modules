@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process GT_GFF3VALIDATOR"
+    script "../main.nf"
+    process "GT_GFF3VALIDATOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/gff3validator"
+
+    test("custom-gff3-valid") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                        '##gff-version 3',
+                        'chr22\thavana\tpseudogene\t16572027\t16574637\t.\t+\t.\tID=gene:ENSG00000233995;Name=AP000547.1'
+                    )
+                    .collectFile(name: 'sample.gff3', newLine: true)
+                    .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.error_log == [] },
+                { assert process.out.success_log != null },
+                { assert path(process.out.success_log.get(0).get(1)).getText().contains("input is valid GFF3") }
+            )
+        }
+
+    }
+
+    test("sarscov2-gff3-invalid") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_gff3'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.success_log == [] },
+                { assert process.out.error_log != null },
+                { assert path(process.out.error_log.get(0).get(1)).getText().contains("gt gff3validator: error:") }
+            )
+        }
+
+    }
+}
