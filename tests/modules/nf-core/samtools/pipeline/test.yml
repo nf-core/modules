@@ -1,5 +1,5 @@
-- name: samtools pipeline test_samtools_pipeline_complete_sormadup
-  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_complete_sormadup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/pipeline/nextflow.config
+- name: samtools pipeline test_samtools_pipeline_sormadup
+  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_sormadup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/pipeline/nextflow.config
   tags:
     - samtools/pipeline
     - samtools

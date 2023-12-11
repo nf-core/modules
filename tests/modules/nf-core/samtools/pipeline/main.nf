@@ -6,7 +6,7 @@ include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_SORMADUP     } from '../../../.
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_COLLFIXMSORT } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_COLLFIXM     } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 
-workflow test_samtools_pipeline_complete_sormadup {
+workflow test_samtools_pipeline_sormadup {
     
     input = [
         [ id:'test', single_end:false ], // meta map
