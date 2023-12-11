@@ -23,11 +23,11 @@ process PIGZ_COMPRESS {
     """
     # Note: needs --stdout for pigz to avoid the following issue:
     #   pigz: skipping: ${raw_file} is a symbolic link
-    pigz --processes $task.cpus --stdout ${args} ${raw_file} > ${archive}
+    pigz --processes $task.cpus --stdout --force ${args} ${raw_file} > ${archive}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(pigz --version | awk '{print \$NF}')
+        pigz: \$(pigz --version | sed 's/^.*pigz\w*//')
     END_VERSIONS
     """
 }
