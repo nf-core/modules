@@ -35,7 +35,10 @@ process CAT_CAT {
     in_zip   = file_list[0].endsWith('.gz')
     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
     command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
-    if(file_list.contains(prefix.trim())) { error "CAT_CAT prefix $prefix is conflicted with an input file name" }
+    if(file_list.contains(prefix.trim())) {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module CAT_CAT (currently `$prefix`). Please choose a different one."
+    }
     """
     $command1 \\
         $args \\
@@ -50,9 +53,12 @@ process CAT_CAT {
     """
 
     stub:
-    def file_list = files_in.collect { it.toString() }
-    prefix   = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
-    if(file_list.contains(prefix.trim())) { error "CAT_CAT prefix $prefix is conflicted with an input file name" }
+    def file_list   = files_in.collect { it.toString() }
+    prefix          = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
+    if(file_list.contains(prefix.trim())) {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module CAT_CAT (currently `$prefix`). Please choose a different one."
+    }
     """
     touch $prefix
 

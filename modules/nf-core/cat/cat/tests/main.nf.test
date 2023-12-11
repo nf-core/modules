@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert !process.success },
-                { assert process.stdout.toString().contains("CAT_CAT prefix genome.fasta is conflicted with an input file name") }
+                { assert process.stdout.toString().contains("The name of the input file can't be the same as for the output prefix") }
             )
         }
     }
