@@ -43,41 +43,41 @@ process SAMTOOLS_PIPELINE {
 
     def pipeline_command = ""
     for (int index = 0; index < n_commands; index++) {
+        def this_command = commands[index]
         def is_first_command = (index == 0)
         def is_last_command = (index == (n_commands - 1))
-        def this_command = """
+        pipeline_command += """
         samtools \\
-            ${commands[index]} \\
+            ${this_command} \\
             ${all_args[index]} \\
             -@ $task.cpus \\
         """
-        if (commands[index] != "fixmate") {
-            this_command += "    -T ${prefix}.tmp.${commands[index]} \\\n"
+        if (this_command != "fixmate") {
+            pipeline_command += "    -T ${prefix}.tmp.${this_command} \\\n"
         }
-        this_command += "    "
+        pipeline_command += "    "
         if (!is_last_command) {
-            this_command += "-u "
+            pipeline_command += "-u "
         }
         this_input = (is_first_command ? "$input" : "-")
-        if (["collate", "sort"].contains(commands[index])) {
+        if (["collate", "sort"].contains(this_command)) {
             if (is_last_command) {
-                this_command += "-o ${prefix}.${extension} "
+                pipeline_command += "-o ${prefix}.${extension} "
             } else {
-                if (commands[index] != "sort") {
-                    this_command += "-O "
+                if (this_command != "sort") {
+                    pipeline_command += "-O "
                 }
             }
-            this_command += this_input
+            pipeline_command += this_input
         } else {
             // e.g. fixmate, markdup
-            this_command += this_input
+            pipeline_command += this_input
             if (is_last_command) {
-                this_command += " ${prefix}.${extension}"
+                pipeline_command += " ${prefix}.${extension}"
             } else {
-                this_command += " -"
+                pipeline_command += " -"
             }
         }
-        pipeline_command += this_command
         if (!is_last_command) {
             pipeline_command += " | \\"
         }
