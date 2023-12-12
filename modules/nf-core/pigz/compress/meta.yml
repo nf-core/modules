@@ -25,6 +25,12 @@ input:
       pattern: "*.*"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
   - archive:
       type: file
       description: The compressed file
