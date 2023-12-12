@@ -8,7 +8,7 @@ process FREEBAYES {
         'biocontainers/freebayes:1.3.6--hbfe0e7f_2' }"
 
     input:
-    tuple val(meta1), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)
+    tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
     tuple val(meta4), path(samples)
