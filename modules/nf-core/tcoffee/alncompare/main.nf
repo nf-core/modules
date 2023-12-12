@@ -21,7 +21,9 @@ process TCOFFEE_ALNCOMPARE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '-compare_mode tc'
+    // First check if the flag is given at all and if not put the argument needed, then if given and contains the argument leave it as it is
+    // otherwise add at the beginning the necessary flag to the given arg by the user
+    def args = task.ext.args ? ( task.ext.args.contains('-compare_mode tc') ? task.ext.args  : ('-compare_mode tc ' + task.ext.args)) : '-compare_mode tc'
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
 
@@ -45,7 +47,7 @@ process TCOFFEE_ALNCOMPARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        t_coffee: \$( t_coffee -version | sed 's/.*(Version_\\(.*\\)).*/\\1/' )
+        t_coffee: \$( t_coffee -version | awk -F'ersion_' '{print \$2}' | cut -d ' ' -f 1 )
     END_VERSIONS
     """
 }
