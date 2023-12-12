@@ -12,7 +12,7 @@ process FREEBAYES {
     tuple val(ref_meta), path(fasta)
     tuple val(ref_idx_meta), path(fasta_fai)
     tuple val(samples_meta), path(samples)
-    tuple val(popualtions_meta), path(populations)
+    tuple val(populations_meta), path(populations)
     tuple val(cnv_meta), path(cnv)
 
     output:
