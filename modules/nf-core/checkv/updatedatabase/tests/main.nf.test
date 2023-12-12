@@ -47,8 +47,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.checkv_db.get(0).get(1).get(0),
-                    process.out.checkv_db.get(0).get(1).get(2),
+                    "${process.out.checkv_db.get(0).get(1).get(0)},
+                    "${process.out.checkv_db.get(0).get(1).get(2)}",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/changelog.tsv",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_error.tsv",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_info.tsv",
