@@ -9,17 +9,29 @@ nextflow_process {
     tag "gt"
     tag "gt/gff3validator"
 
-    test("custom-gff3-valid") {
+    test("sarscov2-gff3-valid") {
+
+        config './nextflow.config'
+
+        setup {
+            run("GT_GFF3") {
+                script "../../../../nf-core/gt/gff3"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = Channel.of(
-                        '##gff-version 3',
-                        'chr22\thavana\tpseudogene\t16572027\t16574637\t.\t+\t.\tID=gene:ENSG00000233995;Name=AP000547.1'
-                    )
-                    .collectFile(name: 'sample.gff3', newLine: true)
-                    .map { file -> [ [ id:'test' ], file ] }
+                input[0] = GT_GFF3.out.gt_gff3
                 """
             }
         }
