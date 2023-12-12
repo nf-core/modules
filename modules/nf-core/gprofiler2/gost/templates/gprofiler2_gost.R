@@ -214,6 +214,10 @@ if (!is.null(opt\$blocking_variables)) {
     output_prefix <- paste(output_prefix, blocking_variables, sep= '_')
 }
 
+
+# Create empty output table as it is a mandatory output
+file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
+
 if (nrow(de.genes) > 0) {
 
     query <- de.genes[[opt\$de_id_column]]
@@ -430,8 +434,6 @@ if (nrow(de.genes) > 0) {
         }
     }
 } else {
-    # Create empty output table as it is a mandatory output
-    file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
     print("No differential features found, pathway enrichment analysis with gprofiler2 will be skipped.")
 }
 
