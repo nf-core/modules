@@ -13,7 +13,7 @@ process MTMALIGN_ALIGN {
     tuple val(meta), path('*.pdb', arity: '2..*')
 
     output:
-    tuple val(meta), path("./mTM_result/result.fasta")  , emit: alignment
+    tuple val(meta), path("./mTM_result/*.aln")  , emit: alignment
     tuple val(meta), path("./mTM_result/result.pdb")    , emit: structure
     path "versions.yml"                                 , emit: versions
 
@@ -21,10 +21,13 @@ process MTMALIGN_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ls *.pdb | sed s/\\ /\\n/ > input_list.txt
     mtm-align -i input_list.txt
-
+mv ./mTM_result/result.fasta ${prefix}.aln
+mv ./mTM_result/result.pdb ${prefix}.pdb
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,6 +36,8 @@ process MTMALIGN_ALIGN {
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mTM_result
     touch mTM_result/result.fasta
