@@ -46,7 +46,7 @@ input:
       type: map
       description: |
         Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test_reference' ]
   - fasta:
       type: file
       description: reference fasta file
@@ -55,7 +55,7 @@ input:
       type: map
       description: |
         Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test_reference' ]
   - fasta_fai:
       type: file
       description: reference fasta file index
@@ -64,16 +64,16 @@ input:
       type: map
       description: |
         Groovy Map containing meta information for the samples file.
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test_samples' ]
   - samples:
       type: file
       description: Optional - Limit analysis to samples listed (one per line) in the FILE.
       pattern: "*.txt"
-  - popualtions_meta:
+  - populations_meta:
       type: map
       description: |
         Groovy Map containing meta information for the populations file.
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test_populations' ]
   - populations:
       type: file
       description: Optional - Each line of FILE should list a sample and a population which it is part of.
@@ -82,7 +82,7 @@ input:
       type: map
       description: |
         Groovy Map containing meta information for the cnv file.
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test_cnv' ]
   - cnv:
       type: file
       description: |
