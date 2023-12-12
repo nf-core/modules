@@ -24,6 +24,11 @@ input:
       description: Source URL to be downloaded
       pattern: "{http,https}*"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
   - downloaded_file:
       type: file
       description: Downloaded file from source
