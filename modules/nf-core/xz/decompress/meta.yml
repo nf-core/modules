@@ -27,6 +27,11 @@ input:
       pattern: "*.{xz}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
   - file:
       type: file
       description: The decompressed file
