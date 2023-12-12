@@ -21,11 +21,20 @@ process XZ_COMPRESS {
     def args = task.ext.args ?: ''
     archive = raw_file.toString() + ".xz"
     """
-    set -e
-
     # needs --stdout for xz to avoid the following issue:
     # xz: ${raw_file}: Is a symbolic link, skipping
     xz -T $task.cpus --stdout ${args} ${raw_file} > ${archive}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
+    END_VERSIONS
+    """
+
+    stub:
+    archive = raw_file.toString() + ".xz"
+    """
+    touch "${archive}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
