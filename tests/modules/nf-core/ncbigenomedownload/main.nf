@@ -10,7 +10,7 @@ workflow test_ncbigenomedownload {
 
     accessions = []
     taxids = []
-    groups = "bacteria"
+    groups = 'bacteria'
 
     NCBIGENOMEDOWNLOAD ( input, accessions, taxids, groups )
 }
