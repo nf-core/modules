@@ -29,7 +29,7 @@ process DEEPARG_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION='1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DATABASE=`find -L $db -type d -name "database" | sed 's/database//'`
 
