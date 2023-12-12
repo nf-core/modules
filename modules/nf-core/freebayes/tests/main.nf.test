@@ -35,9 +35,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                // { assert snapshot(process.out).match() }, // Output VCF includes a timestamp, so snapshot not consistent past a day.
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("test.vcf.gz") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains('MT192765.1	10214	.	ATTTAC	ATTAC	29.8242') },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.toString().contains('MT192765.1\t10214\t.\tATTTAC\tATTAC\t29.8242') },
                 { assert snapshot(file(process.out.versions.get(0)).name).match("versions.yml") },
             )
         }
@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                // { assert snapshot(process.out).match() }, // Output VCF includes a timestamp, so snapshot not consistent past a day.
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("test.vcf.gz") },
                 { assert snapshot(file(process.out.versions.get(0)).name).match("versions.yml") },
             )
@@ -102,9 +102,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                // { assert snapshot(process.out).match() }, // Output VCF includes a timestamp, so snapshot not consistent past a day.
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("test.vcf.gz") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("chr22\t1982\t.\tA\tG\t459.724") },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.toString().contains("chr22\t1982\t.\tA\tG\t459.724") },
                 { assert snapshot(file(process.out.versions.get(0)).name).match("versions.yml") },
             )
         }
@@ -136,9 +136,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                // { assert snapshot(process.out).match() }, // Output VCF includes a timestamp, so snapshot not consistent past a day.
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("test.vcf.gz") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("chr22\t1982\t.\tA\tG\t670.615") },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.toString().contains("chr22\t1982\t.\tA\tG\t670.615") },
                 { assert snapshot(file(process.out.versions.get(0)).name).match("versions.yml") },
             )
         }
@@ -170,9 +170,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                // { assert snapshot(process.out).match() }, // Output VCF includes a timestamp, so snapshot not consistent past a day.
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("test.vcf.gz") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("chr22\t1982\t.\tA\tG\t670.615") },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.toString().contains("chr22\t1982\t.\tA\tG\t670.615") },
                 { assert snapshot(file(process.out.versions.get(0)).name).match("versions.yml") },
             )
         }
