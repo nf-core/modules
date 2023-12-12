@@ -53,7 +53,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.quality_summary,
+                    process.out.completeness,
+                    process.out.contamination,
+                    process.out.complete_genomes,
+                    process.out.viruses,
+                    process.out.versions).match() },
+                { assert new File("${process.out.proviruses.get(0).get(1)}").exists() }
             )
         }
     }
