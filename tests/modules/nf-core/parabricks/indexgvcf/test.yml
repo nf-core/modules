@@ -1,12 +1,19 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml /indexgvcf
-- name: "parabricks indexgvcf test_parabricks_indexgvcf"
-  command: nextflow run ./tests/modules/nf-core/parabricks/indexgvcf -entry test_parabricks_indexgvcf -c ./tests/config/nextflow.config
+- name: parabricks indexgvcf test_parabricks_indexgvcf
+  command: nextflow run ./tests/modules/nf-core/parabricks/indexgvcf -entry test_parabricks_indexgvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/indexgvcf/nextflow.config -stub-run
   tags:
-    - "parabricks"
-    - "parabricks/indexgvcf"
+    - parabricks
+    - parabricks/indexgvcf
   files:
-    - path: "output/parabricks/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/parabricks/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/parabricks/test.g.vcf.idx
+      should_exist: true
+    - path: output/parabricks/versions.yml
+
+- name: parabricks indexgvcf test_parabricks_indexgvcf_gz
+  command: nextflow run ./tests/modules/nf-core/parabricks/indexgvcf -entry test_parabricks_indexgvcf_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/indexgvcf/nextflow.config -stub-run
+  tags:
+    - parabricks
+    - parabricks/indexgvcf
+  files:
+    - path: output/parabricks/test.g.vcf.gz.tbi
+      should_exist: true
+    - path: output/parabricks/versions.yml
