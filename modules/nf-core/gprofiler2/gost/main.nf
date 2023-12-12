@@ -10,7 +10,6 @@ process GPROFILER2_GOST {
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta1), path(de_file)
-    tuple val(organism), val(sources)
     path(gmt_file)
     path(background_file)
 

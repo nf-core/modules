@@ -1,0 +1,34 @@
+nextflow_process {
+
+    name "Test Process FREYJA_UPDATE"
+    script "../main.nf"
+    process "FREYJA_UPDATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "freyja"
+    tag "freyja/update"
+
+    test("sarscov2 - value db name ") {
+
+        when {
+            process {
+                """
+                input[0] = "test_db"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.barcodes.get(0)).exists() },
+                { assert path(process.out.lineages_meta.get(0)).exists() },
+                { assert path(process.out.lineages_topology.get(0)).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}
