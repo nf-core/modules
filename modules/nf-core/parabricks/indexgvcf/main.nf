@@ -2,7 +2,7 @@ process PARABRICKS_INDEXGVCF {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
 
     /*
     NOTE: Parabricks requires the files to be non-symlinked
@@ -12,10 +12,11 @@ process PARABRICKS_INDEXGVCF {
     stageInMode "copy"
 
     input:
-    tuple val(meta), path(gvcf)
+    tuple val(meta), path(gvcf, stageAs:'')
 
     output:
-    tuple val(meta), path("*.vcf.tbi"), emit: gvcf_index
+    // This tool outputs g.vcf.idx if input is uncompressed, g.vcf.gz.tbi if input is compressed
+    tuple val(meta), path("*.g.vcf*") , emit: gvcf_index
     path "versions.yml"               , emit: versions
 
     when:
@@ -33,8 +34,6 @@ process PARABRICKS_INDEXGVCF {
     pbrun \\
         indexgvcf \\
         --input $gvcf \\
-        --num-threads $task.cpus \\
-        --num-gpus $task.accellerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -51,7 +50,15 @@ process PARABRICKS_INDEXGVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.g.vcf.tbi
+    # Different outputs generated depending if file is gzipped
+    case $gvcf in
+    *.gz )
+        touch ${prefix}.g.vcf.gz.tbi
+        ;;
+    * )
+        touch ${prefix}.g.vcf.idx
+        ;;
+    esac
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
