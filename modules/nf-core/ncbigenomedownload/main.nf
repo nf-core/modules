@@ -44,7 +44,7 @@ process NCBIGENOMEDOWNLOAD {
         $taxids_opt \\
         --output-folder ./ \\
         --flat-output \\
-        -p $task.cpus \\
+        --parallel $task.cpus \\
         $groups
 
     cat <<-END_VERSIONS > versions.yml
