@@ -4,7 +4,7 @@ process MTMALIGN_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::mtm-align=20220104"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mtm-align:20220104--h4ac6f70_0':
         'biocontainers/mtm-align:20220104--h4ac6f70_0' }"
