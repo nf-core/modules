@@ -22,11 +22,19 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - input_1:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - input_index:
+  - input_1_index:
+      type: file
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai}"
+  - input_2:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - input_2_index:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai}"
@@ -89,10 +97,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
   - vcf:
       type: file
       description: Compressed VCF file
