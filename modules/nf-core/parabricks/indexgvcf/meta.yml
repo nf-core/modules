@@ -4,6 +4,7 @@ keywords:
   - vcf
   - gvcf
   - tbi
+  - idx
   - index
   - GPU-accelerated
 tools:
@@ -11,7 +12,7 @@ tools:
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/"
-      licence: "custom"
+      licence: ["custom"]
 
 input:
   - meta:
@@ -32,10 +33,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - indexed_gvcf:
+  - gvcf_index:
       type: file
       description: Indexed gvcf file
-      pattern: "*.vcf.tbi"
+      pattern: "*.g.vcf"
 
 authors:
   - "@Furentsu"
