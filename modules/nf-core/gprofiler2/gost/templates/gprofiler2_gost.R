@@ -126,10 +126,7 @@ opt <- list(
     de_id_column = 'gene_id',
     organism = NULL,
     sources = NULL,
-    contrast_variable = '$contrast_variable',
-    reference_level = '$reference',
-    target_level = '$target',
-    blocking_variables = NULL,
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     significant = T,
     measure_underrepresentation = F,
     correction_method = 'gSCS',
@@ -162,9 +159,8 @@ for ( ao in names(args_opt)) {
         opt[[ao]] <- args_opt[[ao]]
     }
 }
-
 # Check if required parameters have been provided
-required_opts <- c('contrast_variable', 'reference_level', 'target_level')
+required_opts <- c('output_prefix')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0) {
@@ -206,14 +202,7 @@ de.genes <-
         file = opt\$de_file
     )
 
-# Create prefix from contrast var, reference and target as well as blocking (if provided)
-contrast_name <- paste(opt\$contrast_variable, opt\$reference_level, opt\$target_level, sep = '_')
-output_prefix <- paste('gprofiler2', contrast_name, sep = '.')
-if (!is.null(opt\$blocking_variables)) {
-    blocking_variables <- paste(make.names(unlist(strsplit(opt\$blocking_variables, split = ','))), collapse = '_')
-    output_prefix <- paste(output_prefix, blocking_variables, sep= '_')
-}
-
+output_prefix <- paste0(opt\$output_prefix, ".gprofiler2")
 
 # Create empty output table as it is a mandatory output
 file.create(paste(output_prefix, 'all_enriched_pathways', 'tsv', sep = '.'))
@@ -332,8 +321,7 @@ if (nrow(de.genes) > 0) {
 
     # Name the query as it will otherwise be called 'query_1' which will also determine the gostplot title
     q <- list(query)
-    names(q) <- c(paste0(contrast_name, ifelse(!is.null(opt\$blocking_variables), paste0("_", blocking_variables), "")))
-
+    names(q) <- c(output_prefix)
     gost_results <- gost(
         query=q,
         organism=token,
@@ -369,7 +357,7 @@ if (nrow(de.genes) > 0) {
 
         # R object for other processes to use
 
-        saveRDS(gost_results, file = paste(opt\$contrast_variable, 'gprofiler2.gost_results.rds', sep = '.'))
+        saveRDS(gost_results, file = paste(output_prefix, 'gost_results.rds', sep = '.'))
 
         # Write full enrichment table (except parents column as that one throws an error)
 
@@ -389,6 +377,7 @@ if (nrow(de.genes) > 0) {
 
         # Iterate over the enrichment results by source and save separate tables
         for (df in split(gost_results\$result, gost_results\$result\$source)){
+
             db_source <- df\$source[1]
             df_subset <- data.frame(
                 Pathway_name = df\$term_name,
