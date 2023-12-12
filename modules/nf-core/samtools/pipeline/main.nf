@@ -50,7 +50,7 @@ process SAMTOOLS_PIPELINE {
         samtools ${this_command} ${all_args[index]} \\
         """
 
-        // The reheader has no useful option
+        // The reheader has none of these options
         if (! ["reheader"].contains(this_command)) {
             pipeline_command += " -@ $task.cpus"
             if (is_last_command) {
