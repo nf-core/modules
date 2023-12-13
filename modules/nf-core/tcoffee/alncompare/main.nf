@@ -41,7 +41,6 @@ process TCOFFEE_ALNCOMPARE {
     scores=\$(awk '{sub(/[[:space:]]+\$/, "")} 1' scores.txt | tr -s '[:blank:]' ',')
     echo "${values},\$scores" >> "${prefix}.scores"
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
