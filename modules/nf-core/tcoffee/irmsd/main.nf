@@ -35,7 +35,7 @@ process TCOFFEE_IRMSD {
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
