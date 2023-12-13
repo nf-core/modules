@@ -1,4 +1,3 @@
-
 process TCOFFEE_IRMSD {
     tag "$meta.id"
     label 'process_medium'
