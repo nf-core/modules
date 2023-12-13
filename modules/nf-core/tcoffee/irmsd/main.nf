@@ -36,7 +36,7 @@ process TCOFFEE_IRMSD {
     END_VERSIONS
     """
     
-    stub: 
+    stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
     """
