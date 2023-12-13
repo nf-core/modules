@@ -26,7 +26,8 @@ nextflow_process {
                 ]
                 input[1] = 'HS25'
                 input[2] = '15'
-                input[3] = '150'
+                input[3] = false
+                input[4] = '150'
                 """
             }
         }
@@ -73,7 +74,8 @@ nextflow_process {
                 ]
                 input[1] = 'HS25'
                 input[2] = '15'
-                input[3] = '150'
+                input[3] = false
+                input[4] = '150'
                 """
             }
         }
@@ -105,7 +107,8 @@ nextflow_process {
                 ]
                 input[1] = 'HS25'
                 input[2] = '15'
-                input[3] = '150'
+                input[3] = false
+                input[4] = '150'
                 """
             }
         }
@@ -164,7 +167,8 @@ nextflow_process {
                 ]
                 input[1] = 'HS25'
                 input[2] = '15'
-                input[3] = '150'
+                input[3] = false
+                input[4] = '150'
                 """
             }
         }
@@ -173,6 +177,65 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("read-length") {
+
+        config "./paired-end.nextflow.config"
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'HS25'
+                input[2] = false
+                input[3] = '15'
+                input[4] = '150'
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path(process.out.fastq.get(0).get(1).get(0)).linesGzip.size() == 60 },
+                                {
+                    def read_name = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[0]
+                    assert read_name.equals("@MT192765.1-30/1")
+                },
+                {
+                    def read = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[1]
+                    assert read.equals("GTTGCGACTACGTGATGAGGAACGAGAAGCGGCTTGACTGCCGCCTCTGCTCCCTTCTGCGTAGAAGCCTTTTGGCAATGTTGTTCCTTGAGGAAGTTGTAGCACGATTGCAGCATTGTTAGCAGGATTGCGGGTGCCAATGTGATCTTT")
+                },
+                {
+                    def read_qc = path(process.out.fastq.get(0).get(1).get(0)).linesGzip[3]
+                    assert read_qc.equals("CCCGGGGGGGGGGGCJCJJJJJ1JJJGJJ(JJJGGGJJJJGGJGJJGJJJCCGCJCJC=GCGGG8GJGGGCGG=1G1CJGG=GGCGGCGGGGGCCGG=8GJCCGCCGCGGGGGGGC=GGG=CCGCGGCGGGCC=GGGGGGCGGCCCGCGG")
+                },
+                { assert path(process.out.fastq.get(0).get(1).get(1)).linesGzip.size() == 60 },
+                {
+                    def read_name = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[0]
+                    assert read_name.equals("@MT192765.1-30/2")
+                },
+                {
+                    def read = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[1]
+                    assert read.equals("GAGCTACCAGACGAATTCGTGGTGGTGACGGTAAAATGAAAGATCTCAGTCCAAGATGGTATTTCTACTACCTAGGAACTGGGCCAGAAGCTGGACTTCCCTATGGTGCTAACAAAGACGGCATCATATGGGTTGCAACTGAGGGAGCCT")
+                },
+                {
+                    def read_qc = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[3]
+                    assert read_qc.equals("1CCGGGGGGGCGGGJJJJJGJG1GJGJ=JGJJCJJJCJJJGJ1GJGJGGJJC8JGG=JGGCGCCGCGGCCCGJCGGGGCJC==CGG88CGGGCGGGCCCGGC8JJJJCGGCGGCCGGGG=CGGGGCCGGCCCGCGCCCCG8GGGG=GGGC")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
