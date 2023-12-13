@@ -43,6 +43,7 @@ nextflow_process {
                     { assert file(process.out.alignment[0][1]).text.contains(">4.pdb") },
                     { assert file(process.out.alignment[0][1]).text.contains(">5.pdb") },
                     { assert snapshot(process.out.versions).match("versions") }
+                    )
             }
         }
 }
