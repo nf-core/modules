@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml 
+- name: "oatk"
+  command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
+  tags:
+    - "oatk"
+  files:
+    - path: "output/oatk/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/oatk/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    
