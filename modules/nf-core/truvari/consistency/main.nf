@@ -3,7 +3,7 @@ process TRUVARI_CONSISTENCY {
     tag "$meta.id"
     label 'process_single'
 
-    conda '${modulesDir}/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/truvari:4.1.0--pyhdfd78af_0':
         'biocontainers/truvari:4.1.0--pyhdfd78af_0' }"
