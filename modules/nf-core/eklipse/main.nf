@@ -4,7 +4,7 @@ process EKLIPSE {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    conda 'modules/nf-core/eklipse/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/eklipse:1.8--hdfd78af_1':
         'biocontainers/eklipse:1.8--hdfd78af_1' }"
@@ -31,6 +31,7 @@ process EKLIPSE {
     echo "$bam\t${prefix}" > infile.txt
     eKLIPse.py \\
         -in infile.txt \\
+        $args \\
         -ref $ref_gb
     mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_deletions.csv
     mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_genes.csv

@@ -2,7 +2,7 @@ process CAT_CAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/cat/cat/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
         'biocontainers/pigz:2.3.4' }"
@@ -35,6 +35,10 @@ process CAT_CAT {
     in_zip   = file_list[0].endsWith('.gz')
     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
     command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
+    if(file_list.contains(prefix.trim())) {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module CAT_CAT (currently `$prefix`). Please choose a different one."
+    }
     """
     $command1 \\
         $args \\
@@ -49,8 +53,12 @@ process CAT_CAT {
     """
 
     stub:
-    def file_list = files_in.collect { it.toString() }
-    prefix   = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
+    def file_list   = files_in.collect { it.toString() }
+    prefix          = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
+    if(file_list.contains(prefix.trim())) {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module CAT_CAT (currently `$prefix`). Please choose a different one."
+    }
     """
     touch $prefix
 

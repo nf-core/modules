@@ -2,7 +2,7 @@ process GENMAP_INDEX {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/genmap/index/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
         'biocontainers/genmap:1.3.0--h1b792b2_1' }"
