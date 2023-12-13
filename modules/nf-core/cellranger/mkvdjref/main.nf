@@ -5,8 +5,6 @@ process CELLRANGER_MKVDJREF {
     container "nf-core/cellranger:7.1.0"
 
     input:
-    path fasta
-    path gtf
     val reference_name
 
     output:
@@ -26,9 +24,20 @@ process CELLRANGER_MKVDJREF {
     cellranger \\
         mkvdjref \\
         --genome=$reference_name \\
-        --fasta=$fasta \\
-        --genes=$gtf \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir ${reference_name}
+    mkdir ${reference_name}/fasta
+    echo stub > ${reference_name}/fasta/regions.fa
+    echo stub > ${reference_name}/reference.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
