@@ -22,76 +22,55 @@ process SAMTOOLS_PIPELINE {
     script:
 
     // Check that we are asked to run more than 1 command
-    def n_commands = commands.size()
-    if (n_commands < 2) error "SAMTOOLS_PIPELINE is used to chain 2 or more samtools commands"
-
-    // Fetch the arguments
-    def all_args = []
-    for (int index = 0; index < n_commands; index++) {
-        all_args.add( task.ext.args?[ commands[index] ] ?: '' )
-    }
-    def last_args = all_args[-1]
-
-    // Output file
+    assert commands.size() > 1
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def cmd_size  = commands.size()
+    def last_args = task.ext."args$cmd_size" ?: ''
     def extension = last_args.contains("--output-fmt sam") ? "sam" :
                     last_args.contains("--output-fmt bam") ? "bam" :
                     last_args.contains("--output-fmt cram") ? "cram" :
                     "bam"
-    if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
-    def pipeline_command = ""
-    for (int index = 0; index < n_commands; index++) {
-        def this_command = commands[index]
-        def is_first_command = (index == 0)
-        def is_last_command = (index == (n_commands - 1))
-
-        pipeline_command += """
-        samtools ${this_command} ${all_args[index]} \\
-        """
-
-        // The reheader has none of these options
-        if (! ["reheader"].contains(this_command)) {
-            pipeline_command += " -@ $task.cpus"
-            if (is_last_command) {
-                pipeline_command += fasta ? " --reference ${fasta}" : ""
-            } else {
-                pipeline_command += " -u"
-            }
+    assert "$input" != "${prefix}.${extension}" : "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    // Compose pipe
+    def cmds = commands.indexed().collect { index, cmd ->
+        def command = [
+            "samtools $cmd",
+            task.ext."args${index!=0 ? index+1 : ''}" ?: ''
+        ]
+        switch(cmd){
+            case !"reheader":
+                // The reheader has no useful option
+                command << "-@ $task.cpus"
+                command << fasta && index == cmd_size ? "--reference ${fasta}" : ''
+                command << index != cmd_size ? '-u' : ''
+            // samtools commands have slightly different syntax
+            case "collate":
+                // [-o OUTPUT|-O] [INPUT|-]
+                command << index == cmd_size ? " -o ${prefix}.${extension}" : " -O"
+                command << index == 0 ? index : '-'
+                break
+            case ["addreplacerg", "sort", "view"]:
+                // [-o OUTPUT] [INPUT|-]
+                command << index == cmd_size ? "-o ${prefix}.${extension}" : ""
+                command << index == 0 ? index : '-'
+                break
+            case "reheader":
+                // [INPUT|-]
+                command << index == 0 ? index : '-'
+                break
+            case ["fixmate", "markdup"]:
+                // [INPUT|-] [OUTPUT|-]
+                command << index == 0 ? index : '-'
+                command << index == cmd_size ? "${prefix}.${extension}" : "-"
+                break
+            default:
+                assert false: "$cmd is not supported"
         }
-        this_input = (is_first_command ? " $input" : " -")
-
-        // samtools commands have slightly different syntax
-        if (["collate"].contains(this_command)) {
-            // [-o OUTPUT|-O] [INPUT|-]
-            pipeline_command += is_last_command ? " -o ${prefix}.${extension}" : " -O"
-            pipeline_command += this_input
-
-        } else if (["addreplacerg", "sort", "view"].contains(this_command)) {
-            // [-o OUTPUT] [INPUT|-]
-            pipeline_command += is_last_command ? " -o ${prefix}.${extension}" : ""
-            pipeline_command += this_input
-
-        } else if (["reheader"].contains(this_command)) {
-            // [INPUT|-]
-            pipeline_command += this_input
-
-        } else if (["fixmate", "markdup"].contains(this_command)) {
-            // [INPUT|-] [OUTPUT|-]
-            pipeline_command += this_input
-            pipeline_command += is_last_command ? " ${prefix}.${extension}" : " -"
-
-        } else {
-            error "${this_command} is not supported"
-        }
-
-        if (!is_last_command) {
-            pipeline_command += " |"
-        }
+        command.join(' ')
     }
 
     """
-    $pipeline_command
+    ${cmds.join(' | ')}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
