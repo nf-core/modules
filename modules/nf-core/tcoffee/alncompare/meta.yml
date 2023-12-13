@@ -1,5 +1,5 @@
-name: "tcoffee_irmsd"
-description: Computes irmsd score for a given alignment and the structures.
+name: "tcoffee_alncompare"
+description: Compares 2 alternative MSAs to evaluate them.
 keywords:
   - alignment
   - MSA
@@ -23,14 +23,10 @@ input:
       type: file
       description: fasta file containing the alignment to be evaluated
       pattern: "*.{aln,fa,fasta,fas}"
-  - template:
+  - ref_msa:
       type: file
-      description: Template file matching the structures to the sequences in the alignment
-      pattern: "*"
-  - structures:
-      type: directory
-      description: Directory containing the structures file matching the sequences in the alignment in PDB format
-      pattern: "*"
+      description: fasta file containing the reference alignment used for the evaluation
+      pattern: "*.{aln,fa,fasta,fas}"
 
 output:
   - meta:
@@ -42,10 +38,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - irmsd:
+  - scores:
       type: file
-      description:  File containing the irmsd of the alignment
-      pattern: "*"
+      description: a file containing the score of the alignment
+      pattern: "*.scores"
 
 authors:
+  - "@l-mansouri"
   - "@luisas"
