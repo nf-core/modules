@@ -15,15 +15,7 @@ tools:
       tool_dev_url: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/advanced/references
       licence: ["10x Genomics EULA"]
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
-  - genes:
-      type: file
-      description: Reference transcriptome GTF file
-      pattern: "*.gtf"
-  - genome:
+  - reference_name:
       type: string
       description: The name to give the new reference folder, e.g. `my_vdj_ref`
       pattern: str
