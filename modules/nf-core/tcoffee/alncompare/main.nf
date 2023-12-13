@@ -22,7 +22,7 @@ process TCOFFEE_ALNCOMPARE {
 
     script:
     def prefix = task.ext.prefix ? task.ext.prefix : "${msa.baseName}"
-    def args = task.ext.args.contains('compare_mode') ? task.ext.args  : (task.ext.args +'-compare_mode tc ' )
+    def args = task.ext.args ? task.ext.args.contains('compare_mode') ? task.ext.args  : (task.ext.args +'-compare_mode tc ' ) : '-compare_mode tc '
     def metric_name = args.split('compare_mode ')[1].split(' ')[0]
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
