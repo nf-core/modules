@@ -29,14 +29,14 @@ output:
       type: map
       description: |
         Groovy Map containing output information
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gvcf_index:
       type: file
       description: Indexed gvcf file
       pattern: "*.g.vcf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@Furentsu"
