@@ -34,7 +34,6 @@ process TCOFFEE_ALNCOMPARE {
         awk '{ print \$4}' ORS="\t" \
         >> "scores.txt"
 
-
     # Add metadata info to output file
     echo "${header},${metric_name}" > "${prefix}.scores"
 
