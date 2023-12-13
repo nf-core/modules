@@ -13,7 +13,7 @@ process TCOFFEE_IRMSD {
 
     output:
     tuple val(meta), path ("${prefix}.irmsd"), emit: irmsd
-    path "versions.yml" , emit: versions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
