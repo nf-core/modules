@@ -13,13 +13,26 @@ process OATK {
 
     input:
     tuple val(meta), path(reads)
-    path(profile)
+    path(mito_hmm)
+    path(pltd_hmm)
+    path(nhmmscan)
+    path(tmp)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*mito.ctg.fasta")    , emit: mito_fasta
+    tuple val(meta), path("*pltd.ctg.fasta")    , emit: pltd_fasta
+    tuple val(meta), path("*mito.ctg.bed")      , emit: mito_bed
+    tuple val(meta), path("*pltd.ctg.bed")      , emit: pltd_bed
+    tuple val(meta), path("*mito.gfa")          , emit: mito_gfa
+    tuple val(meta), path("*pltd.gfa")          , emit: pltd_gfa
+    tuple val(meta), path("*annot_mito.txt")    , emit: annot_mito_txt
+    tuple val(meta), path("*annot_pltd.txt")    , emit: annot_pltd_txt
+    tuple val(meta), path("*utg.clean.gfa")     , emit: clean_gfa
+    tuple val(meta), path("*utg.final.gfa")     , emit: final_gfa
+    tuple val(meta), path("*utg.gfa")           , emit: inital_gfa
+    tuple val(meta), path("*utg.multiplex.gfa") , emit: multiplex_gfa
+    tuple val(meta), path("*utg.unzip.gfa")     , emit: unzip_gfa
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,22 +40,36 @@ process OATK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    profile_arg = ''
-    if (profile) {
-        profile_arg = '-M ' + profile
+    mito_hmm_arg = ''
+    if (mito_hmm) {
+        mito_hmm_arg = '-m ' + mito_hmm
+    }
+    pltd_hmm_arg = ''
+    if (pltd_hmm) {
+        pltd_hmm_arg = '-p ' + pltd_hmm
+    }
+    nhmmscan_arg = ''
+    if (nhmmscan) {
+        nhmmscan_arg = '--nhmmscan ' + nhmmscan
+    }
+    tmp_arg = ''
+    if (tmp) {
+        tmp_arg = '-T ' + tmp
     }
     """
     oatk \\
         $args \\
-        $profile_arg \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+        $mito_hmm_arg \\
+        $pltd_hmm_arg \\
+        $nhmmscan_arg \\
+        $tmp_arg \\
+        -t $task.cpus \\
+        -o ${prefix} \\
+        $reads
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        : \$(echo \$(oatk --version 2>&1) )
     END_VERSIONS
     """
 }

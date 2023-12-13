@@ -1,38 +1,55 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "oatk"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: An nf-core module for the OATK
 keywords:
-  - sort
-  - example
-  - genomics
+  - organelle
+  - mitochondrion
+  - plastid
+  - PacBio
+  - HiFi
+  - assembly
 tools:
   - "oatk":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+      description: "An organelle genome assembly toolkit"
+      homepage: "https://github.com/c-zhou/oatk"
+      documentation: "https://github.com/c-zhou/oatk"
+      tool_dev_url: "https://github.com/c-zhou/oatk"
+      doi: "https://zenodo.org/records/7631376"
+      licence: "MIT"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'Cladonia_norvegica' ]
   
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: HiFi reads in FASTA format
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - mito_hmm:
+      type: file
+      description: mitochondria gene annotation HMM profile database
+      pattern: '*.{fa,fam}'
+
+  - pltd_hmm:
+      type: file
+      description: plastid gene annotation HMM profile database
+      pattern: '*.{fa,fam}'
+
+  - nhmmscan:
+      type: file
+      description: Path to hmmscan binary
+      pattern: '*hmmscan'
+
+  - tmp:
+      type: directory
+      description: temporary directory
+
 output:
   #Only when we have meta
   - meta:
@@ -45,11 +62,68 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - mito_fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: the structure-solved MT contigs 
+      pattern: "*mito.ctg.fasta"
+
+  - pltd_fasta:
+      type: file
+      description: the structure-solved PT contigs 
+      pattern: "*pltd.ctg.fasta"
+
+  - mito_bed:
+      type: file
+      description: the gene annotation for the MT sequences
+      pattern: "*mito.ctg.bed"
+
+  - pltd_bed:
+      type: file
+      description: the gene annotation for the PT sequences
+      pattern: "*pltd.ctg.bed"
+
+  - mito_gfa:
+      type: file
+      description: the subgraph for the MT genome
+      pattern: "*mito.gfa"
+
+  - pltd_gfa:
+      type: file
+      description: the subgraph for the PT genome  
+      pattern: "*pltd.gfa"
+
+  - annot_mito_txt:
+      type: file
+      description: the MT gene annotation file over all assembled sequences
+      pattern: "*annot_mito.txt"
+
+  - annot_pltd_txt:
+      type: file
+      description: the PT gene annotation file over all assembled sequences
+      pattern: "*annot_pltd.txt"
+
+  - clean_gfa:
+      type: file
+      pattern: "*utg.clean.gfa"
+
+  - final_gfa:
+      type: file
+      description: the GFA file for the final genome assembly 
+      pattern: "*utg.final.gfa"
+
+  - inital_gfa:
+      type: file
+      pattern: "*utg.gfa"
+
+  - multiplex_gfa:
+      type: file
+      pattern: "*utg.multiplex.gfa"
+
+  - unzip_gfa:
+      type: file
+      pattern: "*utg.unzip.gfa"
 
 authors:
-  - "@ksenia-krasheninnikoba"
+  - "@ksenia-krasheninnikova"
+  - "@c-zhou"
