@@ -1,5 +1,4 @@
 name: "tcoffee_alncompare"
-#
 description: Compares 2 alternative MSAs to evaluate them.
 keywords:
   - alignment
@@ -7,7 +6,6 @@ keywords:
   - evaluation
 tools:
   - "tcoffee":
-      #
       description: "A collection of tools for Multiple Alignments of DNA, RNA, Protein Sequence"
       homepage: "http://www.tcoffee.org/Projects/tcoffee/"
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
@@ -36,12 +34,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  #
   - scores:
       type: file
       description: a file containing the score of the alignment
@@ -49,3 +45,4 @@ output:
 
 authors:
   - "@l-mansouri"
+  - "@luisas"
