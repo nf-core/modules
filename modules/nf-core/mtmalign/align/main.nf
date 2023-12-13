@@ -13,7 +13,7 @@ process MTMALIGN_ALIGN {
     tuple val(meta), path('*.pdb', arity: '2..*')
 
     output:
-    tuple val(meta), path("./mTM_result/*.aln")  , emit: alignment
+    tuple val(meta), path("./mTM_result/${prefix}.aln")  , emit: alignment
     tuple val(meta), path("./mTM_result/${prefix}.pdb")    , emit: structure
     path "versions.yml"                                 , emit: versions
 
