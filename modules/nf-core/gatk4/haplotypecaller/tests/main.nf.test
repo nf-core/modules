@@ -38,7 +38,7 @@ nextflow_process {
                 // { assert snapshot(process.out).match() }, // Unstable hashes
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("output/gatk4/test.vcf.gz") },
                 { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("output/gatk4/test.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.versions.get(0)).name).match("output/gatk4/versions.yml") },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -71,7 +71,7 @@ nextflow_process {
                 // { assert snapshot(process.out).match() }, // Unstable hashes
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("output/gatk4/test.vcf.gz") },
                 { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("output/gatk4/test.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.versions.get(0)).name).match("output/gatk4/versions.yml") },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -104,7 +104,7 @@ nextflow_process {
                 // { assert snapshot(process.out).match() }, // Unstable hashes
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("output/gatk4/test.vcf.gz") },
                 { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("output/gatk4/test.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.versions.get(0)).name).match("output/gatk4/versions.yml") },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -137,7 +137,7 @@ nextflow_process {
                 // { assert snapshot(process.out).match() }, // Unstable hashes
                 { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("output/gatk4/test.vcf.gz") },
                 { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("output/gatk4/test.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.versions.get(0)).name).match("output/gatk4/versions.yml") },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
