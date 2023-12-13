@@ -1,6 +1,3 @@
-
-
-
 process TCOFFEE_ALNCOMPARE {
     tag "$meta.id"
     label 'process_medium'
