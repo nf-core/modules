@@ -1,0 +1,40 @@
+name: "getorganelle_config"
+description: Downloads databases needed for running getorganelle
+keywords:
+  - assembly
+  - organelle
+  - mitochondria
+  - download
+  - database
+tools:
+  - "getorganelle":
+      description: "Get organelle genomes from genome skimming data"
+      homepage: "https://github.com/Kinggerm/GetOrganelle"
+      documentation: "https://github.com/Kinggerm/GetOrganelle"
+      tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
+      doi: "10.1186/s13059-020-02154-5"
+      licence: ["GPL v3"]
+
+input:
+  - organelle_type:
+      type: string
+      description: |
+        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - organelle_type:
+      type: string
+      description: |
+        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+
+  - db:
+      type: directory
+      description: Downloaded database for GetOrganelle
+
+authors:
+  - "@erinyoung"

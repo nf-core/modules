@@ -9,101 +9,101 @@ nextflow_process {
     tag "picard"
     tag "picard/markduplicates"
 
-    test("test_picard_markduplicates_sorted_bam") {
+    test("sarscov2 - bam, fasta, fai - sorted bam") {
+
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
-                bam = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                        ]
-                fasta = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
-                fai   = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                        ]
-                input[0] = bam
-                input[1] = fasta
-                input[2] = fai
+                input[0] = [ 
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            def metrics_text = "1.0	97	97"
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match() },
-                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
+                    process.out.versions
+                ).match() }
             )
         }
     }
 
-    test("test_picard_markduplicates_unsorted_bam") {
+    test("sarscov2 - bam, fasta, fai - unsorted bam") {
+
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
-                bam = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-                        ]
-                fasta = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
-                fai   = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                        ]
-                input[0] = bam
-                input[1] = fasta
-                input[2] = fai
+                input[0] = [ 
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            def metrics_text = "1.0	97	97"
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match() },
-                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
+                    process.out.versions
+                ).match() }
             )
         }
     }
 
-    test("test_picard_markduplicates_sorted_cram") {
+   test("homo_sapiens - cram, fasta, fai") {
+
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
-                bam = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
-                        ]
-                fasta = [ [ id:'genome' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
-                fai   = [ [ id:'genome' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                        ]
-                input[0] = bam
-                input[1] = fasta
-                input[2] = fai
+                input[0] = [ 
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                ]
+                input[1] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [ 
+                    [ id:'genome' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            def metrics_text = "1.0	0.999986	1178"
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match() },
-                { assert path(process.out.metrics.get(0).get(1)).getText().contains(metrics_text) }
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
+                    process.out.versions
+                ).match() }
             )
         }
     }

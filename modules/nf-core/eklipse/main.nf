@@ -31,6 +31,7 @@ process EKLIPSE {
     echo "$bam\t${prefix}" > infile.txt
     eKLIPse.py \\
         -in infile.txt \\
+        $args \\
         -ref $ref_gb
     mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_deletions.csv
     mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_genes.csv
