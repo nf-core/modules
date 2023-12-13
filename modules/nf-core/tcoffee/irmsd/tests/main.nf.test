@@ -39,8 +39,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") }
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") }            )
         }
 
     }
