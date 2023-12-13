@@ -13,14 +13,13 @@ tools:
       homepage: "https://github.com/SchapiroLabor/Background_subtraction"
       documentation: "https://github.com/SchapiroLabor/Background_subtraction/blob/master/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/Background_subtraction"
-      licence: "MIT licence"
+      licence: ["MIT licence"]
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   - image:
       type: file
       description: Multi-channel image file
@@ -29,18 +28,17 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   - markerfile:
       type: file
       description: Marker file with channel names, exposure times, and specified background to subtract (and remove to exclude channels from output)
       pattern: "*.csv"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
@@ -53,7 +51,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   - markerout:
       type: file
       description: Marker file adjusted to match the background corrected image

@@ -2,7 +2,7 @@ process RSEQC_JUNCTIONANNOTATION {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/rseqc/junctionannotation/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rseqc:3.0.1--py37h516909a_1' :
         'biocontainers/rseqc:3.0.1--py37h516909a_1' }"
@@ -33,7 +33,7 @@ process RSEQC_JUNCTIONANNOTATION {
         -r $bed \\
         -o $prefix \\
         $args \\
-        2> ${prefix}.junction_annotation.log
+        2> >(tee ${prefix}.junction_annotation.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
