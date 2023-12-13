@@ -18,7 +18,7 @@ process TCOFFEE_IRMSD {
 
     when:
     task.ext.when == null || task.ext.when
-    
+
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
@@ -27,6 +27,7 @@ process TCOFFEE_IRMSD {
 
     t_coffee -other_pg irmsd \
         $msa \
+        $args \
         -template_file $template > ${prefix}.irmsd
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,7 +35,7 @@ process TCOFFEE_IRMSD {
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
     END_VERSIONS
     """
-
+    
     stub: 
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
