@@ -12,9 +12,8 @@ process TRUVARI_CONSISTENCY {
     tuple val(meta), path(vcf1), path(vcf2), path(vcf3)
 
     output:
-    tuple val(meta), path("*.txt") , emit: txt,  optional: true
-    tuple val(meta), path("*.json"), emit: json, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.consistency") , emit: consistency
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +29,7 @@ process TRUVARI_CONSISTENCY {
         $args \\
         $vcf1 \\
         $vcf2  \\
-        $vcf3
+        $vcf3 > ${prefix}.consistency
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,8 +41,7 @@ process TRUVARI_CONSISTENCY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
-    touch ${prefix}.json
+    touch ${prefix}.consistency
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
