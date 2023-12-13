@@ -30,7 +30,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test' ], // meta map
-                                file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
