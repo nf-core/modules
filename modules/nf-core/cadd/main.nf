@@ -3,9 +3,7 @@ process CADD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cadd-scripts-with-envs:1.6.post1_cv1':
-        'biocontainers/cadd-scripts-with-envs:1.6.post1_cv1' }"
+    container 'biocontainers/cadd-scripts-with-envs:1.6.post1_cv1'
 
     containerOptions {
         (workflow.containerEngine == 'singularity') ?
