@@ -1,18 +1,16 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "xz_decompress"
-description: Decompresses files with xz.
+name: "pigz_compress"
+description: Compresses files with pigz.
 keywords:
-  - xz
-  - decompression
-  - compression
+  - compress
+  - gzip
+  - parallelized
 tools:
-  - "xz":
-      description: "xz is a general-purpose data compression tool with command line syntax similar to gzip and bzip2."
-      homepage: "https://tukaani.org/xz/"
-      documentation: "https://tukaani.org/xz/man/xz.1.html"
-      tool_dev_url: "https://github.com/tukaani-project/xz"
-      licence: ["GNU LGPLv2.1", "GNU GPLv2", "GNU GPLv3"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 
 input:
   - meta:
@@ -21,10 +19,10 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-  - archive:
+  - raw_file:
       type: file
-      description: File to be decompressed
-      pattern: "*.{xz}"
+      description: File to be compressed
+      pattern: "*.*"
 
 output:
   - meta:
@@ -32,10 +30,12 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - file:
+
+  - archive:
       type: file
-      description: The decompressed file
-      pattern: "*.*"
+      description: The compressed file
+      pattern: "*.gz"
+
   - versions:
       type: file
       description: File containing software versions
