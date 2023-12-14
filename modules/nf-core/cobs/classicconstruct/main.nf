@@ -11,7 +11,7 @@ process COBS_CLASSICCONSTRUCT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("${index}"), emit: index
+    tuple val(meta), path("*.index.cobs_classic"), emit: index
     path "versions.yml"              , emit: versions
 
     when:
@@ -20,7 +20,6 @@ process COBS_CLASSICCONSTRUCT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    index = "${prefix}.index.cobs_classic"
     def task_memory_in_bytes = task.memory.toBytes()
     """
     cobs \\
@@ -29,7 +28,7 @@ process COBS_CLASSICCONSTRUCT {
         --memory $task_memory_in_bytes \\
         --threads $task.cpus \\
         $input \\
-        $index
+        ${prefix}.index.cobs_classic
 
 
     cat <<-END_VERSIONS > versions.yml
