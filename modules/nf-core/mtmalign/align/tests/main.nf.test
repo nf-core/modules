@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process MTMALIGN_ALIGN"
+        script "../main.nf"
+        process "MTMALIGN_ALIGN"
+        tag "modules"
+        tag "modules_nfcore"
+        tag "mtmalign"
+        tag "mtmalign/align"
+
+        test("Should run without failures") {
+            setup {
+
+                run("UNTAR") {
+                    script "../../../../../modules/nf-core/untar/main.nf"
+                        process {
+                            """
+                                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                input[0] = Channel.of(tuple([id:'test'], archive))
+                            """
+                        }
+                }
+            }
+
+            when {
+                params {
+                }
+                process {
+                    """
+                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success  },
+                    // mTMalign may be nondeterministic, just check if the pdbs are all in there
+                    //assert snapshot(process.out).match()
+                    { assert file(process.out.alignment[0][1]).text.contains(">1.pdb")  },
+                    { assert file(process.out.alignment[0][1]).text.contains(">2.pdb")  },
+                    { assert file(process.out.alignment[0][1]).text.contains(">3.pdb") },
+                    { assert file(process.out.alignment[0][1]).text.contains(">4.pdb") },
+                    { assert file(process.out.alignment[0][1]).text.contains(">5.pdb") },
+                    { assert snapshot(process.out.versions).match("versions") }
+                    )
+            }
+        }
+}
