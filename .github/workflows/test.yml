@@ -587,6 +587,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          conda install pdiff
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
@@ -604,6 +605,9 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --expand-tabs=2"
         run: |
           NXF_TEST_DIR=~ \
           nf-test test \
