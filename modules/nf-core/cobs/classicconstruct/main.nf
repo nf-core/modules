@@ -39,9 +39,8 @@ process COBS_CLASSICCONSTRUCT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    index = "${prefix}.index.cobs_classic"
     """
-    touch ${index}
+    touch ${prefix}.index.cobs_classic
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
