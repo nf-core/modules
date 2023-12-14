@@ -33,7 +33,7 @@ process RSEQC_JUNCTIONANNOTATION {
         -r $bed \\
         -o $prefix \\
         $args \\
-        2> >(grep -v '\\[E::idx_find_and_load\\] Could not retrieve index' | tee ${prefix}.junction_annotation.log >&2)
+        2> >(tee ${prefix}.junction_annotation.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
