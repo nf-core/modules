@@ -10,7 +10,7 @@ workflow FASTQ_ALIGN_STAR {
     val_star_ignore_sjdbgtf     // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
     val_seq_platform            // string : sequencing platform
     val_seq_center              // string : sequencing center
-    ch_fasta                    // channel: [ path(fasta) ]
+    ch_fasta                    // channel: [ val(meta), path(fasta) ]
 
     main:
 

@@ -3,6 +3,7 @@ description: Allows one to screen for overlaps between two sets of genomic featu
 keywords:
   - bed
   - intersect
+  - overlap
 tools:
   - bedtools:
       description: |
@@ -29,7 +30,7 @@ input:
         Groovy Map containing reference chromosome sizes
         e.g. [ id:'test' ]
   - chrom_sizes:
-      type: optional file
+      type: file
       description: Chromosome sizes file
       pattern: "*{.sizes,.txt}"
 output:
@@ -47,6 +48,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@Emiller88"
+  - "@sruthipsuresh"
+  - "@drpatelh"
+  - "@sidorov-si"
+maintainers:
   - "@Emiller88"
   - "@sruthipsuresh"
   - "@drpatelh"

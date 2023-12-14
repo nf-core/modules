@@ -3,5 +3,12 @@
   tags:
     - expansionhunter
   files:
-    - path: output/expansionhunter/test.vcf
-      md5sum: cfd4a1d35c0e469b99eb6aaa6d22de76
+    - path: output/expansionhunter/test.json.gz
+      contains:
+        - '"AlleleCount": 2,'
+        - '"Coverage": 0.0,'
+    - path: output/expansionhunter/test.vcf.gz
+      contains:
+        - "##fileformat=VCFv4.1"
+        - '##INFO=<ID=VARID,Number=1,Type=String,Description="Variant identifier as specified in the variant catalog">'
+    - path: output/expansionhunter/versions.yml

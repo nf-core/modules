@@ -2,15 +2,15 @@ name: "scimap_mcmicro"
 description: SCIMAP is a suite of tools that enables spatial single-cell analyses
 keywords:
   - sort
+  - spatial
+  - single cell
 tools:
   - "scimap":
       description: "Scimap is a scalable toolkit for analyzing spatial molecular data."
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      doi: ""
       licence: "MIT License"
-
 input:
   # Only when we have meta
   - meta:
@@ -22,7 +22,6 @@ input:
       type: file
       description: CSV file with cell by feature table
       pattern: "*.{csv}"
-
 output:
   #Only when we have meta
   - meta:
@@ -43,11 +42,11 @@ output:
       type: file
       description: Sorted H5AD file
       pattern: "*.{h5ad}"
-
-  # - clusterPlot:
-  #     type: file
-  #     description: UPMA plot of the data in pdf file
-  #     pattern: "*.pdf"
-
+      # - clusterPlot:
+      #     type: file
+      #     description: UPMA plot of the data in pdf file
+      #     pattern: "*.pdf"
 authors:
+  - "@luiskuhn"
+maintainers:
   - "@luiskuhn"

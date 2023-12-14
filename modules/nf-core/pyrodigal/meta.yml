@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/althonos/pyrodigal/"
       doi: "10.21105/joss.04296"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -23,8 +22,7 @@ input:
   - fasta:
       type: file
       description: FASTA file
-      pattern: "*.{fasta,fa,fna}"
-
+      pattern: "*.{fasta.gz,fa.gz,fna.gz}"
 output:
   - meta:
       type: map
@@ -38,19 +36,20 @@ output:
   - gff:
       type: file
       description: gene annotations in gff format
-      pattern: "*.{gff}"
+      pattern: "*.{gff.gz}"
   - faa:
       type: file
       description: protein translations file
-      pattern: "*.{faa}"
+      pattern: "*.{faa.gz}"
   - fna:
       type: file
       description: nucleotide sequences file
-      pattern: "*.{fna}"
+      pattern: "*.{fna.gz}"
   - score:
       type: file
       description: all potential genes (with scores)
-      pattern: "*.{score}"
-
+      pattern: "*.{score.gz}"
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

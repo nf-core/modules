@@ -2,14 +2,15 @@ process SRATOOLS_PREFETCH {
     tag "$id"
     label 'process_low'
 
-    conda "bioconda::sra-tools=2.11.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
-        'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
+        'https://depot.galaxyproject.org/singularity/sra-tools:3.0.8--h9f5acd7_0' :
+        'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
     tuple val(meta), val(id)
     path ncbi_settings
+    path certificate
 
     output:
     tuple val(meta), path(id), emit: sra
@@ -20,6 +21,16 @@ process SRATOOLS_PREFETCH {
 
     shell:
     args = task.ext.args ?: ''
+
+    if (certificate){
+        if (certificate.toString().endsWith('.jwt')){
+            args += " --perm ${certificate}"
+            }
+        else if (certificate.toString().endsWith('.ngc')){
+            args += " --ngc ${certificate}"
+        }
+    }
+
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
     template 'retry_with_backoff.sh'
 }

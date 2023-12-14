@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { GATK4_COLLECTREADCOUNTS } from '../../../../../modules/nf-core/gatk4/collectreadcounts/main.nf'
 
 workflow test_gatk4_collectreadcounts_hdf5 {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -13,15 +13,15 @@ workflow test_gatk4_collectreadcounts_hdf5 {
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
     ]
 
-    fasta = []
-    fai = []
-    dict = []
+    fasta = [[],[]]
+    fai   = [[],[]]
+    dict  = [[],[]]
 
     GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_collectreadcounts_tsv {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -29,15 +29,15 @@ workflow test_gatk4_collectreadcounts_tsv {
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
     ]
 
-    fasta = []
-    fai = []
-    dict = []
+    fasta = [[],[]]
+    fai   = [[],[]]
+    dict  = [[],[]]
 
     GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_collectreadcounts_cram {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
@@ -45,9 +45,9 @@ workflow test_gatk4_collectreadcounts_cram {
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
     ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [[id:'test'], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
+    fai   = [[id:'test'], file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]
+    dict  = [[id:'test'], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]
 
     GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }

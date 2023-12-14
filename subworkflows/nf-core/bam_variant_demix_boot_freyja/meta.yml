@@ -1,16 +1,15 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_variant_demix_boot_freyja"
 description: Recover relative lineage abundances from mixed SARS-CoV-2 samples from a sequencing dataset (BAM aligned to the Hu-1 reference)
 keywords:
   - bam
   - variants
   - cram
-
-modules:
+components:
   - freyja/variants
   - freyja/demix
   - freyja/update
   - freyja/boot
-
 input:
   - ch_bam:
       type: file
@@ -38,7 +37,6 @@ input:
       description: |
         Structure: path(lineages_meta)
         File containing lineage metadata that correspond to barcodes
-
 output:
   - meta:
       type: map
@@ -72,15 +70,15 @@ output:
         a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - barcodes:
       type: file
-      description: path(barcodes)
-        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+      description: path(barcodes) a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - lineages_meta:
       type: file
-      description: path(lineages_meta)
-        a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
+      description: path(lineages_meta) a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"

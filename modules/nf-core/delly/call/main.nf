@@ -2,10 +2,10 @@ process DELLY_CALL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::delly=1.1.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/delly:1.1.6--ha41ced6_0' :
-        'quay.io/biocontainers/delly:1.1.6--ha41ced6_0' }"
+        'biocontainers/delly:1.1.6--ha41ced6_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)

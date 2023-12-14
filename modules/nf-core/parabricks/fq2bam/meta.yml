@@ -1,5 +1,5 @@
 name: "parabricks_fq2bam"
-description: NVIDIA Clara Parabricks GPU-accelerated alignment, sorting, BQSR calculation, and duplicate marking.
+description: NVIDIA Clara Parabricks GPU-accelerated alignment, sorting, BQSR calculation, and duplicate marking. Note this nf-core module requires files to be copied into the working directory and not symlinked.
 keywords:
   - align
   - sort
@@ -10,10 +10,7 @@ tools:
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/4.0.1/Documentation/"
-      tool_dev_url: ""
-      doi: ""
-      licence: "custom"
-
+      licence: ["custom"]
 input:
   - meta:
       type: map
@@ -36,7 +33,7 @@ input:
       type: file
       description: reference fasta file - must be unzipped
       pattern: "*.fasta"
-  - meta2:
+  - meta3:
       type: map
       description: |
         Groovy Map containing index information
@@ -48,7 +45,6 @@ input:
       type: file
       description: (optional) known sites file(s) for calculating BQSR. markdups must be true to perform BQSR.
       pattern: "*.vcf.gz"
-
 output:
   - meta:
       type: map
@@ -68,7 +64,7 @@ output:
       description: index corresponding to sorted BAM file
       pattern: "*.bai"
   - qc_metrics:
-      type: dir
+      type: directory
       description: (optional) optional directory of qc metrics
       pattern: "qc_metrics"
   - bqsr_table:
@@ -79,6 +75,9 @@ output:
       type: file
       description: (optional) metrics calculated from marking duplcates in the bam file
       pattern: "*-duplicate-metrics.txt"
-
 authors:
   - "@bsiranosian"
+  - "@adamrtalbot"
+maintainers:
+  - "@bsiranosian"
+  - "@adamrtalbot"

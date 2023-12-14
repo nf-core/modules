@@ -37,7 +37,8 @@ workflow test_controlfreec_makegraph {
                         []
                         )
 
-    makegraph_in = CONTROLFREEC_FREEC.out.ratio.join(CONTROLFREEC_FREEC.out.BAF)
+    ploidy = Channel.value("2")
+    makegraph_in = CONTROLFREEC_FREEC.out.ratio.join(CONTROLFREEC_FREEC.out.BAF).combine(ploidy)
     CONTROLFREEC_MAKEGRAPH ( makegraph_in )
 }
 
@@ -72,6 +73,7 @@ workflow test_controlfreec_makegraph_single {
                         []
                         )
 
-    makegraph_in = CONTROLFREEC_FREEC.out.ratio.join(CONTROLFREEC_FREEC.out.BAF)
+    ploidy = Channel.value("2")
+    makegraph_in = CONTROLFREEC_FREEC.out.ratio.join(CONTROLFREEC_FREEC.out.BAF).combine(ploidy)
     CONTROLFREEC_MAKEGRAPH ( makegraph_in )
 }

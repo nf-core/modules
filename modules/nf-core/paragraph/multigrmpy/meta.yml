@@ -12,9 +12,8 @@ tools:
       homepage: "https://github.com/Illumina/paragraph"
       documentation: "https://github.com/Illumina/paragraph"
       tool_dev_url: "https://github.com/Illumina/paragraph"
-      doi: "https://doi.org/10.1101/635011"
+      doi: "10.1101/635011"
       licence: "['Apache License 2.0']"
-
 input:
   - meta:
       type: map
@@ -30,11 +29,11 @@ input:
       description: The index for the VCF file
       pattern: "*.tbi"
   - reads:
-      type: file(s)
+      type: file
       description: BAM or CRAM file(s) to genotype against. These should be specified inside the `manifest`
       pattern: "*.{bam,cram}"
   - reads_index:
-      type: file(s)
+      type: file
       description: The index/indices for the BAM/CRAM file(s)
       pattern: "*.{bai,crai}"
   - manifest:
@@ -61,7 +60,6 @@ input:
       type: file
       description: The index of the reference FASTA file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -80,6 +78,7 @@ output:
       type: file
       description: The genotyped JSON file in GZIP format
       pattern: "*.json.gz"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

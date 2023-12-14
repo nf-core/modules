@@ -2,12 +2,7 @@ process SCIMAP_MCMICRO {
     tag "$meta.id"
     label 'process_single'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container "labsyspharm/scimap:0.22.0"
+    container "docker.io/labsyspharm/scimap:0.22.0"
 
     input:
     tuple val(meta), path(cellbyfeature)
@@ -21,6 +16,10 @@ process SCIMAP_MCMICRO {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='0.22.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping

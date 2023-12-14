@@ -2,10 +2,10 @@ process BEDTOOLS_COVERAGE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bedtools=2.30.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
-        'quay.io/biocontainers/bedtools:2.30.0--h468198e_3' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     input:
     tuple val(meta), path(input_A), path(input_B)

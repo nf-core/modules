@@ -1,0 +1,15 @@
+- name: bam_markduplicates_samtools test_bam_markduplicates_samtools
+  command: nextflow run ./tests/subworkflows/nf-core/bam_markduplicates_samtools -entry test_bam_markduplicates_samtools -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/collate
+    - samtools/fixmate
+    - samtools/markdup
+    - samtools/sort
+    - subworkflows
+    - subworkflows/bam_markduplicates_samtools
+  files:
+    - path: output/samtools/test.collate.bam
+    - path: output/samtools/test.fixmate.bam
+    - path: output/samtools/test.markdup.bam
+    - path: output/samtools/test.sort.bam
