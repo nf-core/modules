@@ -22,7 +22,7 @@ process MTMALIGN_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     ls *.pdb | sed s/\\ /\\n/ > input_list.txt
     mtm-align -i input_list.txt -o ${prefix}.pdb
@@ -38,7 +38,7 @@ process MTMALIGN_ALIGN {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mTM_result
     touch mTM_result/${prefix}.aln
