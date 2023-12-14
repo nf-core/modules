@@ -1,4 +1,3 @@
-
 process ARIA2 {
     tag "$meta.id"
     label 'process_single'
