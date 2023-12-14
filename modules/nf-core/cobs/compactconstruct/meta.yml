@@ -27,13 +27,13 @@ input:
       description: |
         The file or directory to be indexed.
         COBS can read:
-          1. FASTA files (*.fa, *.fasta, *.fna, *.ffn, *.faa, *.frn, *.fa.gz, *.fasta.gz, *.fna.gz, *.ffn.gz, *.faa.gz, *.frn.gz),
-          2. FASTQ files (*.fq, *.fastq, *.fq.gz., *.fastq.gz),
-          3. "Multi-FASTA" and "Multi-FASTQ" files (*.mfasta, *.mfastq),
-          4. McCortex files (*.ctx),
-          5. or text files (*.txt).
+          1. FASTA files (`*.fa`, `*.fasta`, `*.fna`, `*.ffn`, `*.faa`, `*.frn`, `*.fa.gz`, `*.fasta.gz`, `*.fna.gz`, `*.ffn.gz`, `*.faa.gz`, `*.frn.gz`),
+          2. FASTQ files (`*.fq`, `*.fastq`, `*.fq.gz.`, `*.fastq.gz`),
+          3. "Multi-FASTA" and "Multi-FASTQ" files (`*.mfasta`, `*.mfastq`),
+          4. McCortex files (`*.ctx`),
+          5. or text files (`*.txt`).
         You can either recursively scan a directory for all files matching any of these files,
-        or pass a *.list file which lists all paths COBS should index.
+        or pass a `*.list` file which lists all paths COBS should index.
       pattern: "*.*"
 
 output:
