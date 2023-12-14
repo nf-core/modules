@@ -9,7 +9,7 @@ process TRUVARI_CONSISTENCY {
         'biocontainers/truvari:4.1.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf1), path(vcf2), path(vcf3)
+    tuple val(meta), path(vcfs)
 
     output:
     tuple val(meta), path("*.{txt,json}") , emit: consistency
@@ -21,16 +21,13 @@ process TRUVARI_CONSISTENCY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf3   = vcf3 ?: "$vcf3"
     def extension = args.contains("-j") ? "json" : "txt"
 
     """
     truvari \\
         consistency \\
         $args \\
-        $vcf1 \\
-        $vcf2  \\
-        $vcf3 > ${prefix}.${extension}
+        $vcfs > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -20,17 +20,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1' ]`
-  - vcf1:
+  - vcfs:
       type: file
-      description: VCF file 1 to compare
-      pattern: "*.{vcf,gz}"
-  - vcf2:
-      type: file
-      description: VCF file 2 to compare
-      pattern: "*.{vcf,gz}"
-  - vcf3:
-      type: file
-      description: VCF file 3 to compare
+      description: two or more VCF files to compare
       pattern: "*.{vcf,gz}"
 output:
   - meta:
@@ -45,7 +37,7 @@ output:
   - consistency:
       type: file
       description: Output report in txt or json format
-      pattern: "*.{consistency}"
+      pattern: "*.{txt,json}"
 authors:
   - "@kubranarci"
 maintainers:
