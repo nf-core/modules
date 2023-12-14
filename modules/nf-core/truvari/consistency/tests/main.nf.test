@@ -26,8 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.consistency).match("two_consistency") },
-                { assert snapshot(process.out.versions).match("two_versions") }
+                { assert snapshot(
+                    process.out.consistency,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -49,8 +51,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.consistency).match("three_consistency") },
-                { assert snapshot(process.out.versions).match("three_versions") }
+                { assert snapshot(
+                    process.out.consistency,
+                    process.out.versions
+                ).match() }
             )
         }
 
