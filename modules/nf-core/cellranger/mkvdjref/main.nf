@@ -9,7 +9,6 @@ process CELLRANGER_MKVDJREF {
     path gtf            // optional
     path seqs           // optional
     val reference_name
-    
 
     output:
     path "${reference_name}", emit: reference
