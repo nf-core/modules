@@ -5,7 +5,11 @@ process CELLRANGER_MKVDJREF {
     container "nf-core/cellranger:7.1.0"
 
     input:
+    path fasta          // optional
+    path gtf            // optional
+    path seqs           // optional
     val reference_name
+    
 
     output:
     path "${reference_name}", emit: reference
@@ -19,11 +23,18 @@ process CELLRANGER_MKVDJREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MKVDJREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    def args        = task.ext.args ?: ''
+    def gtf_in      = gtf           ? "--genes ${gtf}"      : ""
+    def fasta_in    = fasta         ? "--fasta ${fasta}"    : ""
+    def seqs_in     = seqs          ? "--seqs ${seqs}"      : ""
+
     """
     cellranger \\
         mkvdjref \\
         --genome=$reference_name \\
+        ${gtf_in} \\
+        ${fasta_in} \\
+        ${seqs_in} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
