@@ -1,0 +1,48 @@
+name: "tcoffee_alncompare"
+description: Compares 2 alternative MSAs to evaluate them.
+keywords:
+  - alignment
+  - MSA
+  - evaluation
+tools:
+  - "tcoffee":
+      description: "A collection of tools for Multiple Alignments of DNA, RNA, Protein Sequence"
+      homepage: "http://www.tcoffee.org/Projects/tcoffee/"
+      documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
+      tool_dev_url: "https://github.com/cbcrg/tcoffee"
+      doi: "10.1006/jmbi.2000.4042"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', ... ]
+  - msa:
+      type: file
+      description: fasta file containing the alignment to be evaluated
+      pattern: "*.{aln,fa,fasta,fas}"
+  - ref_msa:
+      type: file
+      description: fasta file containing the reference alignment used for the evaluation
+      pattern: "*.{aln,fa,fasta,fas}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - scores:
+      type: file
+      description: a file containing the score of the alignment
+      pattern: "*.scores"
+
+authors:
+  - "@l-mansouri"
+  - "@luisas"
