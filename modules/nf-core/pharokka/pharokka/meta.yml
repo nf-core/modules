@@ -34,29 +34,29 @@ output:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
   - log:
-    type: file
-    description: Log file containing all logging output
-    pattern: "*.log"
+      type: file
+      description: Log file containing all logging output
+      pattern: "*.log"
   - cds_functions:
-    type: file
-    description: A file that includes count of CDSs, tRNAs, CRISPRs, tmRNAs, and PHROG functions assigned to CDSs
-    pattern: "*_cds_functions.tsv"
+      type: file
+      description: A file that includes count of CDSs, tRNAs, CRISPRs, tmRNAs, and PHROG functions assigned to CDSs
+      pattern: "*_cds_functions.tsv"
   - card:
-    type: file
-    description: OPTIONAL - A file containing any CARD database hits
-    pattern: "*top_hits_card.tsv"
+      type: file
+      description: OPTIONAL - A file containing any CARD database hits
+      pattern: "*top_hits_card.tsv"
   - vfdb:
-    type: file
-    description: OPTIONAL - A file containing any VFDB database hits
-    pattern: "*top_hits_vfdb.tsv"
+      type: file
+      description: OPTIONAL - A file containing any VFDB database hits
+      pattern: "*top_hits_vfdb.tsv"
   - mash:
-    type: file
-    description: OPTIONAL - File containing top hits to INPHARED database
-    pattern: "*_top_hits_mash_inphared.tsv"
+      type: file
+      description: OPTIONAL - File containing top hits to INPHARED database
+      pattern: "*_top_hits_mash_inphared.tsv"
   - reoriented:
-    type: file
-    description: OPTIONAL - FASTA file reoriented to start with the large terminase subunit
-    pattern: "*_genome_terminase_reoriented.fasta"
+      type: file
+      description: OPTIONAL - FASTA file reoriented to start with the large terminase subunit
+      pattern: "*_genome_terminase_reoriented.fasta"
   - versions:
       type: file
       description: File containing software versions
