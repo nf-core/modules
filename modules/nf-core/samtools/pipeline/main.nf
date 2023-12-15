@@ -40,12 +40,15 @@ process SAMTOOLS_PIPELINE {
             task.ext."args${first ? '' : index+1}" ?: ''
         ]
         switch(cmd){
+            //// First the common options
             case !"reheader":
-                // The reheader has no useful option
+                // "reheader" is the only command not to offer these
                 command << "-@ $task.cpus"
                 command << fasta && last ? "--reference ${fasta}" : ''
                 command << !last ? '-u' : ''
-            // samtools commands have slightly different syntax
+                // NOTE: no "break" here because we want to run the next batch of "case"
+
+            //// Then the input/ouput parameters, which differ between commands
             case "collate":
                 // [-o OUTPUT|-O] [INPUT|-]
                 command << last ? "-o ${prefix}.${extension}" : "-O"
