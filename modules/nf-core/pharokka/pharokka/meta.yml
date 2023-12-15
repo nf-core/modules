@@ -26,6 +26,10 @@ input:
       type: file
       description: A FASTA file containing phage sequence(s)
       pattern: "*.{fasta,fna,fa}"
+  - pharokka_db:
+      type: file
+      description: Directory containing Pharokka's database
+      pattern: "pharokka_db/"
 
 output:
   - meta:
