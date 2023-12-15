@@ -1,0 +1,11 @@
+- name: "parabricks genotypegvcf"
+  command: nextflow run ./tests/modules/nf-core/parabricks/genotypegvcf -entry test_parabricks_genotypegvcf -c ./tests/config/nextflow.config
+  tags:
+    - "parabricks"
+    - "parabricks/genotypegvcf"
+  files:
+    - path: "output/parabricks/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/parabricks/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    
