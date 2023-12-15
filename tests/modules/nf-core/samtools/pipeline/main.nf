@@ -46,3 +46,14 @@ workflow test_samtools_pipeline_all {
     commands = ['collate', 'addreplacerg', 'fixmate', 'reheader', 'sort', 'markdup', 'view']
     SAMTOOLS_PIPELINE_ALL ( input, [[],[]], commands )
 }
+
+workflow test_samtools_pipeline_collate_fixmate_cram {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+    ]
+    commands = ['collate', 'fixmate']
+    SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[]], commands )
+}
+
