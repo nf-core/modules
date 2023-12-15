@@ -49,20 +49,20 @@ process SAMTOOLS_PIPELINE {
             case "collate":
                 // [-o OUTPUT|-O] [INPUT|-]
                 command << last ? "-o ${prefix}.${extension}" : "-O"
-                command << first ? index : '-'
+                command << first ? input : '-'
                 break
             case ["addreplacerg", "sort", "view"]:
                 // [-o OUTPUT] [INPUT|-]
                 command << last ? "-o ${prefix}.${extension}" : ""
-                command << first ? index : '-'
+                command << first ? input : '-'
                 break
             case "reheader":
                 // [INPUT|-]
-                command << first ? index : '-'
+                command << first ? input : '-'
                 break
             case ["fixmate", "markdup"]:
                 // [INPUT|-] [OUTPUT|-]
-                command << first ? index : '-'
+                command << first ? input : '-'
                 command << last ? "${prefix}.${extension}" : "-"
                 break
             default:
