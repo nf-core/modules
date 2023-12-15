@@ -2,10 +2,12 @@ process NARFMAP_HASHTABLE {
     tag "$fasta"
     label 'process_high'
 
+    // TODO Add a singularity image
+    // TODO Make a seperate image
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/narfmap:1.4.0--TODO':
-        'biocontainers/narfmap:1.4.0--TODO' }"
+        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242':
+        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242' }"
 
     input:
     tuple val(meta), path(fasta)

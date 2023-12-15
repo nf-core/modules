@@ -2,11 +2,11 @@ process NARFMAP_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
+    // TODO Add a singularity image
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        // TODO
-        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:7eed251370ac7f3537c3d9472cdb2f9f5d8da1c5-0':
-        'biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:7eed251370ac7f3537c3d9472cdb2f9f5d8da1c5-0' }"
+        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242':
+        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242' }"
 
     input:
     tuple val(meta) , path(reads)
