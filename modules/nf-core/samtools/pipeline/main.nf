@@ -46,29 +46,29 @@ process SAMTOOLS_PIPELINE {
             case !"reheader":
                 // "reheader" is the only command not to offer these
                 command << "-@ $task.cpus"
-                command << fasta && last ? "--reference ${fasta}" : ''
-                command << !last ? '-u' : ''
+                command << (fasta && last ? "--reference ${fasta}" : '')
+                command << (!last ? '-u' : '')
                 // NOTE: no "break" here because we want to run the next batch of "case"
 
             //// Then the input/ouput parameters, which differ between commands
             case "collate":
                 // [-o OUTPUT|-O] [INPUT|-]
-                command << last ? "-o ${prefix}.${extension}" : "-O"
-                command << first ? input : '-'
+                command << (last ? "-o ${prefix}.${extension}" : "-O")
+                command << (first ? input : '-')
                 break
             case ["addreplacerg", "sort", "view"]:
                 // [-o OUTPUT] [INPUT|-]
-                command << last ? "-o ${prefix}.${extension}" : ""
-                command << first ? input : '-'
+                command << (last ? "-o ${prefix}.${extension}" : "")
+                command << (first ? input : '-')
                 break
             case "reheader":
                 // [INPUT|-]
-                command << first ? input : '-'
+                command << (first ? input : '-')
                 break
             case ["fixmate", "markdup"]:
                 // [INPUT|-] [OUTPUT|-]
-                command << first ? input : '-'
-                command << last ? "${prefix}.${extension}" : "-"
+                command << (first ? input : '-')
+                command << (last ? "${prefix}.${extension}" : "-")
                 break
             default:
                 assert false: "$cmd is not supported"
