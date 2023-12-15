@@ -20,17 +20,19 @@ process SAMTOOLS_PIPELINE {
     task.ext.when == null || task.ext.when
 
     script:
+    def prefix   = task.ext.prefix ?: "${meta.id}"
 
     // Check that we are asked to run more than 1 command
-    assert commands.size() > 1
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def cmd_size  = commands.size()
+    def cmd_size = commands.size()
+    assert cmd_size > 1
+
     def last_args = task.ext."args$cmd_size" ?: ''
     def extension = last_args.contains("--output-fmt sam") ? "sam" :
                     last_args.contains("--output-fmt bam") ? "bam" :
                     last_args.contains("--output-fmt cram") ? "cram" :
                     "bam"
     assert "$input" != "${prefix}.${extension}" : "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
     // Compose pipe
     def cmds = commands.indexed().collect { index, cmd ->
         def first = index == 0
