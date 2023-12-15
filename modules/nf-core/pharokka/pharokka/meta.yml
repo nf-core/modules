@@ -33,10 +33,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - genbank:
-    type: file
-    description: GenBank formatted file containing annotations
-    pattern: "*.gbk"
   - log:
     type: file
     description: Log file containing all logging output
@@ -47,11 +43,11 @@ output:
     pattern: "*_cds_functions.tsv"
   - card:
     type: file
-    description: A file containing any CARD database hits
+    description: OPTIONAL - A file containing any CARD database hits
     pattern: "*top_hits_card.tsv"
   - vfdb:
     type: file
-    description: A file containing any VFDB database hits
+    description: OPTIONAL - A file containing any VFDB database hits
     pattern: "*top_hits_vfdb.tsv"
   - mash:
     type: file

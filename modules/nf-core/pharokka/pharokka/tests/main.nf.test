@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process PHAROKKA_PHAROKKA"
     script "../main.nf"
     process "PHAROKKA_PHAROKKA"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -31,10 +32,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.cds_functions,
+                    process.out.versions
+                    ).match()
+                },
+                { assert new File(process.out.log.get(0).get(1)).exists() }
             )
         }
-
     }
-
 }

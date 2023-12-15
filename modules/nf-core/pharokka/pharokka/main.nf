@@ -12,11 +12,10 @@ process PHAROKKA_PHAROKKA {
     path pharokka_db
 
     output:
-    tuple val(meta), path("*/*.gbk")                                , emit: genbank
     tuple val(meta), path("*/*.log")                                , emit: log
     tuple val(meta), path("*/*_cds_functions.tsv")                  , emit: cds_functions
-    tuple val(meta), path("*/*top_hits_card.tsv")                   , emit: card
-    tuple val(meta), path("*/*top_hits_vfdb.tsv")                   , emit: vfdb
+    tuple val(meta), path("*/*top_hits_card.tsv")                   , emit: card            , optional: true
+    tuple val(meta), path("*/*top_hits_vfdb.tsv")                   , emit: vfdb            , optional: true
     tuple val(meta), path("*/*_top_hits_mash_inphared.tsv")         , emit: mash            , optional: true
     tuple val(meta), path("*/*_genome_terminase_reoriented.fasta")  , emit: reoriented      , optional: true
     path "versions.yml"                                             , emit: versions
