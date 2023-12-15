@@ -33,6 +33,8 @@ process SAMTOOLS_PIPELINE {
     assert "$input" != "${prefix}.${extension}" : "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     // Compose pipe
     def cmds = commands.indexed().collect { index, cmd ->
+        def first = index == 0
+        def last = index == cmd_size-1
         def command = [
             "samtools $cmd",
             task.ext."args${index!=0 ? index+1 : ''}" ?: ''
@@ -41,27 +43,27 @@ process SAMTOOLS_PIPELINE {
             case !"reheader":
                 // The reheader has no useful option
                 command << "-@ $task.cpus"
-                command << fasta && index == cmd_size ? "--reference ${fasta}" : ''
-                command << index != cmd_size ? '-u' : ''
+                command << fasta && last ? "--reference ${fasta}" : ''
+                command << !last ? '-u' : ''
             // samtools commands have slightly different syntax
             case "collate":
                 // [-o OUTPUT|-O] [INPUT|-]
-                command << index == cmd_size ? " -o ${prefix}.${extension}" : " -O"
-                command << index == 0 ? index : '-'
+                command << last ? "-o ${prefix}.${extension}" : "-O"
+                command << first ? index : '-'
                 break
             case ["addreplacerg", "sort", "view"]:
                 // [-o OUTPUT] [INPUT|-]
-                command << index == cmd_size ? "-o ${prefix}.${extension}" : ""
-                command << index == 0 ? index : '-'
+                command << last ? "-o ${prefix}.${extension}" : ""
+                command << first ? index : '-'
                 break
             case "reheader":
                 // [INPUT|-]
-                command << index == 0 ? index : '-'
+                command << first ? index : '-'
                 break
             case ["fixmate", "markdup"]:
                 // [INPUT|-] [OUTPUT|-]
-                command << index == 0 ? index : '-'
-                command << index == cmd_size ? "${prefix}.${extension}" : "-"
+                command << first ? index : '-'
+                command << last ? "${prefix}.${extension}" : "-"
                 break
             default:
                 assert false: "$cmd is not supported"
