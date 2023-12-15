@@ -3,7 +3,7 @@ process CADD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'biocontainers/cadd-scripts-with-envs:1.6.post1_cv1'
+    container 'docker.io/biocontainers/cadd-scripts-with-envs:1.6.post1_cv1'
 
     containerOptions {
         (workflow.containerEngine == 'singularity') ?
