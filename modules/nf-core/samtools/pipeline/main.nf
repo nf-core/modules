@@ -37,7 +37,7 @@ process SAMTOOLS_PIPELINE {
         def last = index == cmd_size-1
         def command = [
             "samtools $cmd",
-            task.ext."args${index!=0 ? index+1 : ''}" ?: ''
+            task.ext."args${first ? '' : index+1}" ?: ''
         ]
         switch(cmd){
             case !"reheader":
