@@ -15,7 +15,7 @@ workflow test_samtools_pipeline_sormadup {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
     commands = ['collate', 'fixmate', 'sort', 'markdup']
-    SAMTOOLS_PIPELINE_SORMADUP ( input, [[],[]], commands )
+    SAMTOOLS_PIPELINE_SORMADUP ( input, [[],[],[]], commands )
 }
 
 workflow test_samtools_pipeline_collate_fixmate_sort {
@@ -25,7 +25,7 @@ workflow test_samtools_pipeline_collate_fixmate_sort {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
     commands = ['collate', 'fixmate', 'sort']
-    SAMTOOLS_PIPELINE_COLLFIXMSORT ( input, [[],[]], commands )
+    SAMTOOLS_PIPELINE_COLLFIXMSORT ( input, [[],[],[]], commands )
 }
 
 workflow test_samtools_pipeline_collate_fixmate {
@@ -35,7 +35,7 @@ workflow test_samtools_pipeline_collate_fixmate {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
     commands = ['collate', 'fixmate']
-    SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[]], commands )
+    SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[],[]], commands )
 }
 
 workflow test_samtools_pipeline_all {
@@ -45,7 +45,7 @@ workflow test_samtools_pipeline_all {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
     commands = ['collate', 'addreplacerg', 'fixmate', 'reheader', 'sort', 'markdup', 'view']
-    SAMTOOLS_PIPELINE_ALL ( input, [[],[]], commands )
+    SAMTOOLS_PIPELINE_ALL ( input, [[],[],[]], commands )
 }
 
 workflow test_samtools_pipeline_collate_fixmate_cram {
@@ -55,7 +55,7 @@ workflow test_samtools_pipeline_collate_fixmate_cram {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
     ]
     commands = ['collate', 'fixmate']
-    SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[]], commands )
+    SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[],[]], commands )
 }
 
 workflow test_samtools_pipeline_collate_fixmate_bam2cram {
@@ -66,7 +66,8 @@ workflow test_samtools_pipeline_collate_fixmate_bam2cram {
     ]
     fasta = [
         [ id:'test' ], // meta map
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     ]
     commands = ['collate', 'fixmate']
     SAMTOOLS_PIPELINE_COLLFIXM_B2C ( input, fasta, commands )

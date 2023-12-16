@@ -32,6 +32,10 @@ input:
       type: file
       description: FASTA reference file
       pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: Index of the reference file for the CRAM
+      pattern: "*.fai"
   - commands:
       type: list
       description: |

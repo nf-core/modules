@@ -9,7 +9,7 @@ process SAMTOOLS_PIPELINE {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     val commands
 
     output:
