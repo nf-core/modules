@@ -30,7 +30,7 @@ process SAMTOOLS_PIPELINE {
     def extension = last_args.contains("--output-fmt sam") ? "sam" :
                     last_args.contains("--output-fmt bam") ? "bam" :
                     last_args.contains("--output-fmt cram") ? "cram" :
-                    "bam"
+                    input.extension
     assert "$input" != "${prefix}.${extension}" : "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     // Compose pipe
