@@ -46,3 +46,12 @@
     - path: output/samtools/test.cram
       md5sum: b71fc2e9b7c04e32b13e6071f955434d
     - path: output/samtools/versions.yml
+- name: samtools pipeline test_samtools_pipeline_collate_fixmate_bam2cram
+  command: nextflow run ./tests/modules/nf-core/samtools/pipeline -entry test_samtools_pipeline_collate_fixmate_bam2cram -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/pipeline
+  files:
+    - path: output/samtools/test.cram
+      md5sum: b71fc2e9b7c04e32b13e6071f955434d
+    - path: output/samtools/versions.yml

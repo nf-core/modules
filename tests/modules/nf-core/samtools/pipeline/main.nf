@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_SORMADUP     } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_COLLFIXMSORT } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_COLLFIXM     } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
+include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_COLLFIXM_B2C } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 include { SAMTOOLS_PIPELINE as SAMTOOLS_PIPELINE_ALL          } from '../../../../../modules/nf-core/samtools/pipeline/main.nf'
 
 workflow test_samtools_pipeline_sormadup {
@@ -57,3 +58,16 @@ workflow test_samtools_pipeline_collate_fixmate_cram {
     SAMTOOLS_PIPELINE_COLLFIXM ( input, [[],[]], commands )
 }
 
+workflow test_samtools_pipeline_collate_fixmate_bam2cram {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+    ]
+    fasta = [
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    commands = ['collate', 'fixmate']
+    SAMTOOLS_PIPELINE_COLLFIXM_B2C ( input, fasta, commands )
+}
