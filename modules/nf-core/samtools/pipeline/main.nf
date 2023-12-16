@@ -86,7 +86,15 @@ process SAMTOOLS_PIPELINE {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def cmd_size  = commands.size()
+    def last_args = task.ext."args$cmd_size" ?: ''
+    def extension = last_args.contains("--output-fmt sam") ? "sam" :
+                    last_args.contains("--output-fmt bam") ? "bam" :
+                    last_args.contains("--output-fmt cram") ? "cram" :
+                    input.extension
+    assert "$input" != "${prefix}.${extension}" : "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
     """
     touch ${prefix}.${extension}
 
