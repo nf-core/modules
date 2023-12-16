@@ -48,6 +48,10 @@ output:
       type: file
       description: Output BAM/CRAM/SAM file (defaults to the same extension as the input)
       pattern: "*.{bam,cram,sam}"
+  - index:
+      type: file
+      description: BAM.BAI/BAM.CSI/CRAM.CRAI file (optional)
+      pattern: "*.{.bai,.csi,.crai}"
   - versions:
       type: file
       description: File containing software versions

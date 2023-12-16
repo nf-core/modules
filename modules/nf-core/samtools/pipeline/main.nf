@@ -14,6 +14,7 @@ process SAMTOOLS_PIPELINE {
 
     output:
     tuple val(meta), path("*.{bam,cram,sam}"), emit: output
+    tuple val(meta), path("*.{bai,csi,crai}"), emit: index, optional: true
     path "versions.yml",                       emit: versions
 
     when:
