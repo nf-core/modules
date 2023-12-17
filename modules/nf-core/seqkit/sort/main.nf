@@ -1,6 +1,7 @@
 process SEQKIT_SORT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
+    // File IO can be a bottleneck. See: https://bioinf.shenwei.me/seqkit/usage/#parallelization-of-cpu-intensive-jobs
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,21 +12,26 @@ process SEQKIT_SORT {
     tuple val(meta), path(fastx)
 
     output:
-    tuple val(meta), path("*.seqkit-sort.*"), emit: fastx
+    tuple val(meta), path("${prefix}.*")    , emit: fastx
     path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = "fastq"
+    def args        = task.ext.args ?: ''
+    def args2       = task.ext.args2 ?: ''
+    prefix          = task.ext.prefix ?: "${meta.id}"
+    def extension   = "fastq"
     if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension = "fasta"
+        extension   = "fasta"
     }
-    extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    def call_gzip = extension.endsWith('.gz') ? '| gzip -c' : ''
+    extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    def call_gzip   = extension.endsWith('.gz') ? "| gzip -c $args2 " : ''
+    if("${prefix}.${extension}" == "$fastx") {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module SEQKIT_SORT (currently `$prefix`). Please choose a different one."
+    }
     """
     seqkit \\
         sort \\
@@ -33,7 +39,7 @@ process SEQKIT_SORT {
         $args \\
         $fastx \\
         $call_gzip \\
-        > ${prefix}.seqkit-sort.${extension}
+        > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,15 +48,18 @@ process SEQKIT_SORT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = "fastq"
+    prefix          = task.ext.prefix ?: "${meta.id}"
+    def extension   = "fastq"
     if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension = "fasta"
+        extension   = "fasta"
     }
-    extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    if("${prefix}.${extension}" == "$fastx") {
+        error "The name of the input file can't be the same as for the output prefix in the " +
+        "module SEQKIT_SORT (currently `$prefix`). Please choose a different one."
+    }
     """
-    touch ${prefix}.seqkit-sort.${extension}
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
