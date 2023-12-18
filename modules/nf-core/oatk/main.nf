@@ -23,7 +23,6 @@ process OATK {
     path(pltd_hmm_h3i)
     path(pltd_hmm_h3m)
     path(pltd_hmm_h3p)
-    path(nhmmscan)
     path(tmp)
 
     output:
@@ -56,10 +55,6 @@ process OATK {
     if (pltd_hmm) {
         pltd_hmm_arg = '-p ' + pltd_hmm
     }
-    nhmmscan_arg = ''
-    if (nhmmscan) {
-        nhmmscan_arg = '--nhmmscan ' + nhmmscan
-    }
     tmp_arg = ''
     if (tmp) {
         tmp_arg = '-T ' + tmp
@@ -69,7 +64,6 @@ process OATK {
         $args \\
         $mito_hmm_arg \\
         $pltd_hmm_arg \\
-        $nhmmscan_arg \\
         $tmp_arg \\
         -t $task.cpus \\
         -o ${prefix} \\
