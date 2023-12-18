@@ -1,12 +1,30 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml 
-- name: "oatk"
-  command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
+- name: "oatk test_oatk_mito"
+  command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk_mito -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
   tags:
     - "oatk"
+    - "mitochondrion"
   files:
-    - path: "output/oatk/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/oatk/ilDeiPorc1.utg.final.gfa"
+      md5sum: 2477b9a62a50f4d81669c44076948501
+    - path: "output/oatk/ilDeiPorc1.mito.ctg.fasta"
+      md5sum: 763c8cbe005d31de4c323ff60e435231
+    - path: "output/oatk/ilDeiPorc1.mito.ctg.bed"
+      md5sum: 0fdcd458c443cc779914841f99a1c0fb
+    - path: "output/oatk/ilDeiPorc1.annot_mito.txt"
     - path: "output/oatk/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    
+
+- name: "oatk test_oatk_pltd"
+  command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk_pltd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
+  tags:
+    - "oatk"
+    - "plastid"
+    - "chloroplast"
+  files:
+    - path: "output/oatk/ddAraThal4.utg.final.gfa"
+      md5sum: 98810c7411c08a1f40aa11ddf30dc94a
+    - path: "output/oatk/ddAraThal4.pltd.ctg.fasta"
+      md5sum: e41e4f1d90b282744761ed037a1e8d2e
+    - path: "output/oatk/ddAraThal4.pltd.ctg.bed"
+      md5sum: c768fb4d786cf67c1e5e57a64507c491
+    - path: "output/oatk/ddAraThal4.annot_pltd.txt"
+    - path: "output/oatk/versions.yml"
