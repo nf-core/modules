@@ -37,4 +37,19 @@ process CENTRIFUGE_BUILD {
         centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.1.cf
+    touch ${prefix}.2.cf
+    touch ${prefix}.3.cf
+    touch ${prefix}.4.cf
+
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+        centrifuge: \$( centrifuge --version | sed -n 1p | sed 's/^.*centrifuge-class version //')
+    END_VERSIONS
+    """
 }
