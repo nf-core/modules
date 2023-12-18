@@ -1,10 +1,10 @@
 process MASH_SKETCH {
     tag "$meta.id"
     label 'process_medium'
-    conda "bioconda::mash=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
-        'quay.io/biocontainers/mash:2.3--he348c14_1' }"
+        'biocontainers/mash:2.3--he348c14_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -27,7 +27,7 @@ process MASH_SKETCH {
         -p $task.cpus \\
         -o ${prefix} \\
         -r $reads \\
-        2> ${prefix}.mash_stats
+        2> >(tee ${prefix}.mash_stats >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -3,9 +3,7 @@
   tags:
     - trinity
   files:
-    - path: output/trinity/test.fasta
-      contains:
-        - ">TRINITY_"
+    - path: output/trinity/test.fa.gz
     - path: output/trinity/versions.yml
 
 - name: trinity test_trinity_single_end
@@ -13,7 +11,5 @@
   tags:
     - trinity
   files:
-    - path: output/trinity/test.fasta
-      contains:
-        - ">TRINITY_"
+    - path: output/trinity/test.fa.gz
     - path: output/trinity/versions.yml

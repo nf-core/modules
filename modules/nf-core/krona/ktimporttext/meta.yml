@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/marbl/Krona
       doi: 10.1186/1471-2105-12-385
       licence: https://raw.githubusercontent.com/marbl/Krona/master/KronaTools/LICENSE.txt
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: "Tab-delimited text file. Each line should be a number followed by a list of wedges to contribute to (starting from the highest level). If no wedges are listed (and just a quantity is given), it will contribute to the top level. If the same lineage is listed more than once, the values will be added. Quantities can be omitted if -q is specified. Lines beginning with '#' will be ignored."
       pattern: "*.{txt}"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: A html file containing an interactive krona plot.
       pattern: "*.{html}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

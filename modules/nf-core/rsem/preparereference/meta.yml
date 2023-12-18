@@ -2,7 +2,8 @@ name: rsem_preparereference
 description: Prepare a reference genome for RSEM
 keywords:
   - rsem
-  - reference
+  - genome
+  - index
 tools:
   - rseqc:
       description: |
@@ -34,5 +35,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@drpatelh"
+  - "@kevinmenden"
+maintainers:
   - "@drpatelh"
   - "@kevinmenden"

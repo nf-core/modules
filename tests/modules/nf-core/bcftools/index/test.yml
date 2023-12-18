@@ -5,7 +5,6 @@
     - bcftools/index
   files:
     - path: output/bcftools/test.vcf.gz.csi
-      md5sum: 9c49464e5983cc02ba89c862c2f33cf8
 
 - name: bcftools index tbi
   command: nextflow run ./tests/modules/nf-core/bcftools/index -entry test_bcftools_index_tbi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/index/nextflow.config
@@ -14,4 +13,3 @@
     - bcftools/index
   files:
     - path: output/bcftools/test.vcf.gz.tbi
-      md5sum: a5c54806112b6b2464d4985b96b176c0

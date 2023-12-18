@@ -3,6 +3,8 @@ description: shuffles and groups reads together by their names
 keywords:
   - collate
   - bam
+  - sam
+  - cram
 tools:
   - "samtools":
       description: "Tools for dealing with SAM, BAM and CRAM files"
@@ -10,8 +12,7 @@ tools:
       documentation: "https://www.htslib.org/doc/samtools-collate.html"
       tool_dev_url: "https://github.com/samtools/samtools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   # Only when we have meta
   - meta:
@@ -23,7 +24,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 output:
   #Only when we have meta
   - meta:
@@ -39,6 +39,7 @@ output:
       type: file
       description: Collated BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

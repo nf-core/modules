@@ -2,10 +2,10 @@ process KOFAMSCAN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kofamscan=1.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kofamscan:1.3.0--hdfd78af_2':
-        'quay.io/biocontainers/kofamscan:1.3.0--hdfd78af_2' }"
+        'biocontainers/kofamscan:1.3.0--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(fasta)
