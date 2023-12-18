@@ -41,6 +41,11 @@ input:
       description: A '|'-separated file mapping taxonomy IDs to a name. Typically names.dmp from the NCBI taxonomy dump. Links taxonomy IDs to their scientific name
       pattern: "*.{dmp}"
 
+  - size_table:
+      type: file
+      description: List of taxonomic IDs and lengths of the sequences belonging to the same taxonomic IDs.
+      pattern: "*"
+
 output:
   - meta:
       type: map

@@ -12,6 +12,7 @@ process CENTRIFUGE_BUILD {
     path conversion_table
     path taxonomy_tree
     path name_table
+    path size_table
 
     output:
     tuple val(meta), path("*.cf") , emit: cf
@@ -25,12 +26,12 @@ process CENTRIFUGE_BUILD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     centrifuge-build \\
-    -p $task.cpus \\
-    $fasta \\
-    ${prefix} \\
-    --conversion-table $conversion_table \\
-    --taxonomy-tree $taxonomy_tree \\
-    --name-table $name_table \\
+        -p $task.cpus \\
+        $fasta \\
+        ${prefix} \\
+        --conversion-table $conversion_table \\
+        --taxonomy-tree $taxonomy_tree \\
+        --name-table $name_table \\
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
