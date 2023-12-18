@@ -28,10 +28,7 @@ process SEQKIT_SORT {
     }
     extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
     def call_gzip   = extension.endsWith('.gz') ? "| gzip -c $args2 " : ''
-    if("${prefix}.${extension}" == "$fastx") {
-        error "The name of the input file can't be the same as for the output prefix in the " +
-        "module SEQKIT_SORT (currently `$prefix`). Please choose a different one."
-    }
+    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     seqkit \\
         sort \\
@@ -54,10 +51,7 @@ process SEQKIT_SORT {
         extension   = "fasta"
     }
     extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    if("${prefix}.${extension}" == "$fastx") {
-        error "The name of the input file can't be the same as for the output prefix in the " +
-        "module SEQKIT_SORT (currently `$prefix`). Please choose a different one."
-    }
+    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${extension}
 
