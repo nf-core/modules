@@ -33,7 +33,7 @@ process RSEQC_JUNCTIONANNOTATION {
         -r $bed \\
         -o $prefix \\
         $args \\
-        2> ${prefix}.junction_annotation.log
+        2> >(tee ${prefix}.junction_annotation.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
