@@ -13,16 +13,8 @@ process OATK {
 
     input:
     tuple val(meta), path(reads)
-    path(mito_hmm)
-    path(mito_hmm_h3f)
-    path(mito_hmm_h3i)
-    path(mito_hmm_h3m)
-    path(mito_hmm_h3p)
-    path(pltd_hmm)
-    path(pltd_hmm_h3f)
-    path(pltd_hmm_h3i)
-    path(pltd_hmm_h3m)
-    path(pltd_hmm_h3p)
+    tuple path(mito_hmm), path(mito_hmm_h3f), path(mito_hmm_h3i), path(mito_hmm_h3m), path(mito_hmm_h3p)
+    tuple path(pltd_hmm), path(pltd_hmm_h3f), path(pltd_hmm_h3i), path(pltd_hmm_h3m), path(pltd_hmm_h3p)
     path(tmp)
 
     output:
