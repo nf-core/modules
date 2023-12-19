@@ -231,25 +231,10 @@ if (nrow(de.genes) > 0) {
 
         # First check if a token was provided
         token <- opt\$token
-    } else if (opt\$gmt_file != "") {
 
-        # Next check if custom GMT file was provided
-        gmt_path <- opt\$gmt_file
+    } else if (!is.null(opt\$organism)) {
 
-        # If sources are set, extract only requested entries (gprofiler will NOT filter automatically!)
-        if (!is.null(sources)) {
-            gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
-            gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
-            writeLines(gmt, gmt_path)
-        }
-
-        token <- upload_GMT_file(gmt_path)
-
-        # Add gost ID to output GMT name so that it can be reused in future runs
-        file.rename(gmt_path, paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_gostID_", token, "_filtered.gmt"))
-    } else {
-
-        # Otherwise, get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
+        # Next, check if organism was provided. Get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
         gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
         tryCatch(
             {
@@ -279,6 +264,23 @@ if (nrow(de.genes) > 0) {
             }
         )
         token <- opt\$organism
+
+    } else {
+
+        # Last option: Use custom GMT file
+        gmt_path <- opt\$gmt_file
+
+        # If sources are set, extract only requested entries (gprofiler will NOT filter automatically!)
+        if (!is.null(sources)) {
+            gmt <- Filter(function(line) any(startsWith(line, sources)), readLines(opt\$gmt))
+            gmt_path <- paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_filtered.gmt")
+            writeLines(gmt, gmt_path)
+        }
+        token <- upload_GMT_file(gmt_path)
+
+        # Add gost ID to output GMT name so that it can be reused in future runs
+        file.rename(gmt_path, paste0(strsplit(basename(opt\$gmt_file), split = "\\\\.")[[1]][[1]], ".", paste(sources, collapse="_"), "_gostID_", token, "_filtered.gmt"))
+
     }
 
 
