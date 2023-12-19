@@ -15,5 +15,18 @@ workflow test_parabricks_genotypegvcf {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
-    PARABRICKS_GENOTYPEGVCF ( input, fasta )
+    process stage {
+        input:
+        tuple val(meta), path(input)
+
+        output:
+        tuple val(meta), path("*.g.vcf")
+
+        script:
+        """
+        mv $input test.genome.g.vcf
+        """
+    }
+
+    PARABRICKS_GENOTYPEGVCF ( stage( input ), fasta )
 }

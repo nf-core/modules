@@ -12,7 +12,7 @@ process PARABRICKS_GENOTYPEGVCF {
     stageInMode "copy"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input, stageAs:'')
     tuple val(ref_meta), path(fasta)
 
     output:
