@@ -1,10 +1,29 @@
-- name: parabricks genotypegvcf test_parabricks_genotypegvcf
-  command: nextflow run ./tests/modules/nf-core/parabricks/genotypegvcf -entry test_parabricks_genotypegvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/genotypegvcf/nextflow.config -stub-run
+- name: parabricks haplotypecaller test_parabricks_haplotypecaller
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
   tags:
     - parabricks
-    - parabricks/genotypegvcf
+    - parabricks/haplotypecaller
   files:
     - path: output/parabricks/test.vcf
       should_exist: true
     - path: output/parabricks/versions.yml
 
+- name: parabricks haplotypecaller test_parabricks_haplotypecaller_intervals
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
+  tags:
+    - parabricks
+    - parabricks/haplotypecaller
+  files:
+    - path: output/parabricks/test.vcf
+      should_exist: true
+    - path: output/parabricks/versions.yml
+
+- name: parabricks haplotypecaller test_parabricks_haplotypecaller_gvcf
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config -stub-run
+  tags:
+    - parabricks
+    - parabricks/haplotypecaller
+  files:
+    - path: output/parabricks/test.g.vcf
+      should_exist: true
+    - path: output/parabricks/versions.yml
