@@ -24,7 +24,7 @@ process GATK4SPARK_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
     def input_list = bam.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3072
@@ -50,7 +50,7 @@ process GATK4SPARK_MARKDUPLICATES {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
     """
     touch ${prefix}
     touch ${prefix}.bai
