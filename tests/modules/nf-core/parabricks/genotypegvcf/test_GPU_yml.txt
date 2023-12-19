@@ -1,5 +1,5 @@
 - name: parabricks genotypegvcf test_parabricks_genotypegvcf
-  command: nextflow run ./tests/modules/nf-core/parabricks/genotypegvcf -entry test_parabricks_genotypegvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/genotypegvcf/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/parabricks/genotypegvcf -entry test_parabricks_genotypegvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/genotypegvcf/nextflow.config
   tags:
     - parabricks
     - parabricks/genotypegvcf
@@ -7,4 +7,3 @@
     - path: output/parabricks/test.vcf
       should_exist: true
     - path: output/parabricks/versions.yml
-
