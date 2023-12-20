@@ -41,7 +41,7 @@ process CELLRANGERARC_MKREF {
 
     from os.path import exists
     import shutil
-    
+
     fasta = "${fast_name}"
     gtf = "${gtf_name}"
     motifs = "${motifs_name}"
