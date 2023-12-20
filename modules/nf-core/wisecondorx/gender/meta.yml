@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
       licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: Reference NPZ file
       pattern: "*.npz"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: string
       description: The gender of the input NPZ file
       pattern: "(fe)?male"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

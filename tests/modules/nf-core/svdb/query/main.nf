@@ -19,7 +19,7 @@ workflow test_svdb_query {
     out_occs = ['gnomad_svAC']
     out_frqs = ['gnomad_svAF']
 
-    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db )
+    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db, [] )
 }
 
 workflow test_svdb_query_multiple {
@@ -38,5 +38,5 @@ workflow test_svdb_query_multiple {
     out_occs = ['gnomad_svAC','gnomad_svAC']
     out_frqs = ['gnomad_svAF','gnomad_svAF']
 
-    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db )
+    SVDB_QUERY ( input, in_occs, in_frqs, out_occs, out_frqs, vcf_db, [] )
 }

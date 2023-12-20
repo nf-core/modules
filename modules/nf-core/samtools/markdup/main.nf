@@ -2,7 +2,7 @@ process SAMTOOLS_MARKDUP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
         'biocontainers/samtools:1.17--h00cdaf9_0' }"
@@ -41,7 +41,7 @@ process SAMTOOLS_MARKDUP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
     END_VERSIONS
     """
 
@@ -57,7 +57,7 @@ process SAMTOOLS_MARKDUP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

@@ -18,10 +18,13 @@ workflow test_kallisto_quant {
         ]
     ]
 
-    KALLISTO_INDEX ( fasta )
+    KALLISTO_INDEX ( [[:], fasta] )
+
     KALLISTO_QUANT (
         input,
-        KALLISTO_INDEX.out.idx,
+        KALLISTO_INDEX.out.index,
+        [],
+        [],
         [],
         []
     )
@@ -33,11 +36,13 @@ workflow test_kallisto_quant_single_end {
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
 
-    KALLISTO_INDEX ( fasta )
+    KALLISTO_INDEX ( [[:], fasta] )
     KALLISTO_QUANT (
         input,
-        KALLISTO_INDEX.out.idx,
+        KALLISTO_INDEX.out.index,
         [],
-        []
+        [],
+        150,
+        75
     )
 }

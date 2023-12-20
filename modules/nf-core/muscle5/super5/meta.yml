@@ -10,7 +10,7 @@ tools:
       homepage: "https://drive5.com/muscle5/"
       documentation: "https://drive5.com/muscle5/manual/"
       doi: "10.1101/2021.06.20.449169"
-      licence: "[http://www.drive5.com/muscle/manual/license.html]"
+      licence: ["Public Domain"]
 input:
   - meta:
       type: map
@@ -31,9 +31,13 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - aligned_fasta:
+  - alignment:
       type: file
       description: Multiple sequence alignment produced in FASTA format
       pattern: "*.{aln}"
 authors:
   - "@alessiovignoli"
+  - "@JoseEspinosa"
+maintainers:
+  - "@alessiovignoli"
+  - "@JoseEspinosa"

@@ -2,7 +2,7 @@ process PMDTOOLS_FILTER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pmdtools=0.60"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pmdtools:0.60--hdfd78af_5' :
         'biocontainers/pmdtools:0.60--hdfd78af_5' }"
