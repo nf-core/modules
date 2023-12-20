@@ -19,6 +19,18 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""
+
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -202,6 +214,10 @@ jobs:
           - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
+            tags: checkm2/databasedownload
+          - profile: "conda"
+            tags: checkm2/predict
+          - profile: "conda"
             tags: cellrangeratac/count
           - profile: "conda"
             tags: cellrangeratac/mkfastq
@@ -254,6 +270,8 @@ jobs:
           - profile: "conda"
             tags: imputeme/vcftoprs
           - profile: "conda"
+            tags: manta/convertinversion
+          - profile: "conda"
             tags: medaka
           - profile: "conda"
             tags: merquryfk/katcomp
@@ -276,7 +294,15 @@ jobs:
           - profile: "conda"
             tags: parabricks/applybqsr
           - profile: "conda"
+            tags: parabricks/deepvariant
+          - profile: "conda"
             tags: parabricks/fq2bam
+          - profile: "conda"
+            tags: parabricks/haplotypecaller
+          - profile: "conda"
+            tags: parabricks/mutectcaller
+          - profile: "conda"
+            tags: parabricks/indexgvcf
           - profile: "conda"
             tags: picard/collecthsmetrics
           - profile: "conda"
@@ -467,6 +493,8 @@ jobs:
           - profile: "conda"
             tags: custom/dumpsoftwareversions
           - profile: "conda"
+            tags: deepcell/mesmer
+          - profile: "conda"
             tags: deepvariant
           - profile: "conda"
             tags: ensemblvep/vep
@@ -567,6 +595,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          pip install pdiff
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
@@ -584,6 +613,9 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
           NXF_TEST_DIR=~ \
           nf-test test \

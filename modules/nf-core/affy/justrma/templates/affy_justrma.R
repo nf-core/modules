@@ -69,7 +69,7 @@ install_cdf_db <- function(celfile, annotation = FALSE){
     if (annotation){
         exts <- c(exts, '.db')
     }
-
+    options(timeout=600)
     for (package in paste0(cleaned.cdfName, exts)){
         install.packages(
             package,
