@@ -30,6 +30,7 @@ process PARABRICKS_GENOTYPEGVCF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = "${prefix}.vcf"
+    def threads_no = 8
 
     """
     pbrun \\
@@ -37,7 +38,7 @@ process PARABRICKS_GENOTYPEGVCF {
         --ref $fasta \\
         --in-gvcf $input \\
         --out-vcf $output_file \\
-        --num-threads 8 \\
+        --num-threads $threads_no \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
