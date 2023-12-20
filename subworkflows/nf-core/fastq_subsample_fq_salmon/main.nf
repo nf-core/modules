@@ -15,6 +15,7 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     ch_gtf              // channel: /path/to/genome.gtf
     ch_index            // channel: /path/to/salmon/index/
     make_index          // boolean: Whether to create salmon index before running salmon quant
+    index_kmer_size     // integer: kmer size for Salmon indexing 
 
     main:
 
@@ -24,7 +25,7 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     // Create Salmon index if required
     //
     if (make_index) {
-        ch_index = SALMON_INDEX ( ch_genome_fasta, ch_transcript_fasta ).index
+        ch_index = SALMON_INDEX ( ch_genome_fasta, ch_transcript_fasta, index_kmer_size ).index
         ch_versions = ch_versions.mix(SALMON_INDEX.out.versions)
     }
 
