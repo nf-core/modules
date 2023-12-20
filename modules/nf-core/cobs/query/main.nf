@@ -55,7 +55,7 @@ process COBS_QUERY {
         if (should_load_the_whole_index_into_RAM) {
             // streams compressed index to RAM
             command += get_index_size_command
-            command += """
+            command +=  """
                         cobs \\
                             query \\
                             $args \\
@@ -63,12 +63,12 @@ process COBS_QUERY {
                             -i <(${decompress_tool} -d -c "${index}") \\
                             -f <(zcat $query) \\
                             --index-sizes \$index_size \\
-                       """
+                        """
         } else {
             // decompresses compressed index to disk and mmap it
             decompressed_index = index.toString().replaceAll(".[gx]z\$", "")
             should_delete_decompressed_index = true
-            command += """
+            command +=  """
                             ${decompress_tool} -d -c "${index}" > "${decompressed_index}"
 
                             cobs \\
@@ -77,25 +77,25 @@ process COBS_QUERY {
                                 -T $task.cpus \\
                                 -i $decompressed_index \\
                                 -f <(zcat $query) \\
-                       """
+                        """
         }
     }else {
         // index is not compressed - will be loaded completely into RAM (if --load-complete is passed) or memory mapped otherwise
-        command += """
+        command +=  """
                         cobs \\
                             query \\
                             $args \\
                             -T $task.cpus \\
                             -i $index \\
                             -f <(zcat $query) \\
-                   """
+                    """
     }
     command += " | gzip > ${prefix}.matches.gz"
 
     if (should_delete_decompressed_index) {
-        command += """
+        command +=  """
                         rm -v "${decompressed_index}"
-                   """
+                    """
     }
 
     // note: for some reason the indentation is not stripped in some tests making the versions.yml file invalid
