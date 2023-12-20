@@ -95,7 +95,7 @@ process SENTIEON_DEDUP {
     """
     $fix_ld_library_path
 
-    touch "${prefix}${suffix}""
+    touch "${prefix}${suffix}"
     touch "${prefix}${suffix}\$(echo ${suffix} | sed 's/m\$/i/')"
     touch "${metrics}"
     touch "${metrics}.multiqc.tsv"
