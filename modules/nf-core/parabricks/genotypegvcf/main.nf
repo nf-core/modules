@@ -37,6 +37,7 @@ process PARABRICKS_GENOTYPEGVCF {
         --ref $fasta \\
         --in-gvcf $input \\
         --out-vcf $output_file \\
+        --num-threads 8 \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
