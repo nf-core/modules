@@ -1,4 +1,4 @@
-process CATADDITIONALFASTA {
+process CUSTOM_CATADDITIONALFASTA {
     tag "$add_fasta"
 
     conda "conda-forge::python=3.9.5"
