@@ -89,15 +89,16 @@ process SENTIEON_DEDUP {
     } else {
         fix_ld_library_path = ''
     }
-
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: ".cram"   // The suffix should be either ".cram" or ".bam".
+    def metrics = task.ext.metrics ?: "${prefix}${suffix}.metrics"
     """
     $fix_ld_library_path
 
-    touch ${prefix}.cram
-    touch ${prefix}.cram.crai
-    touch ${prefix}.metrics
-    touch ${prefix}.score
+    touch "${prefix}${suffix}\$(echo ${suffix} | sed 's/m\$/i/')"
+    touch "${metrics}"
+    touch "${metrics}.multiqc.tsv"
+    touch "${prefix}.score"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
