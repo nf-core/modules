@@ -4,17 +4,18 @@ process CELLRANGERARC_COUNT {
 
     container "nf-core/cellranger-arc:2.0.2"
 
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use docker or singularity containers."
+        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
     input:
-    tuple val(meta), path(reads)
-    path  lib_csv // A script to generate the lib.csv automatically you can find at nf-core/scrnaseq
+    tuple val(meta), val(sample_type), val(sub_sample), path(reads, stageAs: "fastqs/*")
     path  reference
 
     output:
     tuple val(meta), path("${meta.id}/outs/*"), emit: outs
+    path("${meta.id}_lib.csv")                , emit: lib
     path "versions.yml"                       , emit: versions
 
     when:
@@ -22,23 +23,43 @@ process CELLRANGERARC_COUNT {
 
     script:
     def args = task.ext.args ?: ''
-    def lib_csv_name = lib_csv.name
     def reference_name = reference.name
+    def sample_types = sample_type.join(",")
+    def sample_names = sub_sample.join(",")
+    def lib_csv = meta.id + "_lib.csv"
+
     """
-    # The following ugly three commands (mkdir, mv, awk) are required because cellranger-arc only deals with abolsute paths
-    if [ ! -d "fastqs" ]; then
-        mkdir fastqs
-    fi
+    fastq_folder=\$(readlink -f fastqs)
 
-    mv *.fastq.gz fastqs/
+    python3 <<CODE
 
-    # This adds the tmp/fastqs to the lib.csv
-    cat $lib_csv_name | awk '{if (\$0 !~ /^fastqs/) {print "'"\$(readlink -f fastqs)"'"\$0} else {print \$0}}' > tmp.csv && mv tmp.csv $lib_csv_name
+    sample_types = "${sample_types}".split(",")
+    sample_names = "${sample_names}".split(",")
+    unique_samples_names = set(sample_names)
+
+    lib_csv = open("${lib_csv}", "w")
+    lib_csv.write("fastqs,sample,library_type")
+
+    for i in range(0, len(sample_types)):
+        if sample_names[i] in unique_samples_names:
+            unique_samples_names.remove(
+                sample_names[i]
+            )  # this has to be done to account for different Lane files (e.g., L002)
+            if sample_types[i] == "gex":
+                lib_csv.write("\\n{},{},{}".format("\${fastq_folder}", sample_names[i], "Gene Expression"))
+            else:
+                lib_csv.write("\\n{},{},{}".format("\${fastq_folder}", sample_names[i], "Chromatin Accessibility"))
+
+    lib_csv.close()
+
+    print("Wrote lib.csv file to {}".format("${lib_csv}"))
+
+    CODE
 
     cellranger-arc \\
         count \\
         --id='${meta.id}' \\
-        --libraries=$lib_csv_name \\
+        --libraries=$lib_csv \\
         --reference=$reference_name \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\

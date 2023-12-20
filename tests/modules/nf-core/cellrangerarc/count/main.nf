@@ -8,7 +8,7 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 
 workflow test_cellrangerarc_count {
 
-    input = [ [ id:'test', single_end:false ], // meta map
+    input = [ [ id:'test' ], [ 'gex','atac' ], [ 'SRR18907480_chr19_sub','SRR18907481_chr19_sub' ],
             [  file(params.test_data['mus_musculus']['illumina']['test_scARC_gex_R1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['mus_musculus']['illumina']['test_scARC_gex_R2_fastq_gz'], checkIfExists: true),
                 file(params.test_data['mus_musculus']['illumina']['test_scARC_atac_R1_fastq_gz'], checkIfExists: true),
@@ -34,7 +34,6 @@ workflow test_cellrangerarc_count {
 
     CELLRANGERARC_COUNT(
         input,
-        lib_csv,
         CELLRANGERARC_MKREF.out.reference
     )
 }
