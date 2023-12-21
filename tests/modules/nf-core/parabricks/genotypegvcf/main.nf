@@ -8,7 +8,7 @@ workflow test_parabricks_genotypegvcf {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test.genome.vcf'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
     ]
     fasta = [
         [ id:'test'],
