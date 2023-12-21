@@ -35,11 +35,11 @@ output:
   - alignment:
       type: file
       description: Alignment in FASTA format.
-      pattern: "*.aln"
+      pattern: "*.aln.gz"
   - structure:
       type: file
       description: Overlaid structures in PDB format.
-      pattern: "${prefix}.pdb"
+      pattern: "${prefix}.pdb.gz"
   - versions:
       type: file
       description: File containing software versions
