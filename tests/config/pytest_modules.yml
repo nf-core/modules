@@ -1,9 +1,3 @@
-abritamr/run:
-  - modules/nf-core/abritamr/run/**
-  - tests/modules/nf-core/abritamr/run/**
-adapterremoval:
-  - modules/nf-core/adapterremoval/**
-  - tests/modules/nf-core/adapterremoval/**
 adapterremovalfixprefix:
   - modules/nf-core/adapterremovalfixprefix/**
   - tests/modules/nf-core/adapterremovalfixprefix/**
@@ -386,6 +380,22 @@ cellranger/multi:
 cellranger/vdj:
   - modules/nf-core/cellranger/vdj/**
   - tests/modules/nf-core/cellranger/vdj/**
+cellrangerarc/count:
+  - modules/nf-core/cellrangerarc/count/**
+  - tests/modules/nf-core/cellrangerarc/count/**
+  - modules/nf-core/cellrangerarc/mkref/**
+  - tests/modules/nf-core/cellrangerarc/mkref/**
+cellrangerarc/mkfastq:
+  - modules/nf-core/cellrangerarc/mkfastq/**
+  - tests/modules/nf-core/cellrangerarc/mkfastq/**
+cellrangerarc/mkgtf:
+  - modules/nf-core/cellrangerarc/mkgtf/**
+  - tests/modules/nf-core/cellrangerarc/mkgtf/**
+cellrangerarc/mkref:
+  - modules/nf-core/cellrangerarc/mkref/**
+  - tests/modules/nf-core/cellrangerarc/mkref/**
+  - modules/nf-core/cellrangerarc/mkgtf/**
+  - tests/modules/nf-core/cellrangerarc/mkgtf/**
 cellrangeratac/count:
   - modules/nf-core/cellrangeratac/count/**
   - tests/modules/nf-core/cellrangeratac/count/**
@@ -806,9 +816,6 @@ gatk4/applyvqsr:
 gatk4/asereadcounter:
   - modules/nf-core/gatk4/asereadcounter/**
   - tests/modules/nf-core/gatk4/asereadcounter/**
-gatk4/baserecalibrator:
-  - modules/nf-core/gatk4/baserecalibrator/**
-  - tests/modules/nf-core/gatk4/baserecalibrator/**
 gatk4/bedtointervallist:
   - modules/nf-core/gatk4/bedtointervallist/**
   - tests/modules/nf-core/gatk4/bedtointervallist/**
@@ -965,9 +972,6 @@ gatk4/variantfiltration:
 gatk4/variantrecalibrator:
   - modules/nf-core/gatk4/variantrecalibrator/**
   - tests/modules/nf-core/gatk4/variantrecalibrator/**
-gatk4spark/applybqsr:
-  - modules/nf-core/gatk4spark/applybqsr/**
-  - tests/modules/nf-core/gatk4spark/applybqsr/**
 gatk4spark/baserecalibrator:
   - modules/nf-core/gatk4spark/baserecalibrator/**
   - tests/modules/nf-core/gatk4spark/baserecalibrator/**
@@ -1961,9 +1965,6 @@ pneumocat:
 porechop/abi:
   - modules/nf-core/porechop/abi/**
   - tests/modules/nf-core/porechop/abi/**
-porechop/porechop:
-  - modules/nf-core/porechop/porechop/**
-  - tests/modules/nf-core/porechop/porechop/**
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
   - tests/modules/nf-core/preseq/ccurve/**
