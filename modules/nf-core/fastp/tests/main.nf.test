@@ -57,6 +57,67 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
                 },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_single_end-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_single_end-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                ]
+
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_single_end-for_stub_match")
+                },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -127,6 +188,67 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
                 },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end-for_stub_match")
+                },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -180,6 +302,66 @@ nextflow_process {
                 { log_text.each { log_part ->
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
+                },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_interleaved-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("fastp test_fastp_interleaved-stub") {
+
+        options '-stub'
+
+        config './nextflow.config'
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                            [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+                        ]
+
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_interleaved-for_stub_match")
                 },
                 { assert snapshot(process.out.versions).match("versions") }
             )
@@ -398,6 +580,65 @@ nextflow_process {
                 { log_text.each { log_part ->
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
+                },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end_merged-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_merged-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_fail = false
+                save_merged       = true
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_fail
+                input[3] = save_merged
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end_merged-for_stub_match")
                 },
                 { assert snapshot(process.out.versions).match("versions") }
             )
