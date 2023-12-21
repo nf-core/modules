@@ -12,7 +12,7 @@ process PARABRICKS_GENOTYPEGVCF {
     stageInMode "copy"
 
     input:
-    tuple val(meta), path(input, stageAs:'')
+    tuple val(meta), path(input)
     tuple val(ref_meta), path(fasta)
 
     output:
@@ -23,22 +23,23 @@ process PARABRICKS_GENOTYPEGVCF {
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = "${prefix}.vcf"
-    def threads_no = 8
-
     """
+
     pbrun \\
         genotypegvcf \\
         --ref $fasta \\
         --in-gvcf $input \\
         --out-vcf $output_file \\
-        --num-threads $threads_no \\
+        --num-threads $task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
