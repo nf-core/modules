@@ -1,0 +1,102 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "resfinder_run"
+description: ResFinder identifies acquired antimicrobial resistance genes in total or partial sequenced isolates of bacteria
+keywords:
+  - blastn
+  - kma
+  - microbes
+  - resfinder
+  - resistance genes
+tools:
+  - "resfinder":
+      description: "ResFinder identifies acquired antimicrobial resistance genes in total or partial sequenced isolates of bacteria"
+      homepage: "https://bitbucket.org/genomicepidemiology/resfinder.git/src"
+      documentation: "https://bitbucket.org/genomicepidemiology/resfinder/src/master/README.md"
+      tool_dev_url: "https://bitbucket.org/genomicepidemiology/resfinder.git/src"
+      doi: "10.1099/mgen.0.000748"
+      licence: ['APACHE-2.0']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - fastq:
+      type: file
+      description: fastq file(s)
+      pattern: "*.{fastq,fq}{.gz}"
+
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fna}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - json:
+      type: file
+      description: json file
+      pattern: "*.{json}"
+
+  - disinfinder_kma:
+      type: directory
+      description: directory holding kma results
+      pattern: "disinfinder_kma"
+
+  - pointfinder_kma:
+      type: file
+      description: directory holding kma results
+      pattern: "pointfinder_kma"
+
+  - pheno_table:
+      type: file
+      description: tsv file with phenotype results
+      pattern: "pheno_table.tsv"
+
+  - hit_in_genome_seq:
+      type: file
+      description: fasta file containing hits
+      pattern: "ResFinder_Hit_in_genome_seq.fsa"
+
+  - resfinder_kma:
+      type: file
+      description: directory holding kma results
+      pattern: "resfinder_kma"
+
+  - resistance_gene_seq:
+      type: file
+      description: fasta file containing resistance genes
+      pattern: "ResFinder_Resistance_gene_seq.fsa"
+
+  - results_table:
+      type: file
+      description: tsv file containing results
+      pattern: "ResFinder_results_table.txt"
+
+  - results_tab:
+      type: file
+      description: tsv file containing results
+      pattern: "ResFinder_results_tab.txt"
+
+  - results:
+      type: file
+      description: sql formatted table file
+      pattern: "ResFinder_results.txt"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@marrip"
+maintainers:
+  - "@marrip"
