@@ -90,6 +90,7 @@ process DRAGEN {
     path "./sv/workspace/genomeSegmentScanDebugInfo.txt"            , optional: true, emit: genomeSegmentScanDebugInfo_txt
     path "./sv/workspace/logs/config_log.txt"                       , optional: true, emit: config_log_txt
     path "./sv/workspace/svLocusGraph.bin"                          , optional: true, emit: svLocusGraph_bin
+    path "*_usage.txt"                                              , emit: usage_txt
     path "body.txt"                                                 , emit: body_txt
     path "dragen.time_metrics.csv"                                  , emit: dragen_time_metrics_csv
     path "header.txt"                                               , emit: header_txt
