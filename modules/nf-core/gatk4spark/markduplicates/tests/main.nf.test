@@ -87,11 +87,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-		{ assert snapshot(process.out.versions).match("homo_sapiens - bam - metrics - versions") },
-		{ assert snapshot(process.out.output).match("homo_sapiens - bam - metrics - output") },
-		{ assert snapshot(process.out.bam_index).match("homo_sapiens - bam - metrics - bam_index") },
-		{ assert path(process.out.metrics[0][1]).readLines()[5].contains("GATKDuplicationMetrics") },
-		{ assert path(process.out.metrics[0][1]).readLines().size() == 11 }
+                { assert snapshot(process.out.versions).match("homo_sapiens - bam - metrics - versions") },
+                { assert snapshot(process.out.output).match("homo_sapiens - bam - metrics - output") },
+                { assert snapshot(process.out.bam_index).match("homo_sapiens - bam - metrics - bam_index") },
+                { assert path(process.out.metrics[0][1]).readLines()[5].contains("GATKDuplicationMetrics") },
+                { assert path(process.out.metrics[0][1]).readLines().size() == 11 }
             )
         }
 
