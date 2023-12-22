@@ -8,7 +8,10 @@ process KRAKEN2_ADD {
         'biocontainers/mulled-v2-5799ab18b5fc681e75923b2450abaa969907ec98:87fc08d11968d081f3e8a37131c1f1f6715b6542-0' }"
 
     input:
-    tuple val(meta), path(fasta), path(taxonomy_names), path(taxonomy_nodes), path(accession2taxid)
+    tuple val(meta), path(fasta)
+    path taxonomy_names
+    path taxonomy_nodes 
+    path accession2taxid
 
     output:
     tuple val(meta), path("$prefix/"), emit: db
