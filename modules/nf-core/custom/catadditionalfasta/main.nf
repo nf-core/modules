@@ -1,5 +1,5 @@
 process CUSTOM_CATADDITIONALFASTA {
-    tag "$add_fasta"
+    tag "$meta.id"
 
     conda "conda-forge::python=3.9.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
