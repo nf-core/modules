@@ -13,8 +13,8 @@ process RESFINDER_RUN {
 
     output:
     tuple val(meta), path("*.json")                           , emit: json
-    tuple val(meta), path("disinfinder_kma")                  , emit: disinfinder_kma
-    tuple val(meta), path("pointfinder_kma")                  , emit: pointfinder_kma
+    tuple val(meta), path("disinfinder_kma")                  , optional: true, emit: disinfinder_kma
+    tuple val(meta), path("pointfinder_kma")                  , optional: true, emit: pointfinder_kma
     tuple val(meta), path("pheno_table.txt")                  , emit: pheno_table
     tuple val(meta), path("ResFinder_Hit_in_genome_seq.fsa")  , emit: hit_in_genome_seq
     tuple val(meta), path("resfinder_kma")                    , emit: resfinder_kma
@@ -41,7 +41,7 @@ process RESFINDER_RUN {
     run_resfinder.py \\
         $args \\
         $input \\
-        -d $db
+        -db_res $db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,9 +52,7 @@ process RESFINDER_RUN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir disinfinder_kma \\
-        pointfinder_kma \\
-        resfinder_kma
+    mkdir resfinder_kma
     touch ${prefix}.json \\
         pheno_table.txt \\
         ResFinder_Hit_in_genome_seq.fsa \\
