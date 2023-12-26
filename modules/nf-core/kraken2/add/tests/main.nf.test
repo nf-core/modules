@@ -19,7 +19,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [],
                     file(
-                        params.test_data['sarscov2']['metagenome']['prot.accession2taxid.gz'],
+                        params.test_data['sarscov2']['metagenome']['prot_accession2taxid_gz'],
                         checkIfExists: true
                     )
                 ])
@@ -35,15 +35,15 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['proteome.fasta'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
                     ]
                 input[1] = [
                     [],
-                    file(params.test_data['sarscov2']['metagenome']['prot_names.dmp'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['metagenome']['prot_names_dmp'], checkIfExists: true)
                     ]
                 input[2] = [
                     [],
-                    file(params.test_data['sarscov2']['metagenome']['prot_nodes.dmp'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['metagenome']['prot_nodes_dmp'], checkIfExists: true)
                     ]
                 input[3] = UNTAR.out.untar.map{ it[1] }
                 """
