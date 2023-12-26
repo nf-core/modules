@@ -22,4 +22,12 @@ process AFFY_JUSTRMA {
 
     script:
     template 'affy_justrma.R'
+
+    stub:
+    """
+    touch nulleset.rds
+    touch nullmatrix.tsv
+    touch R_sessionInfo.log
+    touch versions.yml
+    """
 }
