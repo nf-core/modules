@@ -20,12 +20,23 @@ process AGAT_CONVERTSPGFF2TSV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     agat_convert_sp_gff2tsv.pl \\
         --gff $gff \\
         --output ${prefix}.tsv \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed '3!d; s/.*v//' | sed 's/ .*//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
