@@ -26,7 +26,8 @@ process AGAT_SPADDINTRONS {
     agat_sp_add_introns.pl \\
         --gff $gff \\
         $config_param \\
-        --out $output
+        --out $output \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
