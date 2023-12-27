@@ -38,7 +38,7 @@ process AGAT_SPADDINTRONS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = meta.id ?: gff.getBaseName() 
+    def prefix = meta.id ?: gff.getBaseName()
     output = "${prefix}.intron.gff"
     """
     touch ${output}
