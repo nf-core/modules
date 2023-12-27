@@ -30,10 +30,10 @@ process PHAROKKA_PHAROKKA {
     """
     pharokka.py \\
         --infile ${phage_fasta} \\
-        --outdir ${meta.id}_pharokka \\
+        --outdir ${prefix}_pharokka \\
         --database ${pharokka_db} \\
         --threads ${task.cpus} \\
-        --prefix ${meta.id} \\
+        --prefix prefix \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -47,14 +47,14 @@ process PHAROKKA_PHAROKKA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${meta.id}_pharokka
-    touch ${meta.id}_pharokka/${meta.id}.gbk
-    touch ${meta.id}_pharokka/${meta.id}.log
-    touch ${meta.id}_pharokka/${meta.id}_cds_functions.tsv
-    touch ${meta.id}_pharokka/${meta.id}_top_hits_card.tsv
-    touch ${meta.id}_pharokka/top_hits_vfdb.tsv
-    touch ${meta.id}_pharokka/${meta.id}_top_hits_inphared
-    touch ${meta.id}_pharokka/${meta.id}
+    mkdir -p ${prefix}_pharokka
+    touch ${prefix}_pharokka/${prefix}.gbk
+    touch ${prefix}_pharokka/${prefix}.log
+    touch ${prefix}_pharokka/${prefix}_cds_functions.tsv
+    touch ${prefix}_pharokka/${prefix}_top_hits_card.tsv
+    touch ${prefix}_pharokka/top_hits_vfdb.tsv
+    touch ${prefix}_pharokka/${prefix}_top_hits_inphared
+    touch ${prefix}_pharokka/${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
