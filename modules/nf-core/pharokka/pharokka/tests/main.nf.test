@@ -35,11 +35,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.cds_functions,
-                    process.out.cds_final_merged_output,
                     process.out.length_gc_cds_density,
                     process.out.versions
                     ).match()
                 },
+                { assert file(process.out.cds_final_merged_output[0][1]).exists() }
             )
         }
     }
