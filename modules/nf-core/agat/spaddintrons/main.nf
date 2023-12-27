@@ -1,5 +1,5 @@
 process AGAT_SPADDINTRONS {
-    tag '$gff'
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,7 @@ process AGAT_SPADDINTRONS {
         'biocontainers/agat:1.2.0--pl5321hdfd78af_0' }"
 
     input:
-    path gff
+    tuple val(meta), path(gff)
     path config
 
     output:
