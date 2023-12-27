@@ -21,7 +21,8 @@ process AGAT_SPADDINTRONS {
     script:
     def args = task.ext.args ?: ''
     def config_param = config ? "--config $config" : ""
-    output = "${gff.getBaseName()}.intron.gff"
+    def prefix = meta.id ?: gff.getBaseName()
+    output = "${prefix}.intron.gff"
     """
     agat_sp_add_introns.pl \\
         --gff $gff \\
@@ -37,7 +38,8 @@ process AGAT_SPADDINTRONS {
 
     stub:
     def args = task.ext.args ?: ''
-    output = "output.intron.gff"
+    def prefix = meta.id ?: "stub" 
+    output = "${prefix}.intron.gff"
     """
     touch ${output}
 
