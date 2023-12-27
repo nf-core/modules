@@ -8,8 +8,8 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "pharokka"
-    tag "pharokka/installdatabases"
     tag "pharokka/pharokka"
+    tag "pharokka/installdatabases"
 
     test("sarscov2 - genome - fasta") {
         setup {
@@ -35,10 +35,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.cds_functions,
+                    process.out.cds_final_merged_output,
+                    process.out.length_gc_cds_density,
                     process.out.versions
                     ).match()
                 },
-                { assert new File(process.out.log.get(0).get(1)).exists() }
             )
         }
     }

@@ -7,7 +7,7 @@ process PHAROKKA_INSTALLDATABASES {
         'biocontainers/pharokka:1.5.1--pyhdfd78af_0' }"
 
     output:
-    path("$prefix/")    , emit: pharokka_db
+    path("${prefix}/")      , emit: pharokka_db
     path "versions.yml"     , emit: versions
 
     when:
@@ -15,7 +15,7 @@ process PHAROKKA_INSTALLDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: 'pharokka_db'
+    prefix = task.ext.prefix ?: 'pharokka_db'
     """
     install_databases.py \\
         --outdir $prefix \\
@@ -29,7 +29,7 @@ process PHAROKKA_INSTALLDATABASES {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: 'pharokka_db'
+    prefix = task.ext.prefix ?: 'pharokka_db'
     """
     mkdir -p $prefix
     touch $prefix/1Aug2023_data.tsv

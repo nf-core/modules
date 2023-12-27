@@ -12,20 +12,21 @@ process PHAROKKA_PHAROKKA {
     path pharokka_db
 
     output:
-    tuple val(meta), path("*/*.log")                                , emit: log
-    tuple val(meta), path("*/*_cds_functions.tsv")                  , emit: cds_functions
-    tuple val(meta), path("*/*top_hits_card.tsv")                   , emit: card            , optional: true
-    tuple val(meta), path("*/*top_hits_vfdb.tsv")                   , emit: vfdb            , optional: true
-    tuple val(meta), path("*/*_top_hits_mash_inphared.tsv")         , emit: mash            , optional: true
-    tuple val(meta), path("*/*_genome_terminase_reoriented.fasta")  , emit: reoriented      , optional: true
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_cds_final_merged_output.tsv")       , emit: cds_final_merged_output
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_cds_functions.tsv")                 , emit: cds_functions
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_length_gc_cds_density.tsv")         , emit: length_gc_cds_density
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_top_hits_card.tsv")                 , emit: card                    , optional: true
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_top_hits_vfdb.tsv")                 , emit: vfdb                    , optional: true
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_top_hits_mash_inphared.tsv")        , emit: mash                    , optional: true
+    tuple val(meta), path("${prefix}_pharokka/${prefix}_genome_terminase_reoriented.fasta") , emit: reoriented              , optional: true
+    path "versions.yml"                                                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     pharokka.py \\
@@ -33,7 +34,7 @@ process PHAROKKA_PHAROKKA {
         --outdir ${prefix}_pharokka \\
         --database ${pharokka_db} \\
         --threads ${task.cpus} \\
-        --prefix prefix \\
+        --prefix ${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,7 +45,7 @@ process PHAROKKA_PHAROKKA {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p ${prefix}_pharokka
