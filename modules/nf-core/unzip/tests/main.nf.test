@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process UNZIP"
+    script "../main.nf"
+    process "UNZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "unzip"
+
+    test("sarscov2 genome ncbi_taxmap [zip]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ],
+                            file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( path(process.out.unzipped_archive[0][1]).list() ).match() } // FIX-ME
+            )
+        }
+
+    }
+
+    test("sarscov2 genome ncbi_taxmap [zip] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ],
+                            file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.unzipped_archive.collect { file(it[1]).getName() } +
+                                process.out.versions ).match() }
+            )
+        }
+
+    }
+
+}
