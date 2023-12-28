@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process SOURMASH_INDEX"
+    script "../main.nf"
+    process "SOURMASH_INDEX"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sourmash"
+    tag "sourmash/index"
+    tag "sourmash/sketch"
+
+    setup {
+        run("SOURMASH_SKETCH") {
+            script "../../sketch/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = SOURMASH_SKETCH.out.signatures
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert process.out.signature_index }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SOURMASH_SKETCH.out.signatures
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.signature_index.collect { file(it[1]).getName() } +
+                                process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

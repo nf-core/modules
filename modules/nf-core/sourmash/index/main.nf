@@ -32,4 +32,15 @@ process SOURMASH_INDEX {
         sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.sbt.zip"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
+    END_VERSIONS
+    """
 }
