@@ -17,7 +17,9 @@
 
 process SOMATOSIM_SOMATOSIM {
     tag "$meta.id"
-    label 'process_single'
+    cpus 4
+    memory 12g
+    // label 'process_high'
 
     // TODO nf-core: List required Conda package(s).
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
@@ -40,7 +42,7 @@ process SOMATOSIM_SOMATOSIM {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("./output_dir/*.bam"), emit: bam
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -63,17 +65,18 @@ process SOMATOSIM_SOMATOSIM {
     somatosim \\
         -i ${prefix}.bam \\
         -b ${bed} \\
-        -o output \\
+        -o ./output_dir \\
         --vaf-low 0.01 \\
         --vaf-high 0.05 \\
         --number-snv 100 \\
         --random-seed 0
-        $args \\
+        
+    # $args \\
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        somatosim: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
+    #cat <<-END_VERSIONS > versions.yml
+    #"${task.process}":
+    #    somatosim: \$(samtools --version |& sed '1!d ; s/samtools //')
+    #END_VERSIONS
     """
 
     stub:

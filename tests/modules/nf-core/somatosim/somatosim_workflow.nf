@@ -1,3 +1,8 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+
 include { SOMATOSIM_SOMATOSIM } from './somatosim/main'
 
 workflow {
