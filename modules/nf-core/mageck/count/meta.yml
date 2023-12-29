@@ -10,10 +10,8 @@ tools:
       description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
       homepage: "https://sourceforge.net/p/mageck/wiki/Home/"
       documentation: "https://sourceforge.net/p/mageck/wiki/demo/#step-4-run-the-mageck-count-command"
-
       doi: "10.1186/s13059-014-0554-4"
       licence: "['BSD License']"
-
 input:
   - meta:
       type: map
@@ -28,7 +26,6 @@ input:
       type: file
       description: library fastq file containing the sgRNA and gene name or count table containing the sgRNA and number of reads to per sample
       pattern: "*.{fq,fastq,fastq.gz,fq.gz,csv,txt,tsv}"
-
 output:
   - meta:
       type: map
@@ -47,6 +44,7 @@ output:
       type: file
       description: File containing read counts
       pattern: "*.countsummary.txt"
-
 authors:
+  - "@LaurenceKuhl"
+maintainers:
   - "@LaurenceKuhl"

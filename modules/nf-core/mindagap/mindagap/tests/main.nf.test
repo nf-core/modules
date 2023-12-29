@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process MINDAGAP_MINDAGAP"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MINDAGAP_MINDAGAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mindagap"
+    tag "mindagap/mindagap"
+
+    test("mindgap - tiff") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['imaging']['tiff']['mouse_heart_wga'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tiff).match("tiff") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}

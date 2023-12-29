@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/rrwick/Porechop"
       doi: "10.1099/mgen.0.000132"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: fastq/fastq.gz file
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-
 output:
   - meta:
       type: map
@@ -42,8 +40,17 @@ output:
       type: file
       description: Log file containing stdout information
       pattern: "*.log"
-
 authors:
+  - "@ggabernet"
+  - "@jasmezz"
+  - "@d4straub"
+  - "@LaurenceKuhl"
+  - "@SusiJo"
+  - "@jonasscheid"
+  - "@jonoave"
+  - "@GokceOGUZ"
+  - "@jfy133"
+maintainers:
   - "@ggabernet"
   - "@jasmezz"
   - "@d4straub"

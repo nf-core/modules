@@ -14,7 +14,6 @@ tools:
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
       doi: "10.1186/s12859-014-0366-2"
       licence: ["GPLv3 License"]
-
 input:
   - meta:
       type: map
@@ -25,7 +24,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - image:
-      type: image
+      type: file
       description: |
         Obtained from cellpose documentation: Inputs
         You can use tiffs or PNGs or JPEGs. We use the image loader from scikit-image.
@@ -33,7 +32,7 @@ input:
         Then the channels settings will take care of reshaping the input appropriately for the network.
         Note the model also rescales the input for each channel so that 0 = 1st percentile of image values and 1 = 99th percentile.
   - image_metadata:
-      type: csv
+      type: file
       description: |
         This file will let Cellpose know which channels to use for segmentation.
         The default will be channel 0.
@@ -43,7 +42,6 @@ input:
         This will define which model to use.
         The default will be nuclear.
         All models from the model zoo should be usable, the exact string has to be passed.
-
 output:
   - meta:
       type: map
@@ -83,6 +81,10 @@ output:
       description: fastq log file
       pattern: "*.log"
 authors:
+  - "@mjcipriano"
+  - "@sateeshperi"
+  - "@hseabolt"
+maintainers:
   - "@mjcipriano"
   - "@sateeshperi"
   - "@hseabolt"

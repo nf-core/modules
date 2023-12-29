@@ -12,7 +12,6 @@ tools:
       documentation: "https://github.com/RealTimeGenomics/rtg-tools"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
       licence: "['BSD']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: Input TSV ROC files created with RTGTOOLS_VCFEVAL
       pattern: "*.tsv.gz"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: The resulting rocplot in SVG format
       pattern: "*.svg"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

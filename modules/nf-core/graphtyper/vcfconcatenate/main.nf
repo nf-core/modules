@@ -2,7 +2,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::graphtyper=2.7.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.2--h7d7f7ad_0':
         'biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"

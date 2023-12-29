@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/bartongroup/Proteus"
       doi: "10.1101/416511"
       licence: "['GPL v2']"
-
 input:
   - meta:
       type: map
@@ -34,7 +33,6 @@ input:
       type: string
       description: |
         The column in the sample sheet that should be used to define groups for comparison
-
 output:
   - dendro_plot:
       type: file
@@ -76,6 +74,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@WackerO"
+maintainers:
   - "@WackerO"

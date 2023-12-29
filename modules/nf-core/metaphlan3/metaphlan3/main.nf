@@ -2,7 +2,7 @@ process METAPHLAN3_METAPHLAN3 {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::metaphlan=3.0.12"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
         'biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"

@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process SVANALYZER_SVBENCHMARK"
+    script "../main.nf"
+    process "SVANALYZER_SVBENCHMARK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svanalyzer"
+    tag "svanalyzer/svbenchmark"
+
+    test("homo_sapiens - illumina - vcf.gz") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        ]
+                    input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[3] = [
+                        [ id:'test4' ], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                        ]
+                    input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.fns).match("fns") },
+                { assert snapshot(process.out.fps).match("fps") },
+                { assert snapshot(process.out.distances).match("distances") },
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+
+        }
+
+    }
+    test("homo_sapiens - illumina - vcf.gz - bed") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        ]
+                    input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[3] = [
+                        [ id:'test4' ], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                        ]
+                    input[4] = [
+                        [ id:'test5' ], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.fns).match("bed_fns") },
+                { assert snapshot(process.out.fps).match("bed_fps") },
+                { assert snapshot(process.out.distances).match("bed_distances") },
+                { assert snapshot(process.out.report).match("bed_report") },
+                { assert snapshot(process.out.versions).match("bed_versions") }
+            )
+        }
+
+    }
+
+}

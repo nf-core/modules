@@ -7,7 +7,6 @@ keywords:
   - boxcox
   - transformation
   - propr
-
 tools:
   - "propr":
       description: "Logratio methods for omics data"
@@ -16,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
-
 input:
   - meta:
       type: map
@@ -31,7 +29,6 @@ input:
         This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
         You may want to handle the zeros with a different method beforehand.
       pattern: "*.{csv,tsv}"
-
 output:
   - meta:
       type: map
@@ -51,7 +48,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@suzannejin"
+  - "@oprana22"
+maintainers:
   - "@suzannejin"
   - "@oprana22"

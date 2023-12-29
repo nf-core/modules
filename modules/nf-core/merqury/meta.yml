@@ -7,11 +7,9 @@ keywords:
 tools:
   - "merqury":
       description: "Evaluate genome assemblies with k-mers and more."
-
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
       licence: "['PUBLIC DOMAIN']"
-
 input:
   - meta:
       type: map
@@ -24,7 +22,6 @@ input:
   - assembly:
       type: file
       description: FASTA assembly file
-
 output:
   - meta:
       type: map
@@ -95,6 +92,7 @@ output:
       type: file
       description: "Ploidy estimate from read k-mer database"
       pattern: "*.hist.ploidy"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

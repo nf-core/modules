@@ -3,16 +3,14 @@ description: Screen assemblies for antimicrobial resistance against multiple dat
 keywords:
   - bacteria
   - assembly
-  - antimicrobial reistance
+  - antimicrobial resistance
 tools:
   - abricate:
       description: Mass screening of contigs for antibiotic resistance genes
       homepage: https://github.com/tseemann/abricate
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
-
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: FASTA, GenBank or EMBL formatted file
       pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: Tab-delimited report of results
       pattern: "*.{txt}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

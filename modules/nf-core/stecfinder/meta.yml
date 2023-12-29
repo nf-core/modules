@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/LanLab/STECFinder"
       doi: "10.3389/fcimb.2021.772574"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: Illumina paired-end reads or an assembly
       pattern: "*.{fastq.gz,fasta.gz,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: A tab-delimited report of results
       pattern: "*.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_FASTQ"
+    script "../main.nf"
+    process "SAMTOOLS_FASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/fastq"
+
+    test("sarscov2 - bam, false") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect { path(it).linesGzip[0..6] },
+                    process.out.interleaved,
+                    file(process.out.singleton[0][1]).name,
+                    file(process.out.other[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam, true") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    path(process.out.interleaved[0][1]).readLines()[0..6],
+                    process.out.singleton,
+                    file(process.out.other[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

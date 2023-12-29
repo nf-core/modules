@@ -2,7 +2,7 @@ process NGSBITS_SAMPLEGENDER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::ngs-bits=2023_02"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngs-bits:2023_02--py311ha0b7adc_2':
         'biocontainers/ngs-bits:2023_02--py311ha0b7adc_2' }"

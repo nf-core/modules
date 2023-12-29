@@ -1,8 +1,8 @@
 process DESEQ2_DIFFERENTIAL {
     tag "$meta"
-    label 'process_medium'
+    label 'process_single'
 
-    conda "bioconda::bioconductor-deseq2=1.34.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-deseq2:1.34.0--r41hc247a5b_3' :
         'biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
@@ -10,7 +10,8 @@ process DESEQ2_DIFFERENTIAL {
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(counts)
-    tuple val(control_genes_meta), path(control_genes_file)
+    tuple val(meta3), path(control_genes_file)
+    tuple val(meta4), path(transcript_lengths_file)
 
     output:
     tuple val(meta), path("*.deseq2.results.tsv")              , emit: results
@@ -20,6 +21,7 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
     tuple val(meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
     tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
+    tuple val(meta), path("*.deseq2.model.txt")                , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
     path "versions.yml"                                        , emit: versions
 

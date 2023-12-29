@@ -20,7 +20,6 @@ tools:
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -44,7 +43,6 @@ input:
       type: file
       description: TSV for labelled samples. e.g. Somalier labels for 1kg https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
       pattern: "*.{tsv}"
-
 output:
   - meta:
       type: map
@@ -63,6 +61,7 @@ output:
       type: file
       description: html file with ancestry information for query and labelled samples.
       pattern: "*.{-ancestry.html}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

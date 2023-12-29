@@ -9,9 +9,7 @@ tools:
       homepage: https://github.com/tseemann/legsta
       documentation: https://github.com/tseemann/legsta
       tool_dev_url: https://github.com/tseemann/legsta
-
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: FASTA, GenBank or EMBL formatted files
       pattern: "*.{fasta,gbk,embl}"
-
 output:
   - meta:
       type: map
@@ -37,6 +34,7 @@ output:
       type: file
       description: Tab-delimited summary of the results
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

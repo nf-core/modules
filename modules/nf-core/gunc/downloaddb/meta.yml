@@ -15,13 +15,11 @@ tools:
       tool_dev_url: https://github.com/grp-bork/gunc
       doi: "10.1186/s13059-021-02393-0"
       licence: ["GNU General Public v3 or later (GPL v3+)"]
-
 input:
   - db_name:
       type: string
       description: "Which database to download. Options: progenomes or gtdb"
       pattern: "progenomes|gtdb"
-
 output:
   - versions:
       type: file
@@ -31,6 +29,7 @@ output:
       type: file
       description: GUNC database file
       pattern: "*.dmnd"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/althonos/pyrodigal/"
       doi: "10.21105/joss.04296"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fasta.gz,fa.gz,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -51,6 +49,7 @@ output:
       type: file
       description: all potential genes (with scores)
       pattern: "*.{score.gz}"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

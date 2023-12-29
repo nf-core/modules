@@ -14,7 +14,6 @@ tools:
       tool_dev_url: https://github.com/BigDataBiology/macrel
       doi: "10.7717/peerj.10555"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
       type: file
       description: A fasta file with nucleotide sequences.
       pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -56,6 +54,7 @@ output:
       type: file
       description: A log file containing the information pertaining to the run.
       pattern: "*_log.txt"
-
 authors:
+  - "@darcy220606"
+maintainers:
   - "@darcy220606"

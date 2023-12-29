@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/weizhongli/cdhit"
       doi: "10.1093/bioinformatics/btl158"
       licence: "['GPL v2']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: fasta or fastq file of sequences to be clustered
       pattern: "*.{fasta,fastq}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: List of clusters
       pattern: "*.{clstr}"
-
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"

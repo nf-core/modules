@@ -1,0 +1,156 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_MERGE"
+    script "../main.nf"
+    process "SAMTOOLS_MERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/merge"
+
+    test("sarscov2 - [bam1, bam2, bam3], [], []") {
+
+        config "./index.config"
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id: 'test' ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    file(process.out.csi[0][1]).name,
+                    process.out.crai,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [cram1, cram2], fasta, fai") {
+
+        config "./index.config"
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id: 'test' ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
+                    ]
+                ]
+                input[1] = [ 
+                    [id:'genome'],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.cram[0][1]).name,
+                    process.out.bam,
+                    file(process.out.crai[0][1]).name,
+                    process.out.csi,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam, [], []") {
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id: 'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
+                ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.crai,
+                    process.out.csi,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [bam1, bam2, bam3], [], [] - stub") {
+
+        config "./index.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id: 'test' ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    file(process.out.csi[0][1]).name,
+                    process.out.crai,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

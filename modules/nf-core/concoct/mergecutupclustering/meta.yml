@@ -17,7 +17,6 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: "['FreeBSD']"
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: file
       description: Input cutup clustering result. Typically *_gt1000.csv from concoct
       pattern: "*.csv"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: Cluster assignments per contig part with concensus cluster
       pattern: "*.csv"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

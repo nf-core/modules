@@ -14,7 +14,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/4405451249819-ComposeSTRTableFile
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - fasta:
       type: file
@@ -28,7 +27,6 @@ input:
       type: file
       description: Sequence dictionary of the FASTA reference file
       pattern: "*.dict"
-
 output:
   - versions:
       type: file
@@ -38,6 +36,7 @@ output:
       type: file
       description: A zipped folder containing the STR table files
       pattern: "*.zip"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/zellerlab/GECCO"
       doi: "10.1101/2021.05.03.442509"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
   - model_dir:
       type: directory
       description: Path to an alternative CRF (Conditional Random Fields) module to use
-
 output:
   - meta:
       type: map
@@ -62,6 +60,7 @@ output:
       type: file
       description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied. Will not be generated if no hits are found.
       pattern: "*.gbk"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

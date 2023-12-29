@@ -13,50 +13,44 @@ tools:
       tool_dev_url: "https://github.com/HMS-IDAC/UNetCoreograph"
       doi: 10.1038/s41592-021-01308-y
       licence: "MIT License"
-
 input:
   - image:
       type: file
       description: ome.tif/tif file
       pattern: "*.{ome.tif,tif}"
-
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-
 output:
   #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - cores:
       type: file
       description: Complete/Incomplete tissue cores
       pattern: "*.{tif}"
-
   - masks:
       type: file
       description: Binary masks for the Complete/Incomplete tissue cores
       pattern: "./masks/*.{tif}"
-
   - tma_map:
       type: file
       description: A TMA map showing labels and outlines
       pattern: "TMA_MAP.tif"
-
   - centroids:
       type: file
       description: A text file listing centroids of each core in format Y, X
       pattern: "centroidsY-X.txt"
-
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-
 authors:
+  - "@arozhada"
+  - "@MargotCh"
+maintainers:
   - "@arozhada"
   - "@MargotCh"

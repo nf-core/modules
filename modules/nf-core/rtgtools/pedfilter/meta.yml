@@ -11,9 +11,7 @@ tools:
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
       documentation: "https://github.com/RealTimeGenomics/rtg-tools"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-
       licence: "['BSD']"
-
 input:
   - meta:
       type: map
@@ -24,7 +22,6 @@ input:
       type: file
       description: The input file, can be either a PED or a VCF file
       pattern: "*.{vcf,vcf.gz,ped}"
-
 output:
   - meta:
       type: map
@@ -41,6 +38,7 @@ output:
         The output file, can be either a filtered PED file
         or a VCF file containing the PED headers (needs --vcf as argument)
       pattern: "*.{vcf.gz,ped}"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

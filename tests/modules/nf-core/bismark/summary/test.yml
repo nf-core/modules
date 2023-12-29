@@ -1,9 +1,0 @@
-- name: bismark summary test workflow
-  command: nextflow run ./tests/modules/nf-core/bismark/summary -entry test_bismark_summary -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bismark/summary/nextflow.config
-  tags:
-    - bismark
-    - bismark/summary
-  files:
-    - path: output/bismark/bismark_summary_report.html
-    - path: output/bismark/bismark_summary_report.txt
-      md5sum: fdfadd5399c4e7b2108da100e72036eb

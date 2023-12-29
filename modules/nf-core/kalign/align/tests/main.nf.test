@@ -1,0 +1,33 @@
+// nf-core modules test kalign/align
+nextflow_process {
+
+    name "Test Process KALIGN_ALIGN"
+    script "../main.nf"
+    process "KALIGN_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kalign"
+    tag "kalign/align"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                          file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.alignment).match("alignment")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

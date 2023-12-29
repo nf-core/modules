@@ -2,7 +2,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bracken=2.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
         'biocontainers/bracken:2.7--py39hc16433a_0' }"

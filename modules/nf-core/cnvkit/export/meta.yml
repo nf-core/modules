@@ -11,36 +11,33 @@ tools:
       homepage: https://cnvkit.readthedocs.io/en/stable/index.html
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - cns:
       type: file
       description: CNVKit CNS file.
       pattern: "*.cns"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - cns:
       type: file
       description: File containing copy number segment information
       pattern: "*.{cns}"
-
 authors:
+  - "@adamrtalbot"
+  - "@priesgo"
+maintainers:
   - "@adamrtalbot"
   - "@priesgo"

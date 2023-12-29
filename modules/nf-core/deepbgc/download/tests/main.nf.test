@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process DEEPBGC_DOWNLOAD"
+    script "../main.nf"
+    process "DEEPBGC_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deepbgc"
+    tag "deepbgc/download"
+
+    test("deepbgc download db") {
+
+        when {
+            process {
+                """
+                
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("db") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}

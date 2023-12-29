@@ -2,7 +2,7 @@ process SHIGEIFINDER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::shigeifinder=1.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shigeifinder:1.3.2--pyhdfd78af_0':
         'biocontainers/shigeifinder:1.3.2--pyhdfd78af_0' }"

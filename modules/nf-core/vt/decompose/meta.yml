@@ -14,7 +14,6 @@ tools:
       documentation: "https://genome.sph.umich.edu/wiki/Vt"
       tool_dev_url: "https://github.com/atks/vt"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -29,7 +28,6 @@ input:
       type: file
       description: The intervals of the variants of decompose
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -44,6 +42,7 @@ output:
       type: file
       description: The decomposed VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

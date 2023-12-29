@@ -16,12 +16,10 @@ tools:
       tool_dev_url: https://github.com/pachterlab/ffq
       doi: "10.1101/2022.05.18.492548"
       licence: "['MIT']"
-
 input:
   - ids:
       type: list
       description: List of supported database ids e.g. SRA / GEO / ENA
-
 output:
   - versions:
       type: file
@@ -31,6 +29,7 @@ output:
       type: file
       description: JSON file containing metadata for ids
       pattern: "*.{json}"
-
 authors:
+  - "@drpatelh"
+maintainers:
   - "@drpatelh"

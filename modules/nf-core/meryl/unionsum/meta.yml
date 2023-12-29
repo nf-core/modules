@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/marbl/meryl"
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
-
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -21,7 +19,6 @@ input:
   - meryl_dbs:
       type: directory
       description: Meryl k-mer databases
-
 output:
   - meta:
       type: map
@@ -36,6 +33,7 @@ output:
       type: directory
       description: A Meryl k-mer database that is the union sum of the input databases
       pattern: "*.unionsum.meryldb"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

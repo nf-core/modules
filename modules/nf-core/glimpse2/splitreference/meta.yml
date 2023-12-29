@@ -20,32 +20,26 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - reference:
       type: file
       description: Reference panel of haplotypes in VCF/BCF format.
       pattern: "*.{vcf.gz,bcf.gz}"
-
   - reference_index:
       type: file
       description: Index file of the Reference panel file.
       pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-
   - input_region:
       type: string
       description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-
   - output_region:
       type: string
       description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-
   - map:
       type: file
       description: File containing the genetic map.
       pattern: "*.gmap"
-
 output:
   - meta:
       type: map
@@ -60,6 +54,7 @@ output:
       type: file
       description: binary reference panel
       pattern: "*.bin"
-
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

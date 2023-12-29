@@ -33,7 +33,6 @@ tools:
       documentation: "https://github.com/mpieva/mapAD"
       tool_dev_url: "https://github.com/mpieva/mapAD"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -76,7 +75,6 @@ input:
   - indel_rate:
       type: float
       description: Expected rate of indels between reads and reference
-
 output:
   - meta:
       type: map
@@ -91,6 +89,7 @@ output:
       type: file
       description: Output BAM/SAM file containing read alignments
       pattern: "*.bam"
-
 authors:
+  - "@jch-13"
+maintainers:
   - "@jch-13"

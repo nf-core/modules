@@ -15,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -34,7 +33,6 @@ input:
       type: file
       description: optional - a bed file with regions to define the mappability off
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -61,7 +59,9 @@ output:
       type: file
       description: genmap csv mappability file
       pattern: "*.csv"
-
 authors:
+  - "@jianhong"
+  - "@nvnieuwk"
+maintainers:
   - "@jianhong"
   - "@nvnieuwk"

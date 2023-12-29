@@ -2,7 +2,7 @@ process PORECHOP_ABI {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::porechop_abi=0.5.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/porechop_abi:0.5.0--py310h590eda1_0':
         'biocontainers/porechop_abi:0.5.0--py310h590eda1_0' }"

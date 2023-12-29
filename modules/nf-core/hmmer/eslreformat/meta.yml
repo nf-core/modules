@@ -7,10 +7,8 @@ tools:
       description: "Biosequence analysis using profile hidden Markov models"
       homepage: http://hmmer.org/
       documentation: http://hmmer.org/documentation.html
-
       doi: "10.1371/journal.pcbi.1002195"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -21,7 +19,6 @@ input:
       type: file
       description: Sequences, aligned or not, in any supported format
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -36,6 +33,7 @@ output:
       type: file
       description: Reformated sequence file
       pattern: "*.*.gz"
-
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"

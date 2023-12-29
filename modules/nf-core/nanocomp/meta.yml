@@ -12,7 +12,6 @@ tools:
       homepage: "https://github.com/wdecoster/nanocomp"
       documentation: "https://github.com/wdecoster/nanocomp"
       licence: "MIT License"
-
 input:
   - meta:
       type: map
@@ -21,7 +20,6 @@ input:
       type: file
       description: List of all the files you want to compare, they have to be all the same filetype (either fastq, fasta, bam or Nanopore sequencing summary)
       pattern: "*.{fastq,fq,fna,ffn,faa,frn,fa,fasta,txt,bam}"
-
 output:
   - versions:
       type: file
@@ -102,6 +100,7 @@ output:
       type: file
       description: txt file with basic statistics
       pattern: "*NanoStats.txt"
-
 authors:
+  - "@paulwolk"
+maintainers:
   - "@paulwolk"

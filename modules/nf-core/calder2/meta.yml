@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/CSOgroup/CALDER2"
       doi: "10.1038/s41467-021-22666-3"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - resolution:
       type: value
       description: In case a .mcool file is provided, which resolution level to use for the analysis
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
   - intermediate_data:
       type: directory
       description: Output folder containing intermediate data produced during the computation
-
 authors:
+  - "@lucananni93"
+maintainers:
   - "@lucananni93"

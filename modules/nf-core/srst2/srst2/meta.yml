@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/katholt/srst2"
       doi: "10.1186/s13073-014-0090-6"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map0.2.0-4
@@ -36,7 +35,6 @@ input:
       type: file
       description: Database in FASTA format
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -67,6 +65,7 @@ output:
       type: file
       description: SAMtools pileup file
       pattern: "*.pileup"
-
 authors:
+  - "@jvhagey"
+maintainers:
   - "@jvhagey"

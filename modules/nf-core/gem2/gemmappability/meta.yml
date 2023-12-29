@@ -12,7 +12,6 @@ tools:
       description: "GEM2 is a high-performance mapping tool. It also provide a unique tool to evaluate mappability."
       homepage: "https://paoloribeca.science/gem"
       licence: "['Custom']"
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
   - read_length:
       type: integer
       description: The read length to define the mappability of
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: The resulting mappability file
       pattern: "*.mappability"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

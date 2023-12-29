@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "mtmalign_align"
+description: Aligns protein structures using mTM-align
+keywords:
+  - alignment
+  - MSA
+  - genomics
+  - structure
+tools:
+  - "mTM-align":
+      description: "Algorithm for structural multiple sequence alignments"
+      homepage: "http://yanglab.nankai.edu.cn/mTM-align/"
+      documentation: "http://yanglab.nankai.edu.cn/mTM-align/help/"
+      tool_dev_url: "http://yanglab.nankai.edu.cn/mTM-align/"
+      doi: "10.1093/bioinformatics/btx828"
+      licence: ["None"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+  - pdbs:
+      type: file
+      description: Input protein structures in PDB format.
+        They should contain exactly one chain!
+      pattern: "*.{pdb}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+  - alignment:
+      type: file
+      description: Alignment in FASTA format.
+      pattern: "*.aln"
+  - structure:
+      type: file
+      description: Overlaid structures in PDB format.
+      pattern: "${prefix}.pdb"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@lrauschning"
+maintainers:
+  - "@lrauschning"

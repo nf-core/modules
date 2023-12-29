@@ -16,7 +16,6 @@ tools:
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
       licence: "['GPL v3']"
-
 input:
   - input:
       type: file
@@ -35,7 +34,6 @@ input:
         this itself without having the motus database present and configured with the tool
         so here we take it from what is already reported by the upstream module.
       pattern: "versions.yml"
-
 output:
   - versions:
       type: file
@@ -49,6 +47,7 @@ output:
       type: file
       description: OTU table in biom format, if BIOM format requested
       pattern: "*.biom"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

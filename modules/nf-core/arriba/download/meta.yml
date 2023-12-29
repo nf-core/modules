@@ -1,0 +1,27 @@
+name: arriba_download
+description: Arriba is a command-line tool for the detection of gene fusions from RNA-Seq data.
+keywords:
+  - fusion
+  - arriba
+  - reference
+tools:
+  - arriba:
+      description: Fast and accurate gene fusion detection from RNA-Seq data
+      homepage: https://github.com/suhrig/arriba
+      documentation: https://arriba.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/suhrig/arriba
+      doi: "10.1101/gr.257246.119"
+      licence: ["MIT"]
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reference:
+      type: directory
+      description: Folder with arriba references
+      pattern: "*"
+
+authors:
+  - "@peterpru"

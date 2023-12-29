@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/lskatz/mashtree
       doi: "10.21105/joss.01762"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: FASTA, FASTQ, GenBank, or Mash sketch files
       pattern: "*.{fna,fna.gz,fasta,fasta.gz,fa,fa.gz,gbk,gbk.gz,fastq.gz,msh}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: A TSV matrix of pair-wise Mash distances
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

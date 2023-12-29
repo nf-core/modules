@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/lczech/gappa"
       doi: "10.1093/bioinformatics/btaa070"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
       pattern: "*.{jplace,jplace.gz}"
-
 output:
   - meta:
       type: map
@@ -59,6 +57,7 @@ output:
       type: file
       description: log file from the run
       pattern: "*.log"
-
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"

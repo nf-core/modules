@@ -11,9 +11,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
       tool_dev_url: https://gitlab.com/mcfrith/last
-
       licence: ["GPL v3-or-later"]
-
 input:
   - meta:
       type: map
@@ -27,7 +25,6 @@ input:
   - format:
       type: string
       description: Output format (one of axt, blast, blasttab, chain, gff, html, psl, sam, or tab)
-
 output:
   - meta:
       type: map
@@ -74,6 +71,7 @@ output:
       type: file
       description: Gzipped pairwise alignment in TAB format (optional)
       pattern: "*.tab.gz"
-
 authors:
+  - "@aleksandrabliznina"
+maintainers:
   - "@aleksandrabliznina"

@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/jkbonfield/crumble"
       doi: "10.1093/bioinformatics/bty608"
       licence: "['multiple BSD style licenses']"
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
   - bedout:
       type: boolean
       description: set to true to ouput suspicious regions to a BED file
-
 output:
   - meta:
       type: map
@@ -57,6 +55,7 @@ output:
       type: file
       description: optional suspicious regions BED file
       pattern: "*{bed}"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

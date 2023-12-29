@@ -2,7 +2,7 @@ process ALLELECOUNTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cancerit-allelecount=4.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
         'biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"
@@ -23,7 +23,6 @@ process ALLELECOUNTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_options = fasta ? "-r $fasta": ""
-
     """
     alleleCounter \\
         $args \\
@@ -31,6 +30,18 @@ process ALLELECOUNTER {
         -b $input \\
         $reference_options \\
         -o ${prefix}.alleleCount
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        allelecounter: \$(alleleCounter --version)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

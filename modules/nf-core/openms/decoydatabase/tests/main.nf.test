@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process OPENMS_DECOYDATABASE"
+    script "../main.nf"
+    process "OPENMS_DECOYDATABASE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/decoydatabase"
+
+    test("test_openms_decoydatabase") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

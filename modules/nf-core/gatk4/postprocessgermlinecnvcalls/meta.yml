@@ -14,7 +14,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593411-PostprocessGermlineCNVCalls
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -37,7 +36,6 @@ input:
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).
       pattern: "*-cnv-model/*-model"
-
 output:
   - meta:
       type: map
@@ -60,6 +58,7 @@ output:
       type: file
       description: Intervals VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@ryanjameskennedy"
+maintainers:
   - "@ryanjameskennedy"

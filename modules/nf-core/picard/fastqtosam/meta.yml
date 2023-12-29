@@ -13,7 +13,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036510672-FastqToSam-Picard-
       tool_dev_url: https://github.com/broadinstitute/picard
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Unaligned bam file
       pattern: "*.{bam}"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

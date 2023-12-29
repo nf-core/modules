@@ -2,7 +2,7 @@ process PBBAM_PBMERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pbbam=2.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbbam:2.1.0--h3f0f298_2' :
         'biocontainers/pbbam:2.1.0--h3f0f298_2' }"

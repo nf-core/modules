@@ -15,7 +15,6 @@ keywords:
   - eukaryotes
   - fungi
   - antismash
-
 tools:
   - antismashlite:
       description: "antiSMASH - the antibiotics and Secondary Metabolite Analysis SHell"
@@ -24,7 +23,6 @@ tools:
       tool_dev_url: "https://github.com/antismash/antismash"
       doi: "10.1093/nar/gkab335"
       licence: "['AGPL v3']"
-
 input:
   - meta:
       type: map
@@ -55,7 +53,6 @@ input:
       type: file
       description: Annotations in GFF3 format (only if sequence_input is in FASTA format)
       pattern: "*.gff"
-
 output:
   - meta:
       type: map
@@ -130,6 +127,7 @@ output:
       type: file
       description: Sideloaded annotations of protoclusters and/or subregions (see antiSMASH documentation "Annotation sideloading")
       pattern: "regions.js"
-
 authors:
+  - "@jasmezz"
+maintainers:
   - "@jasmezz"

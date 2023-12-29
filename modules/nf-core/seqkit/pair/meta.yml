@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/shenwei356/seqkit/
       doi: "10.1371/journal.pone.0163962"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: file
       description: |
         List of input paired-end FastQ files.
-
 output:
   - meta:
       type: map
@@ -41,8 +39,11 @@ output:
       type: file
       description: Unpaired reads (optional)
       pattern: "*.unpaired.fastq.gz"
-
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
   - "@hseabolt"

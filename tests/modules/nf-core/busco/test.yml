@@ -1,5 +1,5 @@
 - name: busco test_busco_genome_single_fasta
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_single_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_single_fasta -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
@@ -20,10 +20,7 @@
       md5sum: bc2440f8a68d7fbf931ff911c1c3fdfa
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_out.log
-      contains:
-        - "IUPAC"
-        - "genome scaffold"
-        - "Coverage"
+      md5sum: 9caf1a1434414c78562eb0bbb9c0e53f
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_out.log
       contains:
@@ -61,10 +58,10 @@
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/full_table.tsv
-      md5sum: 275a7ece09ef61aa59ee7a811289e3d8
+      md5sum: c56edab1dc1522e993c25ae2b730799f
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/hmmer_output.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/missing_busco_list.tsv
-      md5sum: ab574cde031a3fbff471976ea61e215d
+      md5sum: b533ef30270f27160acce85a22d01bf5
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -80,9 +77,10 @@
         - "DEBUG:busco.run_BUSCO"
         - "Results from dataset"
         - "how to cite BUSCO"
+    - path: output/busco/versions.yml
 
 - name: busco test_busco_genome_multi_fasta
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_multi_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_multi_fasta -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
@@ -113,17 +111,10 @@
         - "Missing BUSCOs"
         - "Dependencies and versions"
     - path: output/busco/test-bacteria_odb10-busco.batch_summary.txt
-      contains:
-        - "Input_file"
-        - "genome.fna"
-        - "genome.fasta"
-        - "bacteria_odb10"
+      md5sum: 8c64c1a28b086ef2ee444f99cbed5f7d
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/bbtools_out.log
-      contains:
-        - "IUPAC"
-        - "genome scaffold"
-        - "Coverage"
+      md5sum: 8f047bdb33264d22a83920bc2c63f29a
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/hmmsearch_out.log
       contains:
@@ -169,10 +160,10 @@
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/full_table.tsv
-      md5sum: f473ded1f1db2463533d51be6ed6fd2d
+      md5sum: c9651b88b10871abc260ee655898e828
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/hmmer_output.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/missing_busco_list.tsv
-      md5sum: 8e6b6a4ba25caf8e7ad15e8a77064755
+      md5sum: 9939309df2da5419de88c32d1435c779
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/run_bacteria_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -185,10 +176,7 @@
         - "busco:"
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_out.log
-      contains:
-        - "IUPAC"
-        - "genome scaffold"
-        - "Coverage"
+      md5sum: 9caf1a1434414c78562eb0bbb9c0e53f
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_out.log
       contains:
@@ -226,10 +214,10 @@
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/full_table.tsv
-      md5sum: 275a7ece09ef61aa59ee7a811289e3d8
+      md5sum: c56edab1dc1522e993c25ae2b730799f
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/hmmer_output.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/missing_busco_list.tsv
-      md5sum: ab574cde031a3fbff471976ea61e215d
+      md5sum: b533ef30270f27160acce85a22d01bf5
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/run_bacteria_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -245,9 +233,10 @@
         - "DEBUG:busco.run_BUSCO"
         - "Results from dataset"
         - "how to cite BUSCO"
+    - path: output/busco/versions.yml
 
 - name: busco test_busco_eukaryote_metaeuk
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_metaeuk -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_metaeuk -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
@@ -268,10 +257,7 @@
       md5sum: ff6d8277e452a83ce9456bbee666feb6
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_out.log
-      contains:
-        - "IUPAC"
-        - "genome scaffold"
-        - "Coverage"
+      md5sum: e63debaa653f18f7405d936050abc093
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_out.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run1_err.log
@@ -287,7 +273,7 @@
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/full_table.tsv
-      md5sum: ff1b64c2adadcf9f0a954a19893e421b
+      md5sum: bd880e90b9e5620a58943a3e0f9ff16b
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/hmmer_output.tar.gz
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/.checkpoint
       contains:
@@ -306,7 +292,7 @@
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.gff
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.headersMap.tsv
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/missing_busco_list.tsv
-      md5sum: 6c17c7e06991db898b318b932d686406
+      md5sum: 1e8e79c540fd2e69ba0d2659d9eb2988
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -322,69 +308,95 @@
         - "DEBUG:busco.run_BUSCO"
         - "Results from dataset"
         - "how to cite BUSCO"
+    - path: output/busco/versions.yml
 
 - name: busco test_busco_eukaryote_augustus
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_augustus -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_augustus -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
-    - path: output/busco/test-eukaryota_odb10-busco.batch_summary.txt
-      md5sum: cdd3ffd590a778cdd2f0f367ee86eba7
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/.checkpoint
+    - path: output/busco/short_summary.specific.eukaryota_odb10.genome.fasta.json
       contains:
-        - "Tool: makeblastdb"
-        - "Completed"
-        - "jobs"
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.ndb
-      md5sum: 0d553c830656469211de113c5022f06d
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.nhr
-      md5sum: 82396da5130a85faf6d454e2889a1d45
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.nin
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.njs
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.not
-      md5sum: 1e53e9d08f1d23af0299cfa87478a7bb
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.nsq
-      md5sum: 4bc119903ac72152363f47612645046a
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.ntf
-      md5sum: de1250813f0c7affc6d12dac9d0fb6bb
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/blast_db/genome.fasta.nto
-      md5sum: 33cdeccccebe80329f1fdbee7f5874cb
+        - "one_line_summary"
+        - "mode"
+        - "dataset"
+    - path: output/busco/short_summary.specific.eukaryota_odb10.genome.fasta.txt
+      contains:
+        - "BUSCO version"
+        - "The lineage dataset is"
+        - "BUSCO was run in mode"
+        - "Complete BUSCOs"
+        - "Missing BUSCOs"
+        - "Dependencies and versions"
+    - path: output/busco/test-eukaryota_odb10-busco.batch_summary.txt
+      md5sum: ff6d8277e452a83ce9456bbee666feb6
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_out.log
+      md5sum: e63debaa653f18f7405d936050abc093
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_err.log
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_out.log
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run1_err.log
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run1_out.log
       contains:
-        - "IUPAC"
-        - "genome scaffold"
-        - "Coverage"
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/makeblastdb_err.log
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/makeblastdb_out.log
+        - "metaeuk"
+        - "easy-predict"
+        - "Compute score and coverage"
+        - "Time for processing:"
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run2_err.log
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run2_out.log
       contains:
-        - "Building a new DB"
-        - "Adding sequences from FASTA"
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/tblastn_err.log
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/tblastn_out.log
+        - "metaeuk"
+        - "easy-predict"
+        - "Compute score and coverage"
+        - "Time for processing:"
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/.bbtools_output/.checkpoint
       contains:
         - "Tool: bbtools"
         - "Completed"
         - "jobs"
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/blast_output/.checkpoint
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/busco_sequences/fragmented_busco_sequences.tar.gz
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/full_table.tsv
+      md5sum: bd880e90b9e5620a58943a3e0f9ff16b
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/hmmer_output.tar.gz
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/.checkpoint
       contains:
-        - "Tool: tblastn"
+        - "Tool: metaeuk"
         - "Completed"
         - "jobs"
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/blast_output/coordinates.tsv
-    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/blast_output/tblastn.tsv
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/combined_pred_proteins.fas
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/initial_results/genome.fasta.codon.fas
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/initial_results/genome.fasta.fas
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/initial_results/genome.fasta.gff
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/initial_results/genome.fasta.headersMap.tsv
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/refseq_db_rerun.faa
+      md5sum: d80b8fa4cb5ed0d47d63d6aa93635bc2
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.codon.fas
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.fas
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.gff
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/metaeuk_output/rerun_results/genome.fasta.headersMap.tsv
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/missing_busco_list.tsv
+      md5sum: 1e8e79c540fd2e69ba0d2659d9eb2988
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/short_summary.json
       contains:
-        - "TBLASTN"
-        - "BLAST processed"
-        - "queries"
+        - "one_line_summary"
+        - "mode"
+        - "dataset"
+    - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/run_eukaryota_odb10/short_summary.txt
+      contains:
+        - "# BUSCO version is:"
+        - "Results:"
+        - "busco:"
     - path: output/busco/test-eukaryota_odb10-busco/logs/busco.log
       contains:
         - "DEBUG:busco.run_BUSCO"
-        - "Running Augustus gene predictor"
+        - "Results from dataset"
+        - "how to cite BUSCO"
+    - path: output/busco/versions.yml
 
 - name: busco test_busco_protein
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_protein -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_protein -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
@@ -419,10 +431,10 @@
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/full_table.tsv
-      md5sum: 81e0e9a5897bb72fffbb1866779f6834
+      md5sum: 0e34f1011cd83ea1d5d5103ec62b8922
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/hmmer_output.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/missing_busco_list.tsv
-      md5sum: 8e6b6a4ba25caf8e7ad15e8a77064755
+      md5sum: 9939309df2da5419de88c32d1435c779
     - path: output/busco/test-bacteria_odb10-busco/proteome.fasta/run_bacteria_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -433,9 +445,10 @@
         - "# BUSCO version is:"
         - "Results:"
         - "busco:"
+    - path: output/busco/versions.yml
 
 - name: busco test_busco_transcriptome
-  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_transcriptome -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_transcriptome -c ./tests/config/nextflow.config
   tags:
     - busco
   files:
@@ -548,10 +561,10 @@
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/busco_sequences/multi_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/busco_sequences/single_copy_busco_sequences.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/full_table.tsv
-      md5sum: 14bb2d7788bd0aa547e4a99df6659f1e
+      md5sum: 24df25199e13c88bd892fc3e7b541ca0
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/hmmer_output.tar.gz
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/missing_busco_list.tsv
-      md5sum: 485902b7b62403985ee9f781e17b20ab
+      md5sum: e7232e2b8cca4fdfdd9e363b39ebbc81
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/run_bacteria_odb10/short_summary.json
       contains:
         - "one_line_summary"
@@ -608,3 +621,4 @@
       md5sum: fe313ffd5efdb0fed887a04fba352552
     - path: output/busco/test-bacteria_odb10-busco/test1.contigs.fa/translated_proteins/95696at2.faa
       md5sum: 4e1f30a2fea4dfbf9bb7fae2700622a0
+    - path: output/busco/versions.yml

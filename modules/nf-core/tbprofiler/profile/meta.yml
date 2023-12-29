@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/jodyphelan/TBProfiler
       doi: "10.1186/s13073-019-0650-x"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: FASTQ file
       pattern: "*.{fastq.gz,fq.gz}"
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
       type: file
       description: VCF with variant info again refernce genomes
       pattern: "*.vcf"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

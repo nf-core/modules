@@ -2,10 +2,10 @@ process VCFANNO {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::vcfanno=0.3.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
-        'biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vcfanno:0.3.5--h9ee0642_0':
+        'biocontainers/vcfanno:0.3.5--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)

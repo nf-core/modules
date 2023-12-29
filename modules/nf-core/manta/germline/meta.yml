@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/Illumina/manta
       doi: "10.1093/bioinformatics/btv710"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -61,7 +60,6 @@ input:
       type: file
       description: Manta configuration file
       pattern: "*.{ini,conf,config}"
-
 output:
   - meta:
       type: map
@@ -96,8 +94,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@maxulysse"
+  - "@ramprasadn"
+  - "@nvnieuwk"
+maintainers:
   - "@maxulysse"
   - "@ramprasadn"
   - "@nvnieuwk"

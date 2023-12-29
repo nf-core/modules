@@ -4,7 +4,6 @@ keywords:
   - estimation
   - alignment
   - variants
-
 tools:
   - "varlociraptor":
       description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
@@ -13,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/varlociraptor/varlociraptor"
       doi: "10.1186/s13059-020-01993-6"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -42,7 +40,6 @@ input:
       type: file
       description: Index for reference fasta file (must be with samtools index)
       pattern: "*.{fai}"
-
 output:
   - meta:
       type: map
@@ -57,6 +54,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@FriederikeHanssen"
+maintainers:
   - "@FriederikeHanssen"

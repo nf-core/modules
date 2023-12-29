@@ -8,10 +8,8 @@ tools:
       description: scalable gVCF merging and joint variant calling for population sequencing projects.
       homepage: https://github.com/dnanexus-rnd/GLnexus
       documentation: https://github.com/dnanexus-rnd/GLnexus/wiki/Getting-Started
-
       doi: 10.1101/343970
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: list
       description: Input genomic vcf files
       pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
-
 output:
   - versions:
       type: file
@@ -33,4 +30,6 @@ output:
       description: merged BCF file
       pattern: "*.bcf"
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

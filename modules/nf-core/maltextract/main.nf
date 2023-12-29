@@ -2,7 +2,7 @@ process MALTEXTRACT {
 
     label 'process_medium'
 
-    conda "bioconda::hops=0.35"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
         'biocontainers/hops:0.35--hdfd78af_1' }"

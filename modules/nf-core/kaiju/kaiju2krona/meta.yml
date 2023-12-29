@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: Kaiju tab-separated output file
       pattern: "*.{tsv,txt}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: Krona text-based input file converted from Kaiju report
       pattern: "*.{txt,krona}"
-
 authors:
+  - "@MillironX"
+maintainers:
   - "@MillironX"

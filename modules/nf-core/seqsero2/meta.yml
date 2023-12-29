@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/denglab/SeqSero2
       doi: "10.1128/AEM.01746-19"
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: FASTQ or FASTA formated sequences
       pattern: "*.{fq.gz,fastq.gz,fna.gz,fna,fasta.gz,fasta,fa.gz,fa}"
-
 output:
   - meta:
       type: map
@@ -47,6 +45,7 @@ output:
       type: file
       description: Detailed summary of the SeqSero2 results
       pattern: "*_result.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

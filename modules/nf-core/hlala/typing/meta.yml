@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
       doi: "10.1093/bioinformatics/btz235"
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - graph:
       type: directory
       description: Path to prepared graph with hla-la --acton prepareGraph
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
   - folder:
       type: directory
       description: Folder containing the HLA typing output
-
 authors:
+  - "@mapo9"
+maintainers:
   - "@mapo9"

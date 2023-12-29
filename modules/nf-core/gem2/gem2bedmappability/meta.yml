@@ -13,7 +13,6 @@ tools:
       homepage: "https://paoloribeca.science/gem"
       # This is not a valid link because all documentation is gone for this tool (it's here because the linter isn't happy otherwise)
       licence: "['Custom']"
-
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
       type: file
       description: The index of the reference FASTA
       pattern: "*.gem"
-
 output:
   - meta:
       type: map
@@ -51,6 +49,7 @@ output:
       type: file
       description: The chromosome sizes
       pattern: "*.sizes"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

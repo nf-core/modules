@@ -2,7 +2,7 @@ process NGMERGE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ngmerge=0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmerge:0.3--ha92aebf_1':
         'biocontainers/ngmerge:0.3--ha92aebf_1' }"

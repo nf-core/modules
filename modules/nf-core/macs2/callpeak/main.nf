@@ -2,7 +2,7 @@ process MACS2_CALLPEAK {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::macs2=2.2.7.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
         'biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"

@@ -8,9 +8,7 @@ tools:
       homepage: "https://github.com/seppinho/haplogrep-cmd"
       documentation: "https://github.com/seppinho/haplogrep-cmd"
       tool_dev_url: "https://github.com/seppinho/haplogrep-cmd"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -24,7 +22,6 @@ input:
   - format:
       type: string
       description: either "vcf", "fasta" or "hsd"
-
 output:
   - meta:
       type: map
@@ -39,6 +36,7 @@ output:
       type: file
       description: text file with classification information
       pattern: "*.{txt}"
-
 authors:
+  - "@lucpen"
+maintainers:
   - "@lucpen"

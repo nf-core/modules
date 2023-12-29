@@ -14,7 +14,6 @@ tools:
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
       licence: "['GPL v3', 'GPL v3 license']"
-
 input:
   - meta:
       type: map
@@ -29,7 +28,6 @@ input:
       type: file
       description: Contigs/scaffolds identified as viral
       pattern: "*.{fna,fasta,fa}"
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: TSV file summarizing the attributes of each bin
       pattern: "vRhyme_best_bins.*.summary.tsv"
-
 authors:
+  - "@CarsonJM"
+maintainers:
   - "@CarsonJM"

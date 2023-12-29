@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process BEDGOVCF"
+    script "../main.nf"
+    process "BEDGOVCF"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bedgovcf"
+
+    test("homo_sapiens - [bed, config] - fai") {
+
+        // WARNING: md5sum between local tests and GHA tests differ
+        // Please change them manually after every snapshot update
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                raw_ch = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                ])
+                config = Channel.of(["config.yaml", "header:", "  - name: test", "    content: test"])
+                    .collectFile(newLine:true, sort:'index')
+                input[0] = raw_ch.combine(config)
+                input[1] = [
+                    [id:"ref"],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+    }
+
+
+    test("homo_sapiens - [bed, config] - fai STUB") {
+        options "-stub"
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                raw_ch = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                ])
+                config = Channel.of(["config.yaml", "header:", "  - name: test", "    content: test"])
+                    .collectFile(newLine:true, sort:'index')
+                input[0] = raw_ch.combine(config)
+                input[1] = [
+                    [id:"ref"],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+    }
+
+}

@@ -2,7 +2,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     tag "${meta.id}"
     label 'process_single'
 
-    conda "bioconda::atlas-gene-annotation-manipulation=1.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas-gene-annotation-manipulation%3A1.1.0--hdfd78af_0':
         'biocontainers/atlas-gene-annotation-manipulation:1.1.0--hdfd78af_0' }"

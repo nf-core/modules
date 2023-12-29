@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/hyattpd/Prodigal
       doi: "10.1186/1471-2105-11-119"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
   - output_format:
       type: string
       description: Output format ("gbk"/"gff"/"sqn"/"sco")
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: gene annotations in output_format given as input
       pattern: "*.{output_format}"
-
 authors:
+  - "@grst"
+maintainers:
   - "@grst"

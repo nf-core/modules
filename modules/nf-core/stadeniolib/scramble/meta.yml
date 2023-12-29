@@ -12,7 +12,6 @@ tools:
       documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
       tool_dev_url: "https://github.com/jkbonfield/io_lib"
       licence: "['BSD']"
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
       type: file
       description: Optional gzip index file for BAM inputs
       pattern: "*.gzi"
-
 output:
   - meta:
       type: map
@@ -55,4 +53,6 @@ output:
       description: gzip index file for BAM outputs
       pattern: ".{bam.gzi}"
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

@@ -1,0 +1,44 @@
+name: "truvari_segment"
+description: Normalization of SVs into disjointed genomic regions
+keywords:
+  - structural variants
+  - sv
+  - vcf
+  - benchmark
+  - normalization
+tools:
+  - "truvari":
+      description: "Structural variant comparison tool for VCFs"
+      homepage: "https://github.com/ACEnglish/truvari"
+      documentation: "https://github.com/acenglish/truvari/wiki"
+      tool_dev_url: "https://github.com/ACEnglish/truvari"
+      doi: "10.1186/s13059-022-02840-6"
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1']`
+  - vcf:
+      type: file
+      description: Input VCF file
+      pattern: "*.{vcf,gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Segmented VCF file
+      pattern: "*.{vcf}"
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

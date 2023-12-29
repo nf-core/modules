@@ -13,14 +13,12 @@ tools:
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
       doi: "10.1101/2022.10.19.512867 "
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - estimate:
       type: file
       description: Imputed data.
@@ -68,6 +66,7 @@ output:
       type: file
       description: Estimates errors from the phased file.
       pattern: "*.txt.gz"
-
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

@@ -9,9 +9,7 @@ tools:
   - "fastawindows":
       description: "fasta_windows is a tool written for Darwin Tree of Life chromosomal level genome assemblies. The executable takes a fasta formatted file and calculates some statistics of interest in windows"
       homepage: "https://github.com/tolkit/fasta_windows"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fa,fasta,fna}"
-
 output:
   - meta:
       type: map
@@ -54,4 +51,6 @@ output:
       description: TSV file with tetranucleotide counts
       pattern: "*.{tsv}"
 authors:
+  - "@muffato"
+maintainers:
   - "@muffato"

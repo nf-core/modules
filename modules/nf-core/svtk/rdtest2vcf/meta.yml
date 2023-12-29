@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       doi: "10.1038/s41586-020-2287-8"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: The reference file of a FASTA file containing the contigs
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: The index of the converted VCF
       pattern: "*.vcf.gz.tbi"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

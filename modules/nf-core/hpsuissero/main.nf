@@ -3,7 +3,7 @@ process HPSUISSERO {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::hpsuissero=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hpsuissero%3A1.0.1--hdfd78af_0':
         'biocontainers/hpsuissero:1.0.1--hdfd78af_0' }"

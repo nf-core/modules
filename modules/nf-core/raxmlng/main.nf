@@ -1,7 +1,7 @@
 process RAXMLNG {
     label 'process_high'
 
-    conda "bioconda::raxml-ng=1.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0' :
         'biocontainers/raxml-ng:1.0.3--h32fcf60_0' }"

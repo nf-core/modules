@@ -1,7 +1,7 @@
 process METAPHLAN3_MERGEMETAPHLANTABLES {
     label 'process_single'
 
-    conda "bioconda::metaphlan=3.0.12"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
         'biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"

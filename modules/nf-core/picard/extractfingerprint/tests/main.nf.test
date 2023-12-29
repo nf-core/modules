@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test Process PICARD_EXTRACTFINGERPRINT"
+    script "../main.nf"
+    process "PICARD_EXTRACTFINGERPRINT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/extractfingerprint"
+
+    test("extract_fingerprint") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                bam = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                ]
+                fasta = [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
+                fai   = [file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                dict  = [file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]
+                haplotype_map  = [file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true)]
+
+                input[0] = bam
+                input[1] = haplotype_map
+                input[2] = fasta
+                input[3] = fai
+                input[4] = dict
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.vcf.get(0).get(1) ==~ ".*.vcf.gz" },
+                { assert process.out.tbi.get(0).get(1) ==~ ".*.vcf.gz.tbi" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(path(process.out.vcf.get(0).get(1)).linesGzip[0]).match() }
+            )
+        }
+    }
+}

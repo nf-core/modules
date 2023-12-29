@@ -20,7 +20,6 @@ tools:
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
       type: dir
       description: Bismark genome index directory
       pattern: "BismarkIndex"
-
 output:
   - meta:
       type: map
@@ -58,6 +56,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@ewels"
+maintainers:
   - "@ewels"

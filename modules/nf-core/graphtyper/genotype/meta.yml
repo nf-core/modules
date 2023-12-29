@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
       doi: "10.1038/ng.3964"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -41,7 +40,6 @@ input:
       type: file
       description: File with a list of chromosome/locations in reference genome to genotype. One region per line in the format <chr>:<start>-<stop>. This or `--region` (in ext.args) must be specified.
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -60,6 +58,7 @@ output:
       type: file
       description: VCF index file
       pattern: "*.{vcf.gz.tbi}"
-
 authors:
+  - "@zachary-foster"
+maintainers:
   - "@zachary-foster"

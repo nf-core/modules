@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process FREYJA_VARIANTS"
+    script "../main.nf"
+    process "FREYJA_VARIANTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "freyja"
+    tag "freyja/variants"
+
+    test("sarscov2 - illumina - test_paired_end_sorted - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                        ]
+                    input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

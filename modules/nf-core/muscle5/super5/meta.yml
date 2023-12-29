@@ -1,0 +1,43 @@
+name: "muscle5_super5"
+description: Muscle is a program for creating multiple alignments of amino acid or nucleotide sequences. This particular module uses the super5 algorithm for very big alignments. It can permutate the guide tree according to a set of flags.
+keywords:
+  - align
+  - msa
+  - multiple sequence alignment
+tools:
+  - muscle -super5:
+      description: "Muscle v5 is a major re-write of MUSCLE based on new algorithms."
+      homepage: "https://drive5.com/muscle5/"
+      documentation: "https://drive5.com/muscle5/manual/"
+      doi: "10.1101/2021.06.20.449169"
+      licence: ["Public Domain"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Input sequences for alignment must be in FASTA format
+      pattern: "*.{fasta,fa,fna}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - alignment:
+      type: file
+      description: Multiple sequence alignment produced in FASTA format
+      pattern: "*.{aln}"
+authors:
+  - "@alessiovignoli"
+  - "@JoseEspinosa"
+maintainers:
+  - "@alessiovignoli"
+  - "@JoseEspinosa"

@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/snayfach/MIDAS"
       doi: "10.1101/gr.201863.115"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: string
       description: The mode to run MIDAS is
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: A directory of results from MIDAS run
       pattern: "*"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

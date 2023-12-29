@@ -2,13 +2,13 @@ process GLIMPSE_CONCORDANCE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::glimpse-bio=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
         'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), val(region), path(freq), path(truth), path(estimate)
+    tuple val(meta), path(estimate), path(estimate_index), path(freq), path(freq_index), path(truth), path(truth_index), val(region)
     val(min_prob)
     val(min_dp)
     val(bins)

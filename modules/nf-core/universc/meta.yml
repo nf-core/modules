@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/minoda-lab/universc"
       doi: "10.1101/2021.01.19.427209"
       licence: ["GPL-3.0-or-later"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-
 output:
   - outs:
       type: file
@@ -36,7 +34,9 @@ output:
       type: file
       description: File containing software version
       pattern: "versions.yml"
-
 authors:
+  - "@kbattenb"
+  - "@tomkellygenetics"
+maintainers:
   - "@kbattenb"
   - "@tomkellygenetics"

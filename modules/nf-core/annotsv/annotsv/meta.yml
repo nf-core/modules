@@ -13,7 +13,6 @@ tools:
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
       licence: "GPL-3.0"
-
 input:
   - meta:
       type: map
@@ -65,7 +64,6 @@ input:
       type: file
       description: OPTIONAL - A file containing the preferred gene transcripts to be used in priority during annotation (either space-separated or tab-separated)
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -89,6 +87,7 @@ output:
       description: |
         OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
       pattern: "*.vcf"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

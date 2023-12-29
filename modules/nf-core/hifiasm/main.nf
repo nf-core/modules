@@ -2,10 +2,10 @@ process HIFIASM {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::hifiasm=0.18.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hifiasm:0.18.5--h5b5514e_0' :
-        'biocontainers/hifiasm:0.18.5--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/hifiasm:0.19.8--h43eeafb_0' :
+        'biocontainers/hifiasm:0.19.8--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,6 +19,7 @@ process HIFIASM {
     tuple val(meta), path("*.ec.bin")          , emit: corrected_reads
     tuple val(meta), path("*.ovlp.source.bin") , emit: source_overlaps
     tuple val(meta), path("*.ovlp.reverse.bin"), emit: reverse_overlaps
+    tuple val(meta), path("*.bp.p_ctg.gfa")    , emit: processed_contigs, optional: true
     tuple val(meta), path("*.p_utg.gfa")       , emit: processed_unitigs, optional: true
     tuple val(meta), path("*.asm.p_ctg.gfa")   , emit: primary_contigs  , optional: true
     tuple val(meta), path("*.asm.a_ctg.gfa")   , emit: alternate_contigs, optional: true

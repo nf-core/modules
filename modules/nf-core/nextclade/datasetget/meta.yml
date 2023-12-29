@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
-
       licence: ["MIT"]
-
 input:
   - dataset:
       type: string
@@ -26,7 +24,6 @@ input:
       type: string
       description: Version tag of the dataset to download. A list of available datasets can be obtained using the nextclade dataset list command.
       pattern: ".+"
-
 output:
   - versions:
       type: file
@@ -36,7 +33,9 @@ output:
       type: path
       description: A directory containing the dataset files needed for nextclade run
       pattern: "prefix"
-
 authors:
+  - "@antunderwood"
+  - "@drpatelh"
+maintainers:
   - "@antunderwood"
   - "@drpatelh"

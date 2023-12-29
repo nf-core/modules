@@ -1,0 +1,61 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_SUBSAMPLE_FQ_SALMON"
+    script "../main.nf"
+    workflow "FASTQ_SUBSAMPLE_FQ_SALMON"
+    config "./nextflow.config"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_subsample_fq_salmon"
+    tag "fastq_subsample_fq_salmon"
+    tag "salmon/index"
+    tag "fq/subsample"
+    tag "salmon/quant"
+
+
+    test("homo_sapiens paired-end [fastq]") {
+
+        setup {
+            run("SALMON_INDEX") {
+                script "../../../../modules/nf-core/salmon/index/main.nf"
+                process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)        // genome_fasta
+                input[1] = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true) // transcript_fasta
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                             file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                             file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                            ]
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)        // genome_fasta
+                input[2] = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true) // transcript_fasta
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)          // gtf
+                input[4] = SALMON_INDEX.out.index
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.reads).match("reads") },
+                { assert snapshot(workflow.out.versions).match("versions") },
+
+                { assert workflow.out.index },
+                { assert workflow.out.results },
+                { assert workflow.out.json_info }
+            )
+        }
+    }
+}

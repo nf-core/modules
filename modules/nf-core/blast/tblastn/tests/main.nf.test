@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process BLAST_TBLASTN"
+    script "../main.nf"
+    process "BLAST_TBLASTN"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/tblastn"
+
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../makeblastdb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("Should search for translated nucleotide hits against a blast db") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.txt).match("txt") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for zipped translated nucleotide hits against a blast db") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.txt).match("gz_txt") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}

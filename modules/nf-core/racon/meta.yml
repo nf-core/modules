@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/lbcb-sci/racon
       doi: 10.1101/gr.214270.116
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
       type: file
       description: Alignment in PAF format
       pattern: "*.paf"
-
 output:
   - meta:
       type: map
@@ -47,6 +45,7 @@ output:
       type: file
       description: Improved genome assembly
       pattern: "*_assembly_consensus.fasta.gz"
-
 authors:
+  - "@avantonder"
+maintainers:
   - "@avantonder"

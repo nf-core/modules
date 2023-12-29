@@ -2,10 +2,10 @@ process GOAT_TAXONSEARCH {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::goat=0.2.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/goat:0.2.0--h92d785c_0':
-        'biocontainers/goat:0.2.0--h92d785c_0' }"
+        'https://depot.galaxyproject.org/singularity/goat:0.2.5--h9d3141d_2':
+        'biocontainers/goat:0.2.5--h9d3141d_2' }"
 
     input:
     tuple val(meta), val(taxon), path(taxa_file)

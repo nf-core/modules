@@ -2,7 +2,7 @@ process ONCOCNV {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::oncocnv=7.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/oncocnv/v7.0_cv2/oncocnv_v7.0_cv2.sif':
         'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv2' }"

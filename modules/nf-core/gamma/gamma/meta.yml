@@ -11,7 +11,6 @@ tools:
       tool_dev_url: "https://github.com/rastanton/GAMMA"
       doi: "10.1093/bioinformatics/btab607"
       licence: "['Apache License 2.0']"
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: Database in FASTA format
       pattern: "*.{fa,fasta}"
-
 output:
   - meta:
       type: map
@@ -37,28 +35,27 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - gamma:
       type: file
       description: GAMMA file with annotated gene matches
       pattern: "*.{gamma}"
-
   - psl:
       type: file
       description: PSL file with all gene matches found
       pattern: "*.{psl}"
-
   - gff:
       type: file
       description: GFF file
       pattern: "*.{gff}"
-
   - fasta:
       type: file
       description: multifasta file of the gene matches
       pattern: "*.{fasta}"
-
 authors:
+  - "@sateeshperi"
+  - "@rastanton"
+  - "@jvhagey"
+maintainers:
   - "@sateeshperi"
   - "@rastanton"
   - "@jvhagey"

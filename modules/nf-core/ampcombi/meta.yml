@@ -18,9 +18,7 @@ tools:
       homepage: "https://github.com/Darcy220606/AMPcombi"
       documentation: "https://github.com/Darcy220606/AMPcombi"
       tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -38,7 +36,6 @@ input:
       type: directory
       description: The path to the folder containing the fasta and tsv database files.
       pattern: "*/"
-
 output:
   - meta:
       type: map
@@ -93,7 +90,9 @@ output:
       type: file
       description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
       pattern: "AMPcombi_summary.html"
-
 authors:
+  - "@darcy220606"
+  - "@louperelo"
+maintainers:
   - "@darcy220606"
   - "@louperelo"

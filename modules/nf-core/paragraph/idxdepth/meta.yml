@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/Illumina/paragraph"
       doi: "10.1101/635011"
       licence: "['Apache License 2.0']"
-
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
       type: file
       description: Index of the reference genome FASTA
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -65,6 +63,7 @@ output:
       type: file
       description: A TSV file containing the binned normalized depth. Can only be calculated for CRAM files
       pattern: "*.tsv"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

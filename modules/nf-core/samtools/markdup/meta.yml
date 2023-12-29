@@ -12,8 +12,7 @@ tools:
       documentation: "https://www.htslib.org/doc/samtools-markdup.html"
       tool_dev_url: "https://github.com/samtools/samtools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

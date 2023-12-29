@@ -8,9 +8,7 @@ tools:
       homepage: "https://github.com/niu-lab/msisensor2"
       documentation: "https://github.com/niu-lab/msisensor2/blob/master/README.md"
       tool_dev_url: "https://github.com/niu-lab/msisensor2"
-
       licence: "GPL-3.0"
-
 input:
   - fasta:
       type: file
@@ -19,7 +17,6 @@ input:
   - output:
       type: val
       description: Name of output MSI scan to write.
-
 output:
   - versions:
       type: file
@@ -29,6 +26,7 @@ output:
       type: file
       description: Output scan of MSI regions in FASTA file.
       pattern: "*"
-
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"

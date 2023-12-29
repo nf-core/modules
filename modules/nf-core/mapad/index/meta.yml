@@ -12,7 +12,6 @@ tools:
       documentation: "https://github.com/mpieva/mapAD"
       tool_dev_url: "https://github.com/mpieva/mapAD"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fasta,fa,fna}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: directory
       description: mapAD genome index files
       pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
-
 authors:
+  - "@jch-13"
+maintainers:
   - "@jch-13"

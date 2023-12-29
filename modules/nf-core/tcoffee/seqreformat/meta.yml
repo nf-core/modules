@@ -1,0 +1,46 @@
+name: "tcoffee_seqreformat"
+description: Reformats files with t-coffee
+keywords:
+  - reformatting
+  - alignment
+  - genomics
+tools:
+  - "tcoffee":
+      description: "A collection of tools for Computing, Evaluating and Manipulating Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      homepage: "http://www.tcoffee.org/Projects/tcoffee/"
+      documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
+      tool_dev_url: "https://github.com/cbcrg/tcoffee"
+      doi: "10.1006/jmbi.2000.4042"
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+
+  - fasta:
+      type: file
+      description: Input file to be reformatted
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - formatted_file:
+      type: file
+      description: Formatted file
+      pattern: "*"
+
+authors:
+  - "@luisas"
+  - "@JoseEspinosa"

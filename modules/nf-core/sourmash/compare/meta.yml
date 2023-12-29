@@ -16,7 +16,6 @@ tools:
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
       licence: "['BSD-3-clause']"
-
 input:
   - meta:
       type: map
@@ -41,7 +40,6 @@ input:
       description: |
         If true, output will contain a (dis)similarity matrix in CSV format
         At least one of save_numpy_matrix or save_csv is required.
-
 output:
   - meta:
       type: map
@@ -64,6 +62,7 @@ output:
       type: file
       description: A text file that specifies the labels in the output numpy_matrix
       pattern: "*.comp.labels.txt"
-
 authors:
+  - "@taylorreiter"
+maintainers:
   - "@taylorreiter"

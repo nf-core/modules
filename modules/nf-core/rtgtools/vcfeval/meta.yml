@@ -10,9 +10,7 @@ tools:
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
       documentation: "https://github.com/RealTimeGenomics/rtg-tools"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-
       licence: "['BSD']"
-
 input:
   - meta:
       type: map
@@ -46,7 +44,6 @@ input:
   - sdf:
       type: file
       description: The SDF (RTG Sequence Data File) folder of the reference genome
-
 output:
   - meta:
       type: map
@@ -109,6 +106,7 @@ output:
       type: file
       description: A TXT file containing the data on the phasing
       pattern: "*.phasing.txt"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

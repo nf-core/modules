@@ -10,7 +10,6 @@ tools:
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
         compressed matrix file produced by
         mutlibamsummary or multibigwigsummary
       pattern: "*.{npz}"
-
 output:
   - meta:
       type: map
@@ -44,7 +42,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@tamara-hodgetts"
+  - "@chris-cheshire"
+maintainers:
   - "@tamara-hodgetts"
   - "@chris-cheshire"

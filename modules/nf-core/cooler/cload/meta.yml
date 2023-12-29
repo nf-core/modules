@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-clause"]
-
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
   - chromsizes:
       type: file
       description: Path to a chromsizes file.
-
 output:
   - meta:
       type: map
@@ -50,7 +48,9 @@ output:
   - cool_bin:
       type: integer
       description: Bins size in bp
-
 authors:
+  - "@jianhong"
+  - "@muffato"
+maintainers:
   - "@jianhong"
   - "@muffato"

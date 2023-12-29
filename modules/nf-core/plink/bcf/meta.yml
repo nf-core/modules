@@ -12,9 +12,7 @@ tools:
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
-
       licence: ["GPL"]
-
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: file
       description: Binary variant call format file (bcf)
       pattern: "*.{bcf}"
-
 output:
   - meta:
       type: map
@@ -48,6 +45,7 @@ output:
       type: file
       description: PLINK sample information file
       pattern: "*.{fam}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

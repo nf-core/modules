@@ -2,7 +2,7 @@ process GLIMPSE_LIGATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::glimpse-bio=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
         'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"

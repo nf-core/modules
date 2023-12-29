@@ -1,0 +1,52 @@
+nextflow_process {
+
+    name "Test Process NONPAREIL_CURVE"
+    script "../main.nf"
+    process "NONPAREIL_CURVE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nonpareil"
+    tag "nonpareil/curve"
+
+    test("candidatus_portiera_aleyrodidarum") {
+
+
+        setup {
+            run("NONPAREIL_NONPAREIL") {
+                script "../../../nonpareil/nonpareil/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                    input[1] = 'fastq'
+                    input[2] = 'kmer'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = NONPAREIL_NONPAREIL.out.npo
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.png[0][1]).name,
+                    ).match()
+                },
+                { assert snapshot(process.out.versions).match("versions") },
+            )
+        }
+
+    }
+
+}

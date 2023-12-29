@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/sguizard/gs-tama
       doi: 10.1186/s12864-020-07123-7
       licence: GNU GPL3
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: A fasta file of the genome used for the mapping
       pattern: "*.{fasta,fa}"
-
 output:
   - meta:
       type: map
@@ -78,6 +76,7 @@ output:
       type: file
       description: This file contains the variants called. Variants are only called if 5 or more reads show the variant at a specific locus. If you would like to change the threshold, please make an issue about this in the Github repo.
       pattern: "*_variants.txt"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

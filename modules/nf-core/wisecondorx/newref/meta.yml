@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
       licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: Multiple NPZ files from healthy patients
       pattern: "*.{npz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: The reference NPZ file
       pattern: "*.{npz}"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

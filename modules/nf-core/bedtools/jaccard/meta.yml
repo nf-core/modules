@@ -14,7 +14,6 @@ tools:
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -38,7 +37,6 @@ input:
       type: file
       description: A file containing all the contigs of the genome used to create the input files
       pattern: "*.{txt,sizes,fai}"
-
 output:
   - meta:
       type: map
@@ -53,6 +51,7 @@ output:
       type: file
       description: TSV file containing the results
       pattern: "*.tsv"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

@@ -17,7 +17,6 @@ tools:
       tool_dev_url: "https://github.com/vgl-hub/gfastats"
       doi: "10.1093/bioinformatics/btac460"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -49,7 +48,6 @@ input:
   - instructions:
       type: file
       description: set of instructions provided as an ordered list.
-
 output:
   - meta:
       type: map
@@ -68,6 +66,7 @@ output:
       type: file
       description: The assembly as modified by gfastats
       pattern: "*.{fasta,fastq,gfa}.gz"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

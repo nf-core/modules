@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/marbl/Mash
       doi: "10.1186/s13059-016-0997-x"
       licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: file
       description: Sequence files to match against
       pattern: "*.msh"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: List of sequences from fastx_db similar to query sequences
       pattern: "*.screen"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

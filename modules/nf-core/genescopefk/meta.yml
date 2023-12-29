@@ -8,11 +8,8 @@ tools:
   - "genescopefk":
       description: "A derivative of GenomeScope2.0 modified to work with FastK"
       homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
-
       tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
-
       licence: "https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"
-
 input:
   - meta:
       type: map
@@ -23,7 +20,6 @@ input:
       type: file
       description: A histogram formatted for GeneScope using the -G parameter from Fastk Histex
       pattern: "*.hist"
-
 output:
   - meta:
       type: map
@@ -58,6 +54,11 @@ output:
       type: file
       description: GeneScope histogram summary
       pattern: "*_summary.txt"
-
+  - kmer_cov:
+      type: float
+      description: Average kmer coverage value extracted from summary file
+      pattern: "[0-9.]+"
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

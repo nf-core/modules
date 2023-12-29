@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process CLUSTALO_ALIGN"
+    script "../main.nf"
+    process "CLUSTALO_ALIGN"
+    config "./nextflow.config"
+    
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clustalo"
+    tag "clustalo/align"
+
+    test("sarscov2 - contigs-fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.alignment).match("alignment")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs-fasta - guide_tree") {
+
+        setup {
+
+            run("CLUSTALO_GUIDETREE") {
+                script "../../guidetree/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], // meta map
+                                 file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                               ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                           ]
+                input[1] = CLUSTALO_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.alignment).match("with_guide_tree_alignment")},
+                { assert snapshot(process.out.versions).match("with_guide_tree_versions") }
+            )
+        }
+    }
+}

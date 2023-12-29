@@ -2,7 +2,7 @@ process KRAKENUNIQ_BUILD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::krakenuniq=1.0.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h19e8d03_0':
         'biocontainers/krakenuniq:1.0.4--pl5321h19e8d03_0' }"

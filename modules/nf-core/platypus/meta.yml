@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/andyrimmer/Platypus
       doi: "10.1038/ng.3036"
       licence: ["BSD-3-clause"]
-
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
       type: file
       description: File with regions to skip, region as comma-separated list of chr:start-end, or just list of chr, or nothing
       pattern: "*.bed|*.txt|*.tab"
-
 output:
   - meta:
       type: map
@@ -69,6 +67,7 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-
 authors:
+  - "@kubranarci"
+maintainers:
   - "@kubranarci"

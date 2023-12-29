@@ -8,8 +8,7 @@ tools:
   - "bedtools":
       description: "A powerful toolset for genome arithmetic"
       documentation: "https://bedtools.readthedocs.io/en/latest/content/tools/sort.html"
-      licence: "['MIT', 'GPL v2']"
-
+      licence: ["MIT", "GPL v2"]
 input:
   - meta:
       type: map
@@ -20,7 +19,6 @@ input:
       type: file
       description: BED file
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -32,9 +30,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - beds:
-      type: file
+      type: list
       description: list of split BED files
       pattern: "*.bed"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

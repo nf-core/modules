@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_BAM2FQ"
+    script "../main.nf"
+    process "SAMTOOLS_BAM2FQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/bam2fq"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - bam, false") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_converted_bam'], checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.reads[0][1]).linesGzip[0..6],
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam, true") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_converted_bam'], checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.reads[0][1].collect{
+                        if(it ==~ /.*(other|singleton)\.fq\.gz$/) {
+                            return file(it).name
+                        }
+                        return path(it).linesGzip[0..6]
+                    },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

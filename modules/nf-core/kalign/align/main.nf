@@ -2,7 +2,7 @@ process KALIGN_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kalign3=3.3.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kalign3:3.3.5--hdbdd923_0':
         'biocontainers/kalign3:3.3.5--hdbdd923_0' }"

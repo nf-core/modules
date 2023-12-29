@@ -22,7 +22,6 @@ tools:
       tool_dev_url: https://github.com/antismash/antismash
       doi: "10.1093/nar/gkab335"
       licence: ["AGPL v3"]
-
 input:
   - database_css:
       type: directory
@@ -39,13 +38,11 @@ input:
       description: |
         antismash/modules folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
       pattern: "modules"
-
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - database:
       type: directory
       description: Download directory for antiSMASH databases
@@ -55,6 +52,7 @@ output:
       description: |
         antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database and installation folder in pipelines.
       pattern: "antismash_dir"
-
 authors:
+  - "@jasmezz"
+maintainers:
   - "@jasmezz"

@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_AMPLICONCLIP"
+    script "../main.nf"
+    process "SAMTOOLS_AMPLICONCLIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/ampliconclip"
+
+    test("sarscov2 - bam, bed, false, false") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[2] = false
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.stats,
+                    process.out.rejects_bam,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+
+    test("sarscov2 - bam, bed, true, false") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[2] = true
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.stats,
+                    file(process.out.rejects_bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam, bed, true, true") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.stats,
+                    file(process.out.rejects_bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}

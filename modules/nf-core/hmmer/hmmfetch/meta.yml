@@ -15,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/EddyRivasLab/hmmer
       doi: "10.1371/journal.pcbi.1002195"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: File containing list of HMM models to extract. Specify either this or key. If none is specified, an index will be built.
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: Index for HMM database. Created if neither key nor keyfile is specified.
       pattern: "*.ssi"
-
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"

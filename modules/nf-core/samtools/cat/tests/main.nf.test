@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_CAT"
+    script "../main.nf"
+    process "SAMTOOLS_CAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/cat"
+
+    test("sarscov2 - [bam1, bam2]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_unaligned_bam'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [bam1, bam2] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_unaligned_bam'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.cram,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

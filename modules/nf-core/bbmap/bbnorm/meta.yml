@@ -11,7 +11,6 @@ tools:
       documentation: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
       tool_dev_url: "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbnorm-guide/"
       licence: "BBMap - Bushnell B. - sourceforge.net/projects/bbmap/"
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: file
       description: fastq file
       pattern: "*.{fastq,fq}(.gz)?"
-
 output:
   - meta:
       type: map
@@ -37,6 +35,7 @@ output:
       type: file
       description: fastq file
       pattern: "*.{fastq, fq}.gz"
-
 authors:
+  - "@danilodileo"
+maintainers:
   - "@danilodileo"

@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process BISMARK_SUMMARY"
+    script "../main.nf"
+    process "BISMARK_SUMMARY"
+    tag "bismark"
+    tag "bismark/summary"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Should run bismark/summary without failures") {
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+
+            run("BISMARK_ALIGN") {
+                script "../../align/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:false ],
+                                [ 
+                                    file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
+                                    file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                                ]
+                               ]
+                    input[1] = BISMARK_GENOMEPREPARATION.out.index
+                    """
+                }
+            }
+
+            run("BISMARK_DEDUPLICATE") {
+                script "../../deduplicate/main.nf"
+                process {
+                    """
+                    input[0] = BISMARK_ALIGN.out.bam
+                    """
+                }
+            }
+
+            run("BISMARK_METHYLATIONEXTRACTOR") {
+                script "../../methylationextractor/main.nf"
+                process {
+                    """
+                    input[0] = BISMARK_ALIGN.out.bam
+                    input[1] = BISMARK_GENOMEPREPARATION.out.index
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = BISMARK_ALIGN.out.bam.collect { meta, bam -> bam }
+                input[1] = BISMARK_ALIGN.out.report.collect { meta, report -> report }
+                input[2] = BISMARK_DEDUPLICATE.out.report.collect { meta, report -> report }
+                input[3] = BISMARK_METHYLATIONEXTRACTOR.out.report.collect { meta, report -> report }
+                input[4] = BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect { meta, txt -> txt }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out.versions).match("versions") },
+            {
+                with(process.out.summary) {
+                    assert get(0).size() == 2
+                    assert get(0).every { it.contains('bismark_summary_report') }
+                    assert path(get(0).get(1)).readLines().first().contains('CpGs')
+                    assert path(get(0).get(0)).readLines().last().contains('</html>')
+                }
+            }
+            )
+        }
+
+    }
+
+}

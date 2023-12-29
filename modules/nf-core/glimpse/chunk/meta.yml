@@ -12,21 +12,18 @@ tools:
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - input:
       type: file
       description: |
         Target dataset in VCF/BCF format defined at all variable positions.
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-
   - region:
       type: string
       description: |
@@ -38,16 +35,15 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - txt:
       type: file
       description: Tab delimited output txt file containing buffer and imputation regions.
       pattern: "*.{txt}"
-
 authors:
+  - "@louislenezet"
+maintainers:
   - "@louislenezet"

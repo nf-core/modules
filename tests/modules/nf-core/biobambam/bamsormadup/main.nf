@@ -11,7 +11,7 @@ workflow test_biobambam_bamsormadup_multi_input {
         [file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)],
     ]
 
-    BIOBAMBAM_BAMSORMADUP ( input, [] )
+    BIOBAMBAM_BAMSORMADUP ( input, [[:],[]] )
 }
 
 workflow test_biobambam_bamsormadup_single_input {
@@ -21,5 +21,5 @@ workflow test_biobambam_bamsormadup_single_input {
         [file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)],
     ]
 
-    BIOBAMBAM_BAMSORMADUP ( input, [] )
+    BIOBAMBAM_BAMSORMADUP ( input, [[:],[]] )
 }

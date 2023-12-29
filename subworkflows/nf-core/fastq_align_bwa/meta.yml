@@ -34,7 +34,6 @@ input:
       description: |
         Optional reference fasta file. This only needs to be given if val_sort_bam = true.
         Structure: [ val(meta), path(fasta) ]
-
 output:
   - bam_orig:
       description: |
@@ -69,4 +68,6 @@ output:
         Files containing software versions
         Structure: [ path(versions.yml) ]
 authors:
+  - "@JoseEspinosa"
+maintainers:
   - "@JoseEspinosa"

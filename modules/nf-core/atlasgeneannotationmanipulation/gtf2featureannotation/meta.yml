@@ -10,7 +10,6 @@ tools:
       documentation: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
       tool_dev_url: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
       licence: "['Apache-2.0']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       description: |
         An optional cDNA file for extracting meta info and/or filtering.
       pattern: "*.{gtf}"
-
 output:
   - versions:
       type: file
@@ -50,6 +48,7 @@ output:
         --dummy-from-cdnas only). See documentation at
         https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
       pattern: "*.{tsv}"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"
