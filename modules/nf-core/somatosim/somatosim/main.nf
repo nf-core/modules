@@ -17,18 +17,21 @@
 
 process SOMATOSIM_SOMATOSIM {
     tag "$meta.id"
-    cpus 4
+    cpus 8
     memory 12g
+    debug true
+    cache false
     // label 'process_high'
 
     // TODO nf-core: List required Conda package(s).
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+    // conda "${moduleDir}/environment.yml"
+    container "somatosim:latest"
+    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //     'somatosim:latest':
+    //     'somatosim:latest' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -42,7 +45,8 @@ process SOMATOSIM_SOMATOSIM {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("./output_dir/*.bam"), emit: bam
+    tuple val(meta), path("*.somatosim.bam"), emit: bam
+    path("simulation_log.txt")
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -62,10 +66,12 @@ process SOMATOSIM_SOMATOSIM {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """ 
-    somatosim \\
-        -i ${prefix}.bam \\
+    set -euxo
+
+    somatosim -h
+    somatosim -i ${prefix}.bam \\
         -b ${bed} \\
-        -o ./output_dir \\
+        -o output_dir \\
         --vaf-low 0.01 \\
         --vaf-high 0.05 \\
         --number-snv 100 \\

@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 
-include { SOMATOSIM_SOMATOSIM } from './somatosim/main'
+include { SOMATOSIM_SOMATOSIM } from '../../../../modules/nf-core/somatosim/somatosim'
 
 workflow {
     // bam = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.markduplicates.sorted.bam')
