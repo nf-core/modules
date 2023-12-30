@@ -5,7 +5,7 @@ keywords:
   - pangolin
   - lineage
 tools:
-  - star:
+  - pangolin:
       description: |
         Phylogenetic Assignment of Named Global Outbreak LINeages
       homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
@@ -21,6 +21,10 @@ input:
       description: |
         The genome assembly to be evaluated
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
   - report:
       type: file
       description: Pangolin lineage report
