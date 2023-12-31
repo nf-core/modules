@@ -13,7 +13,7 @@ process GANON_BUILDCUSTOM {
     path genome_size_files
 
     output:
-    tuple val(meta), path("*.{ibf,tax}")          , emit: db
+    tuple val(meta), path("*.{hibf,ibf,tax}")     , emit: db
     tuple val(meta), path("*.info.tsv")           , emit: info            , optional: true
     path "versions.yml"                           , emit: versions
 
@@ -47,7 +47,7 @@ process GANON_BUILDCUSTOM {
     def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
     def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
-    touch ${prefix}.ibf
+    touch ${prefix}.hibf
     touch ${prefix}.tax
     touch ${prefix}.info.tsv
 
