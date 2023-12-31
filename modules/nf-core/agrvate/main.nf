@@ -31,4 +31,17 @@ process AGRVATE {
         agrvate: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${fasta.baseName}-results
+    touch ${fasta.baseName}-results/${fasta.baseName}-summary.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agrvate: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
+    END_VERSIONS
+    """
 }
