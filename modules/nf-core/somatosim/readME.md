@@ -1,0 +1,1 @@
+nextflow run ~/repos/nf-core/modules/tests/modules/nf-core/somatosim/somatosim_workflow.nf -with-docker somatosim:latest -dump-channels -resume -dump-hashes

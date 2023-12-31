@@ -17,8 +17,8 @@
 
 process SOMATOSIM_SOMATOSIM {
     tag "$meta.id"
-    cpus 8
-    memory 12g
+    // cpus 10
+    // memory 4g
     debug true
     cache false
     // label 'process_high'
@@ -29,6 +29,7 @@ process SOMATOSIM_SOMATOSIM {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     // conda "${moduleDir}/environment.yml"
     container "somatosim:latest"
+
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //     'somatosim:latest':
     //     'somatosim:latest' }"
@@ -66,18 +67,16 @@ process SOMATOSIM_SOMATOSIM {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """ 
-    set -euxo
 
-    somatosim -h
+
     somatosim -i ${prefix}.bam \\
         -b ${bed} \\
         -o output_dir \\
         --vaf-low 0.01 \\
         --vaf-high 0.05 \\
         --number-snv 100 \\
-        --random-seed 0
-        
-    # $args \\
+        --random-seed 0 
+
 
     #cat <<-END_VERSIONS > versions.yml
     #"${task.process}":
