@@ -14,7 +14,7 @@ process GANON_CLASSIFY {
     output:
     tuple val(meta), path("*.tre"), emit: tre
     tuple val(meta), path("*.rep"), emit: report
-    tuple val(meta), path("*.lca"), emit: lca           , optional: true
+    tuple val(meta), path("*.one"), emit: one           , optional: true
     tuple val(meta), path("*.all"), emit: all           , optional: true
     tuple val(meta), path("*.unc"), emit: unc           , optional: true
     tuple val(meta), path("*.log"), emit: log
@@ -28,11 +28,11 @@ process GANON_CLASSIFY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input  = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
     """
-    dbprefix=\$(find -L . -name '*.ibf' | sed 's/\\.ibf\$//')
+    dbprefix=\$(find -L . -name '*.*ibf' | sed 's/\\.h\\?ibf\$//')
 
     ganon \\
         classify \\
-        --db-prefix \${dbprefix%%.ibf} \\
+        --db-prefix \${dbprefix%%.*ibf} \\
         $args \\
         --threads $task.cpus \\
         --output-prefix ${prefix} \\
@@ -52,7 +52,7 @@ process GANON_CLASSIFY {
     """
     touch ${prefix}.tre
     touch ${prefix}.report
-    touch ${prefix}.lca
+    touch ${prefix}.one
     touch ${prefix}.all
     touch ${prefix}.unc
 
