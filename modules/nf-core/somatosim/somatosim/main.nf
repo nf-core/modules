@@ -17,8 +17,8 @@
 
 process SOMATOSIM_SOMATOSIM {
     tag "$meta.id"
-    // cpus 10
-    // memory 4g
+    cpus 10
+    memory 16g
     debug true
     cache false
     // label 'process_high'
@@ -46,8 +46,8 @@ process SOMATOSIM_SOMATOSIM {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.somatosim.bam"), emit: bam
-    path("simulation_log.txt")
+    tuple val(meta), path("./output_dir/${meta.id}.somatosim.bam"), emit: bam
+    path("./output_dir/simulation_output.txt")
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -68,20 +68,24 @@ process SOMATOSIM_SOMATOSIM {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """ 
 
+    
 
-    somatosim -i ${prefix}.bam \\
-        -b ${bed} \\
+    # for some reason the symbolic link doesn't work as input, the package is stuck in limbo
+    
+    somatosim -i \$(readlink -f ${prefix}.bam) \\
+        -b \$(readlink -f ${bed}) \\
         -o output_dir \\
         --vaf-low 0.01 \\
         --vaf-high 0.05 \\
         --number-snv 100 \\
-        --random-seed 0 
+        --random-seed 0 \\
+        --verbose
 
 
-    #cat <<-END_VERSIONS > versions.yml
-    #"${task.process}":
-    #    somatosim: \$(samtools --version |& sed '1!d ; s/samtools //')
-    #END_VERSIONS
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        somatosim: \$(samtools --version |& sed '1!d ; s/samtools //')
+    END_VERSIONS
     """
 
     stub:
