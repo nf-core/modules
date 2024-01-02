@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process GENOMAD_ENDTOEND"
+    script "../main.nf"
+    process "GENOMAD_ENDTOEND"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genomad"
+    tag "genomad/install"
+    tag "genomad/endtoend"
+
+    test("sarscov2 - genome - fasta") {
+        setup {
+            run("GENOMAD_DOWNLOAD") {
+                script "../../download/main.nf"
+                }
+            }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[1] = GENOMAD_DOWNLOAD.out.genomad_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+
+        setup {
+            run("GENOMAD_DOWNLOAD") {
+                script "../../download/main.nf"
+                }
+            }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[1] = GENOMAD_DOWNLOAD.out.genomad_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
