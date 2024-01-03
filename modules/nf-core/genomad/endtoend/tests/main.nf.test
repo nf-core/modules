@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "genomad"
-    tag "genomad/install"
+    tag "genomad/download"
     tag "genomad/endtoend"
 
     test("sarscov2 - genome - fasta") {
@@ -33,7 +33,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.aggregated_classification,
+                    process.out.taxonomy,
+                    process.out.provirus,
+                    process.out.compositions,
+                    process.out.calibrated_classification,
+                    process.out.plasmid_genes,
+                    process.out.virus_fasta,
+                    process.out.virus_genes,
+                    process.out.virus_proteins,
+                    process.out.virus_summary,
+                    process.out.versions,
+                    ).match()
+                },
+                { assert file(process.out.plasmid_fasta.get(0).get(1)).exists() },
+                { assert file(process.out.plasmid_proteins.get(0).get(1)).exists() }
             )
         }
     }
