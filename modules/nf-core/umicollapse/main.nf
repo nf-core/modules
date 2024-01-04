@@ -26,6 +26,8 @@ process UMICOLLAPSE {
     """
     umicollapse \\
         bam \\
+        -Xms${String.format("%.0f", Math.rint(0.2 * task.memory.toGiga()))}g  \\
+        -Xmx${task.memory.toGiga()}g  \\
         -i $bam \\
         -o ${prefix}.bam \\
         $args
