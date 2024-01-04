@@ -20,9 +20,10 @@ nextflow_process {
                     """
                     input[0] = Channel.fromList([
                         tuple([id:'test'],
-                            tuple(file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                                  file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
-                            )
+                            [
+                             file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                             file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                            ]
                         )
                     ])
                     """
@@ -33,10 +34,7 @@ nextflow_process {
         when {
             process {
                 """
-                input = [
-                    [ id:'test' ], // meta map
-                    OPENMS_IDMERGER.out.idxml.collect { meta, idxml -> idxml }
-                    ]
+                input[0] = OPENMS_IDMERGER.out.idxml
                 """
             }
         }
@@ -61,9 +59,10 @@ nextflow_process {
                     """
                     input[0] = Channel.fromList([
                         tuple([id:'test'],
-                            tuple(file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                                  file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
-                            )
+                            [
+                             file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                             file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                            ]
                         )
                     ])
                     """
@@ -74,10 +73,7 @@ nextflow_process {
         when {
             process {
                 """
-                input = [
-                    [ id:'test' ], // meta map
-                    OPENMS_IDMERGER.out.idxml.collect { meta, idxml -> idxml }
-                    ]
+                input[0] = OPENMS_IDMERGER.out.idxml
                 """
             }
         }
