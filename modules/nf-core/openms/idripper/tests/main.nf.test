@@ -1,0 +1,92 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test openms/idripper
+nextflow_process {
+
+    name "Test Process OPENMS_IDRIPPER"
+    script "../main.nf"
+    process "OPENMS_IDRIPPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idmerger"
+    tag "openms/idripper"
+
+    test("proteomics - split - idxml") {
+        setup {
+            run("OPENMS_IDMERGER") {
+                script "../../idmerger/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([id:'test'],
+                            tuple(file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                                  file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                            )
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input = [
+                    [ id:'test' ], // meta map
+                    OPENMS_IDMERGER.out.idxml.collect { meta, idxml -> idxml }
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - split - idxml - stub") {
+
+        options "-stub"
+
+        setup {
+            run("OPENMS_IDMERGER") {
+                script "../../idmerger/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([id:'test'],
+                            tuple(file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                                  file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                            )
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input = [
+                    [ id:'test' ], // meta map
+                    OPENMS_IDMERGER.out.idxml.collect { meta, idxml -> idxml }
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
