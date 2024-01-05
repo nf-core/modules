@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process OPENMS_IDRIPPER"
     script "../main.nf"
     process "OPENMS_IDRIPPER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,24 +11,25 @@ nextflow_process {
     tag "openms/idmerger"
     tag "openms/idripper"
 
-    test("proteomics - split - idxml") {
-        setup {
-            run("OPENMS_IDMERGER") {
-                script "../../idmerger/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                        tuple([id:'test'],
-                            [
-                             file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                             file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
-                            ]
-                        )
-                    ])
-                    """
-                }
+    setup {
+        run("OPENMS_IDMERGER") {
+            script "../../idmerger/main.nf"
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([id:'test'],
+                        [
+                         file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                         file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                        ]
+                    )
+                ])
+                """
             }
         }
+    }
+
+    test("proteomics - split - idxml") {
 
         when {
             process {
@@ -49,24 +51,6 @@ nextflow_process {
     test("proteomics - split - idxml - stub") {
 
         options "-stub"
-
-        setup {
-            run("OPENMS_IDMERGER") {
-                script "../../idmerger/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                        tuple([id:'test'],
-                            [
-                             file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                             file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
-                            ]
-                        )
-                    ])
-                    """
-                }
-            }
-        }
 
         when {
             process {
