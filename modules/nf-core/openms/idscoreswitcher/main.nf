@@ -38,6 +38,7 @@ process OPENMS_IDSCORESWITCHER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$idxml" == "${prefix}.idXML") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     touch ${prefix}.idXML
