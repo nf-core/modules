@@ -19,7 +19,8 @@ process OPENMS_IDSCORESWITCHER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_score_switched"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$idxml" == "${prefix}.idXML") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     IDScoreSwitcher \\
