@@ -48,10 +48,10 @@ output:
       type: file
       description: Plain ganon report file with only targets with match
       pattern: "*.rep"
-  - lca:
+  - one:
       type: file
-      description: Information about the lowest common ancestor match of a given read
-      pattern: "*.lca"
+      description: Information about a single (best) match of a given read after EM or LCA algorithms
+      pattern: "*.one"
   - all:
       type: file
       description: Information of all matches to a given read

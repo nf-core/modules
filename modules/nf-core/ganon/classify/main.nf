@@ -4,7 +4,7 @@ process GANON_CLASSIFY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0:
+        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
         'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
 
     input:
@@ -51,10 +51,11 @@ process GANON_CLASSIFY {
     def input  = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
     """
     touch ${prefix}.tre
-    touch ${prefix}.report
+    touch ${prefix}.rep
     touch ${prefix}.one
     touch ${prefix}.all
     touch ${prefix}.unc
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
