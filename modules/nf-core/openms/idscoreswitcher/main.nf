@@ -37,7 +37,7 @@ process OPENMS_IDSCORESWITCHER {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_score_switched"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.idXML
