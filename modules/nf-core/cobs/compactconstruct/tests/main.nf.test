@@ -1,0 +1,49 @@
+nextflow_process {
+    name "Test Process COBS_COMPACTCONSTRUCT"
+    script "../main.nf"
+    process "COBS_COMPACTCONSTRUCT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cobs"
+    tag "cobs/compactconstruct"
+
+    test("sarscov2 - genome - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()}
+            )
+        }
+    }
+}

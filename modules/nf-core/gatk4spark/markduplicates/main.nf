@@ -24,7 +24,7 @@ process GATK4SPARK_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
     def input_list = bam.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3072
@@ -46,7 +46,18 @@ process GATK4SPARK_MARKDUPLICATES {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-        openjdk: \$(echo \$(java -version 2>&1) | grep version | sed 's/\"//g' | cut -f3 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    """
+    touch ${prefix}
+    touch ${prefix}.bai
+    touch ${prefix}.metrics
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }
