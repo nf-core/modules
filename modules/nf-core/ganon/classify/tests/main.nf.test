@@ -51,7 +51,13 @@ nextflow_process {
                         process.out.tre
                     ).match()
                 }
-                //{ assert path(process.out.log.get(1)).readLines().last().contains('Total elapsed time:') }
+                {
+                with(process.out.log) {
+                    with(get(0)) {
+                        assert path(get(1)).readLines().last().contains("Total elapsed time:")
+                        }
+                    }
+                }
             )
         }
 
