@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process CHEWBBACA_CREATESCHEMA"
+    script "../main.nf"
+    process "CHEWBBACA_CREATESCHEMA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "chewbbaca"
+    tag "chewbbaca/createschema"
+
+    test("test_chewbbaca_createschema_single") {
+
+        when {
+            process {
+
+                """
+
+                ptf     = []
+                cds     = []
+                input[0] = [[ id:'test', single_end:false ], // meta map
+                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)]
+                input[1] = ptf
+                input[2] = cds
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_chewbbaca_createschema_multi") {
+
+        when {
+            process {
+
+                """
+
+                ptf     = []
+                cds     = []
+                input[0] = = [[ id:'test', single_end:false ], // meta map
+                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = ptf
+                input[2] = cds
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_chewbbaca_createschema_gz") {
+
+        when {
+            process {
+
+                """
+
+                ptf     = []
+                cds     = []
+                input[0] = [[ id:'test', single_end:false ], // meta map
+                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)]
+                input[1] = ptf
+                input[2] = cds
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
