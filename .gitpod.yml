@@ -3,6 +3,11 @@ tasks:
   - name: unset JAVA_TOOL_OPTIONS
     command: |
       unset JAVA_TOOL_OPTIONS
+  - name: Install icdiff for nf-test diff viewing
+    command: |
+      sudo apt install icdiff
+      export NFT_DIFF="icdiff"
+      export NFT_DIFF_ARGS="-N --cols 200 -L expected -L observed -t"
 vscode:
   extensions: # based on nf-core.nf-core-extensionpack
     - codezombiech.gitignore # Language support for .gitignore files
