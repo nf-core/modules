@@ -52,9 +52,10 @@ nextflow_process {
                     ).match()
                 }
                 {
-                with(process.out.log) {
-                    with(get(0)) {
-                        assert path(get(1)).readLines().last().contains("Total elapsed time:")
+                    with(process.out.log) {
+                        with(get(0)) {
+                            assert get(1).endsWith("log")
+                            assert path(get(1)).readLines().last().contains("Total elapsed time:").match("log")
                         }
                     }
                 }
