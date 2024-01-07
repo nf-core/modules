@@ -5,7 +5,7 @@ process GANON_TABLE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
-        'biocontainers/ganon:2.0.0--py39ha35b9be_0 }"
+        'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
 
     input:
     tuple val(meta), path(tre)
