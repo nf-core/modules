@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process SPACERANGER_MKREF"
+    script "../main.nf"
+    process "SPACERANGER_MKREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spaceranger"
+    tag "spaceranger/mkref"
+
+    test("homo_sapiens - fasta - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[2] = 'homo_sapiens_chr22_reference'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                // TODO: Add more assertions
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+}
