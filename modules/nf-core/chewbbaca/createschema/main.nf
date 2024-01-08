@@ -54,16 +54,10 @@ process CHEWBBACA_CREATESCHEMA {
 
     """
     mkdir -p results/$meta.id/short/
-    touch results/$meta.id/contigs-protein{1..2}.fasta
-    touch results/$meta.id/contigs-protein{4..11}.fasta
-    touch results/$meta.id/contigs-protein{13..14}.fasta
-    touch results/$meta.id/contigs-protein{16..20}.fasta
+    touch results/$meta.id/contigs-protein{1..*}.fasta
     touch results/$meta.id/.genes_list
     touch results/$meta.id/.schema_config
-    touch results/$meta.id/short/contigs-protein{1..2}_short.fasta
-    touch results/$meta.id/short/contigs-protein{4..11}_short.fasta
-    touch results/$meta.id/short/contigs-protein{13..14}_short.fasta
-    touch results/$meta.id/short/contigs-protein{16..20}_short.fasta
+    touch results/$meta.id/short/contigs-protein{1..*}_short.fasta
     touch results/cds_coordinates.tsv
     touch results/invalid_cds.txt
 
