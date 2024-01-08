@@ -35,6 +35,49 @@ nextflow_process {
 
     }
 
+    test("proteomics - pdb folder") {
+        when {
+            params {
+                folderPath = 'pdb_dir'
+            }
+
+            process {
+                """
+                file(params.folderPath).mkdirs()
+                originalFile = file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true)
+                copy_1 = originalFile.copyTo(file("tim1_cop1.pdb"))
+                copy_2 = originalFile.copyTo(file("tim1_cop2.pdb"))
+                copy_1.moveTo(file(params.folderPath + "/tim1_cop1.pdb"))
+                copy_2.moveTo(file(params.folderPath + "/tim1_cop2.pdb"))
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.folderPath, checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fcz
+                    with(process.out.fcz) {
+                        assert size() == 1
+                        with(get(0).get(1)) {
+                            File folder = new File(get(0).get(1))
+                            File[] listOfFiles = folder.listFiles()
+                            listOfFiles = listOfFiles.sort { it.name }
+                            assert listOfFiles.length == 8
+                        }
+                    }
+                },
+                { assert snapshot(process.out.versions).match('versions_dir') }
+            )
+        }
+
+    }
+
     test("proteomics - pdb - stub") {
 
         options "-stub"
