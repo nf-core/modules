@@ -12,6 +12,8 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     take:
     ch_fasta                // channel: [ val(meta), [ fasta ] ]
     ch_apriori_sequence     // channel: [ val(meta), val(sequence) ]; Optional: Set to [] if not needed
+                            // val(meta) from ch_fasta and ch_apriori_sequence are only required to have
+                            // the same `id`
 
     main:
     ch_versions = Channel.empty()
@@ -36,10 +38,12 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
 
     // TIDK_SEARCH as TIDK_SEARCH_APRIORI
     ch_apriori_inputs       = ch_sorted_fasta
+                            | map { meta, fasta -> [ meta.id, meta, fasta ] }
                             | join(
-                                ch_apriori_sequence
-                                ?: Channel.empty()
+                                ( ch_apriori_sequence ?: Channel.empty() )
+                                | map { meta, seq -> [ meta.id, seq ] }
                             )
+                            | map { id, meta, fasta, seq -> [ meta, fasta, seq ] }
 
     TIDK_SEARCH_APRIORI (
         ch_apriori_inputs.map { meta, fasta, seq -> [ meta, fasta ] },
