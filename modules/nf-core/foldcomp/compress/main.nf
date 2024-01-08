@@ -11,8 +11,8 @@ process FOLDCOMP_COMPRESS {
     tuple val(meta), path(pdb)
 
     output:
-    tuple val(meta), path("{${meta.id}_fcz,*.fcz}"), emit: fcz
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("*fcz"), emit: fcz
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
