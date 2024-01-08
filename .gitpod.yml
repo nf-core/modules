@@ -6,7 +6,7 @@ tasks:
   - name: Use pdiff for nf-test diff viewing
     command: |
       export NFT_DIFF="pdiff"
-      export NFT_DIFF_ARGS="-N --cols 200 -L expected -L observed -t"
+      export NFT_DIFF_ARGS="--line-numbers --expand-tabs=2"
 
 vscode:
   extensions: # based on nf-core.nf-core-extensionpack
