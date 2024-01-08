@@ -89,7 +89,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 illumina contigs [fasta] - stub") {
+    test("sarscov2 illumina contigs [fasta] & genome [fasta_gz] - stub") {
 
         options "-stub"
 
@@ -98,10 +98,11 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                            file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
                 ]
                 input[1] = [] // ptf
-                input[2] = [] //cds
+                input[2] = [] // cds
                 """
             }
         }
