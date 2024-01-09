@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process THERMORAWFILEPARSER"
+    script "../main.nf"
+    process "THERMORAWFILEPARSER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "thermorawfileparser"
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    test("proteomics - parse - raw") {
+
+        when {
+            process {
+                """
+                input = [
+                    [ id:'test'], // meta map
+                    // TODO: update with valid raw file
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - parse - raw - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input = [
+                    [ id:'test'], // meta map
+                    // TODO: update with valid raw file
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
