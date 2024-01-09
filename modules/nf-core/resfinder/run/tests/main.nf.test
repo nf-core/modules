@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process RESFINDER_RUN"
+    script "../main.nf"
+    process "RESFINDER_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "resfinder"
+    tag "resfinder/run"
+
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ],
+                    []
+                    ]
+
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
