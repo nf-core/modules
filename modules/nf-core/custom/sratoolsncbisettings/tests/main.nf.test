@@ -20,7 +20,7 @@ nextflow_process {
             process {
                 """
                 file(params.settings_path).mkdirs()
-                def settings = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                def settings = file(params.modules_test_data_base + '/data/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 settings.copyTo(params.settings_file)
                 """
             }

@@ -13,7 +13,7 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['SRR13255544_tar_gz'], checkIfExists: true) ])
+                    input[0] = Channel.of([ [], file(params.modules_test_data_base + '/data/genomics/sarscov2/illumina/sra/SRR13255544.tar.gz', checkIfExists: true) ])
                     """
                 }
             }
@@ -23,7 +23,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[1] = file(params.modules_test_data_base + '/data/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -44,7 +44,7 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.test_data['sarscov2']['illumina']['SRR11140744_tar_gz'], checkIfExists: true) ])
+                    input[0] = Channel.of([ [], file(params.modules_test_data_base + '/data/genomics/sarscov2/illumina/sra/SRR11140744.tar.gz', checkIfExists: true) ])
                     """
                 }
             }
@@ -54,7 +54,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[1] = file(params.modules_test_data_base + '/data/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }

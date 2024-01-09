@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[1] = file(params.modules_test_data_base + '/data/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -38,7 +38,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'SRR1170046' ])
-                input[1] = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                input[1] = file(params.modules_test_data_base + '/data/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }
