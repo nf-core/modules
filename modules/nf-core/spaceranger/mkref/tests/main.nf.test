@@ -23,7 +23,7 @@ nextflow_process {
 
         then {
             assertAll(
-                // TODO: Add more assertions
+                // TODO nf-core: Add more assertions
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
