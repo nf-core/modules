@@ -15,8 +15,8 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.4--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:1.8.4--r43hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.5--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.5--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info

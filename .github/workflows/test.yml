@@ -22,7 +22,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-python@v3
       - uses: pre-commit/action@v3.0.0
         # FIXME Flip this off once we get to less than a couple hundred. Adding
@@ -304,6 +304,8 @@ jobs:
           - profile: "conda"
             tags: parabricks/indexgvcf
           - profile: "conda"
+            tags: parabricks/genotypegvcf
+          - profile: "conda"
             tags: picard/collecthsmetrics
           - profile: "conda"
             tags: picard/collectwgsmetrics
@@ -553,7 +555,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.2"
+      NFTEST_VER: "0.8.3"
 
     steps:
       - uses: actions/checkout@v4
