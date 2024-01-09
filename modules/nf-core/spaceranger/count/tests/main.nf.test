@@ -70,6 +70,7 @@ nextflow_process {
                     process.out.versions,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
+                        'scalefactors_json.json',
                         'barcodes.tsv.gz',
                         'features.tsv.gz',
                         'matrix.mtx.gz'
@@ -77,6 +78,7 @@ nextflow_process {
                     ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'scalefactors_json.json' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'features.tsv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'matrix.mtx.gz' }).exists() }
@@ -204,6 +206,7 @@ nextflow_process {
                     process.out.versions,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
+                        'scalefactors_json.json',
                         'molecule_info.h5',
                         'barcodes.tsv.gz',
                         'features.tsv.gz',
@@ -212,6 +215,7 @@ nextflow_process {
                     ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'scalefactors_json.json' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'molecule_info.h5' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'features.tsv.gz' }).exists() },
