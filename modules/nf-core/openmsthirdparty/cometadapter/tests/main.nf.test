@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process OPENMSTHIRDPARTY_COMETADAPTER"
+    script "../main.nf"
+    process "OPENMSTHIRDPARTY_COMETADAPTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openmsthirdparty"
+    tag "openmsthirdparty/cometadapter"
+
+    test("proteomics - search engine comet - mzml") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    // TODO: First introduce thermorawfileparser and use it in setup
+                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
+    test("proteomics - search engine comet - mzml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // TODO: First introduce thermorawfileparser and use it in setup
+                file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
