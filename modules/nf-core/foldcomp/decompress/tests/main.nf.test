@@ -66,7 +66,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match('stub') }
+                { assert snapshot(process.out.versions).match('versions_stub') }
             )
         }
 
