@@ -4,6 +4,8 @@ nextflow_process {
     process "SRATOOLS_FASTERQDUMP"
     tag "modules"
     tag "modules_nfcore"
+    tag "untar"
+    tag "sratools"
     tag "sratools/fasterqdump"
 
     test("Single-end") {
