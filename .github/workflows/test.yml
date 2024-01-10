@@ -63,9 +63,6 @@ jobs:
         id: get_tags
         run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
 
-      - name: debug
-        run: cat .github/tags.yml
-
       # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
       - uses: mirpedrol/paths-filter@main
         id: filter
@@ -74,7 +71,7 @@ jobs:
           token: ""
 
   nf-core-lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: nf-core-lint
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
@@ -93,13 +90,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          cache: "pip"
 
       - name: Install pip
         run: python -m pip install --upgrade pip
@@ -127,7 +118,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -430,7 +421,7 @@ jobs:
             !${{ github.workspace }}/.singularity
 
   nf-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
