@@ -367,6 +367,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
@@ -550,17 +551,27 @@ jobs:
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
 
+      - name: Look if nf-test is already installed and write to env variable
+        id: check-nftest
+        run: |
+          if [ -f /usr/local/bin/nf-test ]; then
+            echo "nftest_installed=true" >> $GITHUB_ENV
+          else
+            echo "nftest_installed=false" >> $GITHUB_ENV
+          fi
+
       - name: Cache nf-test installation
+        if: env.nftest_installed != 'true'
         id: cache-software
         uses: actions/cache@v3
         with:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
+          key: ${{ runner.os }}-nftest-${{ env.date }}
 
       - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
+        if: steps.cache-software.outputs.cache-hit != 'true' && env.nftest_installed != 'true'
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
