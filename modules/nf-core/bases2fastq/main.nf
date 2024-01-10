@@ -2,7 +2,7 @@ process BASES2FASTQ {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/bases2fastq:1.1.0"
+    container "docker.io/elembio/bases2fastq:1.6"
 
     input:
     tuple val(meta), path(run_manifest), path(run_dir)
