@@ -30,7 +30,7 @@ process BASES2FASTQ {
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
     """
     export HOME=\$(pwd)
-    
+
     bases2fastq \\
         -p $task.cpus \\
         $runManifest \\
