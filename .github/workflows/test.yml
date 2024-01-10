@@ -544,6 +544,8 @@ jobs:
             tags: vt/decompose
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: "singularity"
+            tags: bases2fastq
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
