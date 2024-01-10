@@ -14,8 +14,7 @@ nextflow_process {
         when {
             params {
                 settings_path = '/tmp/.ncbi'
-                settings_file  = "${params.settings_path}/user-settings.mkfg"
-                outdir        = "${outputDir}"
+                settings_file = "${params.settings_path}/user-settings.mkfg"
             }
 
             process {
@@ -46,8 +45,7 @@ nextflow_process {
         when {
             params {
                 settings_path = '/tmp/.ncbi'
-                settings_file  = "${params.settings_path}/user-settings.mkfg"
-                outdir        = "${outputDir}"
+                settings_file = "${params.settings_path}/user-settings.mkfg"
             }
 
             process {
@@ -90,8 +88,7 @@ nextflow_process {
         when {
             params {
                 settings_path = '/tmp/.ncbi'
-                settings_file  = "${params.settings_path}/user-settings.mkfg"
-                outdir        = "${outputDir}"
+                settings_file = "${params.settings_path}/user-settings.mkfg"
             }
 
             process {
