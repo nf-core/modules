@@ -29,8 +29,6 @@ process BASES2FASTQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
     """
-    export HOME=\$(pwd)
-
     bases2fastq \\
         -p $task.cpus \\
         $runManifest \\
