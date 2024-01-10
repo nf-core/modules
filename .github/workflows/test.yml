@@ -631,7 +631,7 @@ jobs:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
-          NXF_TEST_DIR=~ \
+          NXF_TEST_DIR=/var/tmp \
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
