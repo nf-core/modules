@@ -37,14 +37,8 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
                     ]
-                input[1] = [
-                    [],
-                    file(params.test_data['sarscov2']['metagenome']['prot_names_dmp'], checkIfExists: true)
-                    ]
-                input[2] = [
-                    [],
-                    file(params.test_data['sarscov2']['metagenome']['prot_nodes_dmp'], checkIfExists: true)
-                    ]
+                input[1] = file(params.test_data['sarscov2']['metagenome']['prot_names_dmp'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['metagenome']['prot_nodes_dmp'], checkIfExists: true)
                 input[3] = UNTAR.out.untar.map{ it[1] }
                 """
             }
