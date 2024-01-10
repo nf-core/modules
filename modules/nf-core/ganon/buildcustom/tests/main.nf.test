@@ -27,11 +27,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db[0][1].find{ file(it).name == "test.hibf"}).match() },
-                //{ assert file(process.out.results[0][1].findAll { file(it).name == "test.tax" }).text.contains("MT192765.1") }
+                { assert snapshot(
+                        process.out.db.get(0).get(1).findAll { file(it).name != "test.tax" }
+                    ).match()
+                },
+                { assert file(process.out.db.get(0).get(1).find { file(it).name == "test.tax" }).text.contains("MT192765.1") },
             )
         }
-
     }
 
     test("sarscov2 - genome fasta - stub") {
