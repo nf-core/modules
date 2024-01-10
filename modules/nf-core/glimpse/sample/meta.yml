@@ -22,12 +22,6 @@ input:
       type: file
       description: VCF/BCF file generated using GLIMPSE ligate
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - sample:
-      type: parameter
-      description: Samples a likely haplotype pair for each sample, use it in combination with --seed. Option not recommended for general usage, use --solve instead
-  - solve:
-      type: parameter
-      description: Get the most likely haplotype pair for each sample (the random number generator is not used)
 output:
   - meta:
       type: map
