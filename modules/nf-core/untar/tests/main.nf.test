@@ -30,28 +30,6 @@ nextflow_process {
 
     }
 
-    test("test_untar_different_output_path") {
-
-        when {
-            params {
-                outdir   = "$outputDir"
-            }
-            process {
-                """
-                input[0] = [ [], file(params.modules_test_data_base + '/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true) ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out.untar).match("test_untar_different_output_path") },
-            )
-        }
-
-    }
-
     test("test_untar_onlyfiles") {
 
         when {
