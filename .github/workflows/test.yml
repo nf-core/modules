@@ -19,6 +19,18 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""
+
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -202,11 +214,23 @@ jobs:
           - profile: "conda"
             tags: cellranger/vdj
           - profile: "conda"
+            tags: checkm2/databasedownload
+          - profile: "conda"
+            tags: checkm2/predict
+          - profile: "conda"
             tags: cellrangeratac/count
           - profile: "conda"
             tags: cellrangeratac/mkfastq
           - profile: "conda"
             tags: cellrangeratac/mkref
+          - profile: "conda"
+            tags: cellrangerarc/count
+          - profile: "conda"
+            tags: cellrangerarc/mkref
+          - profile: "conda"
+            tags: cellrangerarc/mkgtf
+          - profile: "conda"
+            tags: cellrangerarc/mkfastq
           - profile: "conda"
             tags: controlfreec/makegraph2
           - profile: "conda"
@@ -270,7 +294,17 @@ jobs:
           - profile: "conda"
             tags: parabricks/applybqsr
           - profile: "conda"
+            tags: parabricks/deepvariant
+          - profile: "conda"
             tags: parabricks/fq2bam
+          - profile: "conda"
+            tags: parabricks/haplotypecaller
+          - profile: "conda"
+            tags: parabricks/mutectcaller
+          - profile: "conda"
+            tags: parabricks/indexgvcf
+          - profile: "conda"
+            tags: parabricks/genotypegvcf
           - profile: "conda"
             tags: picard/collecthsmetrics
           - profile: "conda"
@@ -461,6 +495,8 @@ jobs:
           - profile: "conda"
             tags: custom/dumpsoftwareversions
           - profile: "conda"
+            tags: deepcell/mesmer
+          - profile: "conda"
             tags: deepvariant
           - profile: "conda"
             tags: ensemblvep/vep
@@ -511,7 +547,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.2"
+      NFTEST_VER: "0.8.3"
 
     steps:
       - uses: actions/checkout@v4
@@ -561,6 +597,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          pip install pdiff
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
@@ -578,6 +615,9 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
           NXF_TEST_DIR=~ \
           nf-test test \

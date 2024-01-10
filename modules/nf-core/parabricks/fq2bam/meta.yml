@@ -10,7 +10,7 @@ tools:
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/4.0.1/Documentation/"
-      licence: "custom"
+      licence: ["custom"]
 input:
   - meta:
       type: map
@@ -33,7 +33,7 @@ input:
       type: file
       description: reference fasta file - must be unzipped
       pattern: "*.fasta"
-  - meta2:
+  - meta3:
       type: map
       description: |
         Groovy Map containing index information
