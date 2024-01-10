@@ -1,0 +1,41 @@
+nextflow_process {
+
+    name "Test Process QUALIMAP_BAMQCCRAM"
+    script "../main.nf"
+    process "QUALIMAP_BAMQCCRAM"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qualimap"
+    tag "qualimap/bamqccram"
+
+    test("homo_sapiens [CRAM]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[3] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "qualimapReport.html" }.exists() },
+                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "genome_results.txt" }.md5 == "61d8b36507652fd7d7db9583de708161" },
+                // { assert snapshot(path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "genome_results.txt" }).match() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+}
