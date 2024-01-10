@@ -19,8 +19,8 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcf:
-      type: file (split) or list of files (join)
-      description: VCF file(s)
+      type: file
+      description: VCF file(s), either one (split) or list of files (join)
       pattern: "*.{vcf,vcf.gz}"
 output:
   - meta:
