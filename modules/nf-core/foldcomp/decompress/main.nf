@@ -1,18 +1,18 @@
-process GANON_TABLE {
+process FOLDCOMP_DECOMPRESS {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
-        'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
+        'https://depot.galaxyproject.org/singularity/foldcomp:0.0.7--h43eeafb_0':
+        'biocontainers/foldcomp:0.0.7--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(tre)
+    tuple val(meta), path(fcz)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("{*pdb,*.cif}"), emit: pdb
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,28 +21,27 @@ process GANON_TABLE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ganon \\
-        table \\
-        --input ${tre} \\
-        --output-file ${prefix}.txt \\
-        $args
+    foldcomp \\
+        $args \\
+        decompress \\
+        -t ${task.cpus} \\
+        ${fcz}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
+        foldcomp: \$(foldcomp --version)
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-    touch ${prefix}.txt
+    touch ${prefix}.pdb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
+        foldcomp: \$(foldcomp --version)
     END_VERSIONS
     """
 }
