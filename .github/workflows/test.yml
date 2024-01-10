@@ -582,7 +582,7 @@ jobs:
           conda config --set solver libmamba
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
-          conda install pdiff
+          python -m pip install --upgrade pip pdiff
 
       # Set up secrets
       - name: Set up nextflow secrets
