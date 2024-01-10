@@ -32,7 +32,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.results[0][1]).exists() },
-                { assert snapshot(process.out.results[0][1].findAll{ file(it).name == "rnaseq_qc_results.txt" }).match() },
+                { assert snapshot(process.out.results[0][1].find{ file(it).name == "rnaseq_qc_results.txt" }).match() },
                 { assert snapshot(process.out.versions).match() }
             )
         }
