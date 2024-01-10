@@ -31,8 +31,9 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.results[0][1]).exists() },
-                { assert snapshot(process.out.results[0][1].find{ file(it).name == "rnaseq_qc_results.txt" }).match() },
+                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "qualimapReport.html" }.exists() },
+                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "rnaseq_qc_results.txt" }.md5 == "b77878cac45beaa79a892af54aad2da3" },
+                // { assert snapshot(path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "rnaseq_qc_results.txt" }).match() },
                 { assert snapshot(process.out.versions).match() }
             )
         }
