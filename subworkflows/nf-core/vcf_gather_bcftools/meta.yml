@@ -21,7 +21,7 @@ input:
         Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
         e.g. [ id:'test.001', common_meta:'test' ]
   - ch_vcfs:
-      type: file(s)
+      type: file
       description: |
         VCF files and their indices that should be concatenated
         Structure: [ meta, vcf, tbi ]
