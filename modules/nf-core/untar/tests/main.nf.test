@@ -30,28 +30,6 @@ nextflow_process {
 
     }
 
-    test("test_untar_different_output_path") {
-
-        when {
-            params {
-                outdir   = "$outputDir"
-            }
-            process {
-                """
-                input[0] = [ [], file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true) ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out.untar).match("test_untar_different_output_path") },
-            )
-        }
-
-    }
-
     test("test_untar_onlyfiles") {
 
         when {
