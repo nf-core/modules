@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ganon"
     tag "ganon/buildcustom"
+    tag "ganon/blahblah"
 
     test("sarscov2 - genome fasta") {
 
@@ -27,8 +28,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(file(process.out.db[0][1].find { file(it).name == "test.hibf" }))) },
-                { assert file(process.out.db[0][1].find { file(it).name == "test.tax" }).text.contains("MT192765.1") }
+                { assert snapshot(process.out.db[0][1].find{ file(it).name == "test.hibf"}).match() },
+                { assert file(process.out.results[0][1].findAll { file(it).name == "test.tax" }).text.contains("MT192765.1") }
             )
         }
 
