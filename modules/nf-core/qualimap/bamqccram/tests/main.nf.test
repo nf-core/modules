@@ -31,10 +31,11 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "qualimapReport.html" }.exists() },
-                { assert path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "genome_results.txt" }.md5 == "61d8b36507652fd7d7db9583de708161" },
-                // { assert snapshot(path(process.out.results[0][1]).list().sort().find{ it.getFileName().toString() == "genome_results.txt" }).match() },
-                { assert snapshot(process.out.versions).match() }
+                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
+                { assert snapshot(
+                    path("${process.out.results[0][1]}/genome_results.txt"),
+                    process.out.versions)
+                .match()}
             )
         }
     }
