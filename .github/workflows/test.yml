@@ -29,7 +29,7 @@ jobs:
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra-args: " --files git diff --name-only master..."
+          extra_args: " --files $(git diff --name-only master...)"
 
   pytest-changes:
     name: pytest-changes
