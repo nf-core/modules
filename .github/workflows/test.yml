@@ -168,205 +168,205 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.pytest-changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
+        profile: [conda, docker, singularity]
         exclude:
-          - tags: "nf-test"
-          - profile: "conda"
+          - tags: nf-test
+          - profile: conda
             tags: annotsv
-          - profile: "conda"
-            tags: happy/sompy
-          - profile: "conda"
-            tags: cellpose
-          - profile: "conda"
-            tags: mcquant
-          - profile: "conda"
-            tags: bases2fastq
-          - profile: "conda"
+          - profile: conda
             tags: backsub
-          - profile: "conda"
-            tags: basicpy
-          - profile: "conda"
-            tags: bcl2fastq
-          - profile: "conda"
-            tags: bclconvert
-          - profile: "conda"
-            tags: bwa/aln
-          - profile: "conda"
-            tags: bwa/index
-          - profile: "conda"
-            tags: bwa/mem
-          - profile: "conda"
-            tags: bwa/sampe
-          - profile: "conda"
-            tags: bwa/samse
-          - profile: "conda"
-            tags: cellranger/count
-          - profile: "conda"
-            tags: cellranger/mkfastq
-          - profile: "conda"
-            tags: cellranger/mkgtf
-          - profile: "conda"
-            tags: cellranger/mkref
-          - profile: "conda"
-            tags: cellranger/mkvdjref
-          - profile: "conda"
-            tags: cellranger/multi
-          - profile: "conda"
-            tags: cellranger/vdj
-          - profile: "conda"
-            tags: checkm2/databasedownload
-          - profile: "conda"
-            tags: checkm2/predict
-          - profile: "conda"
-            tags: cellrangeratac/count
-          - profile: "conda"
-            tags: cellrangeratac/mkfastq
-          - profile: "conda"
-            tags: cellrangeratac/mkref
-          - profile: "conda"
-            tags: cellrangerarc/count
-          - profile: "conda"
-            tags: cellrangerarc/mkref
-          - profile: "conda"
-            tags: cellrangerarc/mkgtf
-          - profile: "conda"
-            tags: cellrangerarc/mkfastq
-          - profile: "conda"
-            tags: controlfreec/makegraph2
-          - profile: "conda"
-            tags: coreograph
-          - profile: "conda"
-            tags: deepcell/mesmer
-          - profile: "conda"
-            tags: deepvariant
-          - profile: "conda"
-            tags: fastk/fastk
-          - profile: "conda"
-            tags: fastani
-          - profile: "conda"
-            tags: fastk/histex
-          - profile: "conda"
-            tags: fastk/merge
-          - profile: "conda"
-            tags: fcs/fcsadaptor
-          - profile: "conda"
-            tags: fcs/fcsgx
-          - profile: "conda"
-            tags: gatk4/cnnscorevariants
-          - profile: "conda"
-            tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
-            tags: gatk4/germlinecnvcaller
-          - profile: "conda"
-            tags: gatk4/postprocessgermlinecnvcalls
-          - profile: "conda"
-            tags: genescopefk
-          - profile: "conda"
-            tags: hlala/preparegraph
-          - profile: "conda"
-            tags: ilastik/multicut
-          - profile: "conda"
-            tags: ilastik/pixelclassification
-          - profile: "conda"
-            tags: imputeme/vcftoprs
-          - profile: "conda"
-            tags: manta/convertinversion
-          - profile: "conda"
-            tags: medaka
-          - profile: "conda"
-            tags: merquryfk/katcomp
-          - profile: "conda"
-            tags: merquryfk/katgc
-          - profile: "conda"
-            tags: merquryfk/merquryfk
-          - profile: "conda"
-            tags: merquryfk/ploidyplot
-          - profile: "conda"
-            tags: minimap2/align
-          - profile: "conda"
-            tags: mitohifi/mitohifi
-          - profile: "conda"
-            tags: mitohifi/findmitoreference
-          - profile: "conda"
-            tags: nanoplot
-          - profile: "conda"
-            tags: ncbitools/vecscreen
-          - profile: "conda"
-            tags: parabricks/applybqsr
-          - profile: "conda"
-            tags: parabricks/deepvariant
-          - profile: "conda"
-            tags: parabricks/fq2bam
-          - profile: "conda"
-            tags: parabricks/haplotypecaller
-          - profile: "conda"
-            tags: parabricks/mutectcaller
-          - profile: "conda"
-            tags: parabricks/indexgvcf
-          - profile: "conda"
-            tags: parabricks/genotypegvcf
-          - profile: "conda"
-            tags: picard/collecthsmetrics
-          - profile: "conda"
-            tags: picard/collectwgsmetrics
-          - profile: "conda"
-            tags: scimap/mcmicro
-          - profile: "conda"
-            tags: sentieon/applyvarcal
-          - profile: "conda"
-            tags: sentieon/bwaindex
-          - profile: "conda"
-            tags: sentieon/bwamem
-          - profile: "conda"
-            tags: sentieon/datametrics
-          - profile: "conda"
-            tags: sentieon/dedup
-          - profile: "conda"
-            tags: sentieon/dnamodelapply
-          - profile: "conda"
-            tags: sentieon/dnascope
-          - profile: "conda"
-            tags: sentieon/gvcftyper
-          - profile: "conda"
-            tags: sentieon/haplotyper
-          - profile: "conda"
-            tags: sentieon/readwriter
-          - profile: "conda"
-            tags: sentieon/tnfilter
-          - profile: "conda"
-            tags: sentieon/tnhaplotyper2
-          - profile: "conda"
-            tags: sentieon/tnscope
-          - profile: "conda"
-            tags: sentieon/varcal
-          - profile: "conda"
-            tags: sentieon/wgsmetrics
-          - profile: "conda"
-            tags: spaceranger/count
-          - profile: "conda"
-            tags: spaceranger/mkgtf
-          - profile: "conda"
-            tags: spaceranger/mkref
-          - profile: "conda"
-            tags: svanalyzer/svbenchmark
-          - profile: "conda"
-            tags: universc
-          - profile: "singularity"
-            tags: universc
-          - profile: "conda"
-            tags: vt/decompose
-          - profile: "singularity"
-            tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
-            tags: subworkflows/bcl_demultiplex
-          - profile: "conda"
-            tags: subworkflows/fasta_clean_fcs
-          - profile: "conda"
-            tags: islandpath
-          - profile: "conda"
-            tags: subworkflows/bam_qc_picard
-          - profile: "singularity"
+          - profile: conda
             tags: bases2fastq
+          - profile: singularity
+            tags: bases2fastq
+          - profile: conda
+            tags: basicpy
+          - profile: conda
+            tags: bcl2fastq
+          - profile: conda
+            tags: bclconvert
+          - profile: conda
+            tags: bwa/aln
+          - profile: conda
+            tags: bwa/index
+          - profile: conda
+            tags: bwa/mem
+          - profile: conda
+            tags: bwa/sampe
+          - profile: conda
+            tags: bwa/samse
+          - profile: conda
+            tags: cellpose
+          - profile: conda
+            tags: cellranger/count
+          - profile: conda
+            tags: cellranger/mkfastq
+          - profile: conda
+            tags: cellranger/mkgtf
+          - profile: conda
+            tags: cellranger/mkref
+          - profile: conda
+            tags: cellranger/mkvdjref
+          - profile: conda
+            tags: cellranger/multi
+          - profile: conda
+            tags: cellranger/vdj
+          - profile: conda
+            tags: cellrangerarc/count
+          - profile: conda
+            tags: cellrangerarc/mkfastq
+          - profile: conda
+            tags: cellrangerarc/mkgtf
+          - profile: conda
+            tags: cellrangerarc/mkref
+          - profile: conda
+            tags: cellrangeratac/count
+          - profile: conda
+            tags: cellrangeratac/mkfastq
+          - profile: conda
+            tags: cellrangeratac/mkref
+          - profile: conda
+            tags: checkm2/databasedownload
+          - profile: conda
+            tags: checkm2/predict
+          - profile: conda
+            tags: controlfreec/makegraph2
+          - profile: conda
+            tags: coreograph
+          - profile: conda
+            tags: deepcell/mesmer
+          - profile: conda
+            tags: deepvariant
+          - profile: conda
+            tags: fastani
+          - profile: conda
+            tags: fastk/fastk
+          - profile: conda
+            tags: fastk/histex
+          - profile: conda
+            tags: fastk/merge
+          - profile: conda
+            tags: fcs/fcsadaptor
+          - profile: conda
+            tags: fcs/fcsgx
+          - profile: conda
+            tags: gatk4/cnnscorevariants
+          - profile: conda
+            tags: gatk4/determinegermlinecontigploidy
+          - profile: singularity
+            tags: gatk4/determinegermlinecontigploidy
+          - profile: conda
+            tags: gatk4/germlinecnvcaller
+          - profile: conda
+            tags: gatk4/postprocessgermlinecnvcalls
+          - profile: conda
+            tags: genescopefk
+          - profile: conda
+            tags: happy/sompy
+          - profile: conda
+            tags: hlala/preparegraph
+          - profile: conda
+            tags: ilastik/multicut
+          - profile: conda
+            tags: ilastik/pixelclassification
+          - profile: conda
+            tags: imputeme/vcftoprs
+          - profile: conda
+            tags: islandpath
+          - profile: conda
+            tags: manta/convertinversion
+          - profile: conda
+            tags: mcquant
+          - profile: conda
+            tags: medaka
+          - profile: conda
+            tags: merquryfk/katcomp
+          - profile: conda
+            tags: merquryfk/katgc
+          - profile: conda
+            tags: merquryfk/merquryfk
+          - profile: conda
+            tags: merquryfk/ploidyplot
+          - profile: conda
+            tags: minimap2/align
+          - profile: conda
+            tags: mitohifi/findmitoreference
+          - profile: conda
+            tags: mitohifi/mitohifi
+          - profile: conda
+            tags: nanoplot
+          - profile: conda
+            tags: ncbitools/vecscreen
+          - profile: conda
+            tags: parabricks/applybqsr
+          - profile: conda
+            tags: parabricks/deepvariant
+          - profile: conda
+            tags: parabricks/fq2bam
+          - profile: conda
+            tags: parabricks/genotypegvcf
+          - profile: conda
+            tags: parabricks/haplotypecaller
+          - profile: conda
+            tags: parabricks/indexgvcf
+          - profile: conda
+            tags: parabricks/mutectcaller
+          - profile: conda
+            tags: picard/collecthsmetrics
+          - profile: conda
+            tags: picard/collectwgsmetrics
+          - profile: conda
+            tags: scimap/mcmicro
+          - profile: conda
+            tags: sentieon/applyvarcal
+          - profile: conda
+            tags: sentieon/bwaindex
+          - profile: conda
+            tags: sentieon/bwamem
+          - profile: conda
+            tags: sentieon/datametrics
+          - profile: conda
+            tags: sentieon/dedup
+          - profile: conda
+            tags: sentieon/dnamodelapply
+          - profile: conda
+            tags: sentieon/dnascope
+          - profile: conda
+            tags: sentieon/gvcftyper
+          - profile: conda
+            tags: sentieon/haplotyper
+          - profile: conda
+            tags: sentieon/readwriter
+          - profile: conda
+            tags: sentieon/tnfilter
+          - profile: conda
+            tags: sentieon/tnhaplotyper2
+          - profile: conda
+            tags: sentieon/tnscope
+          - profile: conda
+            tags: sentieon/varcal
+          - profile: conda
+            tags: sentieon/wgsmetrics
+          - profile: conda
+            tags: spaceranger/count
+          - profile: conda
+            tags: spaceranger/mkgtf
+          - profile: conda
+            tags: spaceranger/mkref
+          - profile: conda
+            tags: subworkflows/bam_qc_picard
+          - profile: conda
+            tags: subworkflows/bcl_demultiplex
+          - profile: conda
+            tags: subworkflows/fasta_clean_fcs
+          - profile: conda
+            tags: svanalyzer/svbenchmark
+          - profile: conda
+            tags: universc
+          - profile: singularity
+            tags: universc
+          - profile: conda
+            tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -471,90 +471,90 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.nf-test-changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
+        profile: [conda, docker, singularity]
         exclude:
-          - tags: "nf-test"
-          - profile: "conda"
+          - tags: nf-test
+          - profile: conda
             tags: annotsv
-          - profile: "conda"
+          - profile: conda
             tags: happy/sompy
-          - profile: "conda"
+          - profile: conda
             tags: backsub
-          - profile: "conda"
+          - profile: conda
             tags: bases2fastq
-          - profile: "conda"
+          - profile: conda
             tags: bcl2fastq
-          - profile: "conda"
+          - profile: conda
             tags: bclconvert
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/count
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkfastq
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkgtf
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkref
-          - profile: "conda"
+          - profile: conda
             tags: custom/dumpsoftwareversions
-          - profile: "conda"
+          - profile: conda
             tags: deepcell/mesmer
-          - profile: "conda"
+          - profile: conda
             tags: deepvariant
-          - profile: "conda"
+          - profile: conda
             tags: ensemblvep/vep
-          - profile: "conda"
+          - profile: conda
             tags: fastk/fastk
-          - profile: "conda"
+          - profile: conda
             tags: fastk/histex
-          - profile: "conda"
+          - profile: conda
             tags: fastk/merge
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsadaptor
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsgx
-          - profile: "conda"
+          - profile: conda
             tags: ganon/buildcustom
-          - profile: "conda"
+          - profile: conda
             tags: ganon/classify
-          - profile: "conda"
+          - profile: conda
             tags: ganon/report
-          - profile: "conda"
+          - profile: conda
             tags: ganon/table
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/cnnscorevariants
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
+          - profile: conda
             tags: genescopefk
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/multicut
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/pixelclassification
-          - profile: "conda"
+          - profile: conda
             tags: imputeme/vcftoprs
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/katcomp
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/katgc
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/merquryfk
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/ploidyplot
-          - profile: "conda"
+          - profile: conda
             tags: sentieon/bwaindex
-          - profile: "conda"
+          - profile: conda
             tags: sentieon/bwamem
-          - profile: "conda"
+          - profile: conda
             tags: svanalyzer/svbenchmark
-          - profile: "conda"
+          - profile: conda
             tags: universc
-          - profile: "singularity"
+          - profile: singularity
             tags: universc
-          - profile: "conda"
+          - profile: conda
             tags: vt/decompose
-          - profile: "conda"
+          - profile: conda
             tags: subworkflows/vcf_annotate_ensemblvep
-          - profile: "singularity"
+          - profile: singularity
             tags: bases2fastq
     env:
       NXF_ANSI_LOG: false
