@@ -9,7 +9,8 @@ process RESFINDER_RUN {
 
     input:
     tuple val(meta), path(fastq), path(fasta)
-    path db
+    path db_res
+    path db_point
 
     output:
     tuple val(meta), path("*.json")                           , emit: json
@@ -37,11 +38,19 @@ process RESFINDER_RUN {
     } else if (fasta) {
         input = "-ifa ${fasta}"
     }
+
+    def db = ""
+    if (db_res) {
+        db = "-db_res ${db_res}"
+    }
+    if (db_point) {
+        db = "$db -db_point ${db_point}"
+    }
     """
     run_resfinder.py \\
         $args \\
         $input \\
-        -db_res $db
+        $db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
