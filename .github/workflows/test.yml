@@ -22,7 +22,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-python@v3
       - uses: pre-commit/action@v3.0.0
         # FIXME Flip this off once we get to less than a couple hundred. Adding
@@ -304,6 +304,8 @@ jobs:
           - profile: "conda"
             tags: parabricks/indexgvcf
           - profile: "conda"
+            tags: parabricks/genotypegvcf
+          - profile: "conda"
             tags: picard/collecthsmetrics
           - profile: "conda"
             tags: picard/collectwgsmetrics
@@ -357,6 +359,8 @@ jobs:
             tags: islandpath
           - profile: "conda"
             tags: subworkflows/bam_qc_picard
+          - profile: "singularity"
+            tags: bases2fastq
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -503,6 +507,14 @@ jobs:
           - profile: "conda"
             tags: fcs/fcsgx
           - profile: "conda"
+            tags: ganon/buildcustom
+          - profile: "conda"
+            tags: ganon/classify
+          - profile: "conda"
+            tags: ganon/report
+          - profile: "conda"
+            tags: ganon/table
+          - profile: "conda"
             tags: gatk4/cnnscorevariants
           - profile: "conda"
             tags: gatk4/determinegermlinecontigploidy
@@ -542,10 +554,12 @@ jobs:
             tags: vt/decompose
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: "singularity"
+            tags: bases2fastq
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.2"
+      NFTEST_VER: "0.8.3"
 
     steps:
       - uses: actions/checkout@v4
