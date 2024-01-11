@@ -24,6 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c #v5
+      - name: Fetch master
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507 # v3.0.0
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
