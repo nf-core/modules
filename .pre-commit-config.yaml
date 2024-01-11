@@ -13,15 +13,27 @@ repos:
     rev: 0.27.0
     hooks:
       - id: check-jsonschema
+        name: check meta.yml's of modules
         # match meta.ymls in one of the subdirectories of modules/nf-core
         files: ^modules/nf-core/.*/meta\.yml$
-        args: ["--schemafile", "modules/yaml-schema.json"]
+        args: ["--schemafile", "modules/meta-schema.json"]
       - id: check-jsonschema
+        name: check environment.yml's of modules
+        # match environment.ymls in one of the subdirectories of modules/nf-core
+        files: ^modules/nf-core/.*/environment\.yml$
+        args: ["--schemafile", "modules/environment-schema.json"]
+      - id: check-jsonschema
+        name: check meta.yml's of subworkflows
         # match meta.ymls in one of the subdirectories of subworkflows/nf-core
         files: ^subworkflows/nf-core/.*/meta\.yml$
-        args: ["--schemafile", "subworkflows/yaml-schema.json"]
-      - id: check-github-workflows
-  - repo: https://github.com/renovatebot/pre-commit-hooks
+        args: ["--schemafile", "subworkflows/meta-schema.json"]
+      - id: check-jsonschema
+        name: check environment.yml's of subworkflows
+        # match environment.ymls in one of the subdirectories of subworkflows/nf-core
+        files: ^subworkflows/nf-core/.*/environment\.yml$
+        args: ["--schemafile", "subworkflows/environment-schema.json"]
+  - id: check-github-workflows
+    repo: https://github.com/renovatebot/pre-commit-hooks
     rev: 37.127.0
     hooks:
       - id: renovate-config-validator
