@@ -9,6 +9,7 @@ nextflow_process {
     tag "hisat2/build"
 
     test("Should run without failures") {
+        config "./nextflow.config"
 
         setup {
             run("HISAT2_EXTRACTSPLICESITES") {
