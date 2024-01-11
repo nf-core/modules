@@ -16,13 +16,18 @@ process RESFINDER_RUN {
     tuple val(meta), path("*.json")                           , emit: json
     tuple val(meta), path("disinfinder_kma")                  , optional: true, emit: disinfinder_kma
     tuple val(meta), path("pointfinder_kma")                  , optional: true, emit: pointfinder_kma
-    tuple val(meta), path("pheno_table.txt")                  , emit: pheno_table
-    tuple val(meta), path("ResFinder_Hit_in_genome_seq.fsa")  , emit: hit_in_genome_seq
-    tuple val(meta), path("resfinder_kma")                    , emit: resfinder_kma
-    tuple val(meta), path("ResFinder_Resistance_gene_seq.fsa"), emit: resistance_gene_seq
-    tuple val(meta), path("ResFinder_results_table.txt")      , emit: results_table
-    tuple val(meta), path("ResFinder_results_tab.txt")        , emit: results_tab
-    tuple val(meta), path("ResFinder_results.txt")            , emit: results
+    tuple val(meta), path("pheno_table_species.txt")          , optional: true, emit: pheno_table_species
+    tuple val(meta), path("pheno_table.txt")                  , optional: true, emit: pheno_table
+    tuple val(meta), path("PointFinder_prediction.txt")       , optional: true, emit: pointfinder_prediction
+    tuple val(meta), path("PointFinder_results.txt")          , optional: true, emit: pointfinder_results
+    tuple val(meta), path("PointFinder_table.txt")            , optional: true, emit: pointfinder_table
+    tuple val(meta), path("ResFinder_Hit_in_genome_seq.fsa")  , optional: true, emit: resfinder_hit_in_genome_seq
+    tuple val(meta), path("resfinder_blast")                  , optional: true, emit: resfinder_blast
+    tuple val(meta), path("resfinder_kma")                    , optional: true, emit: resfinder_kma
+    tuple val(meta), path("ResFinder_Resistance_gene_seq.fsa"), optional: true, emit: resfinder_resistance_gene_seq
+    tuple val(meta), path("ResFinder_results_table.txt")      , optional: true, emit: resfinder_results_table
+    tuple val(meta), path("ResFinder_results_tab.txt")        , optional: true, emit: resfinder_results_tab
+    tuple val(meta), path("ResFinder_results.txt")            , optional: true, emit: resfinder_results
     path "versions.yml"                                       , emit: versions
 
     when:
