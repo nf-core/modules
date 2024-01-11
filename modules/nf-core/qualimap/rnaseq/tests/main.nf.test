@@ -35,7 +35,7 @@ nextflow_process {
                 { assert snapshot(
                     path("${process.out.results[0][1]}/rnaseq_qc_results.txt"),
                     process.out.versions)
-                .match()}
+                .match() }
             )
         }
     }

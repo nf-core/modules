@@ -32,7 +32,7 @@ nextflow_process {
                 { assert snapshot(
                     path("${process.out.results[0][1]}/genome_results.txt"),
                     process.out.versions)
-                .match()}
+                .match() }
             )
         }
     }
