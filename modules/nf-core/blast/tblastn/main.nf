@@ -28,7 +28,12 @@ process BLAST_TBLASTN {
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
-    DB=`find -L ./ -name "*.nsq" | sed 's/\\.nsq\$//'`
+    DB=`find -L ./ -name "*.nal" | sed 's/\\.nal\$//'`
+    if [ -z "\$DB" ]; then
+        DB=`find -L ./ -name "*.nin" | sed 's/\\.nin\$//'`
+    fi
+    echo Using \$DB
+
     tblastn \\
         -num_threads ${task.cpus} \\
         -db \$DB \\
