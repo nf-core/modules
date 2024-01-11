@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process TRINITY"
+    script "../main.nf"
+    process "TRINITY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trinity"
+
+    test("homo_sapiens-test_rnaseq-paired") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert process.out.transcript_fasta != null },
+            )
+        }
+
+    }
+
+    test("homo_sapiens-test_rnaseq-single") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert process.out.transcript_fasta != null }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-test_rnaseq-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.transcript_fasta != null },
+                { assert process.out.log != null },
+            )
+        }
+
+    }
+
+}
