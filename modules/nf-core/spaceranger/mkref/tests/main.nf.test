@@ -1,6 +1,3 @@
-import groovy.io.FileType
-
-
 nextflow_process {
 
     name "Test Process SPACERANGER_MKREF"
@@ -25,18 +22,16 @@ nextflow_process {
         }
 
         then {
-            def ref_files = []
-            path(process.out.reference[0]).eachFileRecurse(FileType.FILES) {
-                 f -> if(f.getFileName().toString() != "genomeParameters.txt") { ref_files.add(f)}
-            }
             assertAll(
-                // TODO nf-core: Add more assertions
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    ).match()
-                },
-                { assert snapshot(ref_files).match("spaceranger mkref reference") },
+                { assert snapshot( process.out.versions).match() },
+                { assert snapshot( "${process.out.reference[0]}/fasta").match("spaceranger mkref fasta") },
+                { assert snapshot( "${process.out.reference[0]}/genes").match("spaceranger mkref genes") },
+                { assert snapshot( "${process.out.reference[0]}/reference.json").match("spaceranger mkref reference.json") },
+                { assert snapshot( path("${process.out.reference[0]}/star").list().findAll {
+                    it.getFileName().toString() != "genomeParameters.txt"
+                    }).match("spaceranger mkref star")
+                }
             )
         }
 
