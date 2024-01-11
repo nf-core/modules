@@ -17,6 +17,12 @@ def getFastpReadsAfterFiltering(json_file) {
     return json['after_filtering']['total_reads'].toLong()
 }
 
+String getFastpAdapterSequence(json_file){
+    return new JsonSlurper().parseText(json_file.text)
+    ?.get('adapter_cutting')
+    ?.get('read1_adapter_sequence')
+}
+
 workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     take:
     reads             // channel: [ val(meta), [ reads ] ]
@@ -25,7 +31,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     skip_umi_extract  // boolean: true/false
     umi_discard_read  // integer: 0, 1 or 2
     skip_trimming     // boolean: true/false
-    adapter_fasta     //    file: adapter.fasta
+    adapter_fasta     // file: adapter.fasta
     save_trimmed_fail // boolean: true/false
     save_merged       // boolean: true/false
     min_trimmed_reads // integer: > 0
@@ -108,6 +114,10 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .map { meta, reads, num_reads -> [ meta, num_reads ] }
             .set { trim_read_count }
 
+        trim_json.
+            .map { meta, json -> [meta, getFastpAdapterSequence(json)] }
+            .set { adapterseq }
+
         if (!skip_fastqc) {
             FASTQC_TRIM (
                 trim_reads
@@ -125,6 +135,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     fastqc_raw_zip     // channel: [ val(meta), [ zip ] ]
 
     umi_log            // channel: [ val(meta), [ log ] ]
+    adapterseq         // channel: [ val(meta), [ adapterseq] ]
 
     trim_json          // channel: [ val(meta), [ json ] ]
     trim_html          // channel: [ val(meta), [ html ] ]
