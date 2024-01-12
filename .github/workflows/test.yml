@@ -348,12 +348,6 @@ jobs:
           - profile: conda
             tags: sentieon/wgsmetrics
           - profile: conda
-            tags: spaceranger/count
-          - profile: conda
-            tags: spaceranger/mkgtf
-          - profile: conda
-            tags: spaceranger/mkref
-          - profile: conda
             tags: subworkflows/bam_qc_picard
           - profile: conda
             tags: subworkflows/bcl_demultiplex
@@ -544,6 +538,13 @@ jobs:
             tags: sentieon/bwaindex
           - profile: conda
             tags: sentieon/bwamem
+          - profile: "conda"
+            tags: spaceranger/mkgtf
+          - profile: "conda"
+            tags: spaceranger/mkref
+          - profile: "conda"
+            tags: spaceranger/count
+          - profile: "conda"
           - profile: conda
             tags: svanalyzer/svbenchmark
           - profile: conda
