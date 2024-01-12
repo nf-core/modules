@@ -80,6 +80,8 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     fastqc_trim_html  = Channel.empty()
     fastqc_trim_zip   = Channel.empty()
     trim_read_count   = Channel.empty()
+    adapter_seq       = Channel.empty()
+
     if (!skip_trimming) {
         FASTP (
             umi_reads,
