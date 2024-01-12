@@ -4,45 +4,60 @@ process PARABRICKS_DBSNP {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
     
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful.
+    */
+    stageInMode "copy"
+
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(vcf_file), path(dbsnp_file), path(tabix_file)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path(ann_vcf), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def ann_vcf = "${prefix}.vcf"
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+
+    pbrun \\
+        dbsnp \\
+        --in-vcf $vcf_file \\
+        --in-dbsnp-file $dbsnp_file \\
+        --out-vcf $ann_vcf \\
+        --num-threads $task.cpus \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
- 
+    def ann_vcf = "${prefix}.vcf"
+
     """
-    touch ${prefix}.bam
+    touch $ann_vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
     END_VERSIONS
     """
 }
