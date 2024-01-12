@@ -22,8 +22,6 @@ process CAT_CAT {
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
 
-    prefix = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
-
     // choose appropriate concatenation tool depending on input and output format
 
     // | input     | output     | command1 | command2 |
@@ -33,6 +31,8 @@ process CAT_CAT {
     // | gzipped   | ungzipped  | zcat     |          |
     // | ungzipped | gzipped    | cat      | pigz     |
 
+    // Use input file ending as default
+    prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
     out_zip  = prefix.endsWith('.gz')
     in_zip   = file_list[0].endsWith('.gz')
     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
