@@ -26,13 +26,10 @@ process UMICOLLAPSE {
     """
     umicollapse \\
         bam \\
-        -Xms${String.format("%.0f", Math.rint(0.2 * task.memory.toGiga()))}g  \\
         -Xmx${task.memory.toGiga()}g  \\
         -i $bam \\
         -o ${prefix}.bam \\
-        $args
-
-    mv .command.log ${prefix}_UMICollapse.log
+        $args | tee ${prefix}_UMICollapse.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
