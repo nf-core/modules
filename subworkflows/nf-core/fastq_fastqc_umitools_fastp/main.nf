@@ -115,7 +115,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .map { meta, reads, num_reads -> [ meta, num_reads ] }
             .set { trim_read_count }
 
-        trim_json.
+        trim_json
             .map { meta, json -> [meta, getFastpAdapterSequence(json)] }
             .set { adapter_seq }
 
