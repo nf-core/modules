@@ -18,8 +18,8 @@ def getFastpReadsAfterFiltering(json_file) {
 }
 
 def getFastpAdapterSequence(json_file){
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('adapter_cutting')
-    return json['read1_adapter_sequence']
+    def Map json = (Map) new JsonSlurper().parseText(json_file.text)
+    return json['adapter_cutting']['read1_adapter_sequence']
 }
 
 workflow FASTQ_FASTQC_UMITOOLS_FASTP {
