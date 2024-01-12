@@ -22,12 +22,6 @@ process CAT_CAT {
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
 
-    // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
-    def getFileSuffix(filename) {
-        def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
-        return match ? match[0][1] : filename.substring(filename.lastIndexOf('.')
-    }
-
     prefix = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
 
     // choose appropriate concatenation tool depending on input and output format
@@ -76,3 +70,10 @@ process CAT_CAT {
     END_VERSIONS
     """
 }
+
+// for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
+def getFileSuffix(filename) {
+    def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
+    return match ? match[0][1] : filename.substring(filename.lastIndexOf('.')
+}
+
