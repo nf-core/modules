@@ -74,6 +74,6 @@ process CAT_CAT {
 // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
 def getFileSuffix(filename) {
     def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
-    return match ? match[0][1] : filename.substring(filename.lastIndexOf('.')
+    return match ? match[0][1] : filename.substring(filename.lastIndexOf('.'))
 }
 
