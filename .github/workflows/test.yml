@@ -74,7 +74,7 @@ jobs:
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra_args: "--files ${{ needs.pytest-changes.outputs.modules }} ${{ needs.nf-test-changes.outputs.modules }}"
+          extra_args: "--files $(for module in ${{ fromJson(needs.pytest-changes.outputs.modules) }}; do echo $module) $(for module in ${{ fromJson(needs.nf-test-changes.outputs.modules) }}; do echo $module) "
 
   nf-core-lint:
     runs-on: ubuntu-latest
