@@ -69,12 +69,20 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
+
+      - name: get changed files
+        id: get_changed_files
+        run: |
+          # convert json to bash array
+          echo "pytest-changes=$(echo ${{ needs.pytest-changes.outputs.modules }} | jq -r '.[]')" >> $GITHUB_OUTPUT
+          echo "nf-test-changes=$(echo ${{ needs.nf-test-changes.outputs.modules }} | jq -r '.[]')" >> $GITHUB_OUTPUT
+
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507 # v3.0.0
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra_args: "--files $(for module in ${{ fromJson(needs.pytest-changes.outputs.modules) }}; do echo $module) $(for module in ${{ fromJson(needs.nf-test-changes.outputs.modules) }}; do echo $module) "
+          extra_args: "--files ${{ steps.get_changed_files.outputs.pytest-changes }} ${{ steps.get_changed_files.outputs.nf-test-changes }}"
 
   nf-core-lint:
     runs-on: ubuntu-latest
