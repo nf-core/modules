@@ -20,18 +20,9 @@ process THERMORAWFILEPARSER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Please provide the output format via --format, not -f
-    if (task.ext.args?.format) {
-        suffix = task.ext.args.format switch {
-            case "0" -> "mgf"
-            case "1" -> "mzML"
-            case "2" -> "mzML"
-            case "3" -> "parquet"
-            default  -> "mzML"
-        }
-    } else {
-        suffix = "mzML"
-    }
+    def formatSuffixMap = ["0": "mgf", "1": "mzML", "2": "mzML", "3": "parquet"]
+    // Please provide the output format via --format, not -f. If --format not specified, the parser defaults to mzML
+    suffix = formatSuffixMap.get(task.ext.args?.format, "mzML")
 
     """
     ThermoRawFileParser.sh \\
@@ -48,18 +39,9 @@ process THERMORAWFILEPARSER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Please provide the output format via --format, not -f
-    if (task.ext.args?.format) {
-        suffix = task.ext.args.format switch {
-            case "0" -> "mgf"
-            case "1" -> "mzML"
-            case "2" -> "mzML"
-            case "3" -> "parquet"
-            default  -> "mzML"
-        }
-    } else {
-        suffix = "mzML"
-    }
+    def formatSuffixMap = ["0": "mgf", "1": "mzML", "2": "mzML", "3": "parquet"]
+    // Please provide the output format via --format, not -f. If --format not specified, it defaults to mzML
+    suffix = formatSuffixMap.get(task.ext.args?.format, "mzML")
 
     """
     touch ${prefix}.${suffix}
