@@ -16,7 +16,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [], file(params.testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true) ]
+                input[0] = [ [], file(params.testdata_base_path + 'modules/genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true) ]
                 """
             }
         }
@@ -38,7 +38,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [], file(params.testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true) ]
+                input[0] = [ [], file(params.testdata_base_path + 'modules/generic/tar/hello.tar.gz', checkIfExists: true) ]
                 """
             }
         }
