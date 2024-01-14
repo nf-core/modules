@@ -1,6 +1,7 @@
 nextflow_process {
     name "Test Process SRATOOLS_FASTERQDUMP"
     script "../main.nf"
+    config "./nextflow.config"
     process "SRATOOLS_FASTERQDUMP"
     tag "modules"
     tag "modules_nfcore"
