@@ -25,6 +25,9 @@ input:
       type: file
       description: Input fasta file to index
       pattern: "*.{fsa,fa,fasta}"
+  - mode:
+      type: string
+      description: Mode must be one of 'dna', or 'protein'
 output:
   - meta:
       type: map
