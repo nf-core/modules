@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process TRINITY"
     script "../main.nf"
     process "TRINITY"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -26,12 +27,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert process.out.transcript_fasta != null }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.transcript_fasta
+                    ).match()
+                },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") }
             )
         }
-
     }
 
     test("homo_sapiens-test_rnaseq-single") {
@@ -51,12 +54,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert process.out.transcript_fasta != null }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.transcript_fasta
+                    ).match()
+                },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") }
             )
         }
-
     }
 
     test("homo_sapiens-test_rnaseq-stub") {
@@ -80,15 +85,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(
-                        [ file(process.out.transcript_fasta[0][1]).name ] +
-                        [ file(process.out.log[0][1]).name ]
-                    ).match("stub")
+                        process.out.versions,
+                        process.out.transcript_fasta,
+                        process.out.log
+                    ).match()
                 }
             )
         }
-
     }
-
 }

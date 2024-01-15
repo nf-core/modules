@@ -68,7 +68,8 @@ process TRINITY {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa.gz
+    touch ${prefix}.fa
+    gzip ${prefix}.fa
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

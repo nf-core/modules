@@ -1,19 +1,62 @@
 {
-    "versions": {
+    "homo_sapiens-test_rnaseq-single": {
         "content": [
             [
                 "versions.yml:md5,f77f7a5b3e84ea0ee771e0df95895cfb"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.fa.gz:md5,5886746d04daa090b611fd88dd5abd0d"
+                ]
             ]
         ],
-        "timestamp": "2024-01-11T16:44:00.303918"
+        "timestamp": "2024-01-15T17:47:31.348564804"
     },
-    "stub": {
+    "homo_sapiens-test_rnaseq-paired": {
         "content": [
             [
-                "test.fa.gz",
-                "test.log"
+                "versions.yml:md5,f77f7a5b3e84ea0ee771e0df95895cfb"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.fa.gz:md5,01a3cf5ee0eec38eee8c73a2ac977481"
+                ]
             ]
         ],
-        "timestamp": "2024-01-15T13:58:37.848796"
+        "timestamp": "2024-01-15T17:46:35.526905409"
+    },
+    "homo_sapiens-test_rnaseq-stub": {
+        "content": [
+            [
+                "versions.yml:md5,f77f7a5b3e84ea0ee771e0df95895cfb"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.fa.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ]
+        ],
+        "timestamp": "2024-01-15T17:47:44.871467322"
     }
 }
