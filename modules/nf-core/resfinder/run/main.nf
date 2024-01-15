@@ -9,15 +9,15 @@ process RESFINDER_RUN {
 
     input:
     tuple val(meta), path(fastq), path(fasta)
-    path db_res
     path db_point
+    path db_res
 
     output:
     tuple val(meta), path("*.json")                           , emit: json
     tuple val(meta), path("disinfinder_kma")                  , optional: true, emit: disinfinder_kma
-    tuple val(meta), path("pointfinder_kma")                  , optional: true, emit: pointfinder_kma
     tuple val(meta), path("pheno_table_species.txt")          , optional: true, emit: pheno_table_species
     tuple val(meta), path("pheno_table.txt")                  , optional: true, emit: pheno_table
+    tuple val(meta), path("pointfinder_kma")                  , optional: true, emit: pointfinder_kma
     tuple val(meta), path("PointFinder_prediction.txt")       , optional: true, emit: pointfinder_prediction
     tuple val(meta), path("PointFinder_results.txt")          , optional: true, emit: pointfinder_results
     tuple val(meta), path("PointFinder_table.txt")            , optional: true, emit: pointfinder_table
