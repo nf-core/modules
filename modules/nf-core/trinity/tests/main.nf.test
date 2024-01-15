@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
                 { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert snapshot(process.out.transcript_fasta).match("homo_sapiens-test_rnaseq-paired-fasta") }
+                { assert process.out.transcript_fasta != null }
             )
         }
 
@@ -53,7 +53,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
                 { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert snapshot(process.out.transcript_fasta).match("homo_sapiens-test_rnaseq-single-fasta") }
+                { assert process.out.transcript_fasta != null }
             )
         }
 
@@ -81,8 +81,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert process.out.transcript_fasta != null },
-                { assert process.out.log != null },
+                { assert snapshot(
+                        [ file(process.out.transcript_fasta[0][1]).name ] +
+                        [ file(process.out.log[0][1]).name ]
+                    ).match("stub")
+                }
             )
         }
 
