@@ -16,7 +16,6 @@ nextflow_function {
         when {
             function {
                 """
-                // define inputs of the function here. Example:
                 // input[0] = 1
                 """
             }
@@ -38,7 +37,6 @@ nextflow_function {
         when {
             function {
                 """
-                // define inputs of the function here. Example:
                 // input[0] = 1
                 """
             }
@@ -61,6 +59,7 @@ nextflow_function {
             function {
                 """
                 input[0] = "9.9.9"
+                input[1] = false
                 """
             }
         }
@@ -83,8 +82,7 @@ nextflow_function {
         when {
             function {
                 """
-                // define inputs of the function here. Example:
-                // input[0] = 1
+                input[0] = false
                 """
             }
         }
@@ -100,15 +98,14 @@ nextflow_function {
 
 
 
-    test("Test Function logColours") {
+    test("Test Function without logColours") {
 
         function "logColours"
 
         when {
             function {
                 """
-                // define inputs of the function here. Example:
-                // input[0] = 1
+                input[0] = true
                 """
             }
         }
@@ -120,5 +117,24 @@ nextflow_function {
             )
         }
 
+    }
+
+    test("Test Function with logColours") {
+        function "logColours"
+
+        when {
+            function {
+                """
+                input[0] = false
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert function.success                  },
+                { assert snapshot(function.result).match() }
+            )
+        }
     }
 }
