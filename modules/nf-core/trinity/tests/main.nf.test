@@ -28,11 +28,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.transcript_fasta
-                    ).match()
+                    process.out.versions
+                    ).match("versions")
                 },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") }
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN7_c0_g1_i1 len=299 path=[0:0-151 2:152-298]") }
+
             )
         }
     }
@@ -55,11 +56,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.transcript_fasta
-                    ).match()
+                    process.out.versions
+                    ).match("versions")
                 },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") }
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN10_c0_g1_i1 len=534 path=[0:0-533]") }
             )
         }
     }
@@ -86,11 +87,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         process.out.transcript_fasta,
                         process.out.log
                     ).match()
-                }
+                },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
