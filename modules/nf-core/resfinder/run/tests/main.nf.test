@@ -39,9 +39,9 @@ nextflow_process {
                     []
                 ]
 
-                input[1] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
+                input[1] = []
 
-                input[2] = []
+                input[2] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
                 """
             }
         }
@@ -70,9 +70,9 @@ nextflow_process {
                     []
                 ]
 
-                input[1] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
+                input[1] = []
 
-                input[2] = []
+                input[2] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
                 """
             }
         }
@@ -100,9 +100,9 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
+                input[1] = []
 
-                input[2] = []
+                input[2] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
                 """
             }
         }
@@ -132,9 +132,9 @@ nextflow_process {
                     []
                 ]
 
-                input[1] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
+                input[1] = []
 
-                input[2] = []
+                input[2] = UNTAR.out.untar.map{ it[1] + "/resfinder" }
                 """
             }
         }
