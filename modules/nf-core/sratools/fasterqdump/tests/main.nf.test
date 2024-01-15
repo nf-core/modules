@@ -16,7 +16,7 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.testdata_base_path + 'modules/genomics/sarscov2/illumina/sra/SRR13255544.tar.gz', checkIfExists: true) ])
+                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/sra/SRR13255544.tar.gz', checkIfExists: true) ])
                     """
                 }
             }
@@ -30,7 +30,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
-                input[1] = file(params.testdata_base_path + 'modules/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }
@@ -51,7 +51,7 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.testdata_base_path + 'modules/genomics/sarscov2/illumina/sra/SRR11140744.tar.gz', checkIfExists: true) ])
+                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/sra/SRR11140744.tar.gz', checkIfExists: true) ])
                     """
                 }
             }
@@ -65,7 +65,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
-                input[1] = file(params.testdata_base_path + 'modules/generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
                 """
             }
