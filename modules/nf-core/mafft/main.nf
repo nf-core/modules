@@ -4,8 +4,8 @@ process MAFFT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mafft:7.520--h031d066_3':
-        'biocontainers/mafft:7.520--h031d066_3' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6':
+        'biocontainers/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6' }"
 
     input:
     tuple val(meta),  path(fasta)

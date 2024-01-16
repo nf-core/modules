@@ -6,8 +6,8 @@ process MTMALIGN_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mtm-align:20220104--h4ac6f70_0':
-        'biocontainers/mtm-align:20220104--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-5bcf71dc66dac33d8e003c5e78043b80f5c7f269':
+        'biocontainers/mulled-v2-5bcf71dc66dac33d8e003c5e78043b80f5c7f269' }"
 
     input:
     tuple val(meta), path('*.pdb', arity: '2..*')

@@ -3,8 +3,8 @@ process MUSCLE5_SUPER5 {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/muscle:5.1--h9f5acd7_1':
-        'biocontainers/muscle:5.1--h9f5acd7_1' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-8eb01a3c2755c935d070dd03ff2dee698eeb4466':
+        'biocontainers/mulled-v2-8eb01a3c2755c935d070dd03ff2dee698eeb4466' }"
 
     input:
     tuple val(meta), path(fasta)
