@@ -69,9 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.ancestry_fractions.collect { file(it[1]).getName() } +
-                                process.out.allele_frequencies.collect { file(it[1]).getName() } +
-                                process.out.versions).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
