@@ -37,11 +37,11 @@ nextflow_process {
                     { assert process.success  },
                     // mTMalign may be nondeterministic, just check if the pdbs are all in there
                     //assert snapshot(process.out).match()
-                    { assert file(process.out.alignment[0][1]).text.contains(">1.pdb")  },
-                    { assert file(process.out.alignment[0][1]).text.contains(">2.pdb")  },
-                    { assert file(process.out.alignment[0][1]).text.contains(">3.pdb") },
-                    { assert file(process.out.alignment[0][1]).text.contains(">4.pdb") },
-                    { assert file(process.out.alignment[0][1]).text.contains(">5.pdb") },
+                    { assert file(process.out.alignment[0][1]).getTextGzip().contains(">1.pdb")  },
+                    { assert file(process.out.alignment[0][1]).getTextGzip().contains(">2.pdb")  },
+                    { assert file(process.out.alignment[0][1]).getTextGzip().contains(">3.pdb") },
+                    { assert file(process.out.alignment[0][1]).getTextGzip().contains(">4.pdb") },
+                    { assert file(process.out.alignment[0][1]).getTextGzip().contains(">5.pdb") },
                     { assert snapshot(process.out.versions).match("versions") }
                     )
             }
