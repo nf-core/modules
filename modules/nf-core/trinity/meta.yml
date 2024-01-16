@@ -12,7 +12,7 @@ tools:
       documentation: "https://github.com/trinityrnaseq/trinityrnaseq/wiki"
       tool_dev_url: "https://github.com/trinityrnaseq/trinityrnaseq/"
       doi: "10.1038/nbt.1883"
-      licence: "['BSD-3-clause']"
+      licence: ["BSD-3-clause"]
 input:
   - meta:
       type: map
@@ -37,7 +37,13 @@ output:
       type: file
       description: de novo assembled transcripts fasta file compressed
       pattern: "*.fa.gz"
+  - log:
+      type: file
+      description: Log from trinity
+      pattern: "*.log"
 authors:
   - "@timslittle"
+  - "@gallvp"
 maintainers:
   - "@timslittle"
+  - "@gallvp"
