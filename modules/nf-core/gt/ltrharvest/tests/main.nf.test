@@ -47,6 +47,82 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens-genome_21_fasta-success-extended_outputs") {
+
+        config './nextflow.extended.config'
+
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-success-extended_custom_outputs") {
+
+        config './nextflow.extended.custom.config'
+
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
     test("stub") {
 
         options '-stub'
@@ -72,7 +148,7 @@ nextflow_process {
 
     }
 
-    test("extended_outputs-stub") {
+    test("stub-extended_outputs") {
 
         config './nextflow.extended.config'
         options '-stub'

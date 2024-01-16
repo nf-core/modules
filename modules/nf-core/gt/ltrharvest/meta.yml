@@ -43,12 +43,12 @@ output:
       pattern: "*.gff3"
   - fasta:
       type: file
-      description: FASTA output when `-out out.fasta` argument is present
-      pattern: "out.fasta"
+      description: FASTA output when `-out` argument is present
+      pattern: "*.{fa,fsa,fasta}"
   - inner_fasta:
       type: file
-      description: FASTA output for inner regions when `-outinner inner.fasta` argument is present
-      pattern: "inner.fasta"
+      description: FASTA output for inner regions when `-outinner` argument is present
+      pattern: "*.{fa,fsa,fasta}"
   - versions:
       type: file
       description: File containing software versions
