@@ -8,7 +8,7 @@ nextflow_process {
         tag "mtmalign"
         tag "mtmalign/align"
 
-        test("Should run without failures") {
+        test("Test on seatoxin dataset") {
             setup {
 
                 run("UNTAR") {
