@@ -27,7 +27,10 @@ process MUSCLE5_SUPER5 {
         ${args} \\
         -threads ${task.cpus}
 
-    pigz -p ${task.cpus} ${prefix}.aln
+    # output may be multiple files if -perm all is set
+    for f in *.aln; do
+        pigz -p ${task.cpus} \$f
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
