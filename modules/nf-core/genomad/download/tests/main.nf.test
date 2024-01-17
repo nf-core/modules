@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process GENOMAD_DOWNLOAD"
     script "../main.nf"
     process "GENOMAD_DOWNLOAD"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
