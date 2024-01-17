@@ -15,7 +15,7 @@ process KRAKEN2_ADD {
 
     output:
     tuple val(meta), path("$prefix"), emit: db
-    path "versions.yml"             , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,6 +36,7 @@ process KRAKEN2_ADD {
         --db ${prefix} \\
         --threads ${task.cpus} \\
         $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
