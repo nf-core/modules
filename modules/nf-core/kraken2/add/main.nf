@@ -4,8 +4,8 @@ process KRAKEN2_ADD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5799ab18b5fc681e75923b2450abaa969907ec98:87fc08d11968d081f3e8a37131c1f1f6715b6542-0' :
-        'biocontainers/mulled-v2-5799ab18b5fc681e75923b2450abaa969907ec98:87fc08d11968d081f3e8a37131c1f1f6715b6542-0' }"
+        'https://depot.galaxyproject.org/singularity/kraken2:2.1.2--pl5321h9f5acd7_2' :
+        'biocontainers/kraken2:2.1.2--pl5321h9f5acd7_2' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -14,8 +14,8 @@ process KRAKEN2_ADD {
     path accession2taxid
 
     output:
-    tuple val(meta), path("$prefix/"), emit: db
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("$prefix"), emit: db
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,6 +24,12 @@ process KRAKEN2_ADD {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir ${prefix}
+    cp -L ${taxonomy_names} .
+    cp -L ${taxonomy_nodes} .
+    cp -L ${accession2taxid} .
+    mkdir "${prefix}/taxonomy"
+    mv *.{accession2taxid,dmp} "${prefix}/taxonomy"
     kraken2-build \\
         --add-to-library \\
         ${fasta} \\
