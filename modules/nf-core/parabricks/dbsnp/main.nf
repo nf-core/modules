@@ -38,7 +38,6 @@ process PARABRICKS_DBSNP {
         --in-vcf $vcf_file \\
         --in-dbsnp-file $dbsnp_file \\
         --out-vcf $ann_vcf \\
-        --num-threads $task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

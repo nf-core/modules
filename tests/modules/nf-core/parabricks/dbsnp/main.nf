@@ -8,7 +8,9 @@ workflow test_parabricks_dbsnp {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['vcf']['test.rnaseq.vcf'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['genome']['vcf']['dbsnp_146.hg38.vcf.gz'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['genome']['vcf']['dbsnp_146.hg38.vcf.gz.tbi'], checkIfExists: true)
     ]
 
     PARABRICKS_DBSNP ( input )
