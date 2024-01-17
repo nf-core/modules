@@ -45,6 +45,7 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.trim_json).match("trim_json") },
                 { assert snapshot(workflow.out.trim_reads_fail).match("trim_reads_fail") },
                 { assert snapshot(workflow.out.trim_reads_merged).match("trim_reads_merged") },
+                { assert snapshot(workflow.out.adapter_seq).match("adapter_seq") },
                 { assert snapshot(workflow.out.trim_read_count).match("trim_read_count") },
                 { assert snapshot(workflow.out.versions).match("versions") },
 
