@@ -24,14 +24,7 @@ nextflow_process {
             then {
                 assertAll(
                         { assert process.success },
-                        // although MUSCLE5 is deterministic, for some reason nf-test still computes the checksum before unzipping, which is not deterministic
-                        //{ assert snapshot(process.out.alignment).match("alignment")},
-                        // check for correct entries instead
-                        { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
-                        { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1ahl") },
-                        { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
-                        { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
-                        { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1apf") }
+                        { assert snapshot(process.out.alignment).match("alignment")},
                         )
             }
         }
