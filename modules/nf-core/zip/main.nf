@@ -19,7 +19,6 @@ process ZIP {
 
     script:
     def args = task.ext.args ?: ''
-
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : 'zipped_files')
     """
     7z \\
@@ -27,6 +26,18 @@ process ZIP {
         -l \\
         $args \\
         "${prefix}.zip" ./inputs/*
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : 'zipped_files')
+    """
+    touch "${prefix}.zip"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

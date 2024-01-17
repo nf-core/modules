@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process ZIP"
+    script "../main.nf"
+    process "ZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "zip"
+
+    test("sarscov2 - genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ],
+                            file(params.test_data['sarscov2']['genome']['genome_fasta'])
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.zipped_archive },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ],
+                            file(params.test_data['sarscov2']['genome']['genome_fasta'])
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.zipped_archive.collect { file(it[1]).getName() } +
+                                process.out.versions ).match() }
+            )
+        }
+
+    }
+
+}
