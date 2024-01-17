@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ3_REFINE"
+    script "modules/nf-core/isoseq3/refine/main.nf"
+    config "./nextflow.config"
+    process "ISOSEQ3_REFINE"
+
+    tag "modules"
+    tag "modules_nf-core"
+    tag "isoseq3"
+    tag "isoseq3/refine"
+
+    test("Main test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['lima'], checkIfExists: true),
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.bam).match("bam")
+            assert snapshot(process.out.pbi).match("pbi")
+            assert snapshot(process.out.report).match("report")
+            assert snapshot(process.out.versions).match("versions")
+        }
+
+    }
+
+}
