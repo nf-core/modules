@@ -1,4 +1,4 @@
-- name: "parabricks dbsnp"
+- name: parabricks dbsnp test_parabricks_dbsnp
   command: nextflow run ./tests/modules/nf-core/parabricks/dbsnp -entry test_parabricks_dbsnp -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/dbsnp/nextflow.config -stub-run
   tags:
     - "parabricks"
@@ -8,4 +8,3 @@
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
     - path: "output/parabricks/versions.yml"
       md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    

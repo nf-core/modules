@@ -50,7 +50,6 @@ process PARABRICKS_DBSNP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def ann_vcf = "${prefix}.vcf"
-
     """
     touch $ann_vcf
 
