@@ -42,7 +42,7 @@ process CHECKV_UPDATEDATABASE {
     def checkv_db = db ?: ''
     def update_sequence = fasta ?: ''
     """
-    mkdir -p ${prefix}/
+    touch -p ${prefix}/**
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
