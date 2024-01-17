@@ -1,19 +1,18 @@
-
 process ARIA2 {
-    tag "$source_url"
+    tag "$meta.id"
     label 'process_single'
 
-    conda "conda-forge::aria2=1.36.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
         'biocontainers/aria2:1.36.0' }"
 
     input:
-    val source_url
+    tuple val(meta), val(source_url)
 
     output:
-    path ("$downloaded_file"), emit: downloaded_file
-    path "versions.yml"      , emit: versions
+    tuple val(meta), path("$downloaded_file"), emit: downloaded_file
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,12 +22,22 @@ process ARIA2 {
     downloaded_file = source_url.split("/")[-1]
 
     """
-    set -e
-
     aria2c \\
         --check-certificate=false \\
         $args \\
         $source_url
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    downloaded_file = source_url.split("/")[-1]
+
+    """
+    touch ${downloaded_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

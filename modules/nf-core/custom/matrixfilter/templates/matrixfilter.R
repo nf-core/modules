@@ -166,7 +166,7 @@ if (is.null(opt\$minimum_samples_not_na)) {
 # Define the tests
 
 tests <- list(
-    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
+    'abundance' = function(x) sum(x >= opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
     'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
 )
 

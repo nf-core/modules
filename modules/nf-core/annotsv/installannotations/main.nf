@@ -2,7 +2,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
     tag 'AnnotSV annotations'
     label 'process_single'
 
-    conda "bioconda::annotsv=3.3.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/annotsv:3.3.6--py311hdfd78af_0' :
         'biocontainers/annotsv:3.3.6--py311hdfd78af_0' }"

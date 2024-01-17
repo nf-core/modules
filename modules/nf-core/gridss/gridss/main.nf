@@ -2,7 +2,7 @@ process GRIDSS_GRIDSS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gridss=2.13.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h270b39a_0':
         'biocontainers/gridss:2.13.2--h270b39a_0' }"

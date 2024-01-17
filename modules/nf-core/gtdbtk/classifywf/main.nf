@@ -3,7 +3,7 @@ process GTDBTK_CLASSIFYWF {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::gtdbtk=2.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gtdbtk:2.3.2--pyhdfd78af_0' :
         'biocontainers/gtdbtk:2.3.2--pyhdfd78af_0' }"
@@ -61,7 +61,7 @@ process GTDBTK_CLASSIFYWF {
 
     mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
 
-    find -name gtdbtk.${prefix}.*.classify.tree | xargs -r gzip # do not fail if .tree is missing
+    find -name "gtdbtk.${prefix}.*.classify.tree" | xargs -r gzip # do not fail if .tree is missing
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

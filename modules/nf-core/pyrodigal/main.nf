@@ -2,7 +2,7 @@ process PYRODIGAL {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::pyrodigal=2.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:697b3838b186fac6a9ceec198b09d4032162a079-0':
         'biocontainers/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:697b3838b186fac6a9ceec198b09d4032162a079-0' }"
@@ -35,6 +35,22 @@ process PYRODIGAL {
         -s ${prefix}.score
 
     pigz -nmf ${prefix}*
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gff.gz
+    touch ${prefix}.fna.gz
+    touch ${prefix}.faa.gz
+    touch ${prefix}.score.gz
+    touch versions.yml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

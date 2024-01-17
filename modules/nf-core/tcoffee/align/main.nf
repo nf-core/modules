@@ -2,7 +2,7 @@ process TCOFFEE_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::t-coffee=13.46.0.919e8c6b"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
         'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
@@ -13,7 +13,7 @@ process TCOFFEE_ALIGN {
     tuple val(meta3),  path(template), path(accessory_informations)
 
     output:
-    tuple val (meta), path ("*.aln"), emit: msa
+    tuple val (meta), path ("*.aln"), emit: alignment
     path "versions.yml" , emit: versions
 
     when:

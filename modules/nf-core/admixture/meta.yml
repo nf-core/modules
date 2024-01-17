@@ -12,7 +12,7 @@ tools:
       homepage: "https://dalexander.github.io/admixture/"
       documentation: "https://dalexander.github.io/admixture/admixture-manual.pdf"
       doi: "10.1101/gr.094052.109"
-      licence: "['Free for Academic Use']"
+      licence: ["Free for Academic Use"]
 input:
   - meta:
       type: map
@@ -32,7 +32,7 @@ input:
       description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace with an empty channel if input is ".ped" or ".geno".
       pattern: "*.{fam}"
   - K:
-      type: value
+      type: integer
       description: Belief of the number of ancestral populations.
       pattern: "{*}"
 output:
