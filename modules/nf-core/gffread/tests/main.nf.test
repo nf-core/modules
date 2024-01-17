@@ -18,7 +18,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
                 """
             }
         }
@@ -42,7 +42,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
                 """
             }
         }
