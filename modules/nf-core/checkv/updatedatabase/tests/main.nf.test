@@ -9,22 +9,23 @@ nextflow_process {
     tag "checkv"
     tag "checkv/updatedatabase"
 
-    test("sarscov2 - genome - genome_fasta") {
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(
-                        [
-                            [ id:'checkv_minimal_db' ],
-                            file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
-                        ]
-                    )
-                    """
-                }
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'checkv_minimal_db' ],
+                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
+                    ]
+                )
+                """
             }
         }
+    }
+
+    test("sarscov2 - genome - genome_fasta") {
 
         when {
             params {
@@ -60,6 +61,29 @@ nextflow_process {
                 },
                 { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
                 { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() }
+            )
+        }
+    }
+
+    test("sarscov2 - genome - genome_fasta - stub") {
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                )
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }

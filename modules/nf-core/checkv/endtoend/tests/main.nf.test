@@ -9,37 +9,37 @@ nextflow_process {
     tag "checkv"
     tag "checkv/endtoend"
 
-    test("bacteroides_fragilis - illumina - test1_contigs_fa_gz") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(
-                        [
-                            [ id:'checkv_minimal_db' ],
-                            file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
-                        ]
-                    )
-                    """
-                }
-            }
-
-            run("GUNZIP") {
-                script "../../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(
-                        [
-                            [ id:'test' ],
-                            file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)
-                        ]
-                    )
-                    """
-                }
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'checkv_minimal_db' ],
+                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
+                    ]
+                )
+                """
             }
         }
+
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ],
+                        file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+    }
+
+    test("bacteroides_fragilis - illumina - test1_contigs_fa_gz") {
 
         when {
             process {
@@ -60,6 +60,24 @@ nextflow_process {
                     process.out.viruses,
                     process.out.versions).match() },
                 { assert new File("${process.out.proviruses.get(0).get(1)}").exists() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - illumina - test1_contigs_fa_gz - stub") {
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
             )
         }
     }
