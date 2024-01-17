@@ -19,10 +19,11 @@ process LTRFINDER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def path_prefix     = (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) ? '\$CONDA_PREFIX' : '/usr/local'
     """
-    \$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel \\
+    $path_prefix/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel \\
         -seq $fasta \\
         -threads $task.cpus \\
         $args
@@ -32,21 +33,22 @@ process LTRFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_FINDER_parallel: \$(\$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
+        LTR_FINDER_parallel: \$($path_prefix/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
         ltr_finder: \$(ltr_finder -h 2>&1 | grep 'ltr_finder' | sed 's/ltr_finder //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def path_prefix     = (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) ? '\$CONDA_PREFIX' : '/usr/local'
     """
     touch "${prefix}.scn"
     touch "${prefix}.gff3"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_FINDER_parallel: \$(\$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
+        LTR_FINDER_parallel: \$($path_prefix/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
         ltr_finder: \$(ltr_finder -h 2>&1 | grep 'ltr_finder' | sed 's/ltr_finder //')
     END_VERSIONS
     """
