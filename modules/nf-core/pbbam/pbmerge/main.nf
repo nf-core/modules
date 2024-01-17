@@ -4,8 +4,8 @@ process PBBAM_PBMERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbbam:2.1.0--h3f0f298_2' :
-        'biocontainers/pbbam:2.1.0--h3f0f298_2' }"
+        'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--h8db2425_0' :
+        'biocontainers/pbbam:2.4.0--h8db2425_0' }"
 
     input:
     tuple val(meta), path(bam)
