@@ -1,0 +1,38 @@
+nextflow_process {
+
+    name "Test Process PBCCS"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PBCCS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbccs"
+
+    test("Main test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'alz' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['alz'],    checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true)
+                ]
+                input[1] = 2
+                input[2] = 3
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.bam).match("bam")
+            assert snapshot(process.out.pbi).match("pbi")
+            assert snapshot(process.out.report_txt).match("report_txt")
+            assert snapshot(process.out.versions).match("versions")
+        }
+
+    }
+
+}
