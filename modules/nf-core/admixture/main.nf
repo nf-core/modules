@@ -1,4 +1,3 @@
-
 process ADMIXTURE {
     tag "$meta.id"
     label 'process_medium'
@@ -24,8 +23,6 @@ process ADMIXTURE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
     admixture \\
         $bed_ped_geno \\
@@ -37,6 +34,18 @@ process ADMIXTURE {
     "${task.process}":
         admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*" | sed 's/ADMIXTURE Version //' )
     END_VERSIONS
+    """
 
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.Q"
+    touch "${prefix}.P"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*" | sed 's/ADMIXTURE Version //' )
+    END_VERSIONS
     """
 }
