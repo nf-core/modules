@@ -22,7 +22,7 @@ process KRAKEN2_ADD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     kraken2-build \\
         --add-to-library \\
