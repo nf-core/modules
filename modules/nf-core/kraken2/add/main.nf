@@ -22,7 +22,7 @@ process KRAKEN2_ADD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     cp -L ${taxonomy_names} .
