@@ -2,6 +2,9 @@ name: isoseq3_cluster
 description: IsoSeq3 - Cluster - Cluster trimmed consensus sequences
 keywords:
   - cluster
+  - HiFi
+  - isoseq
+  - Pacbio
 tools:
   - isoseq3:
       description: IsoSeq3 - Cluster - Cluster trimmed consensus sequences
@@ -25,7 +28,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
       description: File containing software version
       pattern: "versions.yml"
