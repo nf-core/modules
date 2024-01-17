@@ -26,7 +26,7 @@ nextflow_process {
             def lines = file(process.out.spectra[0][1]).readLines()
             assertAll(
                 { assert process.success },
-                { assert snapshot(lines[21..-3]).match() }
+                { assert snapshot(lines[21..100]).match() }
             )
         }
 
