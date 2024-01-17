@@ -14,7 +14,7 @@ process KRAKEN2_ADD {
     path accession2taxid
 
     output:
-    tuple val(meta), path("$prefix/"), emit: db
+    tuple val(meta), path("$prefix"), emit: db
     path "versions.yml"              , emit: versions
 
     when:
