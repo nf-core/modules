@@ -1,0 +1,128 @@
+nextflow_process {
+
+    name "Test Process LIMA"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "LIMA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lima"
+
+    test("Input => bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['ccs'], checkIfExists: true),
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.counts).match("counts")
+            assert snapshot(process.out.report).match("report")
+            assert snapshot(process.out.summary).match("summary")
+            assert snapshot(process.out.versions).match("versions")
+            assert snapshot(process.out.bam).match("bam")
+            assert snapshot(process.out.pbi).match("pbi")
+            assert snapshot(process.out.fasta).match("fasta")
+            assert snapshot(process.out.fastagz).match("fastagz")
+            assert snapshot(process.out.fastq).match("fastq")
+            assert snapshot(process.out.fastqgz).match("fastqgz")
+            assert snapshot(process.out.clips).match("clips")
+            assert snapshot(process.out.guess).match("guess")
+        }
+
+    }
+
+    test("Input => fa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['ccs_fa'], checkIfExists: true),
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+        test("Input => fa.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['ccs_fa_gz'], checkIfExists: true),
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("Input => fq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['ccs_fq'], checkIfExists: true),
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("Input => fq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['pacbio']['ccs_fq_gz'], checkIfExists: true),
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
