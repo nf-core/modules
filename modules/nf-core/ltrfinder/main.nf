@@ -22,7 +22,7 @@ process LTRFINDER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    /usr/local/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel \\
+    \$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel \\
         -seq $fasta \\
         -threads $task.cpus \\
         $args
@@ -32,7 +32,7 @@ process LTRFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_FINDER_parallel: \$(/usr/local/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
+        LTR_FINDER_parallel: \$(\$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
         ltr_finder: \$(ltr_finder -h 2>&1 | grep 'ltr_finder' | sed 's/ltr_finder //')
     END_VERSIONS
     """
@@ -46,7 +46,7 @@ process LTRFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_FINDER_parallel: \$(/usr/local/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
+        LTR_FINDER_parallel: \$(\$CONDA_PREFIX/share/EDTA/bin/LTR_FINDER_parallel/LTR_FINDER_parallel -h | grep 'Version:' | sed 's/Version: //')
         ltr_finder: \$(ltr_finder -h 2>&1 | grep 'ltr_finder' | sed 's/ltr_finder //')
     END_VERSIONS
     """
