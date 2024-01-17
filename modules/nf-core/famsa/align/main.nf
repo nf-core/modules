@@ -14,7 +14,7 @@ process FAMSA_ALIGN {
     tuple val(meta2), path(tree)
 
     output:
-    tuple val(meta), path("*.aln"), emit: alignment
+    tuple val(meta), path("*.aln.gz"), emit: alignment
     path "versions.yml"           , emit: versions
 
     when:
@@ -40,7 +40,7 @@ process FAMSA_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln
+    touch ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
