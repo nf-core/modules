@@ -4,6 +4,7 @@
 
 import org.yaml.snakeyaml.Yaml
 import groovy.json.JsonOutput
+import nextflow.extension.FilesEx
 
 /*
 ========================================================================================
@@ -74,16 +75,15 @@ def getWorkflowVersion() {
 //
 // Dump pipeline parameters to a JSON file
 //
-def dumpParametersToJSON(output_directory) {
-    def output_d = new File("${output_directory}/pipeline_info/")
-    if (!output_d.exists()) {
-        output_d.mkdirs()
-    }
-
+def dumpParametersToJSON(outdir) {
     def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
-    def output_pf  = new File(output_d, "params_${timestamp}.json")
+    def filename   = "params_${timestamp}.json"
+    def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
     def jsonStr    = JsonOutput.toJson(params)
-    output_pf.text = JsonOutput.prettyPrint(jsonStr)
+    temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
+
+    FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
+    temp_pf.delete()
 }
 
 //
