@@ -15,10 +15,10 @@ import nextflow.extension.FilesEx
 workflow UTILS_NEXTFLOW_PIPELINE {
 
     take:
-    print_version        // bool
-    dump_parameters      // bool
-    outdir               // path: base directory used to publish pipeline results
-    check_conda_channels // bool
+    print_version           // boolean: print version
+    dump_parameters         // boolean: dump parameters
+    outdir                  // path: base directory used to publish pipeline results
+    check_conda_channels    // boolean: check conda channels
 
     main:
 
@@ -50,38 +50,6 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     FUNCTIONS
 ========================================================================================
 */
-
-//
-// Generate version string
-//
-def getWorkflowVersion() {
-    String version_string = ""
-    if (workflow.manifest.version) {
-        def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
-        version_string += "${prefix_v}${workflow.manifest.version}"
-    }
-
-    if (workflow.commitId) {
-        def git_shortsha = workflow.commitId.substring(0, 7)
-        version_string += "-g${git_shortsha}"
-    }
-
-    return version_string
-}
-
-//
-// Dump pipeline parameters to a JSON file
-//
-def dumpParametersToJSON(outdir) {
-    def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
-    def filename   = "params_${timestamp}.json"
-    def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
-    def jsonStr    = JsonOutput.toJson(params)
-    temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
-
-    FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
-    temp_pf.delete()
-}
 
 //
 // When running with -profile conda, warn if channels have not been set-up appropriately
@@ -121,3 +89,36 @@ def checkCondaChannels() {
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     }
 }
+
+//
+// Dump pipeline parameters to a JSON file
+//
+def dumpParametersToJSON(outdir) {
+    def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
+    def filename   = "params_${timestamp}.json"
+    def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
+    def jsonStr    = JsonOutput.toJson(params)
+    temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
+
+    FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
+    temp_pf.delete()
+}
+
+//
+// Generate version string
+//
+def getWorkflowVersion() {
+    String version_string = ""
+    if (workflow.manifest.version) {
+        def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
+        version_string += "${prefix_v}${workflow.manifest.version}"
+    }
+
+    if (workflow.commitId) {
+        def git_shortsha = workflow.commitId.substring(0, 7)
+        version_string += "-g${git_shortsha}"
+    }
+
+    return version_string
+}
+

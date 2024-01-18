@@ -21,12 +21,12 @@ include { validateParameters } from 'plugin/nf-validation'
 workflow UTILS_NFVALIDATION_PLUGIN {
 
     take:
-    print_help          // bool
-    workflow_command    // string: default commmand used to run pipeline
-    pre_help_text       // string: string to be printed before help text and summary log
-    post_help_text      // string: string to be printed after help text and summary log
-    validate_params     // bool: Validate parameters
-    schema_filename     // path: JSON schema file, null to use default value
+        print_help          // boolean: print help
+        workflow_command    // string: default commmand used to run pipeline
+        pre_help_text       // string: string to be printed before help text and summary log
+        post_help_text      // string: string to be printed after help text and summary log
+        validate_params     // boolean: validate parameters
+        schema_filename     // path: JSON schema file, null to use default value
 
     main:
 
@@ -53,7 +53,7 @@ workflow UTILS_NFVALIDATION_PLUGIN {
     //
     // Validate parameters relative to the parameter JSON schema
     //
-    if (validate_params){
+    if (validate_params) {
         validateParameters(parameters_schema: schema_filename)
     }
 }

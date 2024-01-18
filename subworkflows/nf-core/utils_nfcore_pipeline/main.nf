@@ -14,6 +14,7 @@ import nextflow.extension.FilesEx
 workflow UTILS_NFCORE_PIPELINE {
 
     main:
+
     checkConfigProvided()
 }
 
