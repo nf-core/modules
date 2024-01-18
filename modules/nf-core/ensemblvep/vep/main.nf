@@ -20,7 +20,7 @@ process ENSEMBLVEP_VEP {
     tuple val(meta), path("*.vcf.gz")  , optional:true, emit: vcf
     tuple val(meta), path("*.tab.gz")  , optional:true, emit: tab
     tuple val(meta), path("*.json.gz") , optional:true, emit: json
-    path "*.summary.html"              , emit: report
+    path "*.summary.html"              , optional:true, emit: report
     path "versions.yml"                , emit: versions
 
     when:
@@ -31,6 +31,7 @@ process ENSEMBLVEP_VEP {
     def file_extension = args.contains("--vcf") ? 'vcf' : args.contains("--json")? 'json' : args.contains("--tab")? 'tab' : 'vcf'
     def compress_cmd = args.contains("--compress_output") ? '' : '--compress_output bgzip'
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def stats_cmd = args.contains("--no_stats") ? '' : "--stats_file ${prefix}.summary.html"
     def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     def reference = fasta ? "--fasta $fasta" : ""
     """
@@ -40,13 +41,13 @@ process ENSEMBLVEP_VEP {
         $args \\
         $compress_cmd \\
         $reference \\
+        $stats_cmd \\
         --assembly $genome \\
         --species $species \\
         --cache \\
         --cache_version $cache_version \\
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
-        --stats_file ${prefix}.summary.html \\
 
 
     cat <<-END_VERSIONS > versions.yml
