@@ -17,7 +17,7 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     take:
     print_version        // bool
     dump_parameters      // bool
-    output_directory     // path: base directory used to publish pipeline results
+    outdir               // path: base directory used to publish pipeline results
     check_conda_channels // bool
 
     main:
@@ -33,8 +33,8 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     //
     // Dump pipeline parameters to a JSON file
     //
-    if (dump_parameters && output_directory) {
-        dumpParametersToJSON(output_directory)
+    if (dump_parameters && outdir) {
+        dumpParametersToJSON(outdir)
     }
 
     //
@@ -43,9 +43,6 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     if (check_conda_channels) {
         checkCondaChannels()
     }
-
-    emit:
-        out = true
 }
 
 /*

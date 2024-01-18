@@ -13,12 +13,10 @@ nextflow_workflow {
     test("Should run nothing") {
 
         when {
-
             params {
                 monochrome_logs = true
                 test_data       = ''
             }
-
             workflow {
                 """
                 help            = false
@@ -41,14 +39,11 @@ nextflow_workflow {
         then {
             assert workflow.success
         }
-
     }
 
     test("Should run help") {
 
-
         when {
-
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -79,14 +74,11 @@ nextflow_workflow {
             assert workflow.stdout.any { it.contains('--outdir') }
             assert workflow.stdout.any { it.contains('--outdir') }
         }
-
     }
 
     test("Should run help with command") {
 
-
         when {
-
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -118,14 +110,11 @@ nextflow_workflow {
             assert workflow.stdout.any { it.contains('--outdir') }
             assert workflow.stdout.any { it.contains('--outdir') }
         }
-
     }
 
     test("Should run help with extra text") {
 
-
         when {
-
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -159,14 +148,11 @@ nextflow_workflow {
             assert workflow.stdout.any { it.contains('--outdir') }
             assert workflow.stdout.any { it.contains('post-help-text') }
         }
-
     }
 
     test("Should validate params") {
 
-
         when {
-
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -195,7 +181,5 @@ nextflow_workflow {
             assert workflow.failed
             assert workflow.stdout.any { it.contains('ERROR ~ ERROR: Validation of pipeline parameters failed!') }
         }
-
     }
-
 }

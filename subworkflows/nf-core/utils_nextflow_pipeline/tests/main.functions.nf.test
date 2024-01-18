@@ -9,19 +9,15 @@ nextflow_function {
     tag 'subworkflows/utils_nextflow_pipeline'
 
     test("Test Function getWorkflowVersion") {
-
         function "getWorkflowVersion"
 
         then {
             assert function.success
             assert snapshot(function.result).match()
         }
-
     }
 
-
     test("Test Function dumpParametersToJSON") {
-
         function "dumpParametersToJSON"
 
         when {
@@ -36,18 +32,14 @@ nextflow_function {
         then {
             assert function.success
         }
-
     }
 
     test("Test Function checkCondaChannels") {
-
         function "checkCondaChannels"
 
         then {
             assert function.success
             assert snapshot(function.result).match()
         }
-
     }
-
 }
