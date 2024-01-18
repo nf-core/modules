@@ -22,7 +22,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-python@v3
       - uses: pre-commit/action@v3.0.0
         # FIXME Flip this off once we get to less than a couple hundred. Adding
@@ -43,7 +43,7 @@ jobs:
           node-version: "20"
 
       - name: Install Prettier
-        run: npm install -g prettier
+        run: npm install -g prettier@3.1.0
 
       - name: Run Prettier --check
         run: prettier --check .
@@ -168,193 +168,199 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.pytest-changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
+        profile: [conda, docker, singularity]
         exclude:
-          - tags: "nf-test"
-          - profile: "conda"
+          - tags: nf-test
+          - profile: conda
             tags: annotsv
-          - profile: "conda"
-            tags: happy/sompy
-          - profile: "conda"
-            tags: cellpose
-          - profile: "conda"
-            tags: mcquant
-          - profile: "conda"
-            tags: bases2fastq
-          - profile: "conda"
+          - profile: conda
             tags: backsub
-          - profile: "conda"
+          - profile: conda
+            tags: bases2fastq
+          - profile: singularity
+            tags: bases2fastq
+          - profile: conda
             tags: basicpy
-          - profile: "conda"
+          - profile: conda
             tags: bcl2fastq
-          - profile: "conda"
+          - profile: conda
             tags: bclconvert
-          - profile: "conda"
+          - profile: conda
             tags: bwa/aln
-          - profile: "conda"
+          - profile: conda
             tags: bwa/index
-          - profile: "conda"
+          - profile: conda
             tags: bwa/mem
-          - profile: "conda"
+          - profile: conda
             tags: bwa/sampe
-          - profile: "conda"
+          - profile: conda
             tags: bwa/samse
-          - profile: "conda"
+          - profile: conda
+            tags: cellpose
+          - profile: conda
             tags: cellranger/count
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkfastq
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkgtf
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkref
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkvdjref
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/multi
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/vdj
-          - profile: "conda"
-            tags: checkm2/databasedownload
-          - profile: "conda"
-            tags: checkm2/predict
-          - profile: "conda"
+          - profile: conda
+            tags: cellrangerarc/count
+          - profile: conda
+            tags: cellrangerarc/mkfastq
+          - profile: conda
+            tags: cellrangerarc/mkgtf
+          - profile: conda
+            tags: cellrangerarc/mkref
+          - profile: conda
             tags: cellrangeratac/count
-          - profile: "conda"
+          - profile: conda
             tags: cellrangeratac/mkfastq
-          - profile: "conda"
+          - profile: conda
             tags: cellrangeratac/mkref
-          - profile: "conda"
+          - profile: conda
+            tags: checkm2/databasedownload
+          - profile: conda
+            tags: checkm2/predict
+          - profile: conda
             tags: controlfreec/makegraph2
-          - profile: "conda"
+          - profile: conda
             tags: coreograph
-          - profile: "conda"
+          - profile: conda
             tags: deepcell/mesmer
-          - profile: "conda"
+          - profile: conda
             tags: deepvariant
-          - profile: "conda"
-            tags: fastk/fastk
-          - profile: "conda"
+          - profile: conda
             tags: fastani
-          - profile: "conda"
+          - profile: conda
+            tags: fastk/fastk
+          - profile: conda
             tags: fastk/histex
-          - profile: "conda"
+          - profile: conda
             tags: fastk/merge
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsadaptor
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsgx
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/cnnscorevariants
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
+          - profile: singularity
+            tags: gatk4/determinegermlinecontigploidy
+          - profile: conda
             tags: gatk4/germlinecnvcaller
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/postprocessgermlinecnvcalls
-          - profile: "conda"
+          - profile: conda
             tags: genescopefk
-          - profile: "conda"
+          - profile: conda
+            tags: happy/sompy
+          - profile: conda
             tags: hlala/preparegraph
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/multicut
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/pixelclassification
-          - profile: "conda"
+          - profile: conda
             tags: imputeme/vcftoprs
-          - profile: "conda"
-            tags: manta/convertinversion
-          - profile: "conda"
-            tags: medaka
-          - profile: "conda"
-            tags: merquryfk/katcomp
-          - profile: "conda"
-            tags: merquryfk/katgc
-          - profile: "conda"
-            tags: merquryfk/merquryfk
-          - profile: "conda"
-            tags: merquryfk/ploidyplot
-          - profile: "conda"
-            tags: minimap2/align
-          - profile: "conda"
-            tags: mitohifi/mitohifi
-          - profile: "conda"
-            tags: mitohifi/findmitoreference
-          - profile: "conda"
-            tags: nanoplot
-          - profile: "conda"
-            tags: ncbitools/vecscreen
-          - profile: "conda"
-            tags: parabricks/applybqsr
-          - profile: "conda"
-            tags: parabricks/deepvariant
-          - profile: "conda"
-            tags: parabricks/fq2bam
-          - profile: "conda"
-            tags: parabricks/haplotypecaller
-          - profile: "conda"
-            tags: parabricks/mutectcaller
-          - profile: "conda"
-            tags: parabricks/indexgvcf
-          - profile: "conda"
-            tags: picard/collecthsmetrics
-          - profile: "conda"
-            tags: picard/collectwgsmetrics
-          - profile: "conda"
-            tags: scimap/mcmicro
-          - profile: "conda"
-            tags: sentieon/applyvarcal
-          - profile: "conda"
-            tags: sentieon/bwaindex
-          - profile: "conda"
-            tags: sentieon/bwamem
-          - profile: "conda"
-            tags: sentieon/datametrics
-          - profile: "conda"
-            tags: sentieon/dedup
-          - profile: "conda"
-            tags: sentieon/dnamodelapply
-          - profile: "conda"
-            tags: sentieon/dnascope
-          - profile: "conda"
-            tags: sentieon/gvcftyper
-          - profile: "conda"
-            tags: sentieon/haplotyper
-          - profile: "conda"
-            tags: sentieon/readwriter
-          - profile: "conda"
-            tags: sentieon/tnfilter
-          - profile: "conda"
-            tags: sentieon/tnhaplotyper2
-          - profile: "conda"
-            tags: sentieon/tnscope
-          - profile: "conda"
-            tags: sentieon/varcal
-          - profile: "conda"
-            tags: sentieon/wgsmetrics
-          - profile: "conda"
-            tags: spaceranger/count
-          - profile: "conda"
-            tags: spaceranger/mkgtf
-          - profile: "conda"
-            tags: spaceranger/mkref
-          - profile: "conda"
-            tags: svanalyzer/svbenchmark
-          - profile: "conda"
-            tags: universc
-          - profile: "singularity"
-            tags: universc
-          - profile: "conda"
-            tags: vt/decompose
-          - profile: "singularity"
-            tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
-            tags: subworkflows/bcl_demultiplex
-          - profile: "conda"
-            tags: subworkflows/fasta_clean_fcs
-          - profile: "conda"
+          - profile: conda
             tags: islandpath
-          - profile: "conda"
+          - profile: conda
+            tags: manta/convertinversion
+          - profile: conda
+            tags: mcquant
+          - profile: conda
+            tags: medaka
+          - profile: conda
+            tags: merquryfk/katcomp
+          - profile: conda
+            tags: merquryfk/katgc
+          - profile: conda
+            tags: merquryfk/merquryfk
+          - profile: conda
+            tags: merquryfk/ploidyplot
+          - profile: conda
+            tags: minimap2/align
+          - profile: conda
+            tags: mitohifi/findmitoreference
+          - profile: conda
+            tags: mitohifi/mitohifi
+          - profile: conda
+            tags: nanoplot
+          - profile: conda
+            tags: ncbitools/vecscreen
+          - profile: conda
+            tags: parabricks/applybqsr
+          - profile: conda
+            tags: parabricks/deepvariant
+          - profile: conda
+            tags: parabricks/fq2bam
+          - profile: conda
+            tags: parabricks/genotypegvcf
+          - profile: conda
+            tags: parabricks/haplotypecaller
+          - profile: conda
+            tags: parabricks/indexgvcf
+          - profile: conda
+            tags: parabricks/mutectcaller
+          - profile: conda
+            tags: picard/collecthsmetrics
+          - profile: conda
+            tags: picard/collectwgsmetrics
+          - profile: conda
+            tags: scimap/mcmicro
+          - profile: conda
+            tags: sentieon/applyvarcal
+          - profile: conda
+            tags: sentieon/bwaindex
+          - profile: conda
+            tags: sentieon/bwamem
+          - profile: conda
+            tags: sentieon/datametrics
+          - profile: conda
+            tags: sentieon/dedup
+          - profile: conda
+            tags: sentieon/dnamodelapply
+          - profile: conda
+            tags: sentieon/dnascope
+          - profile: conda
+            tags: sentieon/gvcftyper
+          - profile: conda
+            tags: sentieon/haplotyper
+          - profile: conda
+            tags: sentieon/readwriter
+          - profile: conda
+            tags: sentieon/tnfilter
+          - profile: conda
+            tags: sentieon/tnhaplotyper2
+          - profile: conda
+            tags: sentieon/tnscope
+          - profile: conda
+            tags: sentieon/varcal
+          - profile: conda
+            tags: sentieon/wgsmetrics
+          - profile: conda
             tags: subworkflows/bam_qc_picard
+          - profile: conda
+            tags: subworkflows/bcl_demultiplex
+          - profile: conda
+            tags: subworkflows/fasta_clean_fcs
+          - profile: conda
+            tags: svanalyzer/svbenchmark
+          - profile: conda
+            tags: universc
+          - profile: singularity
+            tags: universc
+          - profile: conda
+            tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -459,85 +465,102 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.nf-test-changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
+        profile: [conda, docker, singularity]
         exclude:
-          - tags: "nf-test"
-          - profile: "conda"
+          - tags: nf-test
+          - profile: conda
             tags: annotsv
-          - profile: "conda"
+          - profile: conda
             tags: happy/sompy
-          - profile: "conda"
+          - profile: conda
             tags: backsub
-          - profile: "conda"
+          - profile: conda
             tags: bases2fastq
-          - profile: "conda"
+          - profile: conda
             tags: bcl2fastq
-          - profile: "conda"
+          - profile: conda
             tags: bclconvert
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/count
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkfastq
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkgtf
-          - profile: "conda"
+          - profile: conda
             tags: cellranger/mkref
-          - profile: "conda"
+          - profile: conda
             tags: custom/dumpsoftwareversions
-          - profile: "conda"
+          - profile: conda
             tags: deepcell/mesmer
-          - profile: "conda"
+          - profile: conda
             tags: deepvariant
-          - profile: "conda"
+          - profile: conda
             tags: ensemblvep/vep
-          - profile: "conda"
+          - profile: conda
             tags: fastk/fastk
-          - profile: "conda"
+          - profile: conda
             tags: fastk/histex
-          - profile: "conda"
+          - profile: conda
             tags: fastk/merge
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsadaptor
-          - profile: "conda"
+          - profile: conda
             tags: fcs/fcsgx
-          - profile: "conda"
+          - profile: conda
+            tags: ganon/buildcustom
+          - profile: conda
+            tags: ganon/classify
+          - profile: conda
+            tags: ganon/report
+          - profile: conda
+            tags: ganon/table
+          - profile: conda
             tags: gatk4/cnnscorevariants
-          - profile: "conda"
+          - profile: conda
             tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
+          - profile: conda
             tags: genescopefk
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/multicut
-          - profile: "conda"
+          - profile: conda
             tags: ilastik/pixelclassification
-          - profile: "conda"
+          - profile: conda
             tags: imputeme/vcftoprs
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/katcomp
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/katgc
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/merquryfk
-          - profile: "conda"
+          - profile: conda
             tags: merquryfk/ploidyplot
-          - profile: "conda"
+          - profile: conda
             tags: sentieon/bwaindex
-          - profile: "conda"
+          - profile: conda
             tags: sentieon/bwamem
           - profile: "conda"
+            tags: spaceranger/mkgtf
+          - profile: "conda"
+            tags: spaceranger/mkref
+          - profile: "conda"
+            tags: spaceranger/count
+          - profile: "conda"
+          - profile: conda
             tags: svanalyzer/svbenchmark
-          - profile: "conda"
+          - profile: conda
             tags: universc
-          - profile: "singularity"
+          - profile: singularity
             tags: universc
-          - profile: "conda"
+          - profile: conda
             tags: vt/decompose
-          - profile: "conda"
+          - profile: conda
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: singularity
+            tags: bases2fastq
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.2"
+      NFTEST_VER: "0.8.3"
 
     steps:
       - uses: actions/checkout@v4
@@ -587,6 +610,7 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
+          pip install pdiff
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
@@ -604,8 +628,11 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
-          NXF_TEST_DIR=~ \
+          NFT_WORKDIR=~ \
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tag ${{ matrix.tags }} \
