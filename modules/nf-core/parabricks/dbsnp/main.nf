@@ -15,7 +15,7 @@ process PARABRICKS_DBSNP {
     tuple val(meta), path(vcf_file), path(dbsnp_file), path(tabix_file)
 
     output:
-    tuple val(meta), path(ann_vcf), emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
