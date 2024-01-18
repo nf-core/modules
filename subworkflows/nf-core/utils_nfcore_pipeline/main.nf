@@ -83,8 +83,8 @@ def processVersionsFromYAML(yaml_file) {
 def workflowVersionToYAML() {
     return """
     Workflow:
-      $workflow.manifest.name: ${getWorkflowVersion()}
-      Nextflow: $workflow.nextflow.version
+        $workflow.manifest.name: ${getWorkflowVersion()}
+        Nextflow: $workflow.nextflow.version
     """.stripIndent().trim()
 }
 
