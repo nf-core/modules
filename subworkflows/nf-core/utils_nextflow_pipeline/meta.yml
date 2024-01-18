@@ -24,7 +24,15 @@ input:
       type: boolean
       description: |
         Check if the conda channel priority is correct.
-output: []
+output:
+  - conda_channels_correct:
+      type: boolean
+      description: |
+        Report if the channel priority is correct
+  - parameters_dumped:
+      type: boolean
+      description: |
+        Report if parameters have been dumped
 authors:
   - "@adamrtalbot"
   - "@drpatelh"

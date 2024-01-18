@@ -21,6 +21,9 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     check_conda_channels    // boolean: check conda channels
 
     main:
+    conda_channels_correct = false
+    parameters_dumped      = false
+    version_printed        = false
 
     //
     // Print workflow version and exit on --version
@@ -35,14 +38,20 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     //
     if (dump_parameters && outdir) {
         dumpParametersToJSON(outdir)
+
+        parameters_dumped = true
     }
 
     //
     // When running with Conda, warn if channels have not been set-up appropriately
     //
     if (check_conda_channels) {
-        checkCondaChannels()
+        conda_channels_correct = checkCondaChannels()
     }
+
+    emit:
+    conda_channels_correct
+    parameters_dumped
 }
 
 /*
@@ -55,6 +64,8 @@ workflow UTILS_NEXTFLOW_PIPELINE {
 // When running with -profile conda, warn if channels have not been set-up appropriately
 //
 def checkCondaChannels() {
+    def conda_channels_correct = true
+
     Yaml parser = new Yaml()
     def channels = []
     try {
@@ -62,7 +73,7 @@ def checkCondaChannels() {
         channels = config.channels
     } catch(NullPointerException | IOException e) {
         log.warn "Could not verify conda channel configuration."
-        return
+        return false
     }
 
     // Check that all channels are present
@@ -87,7 +98,9 @@ def checkCondaChannels() {
             "  but the following channel order is required:\n" +
             "  ${required_channels_in_order}\n" +
             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        conda_channels_correct = false
     }
+    return conda_channels_correct
 }
 
 //
