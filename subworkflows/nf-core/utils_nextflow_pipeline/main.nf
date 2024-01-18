@@ -121,4 +121,3 @@ def getWorkflowVersion() {
 
     return version_string
 }
-

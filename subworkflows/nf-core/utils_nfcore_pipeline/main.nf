@@ -387,7 +387,3 @@ def workflowVersionToYAML() {
         Nextflow: $workflow.nextflow.version
     """.stripIndent().trim()
 }
-
-
-
-
