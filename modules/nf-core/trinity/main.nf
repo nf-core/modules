@@ -9,7 +9,7 @@ process TRINITY {
         'biocontainers/trinity:2.15.1--pl5321h146fbdb_3' }"
 
     input:
-    tuple val(meta), path(reads, stageAs: "input*/*")
+    tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')
 
     output:
     tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
