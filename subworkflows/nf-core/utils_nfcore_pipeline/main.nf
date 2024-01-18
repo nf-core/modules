@@ -15,7 +15,10 @@ workflow UTILS_NFCORE_PIPELINE {
 
     main:
 
-    checkConfigProvided()
+    config_is_correct = checkConfigProvided()
+
+    emit:
+    config_is_correct
 }
 
 /*
@@ -28,6 +31,7 @@ workflow UTILS_NFCORE_PIPELINE {
 //  Warn if a -profile or Nextflow config has not been provided to run the pipeline
 //
 def checkConfigProvided() {
+    def config_is_correct = true
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
         log.warn "[$workflow.manifest.name] You are attempting to run the pipeline without any custom configuration!\n\n" +
             "This will be dependent on your local compute environment but can be achieved via one or more of the following:\n" +
@@ -35,7 +39,9 @@ def checkConfigProvided() {
             "   (2) Using an existing nf-core/configs for your Institution e.g. `-profile crick` or `-profile uppmax`\n" +
             "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" +
             "Please refer to the quick start section and usage docs for the pipeline.\n "
+        config_is_correct = false
     }
+    return config_is_correct
 }
 
 //
