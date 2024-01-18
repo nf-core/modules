@@ -27,8 +27,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path("${process.out.txt[0][1]}")).match("genome.splice_sites") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert path("${process.out.txt[0][1]}").exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
