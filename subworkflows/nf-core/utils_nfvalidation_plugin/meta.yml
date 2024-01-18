@@ -32,7 +32,11 @@ input:
       type: string
       description: |
         The filename of the schema to validate against.
-output: []
+output:
+  - validated_params:
+      type: boolean
+      description: |
+        Report if params have been validated
 authors:
   - "@adamrtalbot"
 maintainers:

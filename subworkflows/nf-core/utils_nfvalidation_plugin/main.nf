@@ -29,6 +29,7 @@ workflow UTILS_NFVALIDATION_PLUGIN {
         schema_filename     // path: JSON schema file, null to use default value
 
     main:
+    validated_params = false
 
     log.debug "Using schema file: ${schema_filename}"
 
@@ -55,5 +56,10 @@ workflow UTILS_NFVALIDATION_PLUGIN {
     //
     if (validate_params) {
         validateParameters(parameters_schema: schema_filename)
+
+        validated_params = true
     }
+
+    emit:
+    validated_params
 }

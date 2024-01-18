@@ -8,17 +8,19 @@ nextflow_function {
     tag 'utils_nextflow_pipeline'
     tag 'subworkflows/utils_nextflow_pipeline'
 
-    test("Test Function getWorkflowVersion") {
+    test("Function getWorkflowVersion") {
 
         function "getWorkflowVersion"
 
         then {
-            assert function.success
-            assert snapshot(function.result).match()
+            assertAll (
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
         }
     }
 
-    test("Test Function dumpParametersToJSON") {
+    test("Function dumpParametersToJSON") {
 
         function "dumpParametersToJSON"
 
@@ -32,17 +34,21 @@ nextflow_function {
         }
 
         then {
-            assert function.success
+            assertAll (
+                { assert function.success }
+            )
         }
     }
 
-    test("Test Function checkCondaChannels") {
+    test("Function checkCondaChannels") {
 
         function "checkCondaChannels"
 
         then {
-            assert function.success
-            assert snapshot(function.result).match()
+            assertAll (
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
         }
     }
 }

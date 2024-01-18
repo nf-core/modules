@@ -61,6 +61,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert workflow.exitStatus == 0 },
                 { assert workflow.stdout.contains("nextflow_workflow v9.9.9") }
             )
         }

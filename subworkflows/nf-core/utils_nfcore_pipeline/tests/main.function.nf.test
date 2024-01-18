@@ -9,31 +9,31 @@ nextflow_function {
     tag "utils_nfcore_pipeline"
     tag "subworkflows/utils_nfcore_pipeline"
 
-    test("Test Function checkConfigProvided") {
+    test("Function checkConfigProvided") {
 
         function "checkConfigProvided"
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
     }
 
-    test("Test Function workflowCitation") {
+    test("Function workflowCitation") {
 
         function "workflowCitation"
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
     }
 
-    test("Test Function nfCoreLogo") {
+    test("Function nfCoreLogo") {
 
         function "nfCoreLogo"
 
@@ -47,13 +47,13 @@ nextflow_function {
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
     }
 
-    test("Test Function dashedLine") {
+    test("Function dashedLine") {
 
         function "dashedLine"
 
@@ -67,13 +67,13 @@ nextflow_function {
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
     }
 
-    test("Test Function without logColours") {
+    test("Function without logColours") {
 
         function "logColours"
 
@@ -87,13 +87,13 @@ nextflow_function {
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
     }
 
-    test("Test Function with logColours") {
+    test("Function with logColours") {
         function "logColours"
 
         when {
@@ -106,7 +106,7 @@ nextflow_function {
 
         then {
             assertAll (
-                { assert function.success                  },
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
