@@ -43,7 +43,7 @@ jobs:
           node-version: "20"
 
       - name: Install Prettier
-        run: npm install -g prettier
+        run: npm install -g prettier@3.1.0
 
       - name: Run Prettier --check
         run: prettier --check .
