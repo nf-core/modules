@@ -12,6 +12,7 @@ process SAMBAMBA_MARKDUP {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), optional:true, emit: bai
     path "versions.yml"           , emit: versions
 
     when:
