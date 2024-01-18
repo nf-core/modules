@@ -13,7 +13,7 @@ workflow test_oatk_mito {
     hmm_h3m = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true)
     hmm_h3p = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
     hmm_index = Channel.of([hmm, hmm_h3f, hmm_h3i, hmm_h3m, hmm_h3p])
-    OATK ( data_reads, hmm_index, [[],[],[],[],[]], [])
+    OATK ( data_reads, hmm_index, [[],[],[],[],[]])
 }
 
 workflow test_oatk_pltd {
@@ -25,5 +25,5 @@ workflow test_oatk_pltd {
     hmm_h3m = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true)
     hmm_h3p = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
     hmm_index = Channel.of([hmm, hmm_h3f, hmm_h3i, hmm_h3m, hmm_h3p])
-    OATK ( data_reads, [[],[],[],[],[]], hmm_index, [])
+    OATK ( data_reads, [[],[],[],[],[]], hmm_index)
 }

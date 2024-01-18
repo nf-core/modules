@@ -11,7 +11,6 @@ process OATK {
     tuple val(meta), path(reads)
     tuple path(mito_hmm), path(mito_hmm_h3f), path(mito_hmm_h3i), path(mito_hmm_h3m), path(mito_hmm_h3p)
     tuple path(pltd_hmm), path(pltd_hmm_h3f), path(pltd_hmm_h3i), path(pltd_hmm_h3m), path(pltd_hmm_h3p)
-    path(tmp)
 
     output:
     tuple val(meta), path("*mito.ctg.fasta")    , emit: mito_fasta, optional: true
@@ -43,16 +42,11 @@ process OATK {
     if (pltd_hmm) {
         pltd_hmm_arg = '-p ' + pltd_hmm
     }
-    tmp_arg = ''
-    if (tmp) {
-        tmp_arg = '-T ' + tmp
-    }
     """
     oatk \\
         $args \\
         $mito_hmm_arg \\
         $pltd_hmm_arg \\
-        $tmp_arg \\
         -t $task.cpus \\
         -o ${prefix} \\
         $reads
