@@ -24,7 +24,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id:'test' ], // meta map
+                    [ id:'test', single_end: false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
