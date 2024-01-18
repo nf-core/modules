@@ -1,0 +1,140 @@
+name: "toulligqc"
+
+description: QC analyses of Oxford Nanopore runs
+keywords:
+  - nanopore sequencing
+  - quality control
+  - genomics
+tools:
+  - "toulligqc":
+      description: "A post sequencing QC tool for Oxford Nanopore sequencers"
+      homepage: https://github.com/GenomiqueENS/toulligQC
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ['CECILL-2.1']
+
+
+input:
+
+  - meta:
+      type: map
+      description: 
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - fastq:
+      type: file
+      description: FASTQ file (necessary if no sequencing summary file)
+      pattern: "*.{fq, fastq, fastq.gz}"
+
+  - fast5:
+      type: file
+      description: fastq/bam/fast5 files
+      pattern: "*.{fast5, fast5.tar.gz, fast5.tar.bz2}"
+
+  - bam:
+      type: file
+      description: BAM file (necessary if no sequencing summary file)
+      pattern: "*.{bam}"
+
+  - seq_summary:
+      type: file
+      description: Basecaller sequencing summary source
+      pattern: "*.{txt, txt.bz2, txt.gz}"      
+
+  - seq_summary:
+      type: file
+      description: Basecaller sequencing summary source
+      pattern: "*.{txt, txt.bz2, txt.gz}"      
+
+  - seq_summary:
+      type: file
+      description: Basecaller sequencing summary source
+      pattern: "*.{txt, txt.bz2, txt.gz}"      
+
+  - telemetry_source:
+      type: file
+      description: Basecaller telemetry file source
+      pattern: "sequencing_telemetry.{js, js.gz, js.bz2}"      
+
+  - report_name:
+      type: value
+      description: Name of toulligqc report
+
+  - output_dir:
+      type: path
+      description: Output directory
+      
+  - html_report:
+      type: true/ false
+      description: Option for output HTML report
+      
+  - data_report:
+      type: path
+      description:  Output data report
+      
+  - images_dir:
+      type: path
+      description: Images directory
+      
+  - summary_1dsqr:
+      type: file
+      description: Basecaller 1dsq summary source
+      
+  - barcodes:
+      type: value
+      description: Coma separated barcode list
+      
+  - barcoding:
+      type: true/ false
+      description: Option for barcode usage
+      
+  - threads:
+      type: value
+      description: Number of threads for parsing FASTQ or BAM files
+      
+  - batch_size:
+      type: value
+      description: Batch size for each threads
+      
+  - qscore_threshold:
+      type: value
+      description: Q-score threshold to distinguish between passing filter and fail reads (default 9), applicable only for FASTQ and BAM files                         
+      
+
+
+output:
+
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+ 
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - report:
+      type: file
+      description: Report data emitted from toulligqc
+      pattern: "report.data"
+  - report_html:
+      type: file
+      description: Report data in html format
+      pattern: "*.html"
+  - image_plots:
+      type: file
+      description: plots emitted from toulligqc
+      pattern: "report.data"
+  - image_plots_html:
+      type: file
+      description: Report data in html format
+      pattern: "*.html"
+
+authors:
+  - "@Salome-Brunon"
+maintainers:
+  - "@Salome-Brunon"
