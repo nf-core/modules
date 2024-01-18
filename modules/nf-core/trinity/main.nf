@@ -24,7 +24,7 @@ process TRINITY {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def reads1 = [], reads2 = []
-    meta.single_end ? [reads].flatten().each{reads1 << it} : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
+    meta.single_end ? reads1 = reads : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
 
     if (meta.single_end) {
         reads_args = "--single ${reads1.join(',')}"
