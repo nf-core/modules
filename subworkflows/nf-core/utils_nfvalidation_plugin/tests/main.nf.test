@@ -13,10 +13,12 @@ nextflow_workflow {
     test("Should run nothing") {
 
         when {
+
             params {
                 monochrome_logs = true
                 test_data       = ''
             }
+
             workflow {
                 """
                 help            = false
@@ -44,6 +46,7 @@ nextflow_workflow {
     test("Should run help") {
 
         when {
+
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -79,6 +82,7 @@ nextflow_workflow {
     test("Should run help with command") {
 
         when {
+
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -115,6 +119,7 @@ nextflow_workflow {
     test("Should run help with extra text") {
 
         when {
+
             params {
                 monochrome_logs = true
                 test_data       = ''
@@ -153,6 +158,7 @@ nextflow_workflow {
     test("Should validate params") {
 
         when {
+
             params {
                 monochrome_logs = true
                 test_data       = ''
