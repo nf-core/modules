@@ -1,4 +1,4 @@
-- name: "oatk test_oatk_mito"
+- name: oatk test_oatk_mito
   command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk_mito -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
   tags:
     - "oatk"
@@ -23,7 +23,7 @@
     - path: "output/oatk/ilDeiPorc1.annot_mito.txt"
     - path: "output/oatk/versions.yml"
 
-- name: "oatk test_oatk_pltd"
+- name: oatk test_oatk_pltd
   command: nextflow run ./tests/modules/nf-core/oatk -entry test_oatk_pltd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/oatk/nextflow.config
   tags:
     - "oatk"
