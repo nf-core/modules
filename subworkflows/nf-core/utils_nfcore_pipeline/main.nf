@@ -73,7 +73,7 @@ def getWorkflowVersion() {
 //
 def processVersionsFromYAML(yaml_file) {
     Yaml yaml = new Yaml()
-    versions = yaml.load(yaml_file).collectEntries { k,v -> [ k.tokenize(':')[-1], v ] }
+    versions = yaml.load(yaml_file).collectEntries { k, v -> [ k.tokenize(':')[-1], v ] }
     return yaml.dumpAsMap(versions).trim()
 }
 
