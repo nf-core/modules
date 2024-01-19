@@ -29,10 +29,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
-                { assert snapshot(
-                    path("${process.out.results[0][1]}/genome_results.txt"),
-                    process.out.versions)
-                .match() }
+                { assert snapshot(path("${process.out.results[0][1]}/genome_results.txt")).match("genome_results") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }

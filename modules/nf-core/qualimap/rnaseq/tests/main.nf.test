@@ -8,7 +8,7 @@ nextflow_process {
     tag "qualimap"
     tag "qualimap/rnaseq"
 
-    test("homo_sapiens [BAM]") {
+    test("homo_sapiens [bam]") {
 
         when {
             params {
@@ -32,10 +32,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
-                { assert snapshot(
-                    path("${process.out.results[0][1]}/rnaseq_qc_results.txt"),
-                    process.out.versions)
-                .match() }
+                { assert snapshot(path("${process.out.results[0][1]}/rnaseq_qc_results.txt")).match("rnaseq_qc_results") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
