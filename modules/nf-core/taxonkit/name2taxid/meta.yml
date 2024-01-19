@@ -1,55 +1,48 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "taxonkit_name2taxid"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Convert taxon names to TaxIds
 keywords:
-  - sort
-  - example
-  - genomics
+  - taxonomy
+  - taxIds
+  - taxon name
+  - conversion
 tools:
   - "taxonkit":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A Cross-platform and Efficient NCBI Taxonomy Toolkit"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://bioinf.shenwei.me/taxonkit/"
+      documentation: "https://bioinf.shenwei.me/taxonkit/usage/#name2taxid"
+      tool_dev_url: "https://github.com/shenwei356/taxonkit"
+      doi: "10.1016/j.jgg.2021.03.006"
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - name:
+      type: string
+      description: Taxon name to look up (provide either this or names.txt, not both)
+  - names_txt:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File with taxon names to look up, each on their own line (provide either this or name, not both)
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - tsv:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TSV file of Taxon names and their taxon ID
+      pattern: "*.tsv"
 
 authors:
   - "@mahesh-panchal"
