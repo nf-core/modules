@@ -10,21 +10,9 @@ nextflow_workflow {
     tag "subworkflows/utils_nfcore_pipeline"
 
     test("Should run without failures") {
-
-        when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
-            workflow {
-                """
-                input[0] = true
-                """
-            }
-        }
-
         then {
             assert workflow.success
+            assert snapshot(workflow.out).match()
         }
 
     }

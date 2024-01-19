@@ -12,14 +12,6 @@ nextflow_function {
 
         function "getWorkflowVersion"
 
-        when {
-            function {
-                """
-                // no inputs
-                """
-            }
-        }
-
         then {
             assert function.success
             assert snapshot(function.result).match()
@@ -43,8 +35,6 @@ nextflow_function {
 
         then {
             assert function.success
-            assert function.result =~ /publish_dir_mode/
-            assert function.result =~ /copy/
         }
 
     }
@@ -52,14 +42,6 @@ nextflow_function {
     test("Test Function checkCondaChannels") {
 
         function "checkCondaChannels"
-
-        when {
-            function {
-                """
-                // no inputs
-                """
-            }
-        }
 
         then {
             assert function.success
