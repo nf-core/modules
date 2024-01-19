@@ -69,7 +69,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.alignment).match("alignment_guidetree")},
-                { assert snapshot(process.out.versions).match("versions_guidtree") }
+                { assert snapshot(process.out.versions).match("versions_guidetree") }
             )
         }
 
