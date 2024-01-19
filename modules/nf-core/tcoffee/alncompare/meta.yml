@@ -21,12 +21,12 @@ input:
         e.g. [ id:'test', ... ]
   - msa:
       type: file
-      description: fasta file containing the alignment to be evaluated
-      pattern: "*.{aln,fa,fasta,fas}"
+      description: fasta file containing the alignment to be evaluated. Can be gzipped or uncompressed
+      pattern: "*.{aln,fa,fasta,fas}{.gz}"
   - ref_msa:
       type: file
-      description: fasta file containing the reference alignment used for the evaluation
-      pattern: "*.{aln,fa,fasta,fas}"
+      description: fasta file containing the reference alignment used for the evaluation. Can be gzipped or uncompressed
+      pattern: "*.{aln,fa,fasta,fas}{.gz}"
 
 output:
   - meta:

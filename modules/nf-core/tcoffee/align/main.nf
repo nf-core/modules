@@ -13,7 +13,7 @@ process TCOFFEE_ALIGN {
     tuple val(meta3),  path(template), path(accessory_informations)
 
     output:
-    tuple val (meta), path ("*.aln"), emit: alignment
+    tuple val(meta), path("*.aln.gz"), emit: alignment
     path "versions.yml" , emit: versions
 
     when:
@@ -32,22 +32,25 @@ process TCOFFEE_ALIGN {
         $args \
         -thread ${task.cpus} \
         -outfile ${prefix}.aln
+    pigz -p ${task.cpus} ${prefix}.aln
 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln
+    touch ${prefix}.aln.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }

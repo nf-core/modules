@@ -27,8 +27,8 @@ process TCOFFEE_ALNCOMPARE {
     """
     export TEMP='./'
     t_coffee -other_pg aln_compare \
-        -al1 ${ref_msa} \
-        -al2 ${msa} \
+        -al1 <(unpigz -cdf ${ref_msa})\
+        -al2 <(unpigz -cdf ${msa})\
         ${args} \
         | grep -v "seq1" | grep -v '*' | \
         awk '{ print \$4}' ORS="\t" \
@@ -44,6 +44,7 @@ process TCOFFEE_ALNCOMPARE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
     stub:
@@ -55,6 +56,7 @@ process TCOFFEE_ALNCOMPARE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
