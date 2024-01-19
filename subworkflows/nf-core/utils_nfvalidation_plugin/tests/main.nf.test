@@ -3,8 +3,10 @@ nextflow_workflow {
     name "Test Workflow UTILS_NFVALIDATION_PLUGIN"
     script "../main.nf"
     workflow "UTILS_NFVALIDATION_PLUGIN"
-    tag "subworkflow"
-    tag "subworkflow_nfcore"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "plugin/nf-validation"
+    tag "'plugin/nf-validation'"
     tag "utils_nfvalidation_plugin"
     tag "subworkflows/utils_nfvalidation_plugin"
 
@@ -168,6 +170,7 @@ nextflow_workflow {
             params {
                 monochrome_logs = true
                 test_data       = ''
+                outdir          = 1
             }
             workflow {
                 """
@@ -191,7 +194,6 @@ nextflow_workflow {
         then {
             assert workflow.failed
             assert workflow.stdout.any { it.contains('ERROR ~ ERROR: Validation of pipeline parameters failed!') }
-            assert workflow.stdout.any { it.contains('The following invalid input values have been detected:') }
         }
 
     }

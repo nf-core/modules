@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "blast"
     tag "blast/blastn"
+    tag "blast/makeblastdb"
 
     setup {
         run("BLAST_MAKEBLASTDB") {
@@ -37,8 +38,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
-                { assert process.out.versions }
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -61,8 +62,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
-                { assert process.out.versions }
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions_zipped") }
             )
         }
 
