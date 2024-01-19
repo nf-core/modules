@@ -28,7 +28,7 @@ process TAXONKIT_NAME2TAXID {
         --data-dir $taxdb \\
         --threads $task.cpus \\
         --out-file ${prefix}.tsv \\
-        ${name? '<<< "$name"': names_txt}
+        ${name? "<<< '$name'": names_txt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
