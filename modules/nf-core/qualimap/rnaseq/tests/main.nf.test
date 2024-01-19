@@ -16,14 +16,14 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
                     [ id:'test_fasta_gtf' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
-                ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
                 """
             }
         }
