@@ -21,6 +21,7 @@ process TAXONKIT_NAME2TAXID {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert (!name && names_txt) || (name && !names_txt)
     """
     taxonkit \\
         name2taxid \\
