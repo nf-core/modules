@@ -1,0 +1,114 @@
+
+nextflow_process {
+
+    name "Test Process KAIJU_KAIJU"
+    script "../main.nf"
+    process "KAIJU_KAIJU"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kaiju"
+
+    tag "kaiju/kaiju"
+
+    test("sarscov2 - fastq - single-end") {
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] =  [ id:'test', single_end:true ], // meta map
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired-end") {
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ id:'test', single_end:false ], // meta map
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+                // { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - stub") {
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ id:'test', single_end:false ], // meta map
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.results[0][1]).name).match() }
+            )
+        }
+    }
+
+}
