@@ -21,11 +21,11 @@ nextflow_workflow {
 
             workflow {
                 """
-                help            = false
+                help             = false
                 workflow_command = null
-                pre_help_text   = null
-                post_help_text  = null
-                validate_params = false
+                pre_help_text    = null
+                post_help_text   = null
+                validate_params  = false
                 schema_filename  = "$moduleTestDir/nextflow_schema.json"
 
                 input[0] = help
@@ -94,7 +94,7 @@ nextflow_workflow {
             workflow {
                 """
                 help             = true
-                workflow_command  = "nextflow run noorg/doesntexist"
+                workflow_command = "nextflow run noorg/doesntexist"
                 pre_help_text    = null
                 post_help_text   = null
                 validate_params  = false
@@ -133,7 +133,7 @@ nextflow_workflow {
             workflow {
                 """
                 help             = true
-                workflow_command  = "nextflow run noorg/doesntexist"
+                workflow_command = "nextflow run noorg/doesntexist"
                 pre_help_text    = "pre-help-text"
                 post_help_text   = "post-help-text"
                 validate_params  = false
@@ -174,7 +174,7 @@ nextflow_workflow {
             workflow {
                 """
                 help             = false
-                workflow_command  = null
+                workflow_command = null
                 pre_help_text    = null
                 post_help_text   = null
                 validate_params  = true
