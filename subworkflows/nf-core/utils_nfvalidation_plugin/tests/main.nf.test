@@ -193,7 +193,6 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.exitStatus == 0 },
                 { assert workflow.stdout.any { it.contains('ERROR ~ ERROR: Validation of pipeline parameters failed!') } }
             )
         }
