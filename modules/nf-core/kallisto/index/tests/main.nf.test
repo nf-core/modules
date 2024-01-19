@@ -8,14 +8,14 @@ nextflow_process {
     tag "kallisto"
     tag "kallisto/index"
 
-    test("sarscov2 genome.fasta") {
+    test("sarscov2 transcriptome.fasta") {
 
         when {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'transcriptome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
                 ])
                 """
             }
