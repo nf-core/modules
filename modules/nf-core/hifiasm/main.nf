@@ -25,6 +25,7 @@ process HIFIASM {
     tuple val(meta), path("*.asm.a_ctg.gfa")   , emit: alternate_contigs, optional: true
     tuple val(meta), path("*.hap1.p_ctg.gfa")  , emit: paternal_contigs , optional: true
     tuple val(meta), path("*.hap2.p_ctg.gfa")  , emit: maternal_contigs , optional: true
+    tuple val(meta), path("*.log")             , emit: log
     path  "versions.yml"                       , emit: versions
 
     when:
@@ -47,7 +48,9 @@ process HIFIASM {
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
-            $reads
+            $reads \\
+            2> >( tee ${prefix}.stderr.log >&2 ) 
+
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -66,7 +69,9 @@ process HIFIASM {
             -t $task.cpus \\
             --h1 $hic_read1 \\
             --h2 $hic_read2 \\
-            $reads
+            $reads \\
+            2> >( tee ${prefix}.stderr.log >&2 ) 
+
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -79,7 +84,8 @@ process HIFIASM {
             $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
-            $reads
+            $reads \\
+            2> >( tee ${prefix}.stderr.log >&2 ) 
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
