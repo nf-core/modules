@@ -15,10 +15,10 @@ import nextflow.extension.FilesEx
 workflow UTILS_NEXTFLOW_PIPELINE {
 
     take:
-    print_version           // boolean: print version
-    dump_parameters         // boolean: dump parameters
-    outdir                  // path: base directory used to publish pipeline results
-    check_conda_channels    // boolean: check conda channels
+    print_version        // boolean: print version
+    dump_parameters      // boolean: dump parameters
+    outdir               //    path: base directory used to publish pipeline results
+    check_conda_channels // boolean: check conda channels
 
     main:
 
@@ -43,6 +43,9 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     if (check_conda_channels) {
         checkCondaChannels()
     }
+
+    emit:
+    dummy_emit = true
 }
 
 /*

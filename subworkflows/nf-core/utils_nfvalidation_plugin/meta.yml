@@ -32,6 +32,11 @@ input:
       type: string
       description: |
         The filename of the schema to validate against.
+output:
+  - dummy_emit:
+      type: boolean
+      description: |
+        Dummy emit to make nf-core subworkflows lint happy
 authors:
   - "@adamrtalbot"
 maintainers:

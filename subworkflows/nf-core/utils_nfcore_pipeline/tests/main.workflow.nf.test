@@ -12,6 +12,7 @@ nextflow_workflow {
     test("Should run without failures") {
         then {
             assert workflow.success
+            assert snapshot(workflow.out).match()
         }
 
     }

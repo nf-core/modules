@@ -25,10 +25,10 @@ input:
       description: |
         Check if the conda channel priority is correct.
 output:
-  - out:
+  - dummy_emit:
       type: boolean
       description: |
-        Dummy output for making using in process chaining.
+        Dummy emit to make nf-core subworkflows lint happy
 authors:
   - "@adamrtalbot"
   - "@drpatelh"
