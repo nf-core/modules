@@ -13,12 +13,12 @@ nextflow_function {
         function "getWorkflowVersion"
 
         then {
-            assert function.success
-            assert snapshot(function.result).match()
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
         }
-
     }
-
 
     test("Test Function dumpParametersToJSON") {
 
@@ -34,20 +34,21 @@ nextflow_function {
         }
 
         then {
-            assert function.success
+            assertAll(
+                { assert function.success }
+            )
         }
-
     }
-	
+
     test("Test Function checkCondaChannels") {
 
         function "checkCondaChannels"
 
         then {
-            assert function.success
-            assert snapshot(function.result).match()
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
         }
-
     }
-
 }

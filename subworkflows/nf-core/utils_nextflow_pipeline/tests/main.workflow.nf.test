@@ -25,9 +25,10 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
+            assertAll(
+                { assert workflow.success }
+            )
         }
-
     }
 
     test("Should print version") {
@@ -47,12 +48,12 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
-            assert workflow.stdout.contains("nextflow_workflow v9.9.9")
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.stdout.contains("nextflow_workflow v9.9.9") }
+            )
         }
-
     }
-
 
     test("Should dump params") {
 
@@ -71,9 +72,10 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
+            assertAll(
+                { assert workflow.success }
+            )
         }
-
     }
 
     test("Should not create params JSON if no output directory") {
@@ -93,9 +95,9 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
+            assertAll(
+                { assert workflow.success }
+            )
         }
-
     }
-
 }
