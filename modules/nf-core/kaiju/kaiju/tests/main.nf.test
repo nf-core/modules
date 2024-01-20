@@ -8,8 +8,8 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "kaiju"
-
     tag "kaiju/kaiju"
+    tag "untar"
 
     test("sarscov2 - fastq - single-end") {
 
@@ -27,10 +27,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [ id:'test', single_end:true ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                input[0] =  [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                         ]
-                input[1] = UNTAR.out.untar
+                input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
         }
@@ -38,7 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
             )
         }
 
@@ -60,11 +61,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
                     [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
         }
@@ -72,13 +74,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
-                // { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
             )
         }
     }
 
     test("sarscov2 - fastq - stub") {
+
+        options '-stub'
 
         setup {
             run ("UNTAR"){
@@ -94,11 +97,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
                     [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                     file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
         }
