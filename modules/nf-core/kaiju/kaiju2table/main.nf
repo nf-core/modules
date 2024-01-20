@@ -8,7 +8,7 @@ process KAIJU_KAIJU2TABLE {
         'biocontainers/kaiju:1.10.0--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(results)
+    tuple val(meta), path(input)
     path db
     val taxon_rank
 
@@ -27,10 +27,22 @@ process KAIJU_KAIJU2TABLE {
     dbnames=`find -L ${db} -name "*names.dmp"`
     kaiju2table   $args \\
         -t \$dbnodes \\
-        -n \$dbname \\
+        -n \$dbnames \\
         -r ${taxon_rank} \\
         -o ${prefix}.txt \\
-        ${results}
+        ${input}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
