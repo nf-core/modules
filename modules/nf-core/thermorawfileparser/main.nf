@@ -11,12 +11,7 @@ process THERMORAWFILEPARSER {
     tuple val(meta), path(raw)
 
     output:
-    tuple val(meta), path("*.mzML")      , optional:true , emit: mzml
-    tuple val(meta), path("*.mzML.gz")   , optional:true , emit: mzml_gz
-    tuple val(meta), path("*.mgf")       , optional:true , emit: mgf
-    tuple val(meta), path("*.mgf.gz")    , optional:true , emit: mgf_gz
-    tuple val(meta), path("*.parquet")   , optional:true , emit: parquet
-    tuple val(meta), path("*.parquet.gz"), optional:true , emit: parquet_gz
+    tuple val(meta), path("*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}")      , emit: spectra
     path "versions.yml"                                  , emit: versions
 
     when:
