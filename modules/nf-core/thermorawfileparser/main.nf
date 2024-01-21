@@ -21,10 +21,10 @@ process THERMORAWFILEPARSER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
-                 args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
-                 args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
-                 args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
-                 "mzML"
+                args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                "mzML"
     suffix = args.contains("--gzip")? "${suffix}.gz" : "${suffix}"
 
     """
@@ -43,10 +43,10 @@ process THERMORAWFILEPARSER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
-                 args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
-                 args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
-                 args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
-                 "mzML"
+                args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                "mzML"
     suffix = args.contains("--gzip")? "${suffix}.gz" : "${suffix}"
 
     """
