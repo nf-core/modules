@@ -35,7 +35,7 @@ process THERMORAWFILEPARSER {
     """
     ThermoRawFileParser.sh \\
         --input $raw \\
-        --output_file ${prefix}.${extension} \\
+        --output_file ${prefix}.${suffix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
