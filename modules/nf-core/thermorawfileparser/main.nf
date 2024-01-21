@@ -50,7 +50,7 @@ process THERMORAWFILEPARSER {
     suffix= args.contains("--gzip")? "${extension}.gz" : "${extension}"
 
     """
-    touch ${prefix}.${extension}
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
