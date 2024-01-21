@@ -23,7 +23,7 @@ nextflow_process {
 
         then {
             // The source file path is written at the top of the file, and the checksum at the bottom by the tool, the rest should be identical
-            def lines = file(process.out.mzml[0][1]).readLines()
+            def lines = file(process.out.spectra[0][1]).readLines()
             assertAll(
                 { assert process.success },
                 { assert snapshot(lines[21..50]).match() }
