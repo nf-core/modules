@@ -11,8 +11,8 @@ process THERMORAWFILEPARSER {
     tuple val(meta), path(raw)
 
     output:
-    tuple val(meta), path("*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}")      , emit: spectra
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"), emit: spectra
+    path "versions.yml"                                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,12 +20,12 @@ process THERMORAWFILEPARSER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
-                    args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
-                    args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
-                    args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
-                    "mzML"
-    suffix = args.contains("--gzip")? "${extension}.gz" : "${extension}"
+    def suffix = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
+                 args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                 args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                 args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                 "mzML"
+    suffix = args.contains("--gzip")? "${suffix}.gz" : "${suffix}"
 
     """
     ThermoRawFileParser.sh \\
@@ -42,12 +42,12 @@ process THERMORAWFILEPARSER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
-                    args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
-                    args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
-                    args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
-                    "mzML"
-    suffix= args.contains("--gzip")? "${extension}.gz" : "${extension}"
+    def suffix = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
+                 args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                 args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                 args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                 "mzML"
+    suffix = args.contains("--gzip")? "${suffix}.gz" : "${suffix}"
 
     """
     touch ${prefix}.${suffix}
