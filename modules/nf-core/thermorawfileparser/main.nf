@@ -11,8 +11,13 @@ process THERMORAWFILEPARSER {
     tuple val(meta), path(raw)
 
     output:
-    tuple val(meta), path("*.{mzML,mfg,parquet}"), emit: spectra
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.mzML")      , optional:true , emit: mzml
+    tuple val(meta), path("*.mzML.gz")   , optional:true , emit: mzml_gz
+    tuple val(meta), path("*.mgf")       , optional:true , emit: mgf
+    tuple val(meta), path("*.mgf.gz")    , optional:true , emit: mgf_gz
+    tuple val(meta), path("*.parquet")   , optional:true , emit: parquet
+    tuple val(meta), path("*.parquet.gz"), optional:true , emit: parquet_gz
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,14 +25,17 @@ process THERMORAWFILEPARSER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def formatSuffixMap = ["0": "mgf", "1": "mzML", "2": "mzML", "3": "parquet"]
-    // Please provide the output format via --format, not -f. If --format not specified, the parser defaults to mzML
-    suffix = formatSuffixMap.get(task.ext.args?.format, "mzML")
+    def extension = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
+                    args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                    args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                    args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                    "mzML"
+    extension = args.contains("--gzip")? "${extension}.gz" : "${extension}"
 
     """
     ThermoRawFileParser.sh \\
         --input $raw \\
-        --output_file ${prefix}.${suffix} \\
+        --output_file ${prefix}.${extension} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,12 +47,15 @@ process THERMORAWFILEPARSER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def formatSuffixMap = ["0": "mgf", "1": "mzML", "2": "mzML", "3": "parquet"]
-    // Please provide the output format via --format, not -f. If --format not specified, it defaults to mzML
-    suffix = formatSuffixMap.get(task.ext.args?.format, "mzML")
+    def extension = args.contains("--format 0") || args.contains("-f 0") ? "mgf" :
+                    args.contains("--format 1") || args.contains("-f 1") ? "mzML" :
+                    args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
+                    args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
+                    "mzML"
+    extension = args.contains("--gzip")? "${extension}.gz" : "${extension}"
 
     """
-    touch ${prefix}.${suffix}
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
