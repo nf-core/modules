@@ -47,7 +47,7 @@ process THERMORAWFILEPARSER {
                     args.contains("--format 2") || args.contains("-f 2") ? "mzML" :
                     args.contains("--format 3") || args.contains("-f 3") ? "parquet" :
                     "mzML"
-    extension = args.contains("--gzip")? "${extension}.gz" : "${extension}"
+    suffix= args.contains("--gzip")? "${extension}.gz" : "${extension}"
 
     """
     touch ${prefix}.${extension}
