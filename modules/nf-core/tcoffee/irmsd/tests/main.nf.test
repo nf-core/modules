@@ -6,7 +6,8 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "tcoffee"
-    tag "tcoffee/irmsd" 
+    tag "tcoffee/irmsd"
+    tag "untar"
 
     test("seatoxin") {
 
@@ -24,7 +25,7 @@ nextflow_process {
                 }
             }
         }
-        
+
         when {
             process {
                 """
@@ -35,7 +36,7 @@ nextflow_process {
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
             }
-            
+
         }
 
         then {
