@@ -11,9 +11,10 @@ process TCOFFEE_ALIGN {
     tuple val(meta) ,  path(fasta)
     tuple val(meta2),  path(tree)
     tuple val(meta3),  path(template), path(accessory_informations)
+    val(compress)
 
     output:
-    tuple val(meta), path("*.aln.gz"), emit: alignment
+    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
     path "versions.yml" , emit: versions
 
     when:
@@ -21,9 +22,10 @@ process TCOFFEE_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
+    def pigz_call = compress ? "pigz -p ${task.cpus} ${prefix}.aln" : ""
     """
     export TEMP='./'
     t_coffee -seq ${fasta} \
@@ -32,7 +34,7 @@ process TCOFFEE_ALIGN {
         $args \
         -thread ${task.cpus} \
         -outfile ${prefix}.aln
-    pigz -p ${task.cpus} ${prefix}.aln
+    ${pigz_call}
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,8 +46,9 @@ process TCOFFEE_ALIGN {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def pigz_call = compressed ? ".gz": ""
     """
-    touch ${prefix}.aln.gz
+    touch ${prefix}.aln${pigz_call}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
