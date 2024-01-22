@@ -28,13 +28,16 @@ process TCOFFEE_ALIGN {
     def pigz_call = compress ? "pigz -p ${task.cpus} ${prefix}.aln" : ""
     """
     export TEMP='./'
+    mkfifo named_pipe
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
         $args \
         -thread ${task.cpus} \
-        -outfile ${prefix}.aln
-    ${pigz_call}
+        -outfile named_pipe &
+    cat named_pipe | pigz -cp ${task.cpus} > ${prefix}.aln.gz
+    cat named_pipe
+    #${pigz_call}
 
 
     cat <<-END_VERSIONS > versions.yml
