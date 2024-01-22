@@ -25,13 +25,14 @@ process TCOFFEE_IRMSD {
     export TEMP='./'
 
     t_coffee -other_pg irmsd \
-        $msa \
+        <( unpigz -cdf $msa ) \
         $args \
-        -template_file $template > ${prefix}.irmsd
+        -template_file <( unpigz -cdf $template ) > ${prefix}.irmsd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -44,6 +45,7 @@ process TCOFFEE_IRMSD {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
