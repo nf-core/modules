@@ -23,7 +23,7 @@ process OATK {
     tuple val(meta), path("*annot_pltd.txt")    , emit: annot_pltd_txt, optional: true
     tuple val(meta), path("*utg.clean.gfa")     , emit: clean_gfa, optional: true
     tuple val(meta), path("*utg.final.gfa")     , emit: final_gfa, optional: true
-    tuple val(meta), path("*utg.gfa")           , emit: inital_gfa, optional: true
+    tuple val(meta), path("*utg.gfa")           , emit: initial_gfa, optional: true
     tuple val(meta), path("*utg.multiplex.gfa") , emit: multiplex_gfa, optional: true
     tuple val(meta), path("*utg.unzip.gfa")     , emit: unzip_gfa, optional: true
     path "versions.yml"                         , emit: versions
