@@ -22,7 +22,7 @@ process PURGEDUPS_CALCUTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    calcuts $args $stat > ${prefix}.cutoffs 2> ${prefix}.calcuts.log
+    calcuts $args $stat > ${prefix}.cutoffs 2> >(tee ${prefix}.calcuts.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
