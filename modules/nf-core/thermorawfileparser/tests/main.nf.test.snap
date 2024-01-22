@@ -1,0 +1,68 @@
+{
+    "proteomics - parse - raw": {
+        "content": [
+            [
+                "    <referenceableParamGroupList count=\"1\">",
+                "      <referenceableParamGroup id=\"commonInstrumentParams\">",
+                "        <cvParam cvRef=\"MS\" accession=\"MS:1001910\" value=\"\" name=\"LTQ Orbitrap Elite\" />",
+                "        <cvParam cvRef=\"MS\" accession=\"MS:1000529\" value=\"SN03142B\" name=\"instrument serial number\" />",
+                "      </referenceableParamGroup>",
+                "    </referenceableParamGroupList>",
+                "    <softwareList count=\"1\">",
+                "      <software id=\"ThermoRawFileParser\" version=\"1.4.3\">",
+                "        <cvParam cvRef=\"MS\" accession=\"MS:1003145\" name=\"ThermoRawFileParser\" />",
+                "      </software>",
+                "    </softwareList>",
+                "    <instrumentConfigurationList count=\"1\">",
+                "      <instrumentConfiguration id=\"IC1\">",
+                "        <referenceableParamGroupRef ref=\"commonInstrumentParams\" />",
+                "        <componentList count=\"3\">",
+                "          <source order=\"1\">",
+                "            <cvParam cvRef=\"MS\" accession=\"MS:1000073\" value=\"\" name=\"electrospray ionization\" />",
+                "          </source>",
+                "          <analyzer order=\"2\">",
+                "            <cvParam cvRef=\"MS\" accession=\"MS:1000079\" value=\"\" name=\"fourier transform ion cyclotron resonance mass spectrometer\" />",
+                "          </analyzer>",
+                "          <detector order=\"3\">",
+                "            <cvParam cvRef=\"MS\" accession=\"MS:1000624\" value=\"\" name=\"inductive detector\" />",
+                "          </detector>",
+                "        </componentList>",
+                "      </instrumentConfiguration>",
+                "    </instrumentConfigurationList>",
+                "    <dataProcessingList count=\"1\">",
+                "      <dataProcessing id=\"ThermoRawFileParserProcessing\">",
+                "        <processingMethod order=\"0\" softwareRef=\"ThermoRawFileParser\">"
+            ]
+        ],
+        "timestamp": "2024-01-21T22:31:20.271719782"
+    },
+    "proteomics - parse - raw - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mzML:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,dd82b5b6b8f27a1b1cf5a5d7c57017bf"
+                ],
+                "spectra": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mzML:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,dd82b5b6b8f27a1b1cf5a5d7c57017bf"
+                ]
+            }
+        ],
+        "timestamp": "2024-01-21T22:31:27.393155134"
+    }
+}
