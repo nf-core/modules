@@ -161,7 +161,8 @@ ch_gex_frna_probeset     = Channel.fromPath( empty_file )
 ch_gex_targetpanel       = Channel.fromPath( empty_file )
 ch_vdj_primer_index      = Channel.fromPath( empty_file )
 ch_fb_reference          = Channel.fromPath( empty_file )
-ch_beam_panel            = Channel.fromPath( empty_file )
+ch_beam_antigen_panel    = Channel.fromPath( empty_file )
+ch_beam_control_panel    = Channel.fromPath( empty_file )
 ch_cmo_reference         = Channel.fromPath( empty_file )
 ch_cmo_barcodes          = Channel.fromPath( empty_file )
 ch_cmo_sample_assignment = Channel.fromPath( empty_file )
@@ -207,7 +208,8 @@ workflow test_cellranger_multi_10k_pbmc {
         ch_vdj_reference,
         ch_vdj_primer_index,
         ch_ab_reference_10k_pbmc,
-        ch_beam_panel,
+        ch_beam_antigen_panel,
+        ch_beam_control_panel,
         ch_cmo_reference,
         ch_cmo_barcodes,
         ch_cmo_sample_assignment,
@@ -257,7 +259,8 @@ workflow test_cellranger_multi_10k_pbmc_cmo {
         ch_vdj_ref_empty,
         ch_vdj_primer_index,
         ch_fb_reference,
-        ch_beam_panel,
+        ch_beam_antigen_panel,
+        ch_beam_control_panel,
         ch_cmo_reference_10k_pbmc_cmo,
         ch_cmo_barcodes_10k_pbmc_cmo,
         ch_cmo_sample_assignment,
@@ -304,7 +307,8 @@ workflow test_cellranger_multi_5k_cmvpos_tcells {
         ch_vdj_reference,
         ch_vdj_primer_index,
         ch_fb_reference_5k_cmvpos_tcells,
-        ch_beam_panel,
+        ch_beam_antigen_panel,
+        ch_beam_control_panel,
         ch_cmo_reference,
         ch_cmo_barcodes,
         ch_cmo_sample_assignment,
