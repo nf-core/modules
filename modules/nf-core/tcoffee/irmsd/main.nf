@@ -24,10 +24,11 @@ process TCOFFEE_IRMSD {
     """
     export TEMP='./'
 
+    unpigz -cdf $msa > msafile &
     t_coffee -other_pg irmsd \
-        <( unpigz -cdf $msa ) \
+        msafile \
         $args \
-        -template_file <( unpigz -cdf $template ) > ${prefix}.irmsd
+        -template_file $template > ${prefix}.irmsd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -29,8 +29,8 @@ input:
       pattern: "*.{aln,fa,fasta,fas}{.gz,}"
   - template:
       type: file
-      description: Template file matching the structures to the sequences in the alignment. May be gzipped or uncompressed.
-      pattern: "*{.gz,}"
+      description: Template file matching the structures to the sequences in the alignment.
+      pattern: "*"
   - structures:
       type: directory
       description: Directory containing the structures file matching the sequences in the alignment in PDB format
