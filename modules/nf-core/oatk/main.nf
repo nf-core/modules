@@ -53,7 +53,7 @@ process OATK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        oatk : \$(echo \$(oatk --version 2>&1) )
+        oatk : \$(oatk --version 2>&1)
     END_VERSIONS
     """
 }
