@@ -1,5 +1,6 @@
 process UMICOLLAPSE {
     tag "$meta.id"
+    label "process_high"
     label "process_high_memory"
 
     conda "${moduleDir}/environment.yml"
@@ -12,7 +13,7 @@ process UMICOLLAPSE {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*_UMICollapse.log"), emit: log
     path  "versions.yml"          , emit: versions
 
     when:
