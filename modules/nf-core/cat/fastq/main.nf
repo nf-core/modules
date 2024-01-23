@@ -49,6 +49,7 @@ process CAT_FASTQ {
         }
     }
 
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def readList = reads instanceof List ? reads.collect{ it.toString() } : [reads.toString()]
