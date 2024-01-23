@@ -22,10 +22,22 @@ process UMICOLLAPSE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    def VERSION = '1.0.0-1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    // Memory allocation: We need to make sure that both heap and stack size is sufficiently large for
+    // umicollapse. We set the stack size to 5% of the available memory, the heap size to 90%
+    // which leaves 5% for stuff happening outside of java without the scheduler killing the process.
+    def max_heap_size_mega = (task.memory.toMega() * 0.9).intValue()
+    def max_stack_size_mega = (task.memory.toMega() * 0.05).intValue()
     """
-    umicollapse \\
+    # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
+    # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
+    # `which` allows us to get the directory that contains `umicollapse`, independent of wheather we
+    # are in a container or conda environment.
+    UMICOLLAPSE_JAR=$(dirname $(which umicollapse))/../share/umicollapse-${VERSION}/umicollapse.jar
+    java \\
+        -Xmx${max_heap_size_mega}M \\
+        -Xss${max_stack_size_mega}M \\
+        -jar \$UMICOLLAPSE_JAR \\
         bam \\
         -Xmx${task.memory.toGiga()}g  \\
         -i $bam \\
