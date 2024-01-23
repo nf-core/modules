@@ -46,9 +46,9 @@ process SIMPLEAF_QUANT {
 
     # run simpleaf quant
     simpleaf quant \\
+        -i ${index} \\
         -1 ${forward.join( "," )} \\
         -2 ${reverse.join( "," )} \\
-        -i ${index} \\
         -c $chemistry \\
         -r $resolution \\
         -o ${prefix} \\

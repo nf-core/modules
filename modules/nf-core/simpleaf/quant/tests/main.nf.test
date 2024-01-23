@@ -11,6 +11,7 @@ nextflow_process {
     tag "simpleaf/index"
 
     test("test_simpleaf_quant") {
+        config "./nextflow.config"
         //Requires SIMPLEAF_INDEX to run prior to quant
         setup {
 
@@ -40,7 +41,7 @@ nextflow_process {
                 ])
                 input[1] = SIMPLEAF_INDEX.out.index
                 input[2] = SIMPLEAF_INDEX.out.transcript_tsv
-                input[3] = Channel.of([[],[]])
+                input[3] = Channel.of('cr-like')
                 input[4] = Channel.of([[],[]])
                 """
             }
@@ -50,7 +51,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path("${process.out.results[0][1]}/genome_results.txt"),
+                    path("${process.out.results[0][1]}/test_10x/af_quant/permit_freq.bin"),
                     process.out.versions)
                     .match() }
             )
