@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process ISOSEQ3_REFINE"
+    name "Test Process ISOSEQ_REFINE"
     script "../main.nf"
     config "./nextflow.config"
-    process "ISOSEQ3_REFINE"
+    process "ISOSEQ_REFINE"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "isoseq3"
-    tag "isoseq3/refine"
+    tag "isoseq"
+    tag "isoseq/refine"
 
     test("Main test") {
 

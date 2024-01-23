@@ -1,11 +1,11 @@
-process ISOSEQ3_REFINE {
+process ISOSEQ_REFINE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq3:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq3:4.0.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
+        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -36,7 +36,7 @@ process ISOSEQ3_REFINE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        isoseq3: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
+        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
     END_VERSIONS
     """
 }

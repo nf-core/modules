@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process ISOSEQ3_CLUSTER"
+    name "Test Process ISOSEQ_CLUSTER"
     script "../main.nf"
     config "./nextflow.config"
-    process "ISOSEQ3_CLUSTER"
+    process "ISOSEQ_CLUSTER"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "isoseq3"
-    tag "isoseq3/cluster"
+    tag "isoseq"
+    tag "isoseq/cluster"
 
     test("Main test") {
 
