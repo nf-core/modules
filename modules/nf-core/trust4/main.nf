@@ -70,4 +70,5 @@ process TRUST4 {
         trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
     END_VERSIONS
     """
+    
 }
