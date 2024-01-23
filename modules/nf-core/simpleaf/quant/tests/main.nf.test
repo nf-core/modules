@@ -30,9 +30,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([ id:'test_10x', single_end:false, strandedness:'auto'  ],
