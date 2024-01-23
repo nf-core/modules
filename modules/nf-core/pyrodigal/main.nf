@@ -41,4 +41,20 @@ process PYRODIGAL {
         pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gff.gz
+    touch ${prefix}.fna.gz
+    touch ${prefix}.faa.gz
+    touch ${prefix}.score.gz
+    touch versions.yml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
+    END_VERSIONS
+    """
 }
