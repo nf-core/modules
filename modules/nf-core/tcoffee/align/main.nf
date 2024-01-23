@@ -25,19 +25,19 @@ process TCOFFEE_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
-    def pigz_call = compress ? "pigz -p ${task.cpus} ${prefix}.aln" : ""
+    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : "> ${prefix}.aln"
     """
     export TEMP='./'
-    mkfifo named_pipe
+    mkfifo out_pipe
     t_coffee -seq ${fasta} \
+        #-output fasta_aln \ # suppress html output
         $tree_args \
         $template_args \
         $args \
         -thread ${task.cpus} \
-        -outfile named_pipe &
-    cat named_pipe | pigz -cp ${task.cpus} > ${prefix}.aln.gz
-    cat named_pipe
-    #${pigz_call}
+        -outfile out_pipe &
+    cat named_pipe ${write_output}
+    cat named_pipe # opening a file handle again is necessary for tcoffee to end execution
 
 
     cat <<-END_VERSIONS > versions.yml
