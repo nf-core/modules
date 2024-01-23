@@ -25,21 +25,18 @@ process TCOFFEE_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : "> ${prefix}.aln"
+    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
+    // using >() is necessary to preserve the tcoffee return value,
+    // so nextflow knows to display an error when it failed
     """
     export TEMP='./'
-    mkfifo out_pipe
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
         $args \
         -thread ${task.cpus} \
-        -outfile out_pipe &
-        # enable to suppress default html output that is not passed on by the module
-        #-output fasta_aln
-    cat out_pipe ${write_output}
-    cat out_pipe > /dev/null # opening a file handle again is necessary for tcoffee to end execution
-
+        -outfile stdout \
+        $write_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
