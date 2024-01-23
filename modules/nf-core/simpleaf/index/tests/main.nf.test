@@ -43,7 +43,7 @@ nextflow_process {
         when {
             process {
                 """
-                genome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+                transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
                 SIMPLEAF_INDEX (
