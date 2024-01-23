@@ -30,13 +30,13 @@ process TCOFFEE_ALIGN {
     export TEMP='./'
     mkfifo out_pipe
     t_coffee -seq ${fasta} \
-        # enable to suppress default html output that is not passed on by the module
-        #-output fasta_aln\
         $tree_args \
         $template_args \
         $args \
         -thread ${task.cpus} \
         -outfile out_pipe &
+        # enable to suppress default html output that is not passed on by the module
+        #-output fasta_aln
     cat out_pipe ${write_output}
     cat out_pipe > /dev/null # opening a file handle again is necessary for tcoffee to end execution
 
