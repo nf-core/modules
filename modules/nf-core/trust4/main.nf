@@ -4,7 +4,7 @@ process TRUST4 {
 
     conda "bioconda::trust4=1.0.13"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trust4:1.0.7--h5b5514e_0':
+        'https://depot.galaxyproject.org/singularity/trust4:1.0.9--h5b5514e_0':
         'biocontainers/trust4:1.0.13--h43eeafb_0' }"
 
     input:
@@ -64,11 +64,10 @@ process TRUST4 {
     touch ${prefix}_raw.out
     touch ${prefix}_final.out
     touch ${prefix}_toassemble.fq
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
     END_VERSIONS
     """
-    
 }
