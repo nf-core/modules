@@ -36,8 +36,8 @@ process TCOFFEE_ALIGN {
         $args \
         -thread ${task.cpus} \
         -outfile out_pipe &
-    cat named_pipe ${write_output}
-    cat named_pipe # opening a file handle again is necessary for tcoffee to end execution
+    cat out_pipe ${write_output}
+    cat out_pipe # opening a file handle again is necessary for tcoffee to end execution
 
 
     cat <<-END_VERSIONS > versions.yml
