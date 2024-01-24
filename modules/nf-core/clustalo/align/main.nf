@@ -10,10 +10,11 @@ process CLUSTALO_ALIGN {
     input:
     tuple val(meta),  path(fasta)
     tuple val(meta2), path(tree)
+    val(compress)
 
     output:
-    tuple val(meta), path("*.aln.gz"), emit: alignment
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,12 +22,18 @@ process CLUSTALO_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
+    // using >() is necessary to preserve the return value,
+    // so nextflow knows to display an error when it failed
     """
-    clustalo \\
-        -i ${fasta} \\
-        --threads=${task.cpus} \\
-        $args \\
-        | pigz -p ${task.cpus} -c > ${prefix}.aln.gz
+    clustalo \
+        -i ${fasta} \
+        --threads=${task.cpus} \
+        $args --force -o \
+        $write_output
+    # the --force -o is necessary, as clustalo expands the commandline input,
+    # causing it to treat the pipe as a parameter and fail
+    # this way, the command expands to /dev/fd/<id>, and --force allows writing output to an already existing file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

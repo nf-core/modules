@@ -8,9 +8,10 @@ process MUSCLE5_SUPER5 {
 
     input:
     tuple val(meta), path(fasta)
+    val(compress)
 
     output:
-    tuple val(meta), path("*.aln.gz"), emit: alignment
+    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
     path "versions.yml"           , emit: versions
 
     when:
