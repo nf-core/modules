@@ -39,7 +39,6 @@ process UMICOLLAPSE {
         -Xss${max_stack_size_mega}M \\
         -jar \$UMICOLLAPSE_JAR \\
         bam \\
-        -Xmx${task.memory.toGiga()}g  \\
         -i $bam \\
         -o ${prefix}.bam \\
         $args | tee ${prefix}_UMICollapse.log
