@@ -8,8 +8,8 @@ workflow test_pbtk_bam2fastq {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
-        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true),
     ]
 
     PBTK_BAM2FASTQ ( input )
