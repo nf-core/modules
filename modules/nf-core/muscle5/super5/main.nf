@@ -12,7 +12,7 @@ process MUSCLE5_SUPER5 {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,17 +21,25 @@ process MUSCLE5_SUPER5 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     prefix = args.contains('-perm all') ? "${prefix}@" : "${prefix}"
+    // if -perm all is set, mafft will produce multiple files
+    // compress these individually in a loop
+    def compress_loop = args.contains('-perm all') ? "for f in *.aln; do pigz -p ${task.cpus} \$f; done" : ""
+    def write_output = (compress && !args.contains('-perm all')) ? " -output >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "-output ${prefix}.aln"
+    // muscle internally expands the shell pipe to a file descriptor of the form /dev/fd/<id>
+    // this causes it to fail, unless -output is left at the end of the call
+    // see also clustalo/align
+    // using >() is necessary to preserve the return value,
+    // so nextflow knows to display an error when it failed
     """
     muscle \\
         -super5 ${fasta} \\
-        -output ${prefix}.aln \\
         ${args} \\
-        -threads ${task.cpus}
+        -threads ${task.cpus} \\
+        $write_output
+
 
     # output may be multiple files if -perm all is set
-    for f in *.aln; do
-        pigz -p ${task.cpus} \$f
-    done
+    $compress_loop
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

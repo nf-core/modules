@@ -10,13 +10,14 @@ nextflow_process {
         tag "muscle5"
         tag "muscle5/super5"
 
-        test("fasta - align_sequence") {
+        test("fasta - align_sequence - uncompressed") {
             when {
                 process {
                     """
                         input[0] = [ [ id:'test' ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                         ]
+                        input[1] = [ false ]
                         """
                 }
             }
@@ -25,6 +26,46 @@ nextflow_process {
                 assertAll(
                         { assert process.success },
                         { assert snapshot(process.out.alignment).match("alignment")},
+                        )
+            }
+        }
+
+        test("fasta - align_sequence - compressed") {
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = [ true ]
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("alignment")},
+                        )
+            }
+        }
+        test("fasta - align_sequence - compressed - perm_all") {
+            config "./perm_all.config"
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = [ true ]
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("perm-all")},
                         )
             }
         }
