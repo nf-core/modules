@@ -31,7 +31,7 @@ process UMICOLLAPSE {
     """
     # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
     # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
-    # `which` allows us to get the directory that contains `umicollapse`, independent of wheather we
+    # `which` allows us to get the directory that contains `umicollapse`, independent of whether we
     # are in a container or conda environment.
     UMICOLLAPSE_JAR=\$(dirname \$(which umicollapse))/../share/umicollapse-${VERSION}/umicollapse.jar
     java \\
