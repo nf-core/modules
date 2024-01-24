@@ -9,13 +9,13 @@ process KRAKEN2_ADD {
 
     input:
     tuple val(meta), path(fasta)
-    path taxonomy_names
-    path taxonomy_nodes
-    path accession2taxid
+    path taxonomy_names, stageAs: 'taxonomy/*'
+    path taxonomy_nodes, stageAs: 'taxonomy/*'
+    path accession2taxid, stageAs: 'taxonomy/*'
 
     output:
     tuple val(meta), path("$prefix"), emit: db
-    path "versions.yml"              , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,7 @@ process KRAKEN2_ADD {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-    cp -L ${taxonomy_names} .
-    cp -L ${taxonomy_nodes} .
-    cp -L ${accession2taxid} .
-    mkdir "${prefix}/taxonomy"
-    mv *.{accession2taxid,dmp} "${prefix}/taxonomy"
+    mv "taxonomy" ${prefix}
     kraken2-build \\
         --add-to-library \\
         ${fasta} \\
