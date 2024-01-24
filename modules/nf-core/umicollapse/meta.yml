@@ -39,6 +39,10 @@ output:
       type: file
       description: BAM file with deduplicated UMIs.
       pattern: "*.{bam}"
+  - log:
+      type: file
+      description: A log file with the deduplication statistics.
+      pattern: "*_{UMICollapse.log}"
   - versions:
       type: file
       description: File containing software versions
