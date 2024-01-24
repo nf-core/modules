@@ -1,0 +1,34 @@
+nextflow_process {
+
+    name "Test Process GENMOD_ANNOTATE"
+    script "modules/nf-core/genmod/annotate/main.nf"
+    process "GENMOD_ANNOTATE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmod"
+    tag "genmod/annotate"
+
+    test("genmod_annotate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['homo_sapiens']['illumina']['genmod_vcf_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+    }
+
+}
