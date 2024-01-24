@@ -7,10 +7,13 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "umicollapse"
+    tag "umitools/extract"
+    tag "samtools/index"
+    tag "bwa/index"
 
     test("single end test") {
         setup{
-            run("UMITOOLS_EXCTRACT"){
+            run("UMITOOLS_EXTRACT"){
                 script "../../umitools/extract/main.nf"
                 process{
                     """
@@ -76,7 +79,7 @@ nextflow_process {
     test("umicollapse paired tests") {
 
         setup{
-            run("UMITOOLS_EXCTRACT"){
+            run("UMITOOLS_EXTRACT"){
                 script "../../umitools/extract/main.nf"
                 process{
                     """
