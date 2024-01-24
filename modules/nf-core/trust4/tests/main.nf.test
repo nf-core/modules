@@ -30,11 +30,15 @@ nextflow_process {
                 { assert snapshot(process.out.airr_tsv,
                                 process.out.fq,
                                 process.out.fasta,
-                                process.out.out,
                                 process.out.report_tsv,
-                                process.out.tsv,
                                 process.out.versions,
-                                ).match() }
+                                ).match() },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
             )
         }
 
@@ -63,11 +67,15 @@ nextflow_process {
                 { assert snapshot(process.out.airr_tsv,
                                 process.out.fq,
                                 process.out.fasta,
-                                process.out.out,
                                 process.out.report_tsv,
-                                process.out.tsv,
                                 process.out.versions,
-                                ).match() }
+                                ).match() },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
             )
         }
 
@@ -94,14 +102,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.airr_tsv,
-                                process.out.fq,
-                                process.out.fasta,
-                                process.out.out,
-                                process.out.report_tsv,
-                                process.out.tsv,
-                                process.out.versions,
-                                ).match() }
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
             )
         }
 

@@ -4,7 +4,7 @@ process TRUST4 {
 
     conda "bioconda::trust4=1.0.13"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trust4:1.0.9--h5b5514e_0':
+        'biocontainers/trust4:1.0.13--h43eeafb_0':
         'biocontainers/trust4:1.0.13--h43eeafb_0' }"
 
     input:
