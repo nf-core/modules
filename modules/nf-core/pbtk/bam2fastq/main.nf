@@ -27,7 +27,7 @@ process PBTK_BAM2FASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bam2fastx: \$(echo \$(bam2fastq --version 2>&1) | sed 's/^.*bam2fastq //' ))
+        bam2fastx: \$(echo \$(bam2fastq --version 2>&1) | sed -n 's/.*bam2fastq \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
     END_VERSIONS
     """
 
