@@ -16,18 +16,86 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
-      licence: 10X Genomics EULA
+      licence: [10X Genomics EULA]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - csv:
+  - gex_fastqs:
       type: file
-      description: Cell Ranger config file, in modified CSV format
+      description: FASTQ files for gene expression analysis
+      pattern: "*.fastq.gz"
+  - vdj_fastqs:
+      type: file
+      description: FASTQ files for V(D)J immunoprofiling analysis
+      pattern: "*.fastq.gz"
+  - ab_fastqs:
+      type: file
+      description: FASTQ files for antibody analysis
+      pattern: "*.fastq.gz"
+  - beam_fastqs:
+      type: file
+      description: FASTQ files for Barcode-Enabled Antigen Mapping (antigen analysis)
+      pattern: "*.fastq.gz"
+  - cmo_fastqs:
+      type: file
+      description: FASTQ files for cell multiplexing data
+      pattern: "*.fastq.gz"
+  - gex_reference:
+      type: directory
+      description: Folder containing Cellranger gene expression reference. Can also be a gzipped tarball
+      pattern: "*.tar.gz"
+  - gex_frna_probeset:
+      type: file
+      description: Fixed RNA profiling information containing custom probes in CSV format
+      pattern: "*.csv"
+  - gex_targetpanel:
+      type: file
+      description: Declaration of the target panel for Targeted Gene Expression analysis
+      pattern: "*.csv"
+  - vdj_reference:
+      type: directory
+      description: Folder containing Cellranger V(D)J reference. Can also be a gzipped tarball
+      pattern: "*.tar.gz"
+  - vdj_primer_index:
+      type: file
+      description: List of custom V(D)J inner enrichment primers
+      pattern: "*.csv"
+  - fb_reference:
+      type: file
+      description: The Feature Barcodes used for reference in Feature Barcoding Analysis
+      pattern: "*.csv"
+  - beam_antigen_panel:
+      type: file
+      description: The BEAM manifest in Feature Barcode CSV format
+      pattern: "*.csv"
+  - beam_control_panel:
+      type: file
+      description: The BEAM antigens set to control status, with corresponding MHC alleles, in Feature Barcode CSV format
+      pattern: "*.csv"
+  - cmo_reference:
+      type: file
+      description: Path to a custom Cell Multiplexing CSV reference IDs, or the `cmo-set` option in Cellranger
+      pattern: "*.csv"
+  - cmo_barcodes:
+      type: file
+      description: A CSV file appended to the Cellranger multi config linking samples to CMO IDs
+      pattern: "*.csv"
+  - cmo_barcode_assignment:
+      type: file
+      description: A CSV file that specifies the barcode-sample assignment in Cell Multiplexing analysis
+      pattern: "*.csv"
+  - frna_sampleinfo:
+      type: file
+      description: Sample information for fixed RNA analysis
       pattern: "*.csv"
 output:
+  - config:
+      type: file
+      description: The resolved Cellranger multi config used for analysis
+      pattern: "cellranger_multi_config.csv"
   - outs:
       type: file
       description: Files containing the outputs of Cell Ranger

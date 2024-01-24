@@ -13,44 +13,24 @@ nextflow_function {
 
         function "checkConfigProvided"
 
-        when {
-            function {
-                """
-                // define inputs of the function here. Example:
-                // input[0] = 1
-                """
-            }
-        }
-
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
     test("Test Function workflowCitation") {
 
         function "workflowCitation"
 
-        when {
-            function {
-                """
-                // define inputs of the function here. Example:
-                // input[0] = 1
-                """
-            }
-        }
-
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
     test("Test Function nfCoreLogo") {
@@ -60,21 +40,18 @@ nextflow_function {
         when {
             function {
                 """
-                input[0] = "9.9.9"
+                input[0] = false
                 """
             }
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
-
-
 
     test("Test Function dashedLine") {
 
@@ -83,42 +60,55 @@ nextflow_function {
         when {
             function {
                 """
-                // define inputs of the function here. Example:
-                // input[0] = 1
+                input[0] = false
                 """
             }
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
-
-
-    test("Test Function logColours") {
+    test("Test Function without logColours") {
 
         function "logColours"
 
         when {
             function {
                 """
-                // define inputs of the function here. Example:
-                // input[0] = 1
+                input[0] = true
                 """
             }
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
+    }
 
+    test("Test Function with logColours") {
+        function "logColours"
+
+        when {
+            function {
+                """
+                input[0] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
+        }
     }
 }
