@@ -10,26 +10,26 @@ nextflow_process {
     tag "simpleaf/quant"
     tag "simpleaf/index"
 
-    test("test_simpleaf_quant") {
 
-        //Requires SIMPLEAF_INDEX to run prior to quant
-        setup {
-            run("SIMPLEAF_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                    meta = [ 'id': 'human']
+    //Requires SIMPLEAF_INDEX to run prior to quant
+    setup {
+        run("SIMPLEAF_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                meta = [ 'id': 'human']
 
-                    input[0] = Channel.of([meta, genome_fasta])
-                    input[1] = Channel.of([meta, gtf])
-                    input[2] = Channel.of([[],[]])
-                    """
-                }
+                input[0] = Channel.of([meta, genome_fasta])
+                input[1] = Channel.of([meta, gtf])
+                input[2] = Channel.of([[],[]])
+                """
             }
         }
+    }
 
+    test("test_simpleaf_quant") {
         when {
             config "./nextflow.config"
             process {
@@ -68,23 +68,6 @@ nextflow_process {
 
     test("test_simpleaf_quant stub") {
         options "-stub-run"
-        //Requires SIMPLEAF_INDEX to run prior to quant
-        setup {
-            run("SIMPLEAF_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                    meta = [ 'id': 'human']
-
-                    input[0] = Channel.of([meta, genome_fasta])
-                    input[1] = Channel.of([meta, gtf])
-                    input[2] = Channel.of([[],[]])
-                    """
-                }
-            }
-        }
 
         when {
             config "./nextflow.config"
