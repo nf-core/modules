@@ -40,7 +40,7 @@ nextflow_process {
                 }
             }
             run("BWA_MEM"){
-                script "../../bwa/index/main.nf"
+                script "../../bwa/mem/main.nf"
                 process{
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
@@ -106,7 +106,7 @@ nextflow_process {
                 }
             }
             run("BWA_MEM"){
-                script "../../bwa/index/main.nf"
+                script "../../bwa/mem/main.nf"
                 process{
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
