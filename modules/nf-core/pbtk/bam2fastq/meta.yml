@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "pbtk_bam2fastq"
-description: converts pacbio bam files to fastq.gz using PacBioToolKit (pbtk) bam2fastq 
+description: converts pacbio bam files to fastq.gz using PacBioToolKit (pbtk) bam2fastq
 keywords:
   - convert
   - bam
@@ -22,7 +22,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - bam:
       type: file
       description: PacBio BAM file
@@ -39,7 +39,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
