@@ -39,6 +39,8 @@ process SURVIVOR_STATS {
         $minnumreads \\
         ${prefix}.stats
 
+    rm $vcf_name
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
