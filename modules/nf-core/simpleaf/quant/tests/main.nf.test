@@ -60,8 +60,7 @@ nextflow_process {
                     path("${process.out.results[0][1]}/af_quant/all_freq.bin"),
                     path("${process.out.results[0][1]}/af_quant/generate_permit_list.json"),
                     path("${process.out.results[0][1]}/af_quant/map.collated.rad"),
-                    path("${process.out.results[0][1]}/af_quant/permit_freq.bin"),
-                    path("${process.out.results[0][1]}/af_quant/quant.json"))
+                    path("${process.out.results[0][1]}/af_quant/permit_freq.bin"))
                     .match() }
             )
         }
