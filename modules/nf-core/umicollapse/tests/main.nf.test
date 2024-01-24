@@ -15,6 +15,7 @@ nextflow_process {
         setup{
             run("UMITOOLS_EXTRACT"){
                 script "../../umitools/extract/main.nf"
+                config "./nextflow_SE.config"
                 process{
                     """
                     input[0] = [
@@ -60,6 +61,7 @@ nextflow_process {
         }
 
         when {
+            config "./nextflow_SE.config"
             process {
                 """
                 input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
@@ -77,10 +79,10 @@ nextflow_process {
     }
 
     test("umicollapse paired tests") {
-
         setup{
             run("UMITOOLS_EXTRACT"){
                 script "../../umitools/extract/main.nf"
+                config "./nextflow_PE.config"
                 process{
                     """
                     input[0] = [
@@ -126,6 +128,7 @@ nextflow_process {
         }
 
         when {
+            config "./nextflow_PE.config"
             process {
                 """
                 input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
