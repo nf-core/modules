@@ -21,9 +21,6 @@ process MUSCLE5_SUPER5 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     prefix = args.contains('-perm all') ? "${prefix}@" : "${prefix}"
-    // if -perm all is set, mafft will produce multiple files
-    // compress these individually in a loop
-    def compress_loop = args.contains('-perm all') ? "for f in *.aln; do pigz -p ${task.cpus} \$f; done" : ""
     def write_output = (compress && !args.contains('-perm all')) ? " -output >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "-output ${prefix}.aln"
     // muscle internally expands the shell pipe to a file descriptor of the form /dev/fd/<id>
     // this causes it to fail, unless -output is left at the end of the call
@@ -39,7 +36,10 @@ process MUSCLE5_SUPER5 {
 
 
     # output may be multiple files if -perm all is set
-    $compress_loop
+    # compress these individually if set to compress output
+    if ${args.contains('-perm all') && compress}; then
+        pigz -p ${task.cpus} *.aln
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
