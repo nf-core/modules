@@ -69,7 +69,15 @@ process SIMPLEAF_QUANT {
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
+    mkdir -p ${prefix}/af_map
+    mkdir -p ${prefix}/af_quant/alevin
+
+    touch ${prefix}/af_map/map.rad
+    touch ${prefix}/af_map/unmapped_bc_count.bin
+    touch ${prefix}/af_quant/alevin/quants_mat_rows.txt
+    touch ${prefix}/af_quant/all_freq.bin
+    touch ${prefix}/af_quant/map.collated.rad
+    touch ${prefix}/af_quant/permit_freq.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
