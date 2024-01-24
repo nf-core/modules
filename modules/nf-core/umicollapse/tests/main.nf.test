@@ -82,7 +82,7 @@ nextflow_process {
     }
 
     test("umicollapse paired tests") {
-        setup{
+            setup{
             run("UMITOOLS_EXTRACT"){
                 script "../../umitools/extract/main.nf"
                 config "./nextflow_PE.config"
@@ -150,4 +150,70 @@ nextflow_process {
 
     }
 
+    test("umicollapse stub tests") {
+        options "-stub-run"
+            setup{
+            run("UMITOOLS_EXTRACT"){
+                script "../../umitools/extract/main.nf"
+                config "./nextflow_PE.config"
+                process{
+                    """
+                    input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                    ]
+                    """
+                }
+            }
+
+            run("BWA_INDEX"){
+                script "../../bwa/index/main.nf"
+                process{
+                    """
+                    input[0] = [
+                            [ id:'sarscov2'],
+                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            ]
+                    """
+                }
+            }
+            run("BWA_MEM"){
+                script "../../bwa/mem/main.nf"
+                process{
+                    """
+                    input[0] = UMITOOLS_EXTRACT.out.reads
+                    input[1] = BWA_INDEX.out.index
+                    input[2] = true
+                    """
+                }
+            }
+            run("SAMTOOLS_INDEX"){
+                script "../../samtools/index/main.nf"
+                process{
+                    """
+                    input[0] = BWA_MEM.out.bam
+                    """
+                }
+            }
+        }
+        when {
+            config "./nextflow_PE.config"
+            process {
+                """
+                input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 }

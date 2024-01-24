@@ -51,8 +51,10 @@ process UMICOLLAPSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.0-1'
     """
     touch ${prefix}.dedup.bam
+    touch ${prefix}_UMICollapse.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         umicollapse: $VERSION
