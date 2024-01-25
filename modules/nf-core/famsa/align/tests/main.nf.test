@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment")},
+                { assert snapshot(process.out.alignment).match("alignment_uncompressed")},
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -51,7 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment")},
+                { assert snapshot(process.out.alignment).match("alignment_compressed")},
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }

@@ -39,8 +39,8 @@ nextflow_process {
                     { assert process.success  },
                     // mTMalign may be nondeterministic, just check if the pdbs are all in there
                     //{ assert snapshot(process.out).match() }
-                    { assert path(process.out.alignment[0][1]).getText().contains(">1.pdb")  },
-                    { assert path(process.out.alignment[0][1]).getText().contains(">2.pdb")  },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1.pdb") },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">2.pdb") },
                     { assert path(process.out.alignment[0][1]).getText().contains(">3.pdb") },
                     { assert path(process.out.alignment[0][1]).getText().contains(">4.pdb") },
                     { assert path(process.out.alignment[0][1]).getText().contains(">5.pdb") },
@@ -79,8 +79,8 @@ nextflow_process {
                     { assert process.success  },
                     // mTMalign may be nondeterministic, just check if the pdbs are all in there
                     //{ assert snapshot(process.out).match() }
-                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1.pdb")  },
-                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">2.pdb")  },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1.pdb") },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">2.pdb") },
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">3.pdb") },
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">4.pdb") },
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">5.pdb") },

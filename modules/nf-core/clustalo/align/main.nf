@@ -8,7 +8,7 @@ process CLUSTALO_ALIGN {
         'biocontainers/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0' }"
 
     input:
-    tuple val(meta),  path(fasta)
+    tuple val(meta) , path(fasta)
     tuple val(meta2), path(tree)
     val(compress)
 

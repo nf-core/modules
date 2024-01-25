@@ -10,7 +10,7 @@ process FAMSA_ALIGN {
         'biocontainers/famsa:2.2.2--h9f5acd7_0' }"
 
     input:
-    tuple val(meta),  path(fasta)
+    tuple val(meta) , path(fasta)
     tuple val(meta2), path(tree)
     val(compress)
 
