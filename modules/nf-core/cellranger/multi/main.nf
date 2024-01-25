@@ -18,7 +18,8 @@ process CELLRANGER_MULTI {
     path vdj_reference         , stageAs: "references/vdj/*"
     path vdj_primer_index      , stageAs: "references/vdj/primers/*"
     path fb_reference          , stageAs: "references/fb/*"
-    path beam_panel            , stageAs: "references/beam/panel/*"
+    path beam_antigen_panel    , stageAs: "references/beam/panel/antigens/*"
+    path beam_control_panel    , stageAs: "references/beam/panel/controls/*"
     path cmo_reference         , stageAs: "references/cmo/*"
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
@@ -45,17 +46,18 @@ process CELLRANGER_MULTI {
     // empty reference channels stage as "references"
     // empty FASTQ channels stage as "fastqs"
     // empty files stage as the file name, we check against 'EMPTY'
-    gex_reference_name     = gex_reference.getName() != 'references'     ? gex_reference.getName()          : ''
-    gex_frna_probeset_name = gex_frna_probeset.getBaseName() != 'EMPTY'  ? gex_frna_probeset.getName()      : ''
-    gex_targetpanel_name   = gex_targetpanel.getBaseName() != 'EMPTY'    ? gex_targetpanel.getName()        : ''
-    fb_reference_name      = fb_reference.getBaseName() != 'EMPTY'       ? fb_reference.getName()           : ''
-    vdj_reference_name     = vdj_reference.getName() != 'references'     ? vdj_reference.getName()          : ''
-    cmo_reference_name     = cmo_reference.getName() != 'EMPTY'          ? cmo_reference.getName()          : ''
-    cmo_sample_assignment  = cmo_barcode_assignment.getName() != 'EMPTY' ? cmo_barcode_assignment.getName() : ''
+    gex_reference_name      = gex_reference.getName() != 'references'     ? gex_reference.getName()          : ''
+    gex_frna_probeset_name  = gex_frna_probeset.getBaseName() != 'EMPTY'  ? gex_frna_probeset.getName()      : ''
+    gex_targetpanel_name    = gex_targetpanel.getBaseName() != 'EMPTY'    ? gex_targetpanel.getName()        : ''
+    fb_reference_name       = fb_reference.getBaseName() != 'EMPTY'       ? fb_reference.getName()           : ''
+    vdj_reference_name      = vdj_reference.getName() != 'references'     ? vdj_reference.getName()          : ''
+    cmo_reference_name      = cmo_reference.getName() != 'EMPTY'          ? cmo_reference.getName()          : ''
+    cmo_sample_assignment   = cmo_barcode_assignment.getName() != 'EMPTY' ? cmo_barcode_assignment.getName() : ''
+    beam_antigen_panel_name = beam_antigen_panel.getName() != 'EMPTY' ? beam_antigen_panel.getName() : ''
 
     include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference ? '[gene-expression]'     : ''
     include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference ? '[vdj]'                 : ''
-    include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_panel   ? '[antigen-specificity]' : ''
+    include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel ? '[antigen-specificity]' : ''
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes  ? '[samples]'             : ''
     include_fb   = fb_reference.first().getName() != 'references'            ? '[feature]'             : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                 ? '[samples]'             : ''
@@ -73,9 +75,12 @@ process CELLRANGER_MULTI {
     // VDJ inner primer set
     primer_index = vdj_primer_index.getBaseName() != 'EMPTY' ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
 
+    // BEAM antigen list, remember that this is a Feature Barcode file
+    beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,\$PWD/$beam_antigen_panel_name" : ''
+
     // pull CSV text from these reference panels
     // these references get appended directly to config file
-    beam_csv_text  = include_beam && beam_panel.size() > 0      ? beam_panel.text      : ''
+    beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
     cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0    ? cmo_barcodes         : ''
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0 ? frna_sampleinfo.text : ''
 
@@ -116,10 +121,10 @@ process CELLRANGER_MULTI {
 
     // point config to FASTQs
     // After renaming it gets in 'fastq_all' folder
-    fastq_gex      = include_gex                      ? "${meta_gex.id},./fastq_all/gex,,Gene Expression"           : ''
+    fastq_gex      = include_gex                      ? "${meta_gex.id},./fastq_all/gex,,Gene Expression"            : ''
     fastq_vdj      = include_vdj                      ? "${meta_vdj.id},./fastq_all/vdj,,VDJ"                        : ''
     fastq_antibody = include_fb && ab_options_use     ? "${meta_ab.id},./fastq_all/ab,,Antibody Capture"             : ''
-    fastq_beam     = include_beam                     ? "${meta_beam.id},./fastq_all/beam,,Antigen Capture"          : ''
+    fastq_beam     = include_beam                     ? "${meta_beam.id},\$PWD/fastqs/beam,,Antigen Capture"         : ''
     fastq_crispr   = include_fb && crispr_options_use ? "${meta_crispr.id},./fastq_all/crispr,,CRISPR Guide Capture" : ''
     fastq_cmo      = include_cmo                      ? "${meta_cmo.id},./fastq_all/cmo,,Multiplexing Capture"       : ''
 

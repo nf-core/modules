@@ -140,9 +140,12 @@ if len("${include_cmo}") > 0:
             file.write(line + "\\n")
 
 if len("${include_beam}") > 0:
-    with open("${config}", 'a') as file, open("${beam_csv_text}", 'r') as input_conf:
+    with open("${config}", 'a') as file, open("${beam_csv_text}", 'r') as input_conf, open("${beam_antigen_csv}", 'r') as input_csv:
         file.write("${include_beam}\\n")
         for line in input_conf:
+            file.write(line + "\\n")
+        file.write("[feature]\\n")
+        for line in input_csv:
             file.write(line + "\\n")
 
 if len("${include_frna}") > 0:
