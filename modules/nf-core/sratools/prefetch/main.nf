@@ -21,16 +21,15 @@ process SRATOOLS_PREFETCH {
 
     shell:
     args = task.ext.args ?: ''
-
-    if (certificate){
-        if (certificate.toString().endsWith('.jwt')){
+    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
+    if (certificate) {
+        if (certificate.toString().endsWith('.jwt')) {
             args += " --perm ${certificate}"
-            }
-        else if (certificate.toString().endsWith('.ngc')){
+        }
+        else if (certificate.toString().endsWith('.ngc')) {
             args += " --ngc ${certificate}"
         }
     }
 
-    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
     template 'retry_with_backoff.sh'
 }

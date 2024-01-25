@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process QUALIMAP_BAMQC"
+    script "../main.nf"
+    process "QUALIMAP_BAMQC"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qualimap"
+    tag "qualimap/bamqc"
+
+    test("homo_sapiens [BAM]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
+                { assert snapshot(
+                    path("${process.out.results[0][1]}/genome_results.txt"),
+                    process.out.versions)
+                .match() }
+            )
+        }
+    }
+}

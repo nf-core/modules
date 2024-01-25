@@ -31,8 +31,11 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).getText().contains("qualimap") }
+                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
+                { assert snapshot(
+                    path("${process.out.results[0][1]}/rnaseq_qc_results.txt"),
+                    process.out.versions)
+                .match() }
             )
         }
     }
