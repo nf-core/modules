@@ -48,6 +48,7 @@ process MTMALIGN_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -63,6 +64,7 @@ process MTMALIGN_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
