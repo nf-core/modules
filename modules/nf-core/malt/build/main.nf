@@ -40,4 +40,17 @@ process MALT_BUILD {
         malt: \$(malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2)
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-malt-build.log
+    mkdir malt_index/
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        malt: \$(malt-run --help  2>&1 | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
 }
