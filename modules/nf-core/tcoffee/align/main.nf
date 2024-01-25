@@ -47,7 +47,7 @@ process TCOFFEE_ALIGN {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pigz_call = compressed ? ".gz": ""
+    def pigz_call = compress ? ".gz": ""
     """
     touch ${prefix}.aln${pigz_call}
 

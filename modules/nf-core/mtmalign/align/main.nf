@@ -14,8 +14,8 @@ process MTMALIGN_ALIGN {
     val(compress)
 
     output:
-    tuple val(meta), path("./mTM_result/${prefix}.aln{.gz,}"), emit: alignment
-    tuple val(meta), path("./mTM_result/${prefix}.pdb{.gz,}"), emit: structure
+    tuple val(meta), path("./mTM_result/${prefix}.aln${compress ? '.gz' : ''}"), emit: alignment
+    tuple val(meta), path("./mTM_result/${prefix}.pdb${compress ? '.gz' : ''}"), emit: structure
     path "versions.yml"                                      , emit: versions
 
     when:
@@ -43,6 +43,7 @@ process MTMALIGN_ALIGN {
     if ${compress}; then
         pigz -p ${task.cpus} ./mTM_result/${prefix}.aln ./mTM_result/${prefix}.pdb
     fi
+    tree
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
@@ -57,8 +58,8 @@ process MTMALIGN_ALIGN {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mTM_result
-    touch mTM_result/${prefix}.aln.gz
-    touch mTM_result/${prefix}.pdb.gz
+    touch mTM_result/${prefix}.aln${compress ? '.gz' : ''}
+    touch mTM_result/${prefix}.pdb${compress ? '.gz' : ''}
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
