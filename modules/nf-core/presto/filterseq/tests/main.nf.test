@@ -7,6 +7,7 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "gunzip"
     tag "presto"
     tag "presto/filterseq"
 
@@ -38,7 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version,
+                { assert snapshot(process.out.versions,
                                   process.out.reads,
                                   process.out.log_tab).match() },
                 { assert path(process.out.log_tab.get(0)).getText().contains("QUALITY") },
