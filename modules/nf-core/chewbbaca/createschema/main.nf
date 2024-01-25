@@ -4,8 +4,8 @@ process CHEWBBACA_CREATESCHEMA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.1--pyhdfd78af_0':
-        'biocontainers/chewbbaca:3.3.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.2--pyhdfd78af_0':
+        'biocontainers/chewbbaca:3.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_genomes/*")
