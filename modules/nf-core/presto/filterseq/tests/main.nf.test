@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process PRESTO_FILTERSEQ"
     script "../main.nf"
+    config "./nextflow.config"
     process "PRESTO_FILTERSEQ"
 
     tag "modules"
@@ -37,10 +38,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.version,
+                                  process.out.reads,
+                                  process.out.log_tab).match() },
                 { assert path(process.out.log_tab.get(0)).getText().contains("QUALITY") },
-                { assert path(process.out.logs.get(0)).getText().contains("PASS") },
-                { assert process.out.reads.size() == 1 }
+                { assert path(process.out.logs.get(0)).getText().contains("PASS") }
             )
         }
 
