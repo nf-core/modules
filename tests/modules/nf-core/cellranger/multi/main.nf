@@ -83,21 +83,21 @@ ab_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_2_gz'], checkIfExists: true)
 ]
-def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect_AB"
+def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
 // stage GEX data
 gex_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
 ]
-def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1"
+def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
 // stage VDJ data
 vdj_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_2_gz'], checkIfExists: true)
 ]
-def vdj_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ"
+def vdj_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
 // stage feature barcode reference for antibody capture
 fb_reference_5k_cmvpos_tcells = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_feature_ref_csv'], checkIfExists: true)
@@ -270,7 +270,7 @@ workflow test_cellranger_multi_10k_pbmc_cmo {
 
 workflow test_cellranger_multi_5k_cmvpos_tcells {
 
-    def test_meta_5k_cmvpos_tcells = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+    def test_meta_5k_cmvpos_tcells = [ id:'subsampled_5k_human_antiCMV_T_TBNK_connect', single_end:false ]
 
     // collect references and fastq files for staging
     ch_gex_fastqs_5k_cmvpos_tcells = Channel.of( gex_fastqs_5k_cmvpos_tcells )
