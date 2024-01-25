@@ -157,7 +157,7 @@ if len("${include_frna}") > 0:
 # Remove blank lines from config file
 with open('tmp.txt', 'w') as file:
     file.write( run(['grep', '-v', '-e', '^[[:space:]]*\$', "${config}"], capture_output=True, text=True).stdout )
-run(['mv', 'tmp.txt', "${config}"])
+run(['mv', 'tmp.txt', "${config}"], check=True)
 
 #
 # run cellranger multi
