@@ -15,21 +15,21 @@ bcell_fastqs_10k_pbmc = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_2_gz'], checkIfExists: true)
 ]
-def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k_b"
+def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
 // stage 5' gene expression FASTQ test data
 fivepgex_fastqs_10k_pbmc = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_2_gz'], checkIfExists: true)
 ]
-def fivepgex_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k_5gex"
+def fivepgex_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
 // stage 5' feature barcode (antibody capture) FASTQ test data
 ab_fastqs_10k_pbmc = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_2_gz'], checkIfExists: true)
 ]
-def fivepab_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k_5fb"
+def fivepab_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
 // stage feature barcode reference for antibody capture
 fb_reference_10k_pbmc = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_feature_ref_csv'], checkIfExists: true)
@@ -78,22 +78,22 @@ cmo_barcodes_csv.append("sample_id,cmo_ids,description\nPBMCs_human_1,CMO301,PBM
 /*** stage 5k CMV+ T-cell data ***/
 /*********************************/
 
-// stage antibody capture data 
+// stage antibody capture data
 ab_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_2_gz'], checkIfExists: true)
 ]
 def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect_AB"
 
-// stage GEX data 
+// stage GEX data
 gex_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
 ]
 def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1"
 
-// stage VDJ data 
-vdj_fastqs_5k_cmvpos_tcells = [ 
+// stage VDJ data
+vdj_fastqs_5k_cmvpos_tcells = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_2_gz'], checkIfExists: true)
 ]
@@ -171,7 +171,7 @@ ch_frna_sampleinfo       = Channel.fromPath( empty_file )
 
 workflow test_cellranger_multi_10k_pbmc {
 
-    def test_meta_10k_pbmc = [ id:'test_10k_pbmc', single_end:false ]
+    def test_meta_10k_pbmc = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
 
     // collect references and fastq files for staging
     ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
@@ -220,7 +220,7 @@ workflow test_cellranger_multi_10k_pbmc {
 
 workflow test_cellranger_multi_10k_pbmc_cmo {
 
-    def test_meta_10k_pbmc_cmo = [ id:'test_10k_pbmc_cmo', single_end:false ]
+    def test_meta_10k_pbmc_cmo = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
 
     // collect references and fastq files for staging
     ch_gex_fastqs_10k_pbmc_cmo = Channel.of( threepgex_fastqs_10k_pbmc_cmo )
@@ -236,7 +236,7 @@ workflow test_cellranger_multi_10k_pbmc_cmo {
     ch_cmo_reference_10k_pbmc_cmo = Channel.of( cmo_reference_10k_pbmc_cmo )
 
     // empty vdj reference
-    ch_vdj_ref_empty = Channel.fromPath( empty_file ) 
+    ch_vdj_ref_empty = Channel.fromPath( empty_file )
 
     // CMO analysis needs barcodes
     ch_cmo_barcodes_10k_pbmc_cmo = Channel.fromPath( cmo_barcodes_csv )
@@ -270,7 +270,7 @@ workflow test_cellranger_multi_10k_pbmc_cmo {
 
 workflow test_cellranger_multi_5k_cmvpos_tcells {
 
-    def test_meta_5k_cmvpos_tcells = [ id:'test_5k_cmvpos_tcells', single_end:false ]
+    def test_meta_5k_cmvpos_tcells = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
 
     // collect references and fastq files for staging
     ch_gex_fastqs_5k_cmvpos_tcells = Channel.of( gex_fastqs_5k_cmvpos_tcells )
