@@ -27,9 +27,12 @@ input:
         e.g. `[ id:'test']`
   - pdbs:
       type: file
-      description: Input protein structures in PDB format.
+      description: Input protein structures in PDB format. Files may be gzipped or uncompressed.
         They should contain exactly one chain!
       pattern: "*.{pdb}"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -38,12 +41,12 @@ output:
         e.g. `[ id:'test']`
   - alignment:
       type: file
-      description: Alignment in gzipped FASTA format.
-      pattern: "*.aln.gz"
+      description: Alignment in FASTA format. May be gzipped or uncompressed.
+      pattern: "*.aln{.gz,}"
   - structure:
       type: file
-      description: Overlaid structures in PDB format.
-      pattern: "${prefix}.pdb.gz"
+      description: Overlaid structures in PDB format. May be gzipped or uncompressed.
+      pattern: "${prefix}.pdb{.gz,}"
   - versions:
       type: file
       description: File containing software versions

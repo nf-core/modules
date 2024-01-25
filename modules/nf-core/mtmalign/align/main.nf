@@ -11,11 +11,12 @@ process MTMALIGN_ALIGN {
 
     input:
     tuple val(meta), path('*.pdb', arity: '2..*')
+    val(compress)
 
     output:
-    tuple val(meta), path("./mTM_result/${prefix}.aln.gz")  , emit: alignment
-    tuple val(meta), path("./mTM_result/${prefix}.pdb.gz")    , emit: structure
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("./mTM_result/${prefix}.aln{.gz,}"), emit: alignment
+    tuple val(meta), path("./mTM_result/${prefix}.pdb{.gz,}"), emit: structure
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,14 +24,25 @@ process MTMALIGN_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    // mTMalign is not capable of writing to stdout
+    // if -o /dev/stdout is specified, the output file will be polluted with debug messages emitted by mTMalign
     """
+    # decompress input files if required
+    if ls ./*.pdb.gz 2&> /dev/null; then # check if any files are compressed; calling unpigz with an empty arg will cause it to panic
+        unpigz -d ./*.pdb.gz
+    fi
+
+    # construct input file for mtmalign
     ls *.pdb | sed s/\\ /\\n/ > input_list.txt
+
     mtm-align -i input_list.txt -o ${prefix}.pdb
     # -o does not affect the fasta naming, so move it to the new name
     mv ./mTM_result/result.fasta ./mTM_result/${prefix}.aln
 
     # compress both output files
-    pigz -p ${task.cpus} ./mTM_result/${prefix}.aln ./mTM_result/${prefix}.pdb
+    if ${compress}; then
+        pigz -p ${task.cpus} ./mTM_result/${prefix}.aln ./mTM_result/${prefix}.pdb
+    fi
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
