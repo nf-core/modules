@@ -22,7 +22,6 @@ process MALT_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-
     def igff = gff ? "-igff ${gff}" : ""
 
     """
@@ -43,9 +42,8 @@ process MALT_BUILD {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}-malt-build.log
+    touch malt-build.log
     mkdir malt_index/
 
     cat <<-END_VERSIONS > versions.yml
