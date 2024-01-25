@@ -10,11 +10,12 @@ nextflow_workflow {
     tag "subworkflows/utils_nfcore_pipeline"
 
     test("Should run without failures") {
+
         then {
-            assert workflow.success
-            assert snapshot(workflow.out).match()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
         }
-
     }
-
 }

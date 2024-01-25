@@ -14,12 +14,11 @@ nextflow_function {
         function "checkConfigProvided"
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
     test("Test Function workflowCitation") {
@@ -27,12 +26,11 @@ nextflow_function {
         function "workflowCitation"
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
     test("Test Function nfCoreLogo") {
@@ -48,15 +46,12 @@ nextflow_function {
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
-
-
 
     test("Test Function dashedLine") {
 
@@ -71,15 +66,12 @@ nextflow_function {
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
-
-
 
     test("Test Function without logColours") {
 
@@ -94,12 +86,11 @@ nextflow_function {
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
-
     }
 
     test("Test Function with logColours") {
@@ -114,8 +105,8 @@ nextflow_function {
         }
 
         then {
-            assertAll (
-                { assert function.success                  },
+            assertAll(
+                { assert function.success },
                 { assert snapshot(function.result).match() }
             )
         }
