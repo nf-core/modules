@@ -10,7 +10,7 @@ nextflow_process {
     tag "famsa/align"
     tag "famsa/guidetree"
 
-    test("sarscov2 - fasta") {
+    test("sarscov2 - fasta - uncompressed") {
 
         when {
             process {
@@ -19,6 +19,31 @@ nextflow_process {
                              file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.alignment).match("alignment")},
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - compressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = true
                 """
             }
         }
@@ -55,6 +80,7 @@ nextflow_process {
                              file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
                            ]
                 input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
+                input[2] = true
                 """
             }
         }
