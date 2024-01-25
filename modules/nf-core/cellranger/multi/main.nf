@@ -81,8 +81,8 @@ process CELLRANGER_MULTI {
     // pull CSV text from these reference panels
     // these references get appended directly to config file
     beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
-    cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0    ? cmo_barcodes         : ''
-    frna_csv_text  = include_frna && frna_sampleinfo.size() > 0 ? frna_sampleinfo.text : ''
+    cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes       : ''
+    frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
     fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [] )
