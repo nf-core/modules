@@ -9,7 +9,7 @@ process TRINITY {
         'biocontainers/trinity:2.15.1--pl5321h146fbdb_3' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')
 
     output:
     tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
@@ -23,14 +23,17 @@ process TRINITY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def reads1 = [], reads2 = []
+    meta.single_end ? reads1 = reads : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
+
     if (meta.single_end) {
-        reads_args = "--single ${reads}"
+        reads_args = "--single ${reads1.join(',')}"
     } else {
-        reads_args = "--left ${reads[0]} --right ${reads[1]}"
+        reads_args = "--left ${reads1.join(',')} --right ${reads2.join(',')}"
     }
 
     // --seqType argument, fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    seqType_args = reads[0] ==~ /(.*fasta(.gz)?$)|(.*fa(.gz)?$)/ ? "fa" : "fq"
+    seqType_args = reads1[0] ==~ /(.*fasta(.gz)?$)|(.*fa(.gz)?$)/ ? "fa" : "fq"
 
     // Define the memory requirements. Trinity needs this as an option.
     def avail_mem = 7
