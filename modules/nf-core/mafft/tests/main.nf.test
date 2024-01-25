@@ -20,7 +20,7 @@ nextflow_process {
                 input[3] = [[:], []]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ false ]
+                input[6] = false
                 """
             }
         }
@@ -47,7 +47,7 @@ nextflow_process {
                 input[3] = [[:], []]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -77,7 +77,7 @@ nextflow_process {
                 input[3] = [[:], []]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -107,7 +107,7 @@ nextflow_process {
                 input[3] = [[:], []]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -136,7 +136,7 @@ nextflow_process {
                     ]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -166,7 +166,7 @@ nextflow_process {
                         file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
                     ]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -197,7 +197,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                         file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
                     ]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }
@@ -231,7 +231,7 @@ nextflow_process {
                 input[3] = [[:], []]
                 input[4] = [[:], []]
                 input[5] = [[:], []]
-                input[6] = [ true ]
+                input[6] = true
                 """
             }
         }

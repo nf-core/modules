@@ -17,7 +17,7 @@ nextflow_process {
                         input[0] = [ [ id:'test' ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                         ]
-                        input[1] = [ false ]
+                        input[1] = false
                         """
                 }
             }
@@ -37,7 +37,7 @@ nextflow_process {
                         input[0] = [ [ id:'test' ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                         ]
-                        input[1] = [ true ]
+                        input[1] = true
                         """
                 }
             }
@@ -57,7 +57,7 @@ nextflow_process {
                         input[0] = [ [ id:'test' ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                         ]
-                        input[1] = [ true ]
+                        input[1] = true
                         """
                 }
             }
