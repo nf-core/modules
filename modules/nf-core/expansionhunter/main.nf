@@ -14,9 +14,10 @@ process EXPANSIONHUNTER {
     tuple val(meta4), path(variant_catalog)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val(meta), path("*.json.gz")  , emit: json
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz")        , emit: vcf
+    tuple val(meta), path("*.json.gz")       , emit: json
+    tuple val(meta), path("*_realigned.bam") , emit: bam
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,6 +50,7 @@ process EXPANSIONHUNTER {
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.json.gz
+    touch ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
