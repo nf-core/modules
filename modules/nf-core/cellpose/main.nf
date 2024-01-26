@@ -10,7 +10,7 @@ process CELLPOSE {
 
     output:
     tuple val(meta), path("*masks.tif") ,   emit: mask
-    tuple val(meta), path("*flows.tif"),   emit: flows, optional: true
+    tuple val(meta), path("*flows.tif") ,   emit: flows, optional: true
     path "versions.yml"                 ,   emit: versions
 
     when:
@@ -26,12 +26,12 @@ process CELLPOSE {
     def model_command = model ? "--pretrained_model $model" : ""
     def VERSION = '2.2.2'
     """
-    cellpose \
-    --image_path $image \
-    --save_tif \
-    --verbose \
-    $model_command \
-    $args
+    cellpose \\
+        --image_path $image \\
+        --save_tif \\
+        --verbose \\
+        $model_command \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,8 +45,10 @@ process CELLPOSE {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "2.2.2" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def name = image.name
+    def base = name.lastIndexOf('.') != -1 ? name[0..name.lastIndexOf('.') - 1] : name
     """
-    touch ${prefix}_cp_masks.tif
+    touch ${base}_cp_masks.tif
 
         cat <<-END_VERSIONS > versions.yml
     "${task.process}":
