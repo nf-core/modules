@@ -24,9 +24,12 @@ process TCOFFEE_IRMSD {
     """
     export TEMP='./'
 
-    unpigz -cdf $msa > msafile &
+    if [[ \$(basename $msa) == *.gz ]] ; then
+        unpigz -f $msa
+    fi
+
     t_coffee -other_pg irmsd \
-        msafile \
+        \$(basename $msa .gz) \
         $args \
         -template_file $template > ${prefix}.irmsd
 
