@@ -28,7 +28,7 @@ nextflow_process {
             {assert process.success},
             {assert path(process.out.vcf.get(0).get(1)).linesGzip.size() == 8},
             {assert path(process.out.json.get(0).get(1)).linesGzip.size() == 27},
-            {assert snapshot(file(process.out.bam.get(0).get(1)).name)}
+            {assert snapshot(process.out.bam).match()}
             )
         }
 

@@ -24,6 +24,10 @@ input:
       type: file
       description: BAM/CRAM file
       pattern: "*.{bam,cram}"
+  - bai:
+      type: file
+      description: Index of BAM/CRAM file
+      pattern: "*.{bai,crai}"
   - meta2:
       type: map
       description: |
@@ -38,7 +42,7 @@ input:
       description: |
         Groovy Map containing reference information
         e.g. [ id:'test' ]
-  - fasta:
+  - fasta_fai:
       type: file
       description: Reference genome index
       pattern: "*.fai"
