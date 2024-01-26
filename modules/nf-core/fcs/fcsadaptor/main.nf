@@ -11,7 +11,7 @@ process FCS_FCSADAPTOR {
     tuple val(meta), path(assembly)
 
     output:
-    tuple val(meta), path("*.cleaned_sequences.fa.gz"), emit: cleaned_assembly
+    tuple val(meta), path("*.cleaned_sequences.fa.gz"), emit: cleaned_assembly, optional: true
     tuple val(meta), path("*.fcs_adaptor_report.txt") , emit: adaptor_report
     tuple val(meta), path("*.fcs_adaptor.log")        , emit: log
     tuple val(meta), path("*.pipeline_args.yaml")     , emit: pipeline_args
@@ -36,8 +36,11 @@ process FCS_FCSADAPTOR {
         $assembly
 
     # compress and/or rename files with prefix
-    find output/cleaned_sequences/  -type f ! -name "*.gz" -exec gzip {} \\;
-    cp output/cleaned_sequences/*         "${prefix}.cleaned_sequences.fa.gz"
+    num_contamination_lines=\$(cat "output/fcs_adaptor_report.txt" | wc -l)
+    if [[ \$num_contamination_lines -gt 1 ]]; then
+        find output/cleaned_sequences/  -type f ! -name "*.gz" -exec gzip {} \\;
+        cp output/cleaned_sequences/*     "${prefix}.cleaned_sequences.fa.gz"
+    fi
     cp "output/fcs_adaptor_report.txt"    "${prefix}.fcs_adaptor_report.txt"
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
     cp "output/pipeline_args.yaml"        "${prefix}.pipeline_args.yaml"
@@ -58,7 +61,6 @@ process FCS_FCSADAPTOR {
     def FCSGX_VERSION = '0.4.0'
 
     """
-    touch ${prefix}.cleaned_sequences.fa.gz
     touch ${prefix}.fcs_adaptor_report.txt
     touch ${prefix}.fcs_adaptor.log
     touch ${prefix}.pipeline_args.yaml
