@@ -61,6 +61,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
   - vcf:
       type: file
       description: VCF with repeat expansions
