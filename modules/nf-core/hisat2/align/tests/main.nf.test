@@ -7,6 +7,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hisat2"
     tag "hisat2/align"
+    tag "hisat2/build"
+    tag "hisat2/extractsplicesites"
 
     test("Single-End") {
 
@@ -15,26 +17,28 @@ nextflow_process {
                 script "../../extractsplicesites/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                             file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
                 """
-            }
+                }
             }
 
             run("HISAT2_BUILD") {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
-                input[1] = [ [id:'genome'],
-                             file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[1] = Channel.of([ [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 """
-            }
+                }
             }
         }
 
@@ -44,12 +48,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                                [ id:'test', single_end:true ], // meta map
-                                [
-                                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                                ]
-                            ]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
                 input[1] = HISAT2_BUILD.out.index
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 """
@@ -58,10 +60,10 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.summary).match("se_summary") },
-            { assert snapshot(process.out.fastq).match("se_fastq") },
-            { assert snapshot(process.out.versions).match("se_versions") }
+                { assert process.success },
+                { assert snapshot(process.out.summary).match("se_summary") },
+                { assert snapshot(process.out.fastq).match("se_fastq") },
+                { assert snapshot(process.out.versions).match("se_versions") }
             )
         }
     }
@@ -73,26 +75,28 @@ nextflow_process {
                 script "../../extractsplicesites/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                             file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
                 """
-            }
+                }
             }
 
             run("HISAT2_BUILD") {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
-                input[1] = [ [id:'genome'],
-                             file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-                           ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[1] = Channel.of([ [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ])
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 """
-            }
+                }
             }
         }
 
@@ -102,13 +106,11 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                [
-                                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-                                ]
-                            ]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
                 input[1] = HISAT2_BUILD.out.index
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 """
@@ -117,10 +119,10 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.summary).match("pe_summary") },
-            { assert snapshot(process.out.fastq).match("pe_fastq") },
-            { assert snapshot(process.out.versions).match("pe_versions") }
+                { assert process.success },
+                { assert snapshot(process.out.summary).match("pe_summary") },
+                { assert snapshot(process.out.fastq).match("pe_fastq") },
+                { assert snapshot(process.out.versions).match("pe_versions") }
             )
         }
     }
@@ -132,13 +134,14 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
                 """
-            }
+                }
             }
         }
 
@@ -148,12 +151,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                                [ id:'test', single_end:true ], // meta map
-                                [
-                                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                                ]
-                            ]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
                 input[1] = HISAT2_BUILD.out.index
                 input[2] = [[:],[]]
                 """
@@ -162,10 +163,10 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.summary).match("se_no_ss_summary") },
-            { assert snapshot(process.out.fastq).match("se_no_ss_fastq") },
-            { assert snapshot(process.out.versions).match("se_no_ss_versions") }
+                { assert process.success },
+                { assert snapshot(process.out.summary).match("se_no_ss_summary") },
+                { assert snapshot(process.out.fastq).match("se_no_ss_fastq") },
+                { assert snapshot(process.out.versions).match("se_no_ss_versions") }
             )
         }
     }
@@ -177,13 +178,14 @@ nextflow_process {
                 script "../../build/main.nf"
                 process {
                 """
-                input[0] = [ [id:'genome'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
                 """
-            }
+                }
             }
         }
 
@@ -193,13 +195,11 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                [
-                                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-                                ]
-                            ]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
                 input[1] = HISAT2_BUILD.out.index
                 input[2] = [[:],[]]
                 """
@@ -208,10 +208,10 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.summary).match("pe_no_ss_summary") },
-            { assert snapshot(process.out.fastq).match("pe_no_ss_fastq") },
-            { assert snapshot(process.out.versions).match("pe_no_ss_versions") }
+                { assert process.success },
+                { assert snapshot(process.out.summary).match("pe_no_ss_summary") },
+                { assert snapshot(process.out.fastq).match("pe_no_ss_fastq") },
+                { assert snapshot(process.out.versions).match("pe_no_ss_versions") }
             )
         }
     }
