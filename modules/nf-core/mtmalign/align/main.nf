@@ -10,7 +10,7 @@ process MTMALIGN_ALIGN {
         'biocontainers/mulled-v2-5bcf71dc66dac33d8e003c5e78043b80f5c7f269:8f0e486d46f7ab38892c1a8f78d2894a549d03b5-0' }"
 
     input:
-    tuple val(meta), path('*.pdb', arity: '2..*')
+    tuple val(meta), path('*.pdb{.gz,}', arity: '2..*')
     val(compress)
 
     output:
