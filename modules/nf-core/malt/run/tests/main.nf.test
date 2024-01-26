@@ -52,9 +52,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignments).match() },
+                { assert snapshot(
+                        process.out.alignments,
+                        file(process.out.rma6[0][1]).name
+                    ).match()
+                },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Peak memory") },
-                { assert file(process.out.rma6[0][1].find { file(it).name == "test_1.rma6" }).exists() }
             )
         }
 
