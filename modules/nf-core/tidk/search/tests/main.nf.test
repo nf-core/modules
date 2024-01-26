@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process TIDK_SEARCH"
+    script "../main.nf"
+    process "TIDK_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tidk"
+    tag "tidk/search"
+
+    test("homo_sapiens-genome_fasta-bedgraph") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = 'TTAGGG'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bedgraph).match("bedgraph") },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.tsv == [] }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_fasta-tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = 'TTAGGG'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.bedgraph == [] }
+            )
+        }
+
+    }
+
+    test("stub-bedgraph") {
+
+        options '-stub'
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = 'TTAGGG'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bedgraph != null },
+                { assert process.out.tsv == [] },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("stub-tsv") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = 'TTAGGG'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bedgraph == [] },
+                { assert process.out.tsv != null },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}

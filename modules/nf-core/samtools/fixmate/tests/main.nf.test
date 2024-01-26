@@ -1,0 +1,39 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test samtools/fixmate
+nextflow_process {
+
+    name "Test Process SAMTOOLS_FIXMATE"
+    script "../main.nf"
+    process "SAMTOOLS_FIXMATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/fixmate"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}
