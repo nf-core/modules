@@ -1,4 +1,3 @@
-
 process BEDOPS_GTF2BED {
     tag "$gtf"
     label 'process_low'
