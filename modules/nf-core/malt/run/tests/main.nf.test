@@ -17,7 +17,7 @@ nextflow_process {
             script "../../../unzip/main.nf"
             process {
                 """
-                input[0] = [[], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
+                input[0] = [[], file("s3://ngi-igenomes/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
                 """
             }
         }
