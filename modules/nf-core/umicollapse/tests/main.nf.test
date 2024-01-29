@@ -151,34 +151,16 @@ nextflow_process {
     }
 
     test("umicollapse fastq tests") {
-            setup{
-            run("UMITOOLS_EXTRACT"){
-                script "../../umitools/extract/main.nf"
-                config "./nextflow_SE.config"
-                process{
-                    """
-                    input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-                    [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                    ]
-                    ]
-                    """
-                }
-            }
-            }
-
 
             when {
                 config "./nextflow_SE.config"
                 process {
                     """
-                    input[0] =  [
-                    [
-                        UMITOOLS_EXTRACT.out.reads
-                    ],
+                    input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                     []
-                ]
+                    ]
                     """
                 }
             }
@@ -191,6 +173,7 @@ nextflow_process {
                         process.out.versions).match() }
                 )
             }
+    }
 
 
 
