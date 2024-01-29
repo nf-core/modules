@@ -10,6 +10,7 @@ process UMICOLLAPSE {
 
     input:
     tuple val(meta), path(input), path(bai)
+    val(mode)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam,             optional: true
@@ -29,8 +30,10 @@ process UMICOLLAPSE {
     // which leaves 5% for stuff happening outside of java without the scheduler killing the process.
     def max_heap_size_mega = (task.memory.toMega() * 0.9).intValue()
     def max_stack_size_mega = (task.memory.toMega() * 0.05).intValue()
-    def file_type = input.getExtension().contains("fastq") ? "fastq" : "bam"
-    def extension = input.getExtension().contains("fastq") ? "fastq.gz" : "bam"
+    if ( mode !in [ 'fastq', 'bam' ] ) {
+        error "Mode must be one of 'fastq' or 'bam'."
+    }
+    def extension = mode == 'fastq' ? "fastq.gz" : "bam"
     """
     # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
     # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
@@ -41,7 +44,7 @@ process UMICOLLAPSE {
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
         -jar \$UMICOLLAPSE_JAR \\
-        ${file_type} \\
+        ${mode} \\
         -i ${input} \\
         -o ${prefix}.${extension} \\
         $args | tee ${prefix}_UMICollapse.log
