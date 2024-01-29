@@ -30,8 +30,7 @@ process UMICOLLAPSE {
     def max_heap_size_mega = (task.memory.toMega() * 0.9).intValue()
     def max_stack_size_mega = (task.memory.toMega() * 0.05).intValue()
     def file_type = args.contains("fastq") ? "fastq" :
-                    args.contains("bam") ? "bam" :
-                    input.getExtension()
+                    args.contains("bam") ? "bam"
     def extension = args.contains("fastq") ? "fastq.gz" : "bam"
     """
     # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated

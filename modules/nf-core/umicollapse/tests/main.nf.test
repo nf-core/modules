@@ -173,7 +173,12 @@ nextflow_process {
                 config "./nextflow_SE.config"
                 process {
                     """
-                    input[0] =  [UMITOOLS_EXTRACT.out.reads, []]
+                    input[0] =  [
+                    [
+                        UMITOOLS_EXTRACT.out.reads
+                    ],
+                    []
+                ]
                     """
                 }
             }
