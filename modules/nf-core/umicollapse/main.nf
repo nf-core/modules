@@ -9,10 +9,11 @@ process UMICOLLAPSE {
         'biocontainers/umicollapse:1.0.0--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(bai)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam,             optional: true
+    tuple val(meta), path("*.fastq.gz"), emit: fastq,      optional: true
     tuple val(meta), path("*_UMICollapse.log"), emit: log
     path  "versions.yml"          , emit: versions
 
@@ -28,6 +29,10 @@ process UMICOLLAPSE {
     // which leaves 5% for stuff happening outside of java without the scheduler killing the process.
     def max_heap_size_mega = (task.memory.toMega() * 0.9).intValue()
     def max_stack_size_mega = (task.memory.toMega() * 0.05).intValue()
+    def file_type = args.contains("fastq") ? "fastq" :
+                    args.contains("bam") ? "bam" :
+                    input.getExtension()
+    def extension = args.contains("fastq") ? "fastq.gz" : "bam"
     """
     # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
     # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
@@ -38,9 +43,9 @@ process UMICOLLAPSE {
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
         -jar \$UMICOLLAPSE_JAR \\
-        bam \\
-        -i $bam \\
-        -o ${prefix}.bam \\
+        $file_type \\
+        -i $input \\
+        -o ${prefix}.${extension} \\
         $args | tee ${prefix}_UMICollapse.log
 
     cat <<-END_VERSIONS > versions.yml
@@ -52,8 +57,12 @@ process UMICOLLAPSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.0-1'
+    def file_type = args.contains("fastq") ? "fastq" :
+                    args.contains("bam") ? "bam" :
+                    input.getExtension()
     """
     touch ${prefix}.dedup.bam
+    touch ${prefix}.dedup.fastq.gz
     touch ${prefix}_UMICollapse.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
