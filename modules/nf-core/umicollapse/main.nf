@@ -33,7 +33,7 @@ process UMICOLLAPSE {
     if ( mode !in [ 'fastq', 'bam' ] ) {
         error "Mode must be one of 'fastq' or 'bam'."
     }
-    def extension = mode == 'fastq' ? "fastq.gz" : "bam"
+    extension = mode.contains("fastq") ? "fastq.gz" : "bam"
     """
     # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
     # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
@@ -44,7 +44,7 @@ process UMICOLLAPSE {
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
         -jar \$UMICOLLAPSE_JAR \\
-        ${mode} \\
+        $mode \\
         -i ${input} \\
         -o ${prefix}.${extension} \\
         $args | tee ${prefix}_UMICollapse.log
@@ -58,9 +58,6 @@ process UMICOLLAPSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.0-1'
-    def file_type = args.contains("fastq") ? "fastq" :
-                    args.contains("bam") ? "bam" :
-                    input.getExtension()
     """
     touch ${prefix}.dedup.bam
     touch ${prefix}.dedup.fastq.gz
