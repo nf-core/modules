@@ -1,6 +1,6 @@
 import groovy.json.JsonSlurper
 
-include { CAT_FASTQ } from '../../../modules/nf-core/cat/fastq/main' 
+include { CAT_FASTQ } from '../../../modules/nf-core/cat/fastq/main'
 include { FASTQC    } from '../../../modules/nf-core/fastqc/main'
 include { SORTMERNA } from '../../../modules/nf-core/sortmerna/main'
 
@@ -25,23 +25,23 @@ public static String getSalmonInferredStrandedness(json_file) {
     return strandedness
 }
 
-//      
+//
 // Create MultiQC tsv custom content from a list of values
 //
 public static String multiqcTsvFromList(tsv_data, header) {
-    def tsv_string = "" 
+    def tsv_string = ""
     if (tsv_data.size() > 0) {
         tsv_string += "${header.join('\t')}\n"
         tsv_string += tsv_data.join('\n')
-    }       
+    }
     return tsv_string
-}  
+}
 
 workflow PREPROCESS_RNASEQ {
 
     take:
     ch_reads            // channel: [ val(meta), [ reads ] ]
-    ch_fasta            // channel: /path/to/genome.fasta  
+    ch_fasta            // channel: /path/to/genome.fasta
     ch_transcript_fasta // channel: /path/to/transcript.fasta
     ch_gtf              // channel: /path/to/genome.gtf
     make_salmon_index   // boolean: Whether to create salmon index before running salmon quant
@@ -106,7 +106,7 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log.map{it[1]})
 
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-    } 
+    }
 
     ch_filtered_reads.view()
 
@@ -125,13 +125,13 @@ workflow PREPROCESS_RNASEQ {
         )
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.reads
         ch_trim_read_count     = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_read_count
-        
+
         ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.versions)
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
-            .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip) 
+            .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
             .map{it[1]}
-            .mix(ch_multiqc_files) 
+            .mix(ch_multiqc_files)
     }
 
     //
@@ -153,14 +153,14 @@ workflow PREPROCESS_RNASEQ {
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
         ch_trim_read_count     = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
         ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
-        
+
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_zip
-            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_zip) 
+            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_log)
             .map{it[1]}
-            .mix(ch_multiqc_files) 
+            .mix(ch_multiqc_files)
     }
-    
+
     //
     // Get list of samples that failed trimming threshold for MultiQC report
     //
@@ -181,9 +181,9 @@ workflow PREPROCESS_RNASEQ {
                 multiqcTsvFromList(tsv_data, header)
         }
         .set { ch_fail_trimming_multiqc }
-        
+
     ch_multiqc_files = ch_multiqc_files
-        .mix( 
+        .mix(
             ch_fail_trimming_multiqc.collectFile(name: 'fail_trimmed_samples_mqc.tsv').ifEmpty([])
          )
 
@@ -202,7 +202,7 @@ workflow PREPROCESS_RNASEQ {
         .set { ch_filtered_reads }
         ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
     }
-    
+
     // Branch FastQ channels if 'auto' specified to infer strandedness
     ch_filtered_reads
         .branch {
@@ -218,7 +218,7 @@ workflow PREPROCESS_RNASEQ {
     // SUBWORKFLOW: Sub-sample FastQ files and pseudoalign with Salmon to auto-infer strandedness
     //
     // Return empty channel if ch_strand_fastq.auto_strand is empty so salmon index isn't created
-    
+
     ch_fasta
         .combine(ch_strand_fastq.auto_strand)
         .map { it.first() }
@@ -230,7 +230,7 @@ workflow PREPROCESS_RNASEQ {
         ch_genome_fasta,
         ch_transcript_fasta,
         ch_gtf,
-        ch_salmon_index,       
+        ch_salmon_index,
         make_salmon_index
     )
     ch_versions = ch_versions.mix(FASTQ_SUBSAMPLE_FQ_SALMON.out.versions)
@@ -249,7 +249,7 @@ workflow PREPROCESS_RNASEQ {
 
     reads           = ch_strand_inferred_fastq
     trim_read_count = ch_trim_read_count
-    
+
     multiqc_files   = ch_multiqc_files
     versions        = ch_versions                     // channel: [ versions.yml ]
 }
