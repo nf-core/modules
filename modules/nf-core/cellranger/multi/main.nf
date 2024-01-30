@@ -18,7 +18,8 @@ process CELLRANGER_MULTI {
     path vdj_reference         , stageAs: "references/vdj/*"
     path vdj_primer_index      , stageAs: "references/vdj/primers/*"
     path fb_reference          , stageAs: "references/fb/*"
-    path beam_panel            , stageAs: "references/beam/panel/*"
+    path beam_antigen_panel    , stageAs: "references/beam/panel/antigens/*"
+    path beam_control_panel    , stageAs: "references/beam/panel/controls/*"
     path cmo_reference         , stageAs: "references/cmo/*"
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
@@ -45,20 +46,21 @@ process CELLRANGER_MULTI {
     // empty reference channels stage as "references"
     // empty FASTQ channels stage as "fastqs"
     // empty files stage as the file name, we check against 'EMPTY'
-    def gex_reference_name     = gex_reference.getName() != 'references'     ? gex_reference.getName()          : ''
-    def gex_frna_probeset_name = gex_frna_probeset.getBaseName() != 'EMPTY'  ? gex_frna_probeset.getName()      : ''
-    def gex_targetpanel_name   = gex_targetpanel.getBaseName() != 'EMPTY'    ? gex_targetpanel.getName()        : ''
-    def fb_reference_name      = fb_reference.getBaseName() != 'EMPTY'       ? fb_reference.getName()           : ''
-    def vdj_reference_name     = vdj_reference.getName() != 'references'     ? vdj_reference.getName()          : ''
-    def cmo_reference_name     = cmo_reference.getName() != 'EMPTY'          ? cmo_reference.getName()          : ''
-    def cmo_sample_assignment  = cmo_barcode_assignment.getName() != 'EMPTY' ? cmo_barcode_assignment.getName() : ''
+    def gex_reference_name      = gex_reference.getName() != 'references'      ? gex_reference.getName()           : ''
+    def gex_frna_probeset_name  = gex_frna_probeset.getBaseName() != 'EMPTY'   ? gex_frna_probeset.getName()       : ''
+    def gex_targetpanel_name    = gex_targetpanel.getBaseName() != 'EMPTY'     ? gex_targetpanel.getName()         : ''
+    def fb_reference_name       = fb_reference.getBaseName() != 'EMPTY'        ? fb_reference.getName()            : ''
+    def vdj_reference_name      = vdj_reference.getName() != 'references'      ? vdj_reference.getName()           : ''
+    def cmo_reference_name      = cmo_reference.getName() != 'EMPTY'           ? cmo_reference.getName()           : ''
+    def cmo_sample_assignment   = cmo_barcode_assignment.getName() != 'EMPTY'  ? cmo_barcode_assignment.getName()  : ''
+    def beam_antigen_panel_name = beam_antigen_panel.getName() != 'EMPTY'      ? beam_antigen_panel.getName()      : ''
 
-    def include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference ? '[gene-expression]'     : ''
-    def include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference ? '[vdj]'                 : ''
-    def include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_panel   ? '[antigen-specificity]' : ''
-    def include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes  ? '[samples]'             : ''
-    def include_fb   = fb_reference.first().getName() != 'references'            ? '[feature]'             : ''
-    def include_frna = gex_frna_probeset_name && frna_sampleinfo                 ? '[samples]'             : ''
+    def include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference         ? '[gene-expression]'     : ''
+    def include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference         ? '[vdj]'                 : ''
+    def include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel   ? '[antigen-specificity]' : ''
+    def include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes          ? '[samples]'             : ''
+    def include_fb   = fb_reference.first().getName() != 'references'                    ? '[feature]'             : ''
+    def include_frna = gex_frna_probeset_name && frna_sampleinfo                         ? '[samples]'             : ''
 
     def gex_reference_path = include_gex ? "reference,\$PWD/${gex_reference_name}" : ''
     def fb_reference_path  = include_fb  ? "reference,\$PWD/${fb_reference_name}"  : ''
@@ -73,11 +75,14 @@ process CELLRANGER_MULTI {
     // VDJ inner primer set
     def primer_index = vdj_primer_index.getBaseName() != 'EMPTY' ? "inner-enrichment-primers,\$PWD/references/primers/${vdj_primer_index.getName()}" : ''
 
+    // BEAM antigen list, remember that this is a Feature Barcode file
+    def beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,\$PWD/$beam_antigen_panel_name" : ''
+
     // pull CSV text from these reference panels
     // these references get appended directly to config file
-    def beam_csv_text  = include_beam && beam_panel.size() > 0      ? beam_panel.text      : ''
-    def cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0    ? cmo_barcodes         : ''
-    def frna_csv_text  = include_frna && frna_sampleinfo.size() > 0 ? frna_sampleinfo.text : ''
+    def beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel   : ''
+    def cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes         : ''
+    def frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo      : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
     def fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [] )
@@ -127,50 +132,52 @@ process CELLRANGER_MULTI {
 
     """
     cat <<-CONFIG > $config
-        $include_gex
-        $gex_reference_path
-        $frna_probeset
-        $gex_options_filter_probes
-        $gex_options_r1_length
-        $gex_options_r2_length
-        $gex_options_chemistry
-        $gex_options_expect_cells
-        $gex_options_force_cells
-        $gex_options_no_secondary
-        $gex_options_no_bam
-        $gex_options_check_library_compatibility
-        $target_panel
-        $gex_options_no_target_umi_filter
-        $gex_options_include_introns
-        $cmo_options_min_assignment_confidence
-        $cmo_reference_path
-        $cmo_barcode_path
+    $include_gex
+    $gex_reference_path
+    $frna_probeset
+    $gex_options_filter_probes
+    $gex_options_r1_length
+    $gex_options_r2_length
+    $gex_options_chemistry
+    $gex_options_expect_cells
+    $gex_options_force_cells
+    $gex_options_no_secondary
+    $gex_options_no_bam
+    $gex_options_check_library_compatibility
+    $target_panel
+    $gex_options_no_target_umi_filter
+    $gex_options_include_introns
+    $cmo_options_min_assignment_confidence
+    $cmo_reference_path
+    $cmo_barcode_path
 
-        $include_fb
-        $fb_reference_path
-        $fb_options_r1_length
-        $fb_options_r2_length
+    $include_fb
+    $fb_reference_path
+    $fb_options_r1_length
+    $fb_options_r2_length
 
-        $include_vdj
-        $vdj_reference_path
-        $primer_index
-        $vdj_options_r1_length
-        $vdj_options_r2_length
+    $include_vdj
+    $vdj_reference_path
+    $primer_index
+    $vdj_options_r1_length
+    $vdj_options_r2_length
 
-        [libraries]
-        fastq_id,fastqs,lanes,feature_types
-        $fastq_gex
-        $fastq_vdj
-        $fastq_antibody
-        $fastq_beam
-        $fastq_crispr
-        $fastq_cmo
+    [libraries]
+    fastq_id,fastqs,lanes,feature_types
+    $fastq_gex
+    $fastq_vdj
+    $fastq_antibody
+    $fastq_beam
+    $fastq_crispr
+    $fastq_cmo
     CONFIG
 
     if [[ "$include_cmo" ]]; then echo "$include_cmo" >> $config; fi
     if [[ "$include_cmo" ]]; then cat $cmo_barcodes >> $config; fi
     if [[ "$include_beam" ]]; then echo "$include_beam" >> $config; fi
     if [[ "$include_beam" ]]; then cat "$beam_csv_text" >> $config; fi
+    if [[ "$include_beam" ]]; then echo "[feature]" >> $config; fi
+    if [[ "$include_beam" ]]; then echo "$beam_antigen_csv" >> $config; fi
     if [[ "$include_frna" ]]; then echo "$include_frna" >> $config; fi
     if [[ "$include_frna" ]]; then cat "$frna_csv_text" >> $config; fi
 
