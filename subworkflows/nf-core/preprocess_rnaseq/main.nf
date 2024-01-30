@@ -1,7 +1,6 @@
 import groovy.json.JsonSlurper
 
 include { CAT_FASTQ } from '../../../modules/nf-core/cat/fastq/main'
-include { FASTQC    } from '../../../modules/nf-core/fastqc/main'
 include { SORTMERNA } from '../../../modules/nf-core/sortmerna/main'
 
 include { FASTQ_SUBSAMPLE_FQ_SALMON        } from '../../../subworkflows/nf-core/fastq_subsample_fq_salmon'
