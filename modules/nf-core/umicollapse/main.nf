@@ -58,9 +58,12 @@ process UMICOLLAPSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.0-1'
+    if ( mode !in [ 'fastq', 'bam' ] ) {
+        error "Mode must be one of 'fastq' or 'bam'."
+    }
+    extension = mode.contains("fastq") ? "fastq.gz" : "bam"
     """
-    touch ${prefix}.dedup.bam
-    touch ${prefix}.dedup.fastq.gz
+    touch ${prefix}.dedup.${extension}
     touch ${prefix}_UMICollapse.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
