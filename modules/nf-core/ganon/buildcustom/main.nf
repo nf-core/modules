@@ -4,11 +4,12 @@ process GANON_BUILDCUSTOM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
-        'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
+        'https://depot.galaxyproject.org/singularity/ganon:2.0.1--py39ha35b9be_0':
+        'biocontainers/ganon:2.0.1--py39ha35b9be_0' }"
 
     input:
     tuple val(meta), path(input)
+    val input_file
     path taxonomy_files
     path genome_size_files
 
@@ -23,13 +24,14 @@ process GANON_BUILDCUSTOM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_args        = input_file ? "--input-file $input" : "--input $input"
     def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
     def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     ganon \\
         build-custom \\
         --threads ${task.cpus} \\
-        --input $input \\
+        ${input_args} \\
         --db-prefix ${prefix} \\
         $taxonomy_args \\
         $genome_size_args \\

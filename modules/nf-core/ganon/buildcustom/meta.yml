@@ -27,9 +27,12 @@ input:
         List of input FASTA files, or a directory containing input FASTA files.
         Note you must supply --input-extension via ext.args if FASTA extensions do not end in the default `fna.gz`.
       pattern: "*"
+  - input_file:
+      type: boolean
+      description: Specify true if you're supplying a ganon build-custom file - header TSV file, else assumed to be a list of FASTA files.
   - taxonomy_files:
       type: file
-      description: Pre-downloaded taxonomy files of input sequences. See ganon docs for formats
+      description: Pre-downloaded taxonomy files of input sequences. If separate dmp files, order must be-  nodes, names, (merged). See ganon docs for formats
   - genome_size_files:
       type: file
       description: Pre-downloaded NCBI or GTDB genome size files of input sequences. See ganon docs for formats
