@@ -1,47 +1,48 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core subworkflows test preprocess_rnaseq
 nextflow_workflow {
 
     name "Test Subworkflow PREPROCESS_RNASEQ"
     script "../main.nf"
     workflow "PREPROCESS_RNASEQ"
+    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/preprocess_rnaseq"
     
-    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "cat"
+    tag "cat/fastq"
+    tag "fastqc"
+    tag "sortmerna"
+    tag "subworkflows/fastq_subsample_fq_salmon"
+    tag "subworkflows/fastq_fastqc_umitools_trimgalore"
+    tag "subworkflows/fastq_fastqc_umitools_fastp
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
+    test("homo_sapiens paired-end [fastq]") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([ [ id:'test', single_end:false ], // meta map
+                input[0] = Channel.of([ [ id:'test', single_end:false, strandedness:'auto' ], // meta map
                         [file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                         file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-                        ]])
-                input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) 
-                input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true))
-                input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true))
-                input[4] = true 
-                input[5] = []
-                input[6] = true
-                input[7] = []
-                input[8] = false
-                input[9] = false
-                input[10] = 'trimgalore'
-                input[11] = 10
-                input[12] = true
-                input[13] = false
-                input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt')
-                input[15] = false
-                input[16] = true
-                input[17] = 0
+                        ]]) // ch_reads
+                input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) // ch_fasta
+                input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)) // ch_transcript_fasta
+                input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
+                input[4] = true            // make_salmon_index
+                input[5] = []              // ch_salmon_index
+                input[6] = true            // skip_bbsplit
+                input[7] = []              // ch_bbsplit_index
+                input[8] = false           // skip_fastqc
+                input[9] = false           // skip_trimming
+                input[10] = 'trimgalore'   // trimmer
+                input[11] = 10             // min_trimmed_reads
+                input[12] = true           // save_trimmed_reads
+                input[13] = false          // remove_ribo_rna
+                input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[15] = false          // with_umi
+                input[16] = true           // skip_umi_extract
+                input[17] = 0              // umi_discard_read
                 """
             }
         }
