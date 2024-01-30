@@ -58,12 +58,12 @@ input:
       description: Whether to skip trimming
   - trimmer:
       type: string
-      description: | 
+      description: |
         Specifies the trimming tool to use - available options are 'trimgalore'
         and 'fastp'
   - min_trimmed_reads:
       type: integer
-      description: | 
+      description: |
         Minimum number of trimmed reads below which samples are removed from
         further processing
   - save_trimmed_reads:
@@ -89,7 +89,7 @@ input:
       type: integer
       description: |
         After UMI barcode extraction discard either R1 or R2 by setting this
-        parameter to 1 or 2, respectively 
+        parameter to 1 or 2, respectively
 output:
   - reads:
       type: file
