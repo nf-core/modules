@@ -28,8 +28,8 @@ nextflow_workflow {
                 input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) 
                 input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true))
                 input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true))
-                input[4] = false 
-                input[5] = params.test_data['homo_sapiens']['genome']['index_salmon'] 
+                input[4] = true 
+                input[5] = []
                 input[6] = true
                 input[7] = []
                 input[8] = false
@@ -37,7 +37,7 @@ nextflow_workflow {
                 input[10] = 'trimgalore'
                 input[11] = 10
                 input[12] = true
-                input[13] = true
+                input[13] = false
                 input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt')
                 input[15] = false
                 input[16] = true
@@ -49,8 +49,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.trim_read_count,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }

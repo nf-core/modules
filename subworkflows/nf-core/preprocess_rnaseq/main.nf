@@ -108,6 +108,8 @@ workflow PREPROCESS_RNASEQ {
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     } 
 
+    ch_filtered_reads.view()
+
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
     //
