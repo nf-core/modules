@@ -60,8 +60,7 @@ process BCLCONVERT {
         $args \\
         --output-directory . \\
         --bcl-input-directory ${input_dir} \\
-        --sample-sheet ${samplesheet} \\
-        --bcl-num-parallel-tiles ${task.cpus}
+        --sample-sheet ${samplesheet}
 
     cp -r ${input_dir}/InterOp .
 

@@ -23,7 +23,7 @@ process DEEPARG_DOWNLOADDATA {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION='1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     # Theano needs a writable space and uses the home directory by default,
