@@ -100,8 +100,10 @@ nextflow_workflow {
                 { assert snapshot(pelines1.size()).match("trimgalore_test_pe_reads_1_size") },
                 { assert snapshot(pelines2).md5().match("trimgalore_test_pe_reads_2_lines") },
                 { assert snapshot(pelines2.size()).match("trimgalore_test_pe_reads_2_size") },
-                { assert snapshot(workflow.out.trim_read_count).match("trimgalore_read_count") },
-                { assert snapshot(workflow.out.versions).match("trimgalore_versions") }
+                { assert snapshot(workflow.out.trim_read_count).match("trimgalore_read_count") }
+		// This doesn't work- 'cat' changes between Conda and Docker -
+		// leaving it here until we find a way to address that
+                //{ assert snapshot(workflow.out.versions).match("trimgalore_versions") }
             )
         }
     }
