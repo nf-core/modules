@@ -2,7 +2,6 @@ process QUARTONOTEBOOK {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO: Harmonise Quarto versions between Docker/Conda
     conda "conda-forge::quarto=1.3.433 conda-forge::r-base=4.3.2 conda-forge::r-rmarkdown=2.25 conda-forge::matplotlib=3.4.3"
     container "docker.io/erikfas/quartonotebook"
 
