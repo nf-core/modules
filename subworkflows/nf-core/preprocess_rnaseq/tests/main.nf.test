@@ -13,11 +13,54 @@ nextflow_workflow {
     tag "cat/fastq"
     tag "fastqc"
     tag "sortmerna"
-    tag "subworkflows/fastq_subsample_fq_salmon"
     tag "subworkflows/fastq_fastqc_umitools_trimgalore"
     tag "subworkflows/fastq_fastqc_umitools_fastp"
 
-    test("homo_sapiens paired-end [fastq]") {
+    test("homo_sapiens paired-end [fastq] fastp") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false, strandedness:'auto' ], // meta map
+                        [file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]]) // ch_reads
+                input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) // ch_fasta
+                input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)) // ch_transcript_fasta
+                input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
+                input[4] = true            // make_salmon_index
+                input[5] = []              // ch_salmon_index
+                input[6] = true            // skip_bbsplit
+                input[7] = []              // ch_bbsplit_index
+                input[8] = false           // skip_fastqc
+                input[9] = false           // skip_trimming
+                input[10] = 'fastp'        // trimmer
+                input[11] = 10             // min_trimmed_reads
+                input[12] = true           // save_trimmed_reads
+                input[13] = false          // remove_ribo_rna
+                input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[15] = false          // with_umi
+                input[16] = true           // skip_umi_extract
+                input[17] = 0              // umi_discard_read
+                """
+            }
+        }
+
+        then {
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(pelines1).md5().match("fastp_test_pe_reads_1_lines") },
+                { assert snapshot(pelines1.size()).match("fastp_test_pe_reads_1_size") },
+                { assert snapshot(pelines2).md5().match("fastp_test_pe_reads_2_lines") },
+                { assert snapshot(pelines2.size()).match("fastp_test_pe_reads_2_size") },
+                { assert snapshot(workflow.out.trim_read_count).match("fastp_read_count") },
+                { assert snapshot(workflow.out.versions).match("fastp_versions") }
+            )
+        }
+    }
+    test("homo_sapiens paired-end [fastq] trimgalore") {
 
         when {
             workflow {
@@ -48,13 +91,16 @@ nextflow_workflow {
         }
 
         then {
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.trim_read_count,
-                    workflow.out.versions
-                ).match()}
+                { assert snapshot(pelines1).md5().match("trimgalore_test_pe_reads_1_lines") },
+                { assert snapshot(pelines1.size()).match("trimgalore_test_pe_reads_1_size") },
+                { assert snapshot(pelines2).md5().match("trimgalore_test_pe_reads_2_lines") },
+                { assert snapshot(pelines2.size()).match("trimgalore_test_pe_reads_2_size") },
+                { assert snapshot(workflow.out.trim_read_count).match("trimgalore_read_count") },
+                { assert snapshot(workflow.out.versions).match("trimgalore_versions") }
             )
         }
     }

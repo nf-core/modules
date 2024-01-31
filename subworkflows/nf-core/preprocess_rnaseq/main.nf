@@ -65,8 +65,6 @@ workflow PREPROCESS_RNASEQ {
     ch_trim_read_count     = Channel.empty()
     ch_multiqc_files       = Channel.empty()
 
-    ch_reads.view()
-
     ch_reads
         .branch {
             meta, fastqs ->
@@ -106,8 +104,6 @@ workflow PREPROCESS_RNASEQ {
 
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
-
-    ch_filtered_reads.view()
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
@@ -151,11 +147,11 @@ workflow PREPROCESS_RNASEQ {
         )
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
         ch_trim_read_count     = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
 
-        ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_zip
-            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_zip)
-            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_log)
+        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
+        ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
+            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
+            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json.map{tuple(it[0], [it[1]])})
             .map{it[1]}
             .mix(ch_multiqc_files)
     }
