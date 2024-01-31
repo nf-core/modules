@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process SHINYNGS_APP"
+    script "../main.nf"
+    process "SHINYNGS_APP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shinyngs"
+    tag "shinyngs/app"
+
+    test("multi - tsv") {
+        
+        config "./multi.config"
+        
+        when {
+            process {
+                """
+                expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)             
+                expression_feature_meta = file(params.test_data['mus_musculus']['genome']['rnaseq_genemeta'], checkIfExists: true)
+                expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+                // Load the same matrix twice to immitate multiple processings (e.g. raw
+                // and normalised)                                                                                                                      
+                                                                                                                                                         
+                raw_expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)                     
+                raw_expression_matrix_file.copyTo('normalised.tsv')                                                                                     
+                normalised_expression_matrix_file = file('normalised.tsv')                                                                              
+                                                                                                                                                         
+                // Same for differential stats - we need two tables for the (now) two contrasts                                                         
+                                                                                                                                                         
+                expression_differential = file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true)                        
+                expression_differential.copyTo('second_contrast_stats.tsv')                                                                             
+                second_contrast_stats = file('second_contrast_stats.tsv')                                                                               
+                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    expression_sample_sheet,
+                    expression_feature_meta,
+                    [ raw_expression_matrix_file, normalised_expression_matrix_file ] 
+                ]
+                input[1] = [
+                    [ "id":"SRP254919" ],
+                    expression_contrasts,
+                    [ expression_differential, second_contrast_stats  ]
+                ]
+                input[2] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+    test("single - tsv") {
+        
+        config "./single.config"
+
+        when {
+            process {
+                """
+                expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true) 
+                expression_feature_meta = file(params.test_data['mus_musculus']['genome']['rnaseq_genemeta'], checkIfExists: true) 
+                expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true) 
+                expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true) 
+                expression_differential = file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true) 
+
+                // We need two tables for the (now) two contrasts 
+
+                expression_differential = file(params.test_data['mus_musculus']['genome']['deseq_results'], checkIfExists: true) 
+                expression_differential.copyTo('second_contrast_stats.tsv') 
+                second_contrast_stats = file('second_contrast_stats.tsv')
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    expression_sample_sheet,
+                    expression_feature_meta,
+                    [ expression_matrix_file ] 
+                ]
+                input[1] = [
+                    [ "id":"SRP254919" ],
+                    expression_contrasts,
+                    [ expression_differential, second_contrast_stats  ]
+                ]
+                input[2] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
