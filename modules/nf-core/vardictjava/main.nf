@@ -24,7 +24,7 @@ process VARDICTJAVA {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def somatic = bams instanceof ArrayList && bams.size() == 2 ? true : false
+    def somatic = bams instanceof List && bams.size() == 2 ? true : false
     def input = somatic ? "-b \"${bams[0]}|${bams[1]}\"" : "-b ${bams}"
     def filter = somatic ? "testsomatic.R" : "teststrandbias.R"
     def convert_to_vcf = somatic ? "var2vcf_paired.pl" : "var2vcf_valid.pl"
