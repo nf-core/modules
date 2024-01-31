@@ -2,9 +2,15 @@
 # Push to nfcore/bclconvert:<VER>
 
 FROM debian:bullseye-slim
-LABEL authors="Matthias De Smet <matthias.desmet@ugent.be>" \
-    description="Docker image containing bcl-convert"
 ARG BCL_VERSION="4.2.7"
+LABEL org.opencontainers.image.authors="Matthias De Smet <matthias.desmet@ugent.be>"
+LABEL org.opencontainers.image.description="Docker image containing bcl-convert"
+LABEL org.opencontainers.image.version="$BCL_VERSION"
+LABEL org.opencontainers.image.documentation="https://github.com/nf-core/modules/blob/master/modules/nf-core/bclconvert/README.md"
+LABEL org.opencontainers.image.source="https://github.com/nf-core/modules"
+LABEL org.opencontainers.image.vendor="nf-core"
+LABEL org.opencontainers.image.license="https://github.com/nf-core/modules/blob/master/modules/nf-core/bclconvert/LICENSE"
+
 # Disclaimer: this container is not provided nor supported by Illumina
 # 'ps' command is need by some nextflow executions to collect system stats
 # Install procps and clean apt cache
