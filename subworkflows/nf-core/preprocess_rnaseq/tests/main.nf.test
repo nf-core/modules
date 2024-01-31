@@ -32,7 +32,7 @@ nextflow_workflow {
                 input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
                 input[4] = []              // ch_salmon_index
                 input[5] = []              // ch_bbsplit_index
-                input[6] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[6] = []              // ch_ribo_db
                 input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
@@ -78,7 +78,7 @@ nextflow_workflow {
                 input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
                 input[4] = []              // ch_salmon_index
                 input[5] = []              // ch_bbsplit_index
-                input[6] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[6] = []              // ch_ribo_db
                 input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
