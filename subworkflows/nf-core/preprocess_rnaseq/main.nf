@@ -1,7 +1,8 @@
 import groovy.json.JsonSlurper
 
-include { CAT_FASTQ } from '../../../modules/nf-core/cat/fastq/main'
-include { SORTMERNA } from '../../../modules/nf-core/sortmerna/main'
+include { BBMAP_BBSPLIT } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ }     from '../../../modules/nf-core/cat/fastq/main'
+include { SORTMERNA }     from '../../../modules/nf-core/sortmerna/main'
 
 include { FASTQ_SUBSAMPLE_FQ_SALMON        } from '../fastq_subsample_fq_salmon'
 include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from '../fastq_fastqc_umitools_trimgalore'

@@ -29,19 +29,19 @@ nextflow_workflow {
                 input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
-                input[4] = true            // make_salmon_index
-                input[5] = []              // ch_salmon_index
-                input[6] = true            // skip_bbsplit
-                input[7] = []              // ch_bbsplit_index
+                input[4] = []              // ch_salmon_index
+                input[5] = []              // ch_bbsplit_index
+                input[6] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
-                input[10] = 'fastp'        // trimmer
-                input[11] = 10             // min_trimmed_reads
-                input[12] = true           // save_trimmed_reads
-                input[13] = false          // remove_ribo_rna
-                input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
-                input[15] = false          // with_umi
-                input[16] = true           // skip_umi_extract
+                input[10] = true           // skip_umi_extract
+                input[11] = true           // make_salmon_index
+                input[12] = 'fastp'        // trimmer
+                input[13] = 10             // min_trimmed_reads
+                input[14] = true           // save_trimmed
+                input[15] = false          // remove_ribo_rna
+                input[16] = false          // with_umi
                 input[17] = 0              // umi_discard_read
                 """
             }
@@ -75,19 +75,19 @@ nextflow_workflow {
                 input[1] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)) // ch_gtf
-                input[4] = true            // make_salmon_index
-                input[5] = []              // ch_salmon_index
-                input[6] = true            // skip_bbsplit
-                input[7] = []              // ch_bbsplit_index
+                input[4] = []              // ch_salmon_index
+                input[5] = []              // ch_bbsplit_index
+                input[6] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
+                input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
-                input[10] = 'trimgalore'   // trimmer
-                input[11] = 10             // min_trimmed_reads
-                input[12] = true           // save_trimmed_reads
-                input[13] = false          // remove_ribo_rna
-                input[14] = file('https://raw.githubusercontent.com/nf-core/rnaseq/master/assets/rrna-db-defaults.txt') // ch_ribo_db
-                input[15] = false          // with_umi
-                input[16] = true           // skip_umi_extract
+                input[10] = true           // skip_umi_extract
+                input[11] = true           // make_salmon_index
+                input[12] = 'fastp'        // trimmer
+                input[13] = 10             // min_trimmed_reads
+                input[14] = true           // save_trimmed
+                input[15] = false          // remove_ribo_rna
+                input[16] = false          // with_umi
                 input[17] = 0              // umi_discard_read
                 """
             }
