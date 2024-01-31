@@ -91,7 +91,9 @@ workflow PREPROCESS_RNASEQ {
     // MODULE: Remove ribosomal RNA reads
     //
     if (remove_ribo_rna) {
-        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines()).map { row -> file(row, checkIfExists: true) }.collect()
+        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
+            .map { row -> file(row, checkIfExists: true) }
+            .collect()
 
         SORTMERNA (
             ch_filtered_reads,
@@ -100,7 +102,7 @@ workflow PREPROCESS_RNASEQ {
         .reads
         .set { ch_filtered_reads }
 
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log.map{it[1]})
+        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log.map{ it[1] })
 
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
@@ -125,7 +127,7 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
-            .map{it[1]}
+            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
@@ -152,7 +154,7 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json.map{tuple(it[0], [it[1]])})
-            .map{it[1]}
+            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
