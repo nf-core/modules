@@ -4,6 +4,7 @@ process BCLCONVERT {
 
     container "nf-core/bclconvert:4.2.7"
 
+
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 
