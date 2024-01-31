@@ -3,6 +3,9 @@ nextflow_process {
     name "Test Process MULTIQC"
     script "../main.nf"
     process "MULTIQC"
+
+    tag "modules"
+    tag "modules_nfcore"
     tag "multiqc"
 
     test("sarscov2 single-end [fastqc]") {
@@ -23,7 +26,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
                 { assert process.out.data[0] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_2") }
             )
         }
 
@@ -47,7 +50,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
                 { assert process.out.data[0] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_1") }
             )
         }
     }
@@ -73,7 +76,7 @@ nextflow_process {
                 { assert snapshot(process.out.report.collect { file(it).getName() } +
                                 process.out.data.collect { file(it).getName() } +
                                 process.out.plots.collect { file(it).getName() } +
-                                process.out.versions ).match() }
+                                process.out.versions ).match("stub") }
             )
         }
 
