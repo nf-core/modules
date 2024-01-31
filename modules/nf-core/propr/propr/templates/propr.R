@@ -96,6 +96,35 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
+#' Round numeric dataframe columns to fixed decimal places by applying
+#' formatting and converting back to numerics
+#' This is needed to avoid floating point inconsistencies in the output
+#'
+#' @param dataframe A data frame
+#' @param columns Which columns to round (assumes all of them by default)
+#' @param digits How many decimal places to round to?
+#'
+#' @return output Data frame
+
+round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (is.null(columns)){
+        columns <- colnames(df)
+    }
+
+    df[,columns] <- format(
+        data.frame(df[, columns], check.names = FALSE),
+        nsmall = digits
+    )
+
+    # Convert columns back to numeric
+
+    for (c in columns) {
+        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]] <- as.numeric(df[[c]])
+    }
+    df
+}
+
 ################################################
 ################################################
 ## Parse arguments                            ##
@@ -252,8 +281,15 @@ saveRDS(
     file = paste0(opt\$prefix, '.propr.rds')
 )
 
+# round matrix decimals to avoid floating point inconsistencies
+out_matrix <- cbind(
+    setNames(data.frame(rownames(pro@matrix)), opt\$gene_id_col),
+    round_dataframe_columns(
+        data.frame(pro@matrix[, !(colnames(pro@matrix) %in% opt\$gene_id_col)], check.names = FALSE)
+    )
+)
 write.table(
-    pro@matrix,
+    out_matrix,
     file      = paste0(opt\$prefix, '.propr.tsv'),
     col.names = TRUE,
     row.names = TRUE,
