@@ -3,9 +3,9 @@ import groovy.json.JsonSlurper
 include { CAT_FASTQ } from '../../../modules/nf-core/cat/fastq/main'
 include { SORTMERNA } from '../../../modules/nf-core/sortmerna/main'
 
-include { FASTQ_SUBSAMPLE_FQ_SALMON        } from '../../../subworkflows/nf-core/fastq_subsample_fq_salmon'
-include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from '../../../subworkflows/nf-core/fastq_fastqc_umitools_trimgalore'
-include { FASTQ_FASTQC_UMITOOLS_FASTP      } from '../../../subworkflows/nf-core/fastq_fastqc_umitools_fastp'
+include { FASTQ_SUBSAMPLE_FQ_SALMON        } from '../fastq_subsample_fq_salmon'
+include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from '../fastq_fastqc_umitools_trimgalore'
+include { FASTQ_FASTQC_UMITOOLS_FASTP      } from '../fastq_fastqc_umitools_fastp'
 
 def pass_trimmed_reads = [:]
 
