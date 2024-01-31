@@ -43,27 +43,27 @@ workflow PREPROCESS_RNASEQ {
     ch_fasta            // channel: /path/to/genome.fasta
     ch_transcript_fasta // channel: /path/to/transcript.fasta
     ch_gtf              // channel: /path/to/genome.gtf
-    make_salmon_index   // boolean: Whether to create salmon index before running salmon quant
     ch_salmon_index     // channel: /path/to/salmon/index/ (optional)
-    skip_bbsplit        // boolean: Skip BBSplit for removal of non-reference genome reads.
     ch_bbsplit_index    // channel: /path/to/bbsplit/index/ (optional)
+    ch_ribo_db          // channel: /path/to/ Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA. (optional)
+    skip_bbsplit        // boolean: Skip BBSplit for removal of non-reference genome reads.
     skip_fastqc         // boolean: true/false
     skip_trimming       // boolean: true/false
-    trimmer             // string: 'fastp' or 'trimgalore'
+    skip_umi_extract    // boolean: true/false
+    make_salmon_index   // boolean: Whether to create salmon index before running salmon quant
+    trimmer             // string (enum): 'fastp' or 'trimgalore'
     min_trimmed_reads   // integer: > 0
     save_trimmed        // boolean: true/false
     remove_ribo_rna     // boolean: true/false: whether to run sortmerna to remove rrnas
-    ch_ribo_db          // Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA. (optional)
     with_umi            // boolean: true/false: Enable UMI-based read deduplication.
-    skip_umi_extract    // boolean: true/false
     umi_discard_read    // integer: 0, 1 or 2
 
     main:
 
-    ch_versions = Channel.empty()
-    ch_filtered_reads      = Channel.empty()
-    ch_trim_read_count     = Channel.empty()
-    ch_multiqc_files       = Channel.empty()
+    ch_versions        = Channel.empty()
+    ch_filtered_reads  = Channel.empty()
+    ch_trim_read_count = Channel.empty()
+    ch_multiqc_files   = Channel.empty()
 
     ch_reads
         .branch {
