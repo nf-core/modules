@@ -28,9 +28,9 @@ parse_args <- function(x){
 #'
 #' @param file Input file
 #' @param header Boolean. TRUE if first row is header. False without header.
-#' @param row.names The first column is used as row names by default. 
+#' @param row.names The first column is used as row names by default.
 #' Otherwise, give another number. Or use NULL when no row.names are present.
-#' 
+#'
 #' @return output Data frame
 read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names = TRUE){
 
@@ -62,7 +62,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 }
 
 #' Check if a variable can be numeric or not
-#' 
+#'
 #' @param x Input variable
 #' @return True if it can be numeric, False otherwise
 can_be_numeric <- function(x) {
@@ -72,15 +72,15 @@ can_be_numeric <- function(x) {
     return(numNAs_new == numNAs)
 }
 
-#' Set the proper reference gene index. 
+#' Set the proper reference gene index.
 #' This should be used for alr transformation only.
-#' 
-#' @param ivar Reference variable given by user. 
+#'
+#' @param ivar Reference variable given by user.
 #' If it is 'null', then set the last column as reference (default).
 #' Otherwise, it should refer to either gene name or gene index.
 #' If the gene name is given, find its index.
 #' @param mat Data matrix, with genes as columns
-#' 
+#'
 #' @return The reference gene index
 set_reference <- function(ivar, mat){
     if (is.na(ivar)){
