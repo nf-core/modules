@@ -1,0 +1,50 @@
+nextflow_process {
+
+    name "Test Process BAKTA_BAKTADBDOWNLOAD"
+    script "../main.nf"
+    process "BAKTA_BAKTADBDOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bakta"
+    tag "bakta/baktadbdownload"
+
+    test("Bakta database download") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("db*") }
+            )
+        }
+
+    }
+
+    test("Bakta database download - stub") {
+    
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.db).match("db*") }
+            )
+        }
+
+    }
+
+}
