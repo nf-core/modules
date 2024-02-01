@@ -24,10 +24,23 @@ process MASH_SKETCH {
     mash \\
         sketch \\
         $args \\
+        $reads \\
         -p $task.cpus \\
         -o ${prefix} \\
-        -r $reads \\
         2> >(tee ${prefix}.mash_stats >&2)
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mash: \$(mash --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.msh
+    touch ${prefix}.mash_stats
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
