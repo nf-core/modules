@@ -32,7 +32,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("fasta_gtf_versions") }
             )
         }
-
     }
 
     test("fasta_gtf_stub") {
@@ -61,7 +60,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("fasta_gtf_stub_versions") }
             )
         }
-
     }
 
     test("fasta") {
