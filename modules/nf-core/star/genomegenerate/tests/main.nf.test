@@ -28,8 +28,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_with_gtf") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_homo_sapiens") },
+                { assert snapshot(process.out.versions).match("versions_homo_sapiens") }
             )
         }
 
@@ -57,8 +57,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_with_gtf") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_homo_sapiens-stub") },
+                { assert snapshot(process.out.versions).match("versions_homo_sapiens-stub") }
             )
         }
 
@@ -81,8 +81,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_without_gtf") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_homo_sapiens-without_gtf") },
+                { assert snapshot(process.out.versions).match("versions_homo_sapiens-without_gtf") }
             )
         }
 
@@ -107,8 +107,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_without_gtf") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(file(process.out.index[0][1]).listFiles().collect { it.getName() }.sort().toString()).match("index_homo_sapiens-without_gtf-stub") },
+                { assert snapshot(process.out.versions).match("versions_homo_sapiens-without_gtf-stub") }
             )
         }
 

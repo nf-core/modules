@@ -47,7 +47,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.json_info.get(0).get(1)).exists() },
                 { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end") }
             )
         }
 
@@ -91,7 +91,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.json_info.get(0).get(1)).exists() },
                 { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end_lib_type_a") }
             )
         }
 
@@ -136,7 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.json_info.get(0).get(1)).exists() },
                 { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_pair_end") }
             )
         }
 
@@ -184,7 +184,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.json_info.get(0).get(1)).exists() },
                 { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_pair_end_multiple") }
             )
         }
 
