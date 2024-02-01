@@ -14,9 +14,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-        "-B $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        "-B $database_css:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.10/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.10/site-packages/antismash/modules" :
         workflow.containerEngine == 'docker' ?
-        "-v \$PWD/$database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        "-v \$PWD/$database_css:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.10/site-packages/antismash/modules" :
         ''
         }
 
@@ -35,7 +35,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    cp_cmd = ( session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
+    cp_cmd = ( session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
@@ -51,7 +51,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     stub:
     def args = task.ext.args ?: ''
-    cp_cmd = (session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
+    cp_cmd = (session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     echo "download-antismash-databases --database-dir antismash_db $args"
 
