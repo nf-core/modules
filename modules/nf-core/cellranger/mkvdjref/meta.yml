@@ -13,20 +13,24 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/advanced/references
       tool_dev_url: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/advanced/references
-      licence: 10x Genomics EULA
+      licence: ["10x Genomics EULA"]
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
+  - reference_name:
+      type: string
+      description: The name to give the new reference folder, e.g. `my_vdj_ref`. This flag is required
+      pattern: str
   - genes:
       type: file
-      description: Reference transcriptome GTF file
+      description: Reference transcriptome GTF file (optional)
       pattern: "*.gtf"
-  - genome:
-      type: string
-      description: The name to give the new reference folder, e.g. `my_vdj_ref`
-      pattern: str
+  - fasta:
+      type: file
+      description: Reference genome FASTA file (optional)
+      pattern: "*.{fasta,fa}"
+  - seqs:
+      type: file
+      description: Reference genome FASTA file from the 10X Genomics fetch-imgt workflow (optional)
+      pattern: "*.{fasta,fa}"
 output:
   - reference:
       type: directory
