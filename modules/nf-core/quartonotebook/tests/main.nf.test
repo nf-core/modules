@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process QUARTONOTEBOOK"
+    script "../main.nf"
+    process "QUARTONOTEBOOK"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quartonotebook"
+
+    test("test notebook - qmd - r") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['generic']['notebooks']['quarto_notebook'], checkIfExists: true) // notebook
+                ]
+                input[1] = [] // input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+            )
+        }
+
+    }
+
+}
