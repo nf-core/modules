@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process BBMAP_BBSPLIT"
     script "../main.nf"
     process "BBMAP_BBSPLIT"
+    tag "modules"
+    tag "modules_nfcore"
     tag "bbmap"
     tag "bbmap/bbsplit"
 
@@ -49,43 +51,40 @@ nextflow_process {
         }
 
         then {
-        //     def filesToExclude = [
-        //         "chr1.chrom.gz",
-        //         "info.txt",
-        //         "merged_ref_9222711925172838098.fa.gz",
-        //         "namelist.txt",
-        //         "reflist.txt",
-        //         "scaffolds.txt.gz",
-        //         "summary.txt",
-        //         "chr1_index_k13_c13_b1.block",
-        //         "chr1_index_k13_c13_b1.block2.gz",
-        //     ]
-        //     def outputDirectory = new File(process.out.db_indexed[0][1])
+            def filesToExclude = [
+                "info.txt",
+                "reflist.txt",
+                "scaffolds.txt.gz",
+                "summary.txt"
+            ]
 
-        //     def filesExist = outputDirectory.listFiles().any { file ->
-        //         filesToExclude.any { excludeName ->
-        //             file.getName().endsWith(excludeName) && file.exists()
-        //         }
-        //     }
+            def outputFiles = []
+            def outputDirectory = new File(process.out.index[0])
+            outputDirectory.eachFileRecurse { file ->
+                if (file.isFile()){
+                    outputFiles << file
+                    }
+            }
 
-        //     def filteredFiles = outputDirectory
-        //         .listFiles()
-        //         .findAll { file ->
-        //             !filesToExclude.any { excludeName ->
-        //                 file.getName().endsWith(excludeName)
-        //             }
-        //         }
-        //         .sort{ it.getName()}
+            def filesExist = filesToExclude.every { excludeName ->
+                outputFiles.any { file ->
+                    file.getName().endsWith(excludeName) && file.exists()
+                }
+            }
 
-        //     assertAll(
-        //         { assert process.success },
-        //         { assert snapshot(filteredFiles).match("createindex_filtered_files")},
-        //         { assert filesExist : "One or more files to exclude do not exist" },
-        //         { assert snapshot(process.out.versions).match("versions")}
-        //     )
+            def filteredFiles = outputFiles
+                .findAll { file ->
+                    !filesToExclude.any { excludeName ->
+                        file.getName().endsWith(excludeName)
+                    }
+                }
+                .sort{ it.getName()}
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(filteredFiles).match("bbsplit_index_filtered_files")},
+                { assert filesExist : "One or more files to exclude do not exist" },
+                { assert snapshot(process.out.versions).match("versions")}
             )
         }
 
