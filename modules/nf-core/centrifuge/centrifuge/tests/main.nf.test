@@ -40,9 +40,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.report[0][1]).name,
                     file(process.out.results[0][1]).name,
-                    file(process.out.sam[0][1]).name,
-                    file(process.out.fastq_mapped[0][1]).name,
-                    file(process.out.fastq_unmapped[0][1]).name,
+                    file(process.out.fastq_mapped[0][1][0]).name,
+                    file(process.out.fastq_unmapped[0][1][0]).name,
                 ).match() }
             )
         }
@@ -72,9 +71,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.report[0][1]).name,
                     file(process.out.results[0][1]).name,
-                    file(process.out.sam[0][1]).name,
-                    file(process.out.fastq_mapped[0][1]).name,
-                    file(process.out.fastq_unmapped[0][1]).name,
+                    file(process.out.fastq_mapped[0][1][0]).name,
+                    file(process.out.fastq_unmapped[0][1][0]).name,
                 ).match() }
             )
         }
