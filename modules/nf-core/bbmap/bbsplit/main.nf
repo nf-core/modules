@@ -12,7 +12,7 @@ process BBMAP_BBSPLIT {
     tuple val(meta), path(reads)
     path  index
     path  primary_ref
-    tuple val(other_ref_names), path (other_ref_paths)
+    tuple val(other_ref_names), path(other_ref_paths)
     val   only_build_index
 
     output:
@@ -86,4 +86,5 @@ process BBMAP_BBSPLIT {
         END_VERSIONS
         """
     }
+
 }
