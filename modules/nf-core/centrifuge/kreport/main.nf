@@ -30,4 +30,14 @@ process CENTRIFUGE_KREPORT {
         centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
+    END_VERSIONS
+    """
 }

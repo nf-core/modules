@@ -55,4 +55,30 @@ process CENTRIFUGE_CENTRIFUGE {
         centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def paired = meta.single_end ? "-U ${reads}" :  "-1 ${reads[0]} -2 ${reads[1]}"
+    def unaligned = ''
+    def aligned = ''
+    if (meta.single_end) {
+        unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
+        aligned = save_aligned ? "--al-gz ${prefix}.mapped.fastq.gz" : ''
+    } else {
+        unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
+        aligned = save_aligned ? "--al-conc-gz ${prefix}.mapped.fastq.gz" : ''
+    }
+    """
+    touch ${prefix}.report.txt
+    touch ${prefix}.results.txt
+    touch ${prefix}.sam
+    touch ${prefix}.unmapped.fastq.gz
+    touch ${prefix}.mapped.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        centrifuge: \$( centrifuge --version  | sed -n 1p | sed 's/^.*centrifuge-class version //')
+    END_VERSIONS
+    """
 }
