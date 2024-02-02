@@ -16,13 +16,13 @@ nextflow_process {
                 script "../main.nf"
                 process {
                     """
-                    input[0] =  [[:],[]]
+                    input[0] = [[:],[]]
                     input[1] = []
-                    input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    input[3] = [
-                            ['human'],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/reference/chr22_23800000-23980000.fa', checkIfExists: true)
-                        ]
+                    input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true))
+                    input[3] = Channel.of([
+                        [ 'human' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/chr22_23800000-23980000.fa', checkIfExists: true)
+                    ])
                     input[4] = true
                     """
                 }
@@ -35,16 +35,16 @@ nextflow_process {
             }
             process {
                     """
-                    input[0] =  [
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                        ]
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ])
                     input[1] = BBMAP_BBSPLIT_INDEX.out.index
-                    input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    input[3] = [
-                            ['human'],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/reference/chr22_23800000-23980000.fa', checkIfExists: true)
-                        ]
+                    input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true))
+                    input[3] = Channel.of([
+                        [ 'human' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/chr22_23800000-23980000.fa', checkIfExists: true)
+                    ])
                     input[4] = true
                     """
                 }
@@ -77,8 +77,7 @@ nextflow_process {
                     !filesToExclude.any { excludeName ->
                         file.getName().endsWith(excludeName)
                     }
-                }
-                .sort{ it.getName()}
+                }.sort{ it.getName()}
 
             assertAll(
                 { assert process.success },
@@ -87,7 +86,5 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("versions")}
             )
         }
-
     }
-
 }
