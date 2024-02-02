@@ -9,10 +9,11 @@ process ANGSD_GL {
 
     input:
     tuple val(meta), path(bam)
+    path(fasta) //Optionally
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${prefix}"), emit: genotype_likelihood
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,9 +24,43 @@ process ANGSD_GL {
     """
     ls -1 *.bam > bamlist.txt
 
+    //GL 1 + 2 work differently than 3 and 4
+    if [[${GL} != 3 || ${GL} != 4]]; then
+        angsd \\
+            -nThreads ${task.cpus} \\
+            $args \\
+            -bam bamlist.txt \\
+            -out ${prefix} \\
+            $minq
+    fi
+
+    //SOAPsnp needs to run twice (above, then this part again), so checking if GL = 3 requesting SOAP SNP model
+    if [${GL} == 3]; then
+        angsd \\
+            -nThreads ${task.cpus} \\
+            -bam bamlist.txt \\
+            -GL 3 \\
+            -doGlf 1 \\
+            -out ${prefix} \\
+            $minq
+    fi
+
+    //SYK model
+        if [${GL} == 4]; then
+        angsd \\
+            -nThreads ${task.cpus} \\
+            -bam bamlist.txt \\
+            -GL 4 \\
+            -doGlf 1 \\
+            -doCounts 1 \\
+            -errors ${prefix}.error \\
+            -out ${prefix} \\
+            $minq
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        angsd: \$(samtools --version |& sed '1!d ; s/samtools //')
+        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
     END_VERSIONS
     """
 
@@ -33,11 +68,12 @@ process ANGSD_GL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
+    ls -1 *.bam > bamlist.txt
+    touch ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        angsd: \$(samtools --version |& sed '1!d ; s/samtools //')
+        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
     END_VERSIONS
     """
 }
