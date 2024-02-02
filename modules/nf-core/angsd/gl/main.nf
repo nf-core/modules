@@ -4,8 +4,8 @@ process ANGSD_GL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
+        'biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
     tuple val(meta), path(bam)
@@ -21,6 +21,7 @@ process ANGSD_GL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def minq = args.contains("-GL 3") ?: 0 : 13 //Required for having minq set on 0 for SOAPsnp
     """
     ls -1 *.bam > bamlist.txt
 
@@ -31,7 +32,8 @@ process ANGSD_GL {
             $args \\
             -bam bamlist.txt \\
             -out ${prefix} \\
-            $minq
+            -ref ${fasta} \\
+            -minq $minq
     fi
 
     //SOAPsnp needs to run twice (above, then this part again), so checking if GL = 3 requesting SOAP SNP model
@@ -41,8 +43,7 @@ process ANGSD_GL {
             -bam bamlist.txt \\
             -GL 3 \\
             -doGlf 1 \\
-            -out ${prefix} \\
-            $minq
+            -out ${prefix}
     fi
 
     //SYK model
@@ -70,6 +71,7 @@ process ANGSD_GL {
     """
     ls -1 *.bam > bamlist.txt
     touch ${prefix}
+    touch ${prefix}.error
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
