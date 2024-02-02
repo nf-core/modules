@@ -80,8 +80,8 @@ process CENTRIFUGE_CENTRIFUGE {
     touch ${prefix}.report.txt
     touch ${prefix}.results.txt
     touch ${prefix}.sam
-    touch ${prefix}.unmapped.fastq.gz
-    touch ${prefix}.mapped.fastq.gz
+    echo | gzip -n > ${prefix}.unmapped.fastq.gz
+    echo | gzip -n > ${prefix}.mapped.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
