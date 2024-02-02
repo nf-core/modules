@@ -32,9 +32,9 @@ nextflow_process {
                             process.out.reads.collect { file(it[1]).getName() } +
                             process.out.log.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("sarscov2 single_end-for_stub_match")
+                    ).match("sarscov2 single_end_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end") }
             )
         }
 
@@ -67,7 +67,7 @@ nextflow_process {
                         ).sort()
                     ).match("sarscov2 single_end-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
             )
         }
 
@@ -99,9 +99,9 @@ nextflow_process {
                             process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
                             process.out.log.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("sarscov2 paired_end-for_stub_match")
+                    ).match("sarscov2 paired_end_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end") }
             )
         }
 
@@ -135,7 +135,7 @@ nextflow_process {
                         ).sort()
                     ).match("sarscov2 paired_end-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end_stub") }
             )
         }
 
