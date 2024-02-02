@@ -21,7 +21,9 @@ process ANGSD_GL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def minq = args.contains("-GL 3") ?: 0 : 13 //Required for having minq set on 0 for SOAPsnp
+    def method = args.contains("-GL 1") ?: 1 : args.contains("-GL 2") : 2 : args.contains("-GL 3") : 3 : args.contains("-GL 4") : 4
+    def minq = (method = 3) ?: 0 : 13 //Required for having minq set on 0 for SOAPsnp
+
     """
     ls -1 *.bam > bamlist.txt
 
@@ -30,6 +32,7 @@ process ANGSD_GL {
         angsd \\
             -nThreads ${task.cpus} \\
             $args \\
+            -GL ${method} \\
             -bam bamlist.txt \\
             -out ${prefix} \\
             -ref ${fasta} \\
@@ -41,7 +44,7 @@ process ANGSD_GL {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            -GL 3 \\
+            -GL ${method} \\
             -doGlf 1 \\
             -out ${prefix}
     fi
@@ -51,7 +54,7 @@ process ANGSD_GL {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            -GL 4 \\
+            -GL ${method} \\
             -doGlf 1 \\
             -doCounts 1 \\
             -errors ${prefix}.error \\
