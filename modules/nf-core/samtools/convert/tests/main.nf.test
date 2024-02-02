@@ -34,14 +34,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.alignment_index[0][1]).name,
-                    file(process.out.alignment_index[0][2]).name,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.alignment_index[0][1]).name).match("bam_alignment_index_1") },
+                { assert snapshot(file(process.out.alignment_index[0][2]).name).match("bam_alignment_index_2") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai], fasta, fai") {
@@ -69,14 +66,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.alignment_index[0][1]).name,
-                    file(process.out.alignment_index[0][2]).name,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.alignment_index[0][1]).name).match("cram_alignment_index_1") },
+                { assert snapshot(file(process.out.alignment_index[0][2]).name).match("cram_alignment_index_2") },
+                { assert snapshot(process.out.versions).match("cram_versions") }
             )
         }
-
     }
-
 }
