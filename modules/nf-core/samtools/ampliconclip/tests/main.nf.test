@@ -17,11 +17,11 @@ nextflow_process {
                 save_cliprejects = false
                 save_clipstats = false
 
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-                ]
-                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
                 input[2] = save_cliprejects
                 input[3] = save_clipstats
                 """
@@ -40,7 +40,7 @@ nextflow_process {
     }
 
 
-    test("sarscov2 - bam, bed, save_clipstats") {
+    test("sarscov2 - bam, bed, save_cliprejects") {
 
         when {
             process {
@@ -48,11 +48,11 @@ nextflow_process {
                 save_cliprejects = true
                 save_clipstats = false
 
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-                ]
-                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
                 input[2] = save_cliprejects
                 input[3] = save_clipstats
                 """
@@ -78,11 +78,11 @@ nextflow_process {
                 save_cliprejects = true
                 save_clipstats = true
 
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-                ]
-                input[1] = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
                 input[2] = save_cliprejects
                 input[3] = save_clipstats
                 """
