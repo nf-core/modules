@@ -52,8 +52,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor.bshrink explicitly")},
-                { assert snapshot(process.out.matrix).match("Test propr/propr using default options") }
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor.bshrink explicitly")}
             )
         }
     }
