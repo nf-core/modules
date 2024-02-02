@@ -40,8 +40,15 @@ process CENTRIFUGE_CENTRIFUGE {
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
     db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
+
+    ## make a directory for placing the pipe files in somewhere other than default /tmp
+    ## otherwise get pipefile name clashes when multiple centrifuge runs on same node
+    ## use /tmp at the same time
+    mkdir ./temp
+
     centrifuge \\
         -x \$db_name \\
+        --temp-directory ./temp \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
