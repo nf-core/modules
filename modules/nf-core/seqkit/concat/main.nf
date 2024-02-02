@@ -4,8 +4,8 @@ process SEQKIT_CONCAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.6.0--h9ee0642_0' :
-        'biocontainers/seqkit:2.6.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.6.1--h9ee0642_0':
+        'biocontainers/seqkit:2.6.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(input, stageAs: 'in/*')
@@ -29,7 +29,7 @@ process SEQKIT_CONCAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
+        seqkit: \$(seqkit version | cut -d' ' -f2)
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process SEQKIT_CONCAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+        seqkit: \$(seqkit version | cut -d' ' -f2)
     END_VERSIONS
     """
 }
