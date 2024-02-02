@@ -9,7 +9,7 @@ nextflow_process {
     tag "samtools"
     tag "samtools/cat"
 
-    test("sarscov2 - [bam1, bam2]") {
+    test("bams") {
 
         when {
             process {
@@ -28,17 +28,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_bam") },
+                { assert snapshot(process.out.cram).match("bams_cram") },
+                { assert snapshot(process.out.versions).match("bams_versions") }
             )
         }
 
     }
 
-    test("sarscov2 - [bam1, bam2] - stub") {
+    test("bams_stub") {
 
         options "-stub"
 
@@ -59,11 +57,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_stub_bam") },
+                { assert snapshot(process.out.cram).match("bams_stub_cram") },
+                { assert snapshot(process.out.versions).match("bams_stub_versions") }
             )
         }
 
