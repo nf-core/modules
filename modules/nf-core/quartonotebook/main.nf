@@ -18,6 +18,13 @@ process QUARTONOTEBOOK {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba on ARM64
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        arch = System.getProperty("os.arch")
+        if (arch == "arm64" || arch == "aarch64") {
+            exit 1, "The QUARTONOTEBOOK module does not support Conda/Mamba on ARM64. Please use Docker / Singularity / Podman instead."
+        }
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
