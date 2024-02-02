@@ -14,14 +14,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
-                    [id:'fasta'],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -43,14 +43,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
-                    [id:'fasta'],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
