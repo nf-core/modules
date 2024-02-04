@@ -7,20 +7,35 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "openms"
     tag "openmsthirdparty"
     tag "openmsthirdparty/cometadapter"
+    tag "thermorawfileparser"
+
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path +'proteomics/msspectra/PXD012083_e005640_II.raw, checkIfExists: true)
+                    )
+                """
+            }
+        }
+    }
 
     test("proteomics - search engine comet - mzml") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of(
                     [id:'test'],
-                    // TODO: First introduce thermorawfileparser and use it in setup
-                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
-                ]
+                    THERMORAWFILEPARSER.out.spectra,
+                    file(params.modules_testdata_base_path +'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                )
                 """
             }
         }
@@ -42,9 +57,11 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO: First introduce thermorawfileparser and use it in setup
-                file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                input[0] = Channel.of(
+                    [id:'test'],
+                    THERMORAWFILEPARSER.out.spectra,
+                    file(params.modules_testdata_base_path +'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                )
                 """
             }
         }
