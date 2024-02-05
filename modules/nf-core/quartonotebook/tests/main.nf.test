@@ -26,7 +26,32 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("test notebook - qmd - r - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['generic']['notebooks']['quarto_notebook'], checkIfExists: true) // notebook
+                ]
+                input[1] = [] // input files
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
             )
         }
 
