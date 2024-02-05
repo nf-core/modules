@@ -34,6 +34,16 @@ process HAMRONIZATION_ABRICATE {
         --reference_database_version ${reference_db_version} \\
         > ${prefix}.${format}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
