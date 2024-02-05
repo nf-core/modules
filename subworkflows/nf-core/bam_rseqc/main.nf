@@ -142,18 +142,18 @@ workflow BAM_RSEQC {
     }
 
     emit:
-    bamstat                         = ch_bamstat                         // channel: [ val(meta), txt ]
+    bamstat_txt                     = ch_bamstat                         // channel: [ val(meta), txt ]
 
-    innerdistance                   = ch_innerdistance
+    innerdistance_all               = ch_innerdistance
     innerdistance_distance          = ch_innerdistance_distance          // channel: [ val(meta), txt ]
     innerdistance_freq              = ch_innerdistance_freq              // channel: [ val(meta), txt ]
     innerdistance_mean              = ch_innerdistance_mean              // channel: [ val(meta), txt ]
     innerdistance_pdf               = ch_innerdistance_pdf               // channel: [ val(meta), pdf ]
     innerdistance_rscript           = ch_innerdistance_rscript           // channel: [ val(meta), r   ]
 
-    inferexperiment                 = ch_inferexperiment                 // channel: [ val(meta), txt ]
+    inferexperiment_txt             = ch_inferexperiment                 // channel: [ val(meta), txt ]
 
-    junctionannotation              = ch_junctionannotation
+    junctionannotation_all          = ch_junctionannotation
     junctionannotation_bed          = ch_junctionannotation_bed          // channel: [ val(meta), bed ]
     junctionannotation_interact_bed = ch_junctionannotation_interact_bed // channel: [ val(meta), bed ]
     junctionannotation_xls          = ch_junctionannotation_xls          // channel: [ val(meta), xls ]
@@ -162,19 +162,19 @@ workflow BAM_RSEQC {
     junctionannotation_rscript      = ch_junctionannotation_rscript      // channel: [ val(meta), r   ]
     junctionannotation_log          = ch_junctionannotation_log          // channel: [ val(meta), log ]
 
-    junctionsaturation              = ch_junctionsaturation
+    junctionsaturation_all          = ch_junctionsaturation
     junctionsaturation_pdf          = ch_junctionsaturation_pdf          // channel: [ val(meta), pdf ]
     junctionsaturation_rscript      = ch_junctionsaturation_rscript      // channel: [ val(meta), r   ]
 
-    readdistribution                = ch_readdistribution                // channel: [ val(meta), txt ]
+    readdistribution_txt            = ch_readdistribution                // channel: [ val(meta), txt ]
 
-    readduplication                 = ch_readduplication
+    readduplication_all             = ch_readduplication
     readduplication_seq_xls         = ch_readduplication_seq_xls         // channel: [ val(meta), xls ]
     readduplication_pos_xls         = ch_readduplication_pos_xls         // channel: [ val(meta), xls ]
     readduplication_pdf             = ch_readduplication_pdf             // channel: [ val(meta), pdf ]
     readduplication_rscript         = ch_readduplication_rscript         // channel: [ val(meta), r   ]
 
-    tin                             = ch_tin                             // channel: [ val(meta), txt ]
+    tin_txt                         = ch_tin                             // channel: [ val(meta), txt ]
 
     versions                        = ch_versions                        // channel: [ versions.yml ]
 }
