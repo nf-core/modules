@@ -1,0 +1,9 @@
+- name: bedops gtf2bed test_bedops_gtf2bed
+  command: nextflow run ./tests/modules/nf-core/bedops/gtf2bed -entry test_bedops_gtf2bed -c ./tests/config/nextflow.config
+  tags:
+    - bedops
+    - bedops/gtf2bed
+  files:
+    - path: output/bedops/genes.bed
+      md5sum: b783320a6ebde0b139f8e0a821b76240
+    - path: output/bedops/versions.yml
