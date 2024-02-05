@@ -142,39 +142,39 @@ workflow BAM_RSEQC {
     }
 
     emit:
-    ch_bamstat                         // channel: [ val(meta), txt ]
+    bamstat                         = ch_bamstat                         // channel: [ val(meta), txt ]
 
-    ch_innerdistance
-    ch_innerdistance_distance          // channel: [ val(meta), txt ]
-    ch_innerdistance_freq              // channel: [ val(meta), txt ]
-    ch_innerdistance_mean              // channel: [ val(meta), txt ]
-    ch_innerdistance_pdf               // channel: [ val(meta), pdf ]
-    ch_innerdistance_rscript           // channel: [ val(meta), r   ]
+    innerdistance                   = ch_innerdistance
+    innerdistance_distance          = ch_innerdistance_distance          // channel: [ val(meta), txt ]
+    innerdistance_freq              = ch_innerdistance_freq              // channel: [ val(meta), txt ]
+    innerdistance_mean              = ch_innerdistance_mean              // channel: [ val(meta), txt ]
+    innerdistance_pdf               = ch_innerdistance_pdf               // channel: [ val(meta), pdf ]
+    innerdistance_rscript           = ch_innerdistance_rscript           // channel: [ val(meta), r   ]
 
-    ch_inferexperiment                 // channel: [ val(meta), txt ]
+    inferexperiment                 = ch_inferexperiment                 // channel: [ val(meta), txt ]
 
-    ch_junctionannotation
-    ch_junctionannotation_bed          // channel: [ val(meta), bed ]
-    ch_junctionannotation_interact_bed // channel: [ val(meta), bed ]
-    ch_junctionannotation_xls          // channel: [ val(meta), xls ]
-    ch_junctionannotation_pdf          // channel: [ val(meta), pdf ]
-    ch_junctionannotation_events_pdf   // channel: [ val(meta), pdf ]
-    ch_junctionannotation_rscript      // channel: [ val(meta), r   ]
-    ch_junctionannotation_log          // channel: [ val(meta), log ]
+    junctionannotation              = ch_junctionannotation
+    junctionannotation_bed          = ch_junctionannotation_bed          // channel: [ val(meta), bed ]
+    junctionannotation_interact_bed = ch_junctionannotation_interact_bed // channel: [ val(meta), bed ]
+    junctionannotation_xls          = ch_junctionannotation_xls          // channel: [ val(meta), xls ]
+    junctionannotation_pdf          = ch_junctionannotation_pdf          // channel: [ val(meta), pdf ]
+    junctionannotation_events_pdf   = ch_junctionannotation_events_pdf   // channel: [ val(meta), pdf ]
+    junctionannotation_rscript      = ch_junctionannotation_rscript      // channel: [ val(meta), r   ]
+    junctionannotation_log          = ch_junctionannotation_log          // channel: [ val(meta), log ]
 
-    ch_junctionsaturation
-    ch_junctionsaturation_pdf          // channel: [ val(meta), pdf ]
-    ch_junctionsaturation_rscript      // channel: [ val(meta), r   ]
+    junctionsaturation              = ch_junctionsaturation
+    junctionsaturation_pdf          = ch_junctionsaturation_pdf          // channel: [ val(meta), pdf ]
+    junctionsaturation_rscript      = ch_junctionsaturation_rscript      // channel: [ val(meta), r   ]
 
-    ch_readdistribution                // channel: [ val(meta), txt ]
+    readdistribution                = ch_readdistribution                // channel: [ val(meta), txt ]
 
-    ch_readduplication
-    ch_readduplication_seq_xls         // channel: [ val(meta), xls ]
-    ch_readduplication_pos_xls         // channel: [ val(meta), xls ]
-    ch_readduplication_pdf             // channel: [ val(meta), pdf ]
-    ch_readduplication_rscript         // channel: [ val(meta), r   ]
+    readduplication                 = ch_readduplication
+    readduplication_seq_xls         = ch_readduplication_seq_xls         // channel: [ val(meta), xls ]
+    readduplication_pos_xls         = ch_readduplication_pos_xls         // channel: [ val(meta), xls ]
+    readduplication_pdf             = ch_readduplication_pdf             // channel: [ val(meta), pdf ]
+    readduplication_rscript         = ch_readduplication_rscript         // channel: [ val(meta), r   ]
 
-    ch_tin                             // channel: [ val(meta), txt ]
+    tin                             = ch_tin                             // channel: [ val(meta), txt ]
 
-    versions = ch_versions             // channel: [ versions.yml ]
+    versions                        = ch_versions                        // channel: [ versions.yml ]
 }
