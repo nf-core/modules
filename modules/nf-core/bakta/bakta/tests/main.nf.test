@@ -13,15 +13,15 @@ nextflow_process {
 
     test("Bakta - bacteroides_fragilis - genome.fasta") {
 
-        // setup {
-        //     run("BAKTA_BAKTADBDOWNLOAD") {
-        //         script "../../baktadbdownload/main.nf"
-        //         process {
-        //             """
-        //             """
-        //         }
-        //     }
-        // }
+        setup {
+            run("BAKTA_BAKTADBDOWNLOAD") {
+                script "../../baktadbdownload/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -30,7 +30,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)
                 ]
-                input[1] = '/home/jasmin/bakta_db_light/'
+                input[1] = BAKTA_BAKTADBDOWNLOAD.out.db
                 input[2] = []
                 input[3] = []
                 """
