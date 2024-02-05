@@ -22,7 +22,7 @@ process CUSTOM_TX2GENE {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'tx2gene.py' 
+    template 'tx2gene.py'
 
     stub:
     """

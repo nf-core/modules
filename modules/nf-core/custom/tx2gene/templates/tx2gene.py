@@ -181,7 +181,7 @@ if __name__ == "__main__":
     )
     if not map_transcripts_to_gene('$quant_type', '$gtf', 'quants', '$id', '$extra', f"{prefix}.tx2gene.tsv"):
         logger.error("Failed to map transcripts to genes.")
-    
+
     # Write the versions
     versions_this_module = {}
     versions_this_module["${task.process}"] = {"python": platform.python_version()}
