@@ -169,12 +169,14 @@ def map_transcripts_to_gene(
 
 # Main function to parse arguments and call the mapping function
 if __name__ == "__main__":
-    prefix = (
-        "$task.ext.prefix"
-        if "$task.ext.prefix" != "null"
-        else f"$meta.id"
-    )
-    if not map_transcripts_to_gene('$quant_type', '$gtf', 'quants', '$id', '$extra', f"{prefix}.tx2gene.tsv"):
+    if '${task.ext.prefix}' != "null":
+        prefix = "${task.ext.prefix}." 
+    elif '$meta.id' != "null":
+        prefix = '${meta.id}.'
+    else:
+        prefix = ''
+
+    if not map_transcripts_to_gene('$quant_type', '$gtf', 'quants', '$id', '$extra', f"{prefix}tx2gene.tsv"):
         logger.error("Failed to map transcripts to genes.")
 
     # Write the versions

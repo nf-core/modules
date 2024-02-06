@@ -9,7 +9,7 @@ process CUSTOM_TX2GENE {
 
     input:
     tuple val(meta), path(gtf)
-    tuple val(meta2), path ("quants")
+    tuple val(meta2), path ("quants/*")
     val quant_type
     val id
     val extra

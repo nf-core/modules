@@ -25,6 +25,14 @@ nextflow_process {
                     """
                 }
             }
+            run("REARRANGE") {
+                script "./utils.nf"
+                process {
+                    """
+                    input[0] = UNTAR.out.untar
+                    """
+                }
+            }
         }
 
         when {
@@ -34,7 +42,7 @@ nextflow_process {
                 [ id:'test'], // meta map
                 file(params.test_data['saccharomyces_cerevisiae']['genome']['genome_gfp_gtf'], checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = REARRANGE.out.subdirs
                 input[2] = 'kallisto'
                 input[3] = 'gene_id' 
                 input[4] = 'gene_name'
@@ -70,6 +78,14 @@ nextflow_process {
                     """
                 }
             }
+            run("REARRANGE") {
+                script "./utils.nf"
+                process {
+                    """
+                    input[0] = UNTAR.out.untar
+                    """
+                }
+            }
         }
         
         when {
@@ -79,7 +95,7 @@ nextflow_process {
                     [ id:'test'], // meta map
                     file(params.test_data['saccharomyces_cerevisiae']['genome']['genome_gfp_gtf'], checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = REARRANGE.out.subdirs
                 input[2] = 'kallisto'
                 input[3] = 'gene_id' 
                 input[4] = 'gene_name'
