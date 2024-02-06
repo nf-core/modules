@@ -14,7 +14,7 @@ process RHOCALL_VIZ {
     output:
     tuple val(meta), path("${prefix}/${prefix}.bed"), emit: bed
     tuple val(meta), path("${prefix}/${prefix}.wig"), emit: wig
-    path "versions.yml"                   , emit: versions
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +40,7 @@ process RHOCALL_VIZ {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}/${prefix}.bed
     touch ${prefix}/${prefix}.wig
