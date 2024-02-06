@@ -158,6 +158,7 @@ def dashedLine(monochrome_logs) {
     return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
 
+
 //
 // nf-core logo
 //
