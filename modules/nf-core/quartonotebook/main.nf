@@ -4,7 +4,7 @@ process QUARTONOTEBOOK {
     tag "$meta.id"
     label 'process_low'
 
-    conda "conda-forge::quarto=1.3.433 conda-forge::r-base=4.3.2 conda-forge::r-rmarkdown=2.25 conda-forge::matplotlib=3.4.3"
+    conda "conda-forge::jupyter=1.0.0 conda-forge::matplotlib=3.4.3 conda-forge::papermill=2.4.0 conda-forge::quarto=1.3.433 conda-forge::r-rmarkdown=2.25"
     container "docker.io/erikfas/quartonotebook"
 
     input:
