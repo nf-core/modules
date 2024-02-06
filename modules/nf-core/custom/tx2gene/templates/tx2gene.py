@@ -84,9 +84,8 @@ def discover_transcript_attribute(gtf_file: str, transcripts: Set[str]) -> str:
             votes.update(key for key, value in attributes.items() if value in transcripts)
 
     if not votes:
-        # Log a warning if no matching attribute is found
-        logger.warning("No attribute in GTF matching transcripts")
-        return ""
+        # Error out if no matching attribute is found
+        logger.error("No attribute in GTF matching transcripts")
 
     # Check if 'transcript_id' is among the attributes with the highest votes
     if "transcript_id" in votes and votes["transcript_id"] == max(votes.values()):
@@ -144,10 +143,6 @@ def map_transcripts_to_gene(
     transcripts = read_top_transcripts(quant_dir, "quant.sf" if quant_type == "salmon" else "abundance.tsv")
     # Discover the attribute that corresponds to transcripts in the GTF
     transcript_attribute = discover_transcript_attribute(gtf_file, transcripts)
-
-    if not transcript_attribute:
-        # If no attribute is found, return False
-        return False
 
     # Open GTF and output file to write the mappings
     # Initialize the set to track seen combinations
