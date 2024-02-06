@@ -4,6 +4,10 @@ process QUARTONOTEBOOK {
     tag "$meta.id"
     label 'process_low'
 
+    // NB: You'll likely want to override this with a container containing all
+    // required dependencies for your analyses. You'll at least need Quarto
+    // itself, Papermill and whatever language you are running your analyses on;
+    // you can see an example in this module's Dockerfile.
     conda "conda-forge::jupyter=1.0.0 conda-forge::matplotlib=3.4.3 conda-forge::papermill=2.4.0 conda-forge::quarto=1.3.433 conda-forge::r-rmarkdown=2.25"
     container "docker.io/erikfas/quartonotebook"
 
