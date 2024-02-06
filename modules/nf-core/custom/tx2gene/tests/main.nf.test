@@ -64,8 +64,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                    [ id:'test'], // meta map
-                    file(params.test_data['saccharomyces_cerevisiae']['genome']['kallisto_results'], checkIfExists: true)
+                        [ id:'test'], // meta map
+                        file(params.test_data['saccharomyces_cerevisiae']['genome']['kallisto_results'], checkIfExists: true)
                     ]
                     """
                 }
@@ -76,8 +76,8 @@ nextflow_process {
             process {
                 """
                input[0] = [
-                [ id:'test'], // meta map
-                file(params.test_data['saccharomyces_cerevisiae']['genome']['genome_gfp_gtf'], checkIfExists: true)
+                    [ id:'test'], // meta map
+                    file(params.test_data['saccharomyces_cerevisiae']['genome']['genome_gfp_gtf'], checkIfExists: true)
                 ]
                 input[1] = UNTAR.out.untar
                 input[2] = 'kallisto'

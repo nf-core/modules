@@ -1,16 +1,16 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_tx2gene"
-description: Make a transcript/gene mapping from a GTF, and cross-reference with transcript quantifications
+description: Make a transcript/gene mapping from a GTF and cross-reference with transcript quantifications.
 keywords:
-  - gtf
-  - transcript
   - gene
+  - gtf
   - pseudoalignment
+  - transcript
 tools:
   - "custom":
       description: |
-        "Custom module to create a transcript/ gene mapping from a GTF and
+        "Custom module to create a transcript to gene mapping from a GTF and
         check it against transcript quantifications"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tx2gene/main.nf"
       licence: ["MIT"]
