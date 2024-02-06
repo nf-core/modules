@@ -3,16 +3,16 @@ on:
   push:
     branches: [master]
     paths:
-      - "**/initialise**"
+      - "subworkflows/nf-core/initialise/**"
   pull_request:
     branches: [master]
     paths:
-      - "**/initialise**"
+      - "subworkflows/nf-core/initialise/**"
   merge_group:
     types: [checks_requested]
     branches: [master]
     paths:
-      - "**/initialise**"
+      - "subworkflows/nf-core/initialise/**"
 
 # Cancel if a newer run is started
 concurrency:
