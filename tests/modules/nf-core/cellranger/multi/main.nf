@@ -50,14 +50,14 @@ cmo_fastqs_10k_pbmc_cmo = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_2_gz'], checkIfExists: true)
 ]
-def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture"
+def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
 // stage 3' gene expression FASTQ test data
 threepgex_fastqs_10k_pbmc_cmo = [
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
     file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
 ]
-def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex"
+def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
 // stage feature barcode reference for antibody capture
 cmo_reference_10k_pbmc_cmo = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_feature_ref_csv'], checkIfExists: true)
@@ -220,7 +220,7 @@ workflow test_cellranger_multi_10k_pbmc {
 
 workflow test_cellranger_multi_10k_pbmc_cmo {
 
-    def test_meta_10k_pbmc_cmo = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+    def test_meta_10k_pbmc_cmo = [ id:'subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K', single_end:false ]
 
     // collect references and fastq files for staging
     ch_gex_fastqs_10k_pbmc_cmo = Channel.of( threepgex_fastqs_10k_pbmc_cmo )
