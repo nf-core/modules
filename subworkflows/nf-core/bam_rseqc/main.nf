@@ -119,7 +119,7 @@ workflow BAM_RSEQC {
     //
     // Run RSeQC read_duplication.py
     //
-    readduplication         = Channel.empty()
+    readduplication_all     = Channel.empty()
     readduplication_seq_xls = Channel.empty()
     readduplication_pos_xls = Channel.empty()
     readduplication_pdf     = Channel.empty()
@@ -131,7 +131,7 @@ workflow BAM_RSEQC {
         readduplication_pos_xls = RSEQC_READDUPLICATION.out.pos_xls
         readduplication_pdf     = RSEQC_READDUPLICATION.out.pdf
         readduplication_rscript = RSEQC_READDUPLICATION.out.rscript
-        readduplication         = readduplication_seq_xls.mix(readduplication_pos_xls, readduplication_pdf, readduplication_rscript)
+        readduplication_all     = readduplication_seq_xls.mix(readduplication_pos_xls, readduplication_pdf, readduplication_rscript)
         versions                = versions.mix(RSEQC_READDUPLICATION.out.versions.first())
     }
 
