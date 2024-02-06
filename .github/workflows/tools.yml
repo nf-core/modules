@@ -1,0 +1,154 @@
+name: Run Template Tests
+on:
+  push:
+    branches: [master]
+    paths:
+      - "**/initialise**"
+  pull_request:
+    branches: [master]
+    paths:
+      - "**/initialise**"
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+    paths:
+      - "**/initialise**"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  RunTestWorkflow:
+    runs-on: ${{ matrix.runner }}
+    env:
+      NXF_ANSI_LOG: false
+    strategy:
+      matrix:
+        TEMPLATE:
+          - "template_skip_github_badges.yml"
+          - "template_skip_igenomes.yml"
+          - "template_skip_ci.yml"
+        runner: ["self-hosted"]
+        profile: ["self_hosted_runner"]
+        include:
+          - TEMPLATE: "template_skip_all.yml"
+            runner: ubuntu-latest
+            profile: "docker"
+          - TEMPLATE: "template_skip_nf_core_configs.yml"
+            runner: ubuntu-latest
+            profile: "docker"
+
+    steps:
+      - name: go to working directory
+        run: |
+          mkdir -p create-lint-wf-template
+          cd create-lint-wf-template
+          export NXF_WORK=$(pwd)
+
+      - uses: actions/checkout@v4
+        name: Check out source-code repository
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Install Nextflow
+        uses: nf-core/setup-nextflow@v1
+        with:
+          version: latest-everything
+
+      # Create template files
+      - name: Create template skip all (except github)
+        run: |
+          mkdir create-test-lint-wf
+          export NXF_WORK=$(pwd)
+          printf "prefix: my-prefix\nskip: ['ci', 'github_badges', 'igenomes', 'nf_core_configs']" > create-test-lint-wf/template_skip_all.yml
+
+      - name: Create template skip github_badges
+        run: |
+          printf "prefix: my-prefix\nskip: github_badges" > create-test-lint-wf/template_skip_github_badges.yml
+
+      - name: Create template skip igenomes
+        run: |
+          printf "prefix: my-prefix\nskip: igenomes" > create-test-lint-wf/template_skip_igenomes.yml
+
+      - name: Create template skip ci
+        run: |
+          printf "prefix: my-prefix\nskip: ci" > create-test-lint-wf/template_skip_ci.yml
+
+      - name: Create template skip nf_core_configs
+        run: |
+          printf "prefix: my-prefix\nskip: nf_core_configs" > create-test-lint-wf/template_skip_nf_core_configs.yml
+
+      # Create a pipeline from the template
+      - name: create a pipeline from the template ${{ matrix.TEMPLATE }}
+        run: |
+          cd create-test-lint-wf
+          nf-core --log-file log.txt create -n testpipeline -d "This pipeline is for testing" -a "Testing McTestface" --template-yaml ${{ matrix.TEMPLATE }}
+
+      - name: run the pipeline
+        run: |
+          cd create-test-lint-wf
+          nextflow run my-prefix-testpipeline -profile test,${{matrix.profile}} --outdir ./results
+
+      # Remove results folder before linting
+      - name: remove results folder
+        run: |
+          rm -rf create-test-lint-wf/results
+
+      # Try syncing it before we change anything
+      - name: nf-core sync
+        run: nf-core --log-file log.txt sync --dir create-test-lint-wf/my-prefix-testpipeline/
+
+      # Run code style linting
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+        working-directory: create-test-lint-wf
+
+      # Remove TODO statements
+      - name: remove TODO
+        run: find my-prefix-testpipeline -type f -exec sed -i '/TODO nf-core:/d' {} \;
+        working-directory: create-test-lint-wf
+
+      # Replace zenodo.XXXXXX to pass readme linting
+      - name: replace zenodo.XXXXXX
+        run: find my-prefix-testpipeline -type f -exec sed -i 's/zenodo.XXXXXX/zenodo.123456/g' {} \;
+        working-directory: create-test-lint-wf
+
+      # Run nf-core linting
+      - name: nf-core lint
+        run: nf-core --log-file log.txt --hide-progress lint --dir my-prefix-testpipeline --fail-warned
+        working-directory: create-test-lint-wf
+
+      # Run bump-version
+      - name: nf-core bump-version
+        run: nf-core --log-file log.txt bump-version --dir my-prefix-testpipeline/ 1.1
+        working-directory: create-test-lint-wf
+
+      # Run nf-core linting in release mode
+      - name: nf-core lint in release mode
+        run: nf-core --log-file log.txt --hide-progress lint --dir my-prefix-testpipeline --fail-warned --release
+        working-directory: create-test-lint-wf
+
+      - name: Tar files
+        run: tar -cvf artifact_files.tar log.txt template_skip*.yml
+        working-directory: create-test-lint-wf
+
+      - name: Upload log file artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nf-core-log-file-${{ matrix.TEMPLATE }}
+          path: create-test-lint-wf/artifact_files.tar
+
+      - name: Cleanup work directory
+        run: sudo rm -rf create-test-lint-wf
+        if: always()
