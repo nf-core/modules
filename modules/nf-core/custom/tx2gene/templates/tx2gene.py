@@ -170,7 +170,7 @@ def map_transcripts_to_gene(
 # Main function to parse arguments and call the mapping function
 if __name__ == "__main__":
     if '${task.ext.prefix}' != "null":
-        prefix = "${task.ext.prefix}." 
+        prefix = "${task.ext.prefix}."
     elif '$meta.id' != "null":
         prefix = '${meta.id}.'
     else:
