@@ -4,8 +4,8 @@ process SEQKIT_CONCAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.6.1--h9ee0642_0':
-        'biocontainers/seqkit:2.6.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.7.0--h9ee0642_0':
+        'biocontainers/seqkit:2.7.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(input, stageAs: 'in/*')
@@ -24,8 +24,8 @@ process SEQKIT_CONCAT {
     """
     seqkit \\
         concat \\
-        in/* \\
-        $args > ${prefix}.${file_type}
+        $args \\
+        in/* > ${prefix}.${file_type}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
