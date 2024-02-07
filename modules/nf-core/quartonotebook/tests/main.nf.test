@@ -45,7 +45,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.test_data['generic']['notebooks']['quarto_python'], checkIfExists: true) // Notebook
                 ]
-                input[1] = [:] // Parameters
+                input[1] = [] // Parameters
                 input[2] = [] // Input files
                 """
             }
@@ -174,59 +174,6 @@ nextflow_process {
 
     }
 
-    test("test notebook - pdf - [qmd:r]") {
-
-        config "./pdf.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_r'], checkIfExists: true) // Notebook
-                ]
-                input[1] = [:] // parameters
-                input[2] = [] // input files
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.pdf[0][1]).exists() }
-            )
-        }
-
-    }
-
-    test("test notebook - pdf - [qmd:python]") {
-
-        config "./pdf.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_python'], checkIfExists: true) // Notebook
-                ]
-                input[1] = [:] // Parameters
-                input[2] = [] // Input files
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.pdf[0][1]).exists() }
-            )
-        }
-
-    }
     test("test notebook - stub - [qmd:r]") {
 
         config "./no-parametrization.config"

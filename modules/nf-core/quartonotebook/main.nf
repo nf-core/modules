@@ -17,8 +17,7 @@ process QUARTONOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")     , emit: html, optional: true
-    tuple val(meta), path("*.pdf")      , emit: pdf, optional: true
+    tuple val(meta), path("*.html")     , emit: html
     tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
     tuple val(meta), path("params.yml") , emit: params_yaml, optional: true
     path "versions.yml"                 , emit: versions
@@ -39,10 +38,6 @@ process QUARTONOTEBOOK {
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
-
-    // Get notebook base name and file extension for building final output name
-    def nb_name = notebook.getBaseName()
-    def nb_extension = notebook.getExtension()
 
     // Dump parameters to yaml file.
     // Using a YAML file over using the CLI params because
@@ -82,12 +77,8 @@ process QUARTONOTEBOOK {
     quarto render \\
         ${notebook} \\
         ${render_args} \\
-        ${args}
-
-    # Change report name to use the prefix and the rendered filetype extension
-    REPORT=\$(find . -name "${nb_name}.*" -not -name "*.${nb_extension}")
-    EXTENSION="\${REPORT/.\\/${nb_name}./}"
-    mv "\$REPORT" "${prefix}.\$EXTENSION"
+        ${args} \\
+        --output ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
