@@ -4,7 +4,7 @@ process HAMRONIZATION_SUMMARIZE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hamronization:1.1.1--pyhdfd78af_0':
-        'biocontainers/hamronization:1.1.1--pyhdfd78af_0' }"
+        'biocontainers/hamronization:1.1.4--pyhdfd78af_0' }"
 
     input:
     path(reports)
