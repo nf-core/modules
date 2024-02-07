@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Dockerfile to create container with bcl-convert
 # Push to nfcore/bclconvert:<VER>
 
@@ -24,7 +25,9 @@ RUN apt-get update \
 # Link hostname cmd to fix hardcoded path
 RUN ln -s /bin/hostname /usr/bin/hostname
 # Install bcl-convert
-ADD https://s3.amazonaws.com/webdata.illumina.com/downloads/software/bcl-convert/bcl-convert-${BCLCONVERT_VERSION}-2.el7.x86_64.rpm bcl-convert.rpm
+ADD --checksum=sha256:ea508d763dc27d30d1a34f6a38d8da31ea67797d7b4971e8c10677bc48539565 \
+    https://s3.amazonaws.com/webdata.illumina.com/downloads/software/bcl-convert/bcl-convert-${BCLCONVERT_VERSION}-2.el7.x86_64.rpm \
+    bcl-convert.rpm
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN rpm2cpio bcl-convert.rpm | cpio -i --make-directories \
     && rm bcl-convert.rpm
