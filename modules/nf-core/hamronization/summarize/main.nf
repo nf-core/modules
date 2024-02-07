@@ -37,16 +37,8 @@ process HAMRONIZATION_SUMMARIZE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def outformat = format == 'interactive' ? 'html' : format
     """
-    echo "hamronize \\
-        summarize \\
-        ${reports.join(' ')} \\
-        -t ${format} \\
-        $args \\
-        -o hamronization_combined_report.${outformat}"
-
     touch hamronization_combined_report.${outformat}
 
     cat <<-END_VERSIONS > versions.yml

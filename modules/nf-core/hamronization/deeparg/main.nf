@@ -43,19 +43,8 @@ process HAMRONIZATION_DEEPARG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "hamronize \\
-        deeparg \\
-        ${report} \\
-        $args \\
-        --format ${format} \\
-        --analysis_software_version ${software_version} \\
-        --reference_database_version ${reference_db_version} \\
-        --input_file_name ${prefix} \\
-        > ${prefix}.${format}"
-
     touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
