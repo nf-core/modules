@@ -67,6 +67,8 @@ nextflow_process {
 
     test("test notebook - parametrized - [qmd:r]") {
 
+        config "./with-parametrization.config"
+
         when {
             process {
                 """
@@ -90,6 +92,8 @@ nextflow_process {
     }
 
     test("test notebook - parametrized - [qmd:python]") {
+
+        config "./with-parametrization.config"
 
         when {
             process {
@@ -120,6 +124,8 @@ nextflow_process {
 
     test("test notebook - parametrized - [rmd]") {
 
+        config "./with-parametrization.config"
+
         when {
             process {
                 """
@@ -143,6 +149,8 @@ nextflow_process {
     }
 
     test("test notebook - parametrized - [ipynb]") {
+
+        config "./with-parametrization.config"
 
         when {
             process {
@@ -193,7 +201,7 @@ nextflow_process {
 
     }
 
-    test("test notebook - pdf [qmd:python]") {
+    test("test notebook - pdf - [qmd:python]") {
 
         config "./pdf.config"
 
