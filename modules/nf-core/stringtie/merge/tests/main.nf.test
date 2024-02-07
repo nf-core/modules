@@ -8,23 +8,22 @@ nextflow_process {
     tag "stringtie"
     tag "stringtie/merge"
 
-    test("homo_sapiens - forward strandedness") {
-
-        setup {
-            run("STRINGTIE_STRINGTIE") {
-                script "../../stringtie/main.nf"
-                process {
-                """
-                input[0] = [
-                                [ id:'test', strandedness:'forward' ], // meta map
-                                [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
-                            ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                """
+    setup {
+        run("STRINGTIE_STRINGTIE") {
+            script "../../stringtie/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test', strandedness:'reverse' ], // meta map
+                        [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true) ]
+                        ]
+            input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gtf", checkIfExists: true)
+            """
             }
-            }
-
         }
+    }
+
+    test("homo_sapiens - forward strandedness") {
 
         when {
             process {
@@ -45,22 +44,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - reverse strandedness") {
-
-        setup {
-            run("STRINGTIE_STRINGTIE") {
-                script "../../stringtie/main.nf"
-                process {
-                """
-                input[0] = [
-                                [ id:'test', strandedness:'reverse' ], // meta map
-                                [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
-                            ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                """
-            }
-            }
-
-        }
 
         when {
             process {
