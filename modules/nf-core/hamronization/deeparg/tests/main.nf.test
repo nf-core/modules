@@ -34,7 +34,7 @@ nextflow_process {
 
     }
 
-    test("hamronization/deeparg - stub") {
+    test("hamronization/deeparg - bacteroides_fragilis - genome_mapping_potential_arg - stub") {
 
         options "-stub"
 
@@ -43,7 +43,7 @@ nextflow_process {
                 """
                 input[0] = [                                                                                                                                                                    
                  [ id:'test', single_end:false ], // meta map                                                                                                                             
-                 file("dummy.ARG"),
+                 file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),
                 ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'

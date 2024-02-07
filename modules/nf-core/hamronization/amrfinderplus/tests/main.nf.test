@@ -34,16 +34,16 @@ nextflow_process {
 
     }
 
-    test("hamronization/amrfinderplus - stub") {
+    test("hamronization/amrfinderplus - delete_me/amrfinderplus - tsv - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [                                                                                                                                                                  
+                input[0] = [
                     [ id:'test', single_end:false ], // meta map                                                                                                                           
-                    file("dummy.tsv")                              
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
                 ]
                 input[1] = 'tsv'
                 input[2] = '3.10.30'
