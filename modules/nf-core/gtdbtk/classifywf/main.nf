@@ -61,7 +61,7 @@ process GTDBTK_CLASSIFYWF {
 
     mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
 
-    find -name gtdbtk.${prefix}.*.classify.tree | xargs -r gzip # do not fail if .tree is missing
+    find -name "gtdbtk.${prefix}.*.classify.tree" | xargs -r gzip # do not fail if .tree is missing
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
