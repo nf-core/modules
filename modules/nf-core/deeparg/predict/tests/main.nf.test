@@ -40,7 +40,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out.daa_tsv,
+                        process.out.arg,
+                        file(process.out.daa[0][1]).name,
+                        path(process.out.potential_arg[0][1]).readLines().first().contains("#ARG")
+                    ).match()
+                }
             )
         }
 
