@@ -31,7 +31,7 @@ process SORTMERNA {
     } else {
         mv_cmd = """
         mv non_rRNA_reads_fwd.f*q.gz ${prefix}_1.non_rRNA.fastq.gz
-        mv non_rRNA_reads_rev.f*q.gz ${prefix}_2.non_rRNA.fastq.gz"
+        mv non_rRNA_reads_rev.f*q.gz ${prefix}_2.non_rRNA.fastq.gz
         """.stripIndent()
         paired_cmd = "--paired_in"
         out2_cmd   = "--out2"
