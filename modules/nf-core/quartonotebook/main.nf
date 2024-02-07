@@ -74,7 +74,10 @@ process QUARTONOTEBOOK {
     export NUMBA_NUM_THREADS="$task.cpus"
 
     # Render notebook
-    quarto render ${notebook} ${render_args}
+    quarto render \\
+        ${notebook} \\
+        ${render_args} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
