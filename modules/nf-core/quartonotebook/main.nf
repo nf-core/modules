@@ -77,7 +77,8 @@ process QUARTONOTEBOOK {
     quarto render \\
         ${notebook} \\
         ${render_args} \\
-        ${args}
+        ${args} \\
+        --output ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
