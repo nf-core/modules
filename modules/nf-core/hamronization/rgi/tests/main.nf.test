@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process HAMRONIZATION_RGI"
+    script "../main.nf"
+    process "HAMRONIZATION_RGI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hamronization"
+    tag "hamronization/rgi"
+    tag "rgi/main"
+
+    // test("hamronization/amrfinderplus - haemophilus_influenzae - genome - fna.gz") {
+
+    //     setup {
+    //         run("RGI_MAIN") {
+    //             script "../../../rgi/main/main.nf"
+    //             process {
+    //                 """
+    //                 input[0] = [                                                                                                                                                                     
+    //                     [ id:'test', single_end:false ], // meta map                                                                                                                              
+    //                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                          
+    //                 ]
+    //                 """
+    //             }
+    //         }
+    //     }
+
+        // when {
+        //     process {
+        //         """
+        //         input[0] = RGI_MAIN.out.tsv
+        //         input[1] = 'tsv'
+        //         input[2] = '1.0.2'
+        //         input[3] = '3.2.3'
+        //         """
+        //     }
+        // }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
+
+    test("hamronization/amrfinderplus - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ], file("dummy.tsv") ]
+                input[1] = 'tsv'
+                input[2] = '1.0.2'
+                input[3] = '3.2.3'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
