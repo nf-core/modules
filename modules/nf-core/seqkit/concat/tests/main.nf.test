@@ -28,7 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions")}
+                { assert snapshot(process.out.versions).match()}
             )
             with(process.out.fastx) {
                 // Including headers from both input files
