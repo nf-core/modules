@@ -25,13 +25,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot (
+                     file(process.out.db.get(0)).list().sort(),
+                     process.out.versions,
+                ).match() }
             )
         }
 
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("downloaddata - stub") {
 
         options "-stub"
