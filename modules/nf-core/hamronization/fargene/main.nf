@@ -55,7 +55,7 @@ process HAMRONIZATION_FARGENE {
         --input_file_name ${prefix} \\
         > ${prefix}.${format}"
 
-    touch ${prefix}.${format}
+    echo "stub" > ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
