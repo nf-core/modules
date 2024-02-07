@@ -63,7 +63,10 @@ test("antiSMASH-lite downloaddatabases") {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.database.get(0)).exists() }
+                { assert snapshot (
+                     file(process.out.database.get(0)).list().sort(),
+                     process.out.versions,
+                ).match() }
             )
         }
 
