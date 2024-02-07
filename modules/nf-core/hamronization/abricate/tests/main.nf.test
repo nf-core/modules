@@ -9,7 +9,7 @@ nextflow_process {
     tag "hamronization"
     tag "hamronization/abricate"
 
-    test("hamronization - bacteroides_fragilis - genome_abricate_tsv") {
+    test("hamronization/abricate - bacteroides_fragilis - genome_abricate_tsv") {
 
         when {
             process {
@@ -31,7 +31,7 @@ nextflow_process {
 
     }
 
-    test("hamronization - stub") {
+    test("hamronization/abricate - stub") {
 
         options "-stub"
 
