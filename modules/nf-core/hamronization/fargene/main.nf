@@ -54,7 +54,7 @@ process HAMRONIZATION_FARGENE {
         --reference_database_version ${reference_db_version} \\
         --input_file_name ${prefix} \\
         > ${prefix}.${format}"
-    
+
     touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml

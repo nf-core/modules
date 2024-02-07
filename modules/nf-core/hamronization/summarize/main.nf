@@ -46,7 +46,7 @@ process HAMRONIZATION_SUMMARIZE {
         -t ${format} \\
         $args \\
         -o hamronization_combined_report.${outformat}"
-    
+
     touch hamronization_combined_report.${outformat}
 
     cat <<-END_VERSIONS > versions.yml
