@@ -43,6 +43,15 @@ process HAMRONIZATION_ABRICATE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo "hamronize \\
+        abricate \\
+        ${report} \\
+        $args \\
+        --format ${format} \\
+        --analysis_software_version ${software_version} \\
+        --reference_database_version ${reference_db_version} \\
+        > ${prefix}.${format}"
+
     touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
