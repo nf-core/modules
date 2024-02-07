@@ -1,4 +1,4 @@
-include { dump_params_yml; indent_code_block } from "./parametrize"
+include { dumpParamsYaml; indentCodeBlock } from "./parametrize"
 
 process QUARTONOTEBOOK {
     tag "$meta.id"
@@ -57,12 +57,12 @@ process QUARTONOTEBOOK {
             nb_params["meta"] = meta
         }
         nb_params += parameters
-        params_cmd = dump_params_yml(nb_params)
+        params_cmd = dumpParamsYaml(nb_params)
         render_args = "--execute-params params.yml"
     }
     """
     # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
-    ${indent_code_block(params_cmd, 4)}
+    ${indentCodeBlock(params_cmd, 4)}
 
     # Create output directory
     mkdir artifacts

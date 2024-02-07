@@ -6,7 +6,7 @@ import org.yaml.snakeyaml.DumperOptions
  * Multiline code blocks need to have the same indentation level
  * as the `script:` section. This function re-indents code to the specified level.
  */
-def indent_code_block(code, n_spaces) {
+def indentCodeBlock(code, n_spaces) {
     def indent_str = " ".multiply(n_spaces)
     return code.stripIndent().split("\n").join("\n" + indent_str)
 }
@@ -17,7 +17,7 @@ def indent_code_block(code, n_spaces) {
  * @params task The process' `task` variable
  * @returns a line to be inserted in the bash script.
  */
-def dump_params_yml(params) {
+def dumpParamsYaml(params) {
     DumperOptions options = new DumperOptions();
     options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     def yaml = new Yaml(options)
@@ -30,7 +30,7 @@ def dump_params_yml(params) {
     // Therefore, we inject it into the bash script:
     return """\
         cat <<"END_PARAMS_SECTION" > ./params.yml
-        ${indent_code_block(yaml_str, 8)}
+        ${indentCodeBlock(yaml_str, 8)}
         END_PARAMS_SECTION
     """
 }
