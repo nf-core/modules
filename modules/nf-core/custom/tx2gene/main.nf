@@ -15,8 +15,8 @@ process CUSTOM_TX2GENE {
     val extra
 
     output:
-    tuple val(meta), path("*.tx2gene.tsv"), emit: tx2gene
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*tx2gene.tsv"), emit: tx2gene
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
