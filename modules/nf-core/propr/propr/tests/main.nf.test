@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr using default options") },
+                { assert snapshot(process.out.matrix).match("Test propr/propr using default options - matrix") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -52,7 +52,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor.bshrink explicitly")}
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor.bshrink explicitly - matrix")},
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+pcor.bshrink explicitly - fdr")}
             )
         }
     }
@@ -77,7 +78,8 @@ nextflow_process {
             // TODO also check that the first columns are the same as the above processes
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running alr+pcor.bshrink") }
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running alr+pcor.bshrink - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running alr+pcor.bshrink - fdr") }
             )
         }
     }
@@ -101,7 +103,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho") }
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+rho - fdr") }
             )
         }
     }
@@ -125,7 +128,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor") }
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+pcor - fdr") }
             )
         }
     }
@@ -149,7 +153,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho with boxcox transformation") }
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho with boxcox transformation - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+rho with boxcox transformation - fdr") }
             )
         }
     }

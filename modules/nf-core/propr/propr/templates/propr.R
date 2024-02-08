@@ -114,7 +114,8 @@ opt <- list(
     cutoff_max       = NA,
     cutoff_interval  = NA,
     ncores           = as.integer('$task.cpus'),
-    features_id_col  = 'gene_id'
+    features_id_col  = 'gene_id',
+    fixseed          = FALSE
 )
 opt_types <- list(
     count            = 'character',
@@ -128,7 +129,8 @@ opt_types <- list(
     cutoff_max       = 'numeric',
     cutoff_interval  = 'numeric',
     ncores           = 'numeric',
-    features_id_col  = 'character'
+    features_id_col  = 'character',
+    fixseed          = 'logical'
 )
 
 # Apply parameter overrides
@@ -225,10 +227,11 @@ if (opt\$metric == 'pcor.bshrink'){
 # Compute correlation coefficients
 pro <- propr(
     mat,
-    metric = opt\$metric,
-    ivar   = opt\$ivar,
-    alpha  = opt\$alpha,
-    p      = opt\$permutation
+    metric  = opt\$metric,
+    ivar    = opt\$ivar,
+    alpha   = opt\$alpha,
+    p       = opt\$permutation,
+    fixseed = opt\$fixseed
 )
 
 # update FDR by permutation, if required
