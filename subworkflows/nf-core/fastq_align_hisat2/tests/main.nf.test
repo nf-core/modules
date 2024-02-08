@@ -58,6 +58,35 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                    ]
+                ])
+                input[1] = HISAT2_BUILD.out.index
+                input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - bam - paired_end") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
