@@ -4,14 +4,14 @@ process ANTISMASH_ANTISMASHLITE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
-        'biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0' :
+        'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0' }"
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-        "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        "-B $antismash_dir:/usr/local/lib/python3.10/site-packages/antismash" :
         workflow.containerEngine == 'docker' ?
-        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.10/site-packages/antismash" :
         ''
         }
 
@@ -61,6 +61,61 @@ process ANTISMASH_ANTISMASHLITE {
         --logfile $prefix/${prefix}.log \\
         --databases $databases \\
         $sequence_input
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    """
+    mkdir -p ${prefix}/css
+    mkdir ${prefix}/images
+    mkdir ${prefix}/js
+    touch ${prefix}/NZ_CP069563.1.region001.gbk
+    touch ${prefix}/NZ_CP069563.1.region002.gbk
+    touch ${prefix}/css/bacteria.css
+    touch ${prefix}/genome.gbk
+    touch ${prefix}/genome.json
+    touch ${prefix}/genome.zip
+    touch ${prefix}/images/about.svg
+    touch ${prefix}/images/bacteria_about.png
+    touch ${prefix}/images/bacteria_antismash_icon.svg
+    touch ${prefix}/images/bacteria_antismash_logo.svg
+    touch ${prefix}/images/bacteria_antismash_white.svg
+    touch ${prefix}/images/bacteria_download.png
+    touch ${prefix}/images/bacteria_help.png
+    touch ${prefix}/images/bacteria_home.png
+    touch ${prefix}/images/bacteria_logo.png
+    touch ${prefix}/images/contact.svg
+    touch ${prefix}/images/download.svg
+    touch ${prefix}/images/expand-arrows-alt-solid.svg
+    touch ${prefix}/images/external-link-alt-solid.svg
+    touch ${prefix}/images/fungi_about.png
+    touch ${prefix}/images/fungi_antismash_icon.svg
+    touch ${prefix}/images/fungi_antismash_icon_white.svg
+    touch ${prefix}/images/fungi_antismash_logo.svg
+    touch ${prefix}/images/fungi_download.png
+    touch ${prefix}/images/fungi_help.png
+    touch ${prefix}/images/fungi_home.png
+    touch ${prefix}/images/fungi_logo.png
+    touch ${prefix}/images/help.svg
+    touch ${prefix}/images/mail.png
+    touch ${prefix}/images/minus-circle.svg
+    touch ${prefix}/images/nostructure_icon.png
+    touch ${prefix}/images/plant_antismash_icon.svg
+    touch ${prefix}/images/plant_antismash_icon_white.svg
+    touch ${prefix}/images/plus-circle.svg
+    touch ${prefix}/images/question-circle-solid.svg
+    touch ${prefix}/images/search-solid.svg
+    touch ${prefix}/index.html
+    touch ${prefix}/js/antismash.js
+    touch ${prefix}/js/jquery.js
+    touch ${prefix}/js/jquery.tablesorter.min.js
+    touch ${prefix}/regions.js
+    touch ${prefix}/test.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
