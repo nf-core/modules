@@ -8,7 +8,6 @@ process QUARTONOTEBOOK {
     // required dependencies for your analyses. You'll at least need Quarto
     // itself, Papermill and whatever language you are running your analyses on;
     // you can see an example in this module's Dockerfile.
-    conda "conda-forge::jupyter=1.0.0 conda-forge::matplotlib=3.4.3 conda-forge::papermill=2.4.0 conda-forge::quarto=1.3.433 conda-forge::r-rmarkdown=2.25"
     container "docker.io/erikfas/quartonotebook"
 
     input:
@@ -26,12 +25,9 @@ process QUARTONOTEBOOK {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba on ARM64
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        arch = System.getProperty("os.arch")
-        if (arch == "arm64" || arch == "aarch64") {
-            exit 1, "The QUARTONOTEBOOK module does not support Conda/Mamba on ARM64. Please use Docker / Singularity / Podman instead."
-        }
+        exit 1, "The QUARTONOTEBOOK module does not support Conda/Mamba, please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
