@@ -27,9 +27,9 @@ process TXIMETA_TXIMPORT {
     when:
     task.ext.when == null || task.ext.when
 
-    script: 
+    script:
     template 'tximport.r'
-    
+
     stub:
     """
     touch ${meta.id}.gene_tpm.tsv

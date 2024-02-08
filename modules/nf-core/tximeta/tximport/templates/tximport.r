@@ -16,13 +16,13 @@ library(tximport)
 
 #' Build a table from a SummarizedExperiment object
 #'
-#' This function takes a SummarizedExperiment object and a specific slot name to extract 
-#' assay data. It then combines the first two columns of the rowData with the specified 
+#' This function takes a SummarizedExperiment object and a specific slot name to extract
+#' assay data. It then combines the first two columns of the rowData with the specified
 #' assay data slot into a new data table.
 #'
 #' @param se.obj A SummarizedExperiment object from which to build the table.
 #' @param slot The name of the slot in the assays list from which to extract data.
-#' 
+#'
 #' @return A data frame combining the first two columns of the rowData with the assay data from the specified slot.
 
 build_table <- function(se.obj, slot) {
@@ -31,9 +31,9 @@ build_table <- function(se.obj, slot) {
 
 #' Write a table to a file from a SummarizedExperiment object with given parameters
 #'
-#' This function generates a table from a SummarizedExperiment object using specified parameters 
-#' and writes the resulting table to a file. The file name is constructed using a prefix and a 
-#' suffix from the parameters, and the table is written with tab separation, without quoting text, 
+#' This function generates a table from a SummarizedExperiment object using specified parameters
+#' and writes the resulting table to a file. The file name is constructed using a prefix and a
+#' suffix from the parameters, and the table is written with tab separation, without quoting text,
 #' and without row names.
 #'
 #' @param params A list containing the parameters needed for file generation and table writing.
@@ -52,11 +52,11 @@ write_se_table <- function(params, prefix) {
 
 #' Read Transcript Metadata from a Given Path
 #'
-#' This function reads transcript metadata from a specified file path. The file is expected to 
-#' be a tab-separated values file without headers, containing transcript information. The function 
-#' checks if the file is empty and stops execution with an error message if so. It reads the file 
-#' into a data frame, expecting columns for transcript IDs, gene IDs, and gene names. Additional 
-#' processing is done to ensure compatibility with a predefined data structure (e.g., `txi[[1]]`), 
+#' This function reads transcript metadata from a specified file path. The file is expected to
+#' be a tab-separated values file without headers, containing transcript information. The function
+#' checks if the file is empty and stops execution with an error message if so. It reads the file
+#' into a data frame, expecting columns for transcript IDs, gene IDs, and gene names. Additional
+#' processing is done to ensure compatibility with a predefined data structure (e.g., `txi[[1]]`),
 #' including adding missing entries and reordering based on the transcript IDs found in `txi[[1]]`.
 #'
 #' @param tinfo_path The file path to the transcript information file.
@@ -87,20 +87,20 @@ read_transcript_info <- function(tinfo_path){
 
 #' Create a SummarizedExperiment Object
 #'
-#' Constructs a SummarizedExperiment object using provided matrices for counts, abundance, and length, 
-#' along with metadata for columns and rows. This function facilitates the organization of experimental 
-#' data (e.g., RNA-seq or other high-throughput data) in a structured format that is convenient for 
+#' Constructs a SummarizedExperiment object using provided matrices for counts, abundance, and length,
+#' along with metadata for columns and rows. This function facilitates the organization of experimental
+#' data (e.g., RNA-seq or other high-throughput data) in a structured format that is convenient for
 #' further analyses and visualization.
 #'
-#' @param counts A matrix or DataFrame containing counts data, with rows as features (e.g., genes) and 
+#' @param counts A matrix or DataFrame containing counts data, with rows as features (e.g., genes) and
 #' columns as samples.
-#' @param abundance A matrix or DataFrame containing abundance data (e.g., TPM or FPKM) with the same 
+#' @param abundance A matrix or DataFrame containing abundance data (e.g., TPM or FPKM) with the same
 #' dimensions and row/column names as the counts data.
-#' @param length A matrix or DataFrame containing feature lengths, matching the dimensions and row/column 
+#' @param length A matrix or DataFrame containing feature lengths, matching the dimensions and row/column
 #' names of the counts data.
-#' @param col_data A DataFrame containing sample-level metadata, with rows corresponding to columns in the 
+#' @param col_data A DataFrame containing sample-level metadata, with rows corresponding to columns in the
 #' counts, abundance, and length matrices.
-#' @param row_data A DataFrame containing feature-level metadata, with rows corresponding to features in 
+#' @param row_data A DataFrame containing feature-level metadata, with rows corresponding to features in
 #' the counts, abundance, and length matrices.
 #'
 #' @return A SummarizedExperiment object containing the supplied data and metadata.
