@@ -4,8 +4,8 @@ params.repo = "../../modules/"
 
 workflow {
     NFTEST_MODULE (
-        params.module_nf_file,
-        params.module_test_file,
+        file(params.module_nf_file),
+        file(params.module_test_file),
         [], // TODO
         false
     )
