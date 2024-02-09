@@ -19,8 +19,9 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.test_data['generic']['notebooks']['quarto_r'], checkIfExists: true) // Notebook
                 ]
-                input[1] = [:] // parameters
-                input[2] = [] // input files
+                input[1] = [:] // Parameters
+                input[2] = [] // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -47,6 +48,7 @@ nextflow_process {
                 ]
                 input[1] = [] // Parameters
                 input[2] = [] // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -78,6 +80,7 @@ nextflow_process {
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
                 input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -104,6 +107,7 @@ nextflow_process {
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
                 input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -135,6 +139,7 @@ nextflow_process {
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
                 input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -161,6 +166,7 @@ nextflow_process {
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
                 input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
@@ -189,6 +195,7 @@ nextflow_process {
                 ]
                 input[1] = [:] // Parameters
                 input[2] = [] // Input files
+                input[3] = [] // Extensions
                 """
             }
         }
