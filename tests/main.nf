@@ -1,11 +1,10 @@
-params.module_nf_file = "./modules/nf-core/samtools/view/main.nf"
-params.module_test_file = "./modules/nf-core/samtools/view/tests"
+params.module_dir = "./modules/nf-core/samtools/view"
 params.repo = "../../modules/"
 
 workflow {
     NFTEST_MODULE (
-        file(params.module_nf_file),
-        file(params.module_test_file),
+        file(params.module_dir + "/main.nf"),
+        file(params.module_dir + "/tests"),
         [], // TODO
         false
     )
