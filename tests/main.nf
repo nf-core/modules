@@ -22,9 +22,11 @@ process NFTEST_MODULE {
     path "*.snap", emit: snapshot, optional: true
 
     script:
-    // TODO if update_snapshot then --updateSnapshot
+    def snapshot = update_snapshot ? '--update-snapshot': ''
     """
     # TODO cd $full_repo
-    nf-test test tests/*.nf.test --profile docker
+    nf-test test tests/*.nf.test \\
+        --profile docker \\
+        $snapshot
     """
 }
