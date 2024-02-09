@@ -1,8 +1,8 @@
 // TODO What if we took nf-test list?
 params.module_dir = "./modules/nf-core/samtools/view"
 params.repo = "../modules/"
-params.nftest_config = "nf-test.config"
-params.nextflow_config = "./config/nextflow.config"
+params.nftest_config = "./tests/meta/nf-test.config"
+params.nextflow_config = "./tests/meta/nf.config"
 
 
 workflow {
@@ -31,13 +31,12 @@ process NFTEST_MODULE {
     script:
     def snapshot = update_snapshot ? '--update-snapshot': ''
     """
-    mkdir tests/config/
-    mv $nextflow_config tests/config/nf-test.config
     # TODO cd $full_repo
     nf-test test tests/*.nf.test \\
         --profile docker \\
         $snapshot \\
         --silent \\
-        --verbose
+        --verbose \\
+        -c $nftest_config
     """
 }
