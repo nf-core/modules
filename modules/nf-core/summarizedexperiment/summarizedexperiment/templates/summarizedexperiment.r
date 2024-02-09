@@ -172,7 +172,7 @@ if ('$coldata' != ''){
         gids = colnames(assay_list[[1]]),
         metadata_id_col = args_opt\$coldata_id_col
     )
-    
+
     assay_list <- lapply(assay_list, function(m){
         m[,rownames(coldata)]
     })
