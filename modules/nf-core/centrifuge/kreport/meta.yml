@@ -1,8 +1,12 @@
 name: "centrifuge_kreport"
 description: Creates Kraken-style reports from centrifuge out files
 keywords:
+  - classify
   - metagenomics
   - centrifuge
+  - fastq
+  - db
+  - report
   - kraken
 tools:
   - centrifuge:
@@ -21,6 +25,9 @@ input:
       type: file
       description: File containing the centrifuge classification report
       pattern: "*.{txt}"
+  - db:
+      type: directory
+      description: Path to directory containing centrifuge database files
 output:
   - meta:
       type: map

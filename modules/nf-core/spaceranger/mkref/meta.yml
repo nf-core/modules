@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkref"
-description: Module to build the reference needed by the 10x Genomics Spaceranger tool. Uses the spaceranger mkref command.
+description: Module to build the reference needed by the 10x Genomics Space Ranger tool. Uses the spaceranger mkref command.
 keywords:
   - reference
   - mkref
@@ -36,7 +36,7 @@ input:
 output:
   - reference:
       type: directory
-      description: Folder containing all the reference indices needed by Cell Ranger
+      description: Folder containing all the reference indices needed by Space Ranger
   - versions:
       type: file
       description: File containing software version

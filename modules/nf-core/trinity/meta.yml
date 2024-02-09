@@ -21,7 +21,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: fasta/fastq file of reads to be assembled into a transcriptome
+      description: |
+        List of input fasta/fastq reads to be assembled into a transcriptome.
       pattern: "*.{fa|fasta|fq|fastq}"
 output:
   - meta:
@@ -37,7 +38,13 @@ output:
       type: file
       description: de novo assembled transcripts fasta file compressed
       pattern: "*.fa.gz"
+  - log:
+      type: file
+      description: Log from trinity
+      pattern: "*.log"
 authors:
   - "@timslittle"
+  - "@gallvp"
 maintainers:
   - "@timslittle"
+  - "@gallvp"
