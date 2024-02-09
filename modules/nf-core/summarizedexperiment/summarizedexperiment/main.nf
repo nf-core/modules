@@ -22,7 +22,7 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
 
     script:
     template 'summarizedexperiment.r'
-    
+
     stub:
     """
     touch ${meta.id}.SummarizedExperiment.rds

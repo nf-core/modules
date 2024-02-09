@@ -37,7 +37,7 @@ input:
         reference from which matrix rows are derived e.g. `[ id:'yeast' ]`
   - rowdata:
       type: file
-      description: | 
+      description: |
         Metadata on matrix features. One column must contain all matrix row
         IDs.
       pattern: "*.{csv,tsv}"
@@ -45,11 +45,11 @@ input:
       type: map
       description: |
         Groovy Map containing information related to the experiment as a whole,
-        as represented by the matrix columns and the sample sheet e.g. 
+        as represented by the matrix columns and the sample sheet e.g.
         `[id:'SRP123456' ]`
   - coldata:
       type: file
-      description: | 
+      description: |
         Metadata on matrix columns. One column must contain all matrix column
         IDs.
       pattern: "*.{csv,tsv}"

@@ -31,7 +31,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
         header = header,
         row.names = row.names,
         check.names = check.names,
-	stringsAsFactors = stringsAsFactors
+        gstringsAsFactors = stringsAsFactors
     )
 }
 
@@ -67,13 +67,13 @@ parse_args <- function(x){
 #'   `namesVector`. If no such column exists, the function will throw an error.
 
 findColumnWithAllEntries <- function(namesVector, df) {
-  for (colName in names(df)) {
-    if (all(namesVector %in% df[[colName]])) {
-      return(colName)
+    for (colName in names(df)) {
+        if (all(namesVector %in% df[[colName]])) {
+            return(colName)
+        }
     }
-  }
-  cat(capture.output(print(df)), sep="\n", file=stderr())
-  stop(paste("No column contains all vector entries ", paste(namesVector, collapse = ', ')))
+    cat(capture.output(print(df)), sep="\n", file=stderr())
+    stop(paste("No column contains all vector entries ", paste(namesVector, collapse = ', ')))
 }
 
 #' Check Matrix Name Uniformity in List
@@ -86,17 +86,17 @@ findColumnWithAllEntries <- function(namesVector, df) {
 #' @keywords matrix
 
 checkRowColNames <- function(matrices) {
-  # Simplify the comparison process
-  allEqual <- function(namesList) {
-    all(sapply(namesList[-1], function(x) identical(x, namesList[[1]])))
-  }
-  
-  rowNamesEqual <- allEqual(lapply(matrices, rownames))
-  colNamesEqual <- allEqual(lapply(matrices, colnames))
-  
-  if ((! rowNamesEqual) || (! colNamesEqual)){
-    stop("Rows or columns different among input matrices")
-  }
+    # Simplify the comparison process
+    allEqual <- function(namesList) {
+        all(sapply(namesList[-1], function(x) identical(x, namesList[[1]])))
+    }
+
+    rowNamesEqual <- allEqual(lapply(matrices, rownames))
+    colNamesEqual <- allEqual(lapply(matrices, colnames))
+
+    if ((! rowNamesEqual) || (! colNamesEqual)){
+        stop("Rows or columns different among input matrices")
+    }
 }
 
 #' Parse Metadata From File
@@ -118,10 +118,10 @@ parse_metadata <- function(metadata_path, ids, metadata_id_col = NULL){
 
     metadata <- read_delim_flexible(metadata_path, stringsAsFactors = FALSE, header = TRUE)
     if (is.null(metadata_id_col)){
-        metadata_id_col <- findColumnWithAllEntries(ids, metadata)	
+        metadata_id_col <- findColumnWithAllEntries(ids, metadata)    g
     }
 
-    # Allow for duplicate rows by the id column 
+    # Allow for duplicate rows by the id column
     metadata <- aggregate(
         . ~ metadata[[metadata_id_col]],
         data = metadata,
@@ -168,31 +168,31 @@ se <- SummarizedExperiment(
 
 if ('$coldata' != ''){
     coldata <- parse_metadata(
-        metadata_path = '$coldata', 
-	ids = colnames(assay_list[[1]]), 
-	metadata_id_col = args_opt\$coldata_id_col
+        metadata_path = '$coldata',
+        gids = colnames(assay_list[[1]]),
+        metadata_id_col = args_opt\$coldata_id_col
     )
-	    
+    
     assay_list <- lapply(assay_list, function(m){
         m[,rownames(coldata)]
     })
-    
+
     colData(se) <- DataFrame(coldata)
-} 
+}
 
 # Add row (feature) metadata if provided
 
 if ('$rowdata' != ''){
     rowdata <- parse_metadata(
-        metadata_path = '$rowdata', 
-	ids = rownames(assay_list[[1]]), 
-	metadata_id_col = args_opt\$rowdata_id_col
+        metadata_path = '$rowdata',
+        gids = rownames(assay_list[[1]]),
+        metadata_id_col = args_opt\$rowdata_id_col
     )
-    
+
     assay_list <- lapply(assay_list, function(m){
         m[rownames(rowdata), ]
     })
-    
+
     rowData(se) <- DataFrame(rowdata)
 }
 
