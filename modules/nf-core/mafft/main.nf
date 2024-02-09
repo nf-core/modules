@@ -63,7 +63,7 @@ process MAFFT {
     def addlong      = addlong         ? "--addlong ${addlong}"           : ''
     if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.fas.gz
+    touch ${prefix}.fas${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
