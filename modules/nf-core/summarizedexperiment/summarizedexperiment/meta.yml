@@ -18,16 +18,13 @@ tools:
       doi: "10.18129/B9.bioc.SummarizedExperiment"
       licence: ["Artistic-2.0"]
 
-    tuple val(meta), path(matrix_files)
-    tuple val(meta2), path(rowdata)
-    tuple val(meta3), path(coldata)
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing information related to the experiment as a whole
         e.g. `[ id:'SRP123456' ]`
-  - matrix files:
+  - matrix_files:
       type: directory
       description: |
         One or more paths to CSV or TSV matrix files. All files must have the

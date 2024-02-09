@@ -13,9 +13,9 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     tuple val(meta3), path(coldata)
 
     output:
-    path "*.rds"              , emit: rds
-    path "*.R_sessionInfo.log", emit: log
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path("*.rds")              , emit: rds
+    tuple val(meta), path("*.R_sessionInfo.log"), emit: log
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -9,6 +9,7 @@ nextflow_process {
     tag "custom/tx2gene"
     tag "tximeta"
     tag "tximeta/tximport"
+    tag "summarizedexperiment"
     tag "summarizedexperiment/summarizedexperiment"
     tag "untar"
 
@@ -72,7 +73,7 @@ nextflow_process {
 
         then {
             // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0]).readLines()[0..14]
+            def loglines = path(process.out.log[0][1]).readLines()[0..14]
 
             assertAll(
                 { assert process.success },
@@ -98,7 +99,7 @@ nextflow_process {
 
         then {
             // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0]).readLines()[0..14]
+            def loglines = path(process.out.log[0][1]).readLines()[0..14]
 
             assertAll(
                 { assert process.success },
@@ -124,7 +125,7 @@ nextflow_process {
 
         then {
             // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0]).readLines()[0..14]
+            def loglines = path(process.out.log[0][1]).readLines()[0..14]
 
             assertAll(
                 { assert process.success },
@@ -150,7 +151,7 @@ nextflow_process {
 
         then {
             // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0]).readLines()[0..14]
+            def loglines = path(process.out.log[0][1]).readLines()[0..14]
 
             assertAll(
                 { assert process.success },
