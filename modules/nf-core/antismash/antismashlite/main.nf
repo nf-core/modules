@@ -70,6 +70,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     stub:
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def VERSION = '7.1.0' // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}/css
     mkdir ${prefix}/images
@@ -81,45 +82,15 @@ process ANTISMASH_ANTISMASHLITE {
     touch ${prefix}/genome.json
     touch ${prefix}/genome.zip
     touch ${prefix}/images/about.svg
-    touch ${prefix}/images/bacteria_about.png
-    touch ${prefix}/images/bacteria_antismash_icon.svg
-    touch ${prefix}/images/bacteria_antismash_logo.svg
-    touch ${prefix}/images/bacteria_antismash_white.svg
-    touch ${prefix}/images/bacteria_download.png
-    touch ${prefix}/images/bacteria_help.png
-    touch ${prefix}/images/bacteria_home.png
-    touch ${prefix}/images/bacteria_logo.png
-    touch ${prefix}/images/contact.svg
-    touch ${prefix}/images/download.svg
-    touch ${prefix}/images/expand-arrows-alt-solid.svg
-    touch ${prefix}/images/external-link-alt-solid.svg
-    touch ${prefix}/images/fungi_about.png
-    touch ${prefix}/images/fungi_antismash_icon.svg
-    touch ${prefix}/images/fungi_antismash_icon_white.svg
-    touch ${prefix}/images/fungi_antismash_logo.svg
-    touch ${prefix}/images/fungi_download.png
-    touch ${prefix}/images/fungi_help.png
-    touch ${prefix}/images/fungi_home.png
-    touch ${prefix}/images/fungi_logo.png
-    touch ${prefix}/images/help.svg
-    touch ${prefix}/images/mail.png
-    touch ${prefix}/images/minus-circle.svg
-    touch ${prefix}/images/nostructure_icon.png
-    touch ${prefix}/images/plant_antismash_icon.svg
-    touch ${prefix}/images/plant_antismash_icon_white.svg
-    touch ${prefix}/images/plus-circle.svg
-    touch ${prefix}/images/question-circle-solid.svg
-    touch ${prefix}/images/search-solid.svg
     touch ${prefix}/index.html
     touch ${prefix}/js/antismash.js
     touch ${prefix}/js/jquery.js
-    touch ${prefix}/js/jquery.tablesorter.min.js
     touch ${prefix}/regions.js
     touch ${prefix}/test.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+        antismash-lite: $VERSION
     END_VERSIONS
     """
 }

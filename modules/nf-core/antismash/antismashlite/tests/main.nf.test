@@ -60,25 +60,13 @@ nextflow_process {
             }
         }
 
-        run("GUNZIP", alias: "GUNZIP1") {
+        run("GUNZIP") {
             script "modules/nf-core/gunzip/main.nf"
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        run("GUNZIP", alias: "GUNZIP2") {
-            script "modules/nf-core/gunzip/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gff_gz'], checkIfExists: true)
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true)
                 ]
                 """
             }
@@ -90,10 +78,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GUNZIP1.out.gunzip
-                input[1] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database
-                input[2] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir
-                input[3] = GUNZIP2.out.gunzip.map{ it[1] }
+                input[0] = GUNZIP.out.gunzip
+                input[1] = "/home/jasmin/antismash7_db"
+                input[2] = "/home/jasmin/miniconda3/envs/antismashlite710/lib/python3.10/site-packages/antismash"
+                input[3] = []
                 """
             }
         }
