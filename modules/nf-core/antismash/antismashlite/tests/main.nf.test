@@ -79,8 +79,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = "/home/jasmin/antismash7_db"
-                input[2] = "/home/jasmin/miniconda3/envs/antismashlite710/lib/python3.10/site-packages/antismash"
+                input[1] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database
+                input[2] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir
                 input[3] = []
                 """
             }
@@ -108,10 +108,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GUNZIP1.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 input[1] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database
                 input[2] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir
-                input[3] = GUNZIP2.out.gunzip.map{ it[1] }
+                input[3] = []
                 """
             }
         }
