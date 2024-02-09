@@ -31,7 +31,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
         header = header,
         row.names = row.names,
         check.names = check.names,
-        gstringsAsFactors = stringsAsFactors
+        stringsAsFactors = stringsAsFactors
     )
 }
 
@@ -169,7 +169,7 @@ se <- SummarizedExperiment(
 if ('$coldata' != ''){
     coldata <- parse_metadata(
         metadata_path = '$coldata',
-        gids = colnames(assay_list[[1]]),
+        ids = colnames(assay_list[[1]]),
         metadata_id_col = args_opt\$coldata_id_col
     )
 
@@ -185,7 +185,7 @@ if ('$coldata' != ''){
 if ('$rowdata' != ''){
     rowdata <- parse_metadata(
         metadata_path = '$rowdata',
-        gids = rownames(assay_list[[1]]),
+        ids = rownames(assay_list[[1]]),
         metadata_id_col = args_opt\$rowdata_id_col
     )
 
