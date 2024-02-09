@@ -18,6 +18,7 @@ process QUARTONOTEBOOK {
 
     output:
     tuple val(meta), path("*.html")     , emit: html
+    tuple val(meta), path("${notebook}"), emit: notebook
     tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
     tuple val(meta), path("params.yml") , emit: params_yaml, optional: true
     tuple val(meta), path("_extensions"), emit: extensions, optional: true
