@@ -27,6 +27,8 @@ process NFTEST_MODULE {
     # TODO cd $full_repo
     nf-test test tests/*.nf.test \\
         --profile docker \\
-        $snapshot
+        $snapshot \\
+        --silent \\
+        --verbose
     """
 }
