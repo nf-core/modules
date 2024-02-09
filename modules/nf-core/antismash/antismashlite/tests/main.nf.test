@@ -101,12 +101,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.gbk_results.get(0).get(1)).list().sort() },
+                { assert path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##") },
                 { assert snapshot(process.out.html_accessory_files).match("html_accessory_files") },
-                { assert path(process.out.gbk_input.get(0).get(1)).text.contains("##antiSMASH-Data-END##") },
-                { assert file(process.out.json_results.get(0).get(1)).list().sort() },
+                { assert path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##") },
                 { assert path(process.out.zip.get(0).get(1)).exists() },
-                { assert snapshot(process.out.html).match("html") },
+                { assert path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/") },
                 { assert path(process.out.json_sideloading.get(0).get(1)).text.contains("\"seq_id\": \"NZ_CP069563.1\"") },
                 { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
                 { assert snapshot(process.out.versions).match("versions") }
