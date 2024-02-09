@@ -29,6 +29,9 @@ process QUARTONOTEBOOK {
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
+    // This is because of issues with getting a homogenous environment across
+    // both AMD64 and ARM64 architectures; please find more information at
+    // https://github.com/nf-core/modules/pull/4876#discussion_r1483541037.
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "The QUARTONOTEBOOK module does not support Conda/Mamba, please use Docker / Singularity / Podman instead."
     }
