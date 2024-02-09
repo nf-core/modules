@@ -19,7 +19,7 @@ process NFTEST_MODULE {
     val update_snapshot
 
     output:
-    path "*.snap", emit: snapshot
+    path "*.snap", emit: snapshot, optional: true
 
     script:
     // TODO if update_snapshot then --updateSnapshot
@@ -27,5 +27,4 @@ process NFTEST_MODULE {
     # TODO cd $full_repo
     nf-test test tests/*.nf.test --profile docker
     """
-
 }
