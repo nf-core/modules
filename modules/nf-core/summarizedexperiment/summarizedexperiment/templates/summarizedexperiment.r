@@ -118,7 +118,7 @@ parse_metadata <- function(metadata_path, ids, metadata_id_col = NULL){
 
     metadata <- read_delim_flexible(metadata_path, stringsAsFactors = FALSE, header = TRUE)
     if (is.null(metadata_id_col)){
-        metadata_id_col <- findColumnWithAllEntries(ids, metadata)    g
+        metadata_id_col <- findColumnWithAllEntries(ids, metadata)
     }
 
     # Allow for duplicate rows by the id column
