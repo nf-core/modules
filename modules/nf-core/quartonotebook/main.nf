@@ -63,6 +63,10 @@ process QUARTONOTEBOOK {
     # Create output directory
     mkdir artifacts
 
+    # Set environment variables needed for Quarto rendering
+    export XDG_CACHE_HOME="./.xdg_cache_home"
+    export XDG_DATA_HOME="./.xdg_data_home"
+
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
     export MKL_NUM_THREADS="$task.cpus"
     export OPENBLAS_NUM_THREADS="$task.cpus"
