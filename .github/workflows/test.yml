@@ -104,7 +104,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow
-        uses: MillironX/setup-nextflow@feature/api-switch@v1
+        uses: MillironX/setup-nextflow@feature/api-switch
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
@@ -346,7 +346,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow ${{ matrix.NXF_VER }}
-        uses: MillironX/setup-nextflow@feature/api-switch@v1
+        uses: MillironX/setup-nextflow@feature/api-switch
         with:
           version: "${{ matrix.NXF_VER }}"
 
@@ -544,7 +544,7 @@ jobs:
           java-version: "17"
 
       - name: Setup Nextflow
-        uses: MillironX/setup-nextflow@feature/api-switch@v1
+        uses: MillironX/setup-nextflow@feature/api-switch
 
       - name: Look if nf-test is already installed and write to env variable
         id: check-nftest
