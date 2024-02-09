@@ -1,5 +1,5 @@
-params.module_nf_file = "../modules/nf-core/samtools/view/main.nf"
-params.module_test_file = "../modules/nf-core/samtools/view/tests/main.nf.test"
+params.module_nf_file = "./modules/nf-core/samtools/view/main.nf"
+params.module_test_file = "./modules/nf-core/samtools/view/tests"
 params.repo = "../../modules/"
 
 workflow {
@@ -25,7 +25,7 @@ process NFTEST_MODULE {
     // TODO if update_snapshot then --updateSnapshot
     """
     # TODO cd $full_repo
-    nf-test test ${test_file} ${update_snapshot} --profile docker
+    nf-test test tests/*.nf.test --profile docker
     """
 
 }
