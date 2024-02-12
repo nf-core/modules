@@ -9,7 +9,7 @@ nextflow_process {
     tag "samtools"
     tag "samtools/view"
 
-    test("sarscov2 - [bam, []], [], []") {
+    test("bam") {
 
         when {
             process {
@@ -28,21 +28,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.sam,
-                    process.out.bai,
-                    process.out.crai,
-                    process.out.csi,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bam") },
+                { assert snapshot(process.out.bai).match("bam_bai") },
+                { assert snapshot(process.out.crai).match("bam_crai") },
+                { assert snapshot(process.out.cram).match("bam_cram") },
+                { assert snapshot(process.out.csi).match("bam_csi") },
+                { assert snapshot(process.out.sam).match("bam_sam") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
             )
         }
-
     }
 
-    test("homo_sapiens - [cram, crai], fasta, []") {
+    test("cram") {
 
         when {
             process {
@@ -64,21 +61,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    process.out.bam,
-                    process.out.sam,
-                    process.out.bai,
-                    process.out.crai,
-                    process.out.csi,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.cram[0][1]).name).match("cram_cram") },
+                { assert snapshot(process.out.bai).match("cram_bai") },
+                { assert snapshot(process.out.bam).match("cram_bam") },
+                { assert snapshot(process.out.crai).match("cram_crai") },
+                { assert snapshot(process.out.csi).match("cram_csi") },
+                { assert snapshot(process.out.sam).match("cram_sam") },
+                { assert snapshot(process.out.versions).match("cram_versions") }
             )
         }
-
     }
 
-    test("homo_sapiens - [cram, []], fasta, [] - bam output") {
+    test("cram_to_bam") {
 
         config "./bam.config"
 
@@ -102,21 +96,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.sam,
-                    process.out.bai,
-                    process.out.crai,
-                    process.out.csi,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_bam") },
+                { assert snapshot(process.out.bai).match("cram_to_bam_bai") },
+                { assert snapshot(process.out.crai).match("cram_to_bam_crai") },
+                { assert snapshot(process.out.cram).match("cram_to_bam_cram") },
+                { assert snapshot(process.out.csi).match("cram_to_bam_csi") },
+                { assert snapshot(process.out.sam).match("cram_to_bam_sam") },
+                { assert snapshot(process.out.versions).match("cram_to_bam_versions") }
             )
         }
-
     }
 
-    test("homo_sapiens - [cram, []], fasta, [] - bam & index output") {
+    test("cram_to_bam_index") {
 
         config "./bam_index.config"
 
@@ -140,21 +131,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.sam,
-                    file(process.out.csi[0][1]).name,
-                    process.out.crai,
-                    process.out.bai,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_index_bam") },
+                { assert snapshot(file(process.out.csi[0][1]).name).match("cram_to_bam_index_csi") },
+                { assert snapshot(process.out.bai).match("cram_to_bam_index_bai") },
+                { assert snapshot(process.out.crai).match("cram_to_bam_index_crai") },
+                { assert snapshot(process.out.cram).match("cram_to_bam_index_cram") },
+                { assert snapshot(process.out.sam).match("cram_to_bam_index_sam") },
+                { assert snapshot(process.out.versions).match("cram_to_bam_index_versions") }
             )
         }
-
     }
 
-    test("homo_sapiens - [cram, []], fasta, qname - bam & index output") {
+    test("cram_to_bam_index_qname") {
 
         config "./bam_index.config"
 
@@ -178,21 +166,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.sam,
-                    file(process.out.csi[0][1]).name,
-                    process.out.crai,
-                    process.out.bai,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_index_qname_bam") },
+                { assert snapshot(file(process.out.csi[0][1]).name).match("cram_to_bam_index_qname_csi") },
+                { assert snapshot(process.out.bai).match("cram_to_bam_index_qname_bai") },
+                { assert snapshot(process.out.crai).match("cram_to_bam_index_qname_crai") },
+                { assert snapshot(process.out.cram).match("cram_to_bam_index_qname_cram") },
+                { assert snapshot(process.out.sam).match("cram_to_bam_index_qname_sam") },
+                { assert snapshot(process.out.versions).match("cram_to_bam_index_qname_versions") }
             )
         }
-
     }
 
-    test("sarscov2 - [bam, []], [], [] - stub") {
+    test("bam_stub") {
 
         options "-stub"
         config "./bam_index.config"
@@ -214,18 +199,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.cram,
-                    process.out.sam,
-                    file(process.out.csi[0][1]).name,
-                    process.out.crai,
-                    process.out.bai,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_stub_bam") },
+                { assert snapshot(file(process.out.csi[0][1]).name).match("bam_stub_csi") },
+                { assert snapshot(process.out.bai).match("bam_stub_bai") },
+                { assert snapshot(process.out.crai).match("bam_stub_crai") },
+                { assert snapshot(process.out.cram).match("bam_stub_cram") },
+                { assert snapshot(process.out.sam).match("bam_stub_sam") },
+                { assert snapshot(process.out.versions).match("bam_stub_versions") }
             )
         }
-
     }
-
 }
