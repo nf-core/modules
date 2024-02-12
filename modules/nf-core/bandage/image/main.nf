@@ -2,7 +2,7 @@ process BANDAGE_IMAGE {
     tag "${meta.id}"
     label 'process_low'
 
-    conda 'modules/nf-core/bandage/image/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2' :
         'biocontainers/bandage:0.8.1--hc9558a2_2' }"

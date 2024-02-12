@@ -2,7 +2,7 @@ process STRINGTIE_STRINGTIE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/stringtie/stringtie/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2' :
         'biocontainers/stringtie:2.2.1--hecb563c_2' }"

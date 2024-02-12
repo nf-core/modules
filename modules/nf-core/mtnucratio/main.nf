@@ -2,7 +2,7 @@ process MTNUCRATIO {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/mtnucratio/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
         'biocontainers/mtnucratio:0.7--hdfd78af_2' }"

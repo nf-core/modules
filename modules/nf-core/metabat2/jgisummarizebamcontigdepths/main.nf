@@ -2,7 +2,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/metabat2/jgisummarizebamcontigdepths/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabat2:2.15--h986a166_1' :
         'biocontainers/metabat2:2.15--h986a166_1' }"

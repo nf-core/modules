@@ -2,7 +2,7 @@ process MAGECK_TEST {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/mageck/test/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mageck:0.5.9--py37h6bb024c_0':
         'biocontainers/mageck:0.5.9--py37h6bb024c_0' }"

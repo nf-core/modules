@@ -4,7 +4,7 @@ process PAIRTOOLS_DEDUP {
 
     // Pinning numpy to 1.23 until https://github.com/open2c/pairtools/issues/170 is resolved
     // Not an issue with the biocontainers because they were built prior to numpy 1.24
-    conda 'modules/nf-core/pairtools/dedup/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.0.2--py39h2a9f597_0' :
         'biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"

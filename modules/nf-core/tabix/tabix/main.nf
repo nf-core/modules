@@ -2,7 +2,7 @@ process TABIX_TABIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/tabix/tabix/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
         'biocontainers/tabix:1.11--hdfd78af_0' }"

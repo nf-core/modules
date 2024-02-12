@@ -2,7 +2,7 @@ process PIRATE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/pirate/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pirate:1.0.4--hdfd78af_2' :
         'biocontainers/pirate:1.0.4--hdfd78af_2' }"

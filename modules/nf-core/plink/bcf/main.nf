@@ -2,7 +2,7 @@ process PLINK_BCF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/plink/bcf/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
         'biocontainers/plink:1.90b6.21--h779adbc_1' }"

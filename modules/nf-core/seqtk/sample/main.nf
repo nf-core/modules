@@ -2,7 +2,7 @@ process SEQTK_SAMPLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/seqtk/sample/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
         'biocontainers/seqtk:1.3--h5bf99c6_3' }"
