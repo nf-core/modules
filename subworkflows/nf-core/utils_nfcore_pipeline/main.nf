@@ -247,9 +247,32 @@ def logColours(monochrome_logs=true) {
 }
 
 //
+// Attach the multiqc report to email
+//
+def attachMultiqcReport(multiqc_report) {
+    def mqc_report = null
+    try {
+        if (workflow.success) {
+            mqc_report = multiqc_report.getVal()
+            if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
+                if (mqc_report.size() > 1) {
+                    log.warn "[$workflow.manifest.name] Found multiple reports from process 'MULTIQC', will use only one"
+                }
+                mqc_report = mqc_report[0]
+            }
+        }
+    } catch (all) {
+        if (multiqc_report) {
+            log.warn "[$workflow.manifest.name] Could not attach MultiQC report to summary email"
+        }
+    }
+    return mqc_report
+}
+
+//
 // Construct and send completion email
 //
-def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true, multiqc_report=[]) {
+def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true, multiqc_report=null) {
 
     // Set up the e-mail variables
     def subject = "[$workflow.manifest.name] Successful: $workflow.runName"
@@ -288,22 +311,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     email_fields['summary']      = summary << misc_fields
 
     // On success try attach the multiqc report
-    def mqc_report = null
-    try {
-        if (workflow.success) {
-            mqc_report = multiqc_report.getVal()
-            if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
-                if (mqc_report.size() > 1) {
-                    log.warn "[$workflow.manifest.name] Found multiple reports from process 'MULTIQC', will use only one"
-                }
-                mqc_report = mqc_report[0]
-            }
-        }
-    } catch (all) {
-        if (multiqc_report) {
-            log.warn "[$workflow.manifest.name] Could not attach MultiQC report to summary email"
-        }
-    }
+    def mqc_report = attachMultiqcReport(multiqc_report)
 
     // Check if we are only sending emails on failure
     def email_address = email
