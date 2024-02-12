@@ -16,7 +16,6 @@ nextflow_process {
 
         setup {
             run("TCOFFEE_SEQREFORMAT") {
-                config "./tcoffee.config"
                 script "../../tcoffee/seqreformat/main.nf"
                 process {
                     """
@@ -47,3 +46,4 @@ nextflow_process {
         }
 
     }
+}
