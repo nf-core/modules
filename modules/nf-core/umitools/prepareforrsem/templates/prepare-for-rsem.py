@@ -295,18 +295,18 @@ if __name__ == "__main__":
         prefix = ''
 
     command_line = f"--stdin=$bam --stdout={prefix}bam --log={prefix}prepare_for_rsem.log $task.ext.args"
-    
+
     # Convert the string into a list mimicking sys.argv
     argv = ["script_name"] + shlex.split(command_line)
-   
+
     # Run the script and record error code
     exit_code = main(argv)
-    
+
     # Write the versions
     versions_this_module = {}
     versions_this_module["${task.process}"] = {"python": platform.python_version(), "UMI-tools": U.__version__}
     with open("versions.yml", "w") as f:
         f.write(format_yaml_like(versions_this_module))
-    
+
     # Exit with correct error code
     sys.exit(exit_code)

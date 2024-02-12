@@ -21,7 +21,7 @@ process UMITOOLS_PREPAREFORRSEM {
 
     script:
     template 'prepare-for-rsem.py'
-    
+
     stub:
     """
     touch ${meta.id}.bam
