@@ -9,7 +9,7 @@ nextflow_process {
     tag "samtools"
     tag "samtools/mpileup"
 
-    test("sarscov2 - [bam, []], fasta") {
+    test("bam_bed") {
 
         when {
             process {
@@ -27,16 +27,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.mpileup[0][1]).linesGzip[0..6],
-                    process.out.versions
-                ).match() }
+                { assert snapshot(path(process.out.mpileup[0][1]).linesGzip[0..6]).match("bam_bed_mpileup") },
+                { assert snapshot(process.out.versions).match("bam_bed_versions") }
             )
         }
-
     }
 
-    test("sarscov2 - [bam, bed], fasta") {
+    test("bam_bed_fasta") {
 
         when {
             process {
@@ -54,13 +51,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.mpileup[0][1]).linesGzip[0..6],
-                    process.out.versions
-                ).match() }
+                { assert snapshot(path(process.out.mpileup[0][1]).linesGzip[0..6]).match("bam_bed_fasta_mpileup") },
+                { assert snapshot(process.out.versions).match("bam_bed_fasta_versions") }
             )
         }
-
     }
-
 }
