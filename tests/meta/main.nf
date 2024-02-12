@@ -17,6 +17,8 @@ workflow {
 }
 
 process NFTEST_MODULE {
+    tag "$module_file"
+
     input:
     path module_file
     path test_file
