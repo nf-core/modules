@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process PYCOQC"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PYCOQC"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pycoqc"
+
+    test("sarscov2 nanopore [sequencing_summary.txt]") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['sarscov2']['nanopore']['test_sequencing_summary'], checkIfExists: true)
+                            ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.html.get(0).get(1) ==~ ".*/test.html" },
+                {
+                    with (process.out.json.get(0)) {
+                        assert snapshot(path(get(1)).json['All Reads']).match("all_reads")
+                    }
+                }
+            )
+        }
+
+    }
+
+}

@@ -2,7 +2,7 @@ process ULTRA_INDEX {
     tag "$gtf"
     label 'process_low'
 
-    conda 'modules/nf-core/ultra/index/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1':
         'biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"

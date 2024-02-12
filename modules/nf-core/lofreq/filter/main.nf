@@ -2,7 +2,7 @@ process LOFREQ_FILTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/lofreq/filter/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"

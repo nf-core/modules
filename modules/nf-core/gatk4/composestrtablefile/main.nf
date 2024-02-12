@@ -2,7 +2,7 @@ process GATK4_COMPOSESTRTABLEFILE {
     tag "$fasta"
     label 'process_low'
 
-    conda 'modules/nf-core/gatk4/composestrtablefile/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
         'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"

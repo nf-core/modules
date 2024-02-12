@@ -2,7 +2,7 @@ process VRHYME_VRHYME {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/vrhyme/vrhyme/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
         'biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"

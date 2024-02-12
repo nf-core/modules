@@ -2,7 +2,7 @@ process DEDUP {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/dedup/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dedup:0.12.8--hdfd78af_1' :
         'biocontainers/dedup:0.12.8--hdfd78af_1' }"

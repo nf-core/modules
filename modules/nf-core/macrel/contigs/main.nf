@@ -2,7 +2,7 @@ process MACREL_CONTIGS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/macrel/contigs/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macrel:1.2.0--pyh5e36f6f_0':
         'biocontainers/macrel:1.2.0--pyh5e36f6f_0' }"

@@ -2,7 +2,7 @@ process BISMARK_GENOMEPREPARATION {
     tag "$fasta"
     label 'process_high'
 
-    conda 'modules/nf-core/bismark/genomepreparation/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
         'biocontainers/bismark:0.24.0--hdfd78af_0' }"

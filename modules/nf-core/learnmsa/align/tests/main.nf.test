@@ -1,0 +1,35 @@
+// nf-core modules test learnmsa/align
+nextflow_process {
+
+    name "Test Process LEARNMSA_ALIGN"
+    script "../main.nf"
+    process "LEARNMSA_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "learnmsa"
+    tag "learnmsa/align"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
+                { assert snapshot(process.out.versions).match("versions_structure") }
+            )
+        }
+
+    }
+
+}

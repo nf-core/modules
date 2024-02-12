@@ -3,7 +3,7 @@ process SAM2LCA_ANALYZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/sam2lca/analyze/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sam2lca:1.1.2--pyhdfd78af_1':
         'biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"

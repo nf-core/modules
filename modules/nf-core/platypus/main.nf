@@ -6,7 +6,7 @@ process PLATYPUS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/platypus/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1':
         'biocontainers/platypus-variant:0.8.1--py27_1' }"

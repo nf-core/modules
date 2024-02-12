@@ -2,7 +2,7 @@ process TRIMGALORE {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/trimgalore/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trim-galore:0.6.7--hdfd78af_0' :
         'biocontainers/trim-galore:0.6.7--hdfd78af_0' }"

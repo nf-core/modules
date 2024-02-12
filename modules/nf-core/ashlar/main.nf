@@ -2,7 +2,7 @@ process ASHLAR {
     tag '$meta.id'
     label 'process_single'
 
-    conda 'modules/nf-core/ashlar/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ashlar:1.17.0--pyh5e36f6f_0' :
         'biocontainers/ashlar:1.17.0--pyh5e36f6f_0' }"

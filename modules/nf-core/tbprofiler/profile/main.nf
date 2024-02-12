@@ -2,7 +2,7 @@ process TBPROFILER_PROFILE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/tbprofiler/profile/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tb-profiler:3.0.8--pypyh5e36f6f_0' :
         'biocontainers/tb-profiler:3.0.8--pypyh5e36f6f_0' }"

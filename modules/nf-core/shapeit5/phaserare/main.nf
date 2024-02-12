@@ -12,7 +12,7 @@ process SHAPEIT5_PHASERARE {
     fi
     """
 
-    conda 'modules/nf-core/shapeit5/phaserare/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
         'biocontainers/shapeit5:1.0.0--h0c8ee15_0' }"

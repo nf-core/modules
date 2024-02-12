@@ -2,7 +2,7 @@ process SNAPALIGNER_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    conda 'modules/nf-core/snapaligner/index/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.3--hd03093a_0':
         'biocontainers/snap-aligner:2.0.3--hd03093a_0' }"
