@@ -3,7 +3,7 @@ process UMITOOLS_PREPAREFORRSEM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::umi_tools=1.1.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/umi_tools:1.1.4--py38hbff2b2d_1' :
         'biocontainers/umi_tools:1.1.4--py38hbff2b2d_1' }"
