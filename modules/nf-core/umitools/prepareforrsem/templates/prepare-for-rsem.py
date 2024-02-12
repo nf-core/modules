@@ -14,7 +14,8 @@ Salmon quant and RSEM as discussed in the issue below:
 https://github.com/CGATOxford/UMI-tools/issues/465
 
 When the "umi_tools prepare-for-rsem" command becomes available in an official
-UMI-tools release this script will be replaced and deprecated.
+UMI-tools release this template script will be replaced with the native
+umi_tools command.
 
 Commit:
 https://github.com/CGATOxford/UMI-tools/blob/bf8608d6a172c5ca0dcf33c126b4e23429177a72/umi_tools/prepare-for-rsem.py
