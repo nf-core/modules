@@ -29,7 +29,7 @@ process UMITOOLS_PREPAREFORRSEM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
+        umitools: \$( umi_tools --version | sed '/version:/!d; s/.*: //' )
     END_VERSIONS
     """
 }

@@ -305,7 +305,7 @@ if __name__ == "__main__":
 
     # Write the versions
     versions_this_module = {}
-    versions_this_module["${task.process}"] = {"python": platform.python_version(), "UMI-tools": U.__version__}
+    versions_this_module["${task.process}"] = {"umitools": U.__version__}
     with open("versions.yml", "w") as f:
         f.write(format_yaml_like(versions_this_module))
 
