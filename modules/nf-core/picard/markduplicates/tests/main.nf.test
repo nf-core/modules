@@ -9,23 +9,23 @@ nextflow_process {
     tag "picard"
     tag "picard/markduplicates"
 
-    test("sarscov2 - bam, fasta, fai - sorted bam") {
+    test("sarscov2 [unsorted bam]") {
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                ]
-                input[2] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -33,32 +33,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("unsorted_bam_name") },
+                { assert snapshot(path(process.out.metrics.get(0).get(1)).readLines()[0..2]).match("unsorted_bam_metrics") },
+                { assert snapshot(process.out.versions).match("unsorted_bam_versions") }
             )
         }
     }
 
-    test("sarscov2 - bam, fasta, fai - unsorted bam") {
+    test("sarscov2 [sorted bam]") {
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-                ]
-                input[1] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                ]
-                input[2] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -66,32 +64,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("sorted_bam_name") },
+                { assert snapshot(path(process.out.metrics.get(0).get(1)).readLines()[0..2]).match("sorted_bam_metrics") },
+                { assert snapshot(process.out.versions).match("sorted_bam_versions") }
             )
         }
     }
 
-   test("homo_sapiens - cram, fasta, fai") {
+    test("homo_sapiens [cram]") {
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
-                ]
-                input[1] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
-                input[2] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
                     [ id:'genome' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -99,13 +95,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    path(process.out.metrics.get(0).get(1)).readLines()[0..2],
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_name") },
+                { assert snapshot(path(process.out.metrics.get(0).get(1)).readLines()[0..2]).match("cram_metrics") },
+                { assert snapshot(process.out.versions).match("cram_versions") }
             )
         }
     }
-
 }
