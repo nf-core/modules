@@ -7,6 +7,15 @@ on:
   merge_group:
     types: [checks_requested]
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
 
 # Cancel if a newer run is started
 concurrency:
@@ -107,7 +116,7 @@ jobs:
           token: ""
 
   nf-core-lint:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-core-lint
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
@@ -160,7 +169,7 @@ jobs:
         if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
 
   pytest:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -459,7 +468,7 @@ jobs:
             !${{ github.workspace }}/.singularity
 
   nf-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-test
     needs: [nf-test-changes]
     if: needs.nf-test-changes.outputs.modules != '[]'
