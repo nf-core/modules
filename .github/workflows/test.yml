@@ -477,11 +477,17 @@ jobs:
           - profile: conda
             tags: backsub
           - profile: conda
+            tags: bakta/bakta
+          - profile: conda
+            tags: bakta/baktadbdownload
+          - profile: conda
             tags: bases2fastq
           - profile: conda
             tags: bcl2fastq
           - profile: conda
             tags: bclconvert
+          - profile: conda
+            tags: cellpose
           - profile: conda
             tags: cellranger/count
           - profile: conda
@@ -537,6 +543,8 @@ jobs:
           - profile: conda
             tags: merquryfk/ploidyplot
           - profile: conda
+            tags: quartonotebook
+          - profile: conda
             tags: sentieon/bwaindex
           - profile: conda
             tags: sentieon/bwamem
@@ -561,7 +569,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-      NFTEST_VER: "0.8.3"
+      NFTEST_VER: "0.8.4"
 
     steps:
       - uses: actions/checkout@v4
