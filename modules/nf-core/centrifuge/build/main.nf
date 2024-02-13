@@ -2,10 +2,10 @@ process CENTRIFUGE_BUILD {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::centrifuge=1.0.4_beta"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4_beta--h9a82719_6':
-        'biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
+        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.1--hdcf5f25_1' :
+        'biocontainers/centrifuge:1.0.4.1--hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -24,6 +24,7 @@ process CENTRIFUGE_BUILD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def size_table_cmd = size_table ? "--size_table ${size_table}" : ""
     """
     centrifuge-build \\
         -p $task.cpus \\
@@ -32,6 +33,7 @@ process CENTRIFUGE_BUILD {
         --conversion-table $conversion_table \\
         --taxonomy-tree $taxonomy_tree \\
         --name-table $name_table \\
+        ${size_table_cmd}
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
