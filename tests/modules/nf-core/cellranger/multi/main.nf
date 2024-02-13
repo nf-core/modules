@@ -213,7 +213,8 @@ workflow test_cellranger_multi_10k_pbmc {
         ch_cmo_reference,
         ch_cmo_barcodes,
         ch_cmo_sample_assignment,
-        ch_frna_sampleinfo
+        ch_frna_sampleinfo,
+        false // default to false to guarantee renaming during test
     )
 
 }
@@ -264,7 +265,8 @@ workflow test_cellranger_multi_10k_pbmc_cmo {
         ch_cmo_reference_10k_pbmc_cmo,
         ch_cmo_barcodes_10k_pbmc_cmo,
         ch_cmo_sample_assignment,
-        ch_frna_sampleinfo
+        ch_frna_sampleinfo,
+        false // default to false to guarantee renaming during test
     )
 }
 
@@ -312,6 +314,7 @@ workflow test_cellranger_multi_5k_cmvpos_tcells {
         ch_cmo_reference,
         ch_cmo_barcodes,
         ch_cmo_sample_assignment,
-        ch_frna_sampleinfo
+        ch_frna_sampleinfo,
+        false // default to false to guarantee renaming during test
     )
 }
