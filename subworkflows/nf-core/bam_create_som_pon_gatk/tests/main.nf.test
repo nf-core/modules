@@ -36,11 +36,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.mutect2_vcf.get(0).get(1) ==~ "*.vcf.gz" }
-                { assert workflow.out.mutect2_index.get(0).get(1) ==~ "*.vcf.gz.tbi" }
-                { assert workflow.out.mutect2_stats.get(0).get(1) ==~"*.stats"  }
-                { assert workflow.out.pon_vcf.get(0).get(1) ==~ "*.vcf.gz" }
-                { assert workflow.out.pon_index.get(0).get(1) ==~ "*.vcf.gz.tbi" }
+                { assert snapshot(file(process.out.mutect2_vcf.get(0).get(1)).name).match("test1.vcf.gz") },
+                { assert snapshot(file(process.out.mutect2_index.get(0).get(1)).name).match("test1.vcf.gz.tbi") },
+                { assert snapshot(file(process.out.mutect2_stats.get(0).get(1)).name).match("test1.vcf.gz.stats") },
+                { assert snapshot(file(process.out.pon_vcf.get(0).get(1)).name).match("test_panel.vcf.gz") },
+                { assert snapshot(file(process.out.pon_index.get(0).get(1)).name).match("test_panel.vcf.gz.tbi") },
             )
         }
     }
