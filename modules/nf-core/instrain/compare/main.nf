@@ -4,17 +4,20 @@ process INSTRAIN_COMPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/instrain:1.6.1--pyhdfd78af_0':
-        'biocontainers/instrain:1.6.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0':
+        'biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(profiles)
-    tuple val(meta2), path(bams)
+    tuple val(meta), path(bams), path(profiles)
     path stb_file
 
     output:
-    tuple val(meta), path("*.IS_compare")   , emit: compare
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.IS_compare")                                               , emit: compare
+    tuple val(meta), path("*.IS_compare/output/*.IS_compare_comparisonsTable.tsv")      , emit: comparisons_table   , optional: true
+    tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_data.tsv")       , emit: pooled_snv
+    tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_data_keys.tsv")  , emit: snv_keys
+    tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_info.tsv")       , emit: snv_info
+    path "versions.yml"                                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

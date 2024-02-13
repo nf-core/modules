@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process GENMOD_COMPOUND"
+    script "modules/nf-core/genmod/compound/main.nf"
+    process "GENMOD_COMPOUND"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmod"
+    tag "genmod/compound"
+
+    test("genmod_compound") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['homo_sapiens']['genome']['genmod_compound_vcf_mt'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+    }
+
+}

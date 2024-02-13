@@ -1,49 +1,112 @@
 {
-    "se_versions": {
+    "sarscov2 single_end-for_stub_match": {
         "content": [
             [
-                "versions.yml:md5,96553a18cad5237fbf76d5a6c966360e"
+                "test.non_rRNA.fastq.gz",
+                "test.sortmerna.log",
+                "{id=test}"
             ]
         ],
-        "timestamp": "2023-11-22T14:25:07.95908694"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:28:29.197913"
     },
-    "pe_reads": {
+    "sarscov2 paired_end_match": {
         "content": [
             [
+                "{id=test}",
                 [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.non_rRNA.fastq.gz:md5,e62ff0123a74adfc6903d59a449cbdb0",
-                        "test_2.non_rRNA.fastq.gz:md5,e62ff0123a74adfc6903d59a449cbdb0"
-                    ]
-                ]
+                    "test_1.non_rRNA.fastq.gz",
+                    "test_2.non_rRNA.fastq.gz"
+                ],
+                "test.sortmerna.log"
             ]
         ],
-        "timestamp": "2023-11-22T14:25:19.098771475"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:28:49.914992"
     },
-    "se_reads": {
+    "versions_paired_end_stub": {
         "content": [
             [
+                "versions.yml:md5,5a099f3eea59b9deee96deffcf3387f5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:27:11.223149"
+    },
+    "versions_paired_end": {
+        "content": [
+            [
+                "versions.yml:md5,5a099f3eea59b9deee96deffcf3387f5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:27:04.517155"
+    },
+    "versions_single_end": {
+        "content": [
+            [
+                "versions.yml:md5,7df9d50209f351e1f75e05a1fad6ba4b"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T12:10:22.534568982"
+    },
+    "versions_single_end_stub": {
+        "content": [
+            [
+                "versions.yml:md5,7df9d50209f351e1f75e05a1fad6ba4b"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T12:10:35.228450189"
+    },
+    "sarscov2 single_end_match": {
+        "content": [
+            [
+                "test.non_rRNA.fastq.gz",
+                "test.sortmerna.log",
+                "{id=test}"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:28:23.20327"
+    },
+    "sarscov2 paired_end-for_stub_match": {
+        "content": [
+            [
+                "{id=test}",
                 [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.non_rRNA.fastq.gz:md5,e62ff0123a74adfc6903d59a449cbdb0"
-                ]
+                    "test_1.non_rRNA.fastq.gz",
+                    "test_2.non_rRNA.fastq.gz"
+                ],
+                "test.sortmerna.log"
             ]
         ],
-        "timestamp": "2023-11-22T14:25:07.949212892"
-    },
-    "pe_versions": {
-        "content": [
-            [
-                "versions.yml:md5,96553a18cad5237fbf76d5a6c966360e"
-            ]
-        ],
-        "timestamp": "2023-11-22T14:25:19.105098985"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-07T12:28:56.063579"
     }
 }
