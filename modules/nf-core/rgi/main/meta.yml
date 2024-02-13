@@ -13,18 +13,24 @@ tools:
       doi: "10.1093/nar/gkz935"
       licence: ["https://card.mcmaster.ca/about"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Nucleotide or protein sequences in FASTA format
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
   - wildcard:
       type: string
-      description: Include WildCARD database (optional) 
-      pattern: "{yes,no}"
-  - db_card:
+      description: Include WildCARD database?
+      pattern: "{"yes",*}"
+  - database:
       type: directory
-      description: Directory containing the CARD database
+      description: Directory containing the CARD and/or WildCARD database
       pattern: "*/"
-  - db_wildcard:
-      type: directory
-      description: Directory containing the WildCARD database
-      pattern: "*/"
+
 output:
   - meta:
       type: map
@@ -47,6 +53,10 @@ output:
       type: directory
       description: Directory containing various intermediate files
       pattern: "temp/"
+  - db_dir:
+      type: directory
+      description: Directory containing all database files (either CARD or CARD + WildCARD)
+      pattern: "database_output/"
   - tool_version:
       type: string
       description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
