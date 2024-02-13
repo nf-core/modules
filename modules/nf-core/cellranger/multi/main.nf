@@ -24,6 +24,7 @@ process CELLRANGER_MULTI {
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
     path frna_sampleinfo       , stageAs: "references/frna/*"
+    val skip_renaming
 
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config

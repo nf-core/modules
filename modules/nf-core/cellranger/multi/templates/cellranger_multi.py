@@ -61,9 +61,18 @@ for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
     final_dir = Path(f"./fastq_all/{subdir}")
     final_dir.mkdir(exist_ok=True)
 
-    # rename
-    r1.rename(fastq_all / subdir / f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz")
-    r2.rename(fastq_all / subdir / f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz")
+    # will we rename the files or just move it with the same name to
+    # the 'fastq_all' directory which is where files are expected?
+    if "${skip_renaming}" == "true": # nf variables are true/false, which are different from Python
+        resolved_name_r1 = str(r1).split('/')[-1]
+        resolved_name_r2 = str(r2).split('/')[-1]
+    else:
+        resolved_name_r1 = f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz"
+        resolved_name_r2 = f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz"
+
+    # rename or just move
+    r1.rename(fastq_all / subdir / resolved_name_r1 )
+    r2.rename(fastq_all / subdir / resolved_name_r2 )
 
 #
 # fix relative paths from main.nf
