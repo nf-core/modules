@@ -9,19 +9,19 @@ nextflow_process {
     tag "samtools"
     tag "samtools/calmd"
 
-    test("homo_sapiens - bam") {
+    test("bam") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
-                    [id:'fasta'],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -29,30 +29,28 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_reads") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
             )
         }
 
     }
 
-    test("homo_sapiens - bam - stub") {
+    test("bam_stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
-                    [id:'fasta'],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -60,10 +58,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_stub_reads") },
+                { assert snapshot(process.out.versions).match("bam_stub_versions") }
             )
         }
 
