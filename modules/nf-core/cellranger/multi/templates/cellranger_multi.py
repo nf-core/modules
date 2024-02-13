@@ -37,7 +37,7 @@ fastq_all.mkdir(exist_ok=True)
 # do not match "SRR12345", "file_INFIXR12", etc
 filename_pattern =  r'([^a-zA-Z0-9])R1([^a-zA-Z0-9])'
 
-for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2)):
+for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
     # double escapes are required because nextflow processes this python 'template'
     if re.sub(filename_pattern, r'\\1R2\\2', r1.name) != r2.name:
         raise AssertionError(
@@ -127,37 +127,28 @@ fastq_id,fastqs,lanes,feature_types
 {fastq_cmo}
 """
 
-with open("${config}", 'w') as file:
-    file.write(config_txt)
-
 #
 # check the extra data that is included
 #
 if len("${include_cmo}") > 0:
-    with open("${config}", 'a') as file, open("${cmo_barcodes}", 'r') as input_conf:
-        file.write("${include_cmo}\\n")
-        for line in input_conf:
-            file.write(line + "\\n")
+    with open("${cmo_barcodes}", 'r') as input_conf:
+        config_txt = config_txt + "\\n${include_cmo}\\n" + input_conf.read() + "\\n"
 
 if len("${include_beam}") > 0:
-    with open("${config}", 'a') as file, open("${beam_csv_text}", 'r') as input_conf, open("${beam_antigen_csv}", 'r') as input_csv:
-        file.write("${include_beam}\\n")
-        for line in input_conf:
-            file.write(line + "\\n")
-        file.write("[feature]\\n")
-        for line in input_csv:
-            file.write(line + "\\n")
+    with open("${beam_csv_text}", 'r') as input_conf, open("${beam_antigen_csv}", 'r') as input_csv:
+        config_txt = config_txt + "\\n${include_beam}\\n" + input_conf.read() + "\\n"
+        config_txt = config_txt + "[feature]\\n" + input_csv.read() + "\\n"
 
 if len("${include_frna}") > 0:
-    with open("${config}", 'a') as file, open("${frna_csv_text}", 'r') as input_conf:
-        file.write("${include_frna}\\n")
-        for line in input_conf:
-            file.write(line + "\\n")
+    with open("${frna_csv_text}", 'r') as input_conf:
+        config_txt = config_txt + "\\n${include_frna}\\n" + input_conf.read() + "\\n"
 
-# Remove blank lines from config file
-with open('tmp.txt', 'w') as file:
-    file.write( run(['grep', '-v', '-e', '^[[:space:]]*\$', "${config}"], capture_output=True, text=True).stdout )
-run(['mv', 'tmp.txt', "${config}"], check=True)
+# Remove blank lines from config text
+config_txt = "\\n".join( [line for line in config_txt.split("\\n") if line.strip() != ""] )
+
+# Save config file
+with open("${config}", 'w') as file:
+    file.write(config_txt)
 
 #
 # run cellranger multi
