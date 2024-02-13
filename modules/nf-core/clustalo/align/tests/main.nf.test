@@ -28,8 +28,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.alignment).match()},
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -52,8 +52,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment - compressed")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.alignment).match()},
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -90,8 +90,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("with_guide_tree_alignment")},
-                { assert snapshot(process.out.versions).match("with_guide_tree_versions") }
+                { assert snapshot(process.out.alignment).match()},
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
