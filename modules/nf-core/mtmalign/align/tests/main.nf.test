@@ -44,7 +44,7 @@ nextflow_process {
                     { assert path(process.out.alignment[0][1]).getText().contains(">3.pdb") },
                     { assert path(process.out.alignment[0][1]).getText().contains(">4.pdb") },
                     { assert path(process.out.alignment[0][1]).getText().contains(">5.pdb") },
-                    { assert snapshot(process.out.versions).match() }
+                    { assert snapshot(process.out.versions).match("versions") }
                     )
             }
         }
@@ -84,7 +84,7 @@ nextflow_process {
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">3.pdb") },
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">4.pdb") },
                     { assert path(process.out.alignment[0][1]).getTextGzip().contains(">5.pdb") },
-                    { assert snapshot(process.out.versions).match() }
+                    { assert snapshot(process.out.versions).match("versions") }
                     )
             }
         }
