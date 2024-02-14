@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Script for importing and processing transcript-level quantifications.
 # Written by Lorena Pantano, later modified by Jonathan Manning, and released
@@ -72,7 +72,7 @@ read_transcript_info <- function(tinfo_path){
         stop("tx2gene file is empty")
     }
 
-    transcript_info <- read.csv(tinfo_path, sep="\t", header = FALSE,
+    transcript_info <- read.csv(tinfo_path, sep="\t", header = TRUE,
                                 col.names = c("tx", "gene_id", "gene_name"))
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
