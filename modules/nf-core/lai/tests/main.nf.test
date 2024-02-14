@@ -15,15 +15,26 @@ nextflow_process {
     test("homo_sapiens-genome_21_fasta-success") {
 
         setup {
-            run("GT_SUFFIXERATOR") {
-                script "../../gt/suffixerator"
+
+            run("GUNZIP") {
+                script "../../gunzip"
 
                 process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        file('/Users/hrauxr/Projects/nf-modules/tests/data/zenodo/actinidia_chinensis/chr1_7M.fasta.gz', checkIfExists: true)
                     ]
+                    """
+                }
+            }
+
+            run("GT_SUFFIXERATOR") {
+                script "../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = GUNZIP.out.gunzip
                     input[1] = 'dna'
                     """
                 }
@@ -39,16 +50,33 @@ nextflow_process {
                 }
             }
 
+            run("LTRFINDER") {
+                script "../../ltrfinder"
+
+                process {
+                    """
+                    input[0] = GUNZIP.out.gunzip
+                    """
+                }
+            }
+
+            run("CAT_CAT") {
+                script "../../cat/cat"
+
+                process {
+                    """
+                    input[0] = GT_LTRHARVEST.out.tabout.mix(LTRFINDER.out.scn).groupTuple()
+                    """
+                }
+            }
+
             run("LTRRETRIEVER") {
                 script "../../ltrretriever"
 
                 process {
                     """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                    ]
-                    input[1] = GT_LTRHARVEST.out.tabout.map { meta, tabout -> tabout }
+                    input[0] = GUNZIP.out.gunzip
+                    input[1] = CAT_CAT.out.file_out.map { meta, tabout -> tabout }
                     input[2] = []
                     input[3] = []
                     input[4] = []
@@ -60,10 +88,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                ]
+                input[0] = GUNZIP.out.gunzip
                 input[1] = LTRRETRIEVER.out.pass_list.map { meta, pass_list -> pass_list }
                 input[2] = LTRRETRIEVER.out.annotation_out.map { meta, annotation_out -> annotation_out }
                 input[3] = []
@@ -74,10 +99,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.log.get(0).get(1)).text.contains("Dependency checking: Passed!") },
-                { assert path(process.out.log.get(0).get(1)).text.contains("Calculate LAI:") },
-                { assert path(process.out.log.get(0).get(1)).text.contains("Sorry, LAI is not applicable on the current genome assembly.") },
-                { assert process.out.lai_out == [] },
+                { assert path(process.out.log[0][1]).text.contains("Dependency checking: Passed!") },
+                { assert path(process.out.log[0][1]).text.contains("Calculate LAI:") },
+                { assert path(process.out.log[0][1]).text.contains("Done!") },
+                { assert path(process.out.log[0][1]).text.contains("Result file:") },
+                { assert Math.abs(Float.parseFloat(path(process.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
@@ -93,7 +119,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file('/Users/hrauxr/Projects/nf-modules/tests/data/zenodo/actinidia_chinensis/chr1_7M.fasta.gz', checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = []

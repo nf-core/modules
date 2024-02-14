@@ -28,27 +28,20 @@ process LAI {
     def lai_output_name = monoploid_seqs    ? "${annotation_out}.${monoploid_seqs}.out.LAI" : "${annotation_out}.LAI"
     def VERSION         = 'beta3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    # Remove comments from genome fasta,
-    # otherwise LAI triggers its sequence name change logic
-
-    sed \\
-        '/^>/ s/\\s.*\$//' \\
-        $fasta \\
-        > for_lai_no_comments.fsa
-
     LAI \\
-        -genome for_lai_no_comments.fsa \\
+        -genome $fasta \\
         -intact $pass_list \\
         -all $annotation_out \\
         -t $task.cpus \\
         $monoploid_param \\
         $args \\
-        > "${prefix}.LAI.log"
+        > >(tee "${prefix}.LAI.log") \\
+        || echo "LAI failed! See ${prefix}.LAI.log"
 
     mv \\
         $lai_output_name \\
         "${prefix}.LAI.out" \\
-        || echo "LAI did not produce the output file"
+        || echo "LAI failed to estimate assembly index. See ${prefix}.LAI.log"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
