@@ -22,9 +22,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).list()).match() },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).list()).match() }
-
+                {
+                    assert snapshot(
+                        file(process.out.vcf.get(0).get(1)).name,
+                        file(process.out.tbi.get(0).get(1)).name
+                    ).match("test_gatk4_mergevcfs")
+                },
             )
         }
 
@@ -43,8 +46,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).list()).match() },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).list()).match() }
+                {
+                    assert snapshot(
+                        file(process.out.vcf.get(0).get(1)).name,
+                        file(process.out.tbi.get(0).get(1)).name
+                    ).match("test_gatk4_mergevcfs_no_dict")
+                },
             )
         }
 
@@ -66,6 +73,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                {
+                    assert snapshot(
+                        file(process.out.vcf.get(0).get(1)).name,
+                        file(process.out.tbi.get(0).get(1)).name
+                    ).match("test_gatk4_mergevcfs_no_dict_stub")
+                },
             )
         }
 
