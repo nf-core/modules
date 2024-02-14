@@ -7,6 +7,15 @@ process RGI_MAIN {
         'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_0':
         'biocontainers/rgi:6.0.3--pyha8f3691_0' }"
 
+    containerOptions {
+        workflow.containerEngine == 'singularity' ?
+        "-B ~/miniconda3/envs/rgi603/lib/python3.8/site-packages/app/_db/.ncbirc:/usr/local/lib/python3.8/site-packages/app/_db/.ncbirc" :
+        workflow.containerEngine == 'docker' ?
+        "-v ~/miniconda3/envs/rgi603/lib/python3.8/site-packages/app/_db/.ncbirc:/usr/local/lib/python3.8/site-packages/app/_db/.ncbirc" :
+        ''
+    }
+
+
     input:
     tuple val(meta), path(fasta)
     val(wildcard)
@@ -16,7 +25,7 @@ process RGI_MAIN {
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt") , emit: tsv
     tuple val(meta), path("temp/") , emit: tmp
-    path("database_output/")       , emit: db_dir
+    path("database_output/")       , emit: db_out
     env RGI_VERSION                , emit: tool_version
     env DB_VERSION                 , emit: db_version
     path "versions.yml"            , emit: versions
@@ -37,23 +46,25 @@ process RGI_MAIN {
     db_process_cmd = "rgi card_annotation -i card.json"
     }
 
-    // if (wildcard.equalsIgnoreCase("yes")) {
-    //     load_wildcard = "--wildcard_annotation $database/wildcard_database_v\$DB_VERSION.fasta \\
-    //     --wildcard_annotation_all_models $database/wildcard_database_v\$DB_VERSION\\_all.fasta \\
-    //     --wildcard_index $database/wildcard/index-for-model-sequences.txt \\
-    //     --wildcard_version \$DB_VERSION \\
-    //     --amr_kmers $database/wildcard/all_amr_61mers.txt \\
-    //     --kmer_database $database/wildcard/61_kmer_db.json \\
-    //     --kmer_size 61"
-    //     if (!database) { // Download both DBs if no path is given
-    //         db_download_cmd = "wget https://card.mcmaster.ca/latest/data;tar -xvf data ./card.json;wget -O wildcard_data.tar.bz2 https://card.mcmaster.ca/latest/variants;mkdir -p wildcard;tar -xjf wildcard_data.tar.bz2 -C wildcard;gunzip wildcard/*.gz"
-    //         db_process_cmd = "rgi card_annotation -i card.json;rgi wildcard_annotation -i wildcard --card_json card.json -v \$DB_VERSION"
-    //         database = "."
-    // }
+    if (wildcard.equalsIgnoreCase("yes")) {
+        load_wildcard = """ \\
+            --wildcard_annotation $database/wildcard_database_v\$DB_VERSION.fasta \\
+            --wildcard_annotation_all_models $database/wildcard_database_v\$DB_VERSION\\_all.fasta \\
+            --wildcard_index $database/wildcard/index-for-model-sequences.txt \\
+            --amr_kmers $database/wildcard/all_amr_61mers.txt \\
+            --kmer_database $database/wildcard/61_kmer_db.json \\
+            --kmer_size 61
+        """
+        if (!database) { // Download both DBs if no path is given
+            db_download_cmd = "wget https://card.mcmaster.ca/latest/data;tar -xvf data ./card.json;wget -O wildcard_data.tar.bz2 https://card.mcmaster.ca/latest/variants;mkdir -p wildcard;tar -xjf wildcard_data.tar.bz2 -C wildcard;gunzip wildcard/*.gz"
+            db_process_cmd = "rgi card_annotation -i card.json > card_annotation.log 2>&;rgi wildcard_annotation -i wildcard --card_json card.json -v \$DB_VERSION > wildcard_annotation.log 2>&1"
+            database = "."
+        }
+    }
 
     """
     $db_download_cmd
-    DB_VERSION=\$(ls $database/card_database_*_all.fasta | sed 's/card_database_v\\([0-9].*[0-9]\\).*/\\1/')
+    DB_VERSION=\$(ls $database/card_database_*_all.fasta | sed 's/$database\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/')
     $db_process_cmd
     
     rgi \\
@@ -76,9 +87,27 @@ process RGI_MAIN {
     mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json temp/
 
     mkdir database_output
-    mv $database/* database_output
+    cp -r $database/* database_output
 
     RGI_VERSION=\$(rgi main --version)
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rgi: \$(echo \$RGI_VERSION)
+        rgi-database: \$(echo \$DB_VERSION)
+    END_VERSIONS
+    """
+
+stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p temp
+    touch test.json
+    touch test.txt
+    mkdir database_output
+
+    RGI_VERSION=\$(rgi main --version)
+    DB_VERSION=stub_version
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

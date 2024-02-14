@@ -25,7 +25,7 @@ input:
   - wildcard:
       type: string
       description: Include WildCARD database?
-      pattern: "{"yes",*}"
+      pattern: "{yes,*}"
   - database:
       type: directory
       description: Directory containing the CARD and/or WildCARD database
@@ -49,11 +49,11 @@ output:
       type: file
       description: Tab-delimited file with RGI results
       pattern: "*.{txt}"
-  - temp:
+  - tmp:
       type: directory
       description: Directory containing various intermediate files
       pattern: "temp/"
-  - db_dir:
+  - db_out:
       type: directory
       description: Directory containing all database files (either CARD or CARD + WildCARD)
       pattern: "database_output/"
