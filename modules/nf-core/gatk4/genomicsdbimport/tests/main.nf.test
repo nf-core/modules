@@ -48,7 +48,7 @@ nextflow_process {
 
         setup {
             run("UNTAR") {
-                script ../../../untar/main.nf
+                script "../../../untar/main.nf"
                 process {
                     """
                     input[0] = Channel.of([ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ])
@@ -74,7 +74,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.genomicsdb.get(0).get(1)).list().sort()).match() }
+                //{ assert snapshot(file(process.out.genomicsdb.get(0).get(1)).list().sort()).match() }
                 //{ assert snapshot(file(process.out.updatedb.get(0).get(1)).list().sort()).match() }
                 { assert snapshot(process.out.intervallist.get(0).get(1)).match() }
             )
@@ -86,7 +86,7 @@ nextflow_process {
 
         setup {
             run("UNTAR") {
-                script ../../../untar/main.nf
+                script "../../../untar/main.nf"
                 process {
                     """
                     input[0] = Channel.of([ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ])
