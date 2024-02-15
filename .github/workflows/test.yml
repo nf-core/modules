@@ -68,7 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      modules: ${{ steps.get_module_names.outputs.module_names }}
+      subworkflows: ${{ steps.get_subworkflow_names.outputs.subworkflow_names }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,36 +82,78 @@ jobs:
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
+      - name: Remove substring from matrix.tags
+        id: get_module_names
+        run: echo module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows) >> $GITHUB_OUTPUT
+
+      - name: Remove substring from matrix.tags
+        id: get_subworkflow_names
+        run: echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo "module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows)"
+          echo "subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | sed 's/subworkflows\///g')"
+
   nf-test-changes:
     name: nf-test-changes
     runs-on: ubuntu-latest
     outputs:
-      # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      # Expose detected tags as 'modules' and 'workflows' output variables
+      modules: ${{ steps.list_modules.outputs.changes }}
+      workflows: ${{ steps.list_workflows.outputs.changes }}
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
         with:
-          fetch-depth: 2 # To retrieve the preceding commit.
+          python-version: "3.11"
+          architecture: "x64"
 
-      - name: Combine all tags.yml files
-        id: get_tags
-        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
-
-      - name: debug
-        run: cat .github/tags.yml
-
-      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: mirpedrol/paths-filter@main
-        id: filter
+      - uses: actions/checkout@v3
         with:
-          filters: ".github/tags.yml"
-          token: ""
+          fetch-depth: 0
+
+      - uses: tj-actions/changed-files@v42
+        id: changed_files
+        with:
+          dir_names: "true"
+          output_renamed_files_as_deleted_and_added: "true"
+          files_ignore: |
+            .git*
+            .gitpod.yml
+            .prettierignore
+            .prettierrc.yml
+            **.md
+            **.png
+            modules.json
+            pyproject.toml
+            tower.yml
+
+      - name: nf-test list tags modules
+        id: list_modules
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: |
+          echo tags=$(python \
+            .github/python/find_changed_files.py \
+            -t process \
+            -p ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }} \
+          ) >> $GITHUB_OUTPUT
+
+      - name: nf-test list tags modules
+        id: list_workflows
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: |
+          echo tags=$(python \
+            .github/python/find_changed_files.py \
+            -t workflow \
+            -p ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }} \
+          ) >> $GITHUB_OUTPUT
 
   nf-core-lint:
     runs-on: ubuntu-latest
-    name: nf-core-lint
+    name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
-    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
+    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -141,6 +184,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
 
@@ -149,15 +193,8 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
 
-      - name: Remove substring from matrix.tags
-        id: remove_substring
-        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
-
-      - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
-        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
+  # TODO: Add subworkflow linting here
 
   pytest:
     runs-on: ubuntu-latest
