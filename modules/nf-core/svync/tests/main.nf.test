@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process SVYNC"
+    script "../main.nf"
+    process "SVYNC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svync"
+
+    test("sarscov2 - vcf, config") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
+                    ]
+
+                input[1] = Channel.of([
+                        "config.yaml", 
+                        "info:", 
+                        "  SVMETHOD:", 
+                        "    value: svync", 
+                        "    description: Type of approach used to detect SV", 
+                        "    number: 1", 
+                        "    type: string",
+                        "format:",
+                        "  GT:",
+                        "    value: 1/1",
+                        "    description: Genotype",
+                        "    number: 1",
+                        "    type: string"
+                    ])
+                    .collectFile(newLine:true, sort:'index')
+                    .map { [[], it] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf[0][0],
+                    path(process.out.vcf[0][1]).linesGzip[20..30]
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf, config - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
+                    ]
+
+                input[1] = Channel.of(["config.yaml", "info:", "  SVMETHOD:", "    value: svync", "    description: Type of approach used to detect SV", "    number: 1", "    type: string"])
+                    .collectFile(newLine:true, sort:'index')
+                    .map { [[], it] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

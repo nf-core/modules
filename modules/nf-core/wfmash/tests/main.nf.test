@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process WFMASH"
+    script "../main.nf"
+    process "WFMASH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wfmash"
+
+    test("homo_sapiens - pangenome - pangenome_fa_bgzip") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip'], checkIfExists: true),
+                    [], // empty paf input
+                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_gzi'], checkIfExists: true), // gzi
+                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_fai'], checkIfExists: true) // fai
+                    ]
+                input[1] = true // empty paf input
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+//                 { assert snapshot(process.out).exists() } // if run on more than 1 thread the lines in the resulting PAF will appear in a different order
+            )
+        }
+
+    }
+
+}
