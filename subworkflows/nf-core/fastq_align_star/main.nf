@@ -36,6 +36,9 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
+    // Only runs when '--quantMode TranscriptomeSAM' is set in args and
+    // STAR_ALIGN.out.bam_transcript is populated
+    //
 
     if (val_build_transcripts){
         MAKE_TRANSCRIPTS_FASTA (
@@ -45,6 +48,7 @@ workflow FASTQ_ALIGN_STAR {
         ch_transcripts_fasta = MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta
         ch_versions = ch_versions.mix(MAKE_TRANSCRIPTS_FASTA.out.versions)
     }
+
     BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta.map{[[:], it]} )
 
     emit:
