@@ -88,12 +88,12 @@ jobs:
 
       - name: Fetch subworkflow tags
         id: get_subworkflow_names
-        run: echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+        run: echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
-          echo "module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows)"
-          echo "subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | sed 's/subworkflows\///g')"
+          echo module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows)
+          echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g')
 
   nf-test-changes:
     name: nf-test-changes
@@ -151,8 +151,8 @@ jobs:
 
       - name: debug
         run: |
-          echo "module_names=$(echo "${{ steps.list_modules.outputs.changes }}" | grep -v subworkflows)"
-          echo "subworkflow_names=$(echo "${{ steps.list_workflows.outputs.changes }}" | sed 's/subworkflows\///g')"
+          echo module_names=${{ steps.list_modules.outputs.changes }}
+          echo subworkflow_names=${{ steps.list_workflows.outputs.changes }}
 
   nf-core-lint:
     runs-on: ubuntu-latest
