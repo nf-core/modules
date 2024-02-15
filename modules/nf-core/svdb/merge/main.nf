@@ -11,7 +11,7 @@ process SVDB_MERGE {
     val (priority)
 
     output:
-    tuple val(meta), path("*_sv_merge.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -35,8 +35,8 @@ process SVDB_MERGE {
         $args \\
         $prio \\
         --vcf $input \\
-        > ${prefix}_sv_merge.vcf
-    bgzip ${prefix}_sv_merge.vcf
+        > ${prefix}.vcf
+    bgzip ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -48,7 +48,7 @@ process SVDB_MERGE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_sv_merge.vcf.gz
+    touch ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
