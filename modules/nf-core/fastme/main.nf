@@ -9,12 +9,14 @@ process FASTME {
 
     input:
     path infile
-    path topo
+    path initial_tree
 
     output:
     path "*.nwk"        , emit: nwk
     path "*_stat.txt"   , emit: stats
     path "versions.yml" , emit: versions
+    path "*.matrix.phy" , emit: matrix    , optional: true
+    path "*.bootstrap"  , emit: bootstrap , optional: true
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +24,17 @@ process FASTME {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: infile
-    def topoarg = topo ? "-u $topo" : ''
+    def initarg = initial_tree ? "-u $initial_tree" : ''
+    def matarg  = task.ext.args =~ "-O" ? "-O ${prefix}.matrix.phy" : ''
+    def bootarg = task.ext.args =~ "-B" ? "-B ${prefix}.bootstrap" : ''
     """
     fastme \\
         $args \\
         -i $infile \\
-        $topoarg \\
+        $initarg \\
         -o ${prefix}.nwk \\
+        $matarg \\
+        $bootarg \\
         -T $task.cpus
 
 

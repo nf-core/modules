@@ -89,4 +89,40 @@ nextflow_process {
         }
 
     }
+
+    test("setoxin - phylip - with_optional_output") {
+
+        config "./optionals.config"
+
+        setup {
+            run("TCOFFEE_SEQREFORMAT") {
+                script "../../tcoffee/seqreformat/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: "test" ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file.collect{ meta, aln -> aln }
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.nwk) },
+                { assert snapshot(process.out.matrix) },
+                { assert snapshot(process.out.bootstrap) }
+            )
+        }
+    }
 }
