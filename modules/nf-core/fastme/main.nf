@@ -9,22 +9,25 @@ process FASTME {
 
     input:
     path infile
+    path topo
 
     output:
-    path "*.nwk",        emit: treefile
-    path "*_stat.txt",   emit: statfile
-    path "versions.yml", emit: versions
+    path "*.nwk"        , emit: nwk
+    path "*_stat.txt"   , emit: stats
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: infile
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: infile
+    def topoarg = topo ? "-u $topo" : ''
     """
     fastme \\
         $args \\
         -i $infile \\
+        $topoarg \\
         -o ${prefix}.nwk \\
         -T $task.cpus
 
@@ -36,7 +39,7 @@ process FASTME {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: infile
     """
     touch ${prefix}.nwk
