@@ -149,6 +149,11 @@ jobs:
             -p ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }} \
           ) >> $GITHUB_OUTPUT
 
+      - name: debug
+        run: |
+          echo "module_names=$(echo "${{ steps.list_modules.outputs.changes }}" | grep -v subworkflows)"
+          echo "subworkflow_names=$(echo "${{ steps.list_workflows.outputs.changes }}" | sed 's/subworkflows\///g')"
+
   nf-core-lint:
     runs-on: ubuntu-latest
     name: nf-core-lint-modules
