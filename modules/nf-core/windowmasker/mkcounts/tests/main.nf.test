@@ -9,7 +9,7 @@ nextflow_process {
     tag "windowmasker"
     tag "windowmasker/mkcounts"
 
-    test("Should run without failures") {
+    test("sarscov2_fasta") {
 
         when {
             params {
@@ -27,12 +27,14 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
-    test("sarscov2 - fasta - stub") {
+    test("sarscov2_fasta_stub") {
 
         options '-stub'
 
@@ -47,8 +49,10 @@ nextflow_process {
             }
         }
         then {
-            assert process.success
-            assert snapshot(process.out.versions).match()
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
     }
 
