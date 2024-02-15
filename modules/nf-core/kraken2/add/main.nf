@@ -4,8 +4,8 @@ process KRAKEN2_ADD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kraken2:2.1.2--pl5321h9f5acd7_2' :
-        'biocontainers/kraken2:2.1.2--pl5321h9f5acd7_2' }"
+        'https://depot.galaxyproject.org/singularitymulled-v2-f8c4015c836dd3ce5c118cfed97ec8259bab9e9d:2e0b144854b4a3d69b5df7a0340a60db846cc8bf-0' :
+        'biocontainers/mulled-v2-f8c4015c836dd3ce5c118cfed97ec8259bab9e9d:2e0b144854b4a3d69b5df7a0340a60db846cc8bf-0' }"
 
     input:
     tuple val(meta), path(fasta)
