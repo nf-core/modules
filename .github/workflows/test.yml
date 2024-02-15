@@ -90,8 +90,8 @@ jobs:
 
       - name: debug
         run: |
-          echo modules=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow") | not))')
-          echo subworkflows=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow")))')
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow") | not))')
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))')
 
   nf-test-changes:
     name: nf-test-changes
