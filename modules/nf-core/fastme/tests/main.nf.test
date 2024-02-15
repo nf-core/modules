@@ -90,7 +90,7 @@ nextflow_process {
 
     }
 
-    test("setoxin - phylip - with_optional_output") {
+    test("setoxin - phylip - bootstrap") {
 
         config "./optionals.config"
 
@@ -119,9 +119,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.nwk) },
-                { assert snapshot(process.out.matrix) },
-                { assert snapshot(process.out.bootstrap) }
+                { assert process.out.nwk },
+                { assert process.out.matrix },
+                { assert process.out.bootstrap }
             )
         }
     }
