@@ -85,7 +85,7 @@ jobs:
       - name: Fetch module tags
         id: tags
         run: |
-          export modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
 
       - name: debug
