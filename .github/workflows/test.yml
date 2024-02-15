@@ -68,8 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.get_module_names.outputs.module_names }}
-      subworkflows: ${{ steps.get_subworkflow_names.outputs.subworkflow_names }}
+      modules: ${{ steps.get_module_names.outputs.tags }}
+      subworkflows: ${{ steps.get_subworkflow_names.outputs.tags }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,11 +84,11 @@ jobs:
 
       - name: Fetch module tags
         id: get_module_names
-        run: echo module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows) >> $GITHUB_OUTPUT
+        run: echo tags=$(echo "${{ steps.filter.outputs.changes }}" | | sed 's/[][]//g' | tr "," "\n" | grep -v subworkflows) >> $GITHUB_OUTPUT
 
       - name: Fetch subworkflow tags
         id: get_subworkflow_names
-        run: echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+        run: echo tags=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
@@ -139,7 +139,7 @@ jobs:
             -p ${{ steps.changed_files.outputs.all_changed_files }} \
           ) >> $GITHUB_OUTPUT
 
-      - name: nf-test list tags modules
+      - name: nf-test list tags workflows
         id: list_workflows
         if: ${{ steps.changed_files.outputs.any_modified }}
         run: |
@@ -504,11 +504,15 @@ jobs:
     runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
-    if: needs.nf-test-changes.outputs.modules != '[]'
+    if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.workflows != '[]' )
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.nf-test-changes.outputs.modules) }}"]
+        tags:
+          [
+            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.workflows) }}",
+          ]
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
