@@ -19,8 +19,6 @@ process IPHOP_DOWNLOAD {
     mkdir -p download_dir
     mkdir -p iphop_db
 
-    https_proxy=http://klone-dip1-A-ib:3128
-    export https_proxy
     iphop \\
         download \\
         --db_dir download_dir \\
