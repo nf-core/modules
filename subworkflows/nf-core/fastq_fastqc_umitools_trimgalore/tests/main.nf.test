@@ -1,33 +1,36 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core subworkflows test fastq_fastqc_umitools_trimgalore
 nextflow_workflow {
 
     name "Test Subworkflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE"
     script "../main.nf"
     workflow "FASTQ_FASTQC_UMITOOLS_TRIMGALORE"
+    config './nextflow.config'
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_fastqc_umitools_trimgalore"
-    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "fastqc"
+    tag "umitools_extract"
+    tag "trimgalore"
 
+    tag "FASTQC"
+    tag "UMITOOLS_EXTRACT"
+    tag "TRIMGALORE"
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
+    test("test single end read with UMI") {
 
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                        ]
-                input[1] = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = false // skip_fastqc
+                input[2] = true  // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
                 """
             }
         }
@@ -35,8 +38,117 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
+                { assert path(workflow.out.fastqc_html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.trim_unpaired,
+                    workflow.out.trim_read_count,
+                    workflow.out.reads
+                ).match("fastq_fastqc_umitools_trimgalore_single") }
+            )
+        }
+    }
+
+    test("test paired end read with UMI") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ 
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = false // skip_fastqc
+                input[2] = true  // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.trim_unpaired,
+                    workflow.out.trim_read_count,
+                    workflow.out.reads
+                ).match("fastq_fastqc_umitools_trimgalore_paired") }
+            )
+        }
+    }
+    test("test paired end read without UMI") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ 
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = false // skip_fastqc
+                input[2] = false // with_umi
+                input[3] = false // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 1     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.trim_unpaired,
+                    workflow.out.trim_read_count,
+                    workflow.out.reads
+                ).match("fastq_fastqc_umitools_trimgalore_paired_without_umi") }
+            )
+        }
+    }
+
+    test("test skip all steps") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ 
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = true // skip_fastqc
+                input[2] = true // with_umi
+                input[3] = true // skip_umi_extract
+                input[4] = true // skip_trimming
+                input[5] = 0    // umi_discard_read
+                input[6] = 1    // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.trim_unpaired,
+                    workflow.out.trim_read_count,
+                    workflow.out.reads
+                ).match("fastq_fastqc_umitools_trimgalore_skip_all") }
             )
         }
     }
