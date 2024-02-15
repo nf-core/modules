@@ -28,13 +28,13 @@ input:
       description: Database of sequences in FASTA format
       pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
   - write_align:
-      type: val
+      type: string
       description: Flag to write optional alignment output. Specify with 'true' to output
   - write_target:
-      type: val
+      type: string
       description: Flag to write optional per target summary . Specify with 'true' to output
   - write_domain:
-      type: val
+      type: string
       description: Flag to write optional per domain summary. Specify with 'true' to output
 output:
   - meta:

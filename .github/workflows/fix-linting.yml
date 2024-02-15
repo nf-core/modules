@@ -1,5 +1,4 @@
-name: fix-linting
-run-name: fix linting (automated)
+name: Fix linting from a comment
 on:
   issue_comment:
     types: [created]
@@ -14,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
@@ -32,40 +31,56 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+        with:
+          node-version: 20
+      - run: npm install --only=dev
 
-      - name: Install Prettier
-        run: npm install -g prettier @prettier/plugin-php
+      # Install and run pre-commit
+      - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
+        with:
+          python-version: 3.11
 
-      # Check that we actually need to fix something
-      - name: Run 'prettier --check'
-        id: prettier_status
-        run: |
-          if prettier --check ${GITHUB_WORKSPACE}; then
-            echo "::set-output name=result::pass"
-          else
-            echo "::set-output name=result::fail"
-          fi
-      - name: Run 'prettier --write'
-        if: steps.prettier_status.outputs.result == 'fail'
-        run: prettier --write ${GITHUB_WORKSPACE}
+      - name: Install pre-commit
+        run: pip install pre-commit
 
-      - name: Post nothing-to-do comment
-        if: steps.prettier_status.outputs.result == 'pass'
+      - name: Run pre-commit
+        id: pre-commit
+        run: pre-commit run --all-files
+        continue-on-error: true
+
+      # indication that the linting has finished
+      - name: react if linting finished succesfully
+        if: ${{ steps.pre-commit.outcome }} == 'success'
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            Nothing for me to do here! :shrug:
-            This is probably because the linting errors come from `nf-core lint` and have to be fixed manually (or with `nf-core lint --fix`).
+          comment-id: ${{ github.event.comment.id }}
+          reactions: green_check_mark
 
       - name: Commit & push changes
-        if: steps.prettier_status.outputs.result == 'fail'
+        id: commit-and-push
+        if: ${{ steps.pre-commit.outcome }} == 'failure'
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"
           git config push.default upstream
           git add .
           git status
-          git commit -m "[automated] Fix linting with Prettier"
+          git commit -m "[automated] Fix code linting"
           git push
+
+      - name: react if linting errors were fixed
+        if: ${{ steps.commit-and-push.outcome }} == 'success'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: pencil2
+
+      - name: react if linting errors were not fixed
+        if: ${{ steps.commit-and-push.outcome }} == 'failure'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: x
+          body: |
+            @${{ github.actor }} I tried to fix the linting errors, but it didn't work. Please fix them manually.

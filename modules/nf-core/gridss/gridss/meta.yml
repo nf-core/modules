@@ -12,7 +12,7 @@ tools:
       documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
       tool_dev_url: "https://github.com/PapenfussLab/gridss"
       doi: "10.1186/s13059-021-02423-x"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -20,7 +20,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - inputs:
-      type: file(s)
+      type: file
       description: One or more input BAM/CRAM file(s)
       pattern: "*.{bam,cram}"
   - assembly:
