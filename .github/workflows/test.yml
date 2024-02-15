@@ -85,7 +85,7 @@ jobs:
       - name: Fetch module tags
         id: tags
         run: |
-          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
+          export modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
 
       - name: debug
@@ -100,6 +100,8 @@ jobs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       modules: ${{ steps.list_modules.outputs.tags }}
       workflows: ${{ steps.list_workflows.outputs.tags }}
+      modules_lower: ${{ steps.modules_lower_case_export.outputs.tags_lower }}
+      workflows_lower: ${{ steps.workflows_lower_case_export.outputs.tags_lower }}
 
     steps:
       - uses: actions/setup-python@v4
@@ -152,7 +154,23 @@ jobs:
           echo module_names=${{ steps.list_modules.outputs.tags }}
           echo subworkflow_names=${{ steps.list_workflows.outputs.tags }}
 
-  nf-core-lint:
+      - id: modules_to_lower
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{ steps.list_modules.outputs.tags }}
+
+      - id: modules_lower_case_export
+        run: echo tags_lower=${{ steps.modules_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
+
+      - id: workflows_to_lower
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{  steps.list_workflows.outputs.tags }}
+
+      - id: workflows_lower_case_export
+        run: echo tags_lower=${{ steps.workflows_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
+
+  nf-core-lint-modules:
     runs-on: ubuntu-latest
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
@@ -163,7 +181,7 @@ jobs:
         tags:
           [
             "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.modules_lower) }}",
           ]
     steps:
       - uses: actions/checkout@v4
@@ -197,7 +215,50 @@ jobs:
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
 
-  # TODO: Add subworkflow linting here
+  nf-core-lint-workflows:
+    runs-on: ubuntu-latest
+    name: nf-core-lint-modules
+    needs: [pytest-changes, nf-test-changes]
+    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.workflows != '[]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          [
+            "${{ fromJson(needs.pytest-changes.outputs.subworkflows) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.workflows_lower) }}",
+          ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
 
   pytest:
     runs-on: ubuntu-latest
