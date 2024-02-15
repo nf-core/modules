@@ -82,11 +82,11 @@ jobs:
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
-      - name: Remove substring from matrix.tags
+      - name: Fetch module tags
         id: get_module_names
         run: echo module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows) >> $GITHUB_OUTPUT
 
-      - name: Remove substring from matrix.tags
+      - name: Fetch subworkflow tags
         id: get_subworkflow_names
         run: echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
 
