@@ -68,8 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.get_module_names.outputs.tags }}
-      subworkflows: ${{ steps.get_subworkflow_names.outputs.tags }}
+      modules: ${{ steps.tags.outputs.modules }}
+      subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,17 +83,15 @@ jobs:
           token: ""
 
       - name: Fetch module tags
-        id: get_module_names
-        run: echo tags=$(echo "${{ steps.filter.outputs.changes }}" | | sed 's/[][]//g' | tr "," "\n" | grep -v subworkflows) >> $GITHUB_OUTPUT
-
-      - name: Fetch subworkflow tags
-        id: get_subworkflow_names
-        run: echo tags=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+        id: tags
+        run:
+          echo modules=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
-          echo module_names=$(echo "${{ steps.filter.outputs.changes }}" | grep -v subworkflows)
-          echo subworkflow_names=$(echo "${{ steps.filter.outputs.changes }}" | grep subworkflows | sed 's/subworkflows\///g')
+          echo modules=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow") | not))')
+          echo subworkflows=$(echo "${{ steps.filter.outputs.changes }}" | jq '. | map(select(contains("subworkflow")))')
 
   nf-test-changes:
     name: nf-test-changes
