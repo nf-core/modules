@@ -38,9 +38,9 @@ workflow FASTQ_ALIGN_STAR {
     //
 
     if (val_build_transcripts){
-        MAKE_TRANSCRIPTS_FASTA ( 
-           ch_fasta.map{it[1]}, 
-           ch_gtf.map{it[1]}
+        MAKE_TRANSCRIPTS_FASTA (
+            ch_fasta.map{it[1]},
+            ch_gtf.map{it[1]}
         )
         ch_transcripts_fasta = MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta
         ch_versions = ch_versions.mix(MAKE_TRANSCRIPTS_FASTA.out.versions)
@@ -63,7 +63,7 @@ workflow FASTQ_ALIGN_STAR {
     stats               = BAM_SORT_STATS_SAMTOOLS_GENOME.out.stats           // channel: [ val(meta), path(stats) ]
     flagstat            = BAM_SORT_STATS_SAMTOOLS_GENOME.out.flagstat        // channel: [ val(meta), path(flagstat) ]
     idxstats            = BAM_SORT_STATS_SAMTOOLS_GENOME.out.idxstats        // channel: [ val(meta), path(idxstats) ]
-    
+
     bam_transcript      = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.bam      // channel: [ val(meta), path(bam) ]
     bai_transcript      = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.bai      // channel: [ val(meta), path(bai) ]
     stats_transcript    = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.stats    // channel: [ val(meta), path(stats) ]
