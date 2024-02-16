@@ -34,7 +34,7 @@ process NARFMAP_ALIGN {
         $args \\
         --num-threads $task.cpus \\
         $reads_command \\
-        2> ${prefix}.narfmap.log \\
+        2> >(tee ${prefix}.narfmap.log >&2) \\
         | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
