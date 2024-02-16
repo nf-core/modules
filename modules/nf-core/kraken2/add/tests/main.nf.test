@@ -8,7 +8,7 @@ nextflow_process {
    tag "gunzip"
     tag "modules"
     tag "modules_nfcore"
-    
+
     setup {
         run("GUNZIP") {
             script "modules/nf-core/gunzip/main.nf"
@@ -32,8 +32,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+                    [ id:'test' ], [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
                     ]
                 input[1] = file(params.test_data['sarscov2']['metagenome']['prot_names_dmp'], checkIfExists: true)
                 input[2] = file(params.test_data['sarscov2']['metagenome']['prot_nodes_dmp'], checkIfExists: true)

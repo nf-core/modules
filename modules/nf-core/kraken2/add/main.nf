@@ -26,11 +26,13 @@ process KRAKEN2_ADD {
     """
     mkdir ${prefix}
     mv "taxonomy" ${prefix}
-    kraken2-build \\
-        --add-to-library \\
-        ${fasta} \\
+
+    echo ${fasta} |\\
+    tr -s " " "\\012" |\\
+    xargs -I {} -n1 kraken2-build \\
+        --add-to-library {} \\
         --db ${prefix} \\
-        --threads ${task.cpus} \\
+        --threads $task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
