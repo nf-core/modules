@@ -376,7 +376,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Python dependencies
-        run: python -m pip install --upgrade pip pytest-workflow cryptography
+        run: python -m pip install --upgrade pip pytest-workflow cryptography pytest-xdist
 
       - uses: actions/setup-java@v3
         with:
@@ -427,7 +427,7 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes -n 4
 
       - name: Output log on failure
         if: failure()
