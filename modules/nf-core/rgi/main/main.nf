@@ -49,7 +49,7 @@ process RGI_MAIN {
             --kmer_database database_output/wildcard/61_kmer_db.json \\
             --kmer_size 61
         """
-        copy_db_cmd = "cp $database/card* database_output database_output;cp -r $database/wildcard/ database_output"
+        copy_db_cmd = "cp $database/card* database_output;cp -r $database/wildcard/ database_output"
     } else if (!database) { // Download CARD DB if no path given
         db_download_cmd = "wget https://card.mcmaster.ca/latest/data;tar -xvf data ./card.json -C database_output"
         db_card_cmd = "rgi card_annotation -i database_output/card.json"
