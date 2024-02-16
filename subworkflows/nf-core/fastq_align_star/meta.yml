@@ -51,10 +51,6 @@ input:
       type: file
       description: Optional reference genome fasta file
       pattern: "*.{fasta,fa,fna}"
-  - val_build_transcripts:
-      type: boolean
-      description: If true a transcriptome fasta will be generated from genome fasta and GTF
-      pattern: "true|false"
 output:
   - orig_bam:
       description: |

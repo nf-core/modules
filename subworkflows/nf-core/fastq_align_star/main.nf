@@ -1,5 +1,4 @@
 include { STAR_ALIGN                                                       } from '../../../modules/nf-core/star/align/main'
-include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA                  } from '../../../modules/nf-core/rsem/preparereference'
 include { BAM_SORT_STATS_SAMTOOLS as BAM_SORT_STATS_SAMTOOLS_GENOME        } from '../bam_sort_stats_samtools/main'
 include { BAM_SORT_STATS_SAMTOOLS as BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME } from '../bam_sort_stats_samtools/main'
 
@@ -15,7 +14,6 @@ workflow FASTQ_ALIGN_STAR {
     val_seq_center              // string : sequencing center
     ch_fasta                    // channel: [ val(meta), path(fasta) ]
     ch_transcripts_fasta        // channel: [ path(fasta) ]
-    val_build_transcripts       // boolean: set to false if transcriptome supplied
 
     main:
 
@@ -39,15 +37,6 @@ workflow FASTQ_ALIGN_STAR {
     // Only runs when '--quantMode TranscriptomeSAM' is set in args and
     // STAR_ALIGN.out.bam_transcript is populated
     //
-
-    if (val_build_transcripts){
-        MAKE_TRANSCRIPTS_FASTA (
-            ch_fasta.map{it[1]},
-            ch_gtf.map{it[1]}
-        )
-        ch_transcripts_fasta = MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta
-        ch_versions = ch_versions.mix(MAKE_TRANSCRIPTS_FASTA.out.versions)
-    }
 
     BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta.map{[[:], it]} )
 
