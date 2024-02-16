@@ -3,7 +3,7 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/bowtie_build:bowtie_build--a6833a982c474692"
+    container "nf-core/modules/bowtie_build:bowtie_build--4ee5ca3f4bf65e6a"
 
     input:
     path fasta

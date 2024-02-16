@@ -3,7 +3,7 @@ process SAMTOOLS_VIEW {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/samtools_view:samtools_view--4731ee50a742fc67"
+    container "nf-core/modules/samtools_view:samtools_view--033f764f39eb1f2d"
 
     input:
     tuple val(meta), path(input), path(index)
