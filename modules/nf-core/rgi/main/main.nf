@@ -37,7 +37,7 @@ process RGI_MAIN {
     if (wildcard.equalsIgnoreCase("yes")) {
         if (!database) { // Download both DBs if no path is given
             db_download_cmd = "wget https://card.mcmaster.ca/latest/data;tar -xvf data ./card.json -C database_output;wget -O wildcard_data.tar.bz2 https://card.mcmaster.ca/latest/variants;mkdir -p wildcard;tar -xjf wildcard_data.tar.bz2 -C wildcard;gunzip wildcard/*.gz"
-            db_card_cmd = "rgi card_annotation -i database_output/card.json > card_annotation.log 2>&"
+            db_card_cmd = "rgi card_annotation -i database_output/card.json > card_annotation.log 2>&1"
             db_wildcard_cmd = "rgi wildcard_annotation -i wildcard --card_json database_output/card.json -v \$DB_VERSION > wildcard_annotation.log 2>&1"
             database = "."
         }
