@@ -13,7 +13,7 @@ workflow FASTQ_ALIGN_STAR {
     val_seq_platform            // string : sequencing platform
     val_seq_center              // string : sequencing center
     ch_fasta                    // channel: [ val(meta), path(fasta) ]
-    ch_transcripts_fasta        // channel: [ path(fasta) ]
+    ch_transcripts_fasta        // channel: [ val(meta), path(fasta) ]
 
     main:
 
@@ -38,7 +38,7 @@ workflow FASTQ_ALIGN_STAR {
     // STAR_ALIGN.out.bam_transcript is populated
     //
 
-    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta.map{[[:], it]} )
+    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta )
 
     emit:
 
