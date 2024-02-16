@@ -3,9 +3,7 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'nf-core/modules/bowtie_build/singularity:bowtie_build--121b0f47850f8086' :
-        'nf-core/modules/bowtie_build:bowtie_build--a6833a982c474692' }"
+    container "nf-core/modules/bowtie_build:bowtie_build--a6833a982c474692"
 
     input:
     path fasta
