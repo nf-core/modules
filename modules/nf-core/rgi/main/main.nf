@@ -11,7 +11,7 @@ process RGI_MAIN {
     tuple val(meta), path(fasta)
     val(wildcard)
     path(database)
-    
+
     output:
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt") , emit: tsv
@@ -64,7 +64,7 @@ process RGI_MAIN {
     DB_VERSION=\$(ls $database/card_database_*_all.fasta | sed "s/$database\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
     $db_wildcard_cmd
     $copy_db_cmd
-    
+
     rgi \\
         load \\
         $args \\
