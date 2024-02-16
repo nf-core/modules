@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process TABIX_BGZIPTABIX"
+    script "modules/nf-core/tabix/bgziptabix/main.nf"
+    process "TABIX_BGZIPTABIX"
+
+    test("sarscov2_vcf_tbi") {
+        config "./tabix_tbi.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_vcf_csi") {
+        config "./tabix_csi.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_vcf_csi_stub") {
+        config "./tabix_csi.config"
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
