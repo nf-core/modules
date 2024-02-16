@@ -53,7 +53,7 @@ RUN ln -s $( find /gatk -name "gatk*spark.jar" ) gatk-spark.jar
 
 WORKDIR /root
 
- # Make sure we can see a help message
+# Make sure we can see a help message
 RUN java -jar gatk.jar -h
 RUN mkdir /gatkCloneMountPoint
 RUN mkdir /jars

@@ -22,8 +22,8 @@ RUN conda config --add channels defaults && \
     conda config --add channels bioconda && \
     conda config --add channels conda-forge
 RUN conda create -n bio \
-                    bioconda::bcftools=1.10 \
-                    bioconda::samtools=1.10 \
+    bioconda::bcftools=1.10 \
+    bioconda::samtools=1.10 \
     && conda clean -a
 
 FROM ${FROM_IMAGE} as builder
@@ -42,10 +42,10 @@ ENV VERSION=${VERSION}
 WORKDIR /opt/deepvariant
 
 RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
-         "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
+    "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
 
 RUN ./build-prereq.sh \
-  && PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh  # PATH for bazel
+    && PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh  # PATH for bazel
 
 FROM ${FROM_IMAGE}
 ARG DV_GPU_BUILD
@@ -56,7 +56,7 @@ ENV VERSION ${VERSION}
 ENV PYTHON_VERSION ${PYTHON_VERSION}
 
 RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
-         "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
+    "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
 
 WORKDIR /opt/
 COPY --from=builder /opt/deepvariant/bazel-bin/licenses.zip .
@@ -88,68 +88,68 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTH
 
 # Create shell wrappers for python zip files for easier use.
 RUN \
-  BASH_HEADER='#!/bin/bash' && \
-  printf "%s\n%s\n" \
+    BASH_HEADER='#!/bin/bash' && \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/make_examples.zip "$@"' > \
     /opt/deepvariant/bin/make_examples && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/call_variants.zip "$@"' > \
     /opt/deepvariant/bin/call_variants && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/call_variants_keras.zip "$@"' > \
     /opt/deepvariant/bin/call_variants_keras && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/postprocess_variants.zip "$@"' > \
     /opt/deepvariant/bin/postprocess_variants && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/model_train.zip "$@"' > \
     /opt/deepvariant/bin/model_train && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/model_eval.zip "$@"' > \
     /opt/deepvariant/bin/model_eval && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/vcf_stats_report.zip "$@"' > \
     /opt/deepvariant/bin/vcf_stats_report && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/show_examples.zip "$@"' > \
     /opt/deepvariant/bin/show_examples && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/runtime_by_region_vis.zip "$@"' > \
     /opt/deepvariant/bin/runtime_by_region_vis && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/multisample_make_examples.zip "$@"' > \
     /opt/deepvariant/bin/multisample_make_examples && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 /opt/deepvariant/bin/freeze_graph.zip "$@"' > \
     /opt/deepvariant/bin/freeze_graph && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 -u /opt/deepvariant/bin/labeled_examples_to_vcf.zip "$@"' > \
     /opt/deepvariant/bin/labeled_examples_to_vcf && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 -u /opt/deepvariant/bin/make_examples_somatic.zip "$@"' > \
     /opt/deepvariant/bin/make_examples_somatic && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 -u /opt/deepvariant/bin/run_deepvariant.py "$@"' > \
     /opt/deepvariant/bin/run_deepvariant && \
-  printf "%s\n%s\n" \
+    printf "%s\n%s\n" \
     "${BASH_HEADER}" \
     'python3 -u /opt/deepvariant/bin/run_deepvariant_keras.py "$@"' > \
     /opt/deepvariant/bin/run_deepvariant_keras && \
-  chmod +x /opt/deepvariant/bin/make_examples \
+    chmod +x /opt/deepvariant/bin/make_examples \
     /opt/deepvariant/bin/call_variants \
     /opt/deepvariant/bin/call_variants_keras \
     /opt/deepvariant/bin/postprocess_variants \
@@ -205,11 +205,11 @@ RUN chmod +r /opt/models/ont_r104/model.ckpt*
 ENV PATH="${PATH}":/opt/conda/bin:/opt/conda/envs/bio/bin:/opt/deepvariant/bin
 
 RUN apt-get -y update && \
-  apt-get install -y parallel python3-pip && \
-  PATH="${HOME}/.local/bin:$PATH" python3 -m pip install absl-py==0.13.0 && \
-  apt-get clean autoclean && \
-  apt-get autoremove -y --purge && \
-  rm -rf /var/lib/apt/lists/*
+    apt-get install -y parallel python3-pip && \
+    PATH="${HOME}/.local/bin:$PATH" python3 -m pip install absl-py==0.13.0 && \
+    apt-get clean autoclean && \
+    apt-get autoremove -y --purge && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/deepvariant
 
