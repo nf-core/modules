@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cobs_query"
+description: Queries a fastx file against a COBS index
+keywords:
+  - COBS
+  - query
+  - k-mer index
+  - bloom filter
+tools:
+  - "cobs":
+      description: "Compact Bit-Sliced Signature Index (for Genomic k-Mer Data or q-Grams)"
+      homepage: "https://panthema.net/cobs"
+      documentation: "https://github.com/iqbal-lab-org/cobs"
+      doi: "10.1007/978-3-030-32686-9_21"
+      licence: ["MIT"]
+
+input:
+  - query_meta:
+      type: map
+      description: |
+        Groovy Map containing query information
+        e.g. `[ id:'sample1' ]`
+
+  - query:
+      type: file
+      description: The file to be queried
+      pattern: "*.{fasta.gz,fastq.gz}"
+
+  - index_meta:
+      type: map
+      description: |
+        Groovy Map containing index information
+        e.g. `[ id:'index1' ]`
+
+  - index:
+      type: file
+      description: The COBS index
+      pattern: "*.{cobs_classic,cobs_classic.gz,cobs_classic.xz,cobs_compact,cobs_compact.gz,cobs_compact.xz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing matches information
+        e.g. `[ id:'sample1', index_id:'index1' ]`
+
+  - matches:
+      type: file
+      description: COBS matches
+      pattern: "*.matches.gz"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@leoisl"
+maintainers:
+  - "@leoisl"
