@@ -1,0 +1,72 @@
+// nf-core modules test mmseqs/taxonomy
+nextflow_process {
+
+    name "Test Process MMSEQS_TAXONOMY"
+    script "../main.nf"
+    process "MMSEQS_TAXONOMY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/taxonomy"
+
+    // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+    test("Generates the taxonomy db") {
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [id :'querydb' ],
+                     file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [id:'targetdb'], '/Net/Groups/ccdata/databases/mmseqs/GTDB_github']
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.db_taxonomy.size() == 1 },
+                { assert process.out.versions }
+            )
+        }
+    }
+    test("Generates the taxonomy db - stub") {
+        options "-stub"
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [id :'querydb' ],
+                     file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [id:'targetdb'], '/Net/Groups/ccdata/databases/mmseqs/GTDB_github']
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
+
