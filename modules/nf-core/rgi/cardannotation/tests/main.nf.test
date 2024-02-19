@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process RGI_CARDANNOTATION"
+    script "../main.nf"
+    process "RGI_CARDANNOTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rgi"
+    tag "rgi/cardannotation"
+
+    // setup {
+    //     run("UNTAR") {
+    //         script "modules/nf-core/untar/main.nf"
+    //         process {
+    //         """
+    //         input[0] = [
+    //             [ ],
+    //             file('https://card.mcmaster.ca/latest/data', checkIfExists: true)
+    //         ]
+    //         """
+    //         }
+    //     }
+    // }
+
+    test("rgi/cardannotation") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("rgi/cardannotation - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
