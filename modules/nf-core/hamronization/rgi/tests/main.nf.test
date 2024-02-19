@@ -10,22 +10,6 @@ nextflow_process {
     tag "hamronization/rgi"
     tag "rgi/main"
 
-    setup {
-        run("RGI_MAIN") {
-            script "../../../rgi/main/main.nf"
-            process {
-                """
-                input[0] = [                                                                                                                                                                     
-                    [ id:'test', single_end:false ], // meta map                                                                                                                              
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                          
-                ]
-                input[1] = ""
-                input[2] = []
-                """
-            }
-        }
-    }
-
     test("hamronization/amrfinderplus - haemophilus_influenzae - genome - fna.gz") {
 
         when {
