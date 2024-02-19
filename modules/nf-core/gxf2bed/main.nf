@@ -1,5 +1,5 @@
 process GXF2BED {
-    tag '$bam'
+    tag '$gxf.baseName'
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -18,7 +18,7 @@ process GXF2BED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${gxf.baseName}"
     """
     gxf2bed \\
         --input $gxf \\
@@ -32,7 +32,7 @@ process GXF2BED {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${gxf.baseName}"
     """
     touch ${prefix}.bed
 
