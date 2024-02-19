@@ -1,11 +1,23 @@
 {
+    "vcf_csi_stub": {
+        "content": [
+            "vcf_csi_stub.csi"
+        ],
+        "timestamp": "2024-02-19T12:51:16.668347"
+    },
+    "tbi_gff": {
+        "content": [
+            "genome.gff3.gz.tbi"
+        ],
+        "timestamp": "2024-02-19T12:50:50.996005"
+    },
     "sarscov2_gff_tbi": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "tbi_gff"
                         },
                         "genome.gff3.gz.tbi:md5,f79a67d95a98076e04fbe0455d825926"
                     ]
@@ -22,7 +34,7 @@
                 "tbi": [
                     [
                         {
-                            "id": "test"
+                            "id": "tbi_gff"
                         },
                         "genome.gff3.gz.tbi:md5,f79a67d95a98076e04fbe0455d825926"
                     ]
@@ -32,7 +44,7 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:10:00.26425"
+        "timestamp": "2024-02-19T12:50:50.957051"
     },
     "sarscov2_bedgz_tbi": {
         "content": [
@@ -40,7 +52,7 @@
                 "0": [
                     [
                         {
-                            "id": "B.bed"
+                            "id": "tbi_bed"
                         },
                         "test.bed.gz.tbi:md5,5b40851ab6b8ccf7946313c86481c0df"
                     ]
@@ -57,7 +69,7 @@
                 "tbi": [
                     [
                         {
-                            "id": "B.bed"
+                            "id": "tbi_bed"
                         },
                         "test.bed.gz.tbi:md5,5b40851ab6b8ccf7946313c86481c0df"
                     ]
@@ -67,7 +79,19 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:09:51.053601"
+        "timestamp": "2024-02-19T12:50:42.377079"
+    },
+    "tbi_vcf": {
+        "content": [
+            "test.vcf.gz.tbi"
+        ],
+        "timestamp": "2024-02-19T12:50:59.847999"
+    },
+    "vcf_csi": {
+        "content": [
+            "test.vcf.gz.csi"
+        ],
+        "timestamp": "2024-02-19T12:51:08.187854"
     },
     "sarscov2_vcf_tbi": {
         "content": [
@@ -75,7 +99,7 @@
                 "0": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "tbi_vcf"
                         },
                         "test.vcf.gz.tbi:md5,d22e5b84e4fcd18792179f72e6da702e"
                     ]
@@ -92,7 +116,7 @@
                 "tbi": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "tbi_vcf"
                         },
                         "test.vcf.gz.tbi:md5,d22e5b84e4fcd18792179f72e6da702e"
                     ]
@@ -102,7 +126,7 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:10:09.228035"
+        "timestamp": "2024-02-19T12:50:59.818953"
     },
     "sarscov2_vcf_csi_stub": {
         "content": [
@@ -110,26 +134,36 @@
                 "0": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "vcf_csi_stub"
                         },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "vcf_csi_stub.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "vcf_csi_stub"
+                        },
+                        "vcf_csi_stub.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     "versions.yml:md5,b3438f135bde58e033e7a39912296a87"
                 ],
                 "csi": [
-                    
+                    [
+                        {
+                            "id": "vcf_csi_stub"
+                        },
+                        "vcf_csi_stub.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "tbi": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "vcf_csi_stub"
                         },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "vcf_csi_stub.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions": [
@@ -137,7 +171,7 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:10:27.152032"
+        "timestamp": "2024-02-19T12:51:16.626701"
     },
     "sarscov2_vcf_csi": {
         "content": [
@@ -148,7 +182,7 @@
                 "1": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "vcf_csi"
                         },
                         "test.vcf.gz.csi:md5,6f733d80ee760fcc8fdbe504a03f2640"
                     ]
@@ -159,7 +193,7 @@
                 "csi": [
                     [
                         {
-                            "id": "test.vcf"
+                            "id": "vcf_csi"
                         },
                         "test.vcf.gz.csi:md5,6f733d80ee760fcc8fdbe504a03f2640"
                     ]
@@ -172,6 +206,12 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:10:18.295495"
+        "timestamp": "2024-02-19T12:51:08.156825"
+    },
+    "tbi_bed": {
+        "content": [
+            "test.bed.gz.tbi"
+        ],
+        "timestamp": "2024-02-19T12:50:42.428353"
     }
 }

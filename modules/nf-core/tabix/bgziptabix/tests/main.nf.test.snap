@@ -1,14 +1,14 @@
 {
-    "sarscov2_vcf_tbi": {
+    "sarscov2_bed_tbi": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "tbi_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766",
-                        "test.vcf.gz.tbi:md5,d22e5b84e4fcd18792179f72e6da702e"
+                        "tbi_test.bed.gz:md5,fe4053cf4de3aebbdfc3be2efb125a74",
+                        "tbi_test.bed.gz.tbi:md5,ca06caf88b1e3c67d5fcba0a1460b52c"
                     ]
                 ],
                 "1": [
@@ -23,10 +23,10 @@
                 "gz_tbi": [
                     [
                         {
-                            "id": "test"
+                            "id": "tbi_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766",
-                        "test.vcf.gz.tbi:md5,d22e5b84e4fcd18792179f72e6da702e"
+                        "tbi_test.bed.gz:md5,fe4053cf4de3aebbdfc3be2efb125a74",
+                        "tbi_test.bed.gz.tbi:md5,ca06caf88b1e3c67d5fcba0a1460b52c"
                     ]
                 ],
                 "versions": [
@@ -34,27 +34,21 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:16:56.776854"
+        "timestamp": "2024-02-19T12:56:01.186711"
     },
-    "sarscov2_vcf_csi_stub": {
+    "sarscov2_bed_csi": {
         "content": [
             {
                 "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/2083c5d9a4fc4bce7a5c8fc9ac594daf/work/83/eeb552ef76cc22c18cb8f136c7d8cf/test.vcf.gz",
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "1": [
                     [
                         {
-                            "id": "test"
+                            "id": "csi_test"
                         },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/2083c5d9a4fc4bce7a5c8fc9ac594daf/work/83/eeb552ef76cc22c18cb8f136c7d8cf/test.vcf.gz",
-                        "test.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "csi_test.bed.gz:md5,fe4053cf4de3aebbdfc3be2efb125a74",
+                        "csi_test.bed.gz.csi:md5,3a9f10b14de6c45240871701cc869c0c"
                     ]
                 ],
                 "2": [
@@ -63,41 +57,59 @@
                 "gz_csi": [
                     [
                         {
-                            "id": "test"
+                            "id": "csi_test"
                         },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/2083c5d9a4fc4bce7a5c8fc9ac594daf/work/83/eeb552ef76cc22c18cb8f136c7d8cf/test.vcf.gz",
-                        "test.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "csi_test.bed.gz:md5,fe4053cf4de3aebbdfc3be2efb125a74",
+                        "csi_test.bed.gz.csi:md5,3a9f10b14de6c45240871701cc869c0c"
                     ]
                 ],
                 "gz_tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/2083c5d9a4fc4bce7a5c8fc9ac594daf/work/83/eeb552ef76cc22c18cb8f136c7d8cf/test.vcf.gz",
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "versions": [
                     "versions.yml:md5,532aebc1fc18524bbfa0b8a4d1166717"
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:17:14.729896"
+        "timestamp": "2024-02-19T12:56:09.663324"
     },
-    "sarscov2_vcf_csi": {
+    "csi_test": {
+        "content": [
+            "csi_test.bed.gz"
+        ],
+        "timestamp": "2024-02-19T12:56:09.694688"
+    },
+    "csi_stub": {
+        "content": [
+            "test.bed.gz"
+        ],
+        "timestamp": "2024-02-19T12:56:18.042751"
+    },
+    "tbi_test": {
+        "content": [
+            "tbi_test.bed.gz"
+        ],
+        "timestamp": "2024-02-19T12:56:01.242217"
+    },
+    "sarscov2_bed_csi_stub": {
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "1": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766",
-                        "test.vcf.gz.csi:md5,6f733d80ee760fcc8fdbe504a03f2640"
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test.bed.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -108,18 +120,24 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766",
-                        "test.vcf.gz.csi:md5,6f733d80ee760fcc8fdbe504a03f2640"
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test.bed.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "gz_tbi": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "versions": [
                     "versions.yml:md5,532aebc1fc18524bbfa0b8a4d1166717"
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:17:05.859605"
+        "timestamp": "2024-02-19T12:56:17.998558"
     }
 }

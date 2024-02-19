@@ -1,13 +1,19 @@
 {
+    "gzi_compress_test": {
+        "content": [
+            "gzi_compress_test.vcf.gz.gzi"
+        ],
+        "timestamp": "2024-02-19T12:27:16.221258"
+    },
     "homo_genome_bedgz_compress": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "bedgz_test"
                         },
-                        "test.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7"
+                        "bedgz_test.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7"
                     ]
                 ],
                 "1": [
@@ -22,9 +28,9 @@
                 "output": [
                     [
                         {
-                            "id": "test"
+                            "id": "bedgz_test"
                         },
-                        "test.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7"
+                        "bedgz_test.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7"
                     ]
                 ],
                 "versions": [
@@ -32,7 +38,13 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:14:00.968546"
+        "timestamp": "2024-02-19T12:26:58.790921"
+    },
+    "test_stub": {
+        "content": [
+            "test_stub.vcf.gz"
+        ],
+        "timestamp": "2024-02-19T12:32:49.261132"
     },
     "sarscov2_vcf_bgzip_compress": {
         "content": [
@@ -40,9 +52,9 @@
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "bgzip_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                        "bgzip_test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "1": [
@@ -57,9 +69,9 @@
                 "output": [
                     [
                         {
-                            "id": "test"
+                            "id": "bgzip_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                        "bgzip_test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "versions": [
@@ -67,7 +79,7 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:13:51.710694"
+        "timestamp": "2024-02-19T12:26:49.798959"
     },
     "sarscov2_vcf_bgzip_compress_gzi": {
         "content": [
@@ -75,17 +87,17 @@
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "gzi_compress_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                        "gzi_compress_test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "1": [
                     [
                         {
-                            "id": "test"
+                            "id": "gzi_compress_test"
                         },
-                        "test.vcf.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                        "gzi_compress_test.vcf.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
                     ]
                 ],
                 "2": [
@@ -94,17 +106,17 @@
                 "gzi": [
                     [
                         {
-                            "id": "test"
+                            "id": "gzi_compress_test"
                         },
-                        "test.vcf.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                        "gzi_compress_test.vcf.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
                     ]
                 ],
                 "output": [
                     [
                         {
-                            "id": "test"
+                            "id": "gzi_compress_test"
                         },
-                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                        "gzi_compress_test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "versions": [
@@ -112,7 +124,19 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:14:10.253424"
+        "timestamp": "2024-02-19T12:27:16.174304"
+    },
+    "bgzip_test": {
+        "content": [
+            "bgzip_test.vcf.gz"
+        ],
+        "timestamp": "2024-02-19T12:26:49.865506"
+    },
+    "bedgz_test": {
+        "content": [
+            "bedgz_test.bed"
+        ],
+        "timestamp": "2024-02-19T12:26:58.819902"
     },
     "sarscov2_vcf_bgzip_compress_stub": {
         "content": [
@@ -120,26 +144,36 @@
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "test_stub"
                         },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/456a0def45e880cce9d6bc7218aaa66/work/71/22a0fc7ed4435a13d2da59baa56e4a/test.vcf.gz"
+                        "test_stub.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "test_stub"
+                        },
+                        "test_stub.vcf.gz.gzi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     "versions.yml:md5,a48a4d4bb9ea4b11b878ce36de0c5163"
                 ],
                 "gzi": [
-                    
+                    [
+                        {
+                            "id": "test_stub"
+                        },
+                        "test_stub.vcf.gz.gzi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "output": [
                     [
                         {
-                            "id": "test"
+                            "id": "test_stub"
                         },
-                        "/nfs/treeoflife-01/teams/tola/users/dp24/new/modules/.nf-test/tests/456a0def45e880cce9d6bc7218aaa66/work/71/22a0fc7ed4435a13d2da59baa56e4a/test.vcf.gz"
+                        "test_stub.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions": [
@@ -147,6 +181,6 @@
                 ]
             }
         ],
-        "timestamp": "2024-02-16T14:14:19.49874"
+        "timestamp": "2024-02-19T12:27:07.278613"
     }
 }

@@ -35,7 +35,7 @@ process TABIX_BGZIPTABIX {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${input.getExtension()}.gz
+    echo "" | gzip > ${prefix}.${input.getExtension()}.gz
     touch ${prefix}.${input.getExtension()}.gz.tbi
     touch ${prefix}.${input.getExtension()}.gz.csi
 

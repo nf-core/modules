@@ -44,7 +44,8 @@ process TABIX_BGZIP {
     output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
 
     """
-    touch ${output}
+    echo "" | gzip > ${output}
+    touch ${output}.gzi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
