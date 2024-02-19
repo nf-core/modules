@@ -657,9 +657,16 @@ jobs:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
+          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+          if [ "${{ matrix.profile }}" == "docker" ]; then
+            PROFILE="docker_self_hosted"
+          else
+            PROFILE=${{ matrix.profile }}
+          fi
+
           NFT_WORKDIR=~ \
           nf-test test \
-            --profile=${{ matrix.profile }} \
+            --profile=$PROFILE \
             --tag ${{ matrix.tags }} \
             --tap=test.tap \
             --verbose
