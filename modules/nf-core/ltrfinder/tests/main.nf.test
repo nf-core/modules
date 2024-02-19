@@ -7,16 +7,29 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "ltrfinder"
+    tag "gunzip/main"
 
-    test("homo_sapiens-genome_fasta-success") {
+    test("actinidia_chinensis-genome_21_fasta_gz-success") {
+
+        setup {
+            run('GUNZIP') {
+                script "../../gunzip/main"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                ]
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
@@ -25,7 +38,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(path(process.out.versions[0]).text).match("versions") }
             )
         }
 
@@ -40,7 +53,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
                 ]
                 """
             }
@@ -50,7 +63,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(path(process.out.versions[0]).text).match("stub_versions") }
             )
         }
 
