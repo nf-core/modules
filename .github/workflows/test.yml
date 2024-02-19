@@ -68,7 +68,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      modules: ${{ steps.tags.outputs.modules }}
+      subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,43 +82,106 @@ jobs:
           filters: "tests/config/pytest_modules.yml"
           token: ""
 
+      - name: Fetch module tags
+        id: tags
+        run: |
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow") | not))')
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))')
+
   nf-test-changes:
     name: nf-test-changes
     runs-on: ubuntu-latest
     outputs:
-      # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2 # To retrieve the preceding commit.
+      # Expose detected tags as 'modules' and 'workflows' output variables
+      modules: ${{ steps.list_modules.outputs.tags }}
+      workflows: ${{ steps.list_workflows.outputs.tags }}
+      modules_lower: ${{ steps.modules_lower_case_export.outputs.tags_lower }}
+      workflows_lower: ${{ steps.workflows_lower_case_export.outputs.tags_lower }}
 
-      - name: Combine all tags.yml files
-        id: get_tags
-        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          architecture: "x64"
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: tj-actions/changed-files@v42
+        id: changed_files
+        with:
+          dir_names: "true"
+          output_renamed_files_as_deleted_and_added: "true"
+          files_ignore: |
+            .git*
+            .gitpod.yml
+            .prettierignore
+            .prettierrc.yml
+            **.md
+            **.png
+            modules.json
+            pyproject.toml
+            tower.yml
+
+      - name: nf-test list tags modules
+        id: list_modules
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: |
+          echo tags=$(python \
+            .github/python/find_changed_files.py \
+            -t process \
+            -p ${{ steps.changed_files.outputs.all_changed_files }} \
+          ) >> $GITHUB_OUTPUT
+
+      - name: nf-test list tags workflows
+        id: list_workflows
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: |
+          echo tags=$(python \
+            .github/python/find_changed_files.py \
+            -t workflow \
+            -p ${{ steps.changed_files.outputs.all_changed_files }} \
+          ) >> $GITHUB_OUTPUT
 
       - name: debug
-        run: cat .github/tags.yml
+        run: |
+          echo module_names=${{ steps.list_modules.outputs.tags }}
+          echo subworkflow_names=${{ steps.list_workflows.outputs.tags }}
 
-      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: mirpedrol/paths-filter@main
-        id: filter
+      - id: modules_to_lower
+        uses: ASzc/change-string-case-action@v6
         with:
-          filters: ".github/tags.yml"
-          token: ""
+          string: ${{ steps.list_modules.outputs.tags }}
 
-  nf-core-lint:
+      - id: modules_lower_case_export
+        run: echo tags_lower=${{ steps.modules_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
+
+      - id: workflows_to_lower
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{  steps.list_workflows.outputs.tags }}
+
+      - id: workflows_lower_case_export
+        run: echo tags_lower=${{ steps.workflows_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
+
+  nf-core-lint-modules:
     runs-on: ubuntu-latest
-    name: nf-core-lint
+    name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
-    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || (needs.nf-test-changes.outputs.modules != '[]') }}
+    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
     strategy:
       fail-fast: false
       matrix:
         tags:
           [
             "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.modules_lower) }}",
           ]
     steps:
       - uses: actions/checkout@v4
@@ -141,6 +205,7 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
 
@@ -149,15 +214,51 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
-        if: ${{ !startsWith(matrix.tags, 'subworkflows/') }}
 
-      - name: Remove substring from matrix.tags
-        id: remove_substring
-        run: echo subworkflow_names=$(echo "${{ matrix.tags }}" | sed 's/subworkflows\///g') >> $GITHUB_OUTPUT
+  nf-core-lint-workflows:
+    runs-on: ubuntu-latest
+    name: nf-core-lint-modules
+    needs: [pytest-changes, nf-test-changes]
+    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.workflows != '[]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          [
+            "${{ fromJson(needs.pytest-changes.outputs.subworkflows) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.workflows_lower) }}",
+          ]
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Lint subworkflow ${{ matrix.tags }}
-        run: nf-core subworkflows lint ${{steps.remove_substring.outputs.subworkflow_names}}
-        if: ${{ startsWith(matrix.tags, 'subworkflows/') }}
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v1
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
 
   pytest:
     runs-on: ubuntu-latest
@@ -462,11 +563,15 @@ jobs:
     runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
-    if: needs.nf-test-changes.outputs.modules != '[]'
+    if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.workflows != '[]' )
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.nf-test-changes.outputs.modules) }}"]
+        tags:
+          [
+            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.workflows) }}",
+          ]
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
@@ -655,7 +760,17 @@ jobs:
 
   confirm-pass:
     runs-on: ubuntu-latest
-    needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
+    needs:
+      [
+        prettier,
+        editorconfig,
+        pytest-changes,
+        nf-core-lint-modules,
+        nf-core-lint-workflows,
+        pytest,
+        nf-test-changes,
+        nf-test,
+      ]
     if: always()
     steps:
       - name: All tests ok
