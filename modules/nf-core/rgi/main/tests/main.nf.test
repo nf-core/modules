@@ -8,8 +8,35 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rgi"
     tag "rgi/main"
+    tag "rgi/cardannotation"
+    tag "untar"
 
-// TODO: Add setup block: RGI/CARDANNOTATION
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('data.tar.gz')
+
+            input[0] = [
+                [ ],
+                file("data.tar.gz")
+            ]
+            """
+            }
+        }
+
+        run("RGI_CARDANNOTATION") {
+            script "modules/nf-core/rgi/cardannotation"
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+
+        }
+    }
+
 
     test("rgi/main - haemophilus_influenzae - genome_fna_gz") {
 
@@ -20,7 +47,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map                                                                                                                            
                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
                 ]
-                input[1] = CARDANNOTATION.out.db
+                input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
                 """
             }
@@ -52,7 +79,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map                                                                                                                            
                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
                 ]
-                input[1] = []
+                input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
                 """
             }

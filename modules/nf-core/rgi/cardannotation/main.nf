@@ -25,10 +25,11 @@ process RGI_CARDANNOTATION {
     rgi card_annotation -i $card/card.json \\
     $args
 
+    DB_VERSION=\$(ls card_database_*_all.fasta | sed "s/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
+
     mkdir output_dir
     mv card*.fasta output_dir
-
-    DB_VERSION=\$(ls $card/card_database_*_all.fasta | sed "s/$card\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
+    cp $card/* output_dir
 
     RGI_VERSION=\$(rgi main --version)
 
