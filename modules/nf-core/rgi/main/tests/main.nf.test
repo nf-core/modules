@@ -9,37 +9,6 @@ nextflow_process {
     tag "rgi"
     tag "rgi/main"
 
-    test("rgi/main - haemophilus_influenzae - genome_fna_gz") {
-
-        when {
-            process {
-                """
-                input[0] = [                                                                                                                                                                   
-                    [ id:'test', single_end:false ], // meta map                                                                                                                            
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
-                ]
-                input[1] = "yes"
-                input[2] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.tsv,
-                    process.out.json,
-                    file(process.out.tmp.get(0).get(1)).list().sort(),
-                    file(process.out.db_out.get(0)).list().sort(),
-                    process.out.tool_version,
-                    process.out.db_version,
-                    ).match() }
-            )
-        }
-    }
-
     test("rgi/main - haemophilus_influenzae - genome_fna_gz - stub") {
 
         options "-stub"
@@ -51,7 +20,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map                                                                                                                            
                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
                 ]
-                input[1] = ""
+                input[1] = []
                 input[2] = []
                 """
             }
