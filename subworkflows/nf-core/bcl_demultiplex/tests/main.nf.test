@@ -1,0 +1,59 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test bcl_demultiplex
+nextflow_workflow {
+
+    name "Test Subworkflow test_bcl_demultiplex_bclconvert"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "BCL_DEMULTIPLEX"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bcl_demultiplex"
+    tag "bclconvert"
+    tag "bcl2fastq"
+
+    test("bclconvert") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = [
+                    [id:'test', lane:1 ],
+                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
+                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
+                    ]
+                input[1] = "bclconvert"
+                """
+                }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow.out).match()
+        }
+    }
+
+    test("bcl2fastq") {
+
+            when {
+
+                workflow {
+                    """
+                    input[0] = [
+                        [id:'test', lane:1 ],
+                        "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
+                        "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
+                        ]
+                    input[1] = "bclconvert"
+                    """
+                        }
+            }
+
+            then {
+                assert workflow.success
+                assert snapshot(workflow.out).match()
+            }
+        }
+}

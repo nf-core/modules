@@ -23,27 +23,21 @@ workflow BCL_DEMULTIPLEX {
         ch_interop       = Channel.empty()
 
         // Split flowcells into separate channels containing run as tar and run as path
-        // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
-        ch_flowcell
-            .branch { meta, samplesheet, run ->
-                tar: run.toString().endsWith(".tar.gz")
-                dir: true
-            }.set { ch_flowcells }
+        ch_tar = ch_flowcell.filter { meta, samplesheet, run -> run.toString().endsWith(".tar.gz") }
+        ch_dir = ch_flowcell.filter { meta, samplesheet, run -> !run.toString().endsWith(".tar.gz") }
 
-        ch_flowcells.tar
-            .multiMap { meta, samplesheet, run ->
-                samplesheets: [ meta, samplesheet ]
-                run_dirs: [ meta, run ]
-            }.set { ch_flowcells_tar }
+        // Process tar channel
+        ch_tar
+            .map { meta, samplesheet, run ->
+                [ [meta, samplesheet], [meta, run] ]
+            }.set { ch_tar_processed }
 
-        // Runs when run_dir is a tar archive
         // Re-join the metadata and the untarred run directory with the samplesheet
-        ch_flowcells_tar_merged = ch_flowcells_tar
-                                    .samplesheets
-                                    .join( ch_flowcells_tar.run_dirs )
+        ch_tar_merged = ch_tar_processed[0]
+            .join( ch_tar_processed[1] )
 
         // Merge the two channels back together
-        ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
+        ch_flowcells = ch_dir.mix(ch_tar_merged)
 
         // MODULE: bclconvert
         // Demultiplex the bcl files
