@@ -5,6 +5,8 @@ keywords:
   - db
   - classification
   - build
+  - kraken2
+  - add
 tools:
   - kraken2:
       description: "Kraken2 is a system for assigning taxonomic labels to short DNA sequences, usually obtained through metagenomic studies."
@@ -41,14 +43,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
       type: directory
       description: contains required files to build the database
       pattern: "*/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:
