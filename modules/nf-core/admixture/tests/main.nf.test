@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process ADMIXTURE"
+    script "../main.nf"
+    process "ADMIXTURE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "admixture"
+    tag "plink/vcf"
+
+    setup {
+        run("PLINK_VCF") {
+            script "../../plink/vcf/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['genmod_annotate_vcf_gz'], checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens illumina genmod_annotate [vcf]") {
+
+        when {
+            process {
+                """
+                bed_ch         = PLINK_VCF.out.bed
+                bim_ch         = PLINK_VCF.out.bim
+                fam_ch         = PLINK_VCF.out.fam
+                ch_bed_bim_fam = bed_ch.join(bim_ch).join(fam_ch)
+
+                input[0] = ch_bed_bim_fam
+                input[1] = Channel.of("3")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens illumina genmod_annotate [vcf] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                bed_ch         = PLINK_VCF.out.bed
+                bim_ch         = PLINK_VCF.out.bim
+                fam_ch         = PLINK_VCF.out.fam
+                ch_bed_bim_fam = bed_ch.join(bim_ch).join(fam_ch)
+
+                input[0] = ch_bed_bim_fam
+                input[1] = Channel.of("3")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
