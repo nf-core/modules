@@ -24,11 +24,11 @@ input:
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
   - card:
       type: directory
-      description: Directory containing the CARD
+      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
   - wildcard:
       type: directory
-      description: Directory containing the WildCARD database (optional)
+      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
 
 output:

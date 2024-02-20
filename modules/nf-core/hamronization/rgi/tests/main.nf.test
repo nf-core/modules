@@ -13,6 +13,7 @@ nextflow_process {
     tag "untar"
 
     setup {
+
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"
             process {
@@ -34,7 +35,6 @@ nextflow_process {
                 input[0] = UNTAR.out.untar.map{ it[1] }
                 """
             }
-
         }
 
         run("RGI_MAIN") {

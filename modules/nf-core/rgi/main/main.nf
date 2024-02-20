@@ -24,36 +24,37 @@ process RGI_MAIN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '' // This customizes the command: rgi load
+    def args2 = task.ext.args ?: '' // This customizes the command: rgi main
     def prefix = task.ext.prefix ?: "${meta.id}"
     def load_wildcard = ""
 
     if (wildcard) {
         load_wildcard = """ \\
-            --wildcard_annotation $wildcard/wildcard_database_v\$DB_VERSION.fasta \\
-            --wildcard_annotation_all_models $wildcard/wildcard_database_v\$DB_VERSION\\_all.fasta \\
-            --wildcard_index $wildcard/wildcard/index-for-model-sequences.txt \\
-            --amr_kmers $wildcard/wildcard/all_amr_61mers.txt \\
-            --kmer_database $wildcard/wildcard/61_kmer_db.json \\
+            --wildcard_annotation ${wildcard}/wildcard_database_v\$DB_VERSION.fasta \\
+            --wildcard_annotation_all_models ${wildcard}/wildcard_database_v\$DB_VERSION\\_all.fasta \\
+            --wildcard_index ${wildcard}/wildcard/index-for-model-sequences.txt \\
+            --amr_kmers ${wildcard}/wildcard/all_amr_61mers.txt \\
+            --kmer_database ${wildcard}/wildcard/61_kmer_db.json \\
             --kmer_size 61
         """
     }
 
     """
-    DB_VERSION=\$(ls $card/card_database_*_all.fasta | sed "s/$card\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
+    DB_VERSION=\$(ls ${card}/card_database_*_all.fasta | sed "s/${card}\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
 
     rgi \\
         load \\
         $args \\
-        --card_json $card/card.json \\
+        --card_json ${card}/card.json \\
         --debug --local \\
-        --card_annotation $card/card_database_v\$DB_VERSION.fasta \\
-        --card_annotation_all_models $card/card_database_v\$DB_VERSION\\_all.fasta \\
+        --card_annotation ${card}/card_database_v\$DB_VERSION.fasta \\
+        --card_annotation_all_models ${card}/card_database_v\$DB_VERSION\\_all.fasta \\
         $load_wildcard
 
     rgi \\
         main \\
-        $args \\
+        $args2 \\
         --num_threads $task.cpus \\
         --output_file $prefix \\
         --input_sequence $fasta
@@ -70,8 +71,7 @@ process RGI_MAIN {
     END_VERSIONS
     """
 
-stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    stub:
     """
     mkdir -p temp
     touch test.json

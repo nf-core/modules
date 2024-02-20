@@ -10,10 +10,10 @@ process RGI_CARDANNOTATION {
     path(card)
 
     output:
-    path("output_dir")  , emit: db
-    env RGI_VERSION     , emit: tool_version
-    env DB_VERSION      , emit: db_version
-    path "versions.yml" , emit: versions
+    path("card_database_processed") , emit: db
+    env RGI_VERSION                 , emit: tool_version
+    env DB_VERSION                  , emit: db_version
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +22,15 @@ process RGI_CARDANNOTATION {
     def args = task.ext.args ?: ''
 
     """
-    rgi card_annotation -i $card/card.json \\
-    $args
+    rgi card_annotation \\
+        -i ${card}/card.json \\
+        $args
 
     DB_VERSION=\$(ls card_database_*_all.fasta | sed "s/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
 
-    mkdir output_dir
-    mv card*.fasta output_dir
-    cp $card/* output_dir
+    mkdir card_database_processed
+    mv card*.fasta card_database_processed
+    cp ${card}/* card_database_processed
 
     RGI_VERSION=\$(rgi main --version)
 
@@ -40,13 +41,13 @@ process RGI_CARDANNOTATION {
     END_VERSIONS
     """
 
-stub:
+    stub:
     """
     touch card.fasta
     touch card_all.fasta
 
-    mkdir output_dir
-    mv card*.fasta output_dir
+    mkdir card_database_processed
+    mv card*.fasta card_database_processed
 
     RGI_VERSION=\$(rgi main --version)
     DB_VERSION=stub_version
