@@ -44,7 +44,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" }
+                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert snapshot(
+                        process.out.versions
+                    ).match() }
             )
         }
 
