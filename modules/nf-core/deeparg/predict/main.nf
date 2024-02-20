@@ -6,11 +6,16 @@ process DEEPARG_PREDICT {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.4--pyhdfd78af_0' :
         'biocontainers/deeparg:1.0.4--pyhdfd78af_0' }"
+
     /*
-    We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
-        Original report: https://github.com/nf-core/funcscan/issues/23
+    We have to force docker/singularity to mount a fake file to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
+    Original report: https://github.com/nf-core/funcscan/issues/23
     */
-    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
+    containerOptions {
+        "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' :
+        "${workflow.containerEngine}" == 'docker'      ? '-v $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' :
+        ''
+    }
 
     input:
     tuple val(meta), path(fasta), val(model)
@@ -46,6 +51,22 @@ process DEEPARG_PREDICT {
         -o ${prefix} \\
         -d \$DATABASE \\
         --model $model
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeparg: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION='1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.align.daa
+    touch ${prefix}.align.daa.tsv
+    touch ${prefix}.mapping.ARG
+    touch ${prefix}.mapping.potential.ARG
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
