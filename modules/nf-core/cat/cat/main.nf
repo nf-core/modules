@@ -51,7 +51,6 @@ process CAT_CAT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -68,7 +67,6 @@ process CAT_CAT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
     END_VERSIONS
     """
 }
