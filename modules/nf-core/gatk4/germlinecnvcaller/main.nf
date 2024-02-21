@@ -37,6 +37,8 @@ process GATK4_GERMLINECNVCALLER {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
+    export THEANO_FLAGS="base_compiledir=$PWD"
+
     gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
         GermlineCNVCaller \\
         $input_list \\
