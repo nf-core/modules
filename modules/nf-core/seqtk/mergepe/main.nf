@@ -4,15 +4,15 @@ process SEQTK_MERGEPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
-        'biocontainers/seqtk:1.3--h5bf99c6_3' }"
+        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
+        'biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*.fastq.gz") , emit: reads
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
