@@ -5,6 +5,11 @@ nextflow_process {
     process "SEQTK_SEQ"
     config "./standard.config"
 
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/seq"
+
     test("sarscov2_seq_fa") {
 
         when {
@@ -58,6 +63,7 @@ nextflow_process {
     }
 
     test("sarscov2_seq_fa_stub") {
+        options "-stub"
 
         when {
             process {

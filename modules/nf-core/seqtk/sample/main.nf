@@ -42,4 +42,17 @@ process SEQTK_SAMPLE {
         seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }

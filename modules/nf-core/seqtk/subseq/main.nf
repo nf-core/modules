@@ -38,4 +38,19 @@ process SEQTK_SUBSEQ {
         seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def ext = "fa"
+    if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
+        ext = "fq"
+    }
+    """
+    echo "" | gzip > ${sequences}${prefix}.${ext}.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

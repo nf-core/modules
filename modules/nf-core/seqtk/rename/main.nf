@@ -37,4 +37,20 @@ process SEQTK_RENAME {
             seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def extension = "fasta"
+    if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
+        extension = "fastq"
+    }
+    """
+    echo "" | gzip > ${prefix}.renamed.${extension}.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
