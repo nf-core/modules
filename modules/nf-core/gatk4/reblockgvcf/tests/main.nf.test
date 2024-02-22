@@ -13,10 +13,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true), []]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -26,7 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).name, file(process.out.vcf.get(0).get(2)).name).match("test_gatk4_reblockgvcf") }
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf") }
             )
         }
 
@@ -36,10 +39,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -49,7 +52,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).name, file(process.out.vcf.get(0).get(2)).name).match("test_gatk4_reblockgvcf_intervals") }
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf_intervals") }
             )
         }
 
@@ -62,10 +68,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true), []]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -75,7 +81,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).name, file(process.out.vcf.get(0).get(2)).name).match("test_gatk4_reblockgvcf_stub") }
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf_stub") }
             )
         }
 
