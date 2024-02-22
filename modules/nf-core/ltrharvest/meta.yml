@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ltrharvest"
+description: |
+  Predicts LTR retrotransposons using the parallel version of GenomeTools gt-ltrharvest
+  utility included in the EDTA toolchain
+keywords:
+  - genomics
+  - genome
+  - annotation
+  - repeat
+  - transposons
+  - retrotransposons
+tools:
+  - "edta":
+      description: Extensive de-novo TE Annotator (EDTA)
+      homepage: "https://github.com/oushujun/EDTA"
+      documentation: "https://github.com/oushujun/EDTA"
+      tool_dev_url: "https://github.com/oushujun/EDTA"
+      doi: "10.1186/s13059-019-1905-y"
+      licence: ["GPL v3"]
+  - "gt":
+      description: "The GenomeTools genome analysis system"
+      homepage: "https://genometools.org/index.html"
+      documentation: "https://genometools.org/documentation.html"
+      tool_dev_url: "https://github.com/genometools/genometools"
+      doi: "10.1109/TCBB.2013.68"
+      licence: ["ISC"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - fasta:
+      type: file
+      description: Input genome fasta
+      pattern: "*.{fsa,fa,fasta}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - gff3:
+      type: file
+      description: Predicted LTR candidates in gff3 format
+      pattern: "*.gff3"
+  - scn:
+      type: file
+      description: Predicted LTR candidates in scn format
+      pattern: "*.scn"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
