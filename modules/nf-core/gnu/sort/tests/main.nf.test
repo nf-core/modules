@@ -112,10 +112,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sorted[0][1]).name
-                                ).match("sort_stub")
-                }
             )
         }
 
