@@ -1,11 +1,11 @@
-process LAI {
+process LTRRETRIEVER_LAI {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ltr_retriever:2.9.0--hdfd78af_2':
-        'biocontainers/ltr_retriever:2.9.0--hdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/ltr_retriever:2.9.9--hdfd78af_0':
+        'biocontainers/ltr_retriever:2.9.9--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
