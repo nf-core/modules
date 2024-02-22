@@ -39,6 +39,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
+    export THEANO_FLAGS="base_compiledir=\$PWD"
+
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         DetermineGermlineContigPloidy \\
         ${input_list} \\
