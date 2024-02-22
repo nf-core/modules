@@ -27,11 +27,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sequences[0][1]).name
-                                ).match("subseq_fa")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -54,11 +50,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sequences[0][1]).name
-                                ).match("subseq_fa_stub")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
