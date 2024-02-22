@@ -621,7 +621,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Python dependencies
-        run: python -m pip install --upgrade pip pdiff
+        run: python -m pip install --upgrade pip pdiff cryptography
 
       - name: Set up miniconda
         uses: conda-incubator/setup-miniconda@v2
