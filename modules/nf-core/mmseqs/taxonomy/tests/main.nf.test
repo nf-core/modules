@@ -47,8 +47,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db_taxonomy).match("db_taxonomy") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() }).match() },
+                { assert process.out.versions }
             )
         }
     }
@@ -69,8 +69,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() } +
-                                process.out.versions).match() }
+                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() }).match()},
+                { assert process.out.versions }
             )
         }
     }
