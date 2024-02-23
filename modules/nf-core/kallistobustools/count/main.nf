@@ -14,6 +14,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t1c
     path  t2c
     val   technology
+    val   workflow_mode
 
     output:
     tuple val(meta), path ("*.count"), emit: count
@@ -38,6 +39,7 @@ process KALLISTOBUSTOOLS_COUNT {
         $cdna \\
         $intron \\
         -x $technology \\
+        --workflow $workflow_mode \\
         $args \\
         -o ${prefix}.count \\
         -m ${memory}G \\
