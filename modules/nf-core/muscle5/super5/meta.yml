@@ -11,6 +11,10 @@ tools:
       documentation: "https://drive5.com/muscle5/manual/"
       doi: "10.1101/2021.06.20.449169"
       licence: ["Public Domain"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 input:
   - meta:
       type: map
@@ -21,6 +25,9 @@ input:
       type: file
       description: Input sequences for alignment must be in FASTA format
       pattern: "*.{fasta,fa,fna}"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -33,11 +40,12 @@ output:
       pattern: "versions.yml"
   - alignment:
       type: file
-      description: Multiple sequence alignment produced in FASTA format
-      pattern: "*.{aln}"
+      description: Multiple sequence alignment produced in gzipped FASTA format. If '-perm all' is passed in ext.args, this will be multiple files per input!
+      pattern: "*.{aln.gz}"
 authors:
   - "@alessiovignoli"
   - "@JoseEspinosa"
 maintainers:
   - "@alessiovignoli"
   - "@JoseEspinosa"
+  - "@lrauschning"
