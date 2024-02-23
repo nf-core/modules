@@ -1,70 +1,76 @@
-// nf-core modules test mmseqs/taxonomy
 nextflow_process {
 
     name "Test Process MMSEQS_TAXONOMY"
     script "../main.nf"
+    config "./nextflow.config"
     process "MMSEQS_TAXONOMY"
 
     tag "modules"
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/taxonomy"
+    tag "mmseqs/createdb"
+    tag "mmseqs/databases"
 
-    // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
-    test("Generates the taxonomy db") {
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [id :'querydb' ],
-                     file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
-                    """
-                }
+    setup {
+        run("MMSEQS_CREATEDB") {
+            script "modules/nf-core/mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_query', single_end:false ],
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    ]
+                """
             }
         }
+        run("MMSEQS_DATABASES") {
+            script "modules/nf-core/mmseqs/databases/main.nf"
+            process {
+            """
+            input[0] = 'SILVA'
+            """
+            }
+        }
+    }
 
+    test("taxonomy - bacteroides_fragilis - genome_nt") {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                input[1] = [ [id:'targetdb'], '/Net/Groups/ccdata/databases/mmseqs/GTDB_github']
+                input[0] = MMSEQS_CREATEDB.out.db
+                input[1] = MMSEQS_DATABASES.out.database
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db_taxonomy.size() == 1 },
-                { assert process.out.versions }
+                { assert snapshot(process.out.db_taxonomy).match("db_taxonomy") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
-    test("Generates the taxonomy db - stub") {
+
+    test("taxonomy - bacteroides_fragilis - genome_nt - stub") {
+
         options "-stub"
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [id :'querydb' ],
-                     file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
-                    """
-                }
-            }
-        }
+
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                input[1] = [ [id:'targetdb'], '/Net/Groups/ccdata/databases/mmseqs/GTDB_github']
+                input[0] = MMSEQS_CREATEDB.out.db
+                input[1] = MMSEQS_DATABASES.out.database
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() } +
+                                process.out.versions).match() }
             )
         }
     }
