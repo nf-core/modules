@@ -38,7 +38,7 @@ process MMSEQS_TAXONOMY {
         ${prefix}_taxonomy/${prefix} \\
         tmp1 \\
         $args \\
-        --threads 26 \\
+        --threads ${task.cpus} \\
         --compressed 1
 
     cat <<-END_VERSIONS > versions.yml
