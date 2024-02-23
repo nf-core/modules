@@ -10,7 +10,7 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     input:
     tuple val(meta), path(bed)
     tuple val(meta2), path(fasta)
-    path(bowtie_index)
+    tuple val(meta3), path(bowtie_index)
 
     output:
     tuple val(meta), path("*.pt"), emit: pt

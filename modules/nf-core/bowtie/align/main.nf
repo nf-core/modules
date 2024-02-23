@@ -9,7 +9,7 @@ process BOWTIE_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path('*.bam'), emit: bam

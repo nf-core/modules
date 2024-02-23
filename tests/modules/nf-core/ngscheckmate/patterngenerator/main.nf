@@ -17,9 +17,7 @@ workflow test_ngscheckmate_patterngenerator {
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
         ]
 
-    bowtie_fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-
-    BOWTIE_BUILD ( bowtie_fasta )
+    BOWTIE_BUILD ( fasta )
 
     NGSCHECKMATE_PATTERNGENERATOR ( input, fasta, BOWTIE_BUILD.out.index )
 }
