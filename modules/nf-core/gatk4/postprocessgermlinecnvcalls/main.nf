@@ -3,7 +3,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
+    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(calls), path(model), path(ploidy)
@@ -35,6 +35,8 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
+    export THEANO_FLAGS="base_compiledir=\$PWD"
+
     gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
         PostprocessGermlineCNVCalls \\
         $calls_command \\
