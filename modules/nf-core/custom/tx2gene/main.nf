@@ -9,14 +9,14 @@ process CUSTOM_TX2GENE {
 
     input:
     tuple val(meta), path(gtf)
-    tuple val(meta2), path ("quants")
+    tuple val(meta2), path ("quants/*")
     val quant_type
     val id
     val extra
 
     output:
-    tuple val(meta), path("*.tx2gene.tsv"), emit: tx2gene
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*tx2gene.tsv"), emit: tx2gene
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
