@@ -85,7 +85,7 @@ output:
         Count values derived from tximport output after summarizeToGene(), with
         a 'countsFromAbundance' specification of 'scaledTPM'
       pattern: "*gene_counts_scaled.tsv"
-  - gene_lengths:
+  - lengths_gene:
       type: file
       description: |
         Length values derived from tximport output after summarizeToGene(),
@@ -103,7 +103,7 @@ output:
         Count values derived from tximport output without
         summarizeToGene(), without a 'countsFromAbundance' specification
       pattern: "*transcript_counts.tsv"
-  - transcript_lengths:
+  - lengths_transcript:
       type: file
       description: |
         Length values derived from tximport output without summarizeToGene(),
