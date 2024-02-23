@@ -42,6 +42,7 @@ process RHOCALL_VIZ {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir ${prefix}
     touch ${prefix}/${prefix}.bed
     touch ${prefix}/${prefix}.wig
 
