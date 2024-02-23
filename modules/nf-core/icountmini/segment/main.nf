@@ -5,7 +5,7 @@ process ICOUNTMINI_SEGMENT {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0' :
-        'quay.io/biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
+        'biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(gtf)

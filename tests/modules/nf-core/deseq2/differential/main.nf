@@ -40,6 +40,36 @@ process spoof_spikes {
     """
 }
 ch_empty_spikes = [[],[]]
+ch_empty_lengths = [[],[]]
+
+// Test with transcript lengths
+
+workflow test_deseq2_differential_with_lengths {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+    transcript_lengths = file(params.test_data['mus_musculus']['genome']['rnaseq_lengths'], checkIfExists: true)
+
+    Channel.fromPath(expression_contrasts)
+        .splitCsv ( header:true, sep:',' )
+        .map{
+            tuple(it, it.variable, it.reference, it.target)
+        }
+        .set{
+            ch_contrasts
+        }
+
+    ch_matrix = [[id: 'test'], expression_sample_sheet, expression_matrix_file]
+    ch_lengths = [[id: 'test'], transcript_lengths]
+
+    DESEQ2_DIFFERENTIAL (
+        ch_contrasts,
+        ch_matrix,
+        ch_empty_spikes,
+        ch_lengths
+    )
+}
 
 workflow test_deseq2_differential {
 
@@ -61,7 +91,8 @@ workflow test_deseq2_differential {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -89,7 +120,8 @@ workflow test_deseq2_differential_noblocking {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -125,7 +157,8 @@ workflow test_deseq2_differential_spikes {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_spikes
+        ch_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -160,7 +193,8 @@ workflow test_deseq2_differential_strip_spikes {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_spikes
+        ch_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -189,7 +223,8 @@ workflow test_deseq2_differential_csv {
     DESEQ2_DIFFERENTIAL(
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -215,7 +250,8 @@ workflow test_deseq2_differential_vst_nsub {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -241,7 +277,8 @@ workflow test_deseq2_differential_subset_to_contrast {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }
 
@@ -267,6 +304,7 @@ workflow test_deseq2_differential_exclude_samples {
     DESEQ2_DIFFERENTIAL (
         ch_contrasts,
         ch_matrix,
-        ch_empty_spikes
+        ch_empty_spikes,
+        ch_empty_lengths
     )
 }

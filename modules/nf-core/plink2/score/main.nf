@@ -26,7 +26,7 @@ process PLINK2_SCORE {
     plink2 \\
         --threads $task.cpus \\
         --memory $mem_mb \\
-        --pfile ${pgen.baseName} vzs \\
+        --pfile ${pgen.baseName} \\
         --score ${scorefile} \\
         $args \\
         --out ${prefix}
