@@ -177,7 +177,7 @@ workflow PREPROCESS_RNASEQ {
 
         BBMAP_BBSPLIT.out.primary_fastq
             .set { ch_filtered_reads }
-        
+
         ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
     }
 
