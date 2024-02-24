@@ -33,7 +33,8 @@ nextflow_workflow {
                     ]
                 ])
 
-                ch_ribo_db = file(params.modules_testdata_base_path + 'genomics/eukaryotes/generic/rrna_db.txt', checkIfExists: true)
+                ch_ribo_db = file('ribo_db.txt')
+                ch_ribo_db.append('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/rfam-5.8s-database-id98.fasta')
 
                 input[0] = ch_reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
@@ -58,8 +59,8 @@ nextflow_workflow {
         }
 
         then {
-            //def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
-            //def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(pelines1).md5().match("fastp_test_pe_reads_1_lines") },
@@ -86,7 +87,8 @@ nextflow_workflow {
                     ]
                 ])
 
-                ch_ribo_db = file(params.modules_testdata_base_path + 'genomics/eukaryotes/generic/rrna_db.txt', checkIfExists: true)
+                ch_ribo_db = file('ribo_db.txt')
+                ch_ribo_db.append('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/rfam-5.8s-database-id98.fasta')
 
                 input[0] = ch_reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
