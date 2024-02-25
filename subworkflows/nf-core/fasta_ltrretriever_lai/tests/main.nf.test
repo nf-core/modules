@@ -1,0 +1,59 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTA_LTRRETRIEVER_LAI"
+    script "../main.nf"
+    workflow "FASTA_LTRRETRIEVER_LAI"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_ltrretriever_lai"
+    tag "fasta_ltrretriever_lai"
+    tag "gunzip"
+    tag "custom/shortenfastaids"
+    tag "ltrharvest"
+    tag "ltrfinder"
+    tag "ltrretriever/ltrretriever"
+    tag "cat/cat"
+    tag "ltrretriever/lai"
+    tag "custom/restoregffids"
+
+    test("actinidia_chinensis-genome_21_fasta_gz-success") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../../modules/nf-core/gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0]    = GUNZIP.out.gunzip
+                input[1]    = []
+                input[2]    = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.annotation_gff[0][1]).text.contains('Copia_LTR_retrotransposon') },
+                { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
+                { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
+                { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
+                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
+            )
+        }
+    }
+}
