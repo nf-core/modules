@@ -28,10 +28,10 @@ nextflow_workflow {
                 """
             }
         }
-    }    
+    }
 
     test("homo_sapiens - fastq - single_end") {
-       config "./nextflow.config"
+        config "./nextflow.config"
         when {
             workflow {
                 """
@@ -51,7 +51,7 @@ nextflow_workflow {
                     [ id:'test_fasta' ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ])
-                input[7] = Channel.of([])
+                input[7] = Channel.of([[:], []])
                 """
             }
         }
@@ -106,7 +106,7 @@ nextflow_workflow {
                     [ id:'test_fasta' ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ])
-                input[7] = Channel.of([])
+                input[7] = Channel.of([[:], []])
                 """
             }
         }
@@ -145,7 +145,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/rsem/preparereference/main.nf"
                 process {
                     """
-		    input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkifexists: true))
+                    input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkifexists: true))
                     input[1] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkifexists: true))
                     """
                 }
@@ -173,7 +173,7 @@ nextflow_workflow {
                     [ id:'test_fasta' ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ])
-                input[7] = Channel.of([])
+                input[7] = RSEM_PREPAREREFERENCE.out.transcript_fasta.map{[[:], it]}
                 """
             }
         }
@@ -203,7 +203,7 @@ nextflow_workflow {
             )
         }
     }
-    
+
     test("homo_sapiens - fastq - paired_end - transcripts - no_transcriptome") {
         config "./with_transcripts.config"
 
@@ -229,7 +229,7 @@ nextflow_workflow {
                     [ id:'test_fasta' ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ])
-                input[7] = Channel.of([])
+                input[7] = Channel.of([[:], []])
                 """
             }
         }
