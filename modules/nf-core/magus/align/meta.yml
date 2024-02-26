@@ -40,6 +40,10 @@ input:
         If empty, or overwritten by passing `-t [fasttree|fasttree-noml|clustal|parttree]`, MAGUS will construct its own guide tree. If empty, `fasttree` is used as a default.
       pattern: "*.{dnd,tree}"
 
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
+
 output:
   - meta:
       type: map
@@ -56,7 +60,8 @@ output:
       type: file
       description: File containing the output alignment, in FASTA format containing gaps.
         The sequences may be in a different order than in the input FASTA.
-      pattern: "*.aln"
+        The output file may or may not be gzipped, depending on the value supplied to `compress`.
+      pattern: "*.aln{.gz,}"
 
 authors:
   - "@lrauschning"
