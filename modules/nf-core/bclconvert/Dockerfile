@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Dockerfile to create container with bcl-convert
-# Push to nfcore/bclconvert:<VER>
+# Push to quay.io/nf-core/modules/bclconvert:<VER>
 
 FROM debian:bullseye-slim
 ARG BCLCONVERT_VERSION="4.2.7"
