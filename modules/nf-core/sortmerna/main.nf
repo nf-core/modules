@@ -9,13 +9,13 @@ process SORTMERNA {
 
     input:
     tuple val(meta), path(reads)
-    tuple  val(meta2), path(fastas)
-    tuple  val(meta3), path(index)
+    tuple val(meta2), path(fastas)
+    tuple val(meta3), path(index)
 
     output:
     tuple val(meta), path("*non_rRNA.fastq.gz"), emit: reads, optional: true
+    tuple val(meta), path("*.log")             , emit: log, optional: true
     tuple val(meta2), path("idx")              , emit: index, optional: true
-    tuple val(meta3), path("*.log")             , emit: log, optional: true
     path  "versions.yml"                       , emit: versions
 
     when:
@@ -53,9 +53,6 @@ process SORTMERNA {
             paired_cmd = "--paired_in"
             out2_cmd   = "--out2"
         }
-    } else {
-        // Output meta needs to correspond to the input used
-        meta = (index_only) ? meta2 : meta
     }
     """
     sortmerna \\
@@ -68,9 +65,9 @@ process SORTMERNA {
         $paired_cmd \\
         $out2_cmd \\
         $args
-    
+
     $mv_cmd
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sortmerna: \$(echo \$(sortmerna --version 2>&1) | sed 's/^.*SortMeRNA version //; s/ Build Date.*\$//')
@@ -99,9 +96,6 @@ process SORTMERNA {
             touch ${prefix}_2.non_rRNA.fastq.gz
             """
         }
-    } else {
-        // Output meta needs to correspond to the input used
-        meta = (index_only) ? meta2 : meta
     }
     """
     $mv_cmd
