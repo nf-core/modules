@@ -67,9 +67,9 @@ nextflow_process {
                             process.out.reads_fail.collect { file(it[1]).getName() } +
                             process.out.reads_merged.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("test_fastp_single_end-for_stub_match")
+                    ).match("test_fastp_single_end-_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end") }
             )
         }
     }
@@ -116,7 +116,7 @@ nextflow_process {
                         ).sort()
                     ).match("test_fastp_single_end-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
             )
         }
     }
@@ -196,9 +196,9 @@ nextflow_process {
                             process.out.reads_fail.collect { file(it[1]).getName() } +
                             process.out.reads_merged.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("test_fastp_paired_end-for_stub_match")
+                    ).match("test_fastp_paired_end_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end") }
             )
         }
     }
@@ -245,7 +245,7 @@ nextflow_process {
                         ).sort()
                     ).match("test_fastp_paired_end-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end-stub") }
             )
         }
     }
@@ -310,9 +310,9 @@ nextflow_process {
                             process.out.reads_fail.collect { file(it[1]).getName() } +
                             process.out.reads_merged.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("test_fastp_interleaved-for_stub_match")
+                    ).match("test_fastp_interleaved-_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_interleaved") }
             )
         }
     }
@@ -359,7 +359,7 @@ nextflow_process {
                         ).sort()
                     ).match("test_fastp_interleaved-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_interleaved-stub") }
             )
         }
     }
@@ -420,7 +420,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_single_end_trim_fail") }
             )
         }
     }
@@ -498,7 +498,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end_trim_fail") }
             )
         }
     }
@@ -587,9 +587,9 @@ nextflow_process {
                             process.out.reads_fail.collect { file(it[1]).getName() } +
                             process.out.reads_merged.collect { file(it[1]).getName() }
                         ).sort()
-                    ).match("test_fastp_paired_end_merged-for_stub_match")
+                    ).match("test_fastp_paired_end_merged_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end_merged") }
             )
         }
     }
@@ -636,7 +636,7 @@ nextflow_process {
                         ).sort()
                     ).match("test_fastp_paired_end_merged-for_stub_match")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end_merged_stub") }
             )
         }
     }
@@ -716,7 +716,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
                     }
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match("versions_paired_end_merged_adapterlist") }
             )
         }
     }

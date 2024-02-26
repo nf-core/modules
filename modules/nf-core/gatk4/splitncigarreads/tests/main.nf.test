@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process GATK4_SPLITNCIGARREADS"
+    script "../main.nf"
+    process "GATK4_SPLITNCIGARREADS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/splitncigarreads"
+
+    test("test_gatk4_splitncigarreads") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists:true), []]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam.get(0).get(1)).name).match("test_gatk4_splitncigarreads") }
+            )
+        }
+
+    }
+
+    test("test_gatk4_splitncigarreads_intervals") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists:true), file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam.get(0).get(1)).name).match("test_gatk4_splitncigarreads_intervals") }
+            )
+        }
+
+    }
+
+    test("test_gatk4_splitncigarreads_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true), [], []]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam.get(0).get(1)).name).match("test_gatk4_splitncigarreads_stub") }
+            )
+        }
+
+    }
+
+}
