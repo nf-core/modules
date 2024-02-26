@@ -8,7 +8,7 @@ process MAGUS_ALIGN {
         'biocontainers/magus-msa:0.1.2--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta) , path(fasta)
     tuple val(meta2), path(tree)
 
     output:
