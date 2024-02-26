@@ -49,7 +49,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.db_taxonomy.get(0).get(1)).list() ).match()},
+                    file(process.out.db_taxonomy.get(0).get(1)).list().sort() ).match()},
                 { assert process.out.versions }
             )
         }
@@ -72,7 +72,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.db_taxonomy.get(0).get(1)).list() ).match()},
+                    file(process.out.db_taxonomy.get(0).get(1)).list().sort() ).match()},
                 { assert process.out.versions }
             )
         }
