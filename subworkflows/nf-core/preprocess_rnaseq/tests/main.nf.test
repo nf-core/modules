@@ -18,24 +18,31 @@ nextflow_workflow {
     tag "subworkflows/fastq_fastqc_umitools_fastp"
     tag "subworkflows/fastq_subsample_fq_salmon"
 
+
+
     test("homo_sapiens paired-end [fastq] fastp") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                ch_reads = Channel.of([
                     [ id:'test', single_end:false, strandedness:'auto' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
-                ]) // ch_reads
+                ])
+
+                ch_ribo_db = file('ribo_db.txt')
+                ch_ribo_db.append('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/rfam-5.8s-database-id98.fasta')
+
+                input[0] = ch_reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)) // ch_gtf
                 input[4] = []              // ch_salmon_index
                 input[5] = []              // ch_bbsplit_index
-                input[6] = []              // ch_ribo_db
+                input[6] = ch_ribo_db      // ch_ribo_db
                 input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
@@ -44,7 +51,7 @@ nextflow_workflow {
                 input[12] = 'fastp'        // trimmer
                 input[13] = 10             // min_trimmed_reads
                 input[14] = true           // save_trimmed
-                input[15] = false          // remove_ribo_rna
+                input[15] = true           // remove_ribo_rna
                 input[16] = false          // with_umi
                 input[17] = 0              // umi_discard_read
                 """
@@ -72,19 +79,24 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                ch_reads = Channel.of([
                     [ id:'test', single_end:false, strandedness:'auto' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
-                ]) // ch_reads
+                ])
+
+                ch_ribo_db = file('ribo_db.txt')
+                ch_ribo_db.append('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/rfam-5.8s-database-id98.fasta')
+
+                input[0] = ch_reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)) // ch_gtf
                 input[4] = []              // ch_salmon_index
                 input[5] = []              // ch_bbsplit_index
-                input[6] = []              // ch_ribo_db
+                input[6] = ch_ribo_db      // ch_ribo_db
                 input[7] = true            // skip_bbsplit
                 input[8] = false           // skip_fastqc
                 input[9] = false           // skip_trimming
@@ -93,7 +105,7 @@ nextflow_workflow {
                 input[12] = 'fastp'        // trimmer
                 input[13] = 10             // min_trimmed_reads
                 input[14] = true           // save_trimmed
-                input[15] = false          // remove_ribo_rna
+                input[15] = true           // remove_ribo_rna
                 input[16] = false          // with_umi
                 input[17] = 0              // umi_discard_read
                 """

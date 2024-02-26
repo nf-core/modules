@@ -89,26 +89,6 @@ workflow PREPROCESS_RNASEQ {
     ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
 
     //
-    // MODULE: Remove ribosomal RNA reads
-    //
-    if (remove_ribo_rna) {
-        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
-            .map { row -> file(row, checkIfExists: true) }
-            .collect()
-
-        SORTMERNA (
-            ch_filtered_reads,
-            ch_sortmerna_fastas
-        )
-        .reads
-        .set { ch_filtered_reads }
-
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log.map{ it[1] })
-
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-    }
-
-    //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
     //
     if (trimmer == 'trimgalore') {
@@ -128,7 +108,6 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
-            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
@@ -155,7 +134,6 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json.map{tuple(it[0], [it[1]])})
-            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
@@ -196,9 +174,33 @@ workflow PREPROCESS_RNASEQ {
             [ [], [] ],
             false
         )
-        .primary_fastq
-        .set { ch_filtered_reads }
+
+        BBMAP_BBSPLIT.out.primary_fastq
+            .set { ch_filtered_reads }
+
         ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
+    }
+
+    //
+    // MODULE: Remove ribosomal RNA reads
+    //
+    if (remove_ribo_rna) {
+        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
+            .map { row -> file(row, checkIfExists: true) }
+            .collect()
+
+        SORTMERNA (
+            ch_filtered_reads,
+            ch_sortmerna_fastas
+        )
+
+        SORTMERNA.out.reads
+            .set { ch_filtered_reads }
+
+        ch_multiqc_files = ch_multiqc_files
+            .mix(SORTMERNA.out.log)
+
+        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
 
     // Branch FastQ channels if 'auto' specified to infer strandedness
@@ -248,7 +250,7 @@ workflow PREPROCESS_RNASEQ {
     reads           = ch_strand_inferred_fastq
     trim_read_count = ch_trim_read_count
 
-    multiqc_files   = ch_multiqc_files
+    multiqc_files   = ch_multiqc_files.transpose().map{it[1]}
     versions        = ch_versions                     // channel: [ versions.yml ]
 }
 
