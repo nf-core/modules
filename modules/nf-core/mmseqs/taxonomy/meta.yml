@@ -25,12 +25,7 @@ input:
         e.g. `[ id:'test', single_end:false ]`
   - db_query:
       type: directory
-      description: an MMseqs2 database with query data
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+      description: An MMseqs2 database with query data
   - db_target:
       type: directory
       description: an MMseqs2 database with target data including the taxonomy classification
@@ -42,7 +37,7 @@ output:
         e.g. `[ id:'test', single_end:false ]`
   - db_taxonomy:
       type: directory
-      description: The created MMseqs2 database with taxonomic classifications
+      description: An MMseqs2 database with target data including the taxonomy classification
   - versions:
       type: file
       description: File containing software versions

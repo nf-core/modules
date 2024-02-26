@@ -24,6 +24,7 @@ nextflow_process {
                 """
             }
         }
+
         run("MMSEQS_DATABASES") {
             script "modules/nf-core/mmseqs/databases/main.nf"
             process {
@@ -33,8 +34,7 @@ nextflow_process {
             }
         }
     }
-
-    test("taxonomy - bacteroides_fragilis - genome_nt") {
+    test("mmseqs/taxonomy - bacteroides_fragilis - genome_nt") {
         when {
             process {
                 """
@@ -47,13 +47,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() }).match() },
+                { assert snapshot(
+                    file(process.out.db_taxonomy.get(0).get(1)).list() ).match()},
                 { assert process.out.versions }
             )
         }
     }
 
-    test("taxonomy - bacteroides_fragilis - genome_nt - stub") {
+    test("mmseqs/taxonomy - bacteroides_fragilis - genome_nt - stub") {
 
         options "-stub"
 
@@ -69,7 +70,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db_taxonomy.collect { file(it[1]).getName() }).match()},
+                { assert snapshot(
+                    file(process.out.db_taxonomy.get(0).get(1)).list() ).match()},
                 { assert process.out.versions }
             )
         }
