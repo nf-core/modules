@@ -53,9 +53,9 @@ process SORTMERNA {
             paired_cmd = "--paired_in"
             out2_cmd   = "--out2"
         }
-    }
-    if (! skip_index){
-        refs_input = '--ref '+fastas.join(' --ref ')
+    } else {
+        // Output meta needs to correspond to the input used
+        meta = (index_only) ? meta2 : meta
     }
     """
     sortmerna \\
@@ -99,8 +99,10 @@ process SORTMERNA {
             touch ${prefix}_2.non_rRNA.fastq.gz
             """
         }
+    } else {
+        // Output meta needs to correspond to the input used
+        meta = (index_only) ? meta2 : meta
     }
-
     """
     $mv_cmd
     mkdir -p idx
