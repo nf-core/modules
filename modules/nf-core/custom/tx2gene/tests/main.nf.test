@@ -45,7 +45,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.tx2gene).match('tx2gene') },
+                { assert snapshot(process.out.versions).match('versions') }
             )
         }
     }
@@ -72,7 +73,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.tx2gene).match('tx2gene - stub') },
+                { assert snapshot(process.out.versions).match('versions - stub') }
             )
         }
     }
