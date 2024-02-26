@@ -199,13 +199,13 @@ workflow PREPROCESS_RNASEQ {
                 ch_sortmerna_fastas,
                 [[],[]]
             )
-            ch_sortmerna_index = SORTMERNA_INDEX.out.index
+            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
         }
 
         SORTMERNA (
             ch_filtered_reads,
             ch_sortmerna_fastas,
-            SORTMERNA_INDEX.out.index
+            ch_sortmerna_index
         )
 
         SORTMERNA.out.reads
