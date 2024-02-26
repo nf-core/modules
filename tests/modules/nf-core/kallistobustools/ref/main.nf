@@ -22,11 +22,11 @@ workflow test_kallistobustools_ref_lamanno {
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
 
-workflow test_kallistobustools_ref_nucleus {
+workflow test_kallistobustools_ref_nac {
 
     fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf         = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-    workflow    = "nucleus"
+    workflow    = "nac"
 
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
