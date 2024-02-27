@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Written by Usman Rashid <@GallVp> and released under the MIT license.
+
 from platform import python_version
 
 ids_tsv = "$ids_tsv"
