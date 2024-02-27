@@ -4,8 +4,8 @@ process GXF2BED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gxf2bed:0.1.0--h4ac6f70_0':
-        'biocontainers/gxf2bed:0.1.0--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/gxf2bed:0.2.0--h4ac6f70_0':
+        'biocontainers/gxf2bed:0.2.0--h4ac6f70_0 ' }"
 
     input:
     path gxf
