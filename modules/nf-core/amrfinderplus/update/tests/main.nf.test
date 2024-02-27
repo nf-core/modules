@@ -23,7 +23,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.db.collect { file(it).getName() } +
-                    process.out.versions).match() }
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -43,8 +45,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.db.collect { file(it).getName() } +
-                    process.out.versions).match() }
+                    process.out.db,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
