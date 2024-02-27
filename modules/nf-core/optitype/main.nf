@@ -11,7 +11,7 @@ process OPTITYPE {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("${prefix}/*.tsv"), emit: hlatype
+    tuple val(meta), path("${prefix}/*.tsv"), emit: hla_type
     tuple val(meta), path("${prefix}/*.pdf"), emit: coverage_plot
     path "versions.yml"                     , emit: versions
 
