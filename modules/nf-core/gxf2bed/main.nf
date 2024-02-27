@@ -19,8 +19,10 @@ process GXF2BED {
 
     script:
     def prefix = task.ext.prefix ?: "${gxf.baseName}"
+    def args = task.ext.args ?: ''
     """
     gxf2bed \\
+        $args \\
         --input $gxf \\
         --threads $task.cpus \\
         --output ${prefix}.bed
