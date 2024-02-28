@@ -27,6 +27,9 @@ process MULTIQC {
     def extra_config = extra_multiqc_config ? "--config $extra_multiqc_config" : ''
     def logo = multiqc_logo ? /--cl-config 'custom_logo: "${multiqc_logo}"'/ : ''
     """
+    #Set TMPDIR to fix issues with the MultiQC container on ARM systems
+    export TMPDIR=\$PWD
+
     multiqc \\
         --force \\
         $args \\
