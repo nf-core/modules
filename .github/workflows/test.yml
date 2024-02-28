@@ -676,6 +676,11 @@ jobs:
           path: >-
             test.tap
 
+      - name: Clean up
+        if: always()
+        run: |
+          sudo rm -rf /home/ubuntu/tests/
+
   confirm-pass:
     runs-on: ubuntu-latest
     needs: [prettier, editorconfig, pytest-changes, nf-core-lint, pytest, nf-test-changes, nf-test]
