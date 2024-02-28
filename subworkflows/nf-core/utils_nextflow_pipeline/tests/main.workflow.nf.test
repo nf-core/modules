@@ -71,7 +71,7 @@ nextflow_workflow {
 
                 input[0] = false
                 input[1] = true
-                input[2] = 'results'
+                input[2] = outdir
                 input[3] = false
                 """
             }
@@ -91,12 +91,12 @@ nextflow_workflow {
                 """
                 print_version        = false
                 dump_parameters      = true
-                outdir               = 'results'
+                outdir               = null
                 check_conda_channels = false
 
                 input[0] = false
                 input[1] = true
-                input[2] = null
+                input[2] = outdir
                 input[3] = false
                 """
             }
