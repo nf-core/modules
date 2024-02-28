@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CUSTOM_SRATOOLSNCBISETTINGS"
     config "modules/nf-core/custom/sratoolsncbisettings/tests/nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "custom"
-    tag "custom/sratoolsncbisettings"
 
     test("Should run without failures") {
 
@@ -15,7 +11,6 @@ nextflow_process {
             params {
                 settings_path = '/tmp/.ncbi'
                 settings_file  = "${params.settings_path}/user-settings.mkfg"
-                outdir         = "$outputDir"
             }
 
             process {

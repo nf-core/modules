@@ -3,11 +3,8 @@ nextflow_process {
     script "../main.nf"
     config "./nextflow.config"
     process "SRATOOLS_FASTERQDUMP"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "untar"
-    tag "sratools"
-    tag "sratools/fasterqdump"
+
+    tag "UNTAR"
 
     test("Single-end") {
 
