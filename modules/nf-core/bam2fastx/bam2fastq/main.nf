@@ -1,3 +1,9 @@
+/*
+WARNING: This module has been deprecated. Please use nf-core/modules/pbtk/bam2fastq
+Reason:
+bam2fastx has been superseded by pbtk (PacBio toolkit), and is no longer compatible with newer BAM formats.
+*/
+
 process BAM2FASTX_BAM2FASTQ {
     tag "$meta.id"
     label 'process_medium'
@@ -20,6 +26,7 @@ process BAM2FASTX_BAM2FASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert true: "This module has been deprecated. See code for the reason and an alternative."
     """
     bam2fastq \\
         $args \\
