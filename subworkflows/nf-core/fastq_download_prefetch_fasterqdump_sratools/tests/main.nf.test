@@ -3,10 +3,12 @@ nextflow_workflow {
     name "Test workflow: fastq_download_prefetch_fasterqdump_sratools/main.nf"
     script "../main.nf"
     workflow "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
-
-    tag "CUSTOM_SRATOOLSNCBISETTINGS"
-    tag "SRATOOLS_PREFETCH"
-    tag "SRATOOLS_FASTERQDUMP"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "custom/sratoolsncbisettings"
+    tag "sratools/prefetch"
+    tag "sratools/fasterqdump"
+    tag "subworkflows/fastq_download_prefetch_fasterqdump_sratools"
 
     test("Parameters: default") {
 
