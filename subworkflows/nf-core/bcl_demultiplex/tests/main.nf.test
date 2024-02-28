@@ -19,12 +19,12 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = [
+                input[0] = Channel.value([
                     [id:'test', lane:1 ],
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
-                    ]
-                input[1] = "bclconvert"
+                    ])
+                input[1] = Channel.value("bclconvert")
                 """
                 }
         }
@@ -41,12 +41,12 @@ nextflow_workflow {
 
                 workflow {
                     """
-                    input[0] = [
+                    input[0] = Channel.value([
                         [id:'test', lane:1 ],
                         "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
                         "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
-                        ]
-                    input[1] = "bcl2fastq"
+                        ])
+                    input[1] = Channel.value("bcl2fastq")
                     """
                         }
             }
