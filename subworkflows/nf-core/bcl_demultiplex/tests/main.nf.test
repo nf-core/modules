@@ -24,7 +24,7 @@ nextflow_workflow {
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
                     ])
-                input[1] = Channel.value("bclconvert")
+                input[1] = "bclconvert"
                 """
                 }
         }
@@ -46,7 +46,7 @@ nextflow_workflow {
                         "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
                         "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
                         ])
-                    input[1] = Channel.value("bcl2fastq")
+                    input[1] = "bcl2fastq"
                     """
                         }
             }
