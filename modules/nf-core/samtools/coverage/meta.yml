@@ -28,6 +28,19 @@ input:
       type: file
       description: BAM/CRAM index file
       pattern: "*.{bai,crai}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'gemome']
+  - fasta:
+      type: file
+      description: Reference file to create the CRAM file
+      pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: Reference file index
+      pattern: "*.{fai}"
 output:
   - meta:
       type: map
@@ -44,5 +57,7 @@ output:
       pattern: "*.txt"
 authors:
   - "@LouisLeNezet"
+  - "@matthdsm"
 maintainers:
   - "@LouisLeNezet"
+  - "@matthdsm"
