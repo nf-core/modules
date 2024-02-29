@@ -10,9 +10,6 @@ nextflow_process {
     test("test_trimgalore_single_end") {
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:true ], // meta map
@@ -50,9 +47,6 @@ nextflow_process {
     test("test_trimgalore_paired_end") {
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
