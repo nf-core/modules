@@ -36,8 +36,6 @@ process TRIMGALORE {
 
     // Added soft-links to original fastqs for consistent naming in MultiQC
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def foo = 'foo'
-
     if (meta.single_end) {
         def args_list = args.split("\\s(?=--)").toList()
         args_list.removeAll { it.toLowerCase().contains('_r2 ') }
