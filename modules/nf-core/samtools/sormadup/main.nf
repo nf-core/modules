@@ -22,6 +22,10 @@ process SAMTOOLS_SORMADUP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
+    def args3 = task.ext.args ?: ''
+    def args4 = task.ext.args ?: ''
+    def args5 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt bam") ? "bam" :
@@ -33,9 +37,11 @@ process SAMTOOLS_SORMADUP {
     """
     samtools cat \\
         --threads $task.cpus \\
+        $args2 \\
         ${input}  \\
     | \\
     samtools collate \\
+        $args3 \\
         -O \\
         -u \\
         -T ${prefix} \\
@@ -44,6 +50,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools fixmate \\
+        $args4 \\
         -m \\
         -u \\
         --threads $task.cpus \\
@@ -51,6 +58,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools sort \\
+        $args5 \\
         -u \\
         -T ${prefix} \\
         --threads $task.cpus \\
