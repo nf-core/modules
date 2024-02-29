@@ -124,7 +124,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
                     input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
-                    input[2] = 'kallisto'
+                    input[2] = 'salmon'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name'
                     """
