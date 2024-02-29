@@ -39,7 +39,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(report1_line) }
                     }
                 },
-                { assert snapshot(process.out.versions).match("se versions") }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
@@ -96,7 +96,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1).get(1)).getText().contains(report2_line) }
                     }
                 },
-                { assert snapshot(process.out.versions).match("pe versions") }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
