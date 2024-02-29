@@ -39,12 +39,10 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert path(workflow.out.fastqc_html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.trim_unpaired,
-                    workflow.out.trim_read_count,
-                    workflow.out.reads
-                ).match("fastq_fastqc_umitools_trimgalore_single") }
+                { assert snapshot(workflow.out.reads).match("se - reads") },
+                { assert snapshot(workflow.out.trim_read_count).match("se - trim_read_count") },
+                { assert snapshot(workflow.out.trim_unpaired).match("se - trim_unpaired") },
+                { assert snapshot(workflow.out.versions).match("se - versions") }
             )
         }
     }
@@ -74,12 +72,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.trim_unpaired,
-                    workflow.out.trim_read_count,
-                    workflow.out.reads
-                ).match("fastq_fastqc_umitools_trimgalore_paired") }
+                { assert snapshot(workflow.out.reads).match("pe - reads") },
+                { assert snapshot(workflow.out.trim_read_count).match("pe - trim_read_count") },
+                { assert snapshot(workflow.out.trim_unpaired).match("pe - trim_unpaired") },
+                { assert snapshot(workflow.out.versions).match("pe - versions") }
             )
         }
     }
@@ -108,12 +104,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.trim_unpaired,
-                    workflow.out.trim_read_count,
-                    workflow.out.reads
-                ).match("fastq_fastqc_umitools_trimgalore_paired_without_umi") }
+                { assert snapshot(workflow.out.reads).match("pe no umi - reads") },
+                { assert snapshot(workflow.out.trim_read_count).match("pe no umi - trim_read_count") },
+                { assert snapshot(workflow.out.trim_unpaired).match("pe no umi - trim_unpaired") },
+                { assert snapshot(workflow.out.versions).match("pe no umi - versions") }
             )
         }
     }
@@ -143,12 +137,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.trim_unpaired,
-                    workflow.out.trim_read_count,
-                    workflow.out.reads
-                ).match("fastq_fastqc_umitools_trimgalore_skip_all") }
+                { assert snapshot(workflow.out.reads).match("pe skip all - reads") },
+                { assert snapshot(workflow.out.trim_read_count).match("pe skip all - trim_read_count") },
+                { assert snapshot(workflow.out.trim_unpaired).match("pe skip all - trim_unpaired") },
+                { assert snapshot(workflow.out.versions).match("pe skip all - versions") }
             )
         }
     }
