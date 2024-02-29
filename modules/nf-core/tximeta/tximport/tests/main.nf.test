@@ -110,7 +110,7 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
                     ])
                     """
                 }
