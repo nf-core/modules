@@ -54,7 +54,7 @@ nextflow_process {
                     process.out.versions,
                     process.out.matrix,
                     path(process.out.count.get(0).get(1)).list().findAll { file(it.toString()).name != "run_info.json" && file(it.toString()).name != "kb_info.json" },
-                    file(path(process.out.count.get(0).get(1)).list().find { file(it.toString()).name == "kb_info.json" }.toString()).readLines()[2..10],
+                    file(path(process.out.count.get(0).get(1)).list().find { file(it.toString()).name == "kb_info.json" }.toString()).readLines()[15..22],
                     file(path(process.out.count.get(0).get(1)).list().find { file(it.toString()).name == "run_info.json" }.toString()).readLines()[0..9]
                     ).match()
                 }
