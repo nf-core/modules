@@ -44,7 +44,7 @@ process SAMTOOLS_SORMADUP {
         $args2 \\
         -O \\
         -u \\
-        -T ${prefix} \\
+        -T ${prefix}.collate \\
         --threads $task.cpus \\
         ${reference} \\
         - \\
