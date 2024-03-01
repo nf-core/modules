@@ -2,7 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:7.2.0"
+    container "docker.io/nf-core/cellranger:7.2.0"
 
     input:
     val meta
