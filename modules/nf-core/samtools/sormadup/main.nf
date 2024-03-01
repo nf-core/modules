@@ -60,7 +60,7 @@ process SAMTOOLS_SORMADUP {
     samtools sort \\
         $args4 \\
         -u \\
-        -T ${prefix} \\
+        -T ${prefix}.sort \\
         --threads $task.cpus \\
         -m ${sort_memory}M \\
         - \\
