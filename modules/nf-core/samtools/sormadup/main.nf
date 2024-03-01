@@ -22,10 +22,10 @@ process SAMTOOLS_SORMADUP {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
-    def args3 = task.ext.args ?: ''
-    def args4 = task.ext.args ?: ''
-    def args5 = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
+    def args4 = task.ext.args4 ?: ''
+    def args5 = task.ext.args5 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
