@@ -28,7 +28,6 @@ process SAMTOOLS_SORMADUP {
     def args5 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
