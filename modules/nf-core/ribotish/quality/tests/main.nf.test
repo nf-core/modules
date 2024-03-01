@@ -16,10 +16,10 @@ nextflow_process {
                 """
                 input[0] = [ 
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
-                    file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
                 ]
-                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
                 """
             }
         }
@@ -44,10 +44,10 @@ nextflow_process {
                 """
                 input[0] = [ 
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
-                    file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
                 ]
-                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "data/genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
                 """
             }
         }
