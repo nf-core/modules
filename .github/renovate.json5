@@ -34,10 +34,10 @@
             description: "Upgrade conda dependencies",
             fileMatch: ["(^|/)environment(.*).ya?ml$"],
             matchStrings: [
-                "#\\s*renovate\\s+datasource=conda\\s+depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*\"?(?<currentValue>.*)\"?",
-                "# renovate: datasource=conda depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*\"?(?<currentValue>.*)\"?"
+                '#\\s*renovate\\s+datasource=conda\\s+depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
+                '# renovate: datasource=conda depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
             ],
-            datasourceTemplate: "conda"
+            datasourceTemplate: "conda",
         },
         {
             customType: "regex",
@@ -45,9 +45,9 @@
             fileMatch: ["(^|/)environment(.*).ya?ml$"],
             matchStrings: [
                 "# renovate datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)",
-                "# renovate: datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)"
+                "# renovate: datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)",
             ],
-            datasourceTemplate: "pypi"
+            datasourceTemplate: "pypi",
         },
     ],
     packageRules: [
@@ -55,12 +55,13 @@
             matchDatasources: ["docker"],
             registryUrls: ["quay.io"],
         },
-        // don't use digest for actions coming from seqera(labs) or nf-core
         {
             matchPackagePatterns: ["^nf-core/", "^seqera"],
             matchManagers: ["github-actions"],
             automerge: true,
-            pinDigest: false,
+            pinDigest: {
+                enabled: false,
+            },
         },
         {
             matchManagers: ["github-actions"],
