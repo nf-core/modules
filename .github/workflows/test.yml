@@ -136,7 +136,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -592,7 +592,7 @@ jobs:
 
       - name: Cache nf-test installation
         id: cache-software
-        uses: actions/cache@v3
+        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         with:
           path: |
             /usr/local/bin/nf-test
