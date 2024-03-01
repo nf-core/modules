@@ -86,12 +86,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                            process.out.txt,
-                            process.out.html,
-                            process.out.log,
-                            process.out.versions
-                         ).match()
+                { assert snapshot(process.out).match()
                 },
                 {
                     with(process.out.html.get(0)) {
