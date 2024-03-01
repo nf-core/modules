@@ -151,7 +151,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v1
+        uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
@@ -392,7 +392,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow ${{ matrix.NXF_VER }}
-        uses: nf-core/setup-nextflow@v1
+        uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
         with:
           version: "${{ matrix.NXF_VER }}"
 
@@ -588,7 +588,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v1
+        uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
 
       - name: Cache nf-test installation
         id: cache-software
