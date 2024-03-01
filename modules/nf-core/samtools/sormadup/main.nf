@@ -37,11 +37,11 @@ process SAMTOOLS_SORMADUP {
     """
     samtools cat \\
         --threads $task.cpus \\
-        $args2 \\
+        $args \\
         ${input}  \\
     | \\
     samtools collate \\
-        $args3 \\
+        $args2 \\
         -O \\
         -u \\
         -T ${prefix} \\
@@ -50,7 +50,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools fixmate \\
-        $args4 \\
+        $args3 \\
         -m \\
         -u \\
         --threads $task.cpus \\
@@ -58,7 +58,7 @@ process SAMTOOLS_SORMADUP {
         - \\
     | \\
     samtools sort \\
-        $args5 \\
+        $args4 \\
         -u \\
         -T ${prefix} \\
         --threads $task.cpus \\
@@ -69,7 +69,7 @@ process SAMTOOLS_SORMADUP {
         -T ${prefix} \\
         -f ${prefix}.metrics \\
         --threads $task.cpus \\
-        $args \\
+        $args5 \\
         - \\
         ${prefix}.${extension}
 
