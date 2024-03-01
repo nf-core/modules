@@ -4,8 +4,8 @@ process OPTITYPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/optitype:1.3.5--0' :
-        'biocontainers/optitype:1.3.5--0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-f3579993d544920cc7c09e8ddf77569e95ea8950:d3ee2331cb4615915b1eda5d23f231da6b0741d7-0' :
+        'biocontainers/mulled-v2-f3579993d544920cc7c09e8ddf77569e95ea8950:d3ee2331cb4615915b1eda5d23f231da6b0741d7-0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
