@@ -55,5 +55,18 @@
             matchDatasources: ["docker"],
             registryUrls: ["quay.io"],
         },
+        // don't use digest for actions coming from seqera(labs) or nf-core
+        {
+            matchPackagePatterns: ["^nf-core/", "^seqera"],
+            matchManagers: ["github-actions"],
+            automerge: true,
+            pinDigest: false,
+        },
+        {
+            matchManagers: ["github-actions"],
+            groupName: "GitHub Actions",
+            automerge: true,
+            schedule: ["before 9am"],
+        },
     ],
 }
