@@ -53,7 +53,7 @@ process GATK_UNIFIEDGENOTYPER {
         -o ${prefix}.vcf \\
         $args
 
-    gzip -n *.vcf
+    bgzip ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
