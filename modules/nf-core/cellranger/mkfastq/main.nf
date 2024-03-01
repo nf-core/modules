@@ -2,7 +2,7 @@ process CELLRANGER_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "docker.io/nfcore/cellrangermkfastq:7.1.0"
+    container "docker.io/nfcore/cellrangermkfastq:7.2.0"
 
     input:
     path bcl
