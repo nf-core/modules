@@ -41,11 +41,19 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - sorted:
+  - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - sorted_index:
+      description: Sorted BAM file
+      pattern: "*.{bam}"
+  - cram:
+      type: file
+      description: Sorted CRAM file
+      pattern: "*.{cram}"
+  - crai:
+      type: file
+      description: CRAM index file (optional)
+      pattern: "*.crai"
+  - csi:
       type: file
       description: BAM index file (optional)
       pattern: "*.csi"
