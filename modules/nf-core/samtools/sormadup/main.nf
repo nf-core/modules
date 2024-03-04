@@ -29,6 +29,7 @@ process SAMTOOLS_SORMADUP {
     def args3 = task.ext.args3 ?: ''
     def args4 = task.ext.args4 ?: ''
     def args5 = task.ext.args5 ?: ''
+    def args6 = task.ext.args6 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
@@ -75,7 +76,9 @@ process SAMTOOLS_SORMADUP {
         - \\
         ${prefix}.${extension}
 
-    samtools index ${prefix}.${extension}
+    samtools index  \\
+        ${args6} \\
+        ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

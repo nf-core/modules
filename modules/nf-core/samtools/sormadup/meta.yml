@@ -63,6 +63,16 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args5"
+  - samtools_index:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      args_id: "$args6"
 input:
   - meta:
       type: map
@@ -88,18 +98,30 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - markdup:
+  - bam:
       type: file
-      description: Sorted and duplicate marked BAM/CRAM file
-      pattern: "*.{bam, cram}"
-  - markdup_index:
+      description: Sorted and duplicate marked BAM file
+      pattern: "*.bam"
+  - cram:
       type: file
-      description: Sorted and duplicate marked BAM/CRAM file
-      pattern: "*.{bai, crai}"
+      description: Sorted and duplicate marked CRAM file
+      pattern: "*.cram"
+  - bai:
+      type: file
+      description: Sorted and duplicate marked BAM index file
+      pattern: "*.bai"
+  - csi:
+      type: file
+      description: Sorted and duplicate marked BAM/CRAM index file
+      pattern: "*.csi"
+  - crai:
+      type: file
+      description: Sorted and duplicate marked CRAM inde file
+      pattern: "*.crai"
   - metrics:
       type: file
       description: Duplicate metrics file
-      pattern: "*.{metrics}"
+      pattern: "*.metrics"
   - versions:
       type: file
       description: File containing software versions
