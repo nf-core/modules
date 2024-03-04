@@ -88,7 +88,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(file(process.out.sorted[0][1]).name).match("bam_stub_bam") },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_stub_bam") },
                 { assert snapshot(process.out.versions).match("bam_stub_versions") }
             )
         }
