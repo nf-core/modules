@@ -31,8 +31,8 @@ output:
       description: String with the GEO accession
   - samples:
       type: file
-      description: Folder with fetched samples
-      pattern: "${geo_accession}"
+      description: List of sample files fetched
+      pattern: "${geo_accession}/*.CEL.gz"
 
 authors:
   - "@mribeirodantas"
