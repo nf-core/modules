@@ -34,7 +34,10 @@ process BAKTA_BAKTA {
     prefix   = task.ext.prefix ?: "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_tf = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
+    db_cmd = ( session.config.conda && session.config.conda.enabled ) ? "amrfinder_update --force_update --database $db/amrfinderplus-db" : ""
     """
+    $db_cmd
+
     bakta \\
         $fasta \\
         $args \\
