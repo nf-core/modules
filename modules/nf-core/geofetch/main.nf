@@ -11,7 +11,7 @@ process GEOFETCH {
 
     output:
     tuple val("${geo_accession}"), path("${geo_accession}/*.CEL.gz"), emit: samples
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
