@@ -13,12 +13,6 @@ ampcombi:
 amps:
   - modules/nf-core/amps/**
   - tests/modules/nf-core/amps/**
-amrfinderplus/run:
-  - modules/nf-core/amrfinderplus/run/**
-  - tests/modules/nf-core/amrfinderplus/run/**
-amrfinderplus/update:
-  - modules/nf-core/amrfinderplus/update/**
-  - tests/modules/nf-core/amrfinderplus/update/**
 angsd/contamination:
   - modules/nf-core/angsd/contamination/**
   - tests/modules/nf-core/angsd/contamination/**
@@ -1875,9 +1869,6 @@ sambamba/markdup:
 samtools/collatefastq:
   - modules/nf-core/samtools/collatefastq/**
   - tests/modules/nf-core/samtools/collatefastq/**
-samtools/coverage:
-  - modules/nf-core/samtools/coverage/**
-  - tests/modules/nf-core/samtools/coverage/**
 samtools/depth:
   - modules/nf-core/samtools/depth/**
   - tests/modules/nf-core/samtools/depth/**
@@ -2260,18 +2251,15 @@ subworkflows/fastq_align_chromap:
 subworkflows/fastq_align_dna:
   - subworkflows/nf-core/fastq_align_dna/**
   - tests/subworkflows/nf-core/fastq_align_dna/**
-subworkflows/fastq_align_hisat2:
-  - subworkflows/nf-core/fastq_align_hisat2/**
-  - tests/subworkflows/nf-core/fastq_align_hisat2/**
+subworkflows/fastq_align_star:
+  - subworkflows/nf-core/fastq_align_star/**
+  - tests/subworkflows/nf-core/fastq_align_star/**
 subworkflows/fastq_contam_seqtk_kraken:
   - subworkflows/nf-core/fastq_contam_seqtk_kraken/**
   - tests/subworkflows/nf-core/fastq_contam_seqtk_kraken/**
 subworkflows/fastq_create_umi_consensus_fgbio:
   - subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
   - tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio/**
-subworkflows/fastq_fastqc_umitools_trimgalore:
-  - subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
-  - tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
 subworkflows/fastq_trim_fastp_fastqc:
   - subworkflows/nf-core/fastq_trim_fastp_fastqc/**
   - tests/subworkflows/nf-core/fastq_trim_fastp_fastqc/**
