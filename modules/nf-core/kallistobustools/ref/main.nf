@@ -64,7 +64,6 @@ process KALLISTOBUSTOOLS_REF {
     }
 
     stub:
-    def args = task.ext.args ?: ''
     if (workflow_mode == "standard") {
         """
         touch kb_ref_out.idx \\

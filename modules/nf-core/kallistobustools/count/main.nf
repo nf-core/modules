@@ -52,11 +52,7 @@ process KALLISTOBUSTOOLS_COUNT {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def cdna    = t1c ? "-c1 $t1c" : ''
-    def intron  = t2c ? "-c2 $t2c" : ''
-    def memory  = task.memory.toGiga() - 1
     """
     mkdir -p ${prefix}.count/counts_unfiltered/
     touch ${prefix}.count/counts_unfiltered/cells_x_genes.mtx

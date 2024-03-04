@@ -32,8 +32,8 @@ nextflow_process {
                     [
                         [id:'test'], // meta map
                         [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
                         ]
                     ]
                 )
@@ -73,8 +73,8 @@ nextflow_process {
                     [
                         [id:'test'], // meta map
                         [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
                         ]
                     ]
                 )
