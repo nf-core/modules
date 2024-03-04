@@ -12,10 +12,13 @@ process SAMTOOLS_SORMADUP {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.{bam,cram}")   , emit: markdup
-    tuple val(meta), path("*.{bai,crai}")   , emit: markdup_index, optional: true
-    tuple val(meta), path("*.metrics")      , emit: metrics
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.bam")      , emit: bam,  optional: true
+    tuple val(meta), path("*.cram")     , emit: cram, optional: true
+    tuple val(meta), path("*.csi")      , emit: csi,  optional: true
+    tuple val(meta), path("*.bai")      , emit: bai,  optional: true
+    tuple val(meta), path("*.crai")     , emit: crai, optional: true
+    tuple val(meta), path("*.metrics")  , emit: metrics
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,6 +74,8 @@ process SAMTOOLS_SORMADUP {
         $args5 \\
         - \\
         ${prefix}.${extension}
+
+    samtools index ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
