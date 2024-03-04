@@ -26,8 +26,6 @@ nextflow_process {
 
     test("sarscov2 [bam] - single_end - single ribo bam") {
 
-        config './nextflow.config'
-
         when {
             process {
                 """
@@ -61,8 +59,6 @@ nextflow_process {
     }
 
     test("sarscov2 [bam] - single_end - single ribo bam - stub") {
-
-        config './nextflow.config'
 
         options '-stub'
 
@@ -99,8 +95,6 @@ nextflow_process {
     }
     
     test("sarscov2 [bam] - single_end - multi ribo bam") {
-
-        config './nextflow.config'
 
         when {
             process {
@@ -141,8 +135,6 @@ nextflow_process {
     }
 
     test("sarscov2 [bam] - single_end - multi ribo bam - stub") {
-
-        config './nextflow.config'
 
         options '-stub'
         
