@@ -37,7 +37,10 @@ process GEOFETCH {
 
     """
     mkdir -p ${geo_accession}
-    touch ${geo_accession}/foo.CEL.gz
+    cd ${geo_accession}
+    touch foo.CEL
+    gzip foo.CEL
+    cd ..
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
