@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "arcashla_genotype"
+## TODO nf-core: Add a description of the module and list keywords
+description: Predicts the most likely genotype.
+keywords:
+  - HLA
+  - genotype
+  - RNA-seq
+tools:
+  - "arcashla":
+      description: "arcasHLA performs high resolution genotyping for HLA class I and class II genes from RNA sequencing, supporting both paired and single-end samples."
+      homepage: "https://github.com/RabadanLab/arcasHLA"
+      documentation: "https://github.com/RabadanLab/arcasHLA"
+      tool_dev_url: "https://github.com/RabadanLab/arcasHLA"
+      doi: "10.1093/bioinformatics/btz474"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fq:
+      type: file
+      description: List of extracted reads mapped to chromosome 6 and any HLA decoys or chromosome 6 alternates in FASTQ format.
+      pattern: "*.{fastq,fq}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@mapo9"
