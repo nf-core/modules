@@ -14,8 +14,8 @@ process SAMTOOLS_SORMADUP {
     output:
     tuple val(meta), path("*.bam")      , emit: bam,  optional: true
     tuple val(meta), path("*.cram")     , emit: cram, optional: true
-    tuple val(meta), path("*.csi")      , emit: csi,  optional: true
     tuple val(meta), path("*.bai")      , emit: bai,  optional: true
+    tuple val(meta), path("*.csi")      , emit: csi,  optional: true
     tuple val(meta), path("*.crai")     , emit: crai, optional: true
     tuple val(meta), path("*.metrics")  , emit: metrics
     path "versions.yml"                 , emit: versions
