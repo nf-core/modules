@@ -9,6 +9,11 @@ nextflow_process {
     tag "umitools"
     tag "umitools/dedup"
 
+    tag "bwa/index"
+    tag "bwa/mem"
+    tag "samtools/index"
+    tag "umitools/extract"
+
     test("no umi") {
 
         config "./nextflow.config"
