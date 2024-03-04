@@ -65,6 +65,8 @@ process RIBOTISH_PREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_pred.txt
+    touch ${prefix}_all.txt
+    touch ${prefix}_transprofile.py
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
