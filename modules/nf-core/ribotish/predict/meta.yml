@@ -19,26 +19,73 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - bam:
+        Groovy Map containing riboseq sample information
+        e.g. `[ id:'sample1', single_end:false ]
+  - bam_ribo:
       type: file
-      description: Sorted BAM/CRAM/SAM file
+      description: Sorted riboseq BAM file(s)
       pattern: "*.{bam}"
-  - bai:
+  - bai_ribo:
       type: file
-      description: Index for sorted BAM/CRAM/SAM file
+      description: Index for sorted riboseq bam file(s)
       pattern: "*.{bai}"
   - meta2:
       type: map
       description: |
+        Groovy Map containing TI-Seq sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - bam_ti:
+      type: file
+      description: Sorted TI-Seq BAM file(s)
+      pattern: "*.{bam}"
+  - bai_ti:
+      type: file
+      description: Index for sorted TI-Seq BAM file(s)
+      pattern: "*.{bai}"
+  - meta3:
+      type: map
+      description: |
         Groovy Map containing reference information
         e.g. `[ id:'Ensembl human v.111' ]`
+  - fasta:
+      type: file
+      description: |
+        Fasta-format sequence file for reference sequences used in the bam file
+      pattern: "*.gtf"
   - gtf:
       type: file
       description: |
         GTF-format annotation file for reference sequences used in the bam file
       pattern: "*.gtf"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing information on candidate ORFs
+  - candidate_orfs:
+      type: file
+      description: |
+        3-column (transID<tab>start<tab>tstop) candidate ORFs file
+      pattern: "*.txt"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing information on riboseq P-site offfset parameter
+        files
+  - para_ribo:
+      type: file
+      description: |
+        Input P-site offset parameter files for riboseq bam files
+      pattern: "*.py"
+  - meta6:
+      type: map
+      description: |
+        Groovy Map containing information on TI-seq P-site offfset parameter
+        files
+  - para_ribo:
+      type: file
+      description: |
+        Input P-site offset parameter files for TI-seq bam files
+      pattern: "*.py"
 
 output:
   - meta:
@@ -46,24 +93,23 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - txt:
+  - predictions:
       type: file
       description: |
-        txt file recording all distribution data in python format for each
-        group of reads
+        txt file all possible ORF results that fit the thresholds
       pattern: "*.{txt}"
-  - pdf:
+  - all:
       type: file
       description: |
-        Pdf figure file is plot of all the distributions and illustration of
-        quality and P-site offset
-      pattern: "*.{pdf}"
-  - offset:
+        txt file similar to the predictions but do not use FDR (q-value) cutoff
+      pattern: "*.{txt}"
+  - transprofile:
       type: file
       description: |
-        This file saves P-site offsets for different reads lengths in python
-        code dict format, and can be used in further analysis
-      pattern: "*.{para.py}"
+        Output RPF P-site profile for each transcript. The profile data is in
+        python dict format, recording non-zero read counts at different
+        positions on transcript.
+      pattern: "*.{py}"
   - versions:
       type: file
       description: File containing software versions
