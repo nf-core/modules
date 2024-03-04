@@ -2,15 +2,15 @@ process SAMTOOLS_CONVERT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/samtools/convert/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.19.2--h50ea8bc_0' :
+        'biocontainers/samtools:1.19.2--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
-    path  fasta
-    path  fai
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.{cram,bam}"), path("*.{crai,bai}") , emit: alignment_index

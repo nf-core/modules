@@ -2,7 +2,7 @@ process GOLEFT_INDEXCOV {
     tag '${meta.id}'
     label 'process_single'
 
-    conda 'modules/nf-core/goleft/indexcov/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1':
         'biocontainers/goleft:0.2.4--h9ee0642_1' }"

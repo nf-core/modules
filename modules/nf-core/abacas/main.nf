@@ -2,7 +2,7 @@ process ABACAS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/abacas/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
         'biocontainers/abacas:1.3.1--pl526_0' }"

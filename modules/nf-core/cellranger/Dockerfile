@@ -1,7 +1,7 @@
 # Dockerfile to create container with Cell Ranger v7.1.0
 # Push to nfcore/cellranger:<VER>
 
-FROM docker.io/continuumio/miniconda3:4.8.2
+FROM docker.io/continuumio/miniconda3:22.11.1@sha256:10b38c9a8a51692838ce4517e8c74515499b68d58c8a2000d8a9df7f0f08fc5e
 LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>" \
     description="Docker image containing Cell Ranger"
 # Disclaimer: this container is not provided nor supported by Illumina or 10x Genomics.

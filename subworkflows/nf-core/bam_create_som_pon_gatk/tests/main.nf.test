@@ -1,0 +1,48 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_CREATE_SOM_PON_GATK"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    workflow "BAM_CREATE_SOM_PON_GATK"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_create_som_pon_gatk"
+    tag "gatk4"
+    tag "gatk4/mutect2"
+    tag "gatk4/genomicsdbimport"
+    tag "gatk4/createsomaticpanelofnormals"
+
+    test("test_create_som_pon_gatk_bam") {
+        when {
+            workflow {
+                """
+                // ch_mutect2_in
+                input[0] = Channel.of([[ id:'test1' ], file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),[]],[[ id:'test2' ], file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true), []])
+                // ch_fasta
+                input[1] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)])
+                // ch_fai
+                input[2] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)])
+                // ch_dict
+                input[3] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists:true)])
+                // str_pon_norm
+                input[4] = "test_panel"
+                // ch_interval_file
+                input[5] = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(file(workflow.out.mutect2_vcf.get(0).get(1)).name).match("test1.vcf.gz") },
+                { assert snapshot(file(workflow.out.mutect2_index.get(0).get(1)).name).match("test1.vcf.gz.tbi") },
+                { assert snapshot(file(workflow.out.mutect2_stats.get(0).get(1)).name).match("test1.vcf.gz.stats") },
+                { assert snapshot(file(workflow.out.pon_vcf.get(0).get(1)).name).match("test_panel.vcf.gz") },
+                { assert snapshot(file(workflow.out.pon_index.get(0).get(1)).name).match("test_panel.vcf.gz.tbi") },
+            )
+        }
+    }
+}

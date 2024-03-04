@@ -2,7 +2,7 @@ process EMBOSS_CONS {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/emboss/cons/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
         'biocontainers/emboss:6.6.0--h86d058a_5' }"

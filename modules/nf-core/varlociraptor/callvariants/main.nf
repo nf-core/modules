@@ -2,7 +2,7 @@ process VARLOCIRAPTOR_CALLVARIANTS {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/varlociraptor/callvariants/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/varlociraptor:8.1.1--hc349b7f_0':
         'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"

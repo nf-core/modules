@@ -1,7 +1,7 @@
 process NANOCOMP {
     label 'process_medium'
 
-    conda 'modules/nf-core/nanocomp/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanocomp:1.21.0--pyhdfd78af_0':
         'biocontainers/nanocomp:1.21.0--pyhdfd78af_0' }"

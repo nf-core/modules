@@ -1,4 +1,8 @@
-image: nfcore/gitpod:latest
+image: nfcore/gitpod:dev
+tasks:
+  - name: unset JAVA_TOOL_OPTIONS
+    command: |
+      unset JAVA_TOOL_OPTIONS
 
 vscode:
   extensions: # based on nf-core.nf-core-extensionpack

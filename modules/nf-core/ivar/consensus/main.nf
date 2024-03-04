@@ -2,7 +2,7 @@ process IVAR_CONSENSUS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/ivar/consensus/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ivar:1.4--h6b7c446_1' :
         'biocontainers/ivar:1.4--h6b7c446_1' }"

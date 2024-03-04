@@ -2,7 +2,7 @@ process ENTREZDIRECT_ESUMMARY {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/entrezdirect/esummary/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
         'biocontainers/entrez-direct:16.2--he881be0_1' }"

@@ -2,7 +2,7 @@ process FLASH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/flash/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flash:1.2.11--hed695b0_5' :
         'biocontainers/flash:1.2.11--hed695b0_5' }"

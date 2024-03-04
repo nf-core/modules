@@ -2,7 +2,7 @@ process DSHBIO_FILTERBED {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda 'modules/nf-core/dshbio/filterbed/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dsh-bio:2.3--hdfd78af_0' :
         'biocontainers/dsh-bio:2.3--hdfd78af_0' }"

@@ -2,7 +2,7 @@ process PROTEUS_READPROTEINGROUPS {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/proteus/readproteingroups/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-4e01206f2c47f56077f04e5d2d7b312f50513a1e:92abccefbeb09795ad6a93553b62a6ad3daaea48-0':
         'biocontainers/mulled-v2-4e01206f2c47f56077f04e5d2d7b312f50513a1e:92abccefbeb09795ad6a93553b62a6ad3daaea48-0' }"

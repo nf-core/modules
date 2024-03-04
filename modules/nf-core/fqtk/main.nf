@@ -2,7 +2,7 @@ process FQTK {
     tag "$meta.id"
     label 'process_high'
 
-    conda 'modules/nf-core/fqtk/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fqtk:0.2.1--h9f5acd7_0' :
         'biocontainers/fqtk:0.2.1--h9f5acd7_0' }"
