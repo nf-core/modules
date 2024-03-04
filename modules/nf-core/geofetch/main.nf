@@ -34,7 +34,7 @@ process GEOFETCH {
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
     mkdir -p ${geo_accession}
     touch ${geo_accession}/foo.CEL.gz
