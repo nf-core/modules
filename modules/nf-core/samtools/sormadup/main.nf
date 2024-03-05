@@ -28,10 +28,9 @@ process SAMTOOLS_SORMADUP {
     def args3 = task.ext.args3 ?: ''
     def args4 = task.ext.args4 ?: ''
     def args5 = task.ext.args5 ?: ''
-    def args6 = task.ext.args6 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt cram") ? "cram" :
+    def extension = args5.contains("--output-fmt sam") ? "sam" :
+                    args5.contains("--output-fmt cram") ? "cram" :
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
     def sort_memory = (task.memory.mega/task.cpus*0.75).intValue()
@@ -82,10 +81,10 @@ process SAMTOOLS_SORMADUP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args5 = task.ext.args5 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt cram") ? "cram" :
+    def extension = args5.contains("--output-fmt sam") ? "sam" :
+                    args5.contains("--output-fmt cram") ? "cram" :
                     "bam"
 
     """
