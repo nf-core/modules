@@ -27,7 +27,7 @@ process BEDTOOLS_GENOMECOV {
     if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {
         args += " -bg"
     }
-    def sort_cmd = sort ? '| bedtools sort' : '' 
+    def sort_cmd = sort ? '| bedtools sort' : ''
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
