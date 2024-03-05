@@ -9,17 +9,17 @@ process TRUST4 {
 
     input:
     tuple val(meta), path(bam), path(reads)
-    path(fasta)
-    path(ref)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(vdj_reference)
 
     output:
-    tuple val(meta), path("*.tsv")      , emit: tsv
-    tuple val(meta), path("*_airr.tsv")  , emit: airr_tsv
-    tuple val(meta), path("*_report.tsv"), emit: report_tsv
-    tuple val(meta), path("*.fa")       , emit: fasta
-    tuple val(meta), path("*.out")      , emit: out
-    tuple val(meta), path("*.fq")       , emit: fq
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.tsv")          , emit: tsv
+    tuple val(meta), path("*_airr.tsv")     , emit: airr_tsv
+    tuple val(meta), path("*_report.tsv")   , emit: report_tsv
+    tuple val(meta), path("*.fa")           , emit: fasta
+    tuple val(meta), path("*.out")          , emit: out
+    tuple val(meta), path("*.fq")           , emit: fq
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,12 @@ process TRUST4 {
     def bam_mode = bam ? "-b ${bam}" : ''
     def single_end_mode = reads && meta.single_end ? "-u ${reads}" : ''
     // reference is optional for fastq input
-    def reference = ref ? "--ref ${ref}" : ""
+    def reference = vdj_reference ? "--ref ${vdj_reference}" : ""
     // separate forward from reverse pairs
     def (forward, reverse) = reads.collate(2).transpose()
     def paired_end_mode = reads && (meta.single_end == false) ? "-1 ${forward[0]} -2 ${reverse[0]}" : ''
     """
+    echo $reference
     run-trust4 \\
         ${bam_mode} \\
         ${single_end_mode} \\
