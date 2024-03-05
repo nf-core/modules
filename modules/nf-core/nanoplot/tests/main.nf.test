@@ -86,13 +86,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
-                },
-                {
-                    with(process.out.html.get(0)) {
-                        assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
-                    }
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
