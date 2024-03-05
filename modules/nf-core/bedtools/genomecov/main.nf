@@ -32,7 +32,6 @@ process BEDTOOLS_GENOMECOV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
-        set -ueo pipefail # Ensure pipe failure
         bedtools \\
             genomecov \\
             -ibam $intervals \\
@@ -47,7 +46,6 @@ process BEDTOOLS_GENOMECOV {
         """
     } else {
         """
-        set -ueo pipefail # Ensure pipe failure
         bedtools \\
             genomecov \\
             -i $intervals \\
