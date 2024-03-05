@@ -13,7 +13,6 @@ nextflow_process {
     tag "mmseqs/createdb"
     tag "mmseqs/databases"
     tag "mmseqs/createtsv"
-    tag "untar"
 
     test("mmseqs/createtsv - bacteroides_fragilis - taxonomy") {
 
@@ -71,36 +70,35 @@ nextflow_process {
     test("mmseqs/createtsv - sarscov2 - cluster") {
 
         setup {
-            run("UNTAR", alias: "UNTAR_QUERY") {
-                script "modules/nf-core/untar/main.nf"
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_QUERY") {
+                script "modules/nf-core/mmseqs/createdb/main.nf"
                 process {
-                """
-                input[0] = [
-                    [ id:'test_query', single_end:false ],
-                    file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true)
-                ]
-                """
+                    """
+                    input[0] = [
+                        [ id:'test_query', single_end:false ],
+                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        ]
+                    """
                 }
             }
-            run("UNTAR", alias: "UNTAR_TARGET") {
-                script "modules/nf-core/untar/main.nf"
+
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_TARGET") {
+                script "modules/nf-core/mmseqs/createdb/main.nf"
                 process {
-                """
-                input[0] = [
-                    [ id:'test_target', single_end:false ],
-                    file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true)
-                ]
-                """
+                    """
+                    input[0] = [
+                        [ id:'test_target', single_end:false ],
+                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        ]
+                    """
                 }
             }
-            run("UNTAR", alias: "UNTAR_RESULT") {
-                script "modules/nf-core/untar/main.nf"
+
+            run("MMSEQS_CLUSTER") {
+                script "modules/nf-core/mmseqs/cluster/main.nf"
                 process {
                 """
-                input[0] = [
-                    [ id:'test_result', single_end:false ],
-                    file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true)
-                ]
+                input[0] = MMSEQS_CREATEDB_QUERY.out.db
                 """
                 }
             }
@@ -109,9 +107,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR_RESULT.untar
-                input[1] = UNTAR_QUERY.untar
-                input[2] = UNTAR_TARGET.untar
+                input[0] = MMSEQS_CLUSTER.out.db_cluster
+                input[1] = MMSEQS_CREATEDB_QUERY.out.db
+                input[2] = MMSEQS_CREATEDB_TARGET.out.db
                 """
             }
         }
