@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env Rscript --vanilla
 
 # Script for importing and processing transcript-level quantifications.
 # Written by Lorena Pantano, later modified by Jonathan Manning, and released
@@ -72,7 +72,7 @@ read_transcript_info <- function(tinfo_path){
         stop("tx2gene file is empty")
     }
 
-    transcript_info <- read.csv(tinfo_path, sep="\t", header = FALSE,
+    transcript_info <- read.csv(tinfo_path, sep="\t", header = TRUE,
                                 col.names = c("tx", "gene_id", "gene_name"))
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
@@ -130,14 +130,8 @@ txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfRe
 # Read transcript and sample data
 transcript_info <- read_transcript_info('$tx2gene')
 
-if (file.exists('$coldata')) {
-    coldata <- read.csv('$coldata', sep="\t")
-    coldata <- coldata[match(names, coldata[,1]),]
-    coldata <- cbind(files = fns, coldata)
-} else {
-    message("ColData not available: ", '$coldata')
-    coldata <- data.frame(files = fns, names = names)
-}
+# Make coldata just to appease the summarizedexperiment
+coldata <- data.frame(files = fns, names = names)
 rownames(coldata) <- coldata[["names"]]
 
 # Create initial SummarizedExperiment object

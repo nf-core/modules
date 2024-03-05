@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process AMRFINDERPLUS_UPDATE"
+    script "../main.nf"
+    process "AMRFINDERPLUS_UPDATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "amrfinderplus"
+    tag "amrfinderplus/update"
+
+    test("amrfinderplus/update") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db.collect { file(it).getName() } +
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("amrfinderplus/update - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
