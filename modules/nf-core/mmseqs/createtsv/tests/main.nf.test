@@ -70,7 +70,7 @@ nextflow_process {
     test("mmseqs/createtsv - sarscov2 - cluster") {
 
         setup {
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_QUERY") {
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
                 script "modules/nf-core/mmseqs/createdb/main.nf"
                 process {
                     """
@@ -82,7 +82,7 @@ nextflow_process {
                 }
             }
 
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_TARGET") {
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
                 script "modules/nf-core/mmseqs/createdb/main.nf"
                 process {
                     """
@@ -94,11 +94,11 @@ nextflow_process {
                 }
             }
 
-            run("MMSEQS_CLUSTER") {
+            run("MMSEQS_CLUSTER", alias: "MMSEQS_RESULT") {
                 script "modules/nf-core/mmseqs/cluster/main.nf"
                 process {
                 """
-                input[0] = MMSEQS_CREATEDB_QUERY.out.db
+                input[0] = MMSEQS_QUERY.out.db
                 """
                 }
             }
@@ -107,9 +107,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MMSEQS_CLUSTER.out.db_cluster
-                input[1] = MMSEQS_CREATEDB_QUERY.out.db
-                input[2] = MMSEQS_CREATEDB_TARGET.out.db
+                input[0] = MMSEQS_RESULT.out.db_cluster
+                input[1] = MMSEQS_QUERY.out.db
+                input[2] = MMSEQS_TARGET.out.db
                 """
             }
         }
