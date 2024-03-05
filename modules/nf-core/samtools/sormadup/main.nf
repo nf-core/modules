@@ -12,10 +12,12 @@ process SAMTOOLS_SORMADUP {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.{bam,cram}")   , emit: markdup
-    tuple val(meta), path("*.{bai,crai}")   , emit: markdup_index, optional: true
-    tuple val(meta), path("*.metrics")      , emit: metrics
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.bam")      , emit: bam,  optional: true
+    tuple val(meta), path("*.cram")     , emit: cram, optional: true
+    tuple val(meta), path("*.csi")      , emit: csi,  optional: true
+    tuple val(meta), path("*.crai")     , emit: crai, optional: true
+    tuple val(meta), path("*.metrics")  , emit: metrics
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +28,7 @@ process SAMTOOLS_SORMADUP {
     def args3 = task.ext.args3 ?: ''
     def args4 = task.ext.args4 ?: ''
     def args5 = task.ext.args5 ?: ''
+    def args6 = task.ext.args6 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
