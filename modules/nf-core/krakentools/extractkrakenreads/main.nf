@@ -24,7 +24,7 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_reads_command = meta.single_end ? "-s $classified_reads_fastq" : "-s ${classified_reads_fastq[0]} -s2 ${classified_reads_fastq[1]}"
-    def output_reads_command = meta.single_end ? "-o ${prefix}.extracted_kraken_read.fastq" : "-o ${prefix}.extracted_kraken_read_1.fastq -o2 ${prefix}.extracted_kraken2_read_2.fastq"
+    def output_reads_command = meta.single_end ? "-o ${prefix}.extracted_kraken2_read.fastq" : "-o ${prefix}.extracted_kraken2_read_1.fastq -o2 ${prefix}.extracted_kraken2_read_2.fastq"
 
     """
     extract_kraken_reads.py \\
