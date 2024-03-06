@@ -57,14 +57,14 @@ nextflow_process {
                 {
                   assert snapshot(
                     process.out.versions,
-                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                    process.out.outs[0][1].findAll { file(it).name !in [
                         'web_summary.html', // unstable checksum
                         'barcodes.tsv.gz' // empty file in test data -> would raise linting error
                     ]}
                   ).match()
-                }
+                },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() }
             )
         }
 
