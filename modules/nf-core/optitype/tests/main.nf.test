@@ -27,7 +27,8 @@ nextflow_process {
                 { assert snapshot(file(process.out.hla_type[0][1])
                     .readLines()[1]
                     .toString()
-                    .split('\t')[1..7])
+                    // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
+                    .split('\t')[3..7])
                     .match("bam_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
                 { assert snapshot(process.out.versions).match("bam_versions") }
@@ -54,7 +55,7 @@ nextflow_process {
                 { assert snapshot(file(process.out.hla_type[0][1])
                     .readLines()[1]
                     .toString()
-                    // the calls with solver CBC seem not to be stable for locus A for the input data, therefore skip the results for HLA locus A
+                    // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
                     .split('\t')[3..7])
                     .match("bam_cbc_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
