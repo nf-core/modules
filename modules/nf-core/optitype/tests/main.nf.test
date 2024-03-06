@@ -14,8 +14,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
-                       file(params.test_data['homo_sapiens']['illumina']['test_paired_end_hla_sorted_bam'], checkIfExists: true),
-                       file(params.test_data['homo_sapiens']['illumina']['test_paired_end_hla_sorted_bam_bai'], checkIfExists: true)
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
                      ]
                 """
             }
@@ -24,7 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.hla_type[0][1]).name).match("bam_hla_type") },
+                { assert snapshot(file(process.out.hla_type[0][1])
+                    .readLines()[1]
+                    .toString()
+                    .split('\t')[1..7])
+                    .match("bam_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
                 { assert snapshot(process.out.versions).match("bam_versions") }
             )
@@ -37,8 +41,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
-                       file(params.test_data['homo_sapiens']['illumina']['test_paired_end_hla_sorted_bam'], checkIfExists: true),
-                       file(params.test_data['homo_sapiens']['illumina']['test_paired_end_hla_sorted_bam_bai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
                      ]
                 """
             }
@@ -47,7 +51,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.hla_type[0][1]).name).match("bam_cbc_hla_type") },
+                { assert snapshot(file(process.out.hla_type[0][1])
+                    .readLines()[1]
+                    .toString()
+                    // the calls with solver CBC seem not to be stable for locus A for the input data, therefore skip the results for HLA locus A
+                    .split('\t')[3..7])
+                    .match("bam_cbc_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
                 { assert snapshot(process.out.versions).match("bam_cbc_versions") }
             )
