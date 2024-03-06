@@ -1,0 +1,56 @@
+name: bbmap_merge
+description: Merges overlapping paired end reads to single reads, saving reads that do not overlap.
+keywords:
+  - merge
+  - overlap
+  - amplicon
+  - fasta
+  - fastq
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      licence: ["UC-LBL license (see package)"]
+input:
+- meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', interleaved:false ]
+  - fastq:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for interleaved or seperated paired-end data,
+        respectively.
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - log:
+      type: file
+      description: |
+        Log file of BBMerge run.
+      pattern: "*.log"
+  - merged_fastq:
+      type: file
+      description: |
+        Fastq file containing the merged reads where paired ends succsefully overlap.
+  - unmerged_fastq_1:
+      type: file
+      description: |
+        Fastq file containing R1 reads that were not able to merge with their paired read.
+  - unmerged_fastq_2:
+      type: file
+      description: |
+        Fastq file containing R" reads that were not able to merge with their paired read.        
+authors:
+  - "@mattjacksonwood"
+maintainers:
+  - "@mattjacksonwood"
