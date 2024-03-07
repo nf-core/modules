@@ -8,10 +8,10 @@ nextflow_process {
     tag "modules_nfcore"
     tag "amplify"
     tag "amplify/predict"
+    tag "pyrodigal"
+    tag "gunzip"
 
-   test("AMPlify predict (with Pyrodigal) - sarscov2 - contigs fasta") {
-
-        setup { 
+    setup {
             run("PYRODIGAL") {
                 script "../../../pyrodigal/main.nf"
                 process {
@@ -28,11 +28,13 @@ nextflow_process {
                 process {
                     """
                     input[0] =  PYRODIGAL.out.faa
-                    
+
                     """
                 }
             }
         }
+
+   test("sarscov2 - contigs [fasta]") {
 
         when {
             process {
@@ -46,8 +48,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.tsv).match("tsv") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
+                                process.out.versions).match() }
             )
         }
 
