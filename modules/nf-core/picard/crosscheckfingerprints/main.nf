@@ -22,9 +22,9 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def input1_cmd = "--INPUT " + input1.join(" --INPUT ")
-    def input2_cmd = input2 ? "--SECOND_INPUT " + input2.join(" --SECOND_INPUT ") : ""
-    def reference_cmd = fasta ? "--REFERENCE_SEQUENCE " + fasta : ""
+    def input1_cmd = input1.collect{"--INPUT $it"}.join(' ')
+    def input2_cmd = input2.collect{"--SECOND_INPUT $it"}.join(' ')
+    def reference_cmd = fasta ? "--REFERENCE_SEQUENCE $fasta" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
