@@ -24,9 +24,9 @@ process DUPRADAR {
     when:
     task.ext.when == null || task.ext.when
 
-    script: 
+    script:
     template 'dupradar.r'
-    
+
     stub:
     """
     touch ${meta.id}_duprateExpDens.pdf
