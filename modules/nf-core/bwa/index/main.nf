@@ -21,7 +21,7 @@ process BWA_INDEX {
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     def args   = task.ext.args ?: ''
     """
-    mkdir bwa
+    mkdir -p bwa
     bwa \\
         index \\
         $args \\
@@ -37,7 +37,7 @@ process BWA_INDEX {
     stub:
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
-    mkdir bwa
+    mkdir -p bwa
 
     touch bwa/${prefix}.amb
     touch bwa/${prefix}.ann
