@@ -391,14 +391,17 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+      - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
-          version: "${{ matrix.NXF_VER }}"
+          version: latest-everything
 
-      - name: Setup apptainer
+      - name: Install Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-apptainer@main
+        run: |
+          wget https://github.com/sylabs/singularity/releases/download/v4.0.2/singularity-ce_4.0.2-jammy_amd64.deb
+          sudo apt-get install -y libfuse2
+          sudo dpkg -i singularity-ce_4.0.2-jammy_amd64.deb
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -589,6 +592,8 @@ jobs:
           java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v1
+        with:
+          version: latest-everything
 
       - name: Cache nf-test installation
         id: cache-software
@@ -605,9 +610,12 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      - name: Setup apptainer
+      - name: Install Singularity
         if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-apptainer@main
+        run: |
+          wget https://github.com/sylabs/singularity/releases/download/v4.0.2/singularity-ce_4.0.2-jammy_amd64.deb
+          sudo apt-get install -y libfuse2
+          sudo dpkg -i singularity-ce_4.0.2-jammy_amd64.deb
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'

@@ -3,9 +3,7 @@ process SAMTOOLS_VIEW {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.19.2--h50ea8bc_0' :
-        'biocontainers/samtools:1.19.2--h50ea8bc_0' }"
+    container "nf-core/modules/samtools_view:samtools_view--033f764f39eb1f2d"
 
     input:
     tuple val(meta), path(input), path(index)
