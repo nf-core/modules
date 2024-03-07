@@ -37,7 +37,7 @@ nextflow_process {
     }
 
     test("Should run with map") {
-        config "modules/nf-core/glimpse2/splitreference/tests/nextflow.config"
+        config "./nextflow.config"
 
         when {
             process {
