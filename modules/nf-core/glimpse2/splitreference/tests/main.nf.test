@@ -17,7 +17,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'ref1000GP', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
                     "chr21:16600000-16800000",
                     "chr21:16600000-16800000"
                 ]
@@ -49,7 +49,7 @@ nextflow_process {
                     "chr21:16600000-16800000",
                     "chr21:16600000-16800000"
                 ]
-                input[1]= [[ id:'map'],file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
+                input[1]= [[ id:'map'], file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
                 """
             }
         }
