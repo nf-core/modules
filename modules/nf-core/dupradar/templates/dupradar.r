@@ -184,7 +184,6 @@ dupradar.version <- as.character(packageVersion('dupRadar'))
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    bioconductor-dupradar:', dupradar.version)
     ),
 'versions.yml')
