@@ -14,8 +14,8 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     path  dict
 
     output:
-    tuple val(meta), path('*.metrics'), emit: metrics
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("${prefix}.metrics"), emit: metrics
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
