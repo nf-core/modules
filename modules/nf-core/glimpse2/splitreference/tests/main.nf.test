@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_SPLITREFERENCE"
+    script "../main.nf"
+    process "GLIMPSE2_SPLITREFERENCE"
+    tag "glimpse2"
+    tag "glimpse2/splitreference"
+    tag "modules_nfcore"
+    tag "modules"
+
+    test("Should run without map") {
+        config "modules/nf-core/glimpse2/splitreference/tests/nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP', single_end:false ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21:16600000-16800000",
+                    "chr21:16600000-16800000"
+                ]
+                input[1]= [[ id:'map'],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // File has a timestamp in it and is in binary format, so we can only check the name
+                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" }
+            )
+        }
+
+    }
+
+    test("Should run with map") {
+        config "modules/nf-core/glimpse2/splitreference/tests/nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP', single_end:false ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21:16600000-16800000",
+                    "chr21:16600000-16800000"
+                ]
+                input[1]= [[ id:'map'],file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // File has a timestamp in it and is in binary format, so we can only check the name
+                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" }
+            )
+        }
+
+    }
+
+}
