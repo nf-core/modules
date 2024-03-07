@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules"
 
     test("Should run without map") {
-        config "modules/nf-core/glimpse2/splitreference/tests/nextflow.config"
+        config "./nextflow.config"
 
         when {
             process {
