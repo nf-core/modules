@@ -173,10 +173,9 @@ if ('$coldata' != ''){
         metadata_id_col = args_opt\$coldata_id_col
     )
 
-    assay_list <- lapply(assay_list, function(m){
-        m[,rownames(coldata), drop = FALSE]
-    })
-
+    # Select coldata to match matrix cols
+    coldata <- coldata[colnames(assay_list[[1]]),, drop = FALSE]
+    
     colData(se) <- DataFrame(coldata)
 }
 
@@ -189,10 +188,9 @@ if ('$rowdata' != ''){
         metadata_id_col = args_opt\$rowdata_id_col
     )
 
-    assay_list <- lapply(assay_list, function(m){
-        m[rownames(rowdata), , drop = FALSE]
-    })
-
+    # Select rowdata to match matrix rows
+    rowdata <- rowdata[rownames(assay_list[[1]]),, drop = FALSE]
+    
     rowData(se) <- DataFrame(rowdata)
 }
 
