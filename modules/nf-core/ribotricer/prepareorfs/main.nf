@@ -20,20 +20,20 @@ process RIBOTRICER_PREPAREORFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     ribotricer prepare-orfs \\
         --gtf $gtf \\
         --fasta $fasta \\
         --prefix $prefix \\
-        $args 
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
