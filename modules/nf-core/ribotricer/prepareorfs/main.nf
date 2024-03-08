@@ -33,4 +33,16 @@ process RIBOTRICER_PREPAREORFS {
         ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
     END_VERSIONS
     """
+    
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_candidate_orfs.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
+    END_VERSIONS
+    """
 }
