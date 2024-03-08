@@ -130,7 +130,7 @@ parse_metadata <- function(metadata_path, ids, metadata_id_col = NULL){
 
     rownames(metadata) <- metadata[[metadata_id_col]]
 
-    metadata
+    metadata[ids,, drop=FALSE]
 }
 
 ################################################
@@ -172,9 +172,6 @@ if ('$coldata' != ''){
         ids = colnames(assay_list[[1]]),
         metadata_id_col = args_opt\$coldata_id_col
     )
-
-    # Select coldata to match matrix cols
-    coldata <- coldata[colnames(assay_list[[1]]),, drop = FALSE]
     
     colData(se) <- DataFrame(coldata)
 }
@@ -187,9 +184,6 @@ if ('$rowdata' != ''){
         ids = rownames(assay_list[[1]]),
         metadata_id_col = args_opt\$rowdata_id_col
     )
-
-    # Select rowdata to match matrix rows
-    rowdata <- rowdata[rownames(assay_list[[1]]),, drop = FALSE]
     
     rowData(se) <- DataFrame(rowdata)
 }
