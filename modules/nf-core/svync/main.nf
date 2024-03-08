@@ -8,8 +8,7 @@ process SVYNC {
         'biocontainers/svync:0.1.2--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
-    tuple val(meta2), path(config)
+    tuple val(meta), path(vcf), path(tbi), path(config)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
