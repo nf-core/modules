@@ -172,7 +172,7 @@ if ('$coldata' != ''){
         ids = colnames(assay_list[[1]]),
         metadata_id_col = args_opt\$coldata_id_col
     )
-    
+
     colData(se) <- DataFrame(coldata)
 }
 
@@ -184,7 +184,7 @@ if ('$rowdata' != ''){
         ids = rownames(assay_list[[1]]),
         metadata_id_col = args_opt\$rowdata_id_col
     )
-    
+
     rowData(se) <- DataFrame(rowdata)
 }
 
