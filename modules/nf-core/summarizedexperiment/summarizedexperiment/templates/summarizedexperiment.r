@@ -232,7 +232,6 @@ summarizedexperiment.version <- as.character(packageVersion('SummarizedExperimen
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    bioconductor-summarizedexperiment:', summarizedexperiment.version)
     ),
 'versions.yml')
