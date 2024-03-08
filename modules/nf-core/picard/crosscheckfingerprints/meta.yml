@@ -25,10 +25,18 @@ input:
       type: file
       description: List containing 1 or more bam/vcf files or a file containing filepaths
       pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - input1_index:
+      type: file
+      description: List containing 1 or more bam/vcf files indexes
+      pattern: "*.{bai,csi,crai,tbi}"
   - input2:
       type: file
       description: Optional list containing 1 or more bam/vcf files or a file containing filepaths
       pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - input2_index:
+      type: file
+      description: List containing 1 or more bam/vcf files indexes
+      pattern: "*.{bai,csi,crai,tbi}"
   - haplotype_map:
       type: file
       description: Haplotype map file
@@ -42,6 +50,10 @@ input:
       type: file
       description: Reference genome file
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - fasta_index:
+      type: file
+      description: Reference genome index file
+      pattern: "*.{fai,fasta.fai,fa.fai,fasta.gz.fai,fa.gz.fai}"
 output:
   - meta:
       type: map
