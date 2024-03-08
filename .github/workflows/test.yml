@@ -590,20 +590,8 @@ jobs:
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - name: Cache nf-test installation
-        id: cache-software
-        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
-        with:
-          path: |
-            /usr/local/bin/nf-test
-            /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
-
       - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
-        run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
-          sudo mv nf-test /usr/local/bin/
+        uses: nf-core/setup-nf-test@v1
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
