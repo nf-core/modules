@@ -32,7 +32,7 @@ input:
   - report:
       type: file
       description: Kraken2 report containing stats about classified and not classifed reads.
-      pattern: "*.{fastq,fasta}"
+      pattern: "*.{report.txt}"
 
 output:
   - meta:
@@ -43,7 +43,7 @@ output:
   - extracted_kraken2_reads:
       type: file
       description: Reads assigned to a taxid list.
-      pattern: "*.{fastq,fasta,fa}"
+      pattern: "*.{fastq,fasta}"
   - versions:
       type: file
       description: File containing software versions
