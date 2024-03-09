@@ -12,13 +12,15 @@ tools:
       tool_dev_url: https://github.com/jenniferlu717/KrakenTools
       doi: 10.1038/s41596-022-00738-y
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
+  - taxid:
+      type: string
+      description: A list of taxid separated by spaces
   - classified_reads_assignment:
       type: file
       description: A file contains the taxonomic classification of each input read.
@@ -27,9 +29,10 @@ input:
       type: file
       description: Classified reads as belonging to any of the taxa on the kraken2 database.
       pattern: "*{fastq.gz}"
-  - taxid:
-      type: string
-      description: A list of taxid separated by spaces
+  - report:
+      type: file
+      description: Kraken2 report containing stats about classified and not classifed reads.
+      pattern: "*.{fastq,fasta}"
 
 output:
   - meta:
@@ -37,15 +40,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-
+  - extracted_kraken2_reads:
+      type: file
+      description: Reads assigned to a taxid list.
+      pattern: "*.{fastq,fasta,fa}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - extracted_kraken_reads:
-      type: file
-      description: Reads assigned to a taxid list.
-      pattern: "*.{fastq}"
 
 authors:
   - "@LilyAnderssonLee"
