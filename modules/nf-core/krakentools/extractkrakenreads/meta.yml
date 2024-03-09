@@ -24,11 +24,11 @@ input:
   - classified_reads_assignment:
       type: file
       description: A file contains the taxonomic classification of each input read.
-      pattern: "*{classifiedreads.txt}"
+      pattern: "*.{classifiedreads.txt}"
   - classified_reads_fastq:
       type: file
       description: Classified reads as belonging to any of the taxa on the kraken2 database.
-      pattern: "*{fastq.gz}"
+      pattern: "*.{fastq.gz}"
   - report:
       type: file
       description: Kraken2 report containing stats about classified and not classifed reads.
