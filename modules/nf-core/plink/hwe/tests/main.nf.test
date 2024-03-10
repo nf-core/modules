@@ -10,14 +10,17 @@ nextflow_process {
     test("Testing Plink HWE with VCF file") {
 
         when {
+            params {
+                outdir = "test"
+            }
             process {
                 """
-                input[0] = [ [:], []]
+                input[0] = [ [id:"null"], [], [], []]
                 input[1] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['genome']['vcf']['syntheticvcf_short.vcf.gz'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
                 ]
-                input[2] = [ [:], []]
+                input[2] = [ [id:"null"], []]
                 """
             }
         }
