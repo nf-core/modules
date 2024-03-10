@@ -58,16 +58,22 @@ process PLINK_HWE {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
+    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
+        prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
+        prefix = task.ext.prefix ?: "${meta2.id}"
+        meta = meta2
     } else if (bcf) {
         input_command = "--bcf ${bcf}"
+        prefix = task.ext.prefix ?: "${meta3.id}"
+        meta = meta3
     } else {
         log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
     }
