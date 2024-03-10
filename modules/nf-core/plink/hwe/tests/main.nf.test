@@ -14,7 +14,7 @@ nextflow_process {
                 """
                 input[0] = [ [:], []]
                 input[1] = [
-                    [id:test],
+                    [id:"test"],
                     file(params.test_data['homo_sapiens']['genome']['vcf']['syntheticvcf_short.vcf.gz'], checkIfExists: true)
                 ]
                 input[2] = [ [:], []]
