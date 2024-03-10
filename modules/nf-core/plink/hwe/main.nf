@@ -14,8 +14,8 @@ process PLINK_HWE {
 
 
     output:
-    tuple val(meta), path("${prefix}.hwe"), emit: hwe
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.hwe"), emit: hwe
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,15 +26,18 @@ process PLINK_HWE {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
+    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
         prefix = task.ext.prefix ?: "${meta2.id}"
+        meta = meta2
     } else if (bcf) {
         input_command = "--bcf ${bcf}"
         prefix = task.ext.prefix ?: "${meta3.id}"
+        meta = meta3
     } else {
         log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
     }
