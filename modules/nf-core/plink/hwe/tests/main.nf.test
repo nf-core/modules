@@ -4,8 +4,9 @@ nextflow_process {
     script "../main.nf"
     process "PLINK_HWE"
     tag "modules"
+    tag "modules_nfcore"
     tag "plink"
-    tag "hwe"
+    tag "plink/hwe"
 
     test("Testing Plink HWE with VCF file") {
 
