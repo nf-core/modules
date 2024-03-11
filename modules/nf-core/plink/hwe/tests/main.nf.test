@@ -28,11 +28,61 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match() },
+                { assert snapshot(process.out.version).match("version") },
                 { assert snapshot(process.out.hwe).match() }
             )
         }
     }
 
+    test("plink - binary") {
 
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists:true),
+                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists:true),
+                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists:true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.hwe).match() }
+            )
+        }
+    }
+
+    test("plink - BCF") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [ [id:"null"], []]
+                input[2] = [
+                    [id:"test"],
+                    file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bcf.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.hwe).match() }
+            )
+        }
+    }
 }
