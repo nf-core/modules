@@ -67,7 +67,7 @@ nextflow_process {
         }
     }
 
-    test("mmseqs/createtsv - bacteroides_fragilis - cluster") {
+    test("mmseqs/createtsv - sarscov2 - cluster") {
 
         setup {
             run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
@@ -76,7 +76,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
                     ]
                     """
                 }
@@ -88,7 +88,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_target', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
                     ]
                     """
                 }
@@ -117,8 +117,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
+                                process.out.versions ).match() }
             )
         }
     }
@@ -178,7 +178,7 @@ nextflow_process {
         }
     }
 
-    test("mmseqs/createtsv - bacteroides_fragilis - cluster - stub") {
+    test("mmseqs/createtsv - sarscov2 - cluster - stub") {
 
         options "-stub"
 
@@ -189,7 +189,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
                     ]
                     """
                 }
@@ -201,7 +201,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_target', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
                     ]
                     """
                 }
@@ -234,7 +234,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
