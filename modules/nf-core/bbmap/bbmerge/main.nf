@@ -11,11 +11,11 @@ process BBMAP_MERGE {
     tuple val(meta), path(fastq)
     
     output:
-    tuple val(meta), path("*_merged.fastq"), emit: merged_fastq
-    tuple val(meta), path("*_unmerged_R1.fastq"), emit: unmerged_fastq_1
-    tuple val(meta), path("*_unmerged_R2.fastq"), emit: unmerged_fastq_2
-    tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_merged.fastq")     , emit: merged_fastq    , optional: true
+    tuple val(meta), path("*_unmerged_R1.fastq"), emit: unmerged_fastq_1, optional: true
+    tuple val(meta), path("*_unmerged_R2.fastq"), emit: unmerged_fastq_2, optional: true
+    tuple val(meta), path("*.log")              , emit: log
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,6 +37,20 @@ process BBMAP_MERGE {
         -Xmx${task.memory.toGiga()}g \\
 	&> ${prefix}.bbmerge.log
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "$meta.id"
+    
+    """
+    touch ${prefix}_merged.fastq
+    touch ${prefix}_unmerged_R1.fastq
+    touch ${prefix}_unmerged_R2.fastq
+    touch ${prefix}.bbmerge.log
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
