@@ -21,7 +21,7 @@ process PRESEQ_LCEXTRAP {
 
     script:
     def args = task.ext.args ?: ''
-    args = task.attempt > 1 ? args.join(' -defects') : args
+    args = task.attempt > 1 ? args.join(' -defects') : args  // Disable testing for defects
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     """
