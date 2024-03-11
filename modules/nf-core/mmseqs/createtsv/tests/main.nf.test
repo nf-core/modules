@@ -14,47 +14,77 @@ nextflow_process {
     tag "mmseqs/databases"
     tag "mmseqs/createtsv"
 
-    test("mmseqs/createtsv - bacteroides_fragilis - taxonomy") {
-
-        setup {
-            run("MMSEQS_CREATEDB") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
-                        ]
-                    """
-                }
-            }
-
-            run("MMSEQS_DATABASES") {
-                script "modules/nf-core/mmseqs/databases/main.nf"
-                process {
+    setup {
+        run("MMSEQS_CREATEDB", alias: "MMSEQS_TAXA") {
+            script "modules/nf-core/mmseqs/createdb/main.nf"
+            process {
                 """
-                input[0] = 'SILVA'
+                input[0] = [
+                    [ id:'test_query', single_end:false ],
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    ]
                 """
-                }
-            }
-
-            run("MMSEQS_TAXONOMY") {
-                script "modules/nf-core/mmseqs/taxonomy/main.nf"
-                process {
-                """
-                input[0] = MMSEQS_CREATEDB.out.db
-                input[1] = MMSEQS_DATABASES.out.database
-                """
-                }
             }
         }
+        run("MMSEQS_DATABASES") {
+            script "modules/nf-core/mmseqs/databases/main.nf"
+            process {
+            """
+            input[0] = 'SILVA'
+            """
+            }
+        }
+        run("MMSEQS_TAXONOMY") {
+            script "modules/nf-core/mmseqs/taxonomy/main.nf"
+            process {
+            """
+            input[0] = MMSEQS_TAXA.out.db
+            input[1] = MMSEQS_DATABASES.out.database
+            """
+            }
+        }
+
+        run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
+            script "modules/nf-core/mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_query', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                ]
+                """
+            }
+        }
+        run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
+            script "modules/nf-core/mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_target', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                ]
+                """
+            }
+        }
+        run("MMSEQS_CLUSTER") {
+            script "modules/nf-core/mmseqs/cluster/main.nf"
+            process {
+            """
+            input[0] = MMSEQS_TARGET.out.db
+            """
+            }
+        }
+    }
+
+
+    test("mmseqs/createtsv - bacteroides_fragilis - taxonomy") {
 
         when {
             process {
                 """
                 input[0] = MMSEQS_TAXONOMY.out.db_taxonomy
                 input[1] = [[:],[]]
-                input[2] = MMSEQS_CREATEDB.out.db
+                input[2] = MMSEQS_TAXA.out.db
                 """
             }
         }
@@ -69,41 +99,6 @@ nextflow_process {
 
     test("mmseqs/createtsv - sarscov2 - cluster") {
 
-        setup {
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_query', single_end:false ],
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_target', single_end:false ],
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("MMSEQS_CLUSTER") {
-                script "modules/nf-core/mmseqs/cluster/main.nf"
-                process {
-                """
-                input[0] = MMSEQS_TARGET.out.db
-                """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -117,8 +112,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
@@ -127,45 +122,12 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("MMSEQS_CREATEDB") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
-                        ]
-                    """
-                }
-            }
-
-            run("MMSEQS_DATABASES") {
-                script "modules/nf-core/mmseqs/databases/main.nf"
-                process {
-                """
-                input[0] = 'SILVA'
-                """
-                }
-            }
-
-            run("MMSEQS_TAXONOMY") {
-                script "modules/nf-core/mmseqs/taxonomy/main.nf"
-                process {
-                """
-                input[0] = MMSEQS_CREATEDB.out.db
-                input[1] = MMSEQS_DATABASES.out.database
-                """
-                }
-            }
-        }
-
         when {
             process {
                 """
                 input[0] = MMSEQS_TAXONOMY.out.db_taxonomy
                 input[1] = [[:],[]]
-                input[2] = MMSEQS_CREATEDB.out.db
+                input[2] = MMSEQS_TAXA.out.db
                 """
             }
         }
@@ -181,41 +143,6 @@ nextflow_process {
     test("mmseqs/createtsv - sarscov2 - cluster - stub") {
 
         options "-stub"
-
-        setup {
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_query', single_end:false ],
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
-                script "modules/nf-core/mmseqs/createdb/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_target', single_end:false ],
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("MMSEQS_CLUSTER") {
-                script "modules/nf-core/mmseqs/cluster/main.nf"
-                process {
-                """
-                input[0] = MMSEQS_TARGET.out.db
-                """
-                }
-            }
-        }
 
         when {
             process {
@@ -234,8 +161,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
+                                    process.out.versions).match() }
             )
         }
     }
