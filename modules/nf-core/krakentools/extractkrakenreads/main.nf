@@ -32,16 +32,12 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
 
     """
     extract_kraken_reads.py \\
+        ${args} \\
         -t $taxid \\
         -k $classified_reads_assignment \\
-        $input_reads_command \\
-        $output_reads_command \\
         $report_option \\
-        $include_children_option \\
-        $include_parents_option \\
-        $fastq_out \\
-        $append_option \\
-        ${args}
+        $input_reads_command \\
+        $output_reads_command 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
