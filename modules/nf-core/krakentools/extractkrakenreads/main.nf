@@ -25,9 +25,10 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_format = task.ext.fastq_output ? "fastq" : "fasta"
     def input_reads_command = meta.single_end ? "-s $classified_reads_fastq" : "-s1 ${classified_reads_fastq[0]} -s2 ${classified_reads_fastq[1]}"
     def output_reads_command = meta.single_end ? "-o ${prefix}.extracted_kraken2_read.$output_format" : "-o ${prefix}.extracted_kraken2_read_1.$output_format -o2 ${prefix}.extracted_kraken2_read_2.$output_format"
-    def report_option = report ? "-r ${report}" : "" 
+    def report_option = report ? "-r ${report}" : ""
     def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -37,7 +38,7 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
         -k $classified_reads_assignment \\
         $report_option \\
         $input_reads_command \\
-        $output_reads_command 
+        $output_reads_command
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
