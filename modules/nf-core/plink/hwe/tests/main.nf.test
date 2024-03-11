@@ -8,7 +8,7 @@ nextflow_process {
     tag "plink"
     tag "plink/hwe"
 
-    test("Testing Plink HWE with VCF file") {
+    test("plink --hardy VCF") {
 
         when {
             params {
@@ -28,12 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(process.out.version).match() },
                 { assert snapshot(process.out.hwe).match() }
             )
         }
     }
-
 
 
 }
