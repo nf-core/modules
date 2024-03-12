@@ -137,6 +137,7 @@ jobs:
           python-version: "3.11"
 
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -144,6 +145,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install pip
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
@@ -383,6 +385,7 @@ jobs:
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
@@ -607,6 +610,7 @@ jobs:
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pdiff cryptography
