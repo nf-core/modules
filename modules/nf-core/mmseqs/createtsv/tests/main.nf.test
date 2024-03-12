@@ -16,7 +16,7 @@ nextflow_process {
 
     setup {
         run("MMSEQS_CREATEDB", alias: "MMSEQS_TAXA") {
-            script "modules/nf-core/mmseqs/createdb/main.nf"
+            script "../../createdb/main.nf"
             process {
                 """
                 input[0] = [
@@ -27,7 +27,7 @@ nextflow_process {
             }
         }
         run("MMSEQS_DATABASES") {
-            script "modules/nf-core/mmseqs/databases/main.nf"
+            script "../../databases/main.nf"
             process {
             """
             input[0] = 'SILVA'
@@ -35,7 +35,7 @@ nextflow_process {
             }
         }
         run("MMSEQS_TAXONOMY") {
-            script "modules/nf-core/mmseqs/taxonomy/main.nf"
+            script "../../taxonomy/main.nf"
             process {
             """
             input[0] = MMSEQS_TAXA.out.db
@@ -45,7 +45,7 @@ nextflow_process {
         }
 
         run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
-            script "modules/nf-core/mmseqs/createdb/main.nf"
+            script "../../createdb/main.nf"
             process {
                 """
                 input[0] = [
@@ -56,7 +56,7 @@ nextflow_process {
             }
         }
         run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
-            script "modules/nf-core/mmseqs/createdb/main.nf"
+            script "../../createdb/main.nf"
             process {
                 """
                 input[0] = [
@@ -67,7 +67,7 @@ nextflow_process {
             }
         }
         run("MMSEQS_CLUSTER") {
-            script "modules/nf-core/mmseqs/cluster/main.nf"
+            script "../../cluster/main.nf"
             process {
             """
             input[0] = MMSEQS_TARGET.out.db
@@ -112,8 +112,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
+                    process.out.versions).match() }
             )
         }
     }
