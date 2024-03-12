@@ -25,9 +25,9 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--fastq-output") ? "fastq" : "fasta"
+    def extension = args.contains("--fastq-output") ? "fastq" : "fasta"
     def input_reads_command = meta.single_end ? "-s $classified_reads_fastq" : "-s1 ${classified_reads_fastq[0]} -s2 ${classified_reads_fastq[1]}"
-    def output_reads_command = meta.single_end ? "-o ${prefix}.extracted_kraken2_read.$output_format" : "-o ${prefix}.extracted_kraken2_read_1.$output_format -o2 ${prefix}.extracted_kraken2_read_2.$output_format"
+    def output_reads_command = meta.single_end ? "-o ${prefix}.extracted_kraken2_read.${extension}" : "-o ${prefix}.extracted_kraken2_read_1.${extension} -o2 ${prefix}.extracted_kraken2_read_2.${extension}"
     def report_option = report ? "-r ${report}" : ""
     def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
