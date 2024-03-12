@@ -2,83 +2,51 @@ nextflow_process {
 
     name "Test Process MMSEQS_CREATETSV"
     script "../main.nf"
-    config "./nextflow.config"
     process "MMSEQS_CREATETSV"
 
     tag "modules"
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/taxonomy"
-    tag "mmseqs/cluster"
     tag "mmseqs/createdb"
     tag "mmseqs/databases"
+    tag "untar"
     tag "mmseqs/createtsv"
-
-    setup {
-        run("MMSEQS_CREATEDB", alias: "MMSEQS_TAXA") {
-            script "../../createdb/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test_query', single_end:false ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
-                    ]
-                """
-            }
-        }
-        run("MMSEQS_DATABASES") {
-            script "../../databases/main.nf"
-            process {
-            """
-            input[0] = 'SILVA'
-            """
-            }
-        }
-        run("MMSEQS_TAXONOMY") {
-            script "../../taxonomy/main.nf"
-            process {
-            """
-            input[0] = MMSEQS_TAXA.out.db
-            input[1] = MMSEQS_DATABASES.out.database
-            """
-            }
-        }
-
-        run("MMSEQS_CREATEDB", alias: "MMSEQS_QUERY") {
-            script "../../createdb/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test_query', single_end:false ],
-                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                ]
-                """
-            }
-        }
-        run("MMSEQS_CREATEDB", alias: "MMSEQS_TARGET") {
-            script "../../createdb/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test_target', single_end:false ],
-                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
-                ]
-                """
-            }
-        }
-        run("MMSEQS_CLUSTER") {
-            script "../../cluster/main.nf"
-            process {
-            """
-            input[0] = MMSEQS_TARGET.out.db
-            """
-            }
-        }
-    }
-
 
     test("mmseqs/createtsv - bacteroides_fragilis - taxonomy") {
 
+        config  "./taxonomy.nextflow.config"
+
+        setup {
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_TAXA") {
+                script "../../createdb/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_query', single_end:false ],
+                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                        ]
+                    """
+                }
+            }
+            run("MMSEQS_DATABASES") {
+                script "../../databases/main.nf"
+                process {
+                """
+                input[0] = 'SILVA'
+                """
+                }
+            }
+            run("MMSEQS_TAXONOMY") {
+                script "../../taxonomy/main.nf"
+                process {
+                """
+                input[0] = MMSEQS_TAXA.out.db
+                input[1] = MMSEQS_DATABASES.out.database
+                """
+                }
+            }
+        }
         when {
             process {
                 """
@@ -99,12 +67,55 @@ nextflow_process {
 
     test("mmseqs/createtsv - sarscov2 - cluster") {
 
+        config  "./cluster.nextflow.config"
+
+        setup {
+            run("UNTAR", alias: "UNTAR_QUERY") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_query', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("UNTAR", alias: "UNTAR_TARGET") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_target', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("UNTAR", alias: "UNTAR_RESULT") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_result', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
         when {
+
             process {
                 """
-                input[0] = MMSEQS_CLUSTER.out.db_cluster
-                input[1] = MMSEQS_QUERY.out.db
-                input[2] = MMSEQS_TARGET.out.db
+                ch_query  = UNTAR_QUERY.out.untar
+                ch_target = UNTAR_TARGET.out.untar
+                ch_result = UNTAR_RESULT.out.untar
+
+                input[0] = ch_result
+                input[1] = ch_query
+                input[2] = ch_target
                 """
             }
         }
@@ -112,8 +123,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
-                    process.out.versions).match() }
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
@@ -121,7 +132,38 @@ nextflow_process {
     test("mmseqs/createtsv - bacteroides_fragilis - taxonomy - stub") {
 
         options "-stub"
+        config  "./taxonomy.nextflow.config"
 
+        setup {
+            run("MMSEQS_CREATEDB", alias: "MMSEQS_TAXA") {
+                script "../../createdb/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_query', single_end:false ],
+                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                        ]
+                    """
+                }
+            }
+            run("MMSEQS_DATABASES") {
+                script "../../databases/main.nf"
+                process {
+                """
+                input[0] = 'SILVA'
+                """
+                }
+            }
+            run("MMSEQS_TAXONOMY") {
+                script "../../taxonomy/main.nf"
+                process {
+                """
+                input[0] = MMSEQS_TAXA.out.db
+                input[1] = MMSEQS_DATABASES.out.database
+                """
+                }
+            }
+        }
         when {
             process {
                 """
@@ -143,13 +185,51 @@ nextflow_process {
     test("mmseqs/createtsv - sarscov2 - cluster - stub") {
 
         options "-stub"
+        config  "./cluster.nextflow.config"
+
+        setup {
+            run("UNTAR", alias: "UNTAR_QUERY") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_query', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("UNTAR", alias: "UNTAR_TARGET") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_target', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("UNTAR", alias: "UNTAR_RESULT") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_result', single_end:true ],
+                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
+
             process {
                 """
-                ch_query  = MMSEQS_QUERY.out.db
-                ch_target = MMSEQS_TARGET.out.db
-                ch_result = MMSEQS_CLUSTER.out.db_cluster
+                ch_query  = UNTAR_QUERY.out.untar
+                ch_target = UNTAR_TARGET.out.untar
+                ch_result = UNTAR_RESULT.out.untar
 
                 input[0] = ch_result
                 input[1] = ch_query
@@ -161,8 +241,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
-                                    process.out.versions).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
