@@ -49,7 +49,7 @@ process RIBOTRICER_DETECTORFS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
+        ribotricer: \$(ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //')
     END_VERSIONS
     """
 
@@ -70,7 +70,7 @@ process RIBOTRICER_DETECTORFS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
+        ribotricer: \$(ribotricer --version 2>&1 | grep ribotricer | sed '1!d ; s/ribotricer, version //')
     END_VERSIONS
     """
 }
