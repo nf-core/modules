@@ -62,12 +62,12 @@ nextflow_process {
                 { assert snapshot(process.out.bam_summary).match('bam_summary') },
                 { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist") },
                 { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p') },
-                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p') },
+                { assert path(process.out.metagene_profile_3p[0][1]).getText().contains("26\t0\t[0.0, 0.0, 0.0, 0.0, 2.6132404181184667") },
                 { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots") },
                 { assert snapshot(process.out.psite_offsets).match('psite_offsets') },
                 { assert snapshot(process.out.pos_wig).match('pos_wig') },
                 { assert snapshot(process.out.neg_wig).match('neg_wig') },
-                { assert snapshot(process.out.orfs).match('orfs') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000370861_62136860_62140830_534\tannotated\ttranslating\t0.515078753637712") },
                 { assert snapshot(process.out.versions).match('versions') }
             )
         }
@@ -97,12 +97,12 @@ nextflow_process {
                 { assert snapshot(process.out.bam_summary).match('bam_summary_all') },
                 { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_all") },
                 { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_all') },
-                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_all') },
+                { assert path(process.out.metagene_profile_3p[0][1]).getText().contains("26\t0\t[0.0, 0.0, 0.0, 0.0, 2.6132404181184667") },
                 { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_all") },
                 { assert snapshot(process.out.psite_offsets).match('psite_offsets_all') },
                 { assert snapshot(process.out.pos_wig).match('pos_wig_all') },
                 { assert snapshot(process.out.neg_wig).match('neg_wig_all') },
-                { assert snapshot(process.out.orfs).match('orfs_all') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000370861_62136860_62140830_534\tannotated\ttranslating\t0.515078753637712") },
                 { assert snapshot(process.out.versions).match('versions_all') }
             )
         }
