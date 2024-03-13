@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ribotricer_detectorfs"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "ribotricer":
+      description: "Python package to detect translating ORF from Ribo-seq data"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ['GNU General Public v3 (GPL v3)']
+
+input:
+  #
+  
+  - input:
+      type: file
+      description: 
+      pattern: 
+
+output:
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  
+  - output:
+      type: file
+      description: 
+      pattern: 
+
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
