@@ -35,7 +35,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BWA_INDEX.out.index
-                input[2] = false
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[3] = false
                 """
             }
         }
@@ -75,7 +76,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BWA_INDEX.out.index
-                input[2] = true
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[3] = true
                 """
             }
         }
@@ -116,7 +118,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BWA_INDEX.out.index
-                input[2] = false
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[3] = false
                 """
             }
         }
@@ -157,7 +160,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BWA_INDEX.out.index
-                input[2] = true
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[3] = true
                 """
             }
         }
