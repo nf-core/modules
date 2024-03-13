@@ -23,10 +23,10 @@ workflow FASTQ_ALIGN_DNA {
 
     main:
 
-        ch_bai      = Channel.empty()
-        ch_bam      = Channel.empty()
-        ch_reports  = Channel.empty()
-        ch_versions = Channel.empty()
+        ch_bam_index    = Channel.empty()
+        ch_bam          = Channel.empty()
+        ch_reports      = Channel.empty()
+        ch_versions     = Channel.empty()
 
         // Align fastq files to reference genome and (optionally) sort
         switch (aligner) {
@@ -38,7 +38,7 @@ workflow FASTQ_ALIGN_DNA {
             case 'bwamem':
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort) // If aligner is bwa-mem
                 ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
-                ch_bam_index = ch_bai.mix(BWAMEM1_MEM.out.csi)
+                ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.csi)
                 ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
                 break
             case 'bwamem2':
@@ -63,8 +63,8 @@ workflow FASTQ_ALIGN_DNA {
         }
 
     emit:
-        bam         = ch_bam        // channel: [ [meta], bam  ]
-        bam_index   = ch_bam_index  // channel: [ [meta], bai  ]
-        reports     = ch_reports    // channel: [ [meta], log  ]
-        versions    = ch_versions   // channel: [ versions.yml ]
+        bam         = ch_bam        // channel: [ [meta], bam       ]
+        bam_index   = ch_bam_index  // channel: [ [meta], csi/bai   ]
+        reports     = ch_reports    // channel: [ [meta], log       ]
+        versions    = ch_versions   // channel: [ versions.yml      ]
 }

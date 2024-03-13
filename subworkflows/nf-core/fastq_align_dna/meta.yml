@@ -35,6 +35,15 @@ input:
       type: file
       description: Aligner genome index files
       pattern: "Directory containing aligner index"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Reference genome in fasta format
+      pattern: "*.{fa, fasta, fna}"
   - aligner:
       type: string
       description: Aligner to use for alignment
@@ -60,7 +69,7 @@ output:
   - bam_index:
       type: file
       description: BAM index (currently only for snapaligner)
-      pattern: "*.bai"
+      pattern: "*.{bai, csi}"
   - report:
       type: file
       description: Alignment report (currently only for dragmap)
