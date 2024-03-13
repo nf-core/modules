@@ -33,13 +33,13 @@ process RIBOTISH_PREDICT {
     if (bam_ribo){
         ribo_bam_cmd = "-b ${bam_ribo.join(',')}"
         if (para_ribo){
-            ribo_bam_cmd += "---ribopara ${para_ribo.join(',')}"
+            ribo_bam_cmd += " --ribopara ${para_ribo.join(',')}"
         }
     }
     if (bam_ti){
         ti_bam_cmd = "-t ${bam_ti.join(',')}"
         if (para_tis){
-            ti_bam_cmd += "---tisparapara  ${para_ti.join(',')}"
+            ti_bam_cmd += " --tisparapara  ${para_ti.join(',')}"
         }
     }
     """
