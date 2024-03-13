@@ -1,5 +1,5 @@
 process RIBOTRICER_DETECTORFS {
-    tag '$bam'
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -46,6 +46,27 @@ process RIBOTRICER_DETECTORFS {
         --prefix $prefix \\
         $strandedness_cmd \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
+    END_VERSIONS
+    """
+    
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_protocol.txt
+    touch ${prefix}_bam_summary.txt
+    touch ${prefix}_read_length_dist.pdf
+    touch ${prefix}_metagene_profiles_5p.tsv
+    touch ${prefix}_metagene_profiles_3p.tsv
+    touch ${prefix}_metagene_plots.pdf
+    touch ${prefix}_psite_offsets.txt
+    touch ${prefix}_pos.wig
+    touch ${prefix}_neg.wig
+    touch ${prefix}_translating_ORFs.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

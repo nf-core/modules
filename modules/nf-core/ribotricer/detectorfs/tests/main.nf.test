@@ -108,6 +108,81 @@ nextflow_process {
         }
 
     }
+    
+    test("human chr20 - bam - default - stub") {
+
+        options '-stub'
+        
+        config './nextflow.default.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_stub') },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+
+    test("human chr20 - bam - all - stub") {
+
+        options '-stub'
+        
+        config './nextflow.all.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_all_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_all_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_all_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_all_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_all_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_all_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_all_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_all_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_all_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_all_stub') },
+                { assert snapshot(process.out.versions).match('versions_all_stub') }
+            )
+        }
+
+    }
 }
 
 
