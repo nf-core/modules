@@ -47,7 +47,7 @@ nextflow_process {
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.phased_variants[0][1]).name == "input_chr21_16650000-16750000.bcf" },
-                { assert snapshot(process.out.version).match("VCF")}
+                { assert snapshot(process.out.versions).match("VCF")}
             )
         }
 
@@ -90,7 +90,7 @@ nextflow_process {
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.phased_variants[0][1]).name == "input_chr21_16650000-16750000.bcf" },
                 { assert snapshot(process.out.stats_coverage).match("BAM_coverage")},
-                { assert snapshot(process.out.version).match("BAM")}
+                { assert snapshot(process.out.versions).match("BAM")}
             )
         }
 
@@ -137,7 +137,7 @@ nextflow_process {
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.phased_variants[0][1]).name == "input_chr21_16650000-16750000.bcf" },
                 { assert snapshot(process.out.stats_coverage).match("CRAM_coverage")},
-                { assert snapshot(process.out.version).match("CRAM")}
+                { assert snapshot(process.out.versions).match("CRAM")}
             )
         }
     }
