@@ -1,7 +1,7 @@
 process RIBOTRICER_DETECTORFS {
     tag '$bam'
     label 'process_single'
-    
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
@@ -30,7 +30,7 @@ process RIBOTRICER_DETECTORFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     def strandedness_cmd = ''
     if (meta.strandedness == 'forward') {
         strandedness_cmd = '--stranded yes'
