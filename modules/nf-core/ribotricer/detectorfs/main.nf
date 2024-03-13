@@ -52,7 +52,7 @@ process RIBOTRICER_DETECTORFS {
         ribotricer: \$(ribotricer --version | grep ribotricer |& sed '1!d ; s/ribotricer, version //')
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
