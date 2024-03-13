@@ -11,7 +11,7 @@ nextflow_process {
 
     test("homo_sapiens - illumina - vcf - bed") {
 
-       when {
+        when {
             process {
                 """
                 input[0] = [
@@ -33,15 +33,16 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out.preprocessed_vcf).match("bed_preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("bed_versions") }
             )
         }
 
     }
     test("homo_sapiens - illumina - vcf") {
 
-       when {
+        when {
             process {
                 """
                 input[0] = [
@@ -63,8 +64,9 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out.preprocessed_vcf).match("preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -96,8 +98,9 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out.preprocessed_vcf).match("stub_preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("stub_versions") }
             )
         }
 

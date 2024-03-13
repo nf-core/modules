@@ -39,4 +39,18 @@ process HAPPY_PREPY {
         pre.py: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def restrict_region = bed ? "-R ${bed}": ""
+    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pre.py: $VERSION
+    END_VERSIONS
+    """
 }
