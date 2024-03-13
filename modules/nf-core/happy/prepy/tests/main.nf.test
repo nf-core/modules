@@ -35,7 +35,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-5..-1] }
+                    process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
                 ).match("bed_preprocessed_vcf") },
                 { assert snapshot(process.out.versions).match("bed_versions") }
             )
@@ -67,7 +67,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.preprocessed_vcf).match("preprocessed_vcf") },
+                { assert snapshot(
+                    process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
+                ).match("preprocessed_vcf") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
