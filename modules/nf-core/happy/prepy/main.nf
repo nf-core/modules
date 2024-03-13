@@ -46,7 +46,7 @@ process HAPPY_PREPY {
     def restrict_region = bed ? "-R ${bed}": ""
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
