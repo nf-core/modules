@@ -145,7 +145,6 @@ jobs:
             ${{ runner.os }}-pip
 
       - name: Install pip
-        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
@@ -394,7 +393,6 @@ jobs:
             ${{ runner.os }}-pip-pytest
 
       - name: Install Python dependencies
-        if: steps.cache-pip-pytest.outputs.cache-hit != 'true'
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
       - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
@@ -626,7 +624,6 @@ jobs:
             ${{ runner.os }}-pip-pdiff
 
       - name: Install Python dependencies
-        if: steps.cache-pip-pdiff.outputs.cache-hit != 'true'
         run: python -m pip install --upgrade pip pdiff cryptography
 
       - name: Set up miniconda
