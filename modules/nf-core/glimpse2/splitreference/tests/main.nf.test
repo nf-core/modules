@@ -2,14 +2,16 @@ nextflow_process {
 
     name "Test Process GLIMPSE2_SPLITREFERENCE"
     script "../main.nf"
+    config "./nextflow.config"
+
     process "GLIMPSE2_SPLITREFERENCE"
-    tag "glimpse2"
-    tag "glimpse2/splitreference"
+
     tag "modules_nfcore"
     tag "modules"
+    tag "glimpse2"
+    tag "glimpse2/splitreference"
 
     test("Should run without map") {
-        config "./nextflow.config"
 
         when {
             process {
@@ -30,14 +32,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" }
+                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
+                { assert snapshot(process.out.version).match()}
             )
         }
 
     }
 
     test("Should run with map") {
-        config "./nextflow.config"
 
         when {
             process {
@@ -58,7 +60,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" }
+                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
+                { assert snapshot(process.out.version).match()}
             )
         }
 
