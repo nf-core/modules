@@ -10,7 +10,8 @@ process HAPPY_PREPY {
 
     input:
     tuple val(meta), path(vcf), path(bed)
-    tuple path(fasta), path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
 
     output:
     tuple val(meta), path('*.vcf.gz')  , emit: preprocessed_vcf
@@ -22,11 +23,12 @@ process HAPPY_PREPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def restrict_region = bed ? "-R ${bed}": ""
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     pre.py \\
         $args \\
-        -R $bed \\
+        $restrict_region \\
         --reference $fasta \\
         --threads $task.cpus \\
         $vcf \\
