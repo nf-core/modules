@@ -58,7 +58,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.protocol).match('protocol') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig') },
+                { assert snapshot(process.out.orfs).match('orfs') },
+                { assert snapshot(process.out.versions).match('versions') }
             )
         }
 
