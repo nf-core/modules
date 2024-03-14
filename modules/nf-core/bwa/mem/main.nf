@@ -33,9 +33,8 @@ process BWA_MEM {
                     sort_bam && args2.contains("-O cram")? "cram":
                     !sort_bam && args2.contains("-C")    ? "cram":
                     "bam"
-    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" :
-                    !fasta && extension=="cram" ? error "Fasta reference is required for CRAM output":
-                    ""
+    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
+    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
