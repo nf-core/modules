@@ -28,8 +28,10 @@ process BWA_MEM {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samtools_command = sort_bam ? 'sort' : 'view'
-    def extension = args2.contains("--output-fmt sam") ? "sam" :
-                    args2.contains("--output-fmt cram") ? "cram" :
+    def extension = args2.contains("--output-fmt sam")   ? "sam" :
+                    args2.contains("--output-fmt cram")  ? "cram":
+                    sort_bam && args2.contains("-O cram")? "cram":
+                    !sort_bam && args2.contains("-C")    ? "cram":
                     "bam"
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
@@ -50,9 +52,15 @@ process BWA_MEM {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args2.contains("--output-fmt sam")   ? "sam" :
+                    args2.contains("--output-fmt cram")  ? "cram":
+                    sort_bam && args2.contains("-O cram")? "cram":
+                    !sort_bam && args2.contains("-C")    ? "cram":
+                    "bam"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.${extension}
     touch ${prefix}.csi
+    touch ${prefix}.crai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
