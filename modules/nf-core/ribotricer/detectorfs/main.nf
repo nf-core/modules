@@ -30,19 +30,17 @@ process RIBOTRICER_DETECTORFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def strandedness_cmd = ''
 
     switch(meta.strandedness) {
         case "forward":
-            def strandedness_cmd = "--stranded yes"
+            strandedness_cmd = "--stranded yes"
             break
         case "reverse":
-            def strandedness_cmd = "--stranded reverse"
+            strandedness_cmd = "--stranded reverse"
             break
         case "unstranded":
-            def strandedness_cmd = "--stranded no"
-            break
-        default:
-            def strandedness_cmd = ""
+            strandedness_cmd = "--stranded no"
             break
     }
     """
