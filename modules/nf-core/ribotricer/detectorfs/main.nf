@@ -31,13 +31,19 @@ process RIBOTRICER_DETECTORFS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def strandedness_cmd = ''
-    if (meta.strandedness == 'forward') {
-        strandedness_cmd = '--stranded yes'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness_cmd = '--stranded revers'
-    } else if (meta.strandedness == 'unstranded') {
-        strandedness_cmd = '--stranded no'
+    switch(meta.strandedness) {
+        case "forward":
+            def strandedness_cmd = "--stranded yes"
+            break
+        case "reverse":
+            def strandedness_cmd = "--stranded reverse"
+            break
+        case "unstranded":
+            def strandedness_cmd = "--stranded no"
+            break
+        default:
+            def strandedness_cmd = ""
+            break
     }
     """
     ribotricer detect-orfs \\
