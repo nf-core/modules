@@ -50,8 +50,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.004656093095383119\tT\tNone\tNone\t0.00893789006386") },
-                { assert path(process.out.all[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.004656093095383119\tT\tNone\tNone\t0.00893789006386") },
+                { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.013377070461772932\tT\tNone\tNone\t0.02118962148347") },
+                { assert path(process.out.all[0][1]).getText().contains("ENSG00000132640\tENST00000254977\tBTBD3\tprotein_coding\t20:11890767-11923666:+\tATG\t45\t1743\tExtended\t0\t0\tNone\t0.013377070461772932\tT\tNone\tNone\t0.02118962148347") },
                 { assert snapshot(process.out.transprofile).match("transprofile_single_end_single_ribo_bam") },
                 { assert snapshot(process.out.versions).match("versions_single_end_single_ribo_bam") }
             )
@@ -126,8 +126,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000088876\tENST00000465019\tZNF343\tprotein_coding\t20:2483160-2492732:-\tATG\t298\t1828\tNovel:Known\t0\t0\tNone\t0.016618916757") },
-                { assert path(process.out.all[0][1]).getText().contains("ENSG00000088876\tENST00000465019\tZNF343\tprotein_coding\t20:2483160-2492732:-\tATG\t298\t1828\tNovel:Known\t0\t0\tNone\t0.016618916757") },
+                { assert path(process.out.predictions[0][1]).getText().contains("ENSG00000284776\tENST00000618693\t\tprotein_coding\t20:18567478-18744216:+\tATG\t26\t695\tAnnotated\t0\t0\tNone\t0.0006123183014212") },
+                { assert path(process.out.all[0][1]).getText().contains("ENSG00000284776\tENST00000618693\t\tprotein_coding\t20:18567478-18744216:+\tATG\t26\t695\tAnnotated\t0\t0\tNone\t0.0006123183014212") },
                 { assert snapshot(process.out.transprofile).match("transprofile_single_end_multi_ribo_bam") },
                 { assert snapshot(process.out.versions).match("versions_single_end_multi_ribo_bam") }
             )
