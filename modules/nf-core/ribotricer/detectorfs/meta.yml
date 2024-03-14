@@ -18,8 +18,8 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing riboseq sample information
-        e.g. `[ id:'sample1', single_end:false ]
+        Map containing riboseq sample information
+        e.g. `[ id:'sample1', single_end:false, strandedness: 'single' ]
   - bam_ribo:
       type: file
       description: Sorted riboseq BAM file(s)
@@ -31,7 +31,7 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing reference information for the candidate ORFs
+        Map containing reference information for the candidate ORFs
         e.g. `[ id:'Ensembl human v.111' ]`
   - candidate_orfs:
       type: file
