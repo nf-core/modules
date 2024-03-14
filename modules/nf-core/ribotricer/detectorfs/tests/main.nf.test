@@ -38,9 +38,9 @@ nextflow_process {
 
     }
 
-    test("human chr20 - bam - default") {
+    test("human chr20 - bam - filtered") {
 
-        config './nextflow.default.config'
+        config './nextflow.filtered.config'
 
         when {
             process {
@@ -109,11 +109,11 @@ nextflow_process {
 
     }
     
-    test("human chr20 - bam - default - stub") {
+    test("human chr20 - bam - filtered - stub") {
 
         options '-stub'
         
-        config './nextflow.default.config'
+        config './nextflow.filtered.config'
 
         when {
             process {
