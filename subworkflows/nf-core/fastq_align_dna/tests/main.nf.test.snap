@@ -48,38 +48,22 @@
     },
     "test_fastq_align_dragmap_PE": {
         "content": [
-            {
-                "0": [
-                    
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "bam": [
-                    
-                ],
-                "bam_index": [
-                    
-                ],
-                "reports": [
-                    
-                ],
-                "versions": [
-                    
-                ]
-            }
+            "test.bam",
+            [
+                "decompHashTableCtxInit...",
+                "decompHashTableHeader...",
+                "decompHashTableLiterals...",
+                "decompHashTableExtIndex...",
+                "decompHashTableAutoHits...",
+                "decompHashTableSetFlags..."
+            ],
+            "versions.yml"
         ],
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-13T15:40:19.410812"
+        "timestamp": "2024-03-14T08:28:25.283436546"
     },
     "test_fastq_align_bwa_mem_SE": {
         "content": [
@@ -271,38 +255,22 @@
     },
     "test_fastq_align_dragmap_SE": {
         "content": [
-            {
-                "0": [
-                    
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "bam": [
-                    
-                ],
-                "bam_index": [
-                    
-                ],
-                "reports": [
-                    
-                ],
-                "versions": [
-                    
-                ]
-            }
+            "test.bam",
+            [
+                "decompHashTableCtxInit...",
+                "decompHashTableHeader...",
+                "decompHashTableLiterals...",
+                "decompHashTableExtIndex...",
+                "decompHashTableAutoHits...",
+                "decompHashTableSetFlags..."
+            ],
+            "versions.yml"
         ],
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-13T15:40:05.154191"
+        "timestamp": "2024-03-14T08:28:12.991034375"
     },
     "test_fastq_align_bowtie2_PE": {
         "content": [
@@ -349,13 +317,19 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-13T15:38:20.426441"
+        "timestamp": "2024-03-14T09:09:31.704599494"
     },
     "test_fastq_align_snapaligner_PE": {
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,1f4f6c38e40ddd5da7f644bb0f794aa8"
+                    ]
                 ],
                 "1": [
                     
@@ -364,10 +338,16 @@
                     
                 ],
                 "3": [
-                    
+                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
                 ],
                 "bam": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,1f4f6c38e40ddd5da7f644bb0f794aa8"
+                    ]
                 ],
                 "bam_index": [
                     
@@ -376,7 +356,7 @@
                     
                 ],
                 "versions": [
-                    
+                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
                 ]
             }
         ],
@@ -384,13 +364,19 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-13T15:40:45.240714"
+        "timestamp": "2024-03-14T08:19:36.298315938"
     },
     "test_fastq_align_snapaligner_SE": {
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,6b3188b8e48ec5c155cfe02b9a24d37a"
+                    ]
                 ],
                 "1": [
                     
@@ -399,10 +385,16 @@
                     
                 ],
                 "3": [
-                    
+                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
                 ],
                 "bam": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,6b3188b8e48ec5c155cfe02b9a24d37a"
+                    ]
                 ],
                 "bam_index": [
                     
@@ -411,7 +403,7 @@
                     
                 ],
                 "versions": [
-                    
+                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
                 ]
             }
         ],
@@ -419,6 +411,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-13T15:40:33.095178"
+        "timestamp": "2024-03-14T08:19:23.611241423"
     }
 }

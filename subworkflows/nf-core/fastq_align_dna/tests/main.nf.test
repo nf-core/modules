@@ -230,7 +230,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    file(workflow.out.versions[0]).name
+                ).match() }
             )
         }
     }
@@ -260,7 +264,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    file(workflow.out.versions[0]).name
+                ).match() }
             )
         }
     }
@@ -270,7 +278,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/snapaligner/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)], [], [], [])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [], [], []])
                     """
                 }
             }
@@ -300,7 +308,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/snapaligner/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)], [], [], [])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [], [], []])
                     """
                 }
             }
