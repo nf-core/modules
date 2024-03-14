@@ -39,9 +39,15 @@ process RIBOTRICER_DETECTORFS {
         case "reverse":
             strandedness_cmd = "--stranded reverse"
             break
-        case "unstranded":
-            strandedness_cmd = "--stranded no"
-            break
+        //
+        // Specifying unstranded seems broken - see
+        // https://github.com/smithlabcode/ribotricer/issues/153. Leaving it
+        // undefined works, though ribotricer may incorrectly infer
+        // strandednesss?
+        //
+        //case "unstranded":
+        //    strandedness_cmd = "--stranded no"
+        //    break
     }
     """
     ribotricer detect-orfs \\
