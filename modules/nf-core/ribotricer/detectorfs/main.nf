@@ -36,7 +36,7 @@ process RIBOTRICER_DETECTORFS {
         strandedness_cmd = '--stranded yes'
     } else if (meta.strandedness == 'reverse') {
         strandedness_cmd = '--stranded revers'
-    } else if (mea.strandedness == 'unstranded') {
+    } else if (meta.strandedness == 'unstranded') {
         strandedness_cmd = '--stranded no'
     }
     """
