@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process PRODIGAL"
+    script "../main.nf"
+    process "PRODIGAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "prodigal"
+
+    test("prodigal - sarscov2 - gff") {
+        when {
+            process {
+                """
+                input[0] =  [
+                             [id:'test', single_end:false ], // meta map
+                             file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            ]
+                input[1] =  'gbk'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("prodigal - sarscov2 - gff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                             [id:'test', single_end:false ], // meta map
+                             file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            ]
+                input[1] =  'gff'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gene_annotations.collect { file(it[1]).getName() } +
+                                    process.out.nucleotide_fasta.collect { file(it[1]).getName() } +
+                                    process.out.amino_acid_fasta.collect { file(it[1]).getName() } +
+                                    process.out.all_gene_annotations.collect { file(it[1]).getName() } +
+                                    process.out.versions).match() }
+            )
+        }
+    }
+
+}
