@@ -19,7 +19,7 @@ nextflow_process {
                 input[0] = [ [id:"null"], [], [], []]
                 input[1] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
                 ]
                 input[2] = [ [id:"null"], []]
                 """
@@ -44,9 +44,9 @@ nextflow_process {
                 """
                 input[0] = [
                         [id:"test"],
-                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists:true),
-                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists:true),
-                        file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists:true)
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
                 ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
@@ -73,7 +73,7 @@ nextflow_process {
                 input[1] = [ [id:"null"], []]
                 input[2] = [
                     [id:"test"],
-                    file("https://raw.githubusercontent.com/lescai/test-datasets-devel/modules/data/genomics/homo_sapiens/popgen/plink_simulated.bcf.gz", checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
                 ]
                 """
             }
