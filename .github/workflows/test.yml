@@ -137,16 +137,17 @@ jobs:
           python-version: "3.11"
 
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-pip
 
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -383,11 +384,18 @@ jobs:
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip-pytest
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pytest
+          restore-keys: |
+            ${{ runner.os }}-pip-pytest
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -583,27 +591,15 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - name: Cache nf-test installation
-        id: cache-software
-        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
-        with:
-          path: |
-            /usr/local/bin/nf-test
-            /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
-
       - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
-        run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
-          sudo mv nf-test /usr/local/bin/
+        uses: nf-core/setup-nf-test@v1
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
@@ -619,6 +615,13 @@ jobs:
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip-pdiff
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pdiff
+          restore-keys: |
+            ${{ runner.os }}-pip-pdiff
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pdiff cryptography
