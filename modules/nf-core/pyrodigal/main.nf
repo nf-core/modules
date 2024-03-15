@@ -9,13 +9,14 @@ process PYRODIGAL {
 
     input:
     tuple val(meta), path(fasta)
+    val(output_format)
 
     output:
-    tuple val(meta), path("*.gff.gz")      , emit: gff
-    tuple val(meta), path("*.fna.gz")      , emit: fna
-    tuple val(meta), path("*.faa.gz")      , emit: faa
-    tuple val(meta), path("*.score.gz")    , emit: score
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.${output_format}.gz")      , emit: gene_annotations
+    tuple val(meta), path("*.fna.gz")                   , emit: fna
+    tuple val(meta), path("*.faa.gz")                   , emit: faa
+    tuple val(meta), path("*.score.gz")                 , emit: score
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +30,8 @@ process PYRODIGAL {
     pyrodigal \\
         $args \\
         -i pigz_fasta.fna \\
-        -o ${prefix}.gff \\
+        -f $output_format \\
+        -o "${prefix}.${output_format}" \\
         -d ${prefix}.fna \\
         -a ${prefix}.faa \\
         -s ${prefix}.score
@@ -41,12 +43,11 @@ process PYRODIGAL {
         pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
     END_VERSIONS
     """
-
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gff.gz
+    touch ${prefix}.${output_format}.gz
     touch ${prefix}.fna.gz
     touch ${prefix}.faa.gz
     touch ${prefix}.score.gz
