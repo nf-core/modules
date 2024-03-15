@@ -218,9 +218,20 @@ nextflow_process {
     }
 
     test("Single-end - stub") {
-
         options "-stub"
-
+        setup {
+            run("BWA_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
         when {
             process {
                 """
@@ -230,7 +241,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[id:'genome'], file("/path/to/index")]
+                input[1] = BWA_INDEX.out.index
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false
                 """
@@ -250,9 +261,20 @@ nextflow_process {
     }
 
     test("Paired-end - stub") {
-
         options "-stub"
-
+        setup {
+            run("BWA_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
         when {
             process {
                 """
@@ -263,7 +285,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[id:'genome'], file("/path/to/index")]
+                input[1] = BWA_INDEX.out.index
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false
                 """
