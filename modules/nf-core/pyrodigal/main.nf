@@ -36,10 +36,7 @@ process PYRODIGAL {
         -a ${prefix}.faa \\
         -s ${prefix}.score
 
-    pigz -nm ${prefix}.${output_format}
-    pigz -nm ${prefix}.fna
-    pigz -nm ${prefix}.faa
-    pigz -nm ${prefix}.score
+    pigz -nmf ${prefix}*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
