@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_faitobed"
+description: Creates a bed file containing the genomic intervals from the input fasta index file
+keywords:
+  - awk
+  - bed
+  - fai
+  - file parsing
+  - gawk
+tools:
+  - "gawk":
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - bed:
+      type: file
+      description: Bed file containing genomic intervals from input fasta index file
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@asp8200"
+maintainers:
+  - "@asp8200"
