@@ -12,7 +12,7 @@ process PYRODIGAL {
     val(output_format)
 
     output:
-    tuple val(meta), path("*.${output_format}.gz")      , emit: gene_annotations
+    tuple val(meta), path("*.${output_format}.gz")      , emit: annotations
     tuple val(meta), path("*.fna.gz")                   , emit: fna
     tuple val(meta), path("*.faa.gz")                   , emit: faa
     tuple val(meta), path("*.score.gz")                 , emit: score
