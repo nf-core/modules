@@ -39,14 +39,11 @@ process WITTYER {
     tuple val(meta), path(bam)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    // directory where all files will be located
-    // overall per-sample-pair stats summary
-    // Wittyer.stats.json
-    // Additional vcf file for each sample pair
-    tuple val(meta), path("${prefix}/"), emit: wittyer_results
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"                 , emit: versions
+    tuple val(meta),    path("*ConfigFileUsed.json") , emit: config
+    tuple val(meta),    path("*.Stats.json")         , emit: report
+    tuple val(meta),    path("*eval.vcf.gz")         , emit: bench_vcf
+    tuple val(meta),    path("*eval.vcf.gz.tbi")     , emit: bench_vcf_gzi
+    path  "versions.yml" 
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,31 +53,26 @@ process WITTYER {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+    def regions = bed ? "--includeBed=$bed" : ""
+    def config = config ? "--configFile=$config" : ""
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    mkdir bench
+    dotnet /opt/Wittyer/Wittyer.dll \\
+        --truthVcf=${truth_vcf} \\
+        --inputVcf=${vcf} \\
+        --outputDirectory=bench \\
+        ${regions} \\
+        ${config} \\
+        ${args}
 
-    wittyer \\
-        -i input.vcf \\
-        -t truth.vcf \\
-        -o outputdir \\
-        --bpDistance=
+    mv bench/Wittyer.ConfigFileUsed.json ${prefix}.ConfigFileUsed.json
+    mv bench/Wittyer.Stats.json ${prefix}.Stats.json
+    mv bench/*.vcf.gz ${prefix}.eval.vcf.gz
+    mv bench/*.vcf.gz.tbi ${prefix}.eval.vcf.gz.tbi
+
+    rm -rf bench
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
