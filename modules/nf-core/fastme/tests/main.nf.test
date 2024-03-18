@@ -128,4 +128,28 @@ nextflow_process {
             )
         }
     }
+
+    test("setoxin - phylip - stub") {
+
+        config "./main.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }
