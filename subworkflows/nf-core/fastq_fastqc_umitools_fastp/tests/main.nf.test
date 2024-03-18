@@ -174,7 +174,6 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                         workflow.out.reads,
-                        workflow.out.umi_log,
                         workflow.out.trim_json,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -377,6 +376,8 @@ nextflow_workflow {
 
     test("save_trimmed_fail") {
 
+        config './nextflow.save_trimmed.config'
+
         when {
             workflow {
                 """
@@ -413,17 +414,20 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.reads).match("reads") },
-                { assert snapshot(workflow.out.umi_log).match("umi_log") },
-                { assert snapshot(workflow.out.trim_json).match("trim_json") },
-                { assert snapshot(workflow.out.trim_reads_fail).match("trim_reads_fail") },
-                { assert snapshot(workflow.out.trim_reads_merged).match("trim_reads_merged") },
-                { assert snapshot(workflow.out.adapter_seq).match("adapter_seq") },
-                { assert snapshot(workflow.out.trim_read_count).match("trim_read_count") },
-                { assert snapshot(workflow.out.versions).match("versions") },
+                { assert snapshot(
+                        workflow.out.reads,
+                        workflow.out.umi_log,
+                        workflow.out.trim_json,
+                        workflow.out.trim_reads_fail,
+                        workflow.out.trim_reads_merged,
+                        workflow.out.adapter_seq,
+                        workflow.out.trim_read_count,
+                        workflow.out.versions
+                    ).match() 
+                },
 
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
+                { assert workflow.out.fastqc_raw_html},
+                { assert workflow.out.fastqc_raw_zip},
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert workflow.out.fastqc_trim_html },
