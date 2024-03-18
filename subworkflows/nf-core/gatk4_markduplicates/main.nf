@@ -40,6 +40,6 @@ workflow BAM_MARKDUPLICATES_GATK4 {
     cram
     reports
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions // channel: [ versions.yml ]
 }
 
