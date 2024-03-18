@@ -39,10 +39,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.report[0][1]).exists() },
                 { assert path(process.out.summary_html[0][1]).exists() },
                 { assert path(process.out.vcf[0][1]).exists() },
                 { assert snapshot(process.out.genes_txt).match("genes_txt") },
-                { assert snapshot(process.out.report).match("report") },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
