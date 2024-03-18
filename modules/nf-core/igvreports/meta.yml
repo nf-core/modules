@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "igvreports"
+## TODO nf-core: Add a description of the module and list keywords
+description: A Python application to generate self-contained HTML reports for variant review and other genomic applications
+keywords:
+  - report
+  - variant
+  - genomics
+tools:
+  - "igvreports":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Creates self-contained html pages for visual variant review with IGV (igv.js)."
+      homepage: "https://github.com/igvteam/igv-reports"
+      documentation: "https://github.com/igvteam/igv-reports"
+      tool_dev_url: "https://github.com/igvteam/igv-reports"
+      doi: ""
+      licence: ['MIT']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  ## TODO nf-core: Delete / customise this example input
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf}"
+  - genome:
+      type: string
+      description: An igv.js genome identifier
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - report:
+      type: file
+      description: html report
+      pattern: "*.{html}"
+
+authors:
+  - "@souljamie"
+maintainers:
+  - "@souljamie"
