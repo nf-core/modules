@@ -45,7 +45,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.phylogeny }
+                { assert process.out.phylogeny },
+                { assert process.out.bootstrap }
             )
         }
     }

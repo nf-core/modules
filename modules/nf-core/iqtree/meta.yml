@@ -26,6 +26,7 @@ input:
       type: string
       description: Number of constant sites to add,
         see iqtree documentation for details
+        (http://www.iqtree.org/doc/Command-Reference)
 output:
   - versions:
       type: file
@@ -35,6 +36,13 @@ output:
       type: file
       description: A phylogeny in Newick format
       pattern: "*.{treefile}"
+  - bootstrap:
+      type: file
+      description: |
+        A file containing all bootstrap trees,
+        only generated if bootstrap is on
+        and the -wbt flag is passed in ext.args
+      pattern: "*.{ufboot}"
 authors:
   - "@avantonder"
   - "@aunderwo"

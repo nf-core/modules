@@ -13,6 +13,7 @@ process IQTREE {
 
     output:
     tuple val(meta), path("*.treefile") , emit: phylogeny
+    tuple val(meta), path("*.ufboot")   , emit: bootstrap, optional: true
     path "versions.yml"                 , emit: versions
 
     when:
@@ -28,11 +29,10 @@ process IQTREE {
         $fconst_args \\
         $args \\
         -s $alignment \\
+        -pre $prefix \\
         -nt AUTO \\
         -ntmax $task.cpus \\
         -mem $memory \\
-
-    mv ${alignment}.treefile ${prefix}.treefile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
