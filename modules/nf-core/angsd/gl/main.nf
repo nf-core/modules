@@ -28,7 +28,7 @@ process ANGSD_GL {
     def output_mode = args.contains("-doGlf") ? "" : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
     // NOTE: GL is specified within args, so is not provided as a separate argument
 
-    if (GL_model != 3 || GL_model != 4) {
+    if (GL_model != 3 && GL_model != 4) {
         """
         ls -1 *.bam > bamlist.txt
 
