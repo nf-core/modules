@@ -24,14 +24,14 @@ nextflow_workflow {
 
                 ch_panel = Channel.fromList([
                     [[ ref:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf",
+                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf.csi",
+                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)],
                     [[ ref:'ref_panel2'],
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf",
+                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf.csi",
+                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)]
                 ])
                 region = Channel.fromList([
@@ -40,13 +40,13 @@ nextflow_workflow {
                 ])
 
                 input_vcf = Channel.fromList([
-                    [[ id:'input'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [[ id:'NA12878'], // meta map
+                    file(params.testdata_base + "../imputation/data/individuals/NA12878/NA12878.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.testdata_base + "../imputation/data/individuals/NA12878/NA12878.s.1x.vcf.gz.csi", checkIfExists: true),
                     ],
-                    [[ id:'input2'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [[ id:'NA19401'], // meta map
+                    file(params.testdata_base + "../imputation/data/individuals/NA19401/NA19401.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.testdata_base + "../imputation/data/individuals/NA19401/NA19401.s.1x.vcf.gz.csi", checkIfExists: true),
                     ]
                 ])
                 input_vcf_multiple = input_vcf
@@ -58,10 +58,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file("https://github.com/nf-core/test-datasets/raw/imputation/data/genetic_maps.b38/chr21.b38.gmap.gz", checkIfExists: true)
+                        file(params.testdata_base + "../imputation/data/reference_genome/GRCh38.s.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file("https://github.com/nf-core/test-datasets/raw/imputation/data/genetic_maps.b38/chr22.b38.gmap.gz", checkIfExists: true)
+                        file(params.testdata_base + "../imputation/data/genetic_maps.b38/GRCh38.s.map", checkIfExists: true)
                     ]
                 ])
 
