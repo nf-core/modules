@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process VCFLIB_VCFALLELICPRIMITIVES"
+    script "../main.nf"
+    process "VCFLIB_VCFALLELICPRIMITIVES"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcflib"
+    tag "vcflib/vcfallelicprimitives"
+
+    test("homo_sapiens - vcf.gz") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
