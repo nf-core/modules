@@ -11,10 +11,10 @@ process FASTME {
     tuple val(meta), path(infile), path(initial_tree)
 
     output:
-    tuple val(meta), path("*.nwk")        , emit: nwk
-    tuple val(meta), path("*_stat.txt")   , emit: stats
-    tuple val(meta), path("*.matrix.phy") , emit: matrix    , optional: true
-    tuple val(meta), path("*.bootstrap")  , emit: bootstrap , optional: true
+    tuple val(meta), path("*.nwk")       , emit: nwk
+    tuple val(meta), path("*_stat.txt")  , emit: stats
+    tuple val(meta), path("*.matrix.phy"), emit: matrix    , optional: true
+    tuple val(meta), path("*.bootstrap") , emit: bootstrap , optional: true
     path "versions.yml" , emit: versions
 
     when:
