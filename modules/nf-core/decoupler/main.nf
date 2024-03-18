@@ -17,8 +17,7 @@ process DECOUPLER {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "conda-forge::decoupler-py=1.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/decoupler:1.5.0--pyhdfd78af_0':
-        'biocontainers/decoupler:1.5.0--pyhdfd78af_0' }"
+        'ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d'}"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -31,9 +30,9 @@ process DECOUPLER {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*__decoupler.tsv"), emit: dc_out
     // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    path("versions.yml"), emit: versions
 
     when: //necessary? check
     task.ext.when == null || task.ext.when
