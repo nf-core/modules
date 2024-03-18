@@ -34,6 +34,8 @@ process CELLRANGER_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
+    mkdir -p "${prefix}/outs/filtered_feature_bc_matrix"
+    mkdir -p "${prefix}/outs/raw_feature_bc_matrix"
     echo "$prefix" > ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
