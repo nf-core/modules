@@ -11,7 +11,7 @@ process GLIMPSE_PHASE {
         tuple val(meta) , path(input), path(input_index), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
+        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variants
         path "versions.yml"                               , emit: versions
 
     when:
