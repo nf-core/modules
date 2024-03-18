@@ -5,7 +5,7 @@
 include { CRAM_QC_MOSDEPTH_SAMTOOLS } from '../cram_qc_mosdepth_samtools/main'
 include { GATK4_MARKDUPLICATES      } from '../../../modules/nf-core/gatk4/markduplicates/main'
 
-workflow GATK4_MARKDUPLICATES {
+workflow BAM_MARKDUPLICATES_GATK4 {
 
     take:
     bam                    // channel: [mandatory] [ meta, bam ]
