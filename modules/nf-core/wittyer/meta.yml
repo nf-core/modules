@@ -1,57 +1,66 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "wittyer"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: A large variant benchmarking tool analogous to hap.py for small variants.
 keywords:
-  - sort
-  - example
-  - genomics
+- structural-variants
+- benchmarking
+- vcf
 tools:
-  - "wittyer":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
-
-## TODO nf-core: Add a description of all of the variables used as input
+- "wittyer":
+    description: "Illumina tool for large variant benchmarking"
+    homepage: "https://github.com/Illumina/witty.er"
+    documentation: "https://github.com/Illumina/witty.er"
+    tool_dev_url: "https://github.com/Illumina/witty.er"
+    licence: "['BSD-2']"
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+- meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+      e.g. `[ id:'sample1', single_end:false ]`
+- query_vcf:
+    type: file
+    description: A VCF with called variants to benchmark against the standard
+    pattern: "*.{vcf,vcf.gz}"
+- query_vcf_index:
+    type: file
+    description: The index of the called VCF (optional)
+    pattern: "*.tbi"
+- truth_vcf:
+    type: file
+    description: A standard VCF to compare against
+    pattern: "*.{vcf,vcf.gz}"
+- truth_vcf_index:
+    type: file
+    description: The index of the standard VCF (optional)
+    pattern: "*.tbi"
+- bed:
+    type: file
+    description: A BED file specifying regions to be included in the analysis (optional)
+    pattern: "*.bed"
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+- meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+      e.g. `[ id:'sample1', single_end:false ]`
+- versions:
+    type: file
+    description: File containing software versions
+    pattern: "versions.yml"
+- report:
+    type: file
+    description: Detailed per-sample-pair, per-svtype, per-bin stats
+    pattern: "*.Stats.json"
+- bench_vcf:
+    type: file
+    description: Updated query and truth entries merged into one file
+    pattern: "*eval.vcf.gz"
+- bench_vcf_tbi:
+    type: file
+    description: Index of merged query and truth entries VCF file
+    pattern: "*eval.vcf.gz.tbi"
 authors:
-  - "@famosab"
+- "@famosab"
 maintainers:
-  - "@famosab"
+- "@famosab"
