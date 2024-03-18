@@ -20,7 +20,7 @@ workflow BAM_MARKDUPLICATES_GATK4 {
     reports  = Channel.empty()
  
     // RUN MARKUPDUPLICATES
-    GATK4_MARKDUPLICATES(bam, fasta, fasta_fai)
+    BAM_MARKDUPLICATES_GATK4(bam, fasta, fasta_fai)
 
     // Join with the crai file
     cram = BAM_MARKDUPLICATES_GATK4.out.cram.join(BAM_MARKDUPLICATES_GATK4.out.crai, failOnDuplicate: true, failOnMismatch: true)
