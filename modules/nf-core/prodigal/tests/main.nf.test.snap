@@ -1,20 +1,13 @@
 {
-    "pyrodigal - sarscov2 - gff - stub": {
-        "content": [
-            [
-                "test.fna.gz",
-                "test.faa.gz",
-                "test.score.gz",
-                "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
-            ]
-        ],
+    "prodigal - sarscov2 - gbk - stub": {
+        "content": null,
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-18T15:42:12.012112014"
+        "timestamp": "2024-03-18T13:58:09.852618454"
     },
-    "pyrodigal - sarscov2 - gbk": {
+    "prodigal - sarscov2 - gff": {
         "content": [
             {
                 "0": [
@@ -23,7 +16,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gbk.gz:md5,2dcc29d50022d1d74ea1133a60c5bd51"
+                        "test.gff.gz:md5,612c2724c2891c63350f171f74165757"
                     ]
                 ],
                 "1": [
@@ -50,22 +43,22 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.score.gz:md5,c0703a9e662ae0b21c7bbb082ef3fb5f"
+                        "test_all.txt.gz:md5,e6d6c50f0c39e5169f84ae3c90837fa9"
                     ]
                 ],
                 "4": [
-                    "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
+                    "versions.yml:md5,9541e53a6927e9856036bb97bfb30307"
                 ],
-                "annotations": [
+                "all_gene_annotations": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gbk.gz:md5,2dcc29d50022d1d74ea1133a60c5bd51"
+                        "test_all.txt.gz:md5,e6d6c50f0c39e5169f84ae3c90837fa9"
                     ]
                 ],
-                "faa": [
+                "amino_acid_fasta": [
                     [
                         {
                             "id": "test",
@@ -74,7 +67,16 @@
                         "test.faa.gz:md5,7168b854103f3586ccfdb71a44c389f7"
                     ]
                 ],
-                "fna": [
+                "gene_annotations": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.gff.gz:md5,612c2724c2891c63350f171f74165757"
+                    ]
+                ],
+                "nucleotide_fasta": [
                     [
                         {
                             "id": "test",
@@ -83,17 +85,8 @@
                         "test.fna.gz:md5,1bc8a05bcb72a3c324f5e4ffaa716d3b"
                     ]
                 ],
-                "score": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.score.gz:md5,c0703a9e662ae0b21c7bbb082ef3fb5f"
-                    ]
-                ],
                 "versions": [
-                    "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
+                    "versions.yml:md5,9541e53a6927e9856036bb97bfb30307"
                 ]
             }
         ],
@@ -101,9 +94,17 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-18T15:42:04.374845155"
+        "timestamp": "2024-03-18T13:57:49.57989696"
     },
-    "pyrodigal - sarscov2 - gff": {
+    "prodigal - sarscov2 - gff - stub": {
+        "content": null,
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:58:03.210222528"
+    },
+    "prodigal - sarscov2 - gbk": {
         "content": [
             {
                 "0": [
@@ -112,7 +113,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gff.gz:md5,8fcd2d93131cf9fb0c82b81db059ad27"
+                        "test.gbk.gz:md5,188b3a0e3f78740ded7f3ec4d876cb4b"
                     ]
                 ],
                 "1": [
@@ -139,22 +140,22 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.score.gz:md5,c0703a9e662ae0b21c7bbb082ef3fb5f"
+                        "test_all.txt.gz:md5,e6d6c50f0c39e5169f84ae3c90837fa9"
                     ]
                 ],
                 "4": [
-                    "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
+                    "versions.yml:md5,9541e53a6927e9856036bb97bfb30307"
                 ],
-                "annotations": [
+                "all_gene_annotations": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.gff.gz:md5,8fcd2d93131cf9fb0c82b81db059ad27"
+                        "test_all.txt.gz:md5,e6d6c50f0c39e5169f84ae3c90837fa9"
                     ]
                 ],
-                "faa": [
+                "amino_acid_fasta": [
                     [
                         {
                             "id": "test",
@@ -163,7 +164,16 @@
                         "test.faa.gz:md5,7168b854103f3586ccfdb71a44c389f7"
                     ]
                 ],
-                "fna": [
+                "gene_annotations": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.gbk.gz:md5,188b3a0e3f78740ded7f3ec4d876cb4b"
+                    ]
+                ],
+                "nucleotide_fasta": [
                     [
                         {
                             "id": "test",
@@ -172,17 +182,8 @@
                         "test.fna.gz:md5,1bc8a05bcb72a3c324f5e4ffaa716d3b"
                     ]
                 ],
-                "score": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.score.gz:md5,c0703a9e662ae0b21c7bbb082ef3fb5f"
-                    ]
-                ],
                 "versions": [
-                    "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
+                    "versions.yml:md5,9541e53a6927e9856036bb97bfb30307"
                 ]
             }
         ],
@@ -190,21 +191,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-18T15:41:55.822235843"
-    },
-    "pyrodigal - sarscov2 - gbk - stub": {
-        "content": [
-            [
-                "test.fna.gz",
-                "test.faa.gz",
-                "test.score.gz",
-                "versions.yml:md5,4aab54554829148e01cc0dc7bf6cb5d3"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T15:42:19.81157751"
+        "timestamp": "2024-03-18T13:57:56.606374214"
     }
 }
