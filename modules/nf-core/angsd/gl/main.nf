@@ -8,12 +8,13 @@ process ANGSD_GL {
         'biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
-    tuple val(meta), path(bam)
-    path(fasta) //Optionally
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)      //Optionally
+    tuple val(meta3), path(error_file) //Optionally. Used for SYK model only.
 
     output:
-    tuple val(meta), path("${prefix}"), emit: genotype_likelihood
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.{glf,beagle}.gz"), emit: genotype_likelihood
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,50 +22,65 @@ process ANGSD_GL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def method = args.contains("-GL 1") ?: 1 : args.contains("-GL 2") : 2 : args.contains("-GL 3") : 3 : args.contains("-GL 4") : 4
-    def minq = (method = 3) ?: 0 : 13 //Required for having minq set on 0 for SOAPsnp
+    def GL_model = args.contains("-GL 1") ? 1 : args.contains("-GL 2") ? 2 : args.contains("-GL 3") ? 3 : args.contains("-GL 4") ? 4 : 0
+    def ref = fasta ? "-ref ${fasta}" : ''                     // Use reference fasta if provided
+    def errors = error_file ? "-errors ${error_file}" : ''     // Only applies to SYK model
+    def output_mode = args.contains("-doGlf") ? "" : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
 
+    // NOTE: GL is specified within args, so is not provided as a separate argument
     """
     ls -1 *.bam > bamlist.txt
 
-    //GL 1 + 2 work differently than 3 and 4
-    if [[${GL} != 3 || ${GL} != 4]]; then
+    ## GL_model 1 + 2 work differently than 3 and 4
+    if [[ ${GL_model} != 3 || ${GL_model} != 4 ]]; then
         angsd \\
             -nThreads ${task.cpus} \\
+            -bam bamlist.txt \\
             $args \\
-            -GL ${method} \\
-            -bam bamlist.txt \\
-            -out ${prefix} \\
-            -ref ${fasta} \\
-            -minq $minq
-    fi
-
-    //SOAPsnp needs to run twice (above, then this part again), so checking if GL = 3 requesting SOAP SNP model
-    if [${GL} == 3]; then
-        angsd \\
-            -nThreads ${task.cpus} \\
-            -bam bamlist.txt \\
-            -GL ${method} \\
-            -doGlf 1 \\
+            $ref \\
+            $output_mode \\
             -out ${prefix}
     fi
 
-    //SYK model
-        if [${GL} == 4]; then
+    ## SOAPsnp model
+    if [[ ${GL_model} == 3 ]]; then
+        ## First get the calibration matrix. minQ MUST be 0 for this step. Will create the directory angsd_tmpdir/ with the required files for the next step.
+        ##  No args for this part.
+        ## GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            -GL ${method} \\
-            -doGlf 1 \\
+            -minQ 0 \\
+            -GL 3 \\
+            $ref \\
+            -out ${prefix}
+
+        ## Then run the model
+        angsd \\
+            -nThreads ${task.cpus} \\
+            -bam bamlist.txt \\
+            $args \\
+            $ref \\
+            $output_mode \\
+            -out ${prefix}
+    fi
+
+    ## SYK model
+        if [[ ${GL_model} == 4 ]]; then
+        angsd \\
+            -nThreads ${task.cpus} \\
+            -bam bamlist.txt \\
+            $args \\
+            $ref \\
+            $output_mode \\
+            $errors \\
             -doCounts 1 \\
-            -errors ${prefix}.error \\
-            -out ${prefix} \\
-            $minq
+            -out ${prefix}
     fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+        angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
     END_VERSIONS
     """
 
@@ -72,13 +88,12 @@ process ANGSD_GL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ls -1 *.bam > bamlist.txt
-    touch ${prefix}
-    touch ${prefix}.error
+    touch ${prefix}.glf
+    gzip ${prefix}.glf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+        angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
     END_VERSIONS
     """
 }
