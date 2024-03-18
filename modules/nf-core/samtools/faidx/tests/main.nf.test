@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process SAMTOOLS_FAIDX"
     script "../main.nf"
-    config "./nextflow.config"
     process "SAMTOOLS_FAIDX"
 
     tag "modules"
@@ -54,6 +53,8 @@ nextflow_process {
 
     test("test_samtools_faidx_fasta") {
 
+        config "./nextflow.config"
+
         when {
             process {
                 """
@@ -75,6 +76,8 @@ nextflow_process {
     }
 
     test("test_samtools_faidx_stub_fasta") {
+
+        config "./nextflow2.config"
 
         when {
             process {
