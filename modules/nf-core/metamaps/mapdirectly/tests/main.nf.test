@@ -14,6 +14,7 @@ nextflow_process {
  test("sarscov2_nanopore_mapdirectly") {
     setup {
         run("UNTAR") {
+            def args="--no-same-owner"
             script "../../../untar/main.nf"
                 process {
                     """
