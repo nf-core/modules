@@ -4,7 +4,9 @@ process FASTCOV {
 
     // This tool is not available on conda
     //conda "${moduleDir}/environment.yml"
-    container "docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19"
+    //container ${"docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19"}
+    container "${ workflow.containerEngine == 'singularity' ?
+        'docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19': 'raverjay/fastcov:0.1.3--ba8c8cf6ae19' }"
 
     input:
     tuple val(meta), path(bam), path(index)
