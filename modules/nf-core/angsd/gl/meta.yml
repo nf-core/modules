@@ -13,7 +13,7 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: "['GPL v3, MIT']"
+      licence: ["GPL v3", "MIT"]
 input:
   - meta:
       type: map
@@ -38,7 +38,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - errors:
+  - error_file:
       type: file
       description: A file containing information about type specific errors.
       pattern: "*.error.chunkunordered"
@@ -52,7 +52,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - glf:
+  - genotype_likelihood:
       type: file
       description: File containing genotype likelihoods per sample
       pattern: "*.{glf,beagle}.gz"
