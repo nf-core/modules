@@ -23,10 +23,11 @@ process WITTYER {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+    // conda "${moduleDir}/environment.yml"
+    container "nf-core/wittier:0.3.3"
+    // "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //    'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+    //    'biocontainers/YOUR-TOOL-HERE' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -39,9 +40,13 @@ process WITTYER {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    // directory where all files will be located
+    // overall per-sample-pair stats summary
+    // Wittyer.stats.json
+    // Additional vcf file for each sample pair
+    tuple val(meta), path("${prefix}/"), emit: wittyer_results
     // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,9 +76,15 @@ process WITTYER {
         -T $prefix \\
         $bam
 
+    wittyer \\
+        -i input.vcf \\
+        -t truth.vcf \\
+        -o outputdir \\
+        --bpDistance=
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wittyer: \$(samtools --version |& sed '1!d ; s/samtools //')
+        wittyer: \$(wittyer --version  |& sed '1!d ; s/witty.er //')
     END_VERSIONS
     """
 
@@ -89,7 +100,7 @@ process WITTYER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wittyer: \$(samtools --version |& sed '1!d ; s/samtools //')
+        wittyer: \$(wittyer --version  |& sed '1!d ; s/witty.er //')
     END_VERSIONS
     """
 }
