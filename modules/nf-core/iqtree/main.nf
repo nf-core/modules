@@ -12,8 +12,8 @@ process IQTREE {
     val constant_sites
 
     output:
-    path "*.treefile"   , emit: phylogeny
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.treefile") , emit: phylogeny
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +31,8 @@ process IQTREE {
         -nt AUTO \\
         -ntmax $task.cpus \\
         -mem $memory \\
+
+    mv ${alignment}.treefile ${prefix}.treefile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
