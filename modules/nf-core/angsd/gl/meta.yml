@@ -1,57 +1,65 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "angsd_gl"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Calculated genotype likelihoods from BAM files.
 keywords:
-  - sort
-  - example
+  - angsd
+  - genotype likelihood
   - genomics
 tools:
   - "angsd":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "ANGSD: Analysis of next generation Sequencing Data"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['GPL v3, MIT']
-
-## TODO nf-core: Add a description of all of the variables used as input
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence: "['GPL v3, MIT']"
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
+        e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: A list of BAM or CRAM files
+      pattern: "*.{bam,cram}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: A reference genome in FASTA format
+      pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - errors:
+      type: file
+      description: A file containing information about type specific errors.
+      pattern: "*.error.chunkunordered"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - glf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File containing genotype likelihoods per sample
+      pattern: "*.{glf,beagle}.gz"
 
 authors:
   - "@apeltzer"
+  - "@TCLamnidis"
 maintainers:
   - "@apeltzer"
+  - "@TCLamnidis"
