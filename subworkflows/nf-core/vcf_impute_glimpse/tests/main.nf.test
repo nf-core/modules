@@ -86,17 +86,7 @@ nextflow_workflow {
         }
 
         then {
-            println(workflow.out.merged_variants)
-            String targetFileName = "input_chr21_ref_panel2_ligate.vcf.gz"
-            File selectedFile = workflow.out.merged_variants.stream()
-                .filter(vector -> vector.size() > 1)
-                .map(vector -> new File(vector.get(1).toString()))
-                .filter(file -> file.getName().equals(targetFileName))
-                .findFirst()
-                .orElse(null)
-            String selectedFilename = selectedFile != null ? selectedFile.getPath() : null
-            def lines = path(selectedFilename).linesGzip.last()
-            print(lines)
+            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(workflow.out.versions).match("versions") },
