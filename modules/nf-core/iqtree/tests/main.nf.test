@@ -1,0 +1,53 @@
+nextflow_process {
+
+    name "Test Process IQTREE"
+    script "../main.nf"
+    process "IQTREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "iqtree"
+
+    test("setoxin - basic") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref")]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.phylogeny }
+            )
+        }
+    }
+
+    test("setoxin - bootstrap") {
+
+        config "./bootstrap.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.phylogeny },
+                { assert process.out.bootstrap }
+            )
+        }
+    }
+}
