@@ -26,13 +26,12 @@ process ANGSD_GL {
     def ref = fasta ? "-ref ${fasta}" : ''                     // Use reference fasta if provided
     def errors = error_file ? "-errors ${error_file}" : ''     // Only applies to SYK model
     def output_mode = args.contains("-doGlf") ? "" : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
-
     // NOTE: GL is specified within args, so is not provided as a separate argument
-    """
-    ls -1 *.bam > bamlist.txt
 
-    ## GL_model 1 + 2 work differently than 3 and 4
-    if [[ ${GL_model} != 3 || ${GL_model} != 4 ]]; then
+    if (GL_model != 3 || GL_model != 4) {
+        """
+        ls -1 *.bam > bamlist.txt
+
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
@@ -40,13 +39,20 @@ process ANGSD_GL {
             $ref \\
             $output_mode \\
             -out ${prefix}
-    fi
 
-    ## SOAPsnp model
-    if [[ ${GL_model} == 3 ]]; then
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+        END_VERSIONS
+        """
+    } else if (GL_model == 3) {
+        // No args for this part.
+        // GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
+        """
+        ls -1 *.bam > bamlist.txt
+
+        ## SOAPsnp model
         ## First get the calibration matrix. minQ MUST be 0 for this step. Will create the directory angsd_tmpdir/ with the required files for the next step.
-        ##  No args for this part.
-        ## GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
@@ -63,10 +69,17 @@ process ANGSD_GL {
             $ref \\
             $output_mode \\
             -out ${prefix}
-    fi
 
-    ## SYK model
-        if [[ ${GL_model} == 4 ]]; then
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+        END_VERSIONS
+        """
+    } else if (GL_model == 4) {
+        """
+        ls -1 *.bam > bamlist.txt
+
+        ## SYK model
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
@@ -76,13 +89,13 @@ process ANGSD_GL {
             $errors \\
             -doCounts 1 \\
             -out ${prefix}
-    fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+        END_VERSIONS
+        """
+    }
 
     stub:
     def args = task.ext.args ?: ''
