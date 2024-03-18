@@ -1,8 +1,0 @@
-- name: imputeme vcftoprs test_imputeme_vcftoprs
-  command: nextflow run ./tests/modules/imputeme/vcftoprs -entry test_imputeme_vcftoprs -c ./tests/config/nextflow.config -c ./tests/modules/imputeme/vcftoprs/nextflow.config
-  tags:
-    - imputeme
-    - imputeme/vcftoprs
-  files:
-    - path: output/imputeme/output.json
-      contains: ['type_2_diabetes_32541925":{"GRS":[24.01]']

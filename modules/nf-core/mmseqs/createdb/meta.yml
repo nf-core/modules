@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "mmseqs_createdb"
+description: Create an MMseqs database from an existing FASTA/Q file
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - sequence:
+      type: file
+      description: Input sequences in FASTA/Q (zipped or unzipped) format to parse into an mmseqs database
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,fastq,fastq.gz,fq,fq.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - db:
+      type: directory
+      description: The created MMseqs2 database
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"
+  - "@vagkaratzas"

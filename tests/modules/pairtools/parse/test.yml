@@ -1,9 +1,0 @@
-- name: pairtools parse test_pairtools_parse
-  command: nextflow run ./tests/modules/pairtools/parse -entry test_pairtools_parse -c ./tests/config/nextflow.config -c ./tests/modules/pairtools/parse/nextflow.config
-  tags:
-    - pairtools
-    - pairtools/parse
-  files:
-    - path: output/pairtools/test.raw.pairsam.gz
-    - path: output/pairtools/test.raw.pairsam.stat
-      md5sum: 11e90f346f855ffd750c7c348ac1d456

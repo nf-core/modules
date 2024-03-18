@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_newick_epang_gappa"
+description: Run phylogenetic placement with a number of query sequences plus a reference alignment and phylogeny. Used in nf-core/phyloplace.
+keywords:
+  - phylogenetic placement
+  - phylogenetics
+  - alignment
+  - fasta
+  - newick
+components:
+  - hmmer/hmmbuild
+  - hmmer/hmmalign
+  - hmmer/eslalimask
+  - hmmer/eslreformat
+  - mafft
+  - epang/place
+  - epang/split
+  - gappa/examinegraft
+  - gappa/examineassign
+  - gappa/examineheattree
+input:
+  - ch_pp_data:
+      type: map
+      description: |
+        Structure: [
+          meta: val(meta),
+          data: [
+            alignmethod:  'hmmer',
+            queryseqfile: path("*.faa"),
+            refseqfile:   path("*.alnfaa"),
+            refphylogeny: path("*.newick"),
+            model:        "LG",
+            taxonomy:     path("*.tsv")
+          ]
+        ]
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - queryseqfile:
+      type: file
+      description: Fasta file with query sequences
+      pattern: "*.{faa,fna,fa,fasta,fa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz}"
+  - refseqfile:
+      type: file
+      description: File with reference sequences; aligned unless an hmmfile is provided
+      pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+  - refphylogeny:
+      type: file
+      description: Newick file with reference phylogenetic tree
+      pattern: "*.{newick,tree}"
+  - hmmfile:
+      type: file
+      description: HMM file to use for alignment; implies that refseqfile is not aligned. Optional.
+      pattern: "*.{hmm,HMM,hmm.gz,HMM.gz}"
+  - model:
+      type: string
+      description: Phylogenetic model to use in placement, e.g. 'LG+F' or 'GTR+I+F'
+  - alignmethod:
+      type: string
+      description: Method used for alignment, 'hmmer' or 'mafft'
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - epang:
+      type: directory
+      description: All output from EPA-NG
+      pattern: "*"
+  - jplace:
+      type: file
+      description: jplace file from EPA-NG
+      pattern: "*.jplace"
+  - grafted_phylogeny:
+      type: file
+      description: Newick file with query sequences placed in reference tree
+      pattern: "*.newick"
+  - taxonomy_profile:
+      type: file
+      description: Tab separated file with taxonomy information from classification
+      pattern: "*.tsv"
+  - taxonomy_per_query:
+      type: file
+      description: Tab separated file with taxonomy information per query from classification
+      pattern: "*.tsv"
+  - heattree:
+      type: file
+      description: Heattree in SVG format
+      pattern: "*.svg"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

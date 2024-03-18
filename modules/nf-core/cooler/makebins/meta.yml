@@ -1,0 +1,36 @@
+name: "cooler_makebins"
+description: Generate fixed-width genomic bins
+keywords:
+  - makebins
+  - cooler
+  - genomic bins
+tools:
+  - "cooler":
+      description: Sparse binary format for genomic interaction matrices
+      homepage: https://open2c.github.io/cooler/
+      documentation: https://cooler.readthedocs.io/en/latest/index.html
+      tool_dev_url: https://github.com/open2c/cooler
+      doi: "10.1093/bioinformatics/btz540"
+      licence: ["BSD-3-Clause"]
+input:
+  - chromsize:
+      type: file
+      description: Path to chromosome size file
+  - cool_bin:
+      type: integer
+      description: Resolution (bin size) in base pairs
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: Genome segmentation at a fixed resolution as a BED file.
+      pattern: "*.bed"
+authors:
+  - "@nservant"
+  - "@muffato"
+maintainers:
+  - "@nservant"
+  - "@muffato"

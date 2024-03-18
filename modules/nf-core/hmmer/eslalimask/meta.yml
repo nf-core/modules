@@ -1,0 +1,87 @@
+name: "hmmer_eslalimask"
+description: Mask multiple sequence alignments
+keywords:
+  - hmmer
+  - alignment
+  - mask
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD-3-Clause"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - unmaskedaln:
+      type: file
+      description: multiple sequence alignment, Stockholm or other formats
+      pattern: "*"
+  - fmask_rf:
+      type: val
+      description: Flag to output optional file with final mask of non-gap RF len
+  - fmask_all:
+      type: val
+      description: Flag to output optional file with final mask of full aln len
+  - gmask_rf:
+      type: val
+      description: Flag to output optional file gap-based 0/1 mask of non-gap RF len
+  - gmask_all:
+      type: val
+      description: Flag to output optional file gap-based 0/1 mask of full aln len
+  - pmask_rf:
+      type: val
+      description: Flag to output optional file with PP-based 0/1 mask of non-gap RF len
+  - pmask_all:
+      type: val
+      description: Flag to output optional file with PP-based 0/1 mask of full aln len
+  - maskfile:
+      type: file
+      description: mask file, see program documentation
+      pattern: "*"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - maskedaln:
+      type: file
+      description: Masked alignment in gzipped Stockholm format
+      pattern: "*.sthlm.gz"
+  - fmask_rf:
+      type: file
+      description: File with final mask of non-gap RF len
+      pattern: "*.fmask-rf.gz"
+  - fmask_all:
+      type: file
+      description: File with final mask of full aln len
+      pattern: "*.fmask-all.gz"
+  - gmask_rf:
+      type: file
+      description: File with gap-based 0/1 mask of non-gap RF len
+      pattern: "*.gmask-rf.gz"
+  - gmask_all:
+      type: file
+      description: File with gap-based 0/1 mask of full aln len
+      pattern: "*.gmask-all.gz"
+  - pmask_rf:
+      type: file
+      description: File with PP-based 0/1 mask of non-gap RF len
+      pattern: "*.pmask-rf.gz"
+  - pmask_all:
+      type: file
+      description: File with PP-based 0/1 mask of full aln len
+      pattern: "*.pmask-all.gz"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

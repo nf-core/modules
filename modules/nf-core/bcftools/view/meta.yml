@@ -1,0 +1,64 @@
+name: bcftools_view
+description: View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+keywords:
+  - variant calling
+  - view
+  - bcftools
+  - VCF
+tools:
+  - view:
+      description: |
+        View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: |
+        The vcf file to be inspected.
+        e.g. 'file.vcf'
+  - index:
+      type: file
+      description: |
+        The tab index for the VCF file to be inspected.
+        e.g. 'file.tbi'
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+        e.g. 'file.vcf'
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+        e.g. 'file.vcf'
+  - samples:
+      type: file
+      description: |
+        Optional, file of sample names to be included or excluded.
+        e.g. 'file.tsv'
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF normalized output file
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@abhi18av"
+maintainers:
+  - "@abhi18av"

@@ -1,0 +1,44 @@
+name: "learnmsa_align"
+description: Align sequences using learnMSA
+keywords:
+  - alignment
+  - MSA
+  - genomics
+tools:
+  - "learnmsa":
+      description: "learnMSA: Learning and Aligning large Protein Families"
+      homepage: "https://github.com/Gaius-Augustus/learnMSA"
+      documentation: "https://github.com/Gaius-Augustus/learnMSA"
+      tool_dev_url: "https://github.com/Gaius-Augustus/learnMSA"
+      doi: "10.1093/gigascience/giac104"
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fasta}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+  - alignment:
+      type: file
+      description: Alignment file.
+      pattern: "*.{aln}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@luisas"
+  - "@JoseEspinosa"
+maintainers:
+  - "@luisas"
+  - "@JoseEspinosa"

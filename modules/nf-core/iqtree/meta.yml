@@ -1,0 +1,51 @@
+name: iqtree
+description: Produces a Newick format phylogeny from a multiple sequence alignment using the maxium likelihood algorithm. Capable of bacterial genome size alignments.
+keywords:
+  - phylogeny
+  - newick
+  - maximum likelihood
+tools:
+  - iqtree:
+      description: Efficient phylogenomic software by maximum likelihood.
+      homepage: http://www.iqtree.org
+      documentation: http://www.iqtree.org/doc
+      tool_dev_url: https://github.com/iqtree/iqtree2
+      doi: 10.1093/molbev/msaa015
+      licence: ["GPL v2-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy map containing sample information
+        e.g. [ id: 'test' ]
+  - alignment:
+      type: file
+      description: A FASTA format multiple sequence alignment file
+      pattern: "*.{fasta,fas,fa,mfa}"
+  - constant_sites:
+      type: string
+      description: Number of constant sites to add,
+        see iqtree documentation for details
+        (http://www.iqtree.org/doc/Command-Reference)
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - phylogeny:
+      type: file
+      description: A phylogeny in Newick format
+      pattern: "*.{treefile}"
+  - bootstrap:
+      type: file
+      description: |
+        A file containing all bootstrap trees,
+        only generated if bootstrap is on
+        and the -wbt flag is passed in ext.args
+      pattern: "*.{ufboot}"
+authors:
+  - "@avantonder"
+  - "@aunderwo"
+maintainers:
+  - "@avantonder"
+  - "@aunderwo"

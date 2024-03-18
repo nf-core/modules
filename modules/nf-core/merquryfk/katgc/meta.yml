@@ -1,0 +1,65 @@
+name: "merquryfk_katgc"
+description: A reimplemenation of KatGC to work with FastK databases
+keywords:
+  - k-mer frequency
+  - GC content
+  - 3D heat map
+  - contour map
+tools:
+  - "merquryfk":
+      description: "FastK based version of Merqury"
+      homepage: "https://github.com/thegenemyers/MERQURY.FK"
+      tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
+      licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastk_hist:
+      type: file
+      description: A histogram files from the program FastK
+      pattern: "*.hist"
+  - fastk_ktab:
+      type: file
+      description: ktab files from the program FastK
+      pattern: "*.ktab*"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - filled_gc_plot_png:
+      type: file
+      description: A filled GC content plot in PNG format
+      pattern: "*.fi.png"
+  - filled_gc_plot_pdf:
+      type: file
+      description: A filled GC content plot in PDF format
+      pattern: "*.fi.pdf"
+  - line_gc_plot_png:
+      type: file
+      description: A line GC content plot in PNG format
+      pattern: "*.ln.png"
+  - line_gc_plot_pdf:
+      type: file
+      description: A line GC content plot in PDF format
+      pattern: "*.ln.pdf"
+  - stacked_gc_plot_png:
+      type: file
+      description: A stacked GC content plot in PNG format
+      pattern: "*.st.png"
+  - stacked_gc_plot_pdf:
+      type: file
+      description: A stacked GC content plot in PDF format
+      pattern: "*.st.pdf"
+authors:
+  - "@mahesh-panchal"
+maintainers:
+  - "@mahesh-panchal"

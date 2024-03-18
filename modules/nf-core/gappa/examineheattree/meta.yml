@@ -1,0 +1,63 @@
+name: "gappa_examineheattree"
+description: colours a phylogeny with placement densities
+keywords:
+  - phylogeny
+  - phylogenetic placement
+  - heattree
+  - visualisation
+tools:
+  - "gappa":
+      description: "Genesis Applications for Phylogenetic Placement Analysis"
+      homepage: "https://github.com/lczech/gappa"
+      documentation: "https://github.com/lczech/gappa/wiki"
+      tool_dev_url: "https://github.com/lczech/gappa"
+      doi: "10.1093/bioinformatics/btaa070"
+      licence: "['GPL v3']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - jplace:
+      type: file
+      description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
+      pattern: "*.{jplace,jplace.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - newick:
+      type: file
+      description: phylogenetic tree file in newick format
+      pattern: "*.newick"
+  - nexus:
+      type: file
+      description: coloured phylogenetic tree file in nexus format
+      pattern: "*.nexus"
+  - phyloxml:
+      type: file
+      description: coloured phylogenetic tree file in phyloxml format
+      pattern: "*.phyloxml"
+  - svg:
+      type: file
+      description: coloured phylogenetic tree file in svg format
+      pattern: "*.svg"
+  - colours:
+      type: file
+      description: colours used in plot
+      pattern: "*.colours.txt"
+  - log:
+      type: file
+      description: log file from the run
+      pattern: "*.log"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

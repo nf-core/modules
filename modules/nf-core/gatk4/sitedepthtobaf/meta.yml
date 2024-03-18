@@ -1,0 +1,70 @@
+name: "gatk4_sitedepthtobaf"
+description: EXPERIMENTAL TOOL! Convert SiteDepth to BafEvidence
+keywords:
+  - baf
+  - gatk4
+  - site depth
+tools:
+  - gatk4:
+      description: Genome Analysis Toolkit (GATK4)
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ["BSD-3-clause"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - site_depths:
+      type: file
+      description: Files containing site depths
+      pattern: "*.sd.txt.gz"
+  - site_depths_indices:
+      type: file
+      description: The indices of the site depth files
+      pattern: "*.sd.txt.gz.tbi"
+  - vcf:
+      type: file
+      description: Input VCF of SNPs marking loci for site depths
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of the input VCF of SNPs marking loci for site depths
+      pattern: "*.vcf.gz.tbi"
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: The sequence dictionary of the reference FASTA file
+      pattern: "*.dict"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - baf:
+      type: file
+      description: The created BAF file
+      pattern: "*.baf.txt.gz"
+  - baf_tbi:
+      type: file
+      description: The index of the created BAF file
+      pattern: "*.baf.txt.gz.tbi"
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

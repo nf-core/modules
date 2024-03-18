@@ -1,8 +1,0 @@
-- name: hisat2 extractsplicesites test_hisat2_extractsplicesites
-  command: nextflow run ./tests/modules/hisat2/extractsplicesites -entry test_hisat2_extractsplicesites -c ./tests/config/nextflow.config -c ./tests/modules/hisat2/extractsplicesites/nextflow.config
-  tags:
-    - hisat2
-    - hisat2/extractsplicesites
-  files:
-    - path: output/hisat2/genome.splice_sites.txt
-      md5sum: d41d8cd98f00b204e9800998ecf8427e

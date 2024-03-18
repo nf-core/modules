@@ -1,0 +1,43 @@
+name: "hmmer_hmmbuild"
+description: create an hmm profile from a multiple sequence alignment
+keywords:
+  - search
+  - hidden Markov model
+  - HMM
+  - hmmer
+  - hmmsearch
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: "['BSD']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - alignment:
+      type: file
+      description: multiple sequence alignment in fasta, clustal, stockholm or phylip format
+      pattern: "*"
+  - mxfile:
+      type: file
+      description: read substitution score matrix, for use when building profiles from single sequences (--singlemx option)
+      pattern: "*"
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hmm:
+      type: file
+      description: Gzipped HMM file
+      pattern: "*.{hmm.gz}"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

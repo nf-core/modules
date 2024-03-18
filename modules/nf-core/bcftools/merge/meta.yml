@@ -1,0 +1,88 @@
+name: bcftools_merge
+description: Merge VCF files
+keywords:
+  - variant calling
+  - merge
+  - VCF
+tools:
+  - merge:
+      description: |
+        Merge VCF files.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcfs:
+      type: file
+      description: |
+        List containing 2 or more vcf files
+        e.g. [ 'file1.vcf', 'file2.vcf' ]
+  - tbis:
+      type: file
+      description: |
+        List containing the tbi index files corresponding to the vcfs input files
+        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: "(Optional) The fasta reference file (only necessary for the `--gvcf FILE` parameter)"
+      pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
+      type: file
+      description: "(Optional) The fasta reference file index (only necessary for the `--gvcf FILE` parameter)"
+      pattern: "*.fai"
+  - bed:
+      type: file
+      description: "(Optional) The bed regions to merge on"
+      pattern: "*.bed"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf_gz:
+      type: file
+      description: VCF merged output file (bgzipped) => when `--output-type z` is used
+      pattern: "*.vcf.gz"
+  - vcf:
+      type: file
+      description: VCF merged output file => when `--output-type v` is used
+      pattern: "*.vcf"
+  - bcf_gz:
+      type: file
+      description: BCF merged output file (bgzipped) => when `--output-type b` is used
+      pattern: "*.bcf.gz"
+  - bcf:
+      type: file
+      description: BCF merged output file => when `--output-type u` is used
+      pattern: "*.bcf"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+  - "@nvnieuwk"
+  - "@ramprasadn"
+maintainers:
+  - "@joseespinosa"
+  - "@drpatelh"
+  - "@nvnieuwk"
+  - "@ramprasadn"

@@ -2,10 +2,10 @@
  * Identify transcripts with homer
  */
 
-include { HOMER_MAKETAGDIRECTORY      } from '../../../../modules/homer/maketagdirectory/main'
-include { HOMER_MAKEUCSCFILE          } from '../../../../modules/homer/makeucscfile/main'
-include { HOMER_FINDPEAKS             } from '../../../../modules/homer/findpeaks/main'
-include { HOMER_POS2BED               } from '../../../../modules/homer/pos2bed/main'
+include { HOMER_MAKETAGDIRECTORY } from '../../../../modules/nf-core/homer/maketagdirectory/main'
+include { HOMER_MAKEUCSCFILE     } from '../../../../modules/nf-core/homer/makeucscfile/main'
+include { HOMER_FINDPEAKS        } from '../../../../modules/nf-core/homer/findpeaks/main'
+include { HOMER_POS2BED          } from '../../../../modules/nf-core/homer/pos2bed/main'
 
 workflow HOMER_GROSEQ {
     take:

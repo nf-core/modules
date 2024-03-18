@@ -1,0 +1,37 @@
+name: "vsearch_sintax"
+description: Taxonomic classification using the sintax algorithm.
+keywords:
+  - vsearch
+  - sintax
+tools:
+  - "vsearch":
+      description: "VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)"
+      homepage: "https://github.com/torognes/vsearch"
+      tool_dev_url: "https://github.com/torognes/vsearch"
+      doi: "10.7717/peerj.2584"
+      licence: "['GPL v3-or-later OR BSD-2-clause']"
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing query file information e.g. [ id:'test' ]
+  - queryfasta:
+      type: file
+      description: Query sequences in FASTA or FASTQ format
+      pattern: "*.{fasta,fa,fna,faa,fastq,fq}"
+  - db:
+      type: file
+      description: Reference database file in FASTA or UDB format
+      pattern: "*"
+output:
+  - tsv:
+      type: file
+      description: Results written to tab-delimited file
+      pattern: "*.{tsv}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@jtangrot"
+maintainers:
+  - "@jtangrot"
