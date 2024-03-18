@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bwamem2"
     tag "bwamem2/mem"
+    tag "bwamem2/index"
 
     test("sarscov2 - fastq, index, false") {
 
@@ -16,7 +17,10 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
                     """
                 }
             }
@@ -25,10 +29,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                ]
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
                 input[1] = BWAMEM2_INDEX.out.index
                 input[2] = false
                 """
@@ -54,7 +58,10 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
                     """
                 }
             }
@@ -63,10 +70,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                ]
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
                 input[1] = BWAMEM2_INDEX.out.index
                 input[2] = true
                 """
@@ -92,7 +99,10 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
                     """
                 }
             }
@@ -101,13 +111,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ]
+                ])
                 input[1] = BWAMEM2_INDEX.out.index
                 input[2] = false
                 """
@@ -133,7 +143,10 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
                     """
                 }
             }
@@ -142,13 +155,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ]
+                ])
                 input[1] = BWAMEM2_INDEX.out.index
                 input[2] = true
                 """
@@ -176,7 +189,10 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
                     """
                 }
             }
@@ -185,13 +201,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ]
+                ])
                 input[1] = BWAMEM2_INDEX.out.index
                 input[2] = true
                 """
