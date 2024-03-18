@@ -25,7 +25,8 @@ input:
       pattern: "*.{fasta.gz,fa.gz,fna.gz}"
   - output_format:
       type: string
-      description: Output format ("gbk"/"gff")
+      description: Output format
+      pattern: "{gbk,gff}"
 output:
   - meta:
       type: map
@@ -38,8 +39,8 @@ output:
       pattern: "versions.yml"
   - annotations:
       type: file
-      description: gene annotations in output format given as input
-      pattern: "*.{output_format}.gz"
+      description: Gene annotations. The file format is specified via input channel "output_format".
+      pattern: "*.{gbk,gff}.gz"
   - faa:
       type: file
       description: protein translations file
