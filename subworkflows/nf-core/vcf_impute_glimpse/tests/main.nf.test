@@ -3,13 +3,15 @@ nextflow_workflow {
     name "Test Workflow VCF_IMPUTE_GLIMPSE"
     script "../main.nf"
     workflow "VCF_IMPUTE_GLIMPSE"
+
+    tag "subworkflows"
+    tag "bcftools/index"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_impute_glimpse"
     tag "glimpse"
     tag "glimpse/chunk"
     tag "glimpse/phase"
     tag "glimpse/ligate"
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "vcf_impute_glimpse"
 
     test("Should run without failures") {
         config "./nextflow.config"
