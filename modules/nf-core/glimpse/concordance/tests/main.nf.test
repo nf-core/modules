@@ -3,10 +3,13 @@ nextflow_process {
     name "Test Process GLIMPSE_CONCORDANCE"
     script "../main.nf"
     process "GLIMPSE_CONCORDANCE"
-    tag "glimpse"
-    tag "glimpse/concordance"
+
     tag "modules"
     tag "modules_nfcore"
+    tag "glimpse"
+    tag "glimpse/concordance"
+    tag "glimpse/phase"
+    tag "bcftools/index"
 
     test("test_glimpse_concordance") {
         setup {
