@@ -42,12 +42,12 @@ nextflow_workflow {
 
                 input_vcf = Channel.fromList([
                     [[ id:'NA12878'], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.vcf.gz.csi", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
                     ],
                     [[ id:'NA19401'], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.vcf.gz.csi", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
                     ]
                 ])
                 input_vcf_multiple = input_vcf
