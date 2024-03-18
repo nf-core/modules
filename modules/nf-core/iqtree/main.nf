@@ -4,8 +4,8 @@ process IQTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
-        'biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"
+        'https://depot.galaxyproject.org/singularity/iqtree:2.3.0--h21ec9f0_0' :
+        'biocontainers/iqtree:2.3.0--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(alignment)
