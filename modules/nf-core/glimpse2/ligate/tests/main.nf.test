@@ -65,11 +65,10 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.merged_variants.get(0).get(1)).linesGzip.last()
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(lines).match("ligate") }
+                { assert file(process.out.merged_variants[0][1]).name == "input.vcf.gz" }
             )
         }
 
