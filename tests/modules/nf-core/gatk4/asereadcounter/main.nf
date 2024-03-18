@@ -14,9 +14,15 @@ workflow test_gatk4_asereadcounter {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [ [ id:'reference' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+    fai = [ [ id:'reference' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+    dict = [ [ id:'reference' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+            ]
     intervals = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
     GATK4_ASEREADCOUNTER ( input, vcf, fasta, fai, dict, intervals )
