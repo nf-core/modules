@@ -8,10 +8,6 @@ nextflow_workflow {
     tag "bcftools/index"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_impute_glimpse"
-    tag "glimpse"
-    tag "glimpse/chunk"
-    tag "glimpse/phase"
-    tag "glimpse/ligate"
 
     test("Should run without failures") {
         config "./nextflow.config"
@@ -26,14 +22,14 @@ nextflow_workflow {
 
                 ch_panel = Channel.fromList([
                     [[ ref:'ref_panel'],
-                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)],
                     [[ ref:'ref_panel2'],
-                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file(params.testdata_base + "../imputation/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)]
                 ])
                 region = Channel.fromList([
@@ -43,12 +39,12 @@ nextflow_workflow {
 
                 input_vcf = Channel.fromList([
                     [[ id:'NA12878'], // meta map
-                    file(params.testdata_base + "../imputation/data/individuals/NA12878/NA12878.s.1x.vcf.gz", checkIfExists: true),
-                    file(params.testdata_base + "../imputation/data/individuals/NA12878/NA12878.s.1x.vcf.gz.csi", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.vcf.gz", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.vcf.gz.csi", checkIfExists: true),
                     ],
                     [[ id:'NA19401'], // meta map
-                    file(params.testdata_base + "../imputation/data/individuals/NA19401/NA19401.s.1x.vcf.gz", checkIfExists: true),
-                    file(params.testdata_base + "../imputation/data/individuals/NA19401/NA19401.s.1x.vcf.gz.csi", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.vcf.gz", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.vcf.gz.csi", checkIfExists: true),
                     ]
                 ])
                 input_vcf_multiple = input_vcf
@@ -60,10 +56,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file(params.testdata_base + "../imputation/data/reference_genome/GRCh38.s.map", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/GRCh38.s.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file(params.testdata_base + "../imputation/data/genetic_maps.b38/GRCh38.s.map", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/genetic_maps.b38/GRCh38.s.map", checkIfExists: true)
                     ]
                 ])
 
