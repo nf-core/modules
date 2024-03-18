@@ -14,9 +14,9 @@ process CELLRANGERARC_COUNT {
     path  reference
 
     output:
-    tuple val(meta), path("${meta.id}/outs/*"), emit: outs
-    path("${meta.id}_lib.csv")                , emit: lib
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("${meta.id}/outs/**"), emit: outs
+    path("${meta.id}_lib.csv")                 , emit: lib
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
