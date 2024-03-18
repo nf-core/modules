@@ -13,10 +13,19 @@ tools:
       doi: 10.1093/molbev/msaa015
       licence: ["GPL v2-or-later"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy map containing sample information
+        e.g. [ id: 'test' ]
   - alignment:
       type: file
       description: A FASTA format multiple sequence alignment file
       pattern: "*.{fasta,fas,fa,mfa}"
+  - constant_sites:
+      type: string
+      description: Number of constant sites to add,
+        see iqtree documentation for details
 output:
   - versions:
       type: file

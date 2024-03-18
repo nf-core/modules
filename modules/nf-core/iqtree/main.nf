@@ -1,5 +1,5 @@
 process IQTREE {
-    tag "$alignment"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -8,20 +8,21 @@ process IQTREE {
         'biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"
 
     input:
-    path alignment
+    tuple val(meta), path(alignment)
     val constant_sites
 
     output:
-    path "*.treefile",    emit: phylogeny
+    path "*.treefile"   , emit: phylogeny
     path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args        = task.ext.args ?: ''
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
+    def prefix      = task.ext.prefix ?: meta.id
     """
     iqtree \\
         $fconst_args \\
