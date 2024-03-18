@@ -9,7 +9,7 @@ nextflow_process {
     tag "bowtie2/build"
     tag "bowtie2/align"
 
-    test("sarscov2 - fastq, index, false, false - bam") {
+    test("sarscov2 - fastq, index, fasta, false, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -44,7 +44,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.aligned[0][1]).name,
+                    file(process.out.bam[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -476,7 +476,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, false - cram") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram") {
 
         config "./cram_crai.config"
         setup {
@@ -506,7 +506,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -514,13 +514,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name,
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -576,7 +570,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, true, fasta, false - stub") {
+    test("sarscov2 - fastq, index, fasta, true, false - stub") {
 
         options "-stub"
         setup {
@@ -612,9 +606,10 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.aligned[0][1]).name,
+                    file(process.out.bam[0][1]).name,
+                    file(process.out.csi[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    file(process.out.fastq[0][1]).name,
+                    process.out.fastq,
                     process.out.versions
                 ).match() }
             )

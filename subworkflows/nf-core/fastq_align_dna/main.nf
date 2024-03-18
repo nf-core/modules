@@ -32,7 +32,7 @@ workflow FASTQ_ALIGN_DNA {
         switch (aligner) {
             case 'bowtie2':
                 BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort) // if aligner is bowtie2
-                ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.aligned)
+                ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
                 ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
                 break
             case 'bwamem':
