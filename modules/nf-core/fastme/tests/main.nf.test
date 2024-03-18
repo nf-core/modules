@@ -30,8 +30,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file.collect{ meta, aln -> aln }
-                input[1] = []
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .map { meta, aln -> [meta, aln, []] }
                 """
             }
         }
@@ -75,8 +75,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file.collect{ meta, aln -> aln }
-                input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .join(FAMSA_GUIDETREE.out.tree, by: 0)
+                    .map { meta, aln, tree -> [meta, aln, tree] }
                 """
             }
         }
@@ -110,8 +111,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file.collect{ meta, aln -> aln }
-                input[1] = []
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .map { meta, aln -> [meta, aln, []] }
                 """
             }
         }
