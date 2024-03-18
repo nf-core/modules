@@ -1,17 +1,14 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "gatk4_markduplicates"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+# yaml-language-server: $schema=htps://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "gatk_markduplicates"
+description: 
 keywords:
-  - sort
   - bam
-  - sam
+  - fasta
   - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - intervals
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - cram_qc_mosdepth_samtools
+  - gatk4/markduplicates
 input:
   - ch_bam:
       type: file
@@ -19,26 +16,37 @@ input:
         The input channel containing the BAM/CRAM/SAM files
         Structure: [ val(meta), path(bam) ]
       pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+  - fasta:
+      type: file
+      description: |
+        Channel containing fasta files
+        Structure: [ path(fasta) ]
+      pattern: "*.fasta"
+  - fasta-index:
+      type: file
+      description: |
+        Channel containing fasta index files
+        Structure: [ path(fasta_fai) ]
+      pattern: "*.fasta.fai"
+  - intervals:
+      type: file
+      description: |
+        Channel containing intervals bed file
+        Structure: [ path(intervals_bed) ]
+      pattern: "*.bed"
 output:
-  - bam:
+  - :m
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
+        Channel containing cram files
+        Structure: [ val(meta), path(cram) ]
+      pattern: "*.cram"
+  - reports:
       type: file
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing reports
+        Structure: [ val(meta) ]
+      pattern: "*.*"
   - versions:
       type: file
       description: |

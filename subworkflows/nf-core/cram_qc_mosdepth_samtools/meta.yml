@@ -1,44 +1,32 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "cram_qc_mosdepth_samtools"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: QC on CRAM file
 keywords:
-  - sort
-  - bam
-  - sam
+  - QC
   - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - samtools/stats
+  - mosdepth
 input:
-  - ch_bam:
+  - ch_cram:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        The input channel containing the CRAM files
+        Structure: [ val(meta), path(bam), path(crai) ]
+      pattern: "*.{cram}"
+  - ch_fasta:
+      type: file
+      description: |
+        The input channel containing the fasta files
+        Structure: [ path(fasta) ]
+      pattern: "*.{fasta}"
 output:
-  - bam:
+  - reports:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing QC reparts
+        Structure: [ val(meta) ]
+      pattern: "*.*"
   - versions:
       type: file
       description: |
