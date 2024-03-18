@@ -36,13 +36,12 @@ process WITTYER {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(bed)
 
     output:
-    tuple val(meta),    path("*ConfigFileUsed.json") , emit: config
     tuple val(meta),    path("*.Stats.json")         , emit: report
     tuple val(meta),    path("*eval.vcf.gz")         , emit: bench_vcf
-    tuple val(meta),    path("*eval.vcf.gz.tbi")     , emit: bench_vcf_gzi
+    tuple val(meta),    path("*eval.vcf.gz.tbi")     , emit: bench_vcf_tbi
     path  "versions.yml" 
 
     when:
@@ -51,23 +50,20 @@ process WITTYER {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "WHITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def regions = bed ? "--includeBed=$bed" : ""
-    def config = config ? "--configFile=$config" : ""
     """
     mkdir bench
-    dotnet /opt/Wittyer/Wittyer.dll \\
+    wittyer \\
         --truthVcf=${truth_vcf} \\
-        --inputVcf=${vcf} \\
+        --inputVcf=${query_vcf} \\
         --outputDirectory=bench \\
         ${regions} \\
-        ${config} \\
         ${args}
 
-    mv bench/Wittyer.ConfigFileUsed.json ${prefix}.ConfigFileUsed.json
     mv bench/Wittyer.Stats.json ${prefix}.Stats.json
     mv bench/*.vcf.gz ${prefix}.eval.vcf.gz
     mv bench/*.vcf.gz.tbi ${prefix}.eval.vcf.gz.tbi
