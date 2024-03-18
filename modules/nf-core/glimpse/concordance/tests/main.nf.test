@@ -46,7 +46,7 @@ nextflow_process {
                 script "../../../bcftools/index/main.nf"
                 process {
                 """
-                input[0] = GLIMPSE_PHASE.out.phased_variant
+                input[0] = GLIMPSE_PHASE.out.phased_variants
                 """
                 }
             }
@@ -62,7 +62,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
                 ]).collect()
-                estimate = GLIMPSE_PHASE.out.phased_variant
+                estimate = GLIMPSE_PHASE.out.phased_variants
                     | join (BCFTOOLS_INDEX.out.csi)
                 input[0] = estimate
                     | combine (allele_freq)
