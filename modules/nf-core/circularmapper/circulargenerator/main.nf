@@ -11,8 +11,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_elongated*")  , emit: elongated
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*_elongated.${fasta.extension}")  , emit: elongated
+    tuple val(meta), path("_elongated")                      , emit: contig
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
