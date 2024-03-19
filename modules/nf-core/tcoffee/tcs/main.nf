@@ -25,15 +25,17 @@ process TCOFFEE_TCS {
     def lib_arg = lib ? "-lib ${lib}" : ""
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
+    def unzipped_name = msa.toString() - '.gz'
     """ 
+    filename=${msa}
     if [[ \$(basename $msa) == *.gz ]] ; then
         unpigz -f $msa
+        filename=${unzipped_name}
     fi
     
     # Bad hack to circumvent t_coffee bug
     # Issue described already in: https://github.com/cbcrg/tcoffee/issues/3
     # Add an A in front of filename if the file begins with A
-    filename=${msa}
     first_letter_filename=\${filename:0:1}
     if [ "\$first_letter_filename" == "A" ]; then input="A"\$filename; else input=\$filename;  fi
 
