@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process PYMYGENE"
+    script "../main.nf"
+    process "PYMYGENE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pymygene"
+
+    test("pymygene - txt") {
+        when {
+            process {
+                """
+                // Create a temporary file with the first column of the input file, without header
+                source = params.test_data['mus_musculus']['genome']['rnaseq_matrix']
+                def tmp = new File('tmp.tsv')
+                tmp.withWriter { writer ->
+                    new URL(source).withReader { reader ->
+                        reader.readLine() // Skip the header line
+                        reader.eachLine { line, lineNumber ->
+                            def cols = line.split('\\t')
+                            writer.write(cols[0] + '\\n')
+                        }
+                    }
+                }
+                input[0] = [
+                    [id : 'test'],
+                    file('tmp.tsv')
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.gmt).match("gmt") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}
