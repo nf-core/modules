@@ -58,6 +58,14 @@ output:
       type: file
       description: kb count output folder
       pattern: "*.{count}"
+  - raw_counts:
+      type: file
+      description: kb raw counts output folder
+      pattern: "*.{count}/counts_unfiltered"
+  - filtered_counts:
+      type: file
+      description: kb filtered counts output folder
+      pattern: "*.{count}/counts_filtered"
   - versions:
       type: file
       description: File containing software versions

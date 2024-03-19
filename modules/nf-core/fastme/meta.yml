@@ -18,6 +18,11 @@ tools:
       args_id: "$args"
 
 input:
+  - meta:
+      type: map
+      description: |
+        A Groovy map containing sample information,
+        e.g. [ id: "test" ]
   - infile:
       type: file
       description: MSA or distance matrix in Phylip format
