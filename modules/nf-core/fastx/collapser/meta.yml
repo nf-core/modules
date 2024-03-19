@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastx_collapser"
-description: Collapsing identical sequences in a FASTQ/A file into a single sequence (while maintaining reads counts)
+description: Collapses identical sequences in a FASTQ/A file into a single sequence (while maintaining reads counts)
 keywords:
   - collapse
   - genomics
@@ -25,7 +25,7 @@ input:
 
   - fastx:
       type: file
-      description: FASTA/FASTQ input file
+      description: Decompressed FASTA/FASTQ input file
       pattern: "*.{fastq,fasta}"
 
 output:
