@@ -28,10 +28,6 @@ process PICARD_ADDORREPLACEREADGROUPS {
     def suffix = task.ext.suffix    ?: "${bam.getExtension()}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
-    //def create_index = ""
-    //if (suffix == "BAM") {
-    //    create_index = "--CREATE_INDEX"
-    //}
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
