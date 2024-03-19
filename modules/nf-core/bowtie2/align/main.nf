@@ -15,13 +15,13 @@ process BOWTIE2_ALIGN {
     val   sort_bam
 
     output:
-    tuple val(meta), path("*.sam")      , emit: sam, optional:true
-    tuple val(meta), path("*.bam")      , emit: bam, optional:true
-    tuple val(meta), path("*.cram")     , emit: cram, optional:true
-    tuple val(meta), path("*.csi")      , emit: csi, optional:true
-    tuple val(meta), path("*.crai")     , emit: crai, optional:true
+    tuple val(meta), path("*.sam")      , emit: sam     , optional:true
+    tuple val(meta), path("*.bam")      , emit: bam     , optional:true
+    tuple val(meta), path("*.cram")     , emit: cram    , optional:true
+    tuple val(meta), path("*.csi")      , emit: csi     , optional:true
+    tuple val(meta), path("*.crai")     , emit: crai    , optional:true
     tuple val(meta), path("*.log")      , emit: log
-    tuple val(meta), path("*fastq.gz")  , emit: fastq, optional:true
+    tuple val(meta), path("*fastq.gz")  , emit: fastq   , optional:true
     path  "versions.yml"                , emit: versions
 
     when:
@@ -44,7 +44,8 @@ process BOWTIE2_ALIGN {
 
     def samtools_command = sort_bam ? 'sort' : 'view'
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
+    def extension_matcher =  (args2 =~ extension_pattern)
+    def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
     def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 
