@@ -69,7 +69,7 @@ process CRABZ_COMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabz: \$(samtools --version |& sed '1!d ; s/samtools //')
+        crabz: \$(crabz --version |& sed 's/[^:]*://')
     END_VERSIONS
     """
 
@@ -85,7 +85,9 @@ process CRABZ_COMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabz: \$(samtools --version |& sed '1!d ; s/samtools //')
+        crabz: \$(crabz --version |& sed 's/[^:]*://')
+
+
     END_VERSIONS
     """
 }
