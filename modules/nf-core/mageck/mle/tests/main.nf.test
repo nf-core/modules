@@ -29,9 +29,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match() },
-                { assert file(process.out.gene_summary).exists() },
+                { assert file(process.out.gene_summary).readLines().first().contains("Gene")}
                 { assert file(process.out.sgrna_summary).exists() }
-            )
+                )
+
         }
 
     }
