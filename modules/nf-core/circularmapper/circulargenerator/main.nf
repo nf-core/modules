@@ -42,7 +42,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    ${fasta.baseName}_elongated.${fasta.extension}
+    touch ${fasta.baseName}_elongated.${fasta.extension}
+    touch ${fasta.baseName}.${fasta.extension}_elongated
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
