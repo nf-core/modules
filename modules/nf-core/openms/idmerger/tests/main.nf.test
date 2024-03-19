@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process OPENMS_IDMERGER"
+    script "../main.nf"
+    process "OPENMS_IDMERGER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idmerger"
+
+    test("proteomics - openms - idxml") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test'], // meta map
+                            [ file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                              file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)]
+                        ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.idxml).match("idxml") }
+            )
+        }
+
+    }
+
+    test("proteomics - openms - idxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test'], // meta map
+                            [ file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
+                              file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)]
+                        ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
