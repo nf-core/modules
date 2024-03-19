@@ -9,25 +9,25 @@ process NANOFILT {
 
     input:
     tuple val(meta), path(reads)
-    val   readlength
-    val   readqual
+    path  summary_file
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: filtreads
     path "versions.yml"                , emit: versions
+    path "*.log"                       , optional: true, emit: log_file
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "filtered_${meta.id}"
+    def sum    = summary_file ? "--summary ${summary_file}" : ''
     """
     gunzip \\
         -c $reads \\
         | NanoFilt \\
-        --maxlength $readlength \\
-        -q $readqual \\
+        $sum \\
         $args \\
         | gzip > ${prefix}.fastq.gz
 
@@ -40,8 +40,10 @@ process NANOFILT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "filtered_${meta.id}"
+    def sum    = summary_file ? "--summary ${summary_file}" : ''
     """
     touch ${prefix}.fastq.gz
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
