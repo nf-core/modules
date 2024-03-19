@@ -1,0 +1,82 @@
+// nf-core modules test shovill
+nextflow_process {
+
+    name "Test Process SHOVILL"
+    script "../main.nf"
+    process "SHOVILL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shovill"
+
+    test("shovill with spades") {
+        config "./nextflow.spades.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                [ file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_1.fastq.gz", checkIfExists: true),
+                file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_2.fastq.gz", checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert process.out.raw_contigs.size() == 1 },
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*spades.fasta" }
+            )
+        }
+
+    }
+
+    test("shovill with skesa") {
+        config "./nextflow.skesa.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                [ file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_1.fastq.gz", checkIfExists: true),
+                file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_2.fastq.gz", checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert process.out.raw_contigs.size() == 1 },
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*skesa.fasta" }
+            )
+        }
+
+    }
+    test("shovill with megahit") {
+        config "./nextflow.megahit.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                [ file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_1.fastq.gz", checkIfExists: true),
+                file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_2.fastq.gz", checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert process.out.raw_contigs.size() == 1 },
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*megahit.fasta" }
+            )
+        }
+
+    }
+}
