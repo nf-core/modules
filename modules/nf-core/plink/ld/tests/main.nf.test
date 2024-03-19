@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process PLINK_LD"
     script "../main.nf"
     process "PLINK_LD"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "plink"
@@ -23,6 +24,8 @@ nextflow_process {
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
                 ]
                 input[2] = [ [id:"null"], []]
+                input[3] = [[id:"test"],
+                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
                 """
             }
         }
@@ -51,7 +54,9 @@ nextflow_process {
                 ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
-                """
+                input[3] = [[id:"test"],
+                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
+                    """
             }
         }
         then {
@@ -74,9 +79,10 @@ nextflow_process {
                 input[1] = [ [id:"null"], []]
                 input[2] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
-                ]
-                """
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)]
+                input[3] = [[id:"test"],
+                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
+                    """
             }
         }
         then {
