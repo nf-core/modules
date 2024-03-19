@@ -13,39 +13,35 @@ tools:
       documentation: "https://github.com/wdecoster/nanofilt"
       tool_dev_url: "https://github.com/wdecoster/nanofilt"
       doi: "10.1093/bioinformatics/bty149"
-      licence: ['GLP-3.0']
-
+      licence: ["GLP-3.0"]
 
 input:
-
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - reads:
       type: file
       description: Gunziped fastq files from Oxford Nanopore sequencing.
       pattern: "*.fastq.gz"
-  
+
   - readlength:
       type: string
       description: Maximum readlength that will be on data after filtering step.
-  
+
   - readqual:
       type: string
       description: Minimum read quality to keep in filtering step.
 
-
 output:
-
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions

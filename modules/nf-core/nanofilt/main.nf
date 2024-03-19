@@ -22,7 +22,6 @@ process NANOFILT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "filtered_${meta.id}"
-    
     """
     gunzip \\
         -c $reads \\
@@ -41,7 +40,6 @@ process NANOFILT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "filtered_${meta.id}"
-    
     """
     touch ${prefix}.fastq.gz
 
