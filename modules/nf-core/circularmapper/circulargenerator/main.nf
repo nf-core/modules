@@ -11,9 +11,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_${task.ext.prefix}.${fasta.extension}") , emit: fasta
-    tuple val(meta), path("*_${task.ext.prefix}_elongated")          , emit: elongated
-    path "versions.yml"                                                     , emit: versions
+    tuple val(meta), path("*_elongated.fasta")  , emit: elongated
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +25,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     circulargenerator \\
         -Xmx${task.memory.toGiga()}g \\
         $args \\
-        -i $fasta
-    mv ${fasta}_${prefix}_elongated ${fasta.baseName}_${prefix}.${fasta.extension}_${prefix}_elongated
+        --input $fasta
+    mv ${fasta.baseName}_[0-9]*\.${fasta.extension} ${fasta.baseName}_[0-9]*_elongated.${fasta.extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,8 +39,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${fasta.baseName}_${prefix}.${fasta.extension}
-    touch ${fasta.baseName}_${prefix}.${fasta.extension}_${prefix}_elongated
+    ${fasta.baseName}_elongated.${fasta.extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
