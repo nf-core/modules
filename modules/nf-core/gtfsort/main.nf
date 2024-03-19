@@ -13,13 +13,13 @@ process GTFSORT {
 
     output:
     path "*.sorted.gtf", emit: gtf
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
 
     """
@@ -35,7 +35,7 @@ process GTFSORT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
 
     """
