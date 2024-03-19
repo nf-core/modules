@@ -8,6 +8,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process DECOUPLER {
+    debug true
     tag "$meta"
     label 'process_medium'
 
@@ -23,7 +24,6 @@ process DECOUPLER {
     val(meta)
     path(mat)
     path(net)
-    val(method)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -35,22 +35,44 @@ process DECOUPLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '{}'
+    def methods = task.ext.args ?: 'None'
+    def source = task.ext.source ?: "source"
+    def target = task.ext.target ?: "target"
+    def weight = task.ext.weight ?: "weight"
+    def min_n = task.ext.min_n ?: 5
+    def dense = task.ext.verbose ?: 'False'
+    def consensus = task.ext.verbose ?: 'False'
+    def verbose = task.ext.verbose ?: 'False'
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     #!/usr/bin/env python3
     import decoupler as dc
     import pandas as pd
 
+    print(${args}, type(${args}))
+    print('${source}', type('${source}'))
+    print('${target}', type('${target}'))
+    print('${weight}', type('${weight}'))
+    print(${min_n}, type(${min_n}))
+    print(${verbose}, type(${verbose}))
+    print('${prefix}', type('${prefix}'))
 
-    mat = pd.read_csv("${mat}", sep='\t', index_col=0)
-    net = pd.read_csv("${net}", sep='\t', index_col=0)
+    mat = pd.read_csv("${mat}", sep="\t", index_col=0)
+    net = pd.read_csv("${net}", sep="\t", index_col=0)
 
     results = dc.decouple(
         mat=mat,
         net=net,
-        methods="${method}",
-        min_n=int("${task.ext.min_n}")
+        methods=${methods},
+        source="${source}",
+        target="${target}",
+        weight="${weight}",
+        min_n=int(${min_n}),
+        dense=${dense},
+        consensus=${consensus},
+        verbose=${verbose},
+        args="${args}"
     )
 
     for result in results:
