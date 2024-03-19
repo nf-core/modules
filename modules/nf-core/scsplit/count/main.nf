@@ -44,25 +44,22 @@ process SCSPLIT_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+    def common_data = com != 'None' ? "--com $com" : ''
+    def vcf_data = "-v $vcf"
+    def bam_data = "-i $bam"
+    def barcode_data = "-b $barcode"
+    def tag_data = "--tag $tag"
+
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    git clone https://github.com/jon-xu/scSplit
+    mkdir scsplit_${prefix}
+    mkdir $out
+    touch scsplit_${prefix}/params.csv
+    echo -e "Argument,Value \n vcf,$vcf \n bam,$bam \n barcode,$barcode \n common_data,${common_data_name} \n num,${num} \n sub,${sub_yesno} \n ems,${ems} \n dbl,${dbl} \n vcf_known_data,${vcf_known_data_name}" >> scsplit_${sampleId}/params.csv
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
