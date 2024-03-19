@@ -23,9 +23,7 @@ nextflow_process {
                 input[2] = [
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[3] = [
-                    'ulm'
-                ]
+                input[3] = 'ulm'
                 """
             }
         }

@@ -49,7 +49,8 @@ process DECOUPLER {
     results = dc.decouple(
         mat=mat,
         net=net,
-        methods="${method}"
+        methods="${method}",
+        min_n=int("${task.ext.min_n}")
     )
 
     for result in results:
