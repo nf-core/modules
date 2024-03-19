@@ -39,6 +39,7 @@ nextflow_process {
                 input[2] = [
                     file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
                 ]
+                input[3] = []
                 """
             }
         }
@@ -84,6 +85,7 @@ nextflow_process {
                 input[2] = [
                     file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
                 ]
+                input[3] = []
                 """
             }
         }

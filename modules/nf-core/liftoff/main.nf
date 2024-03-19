@@ -11,6 +11,7 @@ process LIFTOFF {
     tuple val(meta), path(target_fa)
     path ref_fa, name: 'ref_assembly.fa'
     path ref_annotation
+    path ref_db
 
     output:
     tuple val(meta), path("${prefix}.gff3")     , emit: gff3
@@ -22,11 +23,14 @@ process LIFTOFF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args     ?: ''
-    prefix      = task.ext.prefix   ?: "${meta.id}"
+    def args    = task.ext.args     ?:  ''
+    def arg_g   = ref_annotation    ?   "-g $ref_annotation"    : ''
+    def arg_db  = ref_db            ?   "-db $ref_db"           : ''
+    prefix      = task.ext.prefix   ?:  "${meta.id}"
     """
     liftoff \\
-        -g $ref_annotation \\
+        $arg_g \\
+        $arg_db \\
         -p $task.cpus \\
         -o "${prefix}.gff3" \\
         -u "${prefix}.unmapped.txt" \\

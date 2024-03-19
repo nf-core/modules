@@ -38,6 +38,11 @@ input:
       type: file
       description: Reference assembly annotations in gtf or gff3 format
       pattern: "*.{gtf,gff3}"
+  - ref_db:
+      type: file
+      description: |
+        Name of feature database; if not specified, the -g argument must
+        be provided and a database will be built automatically
 output:
   - meta:
       type: map
