@@ -56,7 +56,6 @@ nextflow_process {
         }
 
         then {
-            
             assertAll(
                 { assert process.success },
                 { assert process.out.stats },
