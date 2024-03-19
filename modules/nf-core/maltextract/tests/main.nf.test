@@ -35,10 +35,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions).match('version') },
                 // snapshots dont work, because the results channel contains a log file that changes with each run
-                // so just check that the results-folder exists
-                { assert process.out.results.get(0).get(1) ==~ ".*results" }
+                { assert snapshot(
+                        path("${process.out.results.get(0).get(1)}/error.txt"),
+                        path("${process.out.results.get(0).get(1)}/ScanSummary.txt"),
+                    ).match('results')
+                }
             )
         }
     }
