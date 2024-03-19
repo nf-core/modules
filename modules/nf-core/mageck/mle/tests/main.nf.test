@@ -1,4 +1,3 @@
-// nf-core modules test mageck/mle
 nextflow_process {
 
     name "Test Process MAGECK_MLE"
@@ -11,6 +10,35 @@ nextflow_process {
     tag "mageck/mle"
 
     test("mageck_mle - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                 file(params.test_data['mus_musculus']['csv']['count_table'], checkIfExists: true)
+                ]
+                input[1] =
+                    file(params.test_data['mus_musculus']['txt']['design_matrix'],
+                    checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert file(process.out.gene_summary).exists() },
+                { assert file(process.out.sgrna_summary).exists() }
+            )
+        }
+
+    }
+
+    test("mageck_mle - csv - stub") {
+
+        options "-stub"
 
         when {
             process {
