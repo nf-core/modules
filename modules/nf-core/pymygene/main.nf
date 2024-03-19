@@ -5,7 +5,7 @@ process PYMYGENE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mygene:3.2.2--pyh5e36f6f_0':
-        'quay.io/biocontainers/mygene:3.2.2--pyh5e36f6f_0' }"
+        'biocontainers/mygene:3.2.2--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(gene_list)
