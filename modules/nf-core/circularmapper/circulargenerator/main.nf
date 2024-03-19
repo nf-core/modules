@@ -28,7 +28,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
         $args \\
         --input $fasta
 
-    tmp="\$(basename \$(ls ${fasta.baseName}_[0-9]*\.${fasta.extension}) .${fasta.extension} )"
+    tmp=\$(basename \$(ls ${fasta.baseName}_[0-9]*\.${fasta.extension}) .${fasta.extension} )
     mv \${tmp}.${fasta.extension} \${tmp}_elongated.${fasta.extension}
 
     cat <<-END_VERSIONS > versions.yml
