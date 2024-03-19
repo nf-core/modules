@@ -11,7 +11,7 @@ process GRABIX_CHECK {
 
     output:
     env COMPRESS_BGZIP  , emit: compress_bgzip
-    path "versions.yml"    , emit: versions
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
