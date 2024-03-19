@@ -11,7 +11,7 @@ keywords:
   - bwa
 tools:
   - "circularmapper":
-      description: "A method to improve mappings on circular genomes such as Mitochondria."
+      description: "A method to improve mappings on circular genomes such as Mitochondira."
       homepage: "https://circularmapper.readthedocs.io/en/latest/index.html"
       documentation: "https://circularmapper.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/apeltzer/CircularMapper/"
@@ -34,7 +34,10 @@ input:
         e.g. `[ id:'test' ]`
   - fasta:
       type: file
-      description: Input genome fasta
+      description: Input elongated genome fasta
+  - elongated:
+      type: file
+      description: Elongated contig name
 output:
   - meta:
       type: map

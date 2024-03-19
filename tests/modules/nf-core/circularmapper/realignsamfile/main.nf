@@ -19,15 +19,15 @@ workflow test_circularmapper_realignsamfile {
             ]
         ).collect()
         .set { input }
-
+    
     fasta = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     CIRCULARMAPPER_CIRCULARGENERATOR ( fasta )
-    BWA_INDEX ( CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated )
+    BWA_INDEX ( CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta )
     BWA_ALN ( input, BWA_INDEX.out.index )
     BWA_SAMPE ( input.join(BWA_ALN.out.sai), BWA_INDEX.out.index )
-    CIRCULARMAPPER_REALIGNSAMFILE ( BWA_SAMPE.out.bam, CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated )
+    CIRCULARMAPPER_REALIGNSAMFILE ( BWA_SAMPE.out.bam, CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta.join(CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated) )
 }

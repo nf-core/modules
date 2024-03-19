@@ -9,7 +9,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
 
     input:
     tuple val(meta), path(bam)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(elongated)
 
     output:
     tuple val(meta), path("*_realigned.bam")    , emit: bam
@@ -26,8 +26,8 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     realignsamfile \\
         -Xmx${task.memory.toGiga()}g \\
         ${args} \\
-        --input ${bam} \\
-        --reference ${fasta}
+        -i ${bam} \\
+        -r ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +40,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${bam.baseName}_realigned.bam
+    touch ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
