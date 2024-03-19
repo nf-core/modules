@@ -27,12 +27,13 @@ process GET_DATA {
 }
 
 workflow {
-    GET_DATA()
-
 
     Channel
         .value('ulm')
         .set{method}
+
+    GET_DATA()
+
 
     DECOUPLER (Channel.value('toy'), GET_DATA.out.mat, GET_DATA.out.net, method)
 }

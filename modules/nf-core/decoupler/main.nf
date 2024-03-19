@@ -16,8 +16,7 @@ process DECOUPLER {
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "conda-forge::decoupler-py=1.6.0"
-    container = "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d' : ''}"
+    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d"
 
 
     input:
@@ -36,14 +35,8 @@ process DECOUPLER {
     task.ext.when == null || task.ext.when
 
     script:
-    // def args = task.ext.args ?: ''
-    // def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    // template 'decoupler_proc.py -mat ${mat} -net ${net} -method ${method}'
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     #!/usr/bin/env python3
     import decoupler as dc
