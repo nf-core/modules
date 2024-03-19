@@ -1,0 +1,19 @@
+- name: bbmap merged paired fastq
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbmerge -entry test_bbmap_merge_paired_fastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbmerge/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/bbmerge
+  files:
+    - path: output/bbmap/test_merged.fastq
+      md5sum: 2ed649bfa4e67907a32f6d797333137c
+    - path: output/bbmap/test.bbmerge.log
+
+- name: bbmap merge single fastq
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbmerge -entry test_bbmap_merge_single_fastq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbmerge/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/bbmerge
+  files:
+    - path: output/bbmap/test_merged.fastq
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bbmap/test.bbmerge.log
