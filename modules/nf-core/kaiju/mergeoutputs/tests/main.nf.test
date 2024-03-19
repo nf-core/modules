@@ -14,6 +14,7 @@ nextflow_process {
 
     setup {
         run("UNTAR",alias: "UNTAR_KRAKEN2" ) {
+            config "./nodb.config"
             script "../../../untar/main.nf"
             process {
                 """
@@ -25,6 +26,7 @@ nextflow_process {
             }
         }
         run("KRAKEN2_KRAKEN2") {
+            config "./nodb.config"
             script "../../../kraken2/kraken2/main.nf"
             process {
                 """
@@ -39,6 +41,7 @@ nextflow_process {
             }
         }
         run("UNTAR",alias: "UNTAR_KAIJU" ) {
+            config "./nodb.config"
             script "../../../untar/main.nf"
             process {
                 """
@@ -50,6 +53,7 @@ nextflow_process {
             }
         }
         run("KAIJU_KAIJU") {
+            config "./nodb.config"
             script "../../../kaiju/kaiju/main.nf"
             process {
                 """
