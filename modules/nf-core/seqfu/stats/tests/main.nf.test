@@ -28,11 +28,10 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.stats },
                 { assert process.out.multiqc },
-                { assert process.out.versions },
                 { assert process.out.stats.size() == 1 },
-                { assert snapshot(process.out.stats).match() },
-                { assert path(process.out.stats.get(0).get(1)).md5 == "26141ef87ad8a6f59a6f283cc0a06fda" },
-                { assert path(process.out.multiqc.get(0).get(1)).md5  == "2b43eccda6bb5378adab36f882407b5f" }
+                { assert snapshot(process.out.versions).match("versions-single") },
+                { assert snapshot(process.out.stats).match("stats-single") },
+                { assert path(process.out.stats.get(0).get(1)).md5 == "26141ef87ad8a6f59a6f283cc0a06fda" }
             )
         }
 
@@ -60,14 +59,18 @@ nextflow_process {
         }
 
         then {
+            
             assertAll(
                 { assert process.success },
                 { assert process.out.stats },
                 { assert process.out.multiqc },
-                { assert process.out.versions },
                 { assert process.out.stats.size() == 1 },
-                { assert path(process.out.stats.get(0).get(1)).md5 == "98102573ecf7e3b9e53db1c6e0f02b06" },
-                { assert path(process.out.multiqc.get(0).get(1)).md5 == "e36822757aae8d0451e5a30a4c66fe4d" }
+                { assert snapshot(process.out.versions).match("versions-multi") },
+                { assert snapshot(process.out.stats).match("stats-multi") },
+                { assert snapshot(process.out.stats).md5().match("multi-lines") },
+                { assert path(process.out.stats[0][1]).readLines()[0] ==  'File\t#Seq\tTotal bp\tAvg\tN50\tN75\tN90\tauN\tMin\tMax' },
+                { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('genome.fasta') },
+                { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('proteome.fasta') }              
             )
         }
 
