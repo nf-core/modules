@@ -30,6 +30,8 @@ process WITTYER {
     if ("$query_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$truth_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$query_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    
+    // dotnet /opt/Wittyer/Wittyer.dll might need to be replaced with new docker image
     """
     mkdir bench
 
