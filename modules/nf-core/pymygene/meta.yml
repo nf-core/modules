@@ -1,55 +1,49 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pymygene"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Fetch the GO concepts for a list of genes
 keywords:
-  - sort
-  - example
-  - genomics
+  - mygene
+  - go
+  - annotation
 tools:
   - "pymygene":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "A python wrapper to query/retrieve gene annotation data from Mygene.info."
+      homepage: "https://mygene.info/"
+      documentation: "https://docs.mygene.info/projects/mygene-py/en/latest/"
+      tool_dev_url: "https://github.com/biothings/mygene.py"
+      doi: "10.1093/nar/gks1114"
+      licence: ["Apache-2.0"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. `[ id:'sample1' ]`
+  - gene_list:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File containing a list of gene ids (ideally ensembl gene ids)
+      pattern: "*.txt"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+        e.g. `[ id:'sample1' ]`
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - tsv:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        A tsv file with the following columns: query, mygene_id, go_id, go_term, go_evidence, go_category, symbol, name, taxid
+      pattern: "*.tsv"
+  - gmt:
+      type: file
+      description: |
+        Each row contains the GO id, a description, and a list of gene ids.
+      pattern: "*.gmt"
 
 authors:
   - "@suzannejin"

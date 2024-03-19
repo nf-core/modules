@@ -24,6 +24,7 @@ nextflow_process {
                         }
                     }
                 }
+                // run process with the temporary file
                 input[0] = [
                     [id : 'test'],
                     file('tmp.tsv')

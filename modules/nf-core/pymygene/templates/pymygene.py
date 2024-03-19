@@ -48,6 +48,9 @@ class Arguments:
 
 
 class Version:
+    """
+    This class contains the functions to get the versions of the modules used in the script.
+    """
     
     @staticmethod
     def get_versions(modules: list) -> dict:
