@@ -4,36 +4,32 @@ process KAIJU_MERGEOUTPUTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
-        'biocontainers/kaiju:1.8.2--h5b5514e_1' }"
+        'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0':
+        'biocontainers/kaiju:1.10.0--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(kaiju)
-    tuple val(meta2), path(kraken2)
-    path db
-    merge_option
+    tuple val(meta), path(kaiju), path(kraken)
+    path (db)
 
     output:
-    tuple val(meta), path("*.merged.txt"), emit: merged
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_merged.tsv"), emit: merged
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def dbnodes       = db              ? '-t <(find -L ${db} -name "*nodes.dmp")' : ''
-    def merge_option  = merge_option    ? "-c ${merge_option}"                     : ''
-
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def dbnodes = db ? '-t <(find -L ${db} -name "*nodes.dmp")' : ''
     """
-
     kaiju-mergeOutputs \\
-        $args \\
         -i <(sort -k2,2 ${kaiju}) \\
-        -j <(sort -k2,2 ${kraken2}) \\
+        -j <(sort -k2,2 ${kraken}) \\
+        -o ${prefix}_merged.tsv \\
         $dbnodes \\
-        -o ${prefix}.merged.txt
+        $args
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,12 +38,10 @@ process KAIJU_MERGEOUTPUTS {
     """
 
     stub:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def dbnodes       = db              ? '-t <(find -L ${db} -name "*nodes.dmp")' : ''
-    def merge_option  = merge_option    ? "-c ${merge_option}"                     : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch  ${prefix}.merged.txt
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

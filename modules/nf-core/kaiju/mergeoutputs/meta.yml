@@ -23,36 +23,25 @@ input:
       type: file
       description: |
         Results with taxonomic classification of each read from Kaiju
-      pattern: "*.{tsv}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - kraken:
       type: file
       description: |
         Results with taxonomic classification of each read from Kraken
       pattern: "*.{tsv}"
   - db:
-      type: files
+      type: directory
       description: |
         List containing the database and nodes files for Kaiju
         e.g. [ 'database.fmi', 'nodes.dmp' ]
-  - merge_option:
-      type: string
-      description: |
-        Conflict resolution mode, must be 1, 2,  lca, or lowest
-        If lca or lowest, db must be specified
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - results:
+  - merged:
       type: file
-      description: Results with merged taxonomic classification of each read
+      description: Results with merged taxonomic classification of each read based on the given strategy '1', '2', 'lca' [default] or 'lowest'
       pattern: "*.tsv"
   - versions:
       type: file
