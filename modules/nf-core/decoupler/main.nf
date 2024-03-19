@@ -8,7 +8,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process DECOUPLER {
-    tag "$meta.id"
+    tag "$meta"
     label 'process_medium'
 
     // TODO nf-core: List required Conda package(s).
@@ -16,17 +16,15 @@ process DECOUPLER {
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "conda-forge::decoupler-py=1.6.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d'}"
+    container = "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d' : ''}"
+
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(mat), path(net), val(method)
+    val(meta)
+    path(mat)
+    path(net)
+    val(method)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -38,32 +36,51 @@ process DECOUPLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // def args = task.ext.args ?: ''
+    // def prefix = task.ext.prefix ?: "${meta.id}"
     // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
     // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    template 'decoupler.py \\
-        -mat ${mat} \\
-        -net ${net} \\
-        -method ${method} \\
-        --args ${args}'
-
-    stub: //dryrun, to-do
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
+    // template 'decoupler_proc.py -mat ${mat} -net ${net} -method ${method}'
     """
-    touch ${prefix}.bam
+    #!/usr/bin/env python3
+    import decoupler as dc
+    import pandas as pd
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
-    END_VERSIONS
+
+    mat = pd.read_csv("${mat}", sep='\t', index_col=0)
+    net = pd.read_csv("${net}", sep='\t', index_col=0)
+
+    results = dc.decouple(
+        mat=mat,
+        net=net,
+        methods="${method}"
+    )
+
+    for result in results:
+        results[result].to_csv(result + "__decoupler.tsv", sep='\t')
+
+    ## VERSIONS FILE
+    with open('versions.yml', 'a') as version_file:
+        version_file.write('"${task.process}":' + "\\n")
+        version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
     """
+
+    // stub: //dryrun, to-do
+    // def args = task.ext.args ?: ''
+    // def prefix = task.ext.prefix ?: "${meta.id}"
+    // // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
+    // //               Have a look at the following examples:
+    // //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
+    // //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
+    // """
+    // touch ${prefix}.bam
+
+    // cat <<-END_VERSIONS > versions.yml
+    // "${task.process}":
+    //     : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+    // END_VERSIONS
+    // """
 }
