@@ -61,6 +61,10 @@ output:
       type: file
       description: Alignment file in FASTA format. May be gzipped.
       pattern: "*.aln{.gz,}"
+  - lib:
+      type: file
+      description: optional output, the library generated from the MSA file.
+      pattern: "*.*lib"
   - versions:
       type: file
       description: File containing software versions
@@ -68,7 +72,9 @@ output:
 authors:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@alessiovignoli"
 maintainers:
   - "@luisas"
   - "@JoseEspinosa"
   - "@lrauschning"
+  - "@alessiovignoli"
