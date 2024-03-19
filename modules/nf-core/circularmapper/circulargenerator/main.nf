@@ -13,7 +13,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     output:
     tuple val(meta), path("*_${task.ext.prefix}.${fasta.extension}") , emit: fasta
     tuple val(meta), path("*_${task.ext.prefix}_elongated")          , emit: elongated
-    path "versions.yml"                                                     , emit: versions
+    path "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
