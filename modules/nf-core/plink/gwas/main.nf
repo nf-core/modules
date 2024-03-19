@@ -13,7 +13,6 @@ process PLINK_GWAS {
     tuple val(meta), path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
-    path (pheno); optional (true)
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
@@ -49,7 +48,6 @@ process PLINK_GWAS {
         $input_command \\
         --threads $task.cpus \\
         --assoc \\
-        --allow-no-sex \\
         $args \\
         --out $prefix
 

@@ -16,7 +16,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:"null"], [], [], []]
+                input[0] = [
+                        [id:"test"],
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
+                ]
                 input[1] = [
                     [id:"test"],
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
@@ -69,7 +74,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:"null"], [], [], []]
+                input[0] = [
+                        [id:"test"],
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
+                ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [
                     [id:"test"],
