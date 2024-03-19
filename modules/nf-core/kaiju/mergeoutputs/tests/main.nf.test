@@ -29,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                        [ id:'test', single_end:true ], // meta map
+                        [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ]
                 input[1] = UNTAR_KRAKEN2.out.untar.map{ it[1] }
@@ -54,7 +54,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                        [ id:'test', single_end:true ], // meta map
+                        [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ]
                 input[1] = UNTAR_KAIJU.out.untar.map{ it[1] }
@@ -91,6 +91,28 @@ nextflow_process {
                 """
                 input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
                 input[1] = UNTAR_KAIJU.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - kraken2.kaiju.classified - noDB - stub ") {
+        config "./nodb.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
+                input[1] = []
                 """
             }
         }
