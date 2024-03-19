@@ -17,9 +17,11 @@ process KALLISTOBUSTOOLS_COUNT {
     val   workflow_mode
 
     output:
-    tuple val(meta), path ("*.count")   , emit: count
-    path "versions.yml"                 , emit: versions
-    path "*.count/*/*.mtx"              , emit: matrix //Ensure that kallisto finished and produced outputs
+    tuple val(meta), path ("*.count")                  , emit: count
+    tuple val(meta), path ("*.count/counts_unfiltered"), emit: raw_counts
+    tuple val(meta), path ("*.count/counts_filtered")  , emit: filtered_counts, optional: true
+    path "versions.yml"                                , emit: versions
+    path "*.count/*/*.mtx"                             , emit: matrix //Ensure that kallisto finished and produced outputs
 
     when:
     task.ext.when == null || task.ext.when
