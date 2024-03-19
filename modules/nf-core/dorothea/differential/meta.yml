@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "dorothea_differential"
+name: "dorothea_differential_limma"
 description: Runs ULM from decoupleR on limma results using CollecTRI (New Dorothea)
 keywords:
   - Transcription_factor
@@ -14,7 +14,7 @@ tools:
       documentation: "https://saezlab.github.io/decoupleR/"
       tool_dev_url: "https://github.com/saezlab/decoupleR/"
       doi: "10.1093/bioadv/vbac016"
-      licence: "['GPL v3']"
+      licence: ['GPL >=3']
 
 input:
   # Only when we have meta
@@ -26,7 +26,7 @@ input:
         --treatment_level $meta.target'
         e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
 
-  - differential_results:
+  - differential_result:
       type: file
       description: |
         CSV or TSV-format tabular file with differential analysis outputs
