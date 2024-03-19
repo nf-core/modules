@@ -17,7 +17,7 @@ nextflow_process {
 
         setup {
             run("WISECONDORX_CONVERT") {
-                script "../../convert/main"
+                script "../../convert/main.nf"
                 process {
                     """
                     input[0] = [
