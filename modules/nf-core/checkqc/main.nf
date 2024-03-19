@@ -1,10 +1,10 @@
 process CHECKQC {
     label 'process_single'
 
-    conda "bioconda::checkqc=3.6.1"
+    conda "bioconda::checkqc=4.0.1=pyhdfd78af_0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkqc:3.6.1--py_0':
-        'biocontainers/checkqc:3.6.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/checkqc:4.0.1--pyhdfd78af_0':
+        'biocontainers/checkqc:4.0.1--pyhdfd78af_0' }"
 
     input:
     path(run_dir)
