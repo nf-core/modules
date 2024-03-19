@@ -25,12 +25,6 @@ input:
       description: Assembly in FASTA format
       pattern: "*.{fasta,fa}"
 
-  - meta1:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
   - bam:
       type: file
       description: BAM file containing sorted read mappings

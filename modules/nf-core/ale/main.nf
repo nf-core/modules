@@ -9,19 +9,18 @@ process ALE {
         'biocontainers/ale:20180904--py27ha92aebf_0' }"
 
     input:
-    tuple val(meta), path(asm)
-    tuple val(meta1), path(bam)
+    tuple val(meta), path(asm), path(bam)
 
     output:
     tuple val(meta), path("*_ALEoutput.txt"), emit: ale
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20180904' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     ALE \\
@@ -37,8 +36,8 @@ process ALE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20180904' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_ALEoutput.txt
