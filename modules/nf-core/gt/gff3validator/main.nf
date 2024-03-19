@@ -24,22 +24,22 @@ process GT_GFF3VALIDATOR {
     gt \\
         gff3validator \\
         "$gff3" \\
-        > "${prefix}.success.log" \\
-        2> "${prefix}.error.log" \\
-        || echo "Errors from gt-gff3validator printed to ${prefix}.error.log"
+        > "${prefix}.stdout" \\
+        2> >(tee "${prefix}.stderr" >&2) \\
+        || echo "Errors from gt-gff3validator printed to ${prefix}.stderr"
 
-    if grep -q "input is valid GFF3" "${prefix}.success.log"; then
+    if grep -q "input is valid GFF3" "${prefix}.stdout"; then
         echo "Validation successful..."
-
+        # emit stdout to the success output channel
         mv \\
-            "${prefix}.error.log" \\
-            gt_gff3validator.stderr
+            "${prefix}.stdout" \\
+            "${prefix}.success.log"
     else
         echo "Validation failed..."
-
+        # emit stderr to the error output channel
         mv \\
-            "${prefix}.success.log" \\
-            gt_gff3validator.stdout
+            "${prefix}.stderr" \\
+            "${prefix}.error.log"
     fi
 
     cat <<-END_VERSIONS > versions.yml
