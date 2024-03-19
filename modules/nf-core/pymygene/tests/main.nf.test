@@ -36,7 +36,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.gmt).match("gmt") },
+                { assert snapshot(process.out.gmt).match("gmt") }
             )
         }
     }
