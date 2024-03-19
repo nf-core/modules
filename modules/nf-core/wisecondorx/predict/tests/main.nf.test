@@ -50,7 +50,12 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.npz.collect { it.collect { it instanceof Map ? it : file(it).name }}
+                    process.out.aberrations_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.bins_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.segments_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.chr_statistics.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.chr_plots.collect { it.collect { it instanceof Map ? it : it.collect { file(it).name } }},
+                    process.out.genome_plot.collect { it.collect { it instanceof Map ? it : file(it).name }}
                 ).match() }
             )
         }
