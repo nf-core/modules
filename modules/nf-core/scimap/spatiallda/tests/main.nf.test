@@ -24,9 +24,13 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert process.out.spatial_lda_output},
+                { assert process.out.composition_plot},
+                { assert process.out.motif_location_plot},
+                { assert process.out.versions},
+                { assert snapshot(process.out.versions).match("versions")},
             )
         }
     }
-
 }
