@@ -23,3 +23,5 @@ witty.er is a commercial tool from Illumina. The container provided for the witt
    docker tag wittyer:<VERSION> quay.io/nf-core/wittyer:<VERSION>
    docker push quay.io/nf-core/wittyer:<VERSION>
    ```
+
+7. Make the image public.
