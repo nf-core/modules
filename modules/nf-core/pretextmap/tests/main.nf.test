@@ -15,14 +15,68 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
                 ]
 
                 input[1] = [
                     [ id: 'test2', single_end: false ],
                     file(params.test_data['homo_sapiens']['genome']['genome_fasta']),
                     file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'])
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_bam_map") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id: 'test2', single_end: false ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta']),
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'])
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("mapped_pairs_map") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/test_4dn.pairs.gz", checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [],
+                    [],
+                    []
                 ]
                 """
             }
