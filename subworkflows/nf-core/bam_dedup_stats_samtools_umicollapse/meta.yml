@@ -20,10 +20,6 @@ input:
       description: |
         input BAM file
         Structure: [ val(meta), path(bam), path(bai) ]
-  - val_get_dedup_stats:
-      type: boolean
-      description: |
-        Generate output stats when running "umi_tools dedup"
 output:
   - bam:
       description: |
@@ -37,6 +33,10 @@ output:
       description: |
         CSI samtools index
         Structure: [ val(meta), path(csi) ]
+  - dedupstats:
+      description: |
+        File containing umicollapse deduplication stats
+        Structure: [ val(meta), path(stats) ]
   - stats:
       description: |
         File containing samtools stats output

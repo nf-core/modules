@@ -1,36 +1,55 @@
-// TODO nf-core: If in doubt look at other nf-core/subworkflows to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/subworkflows
-//               You can also ask for help via your pull request or on the #subworkflows channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A subworkflow SHOULD import at least two modules
+//
+// umicollapse, index BAM file and run samtools stats, flagstat and idxstats
+//
 
-include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
+include { UMICOLLAPSE    } from '../../../modules/nf-core/umicollapse/main'
 include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
+include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
 workflow BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE {
-
     take:
-    // TODO nf-core: edit input (take) channels
-    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_bam_bai          // channel: [ val(meta), path(bam), path(bai/csi) ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    // TODO nf-core: substitute modules here for the modules of your subworkflow
+    //
+    // umicollapse in bam mode (thus hardcode mode input channel to 'bam')
+    //
+    UMICOLLAPSE ( ch_bam_bai, "bam" )
+    ch_versions = ch_versions.mix(UMICOLLAPSE.out.versions.first())
 
-    SAMTOOLS_SORT ( ch_bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions.first())
-
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
+    //
+    // Index BAM file and run samtools stats, flagstat and idxstats
+    //
+    SAMTOOLS_INDEX ( UMICOLLAPSE.out.bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
+    ch_bam_bai_dedup = UMICOLLAPSE.out.bam
+        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
+        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
+        .map {
+            meta, bam, bai, csi ->
+                if (bai) {
+                    [ meta, bam, bai ]
+                } else {
+                    [ meta, bam, csi ]
+                }
+        }
+
+    BAM_STATS_SAMTOOLS ( ch_bam_bai_dedup, [ [:], [] ] )
+    ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
+
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    bam            = UMICOLLAPSE.out.bam             // channel: [ val(meta), path(bam) ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    bai            = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), path(bai) ]
+    csi            = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), path(csi) ]
+    dedup_stats    = UMICOLLAPSE.out.log             // channel: [ val(meta), path(stats) ]
+    stats          = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
+    flagstat       = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats       = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
+
+    versions       = ch_versions                     // channel: [ path(versions.yml) ]
 }
-
