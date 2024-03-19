@@ -2,14 +2,10 @@ process DOROTHEA_DIFFERENTIAL_LIMMA {
     tag "$meta.id"
     label 'dorothea_limma'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/bioconductor-decoupler:2.8.0--r43hdfd78af_0':
+        'biocontainers/bioconductor-decoupler:2.8.0--r43hdfd78af_0'}"
 
     input:
     
