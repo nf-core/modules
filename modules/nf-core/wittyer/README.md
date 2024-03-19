@@ -9,7 +9,7 @@ witty.er is a commercial tool from Illumina. The container provided for the witt
     ```
 3. Uncompress the released package.
     ```bash
-    tar -xvf <VERSION>.tar.gz 
+    tar -xvf <VERSION>.tar.gz
     ```
 4. Change to the uncompressed directory.
 5. Build docker image using provided Dockerfile.
