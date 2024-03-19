@@ -28,8 +28,8 @@ process WITTYER {
     def regions = bed ? "--includeBed=$bed" : ""
     if ("$truth_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$query_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$truth_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$query_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$query_vcf_index" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$query_vcf_index" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     // dotnet /opt/Wittyer/Wittyer.dll might need to be replaced with new docker image
     """
@@ -59,7 +59,7 @@ process WITTYER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.json
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
