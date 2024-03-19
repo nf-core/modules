@@ -12,7 +12,7 @@ tools:
       homepage: "https://github.com/Molmed/checkQC"
       documentation: "http://checkqc.readthedocs.io/en/latest/"
       doi: "10.21105/joss.00556"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 
 input:
   - run_dir:
@@ -30,7 +30,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - checkqc_report:
+  - report:
       type: file
       description: CheckQC report in json format
       pattern: "*checkqc_report.json"
