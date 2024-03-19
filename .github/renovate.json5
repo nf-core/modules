@@ -70,5 +70,10 @@
             automerge: true,
             schedule: ["before 9am"],
         },
+        {
+            matchPackagePatterns: ["renovate-config-validator"],
+            automerge: true,
+            schedule: ["before 9am on Monday"],
+        },
     ],
 }
