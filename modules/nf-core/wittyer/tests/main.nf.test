@@ -15,7 +15,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf_tbi'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf_tbi'], checkIfExists: true),
+                    []
                     ]
                 """
             }
@@ -39,7 +43,11 @@ nextflow_process {
                 """             
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf_tbi'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf_tbi'], checkIfExists: true),
+                    []
                     ]
                 """
             }
