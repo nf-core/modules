@@ -11,8 +11,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_elongated.fasta")  , emit: elongated
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*_elongated*")  , emit: elongated
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
         -Xmx${task.memory.toGiga()}g \\
         $args \\
         --input $fasta
-    mv ${fasta.baseName}_[0-9]*\.${fasta.extension} ${fasta.baseName}_[0-9]*_elongated.${fasta.extension}
+
+    tmp="\$(basename \$(ls ${fasta.baseName}_[0-9]*\.${fasta.extension}) .${fasta.extension} )"
+    mv \${tmp}.${fasta.extension} \${tmp}_elongated.${fasta.extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -40,7 +40,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}_realigned.bam
+    touch ${bam.baseName}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
