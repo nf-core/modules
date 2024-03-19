@@ -19,8 +19,13 @@ nextflow_process {
                     [ id: 'test' ],
                 ]
                 input[1] = [
-                    [],
-                    []
+                    file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
+                ]
+                input[2] = [
+                    file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
+                ]
+                input[3] = [
+                    'ulm'
                 ]
                 """
             }
