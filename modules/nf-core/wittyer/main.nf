@@ -2,7 +2,12 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/wittier:0.3.3"
+    container "quay.io/nf-core/wittier:0.3.3"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(bed)
@@ -17,15 +22,18 @@ process WITTYER {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def regions = bed ? "--includeBed=$bed" : ""
     """
+    script:
+    if ("$truth_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$query_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$truth_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$query_vcf_tbi" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    
     mkdir bench
+
     wittyer \\
         --truthVcf=${truth_vcf} \\
         --inputVcf=${query_vcf} \\
