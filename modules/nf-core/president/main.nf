@@ -39,7 +39,7 @@ process PRESIDENT {
     if [ "$compress" = true ] ; then
         gzip output/*.fasta;
     fi
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         president: \$(president --version |& sed '1!d ; s/president v//')
