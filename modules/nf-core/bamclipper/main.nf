@@ -9,7 +9,7 @@ process BAMCLIPPER {
         'biocontainers/bamclipper:1.0.0--hdfd78af_2' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(bed)
+    tuple val(meta), path(bam), path(bai), path(bedpe)
 
     output:
     tuple val(meta), path("*.primerclipped.bam")    , emit: bam
@@ -26,7 +26,7 @@ process BAMCLIPPER {
     """
     bamclipper.sh \\
         -b ${bam} \\
-        -p ${bed} \\
+        -p ${bedpe} \\
         -n $task.cpus \\
         ${args}
 

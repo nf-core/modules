@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bamclipper"
 
 description: This module is used to clip primer sequences from your alignments.
@@ -15,7 +13,7 @@ tools:
       documentation: "https://github.com/tommyau/bamclipper"
       tool_dev_url: "https://github.com/tommyau/bamclipper"
       doi: "10.1038/s41598-017-01703-6"
-      licence: ["MIT license"]
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -33,7 +31,7 @@ input:
       description: BAI index of the input BAM file
       pattern: "*.bam.bai"
 
-  - bed:
+  - bedpe:
       type: file
       description: BEDPE file of primer pair locations
       pattern: "*.bed"
