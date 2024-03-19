@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process AMPLIFY_PREDICT"
+    script "../main.nf"
+    process "AMPLIFY_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "amplify"
+    tag "amplify/predict"
+
+   test("AMPlify predict (with Pyrodigal) - sarscov2 - contigs fasta") {
+
+        setup { 
+            run("PYRODIGAL") {
+                script "../../../pyrodigal/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test', single_end:false ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  PYRODIGAL.out.faa
+                    
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.tsv).match("tsv") }
+            )
+        }
+
+    }
+
+}

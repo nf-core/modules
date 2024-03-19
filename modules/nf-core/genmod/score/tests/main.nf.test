@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process GENMOD_SCORE"
+    script "modules/nf-core/genmod/score/main.nf"
+    process "GENMOD_SCORE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmod"
+    tag "genmod/score"
+
+    test("genmod_score") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['genmod_models_vcf_gz'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['illumina']['rank_model'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+    }
+
+}

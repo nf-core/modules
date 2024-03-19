@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process GATK4_REBLOCKGVCF"
+    script "../main.nf"
+    process "GATK4_REBLOCKGVCF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/reblockgvcf"
+
+    test("test_gatk4_reblockgvcf") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf") }
+            )
+        }
+
+    }
+
+    test("test_gatk4_reblockgvcf_intervals") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf_intervals") }
+            )
+        }
+
+    }
+
+    test("test_gatk4_reblockgvcf_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name
+                ).match("test_gatk4_reblockgvcf_stub") }
+            )
+        }
+
+    }
+
+}
