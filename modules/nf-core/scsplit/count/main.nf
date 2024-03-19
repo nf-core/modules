@@ -30,18 +30,14 @@ process SCSPLIT_COUNT {
     //    'biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), tuple val(sampleId), path(bam), path(bai), path(vcf)
+    val tag
+    val com
+    val ref
+    val alt
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
     when:
