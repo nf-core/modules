@@ -12,8 +12,8 @@ process KAIJU_MERGEOUTPUTS {
     path (db)
 
     output:
-    tuple val(meta), path("*_merged.tsv"), emit: merged
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.tsv"), emit: merged
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +22,16 @@ process KAIJU_MERGEOUTPUTS {
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def dbnodes = db ? '-t <(find -L ${db} -name "*nodes.dmp")' : ''
+    script:
+    if ("$kaiju" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$kraken" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     kaiju-mergeOutputs \\
         -i <(sort -k2,2 ${kaiju}) \\
         -j <(sort -k2,2 ${kraken}) \\
-        -o ${prefix}_merged.tsv \\
+        -o ${prefix}.tsv \\
         $dbnodes \\
         $args
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,7 +43,7 @@ process KAIJU_MERGEOUTPUTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_merged.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

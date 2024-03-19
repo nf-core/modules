@@ -85,7 +85,7 @@ nextflow_process {
     }
 
     test("sarscov2 - kraken2.kaiju.classified - kaiju.DB ") {
-
+        config "./db.config"
         when {
             process {
                 """
