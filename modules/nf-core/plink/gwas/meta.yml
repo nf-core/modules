@@ -14,17 +14,17 @@ tools:
 
 input:
   - meta:
-      type: file
+      type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - meta2:
-      type: file
+      type: map
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
   - meta3:
-      type: file
+      type: map
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
@@ -50,6 +50,11 @@ input:
       pattern: "*.{vcf}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - assoc:
       type: file
       description: PLINK GWAS association file
