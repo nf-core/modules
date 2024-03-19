@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "maltextract"
+    tag "unzip"
 
     test("test_maltextract") {
         setup{
@@ -34,10 +35,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions },
-                { assert process.out.results }
+                { assert snapshot(process.out.versions).match() },
+                // snapshots dont work, because the results channel contains a log file that changes with each run
+                // so just check that the results-folder exists
+                { assert process.out.results.get(0).get(1) ==~ ".*results" }
             )
-            process.out.view()
         }
     }
 }
