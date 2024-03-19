@@ -7,7 +7,7 @@ process GRABIX_CHECK {
         'biocontainers/grabix:0.1.8--hdcf5f25_9' }"
 
     input:
-    path(input)
+    tuple val(meta), path(input)
 
     output:
     env COMPRESS_BGZIP  , emit: compress_bgzip
