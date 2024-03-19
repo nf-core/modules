@@ -4,7 +4,7 @@ process LEARNMSA_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0'
+        'https://depot.galaxyproject.org/singularity/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' :
         'biocontainers/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' }"
 
     input:
