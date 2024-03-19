@@ -17,8 +17,8 @@ process BWAMEM2_MEM {
     tuple val(meta), path("*.sam")  , emit: sam , optional:true
     tuple val(meta), path("*.bam")  , emit: bam , optional:true
     tuple val(meta), path("*.cram") , emit: cram, optional:true
-    tuple val(meta), path("*.csi")  , emit: csi , optional:true
     tuple val(meta), path("*.crai") , emit: crai, optional:true
+    tuple val(meta), path("*.csi")  , emit: csi , optional:true
     path  "versions.yml"            , emit: versions
 
     when:
@@ -55,6 +55,9 @@ process BWAMEM2_MEM {
     """
 
     stub:
+
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samtools_command = sort_bam ? 'sort' : 'view'
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
