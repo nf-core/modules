@@ -2,7 +2,7 @@ process SCIMAP_SPATIALLDA {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/miguelib/scimap:latest"
+    container "docker.io/miguelib/scimap:0.0.3"
 
     input:
     tuple val(meta), path(phenotyped)
@@ -23,10 +23,10 @@ process SCIMAP_SPATIALLDA {
     """
     python /scimap/scripts/spatialLDA.py \
         --input $phenotyped \
-        --output $spatial_lda_output \
-        --neighborhood-composition-plot $composition_plot \
-        --motif-locations-plot $motif_location_plot \
-        $args"
+        --output "${prefix}.csv" \
+        --neighborhood-composition-plot "${prefix}.png" \
+        --motif-locations-plot "${prefix}.html" \
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
