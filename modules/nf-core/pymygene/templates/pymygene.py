@@ -27,7 +27,7 @@ class Arguments:
         # skip when there are no extended arguments
         if args_string == "null":
             args_string = ""
-        
+
         # Parse the extended arguments
         args_list = shlex.split(args_string)  # Split the string into a list of arguments
         parser = argparse.ArgumentParser()
@@ -51,7 +51,7 @@ class Version:
     """
     This class contains the functions to get the versions of the modules used in the script.
     """
-    
+
     @staticmethod
     def get_versions(modules: list) -> dict:
         """
@@ -63,7 +63,7 @@ class Version:
             **{module.__name__: module.__version__ for module in modules}
         }
         return dic
-    
+
     @staticmethod
     def format_yaml_like(data: dict, indent: int = 0) -> str:
         """Formats a dictionary to a YAML-like string.
@@ -143,7 +143,7 @@ class MyGene:
                 for go in go_list:
                     if (self.filter_go_evidence) and (go['evidence'] not in self.filter_go_evidence.split(",")):
                         continue
-                    
+
                     current_info = {
                         'query': self.idmap[dic['_id']],
                         'mygene_id': dic['_id'],
@@ -157,7 +157,7 @@ class MyGene:
                     }
                     info[self.idmap[dic['_id']]] = current_info
         return info
-    
+
     def parse_go_based_info(self):
         """
         This converts the gene based info dictionary of dictionaries to a GO based info dictionary of lists.
@@ -174,7 +174,7 @@ class MyGene:
             if gene not in info[go_id]:
                 info[go_id].append(gene)
         return info
-    
+
     def save_to_tsv(self, filename: str) -> None:
         """
         It saves the parsed gene centric information in a tsv file.
@@ -185,7 +185,7 @@ class MyGene:
             for gene in self.query:  # sorted by query gene list
                 if gene in self.gene_based_info:
                     f.write("\\t".join([str(val) for val in self.gene_based_info[gene].values()]) + "\\n")
-    
+
     def save_to_gmt(self, filename: str) -> list:
         """
         It saves the parsed go centric information to a gmt file.
@@ -207,7 +207,7 @@ if __name__ == "__main__":
     # save info
     mg.save_to_tsv(args.output_tsv)
     mg.save_to_gmt(args.output_gmt)
-    
+
     # write versions to file
     versions_this_module = {}
     versions_this_module["${task.process}"] = Version.get_versions([argparse, mygene])
