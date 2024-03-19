@@ -83,9 +83,9 @@ nextflow_process {
                     file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
                     ]
-                input[1] = [[:],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = [[:],file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
                 input[2] = [[:],file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]
-                input[3] = [[:],file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)]
+                input[3] = [[:],[]]
                 input[4] = [[:],[]]
                 input[5] = false
                 """
