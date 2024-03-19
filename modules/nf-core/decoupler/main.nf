@@ -34,7 +34,7 @@ process DECOUPLER {
     // TODO nf-core: List additional required output channels/values here
     path("versions.yml"), emit: versions
 
-    when: //necessary? check
+    when:
     task.ext.when == null || task.ext.when
 
     script:
@@ -49,7 +49,7 @@ process DECOUPLER {
     decoupler.py \\
         -mat ${mat} \\
         -net ${net} \\
-        -method ${method}
+        -method ${method} \\
         --args ${args}
     """
 
