@@ -36,7 +36,7 @@ process KRAKEN2_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir "$prefix"
+    mkdir -p "$prefix"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
