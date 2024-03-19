@@ -20,12 +20,23 @@ process AGAT_SPSTATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     agat_sp_statistics.pl \\
         --gff $gff \\
         --output ${prefix}.stats.txt \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: \$(agat_sp_statistics.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.stats.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

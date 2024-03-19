@@ -33,4 +33,15 @@ process XZ_DECOMPRESS {
         xz: \$(xz --version | head -n1 | awk '{print \$NF}')
     END_VERSIONS
     """
+
+    stub:
+    decompressed_file = archive.toString().replaceAll(".xz\$", "")
+    """
+    touch "${decompressed_file}"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
+    END_VERSIONS
+    """
 }

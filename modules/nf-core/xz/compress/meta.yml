@@ -33,15 +33,15 @@ output:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - archive:
       type: file
       description: The compressed file
       pattern: "*.xz"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@leoisl"
