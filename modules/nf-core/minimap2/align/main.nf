@@ -34,12 +34,24 @@ process MINIMAP2_ALIGN {
     minimap2 \\
         $args \\
         -t $task.cpus \\
-        "${reference ?: reads}" \\
-        "$reads" \\
+        ${reference ?: reads} \\
+        $reads \\
         $cigar_paf \\
         $set_cigar_bam \\
         $bam_output
 
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minimap2: \$(minimap2 --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_file = bam_format ? "${prefix}.bam" : "${prefix}.paf"
+    """
+    touch $output_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
