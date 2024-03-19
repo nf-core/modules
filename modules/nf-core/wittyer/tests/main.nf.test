@@ -35,7 +35,33 @@ nextflow_process {
 
     }
 
-     test("human - simulatedSV - vcf_gz - stub") {
+    test("human - simulatedSV - vcf_gz - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf_tbi'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf_tbi'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("human - simulatedSV - vcf_gz - stub") {
 
         options "-stub"
 
