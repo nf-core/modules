@@ -30,10 +30,10 @@ parse_args <- function(x){
 
 read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
-  ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
+  ext <- tolower(tail(strsplit(basename(file), split = "\\.")[[1]], 1))
 
   if (ext == "tsv" || ext == "txt") {
-    separator <- "\\t"
+    separator <- "\t"
   } else if (ext == "csv") {
     separator <- ","
   } else {
@@ -65,9 +65,9 @@ opt <- list(
   feature_id_col = "gene_id",
   reference_level = "$meta.reference",
   treatment_level = "$meta.target",
-  fold_change_col = "log2FoldChange",
-  p_value_column = 'pvalue',
-  diff_feature_id_col = "gene_id",
+  fold_change_col = "logFC",
+  p_value_column = 'P.Value',
+  diff_feature_id_col = "ID",
   fold_change_threshold = 2,
   p_value_threshold = 0.05,
   unlog_foldchanges = TRUE,
@@ -103,7 +103,7 @@ if (length(missing) > 0){
 
 # Check file inputs are valid
 
-for (file_input in c('count_file', 'sample_file')){
+for (file_input in c("diff_results")){
   if (is.null(opt[[file_input]])) {
     stop(paste("Please provide", file_input), call. = FALSE)
   }
@@ -131,7 +131,8 @@ diff.table <-
     header = TRUE,
     row.names = opt$diff_feature_id_col,
     check.names = FALSE
-  )
+  ) %>%
+  rownames_to_column(var = opt$diff_feature_id_col)
 
 # Load Regulons -----------------------------------------------------------
 net <- get_collectri(organism='human', split_complexes=FALSE)
@@ -142,13 +143,9 @@ deg <- diff.table %>%
   filter(!is.na(t)) %>%
   column_to_rownames(var = "ID") %>%
   as.matrix()
-
-
 # Run ULM -----------------------------------------------------------------
 contrast_acts <- run_ulm(mat=deg[, 't', drop=FALSE], net=net, .source='source', .target='target',
                          .mor='mor', minsize = 5)
-
-
 # Make TF_plot ------------------------------------------------------------
 n_tfs <- 30
 
@@ -182,9 +179,6 @@ tf_plot = ggplot(f_contrast_acts, aes(x = reorder(source, score), y = score)) +
 
 
 # Generate outputs --------------------------------------------------------
-
-
-
 contrast.name <- paste(opt$target_level, opt$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
@@ -222,13 +216,13 @@ sink()
 
 # VERSIONS FILE -----------------------------------------------------------
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-limma.version <- as.character(packageVersion('limma'))
+decoupleR.version <- as.character(packageVersion('decoupleR'))
 
 writeLines(
   c(
     '"${task.process}":',
     paste('    r-base:', r.version),
-    paste('    bioconductor-limma:', limma.version)
+    paste('    bioconductor-decoupler:', decoupleR.version)
   ),
   'versions.yml')
 
