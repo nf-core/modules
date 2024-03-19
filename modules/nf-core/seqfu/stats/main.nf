@@ -1,4 +1,3 @@
-
 process SEQFU_STATS {
     tag "$meta.id"
     label 'process_single'
