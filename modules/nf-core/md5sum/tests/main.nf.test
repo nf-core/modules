@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process MD5SUM"
+    script "../main.nf"
+    process "MD5SUM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "md5sum"
+
+    test("md5sum on hello.txt") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            with(process.out) {
+                // check that one output is ready on the channel
+                assert checksum.size() == 1
+                // destructure tuple
+                (meta, md5file) = checksum.get(0)
+                // ensure file is named as expected
+                assert md5file ==~ ".*/hello.txt.md5"
+                // compare checksum file content
+                assert path(md5file).text == 'e59ff97941044f85df5297e1c302d260  hello.txt\n'
+
+                // create / test snapshot
+                assert snapshot(checksum).match("hello_checksum")
+            }
+        }
+    }
+
+    test("md5sum on hello.txt (BSD-style)") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            with(process.out) {
+                // check that one output is ready on the channel
+                assert checksum.size() == 1
+                // destructure tuple
+                (meta, md5file) = checksum.get(0)
+                // ensure file is named as expected
+                assert md5file ==~ ".*/hello.txt.md5"
+                // compare checksum file content
+                assert path(md5file).text == 'MD5 (hello.txt) = e59ff97941044f85df5297e1c302d260\n'
+
+                // create / test snapshot
+                assert snapshot(checksum).match("hello_checksum_BSD")
+            }
+        }
+    }
+    
+}
