@@ -35,6 +35,9 @@ process SCIMAP_SPATIALLDA {
     """
 
     stub:
+    
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     touch "${prefix}.csv"
     touch "${prefix}.png"
