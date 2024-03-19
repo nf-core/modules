@@ -17,7 +17,7 @@ nextflow_process {
                 """             
                 input[0] = [[],file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)]
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = ""
+                input[2] = []
                 """
 
             }
@@ -30,29 +30,25 @@ nextflow_process {
             def sdf = new SimpleDateFormat("yyyy-MM-dd")
             firstReportAssert.add(sdf.format(date))
 
-            assertAll{
-                process.success
-
-                process.out.log != null
-                process.out.log.size() == 1
-                process.out.log.get(0).get(1) ==~ ".*/president_logger.log"
-
-                process.out.report != null
-                process.out.report.size() == 1
-                process.out.report.get(0).get(1) ==~ ".*/report.tsv"
-                firstReportEntry == firstReportAssert
-
-                process.out.fasta != null
-                process.out.fasta.size() == 1
-                process.out.fasta.get(0).get(1).size() == 2
-                process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta"
-                path(process.out.fasta.get(0).get(1).get(0)).readLines().size() == 2
-                path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"
-
-                process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta"
-                path(process.out.fasta.get(0).get(1).get(1)).readLines().size() == 6
-                path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"
-            }
+            assertAll(
+                {assert process.success},
+                {assert process.out.log != null},
+                {assert process.out.log.size() == 1},
+                {assert process.out.log.get(0).get(1) ==~ ".*/president_logger.log"},
+                {assert process.out.report != null},
+                {assert process.out.report.size() == 1},
+                {assert process.out.report.get(0).get(1) ==~ ".*/report.tsv"},
+                {assert firstReportEntry == firstReportAssert},
+                {assert process.out.fasta != null},
+                {assert process.out.fasta.size() == 1},
+                {assert process.out.fasta.get(0).get(1).size() == 2},
+                {assert process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta"},
+                {assert path(process.out.fasta.get(0).get(1).get(0)).readLines().size() == 2},
+                {assert path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"},
+                {assert process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta"},
+                {assert path(process.out.fasta.get(0).get(1).get(1)).readLines().size() == 6},
+                {assert path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"}
+            )
         }
     }
 
@@ -75,30 +71,30 @@ nextflow_process {
             def date = new Date()
             def sdf = new SimpleDateFormat("yyyy-MM-dd")
             firstReportAssert.add(sdf.format(date))
-            assertAll{
-                process.success
+            assertAll(
+                {assert process.success},
 
-                process.out.log != null
-                process.out.log.size() == 1
-                process.out.log.get(0).get(1) ==~ ".*/president_logger.log"
+                {assert process.out.log != null},
+                {assert process.out.log.size() == 1},
+                {assert process.out.log.get(0).get(1) ==~ ".*/president_logger.log"},
 
-                process.out.report != null
-                process.out.report.size() == 1
-                process.out.report.get(0).get(1) ==~ ".*/report.tsv"
+                {assert process.out.report != null},
+                {assert process.out.report.size() == 1},
+                {assert process.out.report.get(0).get(1) ==~ ".*/report.tsv"},
 
-                firstReportEntry == firstReportAssert
+                {assert firstReportEntry == firstReportAssert},
 
-                process.out.fasta != null
-                process.out.fasta.size() == 1
-                process.out.fasta.get(0).get(1).size() == 2
-                process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta.gz"
-                path(process.out.fasta.get(0).get(1).get(0)).linesGzip.size() == 2
-                path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"
+                {assert process.out.fasta != null},
+                {assert process.out.fasta.size() == 1},
+                {assert process.out.fasta.get(0).get(1).size() == 2},
+                {assert process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta.gz"},
+                {assert path(process.out.fasta.get(0).get(1).get(0)).linesGzip.size() == 2},
+                {assert path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"},
 
-                process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta.gz"
-                path(process.out.fasta.get(0).get(1).get(1)).linesGzip.size() == 6
-                path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"
-            }
+                {assert process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta.gz"},
+                {assert path(process.out.fasta.get(0).get(1).get(1)).linesGzip.size() == 6},
+                {assert path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"}
+            )
         }
     }
 }
