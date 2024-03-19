@@ -6,14 +6,14 @@ process PRESIDENT {
     container "docker://rkimf1/president:0.6.8--4616f6d"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
     path reference
     val compress
 
     output:
-    path "output/*.fasta*", emit: fasta
-    path "output/*.tsv", emit: report
-    path "output/*.log", emit: log
+    tuple val(meta), path("output/*.fasta*"), emit: fasta
+    tuple val(meta), path("output/*.tsv"), emit: report
+    tuple val(meta), path("output/*.log"), emit: log
     path "versions.yml", emit: versions
 
     when:
