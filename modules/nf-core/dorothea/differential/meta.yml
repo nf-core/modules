@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dorothea_differential"
+description: Runs ULM from decoupleR on limma results using CollecTRI (New Dorothea)
+keywords:
+  - Transcription_factor
+  - Transcriptomics
+  - Activity
+  - Footprinting
+tools:
+  - "decoupler":
+      description: "R package containing containing different statistical methods to extract biological signatures from prior knowledge within a unified framework"
+      homepage: "https://saezlab.github.io/decoupleR/"
+      documentation: "https://saezlab.github.io/decoupleR/"
+      tool_dev_url: "https://github.com/saezlab/decoupleR/"
+      doi: "10.1093/bioadv/vbac016"
+      licence: "['GPL v3']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information, to be passed as reference
+        and target levels, like '--reference_level $meta.reference
+        --treatment_level $meta.target'
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+
+  - differential_results:
+      type: file
+      description: |
+        CSV or TSV-format tabular file with differential analysis outputs
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - results:
+      type: file
+      description : TSV-format of TF activity inference as output by decoupleR::run_ulm
+      pattern: "*.dorothea.results.tsv"
+  - TF_plot:
+      type: file
+      description: TF activity contrast bar plot
+      pattern: "*.dorothea.TF_plot.png"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@bisho2122"
+maintainers:
+  - "@bisho2122"
