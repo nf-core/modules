@@ -32,6 +32,7 @@ nextflow_process {
                 { assert process.out.stats.size() == 1 },
                 { assert snapshot(process.out.stats).match() },
                 { assert path(process.out.stats.get(0).get(1)).md5 == "26141ef87ad8a6f59a6f283cc0a06fda" },
+                { assert path(process.out.multiqc.get(0).get(1)).md5  == "2b43eccda6bb5378adab36f882407b5f" }
             )
         }
 
@@ -42,18 +43,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel
-                    .fromList(
-                        [
+                input[0] = [
                             [ id:'test' ],
                             [
-                                [file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)],
-                                [file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                [file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)],
-                                [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
-                            ].collect()
+                                file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
                         ]
-                    )
+                    
                     
        
                 """
@@ -67,7 +66,8 @@ nextflow_process {
                 { assert process.out.multiqc },
                 { assert process.out.versions },
                 { assert process.out.stats.size() == 1 },
-                { assert path(process.out.stats.get(0).get(1)).md5 != "26141ef87ad8a6f59a6f283cc0a06fda" }
+                { assert path(process.out.stats.get(0).get(1)).md5 == "98102573ecf7e3b9e53db1c6e0f02b06" },
+                { assert path(process.out.multiqc.get(0).get(1)).md5 == "e36822757aae8d0451e5a30a4c66fe4d" }
             )
         }
 
