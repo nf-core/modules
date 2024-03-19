@@ -120,11 +120,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.nwk[0][1] =~ ".*.nwk" },
-                { assert process.out.matrix[0][1] =~ ".*.matrix.phy" },
-                { assert process.out.bootstrap[0][1] =~ ".*.bootstrap" },
-                { assert process.out.stats[0][1] =~ ".*_stat.txt" },
-                { assert process.out.versions }
+                { assert path(process.out.nwk[0][1]).text.contains("1atx:") },
+                { assert path(process.out.matrix[0][1]).text.contains("1apf") },
+                { assert path(process.out.bootstrap[0][1]).text.contains("1atx:") },
+                { assert path(process.out.stats[0][1]).readLines()[0..12]).match("stats_boot") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
