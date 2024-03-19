@@ -11,7 +11,7 @@ process WITTYER {
 
     input:
     // use stageAs to allow comparing the same vcfs against each other
-    tuple val(meta), path(query_vcf, stageAs: "query.vcf.gz"), path(query_vcf_tbi, stageAs: "query.vcf.gz.tbi"), path(truth_vcf, stageAs: "truth.vcf.gz"), path(truth_vcf_tbi, stageAs: "truth.vcf.gz.tbi"), path(bed)
+    tuple val(meta), path(query_vcf, stageAs: "query.vcf.gz"), path(query_vcf_index, stageAs: "query.vcf.gz.tbi"), path(truth_vcf, stageAs: "truth.vcf.gz"), path(truth_vcf_index, stageAs: "truth.vcf.gz.tbi"), path(bed)
 
     output:
     tuple val(meta),    path("*.json")         , emit: report
