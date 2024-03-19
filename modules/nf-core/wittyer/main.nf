@@ -10,13 +10,14 @@ process WITTYER {
     }
 
     input:
-    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(bed)
+    // use stageAs to allow comparing the same vcfs against each other
+    tuple val(meta), path(query_vcf, stageAs: "query.vcf.gz"), path(query_vcf_tbi, stageAs: "query.vcf.gz.tbi"), path(truth_vcf, stageAs: "truth.vcf.gz"), path(truth_vcf_tbi, stageAs: "truth.vcf.gz.tbi"), path(bed)
 
     output:
-    tuple val(meta),    path("*.Stats.json")         , emit: report
-    tuple val(meta),    path("*eval.vcf.gz")         , emit: bench_vcf
-    tuple val(meta),    path("*eval.vcf.gz.tbi")     , emit: bench_vcf_tbi
-    path  "versions.yml"                             , emit: versions
+    tuple val(meta),    path("*.json")         , emit: report
+    tuple val(meta),    path("*.vcf.gz")       , emit: bench_vcf
+    tuple val(meta),    path("*.vcf.gz.tbi")   , emit: bench_vcf_tbi
+    path  "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +33,7 @@ process WITTYER {
     """
     mkdir bench
 
-    wittyer \\
+    dotnet /opt/Wittyer/Wittyer.dll \\
         --truthVcf=${truth_vcf} \\
         --inputVcf=${query_vcf} \\
         --outputDirectory=bench \\
@@ -47,7 +48,7 @@ process WITTYER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wittyer: \$(wittyer --version  |& sed '1!d ; s/witty.er //')
+        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
     END_VERSIONS
     """
 
@@ -61,7 +62,7 @@ process WITTYER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wittyer: \$(wittyer --version  |& sed '1!d ; s/witty.er //')
+        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
     END_VERSIONS
     """
 }
