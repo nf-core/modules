@@ -10,7 +10,7 @@ process GRABIX_CHECK {
     tuple val(meta), path(input)
 
     output:
-    env COMPRESS_BGZIP  , emit: compress_bgzip
+    tuple val(meta), env(COMPRESS_BGZIP)  , emit: compress_bgzip
     path "versions.yml" , emit: versions
 
     when:
