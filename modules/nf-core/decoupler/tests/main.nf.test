@@ -1,16 +1,15 @@
 nextflow_process {
 
-    name "Test Process DEEPCELL_MESMER"
+    name "Test Process DECOUPLER"
     script "../main.nf"
     config "./nextflow.config"
-    process "DEEPCELL_MESMER"
+    process "DECOUPLER"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "deepcell"
-    tag "deepcell/mesmer"
+    tag "decoupler"
 
-    test("mesmer - tif") {
+    test("decoupler_test") {
 
         when {
             process {
@@ -34,8 +33,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.mask).match("mask") },
-                { assert snapshot(process.out.versions).match("versions") }
+                //{ assert snapshot(process.out.mask).match("mask") },
+                //{ assert snapshot(process.out.versions).match("versions") }
             )
         }
 
