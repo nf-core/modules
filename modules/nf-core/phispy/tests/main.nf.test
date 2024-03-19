@@ -1,0 +1,67 @@
+// nf-core modules test phispy
+nextflow_process {
+
+    name "Test Process PHISPY"
+    script "../main.nf"
+    process "PHISPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "phispy"
+
+    test("bacteroides_fragilis - gbff") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def log_text = path(process.out.log[0][1]).text
+            def tsv_text = path(process.out.coordinates[0][1]).text
+            assertAll(
+                { assert process.success },
+                { assert log_text.contains('NZ_CP069563.1') },
+                { assert log_text.contains('91') },
+                { assert log_text.contains('Kept') },
+                { assert tsv_text.contains('NZ_CP069563.1') },
+                { assert tsv_text.contains('pp1') },
+                { assert tsv_text.contains('Longest Repeat flanking phage and within 2000 bp') },
+                { assert path(process.out.gbk[0][1]).linesGzip.toString().contains('5150703 bp') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - gbff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
