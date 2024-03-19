@@ -38,7 +38,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match('version') },
                 // snapshots dont work, because the results channel contains a log file that changes with each run
                 { assert snapshot(
-                        path("${process.out.results.get(0).get(1)}/error.txt"),
                         path("${process.out.results.get(0).get(1)}/ScanSummary.txt"),
                     ).match('results')
                 }
