@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process GRABIX_CHECK"
+    script "../main.nf"
+    process "GRABIX_CHECK"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "grabix"
+    tag "grabix/check"
+
+    test("sarscov2") {
+        when {
+            process {
+                """                
+                input[0] = Channel.of([file(params.test_data_base + "/data/genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)])
+  
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.compress_bgzip) },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}
