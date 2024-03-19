@@ -51,15 +51,15 @@ output:
   - report:
       type: file
       description: Detailed per-sample-pair, per-svtype, per-bin stats
-      pattern: "*.Stats.json"
+      pattern: "*.json"
   - bench_vcf:
       type: file
       description: Updated query and truth entries merged into one file
-      pattern: "*eval.vcf.gz"
+      pattern: "*.vcf.gz"
   - bench_vcf_tbi:
       type: file
       description: Index of merged query and truth entries VCF file
-      pattern: "*eval.vcf.gz.tbi"
+      pattern: "*.vcf.gz.tbi"
 authors:
   - "@famosab"
 maintainers:
