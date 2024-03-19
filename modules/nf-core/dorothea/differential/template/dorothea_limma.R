@@ -122,7 +122,6 @@ library(dplyr)
 library(tibble)
 library(tidyr)
 library(ggplot2)
-library(ggrepel)
 
 
 # READ IN Limma differential results --------------------------------------
