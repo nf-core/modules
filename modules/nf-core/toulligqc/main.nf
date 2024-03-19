@@ -1,4 +1,3 @@
-
 process TOULLIGQC {
     label 'process_low'
 
@@ -25,7 +24,7 @@ process TOULLIGQC {
     def args = task.ext.args ?: ''
 
     """
-    toulligqc -a ${seq_summary} 
+    toulligqc -a ${seq_summary}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
