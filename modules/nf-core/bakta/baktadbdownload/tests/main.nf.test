@@ -22,7 +22,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.db.get(0)).exists() }
+                { assert path(process.out.db.get(0)).exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -42,7 +43,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db).match("db*") }
+                { assert snapshot(
+                    process.out.db + 
+                    process.out.versions
+                    ).match() }
             )
         }
 
