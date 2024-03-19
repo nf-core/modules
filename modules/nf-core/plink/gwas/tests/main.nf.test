@@ -1,6 +1,6 @@
 nextflow_process {
 
-    name "test Plink gwas"
+    name "test Plink GWAs function"
     script "../main.nf"
     process "PLINK_GWAS"
     tag "modules"
@@ -16,17 +16,16 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                        [id:"test"],
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
-                ]
+                input[0] = [ [id:"null"], [], [], []]
                 input[1] = [
                     [id:"test"],
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
                 ]
                 input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
                 """
             }
         }
@@ -55,6 +54,7 @@ nextflow_process {
                 ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
+                input[3] = [ [id:"null"], []]
                 """
             }
         }
@@ -74,16 +74,15 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                        [id:"test"],
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
-                ]
+                input[0] = [ [id:"null"], [], [], []]
                 input[1] = [ [id:"null"], []]
                 input[2] = [
                     [id:"test"],
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
                 ]
                 """
             }
