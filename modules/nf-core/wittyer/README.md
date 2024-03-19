@@ -6,7 +6,6 @@ witty.er is a commercial tool from Illumina. The container provided for the witt
 2. Download the latest release.
     ```bash
     wget https://github.com/Illumina/witty.er/archive/refs/tags/<VERSION>.tar.gz
-    curl https://github.com/Illumina/witty.er/archive/refs/tags/<VERSION>.tar.gz -o <VERSION>.tar.gz 
     ```
 3. Uncompress the released package.
     ```bash
