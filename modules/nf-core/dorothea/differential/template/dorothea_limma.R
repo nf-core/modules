@@ -62,6 +62,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 opt <- list(
   output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
   diff_results = '$differential_result',
+  pkn_network = "$pkn_network",
   feature_id_col = "gene_id",
   reference_level = "$meta.reference",
   treatment_level = "$meta.target",
@@ -94,7 +95,7 @@ for ( ao in names(args_opt)){
 
 # Check if required parameters have been provided
 
-required_opts <- c('diff_results')
+required_opts <- c("diff_results", "pkn_network")
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -103,7 +104,7 @@ if (length(missing) > 0){
 
 # Check file inputs are valid
 
-for (file_input in c("diff_results")){
+for (file_input in c("diff_results", "pkn_network")){
   if (is.null(opt[[file_input]])) {
     stop(paste("Please provide", file_input), call. = FALSE)
   }
@@ -135,7 +136,8 @@ diff.table <-
   rownames_to_column(var = opt$diff_feature_id_col)
 
 # Load Regulons -----------------------------------------------------------
-net <- get_collectri(organism='human', split_complexes=FALSE)
+# net <- get_collectri(organism='human', split_complexes=FALSE)
+net = read.csv(opt$pkn_network, na.strings = c("", "NA"))
 
 # Prepare DEGs for ULM ----------------------------------------------------
 deg <- diff.table %>%
@@ -146,38 +148,6 @@ deg <- diff.table %>%
 # Run ULM -----------------------------------------------------------------
 contrast_acts <- run_ulm(mat=deg[, 't', drop=FALSE], net=net, .source='source', .target='target',
                          .mor='mor', minsize = 5)
-# Make TF_plot ------------------------------------------------------------
-n_tfs <- 30
-
-# Filter top TFs in both signs
-f_contrast_acts <- contrast_acts %>%
-  mutate(rnk = NA)
-msk <- f_contrast_acts$score > 0
-f_contrast_acts[msk, 'rnk'] <- rank(-f_contrast_acts[msk, 'score'])
-f_contrast_acts[!msk, 'rnk'] <- rank(-abs(f_contrast_acts[!msk, 'score']))
-tfs <- f_contrast_acts %>%
-  arrange(rnk) %>%
-  head(n_tfs) %>%
-  pull(source)
-f_contrast_acts <- f_contrast_acts %>%
-  filter(source %in% tfs)
-
-# Plot
-tf_plot = ggplot(f_contrast_acts, aes(x = reorder(source, score), y = score)) +
-  geom_bar(aes(fill = score), stat = "identity") +
-  scale_fill_gradient2(low = "darkblue", high = "indianred",
-                       mid = "whitesmoke", midpoint = 0) +
-  theme_minimal() +
-  theme(axis.title = element_text(face = "bold", size = 12),
-        axis.text.x =
-          element_text(angle = 45, hjust = 1, size =10, face= "bold"),
-        axis.text.y = element_text(size =10, face= "bold"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank()) +
-  xlab("TFs")
-
-
-
 # Generate outputs --------------------------------------------------------
 contrast.name <- paste(opt$target_level, opt$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
@@ -194,18 +164,6 @@ write.table(
   sep = '\t',
   quote = FALSE
 )
-
-# TF plot
-
-png(
-  file = paste(opt$output_prefix, 'dorothea.TF_plot.png', sep = '.'),
-  width = 600,
-  height = 600
-)
-tf_plot
-dev.off()
-
-
 
 # R SESSION INFO  ---------------------------------------------------------
 
