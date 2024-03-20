@@ -21,22 +21,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions
-                    ).match()
-                },
-                { assert snapshot(
-                    process.out.constant_sites
-                    ).match("constant_sites")
-                },
-                { assert snapshot(
-                    process.out.constant_sites_string
-                    ).match("constant_sites_string")
-                },
-                { assert snapshot(
-                    process.out.fasta
-                    ).match("fasta")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
