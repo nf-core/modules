@@ -9,6 +9,8 @@ nextflow_process {
 
     test("Test deepvariant(homo_sapiens - [bam, bai] - fasta - fai") {
         when {
+            config "./nextflow.config"
+
             process {
                 """
                 input[0] = [
@@ -40,6 +42,8 @@ nextflow_process {
     }
 
     test("Test deepvariant(homo_sapiens - [cram, crai, genome_bed] - fasta - fai)") {
+        config "./nextflow-intervals.config"
+
         when {
             process {
                 """
@@ -74,6 +78,8 @@ nextflow_process {
 
     test("Test deepvariant(homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai)") {
         when {
+            config "./nextflow.config"
+
             process {
                 """
                 input[0] = [
