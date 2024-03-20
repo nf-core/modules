@@ -1,23 +1,19 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "crabz_compress"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Compress files with crabz
 keywords:
-  - sort
-  - example
-  - genomics
+  - compression
+  - gzip
+  - zlib
 tools:
   - "crabz":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "Like pigz, but rust"
+      homepage: "https://github.com/sstadick/crabz"
+      documentation: "https://github.com/sstadick/crabz"
+      tool_dev_url: "https://github.com/sstadick/crabz"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -25,14 +21,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - file:
+      type: file
+      description: File to be compressed
+      pattern: "*.*"
+
 output:
   #Only when we have meta
   - meta:
@@ -40,16 +34,15 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - archive:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The compressed file
+      pattern: "*.gz"
 
 authors:
   - "@camlloyd"
