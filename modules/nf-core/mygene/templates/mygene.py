@@ -2,12 +2,26 @@
 import argparse
 import mygene
 import shlex
-import sys
+
+
+"""
+This python script uses the mygene module to query the MyGene.info API and
+retrieve the go terms associated with a list of gene ids. The gene ids should
+ideally be Ensembl or Entrez ids. The script generates two outputs:
+     1. A tsv file containing information related to each query. The columns
+     include query, mygene_id, go_id, go_term, go_evidence, go_category, 
+     symbol, name, and taxid.
+     2. A gmt file containing information related to each go term. Each row
+     includes the go id, go term, and the genes associated with that go term.
+
+Author: Suzanne Jin
+License: Apache 2.0 (same as the mygene library)
+"""
 
 
 class Arguments:
     """
-    This class contains the arguments of the module.
+    Parses the argments, including the ones coming from $task.ext.args.
     """
     def __init__(self) -> None:
         self.input = "$gene_list"
@@ -16,8 +30,8 @@ class Arguments:
             if "$task.ext.prefix" != "null"
             else "$meta.id"
         )
-        self.output_tsv = self.prefix + ".tsv"
         self.output_gmt = self.prefix + ".gmt"
+        self.output_tsv = self.prefix + ".tsv"
         self.parse_ext_args("$task.ext.args")
 
     def parse_ext_args(self, args_string: str) -> None:
@@ -31,9 +45,14 @@ class Arguments:
         # Parse the extended arguments
         args_list = shlex.split(args_string)  # Split the string into a list of arguments
         parser = argparse.ArgumentParser()
+        # input parameters
+        parser.add_argument('--columname', default='gene_id', help='Name of the column where the gene ids are stored in the input file. Default: gene_id')
+        # filtering parameters
         parser.add_argument('--species', default=None, help="Comma separated of common name of the species or taxon ids")
-        parser.add_argument('--filter_go_category', default=None, help="Comma separated list of GO categories to keep. Default: all")
-        parser.add_argument('--filter_go_evidence', default=None, help="Comma separated list of GO evidence codes to keep. Default: all")
+        parser.add_argument('--go_category', default=None, help="Comma separated list of GO categories to keep. Default: all")
+        parser.add_argument('--go_evidence', default=None, help="Comma separated list of GO evidence codes to keep. Default: all")
+        # output parameters
+        parser.add_argument('--generate_tsv', default=False, help="Also generate a tsv file with the gene based information. Default: False")
         args = parser.parse_args(args_list)
 
         # Convert "null" values to default values
@@ -41,6 +60,15 @@ class Arguments:
             value = getattr(args, attr)
             if value == "null":
                 setattr(args, attr, parser.get_default(attr))
+            
+        # check if the arguments are valid
+        if args.go_category:
+            args.go_category = args.go_category.upper()
+            for category in args.go_category.split(","):
+                if category not in ["BP", "MF", "CC"]:
+                    raise ValueError("The GO category should be one of BP, MF, or CC.")
+        if args.go_evidence:
+            args.go_evidence = args.go_evidence.upper()
 
         # Assign args attributes to self attributes
         for attr in vars(args):
@@ -49,31 +77,28 @@ class Arguments:
 
 class Version:
     """
-    This class contains the functions to get the versions of the modules used in the script.
+    Parse the versions of the modules used in the script.
     """
 
     @staticmethod
     def get_versions(modules: list) -> dict:
         """
-        This function takes a list of modules and returns a dictionary with the versions of each module.
-        This dictionary will also contain the version of python.
+        This function takes a list of modules and returns a dictionary with the
+        versions of each module.
         """
-        dic = {
-            **{"python": '.'.join(map(str, sys.version_info[:3]))},
-            **{module.__name__: module.__version__ for module in modules}
-        }
-        return dic
+        return {module.__name__: module.__version__ for module in modules}
 
     @staticmethod
     def format_yaml_like(data: dict, indent: int = 0) -> str:
-        """Formats a dictionary to a YAML-like string.
+        """
+        Formats a dictionary to a YAML-like string.
 
         Args:
             data (dict): The dictionary to format.
             indent (int): The current indentation level.
 
         Returns:
-            str: A string formatted as YAML.
+            yaml_str: A string formatted as YAML.
         """
         yaml_str = ""
         for key, value in data.items():
@@ -87,27 +112,35 @@ class Version:
 
 class MyGene:
     """
-    This class contains the functions to query the MyGene.info API.
+    This class will query the MyGene.info API and retrieve the go terms 
+    associated with a list of gene ids.
+
+    Args:
+        query (list) : 
+            A list of gene ids. Ideally Ensembl or Entrez ids.
+        species (str) : 
+            Comma separated of common name of the species or taxon ids.
+            If not provided, the API will return information for all species.
+        go_category (str) : 
+            Comma separated list of GO categories to keep. If not provided,
+            the API will return all categories.
+        go_evidence (str) : 
+            Comma separated list of GO evidence codes to keep. If not provided,
+            the API will return all evidence codes.
     """
-    def __init__(self, filename, species:str = None, filter_go_category: str = None, filter_go_evidence: str = None) -> None:
-        self.query = self.load_list(filename)
+    def __init__(self, query: list, species:str = None, go_category: str = None, go_evidence: str = None) -> None:
+        self.query = query
         self.species = species
-        self.filter_go_category = filter_go_category
-        self.filter_go_evidence = filter_go_evidence
+        self.go_category = go_category
+        self.go_evidence = go_evidence
         self.mg = mygene.MyGeneInfo()
+
+        # query gene ids
         self.idmap = self.query2idmap()
+
+        # fetch and parse go information into the correct format
         self.gene_based_info = self.parse_gene_based_info()
         self.go_based_info = self.parse_go_based_info()
-
-    def load_list(self, filename: str) -> list:
-        """
-        It reads the a list from a file.
-        Each row is an element of the list.
-        """
-        with open(filename, "r") as f:
-            mylist = f.readlines()
-        mylist = [element.strip() for element in mylist]
-        return mylist
 
     def query2idmap(self) -> dict:
         """
@@ -115,7 +148,7 @@ class MyGene:
         """
         return {dic['_id']: dic['query'] for dic in self.mg.querymany(self.query, species=self.species) if '_id' in dic}
 
-    def parse_gene_based_info(self) -> dict:
+    def parse_gene_based_info(self, fields="go,symbol,name,taxid") -> dict:
         """
         It returns the parsed information for all the query ids.
         The returned information is a dictionary {query gene: {}} of dictionaries with the following keys:
@@ -131,17 +164,17 @@ class MyGene:
         Note that this is a query gene centric dictionary.
         """
         info = {}
-        for dic in self.mg.getgenes(list(set(self.idmap)), fields="symbol,name,taxid,go", species=self.species):
+        for dic in self.mg.getgenes(list(set(self.idmap)), fields=fields, species=self.species):
 
             if 'go' not in dic:
                 continue
-            if self.filter_go_category:
-                dic['go'] = {category: dic['go'][category] for category in self.filter_go_category.split(",") if category in dic['go']}
+            if self.go_category:
+                dic['go'] = {category: dic['go'][category] for category in self.go_category.split(",") if category in dic['go']}
             for category, go_list in dic['go'].items():
                 if not isinstance(go_list, list):
                     go_list = [go_list]
                 for go in go_list:
-                    if (self.filter_go_evidence) and (go['evidence'] not in self.filter_go_evidence.split(",")):
+                    if (self.go_evidence) and (go['evidence'] not in self.go_evidence.split(",")):
                         continue
 
                     current_info = {
@@ -198,15 +231,35 @@ class MyGene:
                 f.write(go_id + "\\t" + go_list[0] + "\\t" + "\\t".join(tmp) + "\\n")
 
 
+def load_list(filename: str, columname: str) -> list:
+        """
+        It loads the list of gene ids from a file.
+        The columname is the name of the column where the gene ids are stored.
+        """
+        if filename.split('.')[-1] == 'tsv':
+            sep = "\\t"
+        elif filename.split('.')[-1] == 'csv':
+            sep = ","
+        else:
+            raise ValueError("The input file extension should be either tsv or csv.")
+        with open(filename, 'r') as f:
+            idx = f.readline().strip().split(sep).index(columname)
+            return [line.strip().split(sep)[idx] for line in f]
+
+
 if __name__ == "__main__":
     args = Arguments()
+    
+    # load gene list
+    gene_list = load_list(args.input, args.columname)
 
     # parse info for each gene
-    mg = MyGene(args.input, args.species, args.filter_go_category, args.filter_go_evidence)
+    mg = MyGene(gene_list, args.species, args.go_category, args.go_evidence)
 
     # save info
-    mg.save_to_tsv(args.output_tsv)
     mg.save_to_gmt(args.output_gmt)
+    if args.generate_tsv:
+        mg.save_to_tsv(args.output_tsv)
 
     # write versions to file
     versions_this_module = {}

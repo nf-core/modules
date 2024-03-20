@@ -1,0 +1,30 @@
+nextflow_process {
+
+    name "Test Process MYGENE"
+    script "../main.nf"
+    process "MYGENE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mygene"
+
+    test("mygene - txt") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id : 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.gmt).match("gmt") }
+            )
+        }
+    }
+}
