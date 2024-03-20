@@ -1,19 +1,21 @@
-name: picard_addorreplacereadgroups
+name: gatk4_addorreplacereadgroups
 description: Assigns all the reads in a file to a single new read-group
 keywords:
   - add
   - replace
   - read-group
   - picard
+  - gatk
 tools:
-  - picard:
+  - gatk4:
       description: |
-        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
-        data and formats such as SAM/BAM/CRAM and VCF.
-      homepage: https://broadinstitute.github.io/picard/
-      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
-      tool_dev_url: https://github.com/broadinstitute/picard
-      licence: ["MIT"]
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
 input:
   - meta:
       type: map
