@@ -24,12 +24,32 @@ input:
       description: |
         Path to file containing input raw RNA expression matrix in 10x hdf5 format
         pattern: "*.{h5}"
+  - input_hto_csv_file:
+      type: string
+      description: |
+        Path to file containing input HTO (antibody tag) count matrix in CSV format.
+      pattern: "*.{csv}"
+  - output_name:
+      type: string
+      description: |
+        Output name. All outputs will use it as the prefix.
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'sample1' ]
+  - output_name_demux:
+      type: file
+      description: |
+        RNA expression matrix with demultiplexed sample identities in Zarr format.
+      pattern: "*_demux.zarr"
+
+  - output_name.out.demuxEM:
+      type: file
+      description: |
+        DemuxEM-calculated results in Zarr format, containing two datasets, one for HTO and one for RNA.
+      pattern: "*.out.demuxEM.zarr"
 
 authors:
   - "@mari-ga"
