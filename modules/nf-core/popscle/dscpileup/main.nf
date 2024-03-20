@@ -15,14 +15,14 @@ process POPSCLE_DSCPILEUP {
     tuple val(meta), path('*.plp.gz'), emit: plp
     tuple val(meta), path('*.var.gz'), emit: var
     tuple val(meta), path('*.umi.gz'), emit: umi
-    path 'versions.yml'           , emit: versions
+    path 'versions.yml'              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
@@ -39,8 +39,8 @@ process POPSCLE_DSCPILEUP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """

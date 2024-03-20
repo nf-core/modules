@@ -28,10 +28,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-		{ assert snapshot(
-                        file(process.out.cel[0][1]).name,
-                    ).match("sample1.cel.gz")
-                },
+		        { assert snapshot(file(process.out.cel[0][1]).name).match("sample1.cel.gz")},
             )
         }
 
@@ -57,10 +54,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("stub-versions") },
-		{ assert snapshot(
-                        file(process.out.plp[0][1]).name,
-                    ).match("sample1.plp.gz")
-                },
+		        { assert snapshot(file(process.out.plp[0][1]).name).match("sample1.plp.gz")},
             )
         }
 
