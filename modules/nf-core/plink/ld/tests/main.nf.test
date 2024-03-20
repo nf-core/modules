@@ -23,8 +23,10 @@ nextflow_process {
                     [id:"test"],
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)]
                 input[2] = [ [id:"null"], []]
-                input[3] = [ [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)]
+                input[3] = [ 
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)
+                    ]
                 """
             }
         }
