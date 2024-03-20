@@ -11,13 +11,8 @@ process DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "conda-forge::decoupler-py=1.6.0"
     container = "ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d"
-
 
     input:
     tuple val(meta), path(mat)
@@ -25,7 +20,8 @@ process DECOUPLER {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*__decoupler.tsv"), emit: dc_out
+    tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
+    tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
     // TODO nf-core: List additional required output channels/values here
     path("versions.yml"), emit: versions
 
