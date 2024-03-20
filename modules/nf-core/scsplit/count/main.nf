@@ -8,9 +8,9 @@ process SCSPLIT_COUNT {
     tuple val(meta), path(bam), path(bai), path(vcf), path(barcode)
 
     output:
-    tuple val(meta), path("*alt_filtered.csv"), emit: alt_filtered
-    tuple val(meta), path("*ref_filtered.csv"), emit: ref_filtered
-    tuple val(meta), path("*scSplit.log")     , emit: log
+    tuple val(meta), path("*_alt_filtered.csv"), emit: alt_filtered
+    tuple val(meta), path("*_ref_filtered.csv"), emit: ref_filtered
+    tuple val(meta), path("*_scSplit.log")     , emit: log
     path "versions.yml"                      , emit: versions
 
     when:
