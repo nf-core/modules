@@ -8,11 +8,11 @@ import shlex
 This python script uses the mygene module to query the MyGene.info API and
 retrieve the go terms associated with a list of gene ids. The gene ids should
 ideally be Ensembl or Entrez ids. The script generates two outputs:
-     1. A tsv file containing information related to each query. The columns
-     include query, mygene_id, go_id, go_term, go_evidence, go_category, 
-     symbol, name, and taxid.
-     2. A gmt file containing information related to each go term. Each row
-     includes the go id, go term, and the genes associated with that go term.
+    1. A tsv file containing information related to each query. The columns
+        include query, mygene_id, go_id, go_term, go_evidence, go_category,
+        symbol, name, and taxid.
+    2. A gmt file containing information related to each go term. Each row
+        includes the go id, go term, and the genes associated with that go term.
 
 Author: Suzanne Jin
 License: Apache 2.0 (same as the mygene library)
@@ -128,19 +128,19 @@ class Version:
 
 class MyGene:
     """
-    This class will query the MyGene.info API and retrieve the go terms 
+    This class will query the MyGene.info API and retrieve the go terms
     associated with a list of gene ids.
 
     Args:
-        query (list) : 
+        query (list) :
             A list of gene ids. Ideally Ensembl or Entrez ids.
-        species (str) : 
+        species (str) :
             Comma separated of common name of the species or taxon ids.
             If not provided, the API will return information for all species.
-        go_category (str) : 
+        go_category (str) :
             Comma separated list of GO categories to keep. If not provided,
             the API will return all categories.
-        go_evidence (str) : 
+        go_evidence (str) :
             Comma separated list of GO evidence codes to keep. If not provided,
             the API will return all evidence codes.
     """
@@ -288,18 +288,18 @@ if __name__ == "__main__":
     # parse and print arguments
     args = Arguments()
     args.print_args()
-    
+
     # load gene list
     gene_list = load_list(args.input, args.columname)
 
     # run mygene api
     mg = MyGene(
-            gene_list, 
-            species=args.species, 
+            gene_list,
+            species=args.species,
             scopes=args.scopes,
             entrezonly=args.entrezonly,
             ensemblonly=args.ensemblonly,
-            go_category=args.go_category, 
+            go_category=args.go_category,
             go_evidence=args.go_evidence
         )
 
