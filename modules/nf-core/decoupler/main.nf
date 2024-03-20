@@ -36,7 +36,7 @@ process DECOUPLER {
 
     script:
     def args = task.ext.args ?: '{}'
-    def methods = task.ext.args ?: 'None'
+    def methods = task.ext.methods ?: 'None'
     def source = task.ext.source ?: "source"
     def target = task.ext.target ?: "target"
     def weight = task.ext.weight ?: "weight"
