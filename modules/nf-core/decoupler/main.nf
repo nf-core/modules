@@ -31,7 +31,7 @@ process DECOUPLER {
     net = pd.read_csv("${net}", sep="\t", index_col=0)
 
     # Parsing arguments
-    args = "${args}"
+    args = ${args}
     parsedargs = {'args': {}}
 
     for k, v in args.items():
