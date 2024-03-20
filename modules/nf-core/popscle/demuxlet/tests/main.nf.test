@@ -1,0 +1,66 @@
+// nf-core modules test popscle/demuxlet
+nextflow_process {
+
+    name "Test Process POPSCLE_DEMUXLET"
+    script "../main.nf"
+    process "POPSCLE_DEMUXLET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "popscle"
+    tag "popscle/demuxlet"
+
+    test("demultiplexing - bam") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'sample1'],
+                    [],
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam']),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("demultiplexing - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                
+                input[0] = [
+                    [ id:'sample1'],
+                    [],
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam']),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
