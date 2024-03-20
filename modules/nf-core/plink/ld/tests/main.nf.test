@@ -21,11 +21,10 @@ nextflow_process {
                 input[0] = [ [id:"null"], [], [], []]
                 input[1] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
-                ]
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)]
                 input[2] = [ [id:"null"], []]
-                input[3] = [[id:"test"],
-                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
+                input[3] = [ [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)]
                 """
             }
         }
@@ -33,7 +32,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.version).match("version") },
-                { assert snapshot(process.out.hwe).match() }
+                { assert snapshot(process.out.ld).match() }
             )
         }
     }
@@ -54,15 +53,15 @@ nextflow_process {
                 ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
-                input[3] = [[id:"test"],
-                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
-                    """
+                input[3] = [ [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)]
+                """
             }
         }
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.hwe).match() }
+                { assert snapshot(process.out.ld).match() }
             )
         }
     }
@@ -80,15 +79,15 @@ nextflow_process {
                 input[2] = [
                     [id:"test"],
                     file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)]
-                input[3] = [[id:"test"],
-                    file(['https://github.com/DavideBag/test-datasets-dev/blob/modules/data/genomics/homo_sapiens/popgen/plink_random_selected_snp.txt'], checkIfExists: true) ]
-                    """
+                input[3] = [ [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)]
+                """
             }
         }
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.hwe).match() }
+                { assert snapshot(process.out.ld).match() }
             )
         }
     }

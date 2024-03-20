@@ -22,6 +22,7 @@ process PLINK_LD {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
@@ -46,9 +47,8 @@ process PLINK_LD {
     plink \\
         $input_command \\
         --threads $task.cpus \\
-        --r2 \\
-        $args \\
-        $snpfile \\
+        $args $snpfile \\
+        --r2 $args2 \\
         --out $prefix
 
     cat <<-END_VERSIONS > versions.yml
@@ -60,6 +60,7 @@ process PLINK_LD {
 
     stub:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
