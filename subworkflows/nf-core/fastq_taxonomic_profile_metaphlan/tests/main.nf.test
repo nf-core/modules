@@ -1,4 +1,3 @@
-// nf-core subworkflows test fastq_taxonomic_profile_metaphlan
 nextflow_workflow {
 
     name "Test Subworkflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
@@ -19,7 +18,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here.
                 input[0] = Channel.of (
                     [
                         [ id:'test1', single_end:false ], // meta map
@@ -36,8 +34,6 @@ nextflow_workflow {
                             ]
                     ]
                 )
-
-
                 """
             }
         }

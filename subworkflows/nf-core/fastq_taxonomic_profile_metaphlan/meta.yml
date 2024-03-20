@@ -11,6 +11,7 @@ components:
   - metaphlan/makedb
   - metaphlan/metaphlan
   - metaphlan/mergemetaphlantables
+
 input:
   - meta:
       type: map
@@ -23,6 +24,7 @@ input:
         The input channel containing the FASTQ files
         Structure: [ val(meta), path(fastqs) ]
       pattern: "*.{fastq/fastq.gz}"
+
 output:
   - meta:
       type: map
