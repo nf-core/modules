@@ -583,6 +583,8 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
           - profile: singularity
             tags: bases2fastq
+          - profile: conda
+            tags: wittyer
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
