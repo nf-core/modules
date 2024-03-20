@@ -1,5 +1,5 @@
 process ASHLAR {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -46,7 +46,7 @@ process ASHLAR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ashlar: \$(ashlar --version 2>&1 | sed 's/^.*ashlar //; s/Using.*\$//' )
+        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
     END_VERSIONS
     """
 }
