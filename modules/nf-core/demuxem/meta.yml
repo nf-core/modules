@@ -19,7 +19,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-
+  - input_raw_gene_bc_matrices_h5:
+      type: string
+      description: |
+        Path to file containing input raw RNA expression matrix in 10x hdf5 format
+        pattern: "*.{h5}"
 output:
   - meta:
       type: map
