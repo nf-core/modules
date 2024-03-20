@@ -21,16 +21,17 @@ process POPSCLE_DEMUXLET {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = plp_input ? "--plp ${plp_input}" : "--sam $bam"
-
+    def VERSION ='0.1'
     """
     popscle demuxlet \\
         $input  \\
         --vcf ${donor_genotype} \\
-        --out $prefix
+        --out $prefix \\
+	$args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        popscle: v0.1
+        popscle demuxlet: $VERSION
     END_VERSIONS
     """
 
@@ -38,13 +39,14 @@ process POPSCLE_DEMUXLET {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = plp_input ? "--plp ${plp_input}" : "--sam $bam"
-
-    """
+    def VERSION ='0.1'
+    
+"""
     touch ${prefix}.best
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        popscle: v0.1
+        popscle demuxlet: $VERSION
     END_VERSIONS
     """
 }
