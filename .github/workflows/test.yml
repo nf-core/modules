@@ -506,6 +506,8 @@ jobs:
           - profile: conda
             tags: bclconvert
           - profile: conda
+            tags: celesta
+          - profile: conda
             tags: cellpose
           - profile: conda
             tags: cellranger/count
@@ -591,6 +593,8 @@ jobs:
             tags: bases2fastq
           - profile: conda
             tags: wittyer
+          - profile: conda
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
