@@ -30,6 +30,7 @@ process MERFIN_HIST {
     """
     merfin -hist \\
         -threads $task.cpus \\
+        -memory $task.memory \\
         $args \\
         -sequence $fasta_assembly \\
         -readmers $meryl_db_reads \\
