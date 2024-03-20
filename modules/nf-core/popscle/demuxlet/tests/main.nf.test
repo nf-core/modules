@@ -31,7 +31,80 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-		{ assert snapshot(
+		        { assert snapshot(
+                        file(process.out.demuxlet_result[0][1]).name,
+                    ).match("sample1.best")
+                },
+            )
+        }
+
+    }
+
+    test ("demultiplexing - bam - pileup"){
+        setup { 
+            run("pileup") {
+                script "../../dscpileup/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'sample1' ], // meta map
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+
+        when {
+            process {
+                """
+                plp_prefix = "${pileup.out.plp.parent}/${pileup.out.plp.baseName}"
+                input[0] = [
+                    [ id:'sample1'],
+                    plp_prefix,
+                    [],
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+		        { assert snapshot(
+                        file(process.out.demuxlet_result[0][1]).name,
+                    ).match("sample1.best")
+                },
+            )
+        }
+            
+        }
+    }
+
+    test("demultiplexing - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'sample1' ],
+                    [],
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam']),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+		        { assert snapshot(
                         file(process.out.demuxlet_result[0][1]).name,
                     ).match("sample1.best")
                 },

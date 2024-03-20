@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "popscle_demuxlet"
-description: write your description here
+description: Software to deconvolute sample identity and identify multiplets when multiple samples are pooled by barcoded single cell sequencing and external genotyping data for each sample is available.
 keywords:
   - popscle
   - demultiplexing
@@ -23,9 +23,9 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'sample1']`
 
-  - plp_input:
-      type: directory
-      description: Pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
+  - plp_prefix:
+      type: val
+      description: Prefix of pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
 
   - bam:
       type: file
