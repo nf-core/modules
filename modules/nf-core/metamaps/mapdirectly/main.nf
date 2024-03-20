@@ -39,4 +39,18 @@ process METAMAPS_MAPDIRECTLY {
         metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
     END_VERSIONS
     """
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_classification_res
+    touch ${prefix}_classification_res.meta
+    touch ${prefix}_classification_res.meta.unmappedReadsLengths
+    touch ${prefix}_classification_res.parameters
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
+    END_VERSIONS
+    """
 }
