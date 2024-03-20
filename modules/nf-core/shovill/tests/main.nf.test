@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*spades.fasta" }
             )
@@ -49,7 +49,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*skesa.fasta" }
             )
@@ -72,7 +72,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.versions.get(0)).md5 == "aa657c335ef793da97b3d627140e7fb2" },
+                { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*megahit.fasta" }
             )
