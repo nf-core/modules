@@ -3,13 +3,14 @@ nextflow_process {
     name "test Plink GWAS function"
     script "../main.nf"
     process "PLINK_GWAS"
-    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "plink"
     tag "plink/gwas"
 
     test("plink - VCF") {
+
+        config "./nextflow.config"
 
         when {
             params {
@@ -39,7 +40,41 @@ nextflow_process {
         }
     }
 
+    test("plink - VCF with phenotype name") {
+
+        config "./pheno_name.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe_phenoname'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(process.out.gwas).match() }
+            )
+        }
+    }
+
     test("plink - binary") {
+
+        config "./nextflow.config"
 
         when {
             params {
@@ -69,6 +104,8 @@ nextflow_process {
 
     test("plink - BCF") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 outdir = "test"
@@ -91,6 +128,38 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.gwas).match() }
+            )
+        }
+    }
+
+    test("plink - BCF with phenotype name") {
+
+        config "./pheno_name.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe_phenoname'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.version).match("version") },
                 { assert snapshot(process.out.gwas).match() }
             )
         }

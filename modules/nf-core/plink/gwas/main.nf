@@ -32,11 +32,11 @@ process PLINK_GWAS {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
-        input_command = "--vcf ${vcf} --pheno ${phe} --allow-no-sex"
+        input_command = "--vcf ${vcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${phe} --allow-no-sex"
+        input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
@@ -69,10 +69,10 @@ process PLINK_GWAS {
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno} --allow-no-sex"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno} --allow-no-sex"
+        input_command = "--bcf ${bcf} --pheno ${pheno}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
