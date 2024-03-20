@@ -168,10 +168,10 @@ class MyGene:
         Each dictionary contains the annotations for the corresponding query gene.
         """
         return self.mg.getgenes(list(set(self.idmap)), fields=self.fields, species=self.species)
-    
+
     def parse_go_based_info(self) -> dict:
         """
-        It queries the annotations for all query ids and then parses a go 
+        It queries the annotations for all query ids and then parses a go
         centric dictionary. It is a dictionary of dictionaries with the
         following format: {{go_id1: [go_term, gene1, gene2, ...]}, ...}
         """
@@ -197,7 +197,7 @@ class MyGene:
 
     def parse_gene_based_info(self) -> dict:
         """
-        It queries the annotations for all query ids and then parses a go 
+        It queries the annotations for all query ids and then parses a go
         centric dictionary.
 
         At the end it returns a dictionary {query gene: {}} of dictionaries
@@ -231,7 +231,7 @@ class MyGene:
                     }
                     info[self.idmap[dic['_id']]] = current_info
         return info
-    
+
     def parse_and_save_to_gmt(self, filename: str) -> list:
         """
         It parses and saves go centric information to a gmt file.
@@ -294,7 +294,7 @@ if __name__ == "__main__":
             go_category=args.go_category,
             go_evidence=args.go_evidence
         )
-    
+
     # parse annotations and save output files
     mg.parse_and_save_to_gmt(args.output_gmt)
     if args.generate_tsv:
