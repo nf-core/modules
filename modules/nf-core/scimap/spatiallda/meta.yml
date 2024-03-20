@@ -20,7 +20,7 @@ input:
         e.g. `[ id:'sample1', single_end:false ]`
   - phenotyped:
       type: file
-      description: Phenotyped CSV file
+      description: Phenotyped CSV file, it must contain the columns, sampleID, X, Y and Phenotype.
       pattern: "*.{csv}"
 output:
   - meta:
