@@ -1,11 +1,11 @@
-process PICARD_ADDORREPLACEREADGROUPS {
+process GATK4_ADDORREPLACEREADGROUPS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.1.1--hdfd78af_0' :
-        'biocontainers/picard:3.1.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -29,7 +29,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
@@ -37,8 +37,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     if ("$bam" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
-    picard \\
-        -Xmx${avail_mem}M \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         AddOrReplaceReadGroups \\
         $args \\
         $reference \\
@@ -48,7 +47,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+        gatk4: \$(echo \$(gatk AddOrReplaceReadGroups --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -66,7 +65,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+        gatk4: \$(echo \$(gatk AddOrReplaceReadGroups --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }
