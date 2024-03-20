@@ -24,7 +24,7 @@ nextflow_process {
                 input[2] = [ [id:"null"], []]
                 input[3] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe'], checkIfExists: true)
                 ]
                 """
             }
@@ -82,7 +82,7 @@ nextflow_process {
                 ]
                 input[3] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe'], checkIfExists: true)
                 ]
                 """
             }

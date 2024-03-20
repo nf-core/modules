@@ -48,10 +48,10 @@ input:
       type: file
       description: Variant calling file (vcf)
       pattern: "*.{vcf}"
-  - pheno:
+  - phe:
       type: file
-      description: PLINK file containing phenotype information
-      pattern: "*.{pheno}"
+      description: PLINK file containing family IDs in the first column, within-family IDs in the second column and phenotype information in the third column
+      pattern: "*.{phe}"
 
 output:
   - meta:

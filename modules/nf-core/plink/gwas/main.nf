@@ -12,7 +12,7 @@ process PLINK_GWAS {
     tuple val(meta), path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
-    tuple val(meta4), path(pheno)
+    tuple val(meta4), path(phe), val(pheno), val(allow-no-sex)
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
@@ -32,11 +32,11 @@ process PLINK_GWAS {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
-        input_command = "--vcf ${vcf} --pheno ${pheno}"
+        input_command = "--vcf ${vcf} --pheno ${phe} --allow-no-sex"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno}"
+        input_command = "--bcf ${bcf} --pheno ${phe} --allow-no-sex"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
@@ -69,10 +69,10 @@ process PLINK_GWAS {
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno} --allow-no-sex"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno}"
+        input_command = "--bcf ${bcf} --pheno ${pheno} --allow-no-sex"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
