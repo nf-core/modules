@@ -46,5 +46,4 @@ process LEVIOSAM2_INDEX {
         leviosam2: \$(leviosam2 --version)
     END_VERSIONS
     """
-}
-    
+}    
