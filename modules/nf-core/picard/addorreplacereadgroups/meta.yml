@@ -20,6 +20,16 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
       description: Input BAM file
@@ -54,10 +64,6 @@ output:
       type: file
       description: Output CRAM file
       pattern: "*.{cram}"
-  - crai:
-      type: file
-      description: An optional CRAM index file
-      pattern: "*.{crai}"
 authors:
   - "@sateeshperi"
   - "@mjcipriano"
