@@ -27,7 +27,7 @@ process POPSCLE_DEMUXLET {
         $input  \\
         --vcf ${donor_genotype} \\
         --out $prefix \\
-	$args
+	    $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,8 +40,7 @@ process POPSCLE_DEMUXLET {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = plp_input ? "--plp ${plp_input}" : "--sam $bam"
     def VERSION ='0.1'
-    
-"""
+    """
     touch ${prefix}.best
 
     cat <<-END_VERSIONS > versions.yml
