@@ -84,14 +84,24 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.from([
-                        [ id:'test_sars', single_end:true ], // meta map
-                        [file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)]
-                        ],[
-                        [ id:'test_fragilis', single_end:true ], // meta map
-                        [file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)]
-                        ])
-                input[1] = MERYL_COUNT.out.meryl_db
+                Channel.from([
+                    [ id:'test_sars', single_end:true ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ],[
+                    [ id:'test_fragilis', single_end:true ], // meta map
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    ]).set{ input_zero_ch }
+
+                input_zero_ch.join( MERYL_COUNT.out.meryl_db ).multiMap{ meta, asm, meryl_db ->
+                    asm_ch: [meta, asm]
+                    meryl_ch: [meta, meryl_db]
+                }.set{ multimap_inputs_ch }
+                
+                multimap_inputs_ch.asm_ch.view()
+                multimap_inputs_ch.meryl_ch.view()
+
+                input[0] = multimap_inputs_ch.asm_ch
+                input[1] = multimap_inputs_ch.meryl_ch
                 input[2] = []
                 input[3] = []
                 input[4] = 10
@@ -611,17 +621,33 @@ nextflow_process {
         when {
             process {
                 """
+                Channel.from([
+                    [ id:'test_sars', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ],[
+                    [ id:'test_fragilis', single_end:false ], // meta map
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    ]).set{ input_zero_ch }
+
+                input_zero_ch.view()
+
+                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db ).multiMap{ meta, asm, meryl_db ->
+                    asm_ch: [meta, asm]
+                    meryl_ch: [meta, meryl_db]
+                }.set{ multimap_inputs_ch }
+                
+                multimap_inputs_ch.asm_ch.view()
+                multimap_inputs_ch.meryl_ch.view()
+
                 // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
                 // we had to do a hack to get this file's path
                 GENOMESCOPE2.out.summary.map{ meta, sum -> {
                     def res = sum.getParent();
                     [res/"lookup_table.txt"]
                     }}.set{ lk_ch }
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    ]
-                input[1] = MERYL_COUNT_READS.out.meryl_db
+                
+                input[0] = multimap_inputs_ch.asm_ch
+                input[1] = multimap_inputs_ch.meryl_ch
                 input[2] = lk_ch
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
                 input[4] = 10
