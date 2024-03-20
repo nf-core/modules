@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vg_call"
-## TODO nf-core: Add a description of the module and list keywords
 description: (Structure) varian calling of a graph
 keywords:
   - vg
@@ -11,13 +10,11 @@ keywords:
   - structural variants
 tools:
   - "vg":
-      ## TODO nf-core: Add a description and other details for the software below
       description: Variation graph data structures, interchange formats, alignment, genotyping, and variant calling methods
       homepage: https://github.com/vgteam/vg
       documentation: https://github.com/vgteam/vg/wiki
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -26,7 +23,6 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
   
-  ## TODO nf-core: Delete / customise this example input
   - graph:
       type: file
       description: A graph file preferably contstructed with vg
@@ -36,7 +32,6 @@ input:
       description: vg-defined file for read support of the variant calling
       pattern: "*.pack"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -49,7 +44,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - vcf:
       type: file
       description: The variant calling file
