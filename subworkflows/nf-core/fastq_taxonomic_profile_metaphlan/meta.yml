@@ -1,51 +1,52 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_taxonomic_profile_metaphlan"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Subworkflow to taxonomically classify metagenomic sequencing data using MetaPhlAn
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - metaphlan
+  - metagenomics
+  - database
+  - classification
+  - merge
+  - profiles
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - metaphlan/makedb
+  - metaphlan/metaphlan
+  - metaphlan/mergemetaphlantables
 input:
-  - ch_bam:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:‘test’, single_end:false ]
+  - ch_fastq:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        The input channel containing the FASTQ files
+        Structure: [ val(meta), path(fastqs) ]
+      pattern: "*.{fastq/fastq.gz}"
 output:
-  - bam:
-      type: file
+  - meta:
+      type: map
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Groovy Map containing sample information
+        e.g. [ id:‘test’, single_end:false ]
   - versions:
       type: file
       description: |
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
+  - txt:
+      type: file
+      description: |
+        Combined MetaPhlAn table
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+
 authors:
-  - "@lgonsa"
+  - "@LaurenGonsalves"
+  - "@hhayden01"
+  - "@ErikLHendrickson"
+  - "@CarsonJM"
 maintainers:
-  - "@lgonsa"
+  - "@LaurenGonsalves"
+  - "@CarsonJM"
