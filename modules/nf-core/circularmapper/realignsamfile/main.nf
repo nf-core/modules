@@ -10,6 +10,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
+    val(elongation_factor)
 
     output:
     tuple val(meta), path("*_realigned.bam")    , emit: bam
@@ -26,6 +27,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     realignsamfile \\
         -Xmx${task.memory.toGiga()}g \\
         ${args} \\
+        -e $elongation_factor \\
         -i ${bam} \\
         -r ${fasta}
 

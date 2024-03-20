@@ -9,6 +9,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
 
     input:
     tuple val(meta), path(fasta)
+    val(elongation_factor)
+    val(elongation_sequence)
 
     output:
     tuple val(meta), path("*_${task.ext.prefix}.${fasta.extension}") , emit: fasta
@@ -25,8 +27,10 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     """
     circulargenerator \\
         -Xmx${task.memory.toGiga()}g \\
-        $args \\
-        -i $fasta
+        -i $fasta \\
+        -e $elongation_factor \\
+        -s $elongation_sequence
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

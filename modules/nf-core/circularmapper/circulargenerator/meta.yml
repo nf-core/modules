@@ -22,6 +22,12 @@ input:
   - fasta:
       type: file
       description: Input genome fasta file
+  - elongation_factor:
+      type: integer
+      description: the elongation factor
+  - elongation_sequence:
+      type: string
+      description: the names of the sequences that should to be elongated.
 output:
   - meta:
       type: map

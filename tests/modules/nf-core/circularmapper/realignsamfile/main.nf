@@ -23,6 +23,8 @@ workflow test_circularmapper_realignsamfile {
     fasta = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        [ elongation_factor:'500' ],
+        [ elongation_sequence:'MT192765.1']
     ]
 
     CIRCULARMAPPER_CIRCULARGENERATOR ( fasta )
