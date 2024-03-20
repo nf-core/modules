@@ -9,8 +9,8 @@ process KRAKEN2_ADD {
 
     input:
     tuple val(meta), path(fasta)
-    path taxonomy_names, stageAs: 'taxonomy/*'
-    path taxonomy_nodes, stageAs: 'taxonomy/*'
+    path taxonomy_names, stageAs: 'taxonomy/names.dmp'
+    path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
     path accession2taxid, stageAs: 'taxonomy/*'
 
     output:
