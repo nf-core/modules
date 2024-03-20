@@ -3,7 +3,9 @@ process PRESIDENT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "docker://rkimf1/president:0.6.8--4616f6d"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/president:0.6.8--pyhdfd78af_0' :
+        'biocontainers/president:0.6.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
