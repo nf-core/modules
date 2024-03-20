@@ -1,0 +1,63 @@
+// nf-core modules test popscle/dscpileup
+nextflow_process {
+
+    name "Test Process POPSCLE_DSCPILEUP"
+    script "../main.nf"
+    process "POPSCLE_DSCPILEUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "popscle"
+    tag "popscle/dscpileup"
+
+    test("demultiplexing - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ], // meta map
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+		        { assert snapshot(file(process.out.cel[0][1]).name).match("sample1.cel.gz")},
+            )
+        }
+
+    }
+
+    test("demultiplexing - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'sample1' ], // meta map
+                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("stub-versions") },
+		        { assert snapshot(file(process.out.plp[0][1]).name).match("sample1.plp.gz")},
+            )
+        }
+
+    }
+
+}
