@@ -27,10 +27,11 @@ process MERFIN_HIST {
     def prefix                  = task.ext.prefix ?: "${meta.id}"
     def optional_lookup_table   = lookup_table ? "-prob ${lookup_table}" : ""
     def optional_seqmers        = seqmers ? "-seqmers ${seqmers}" : ""
+    def mem_adjust              = "${task.memory}".replaceAll(' ', '')
     """
     merfin -hist \\
         -threads $task.cpus \\
-        -memory $task.memory \\
+        -memory $mem_adjust \\
         $args \\
         -sequence $fasta_assembly \\
         -readmers $meryl_db_reads \\
