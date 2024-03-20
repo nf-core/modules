@@ -27,7 +27,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions_structure") }
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions_structure") }
+                { assert snapshot(process.out.versions).match("versions1") }
             )
         }
 
