@@ -48,4 +48,18 @@ process STRELKA_GERMLINE {
         strelka: \$( configureStrelkaGermlineWorkflow.py --version )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.genome.vcf.gz
+    touch ${prefix}.genome.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.variants.vcf.gz
+    touch ${prefix}.variants.vcf.gz.tbi
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        strelka: \$( configureStrelkaSomaticWorkflow.py --version )
+    END_VERSIONS
+    """
 }
