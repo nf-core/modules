@@ -20,9 +20,9 @@ process SVTYPER_SVTYPERSSO {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf  = vcf ? "--input_vcf ${vcf}" : ""
+    def vcf    = vcf ? "--input_vcf ${vcf}" : ""
     def fasta  = fasta ? "--ref_fasta ${fasta}" : ""
     if ("$vcf" == "${prefix}.vcf") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -43,7 +43,7 @@ process SVTYPER_SVTYPERSSO {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.json
