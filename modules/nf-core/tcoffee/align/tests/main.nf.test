@@ -147,4 +147,31 @@ nextflow_process {
         }
 
     }
+
+    test("fasta - align_with_lib") {
+
+        config "./lib.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.alignment).match("alignment - lib") },
+                { assert path(process.out.lib.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match("versions_lib") }
+            )
+        }
+    }
 }
