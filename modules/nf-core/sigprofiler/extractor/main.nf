@@ -5,7 +5,7 @@ process SIGPROFILER_EXTRACTOR {
     // TODO nf-core: List required Conda package(s). Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
-    container "sigprofilerextractor"
+    container "pawelqs/sigprofiler:1.0.0"
 
     input:
     tuple val(meta), path(vcf)
