@@ -8,8 +8,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process DECOUPLER {
-    debug true
-    tag "$meta"
+    tag "$meta.id"
     label 'process_medium'
 
     // TODO nf-core: List required Conda package(s).
@@ -21,8 +20,7 @@ process DECOUPLER {
 
 
     input:
-    val(meta)
-    path(mat)
+    tuple val(meta), path(mat)
     path(net)
 
     output:
@@ -50,15 +48,7 @@ process DECOUPLER {
     import decoupler as dc
     import pandas as pd
 
-    print(${args}, type(${args}))
-    print('${source}', type('${source}'))
-    print('${target}', type('${target}'))
-    print('${weight}', type('${weight}'))
-    print(${min_n}, type(${min_n}))
-    print(${verbose}, type(${verbose}))
-    print('${prefix}', type('${prefix}'))
-
-    mat = pd.read_csv("${mat}", sep="\t", index_col=0)
+    mat = pd.read_csv("${mat}", sep="\\t", index_col=0)
     net = pd.read_csv("${net}", sep="\t", index_col=0)
 
     results = dc.decouple(
@@ -72,11 +62,11 @@ process DECOUPLER {
         dense=${dense},
         consensus=${consensus},
         verbose=${verbose},
-        args="${args}"
+        args=${args}
     )
 
     for result in results:
-        results[result].to_csv(result + "__decoupler.tsv", sep='\t')
+        results[result].to_csv(result + "__decoupler.tsv", sep="\t")
 
     ## VERSIONS FILE
     with open('versions.yml', 'a') as version_file:
