@@ -35,8 +35,6 @@ process BAKTA_BAKTA {
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_tf = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
     """
-    amrfinder_update --force_update --database $db/amrfinderplus-db
-
     bakta \\
         $fasta \\
         $args \\
