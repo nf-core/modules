@@ -8,10 +8,10 @@ keywords:
 tools:
   - "reseq":
       description: "ReSeq Illumina/BGI simulator"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/schmeing/ReSeq"
+      documentation: "https://github.com/schmeing/ReSeq"
+      tool_dev_url: "https://github.com/schmeing/ReSeq"
+      doi: "10.1186/s13059-021-02265-7"
       licence: ['MIT']
 
 input:
@@ -35,13 +35,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - simulated1:
+  - simulated_fastqgz:
       type: file
-      description: Simulated reads as a fastq.gz file
-      pattern: "*.{fastq.gz}"
-  - simulated2:
-      type: file
-      description: Simulated reads as a fastq.gz file
+      description: Simulated reads as two matching fastq.gz files
       pattern: "*.{fastq.gz}"
   - versions:
       type: file
