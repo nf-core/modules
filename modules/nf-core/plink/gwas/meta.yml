@@ -18,21 +18,25 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+        meta is associated to the PLINK native file input
   - meta2:
       type: map
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
+        meta2 is associated to VCF file input
   - meta3:
       type: map
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
+        meta3 is associated to BCF file input
   - meta4:
       type: map
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
+        meta4 is associated to phenotype file input
   - bed:
       type: file
       description: PLINK binary biallelic genotype table file
@@ -55,7 +59,7 @@ input:
       pattern: "*.{vcf}"
   - phe:
       type: file
-      description: PLINK file containing family IDs in the first column, within-family IDs in the second column and phenotype information in the third column
+      description: PLINK file containing phenotype information. This phenotype information can be read from the third column with the --pheno option or from a specific column with the --pheno-name option.
       pattern: "*.{phe}"
 
 output:
