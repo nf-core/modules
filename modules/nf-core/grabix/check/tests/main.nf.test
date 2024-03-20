@@ -11,9 +11,11 @@ nextflow_process {
     test("sarscov2") {
         when {
             process {
-                """                
-                input[0] = Channel.of([file(params.test_data_base + "/data/genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)])
-  
+                """
+                input[0] = Channel.of([
+                    [ id: 'test'], // meta map
+                    [file(params.test_data_base + "/data/genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true) ]
+                ])    
                 """
             }
         }
@@ -21,7 +23,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.compress_bgzip) },
+                { assert snapshot(process.out.stdout) },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
