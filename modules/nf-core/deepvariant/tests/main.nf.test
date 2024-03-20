@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("Test deepvariant(homo_sapiens - [bam, bai] - fasta - fai") {
+    test("homo_sapiens - [bam, bai] - fasta - fai") {
         when {
             config "./nextflow.config"
 
@@ -17,6 +17,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
                 ]
                 input[1] = [
                     [ id:'genome'],
@@ -41,7 +42,7 @@ nextflow_process {
         }
     }
 
-    test("Test deepvariant(homo_sapiens - [cram, crai, genome_bed] - fasta - fai)") {
+    test("homo_sapiens - [cram, crai, genome_bed] - fasta - fai") {
         config "./nextflow-intervals.config"
 
         when {
@@ -76,7 +77,7 @@ nextflow_process {
         }
     }
 
-    test("Test deepvariant(homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai)") {
+    test("homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai") {
         when {
             config "./nextflow.config"
 
