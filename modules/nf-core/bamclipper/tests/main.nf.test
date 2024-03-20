@@ -9,17 +9,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bamclipper"
 
-    test("TruSight-Myeloid - [BAM, BEDPE]") {
+    test("SarsCov2 - [BAM, BEDPE]") {
 
         when {
             process {
 
                 """
                 input[0] = [
-                    [ id:'SRR2075598' ],
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                    [ id:'MT192765.1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bedpe', checkIfExists: true)
                     ]
                 """
             }
@@ -35,7 +35,7 @@ nextflow_process {
     }
 
 
-    test("TruSight-Myeloid - [BAM, BEDPE] - stub") {
+    test("SarsCov2 - [BAM, BEDPE] - stub") {
 
         options "-stub"
 
@@ -44,10 +44,10 @@ nextflow_process {
 
                 """
                 input[0] = [
-                    [ id:'SRR2075598' ],
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                    [ id:'MT192765.1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bedpe', checkIfExists: true)
                     ]
                 """
             }
