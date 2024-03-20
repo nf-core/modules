@@ -145,15 +145,8 @@ class MyGene:
         self.go_category = go_category
         self.go_evidence = go_evidence
         self.mg = mygene.MyGeneInfo()
-
-        # query gene ids
         self.idmap = self.query2idmap()
         print(f"fetched {len(self.idmap)} ids from {len(self.query)} queries")
-
-        # fetch and parse go information into the correct format
-        self.gene_based_info = self.parse_gene_based_info()
-        self.go_based_info = self.parse_go_based_info()
-        print(f"parsed {len(self.gene_based_info)} gene centric info and {len(self.go_based_info)} go centric info")
 
     def query2idmap(self) -> dict:
         """
@@ -175,21 +168,41 @@ class MyGene:
         Each dictionary contains the annotations for the corresponding query gene.
         """
         return self.mg.getgenes(list(set(self.idmap)), fields=self.fields, species=self.species)
+    
+    def parse_go_based_info(self) -> dict:
+        """
+        It queries the annotations for all query ids and then parses a go 
+        centric dictionary. It is a dictionary of dictionaries with the
+        following format: {{go_id1: [go_term, gene1, gene2, ...]}, ...}
+        """
+        info = {}
+        for dic in self.id2info():
+
+            if 'go' not in dic:
+                continue
+            if self.go_category:
+                dic['go'] = {category: dic['go'][category] for category in self.go_category.split(",") if category in dic['go']}
+            for category, go_list in dic['go'].items():
+                if not isinstance(go_list, list):
+                    go_list = [go_list]
+                for go in go_list:
+                    if (self.go_evidence) and (go['evidence'] not in self.go_evidence.split(",")):
+                        continue
+
+                    if go['id'] not in info:
+                        info[go['id']] = [go['term'], self.idmap[dic['_id']]]
+                    else:
+                        info[go['id']].append(self.idmap[dic['_id']])
+        return info
 
     def parse_gene_based_info(self) -> dict:
         """
-        It parses the information for all the query ids.
-        At the end it returns a dictionary {query gene: {}} of dictionaries with the following keys:
-            - query
-            - mygene_id
-            - go_id
-            - go_term
-            - go_evidence
-            - go_category
-            - symbol
-            - name
-            - taxid
-        Note that this is a query gene centric dictionary.
+        It queries the annotations for all query ids and then parses a go 
+        centric dictionary.
+
+        At the end it returns a dictionary {query gene: {}} of dictionaries
+        with the following keys: query, mygene_id, go_id, go_term, go_evidence,
+        go_category, symbol, name, taxid.
         """
         info = {}
         for dic in self.id2info():
@@ -218,45 +231,32 @@ class MyGene:
                     }
                     info[self.idmap[dic['_id']]] = current_info
         return info
-
-    def parse_go_based_info(self):
+    
+    def parse_and_save_to_gmt(self, filename: str) -> list:
         """
-        This converts the gene based info dictionary of dictionaries to a GO based info dictionary of lists.
-        {go_id: [go_term, gene1, gene2, ...]}
+        It parses and saves go centric information to a gmt file.
+        The final gmt output will be sorted following the go id order.
         """
-        # get unique go ids with the corresponding go terms
-        info = {}
-        for gene,dic in self.gene_based_info.items():
-            info[dic['go_id']] = [dic['go_term']]
-
-        # add all the genes associated to each go entry
-        for gene,dic in self.gene_based_info.items():
-            go_id = dic['go_id']
-            if gene in info[go_id]:
-                info[go_id].append(gene)
-        return info
-
-    def save_to_tsv(self, filename: str) -> None:
-        """
-        It saves the parsed gene centric information in a tsv file.
-        The parsing is performed in an sorted way following the query gene list order.
-        """
-        with open(filename, 'w') as f:
-            f.write("\\t".join(self.gene_based_info[self.query[0]].keys()) + "\\n")
-            for gene in self.query:  # sorted by query gene list
-                if gene in self.gene_based_info:
-                    f.write("\\t".join([str(val) for val in self.gene_based_info[gene].values()]) + "\\n")
-
-    def save_to_gmt(self, filename: str) -> list:
-        """
-        It saves the parsed go centric information to a gmt file.
-        The parsing is performed in an sorted way following the go id order.
-        """
-        info = dict(sorted(self.go_based_info.items(), key=lambda x: x[0]))
+        info = self.parse_go_based_info()
+        info = dict(sorted(info.items(), key=lambda x: x[0]))
         with open(filename, 'w') as f:
             for go_id, go_list in info.items():
                 tmp = sorted(go_list[1:])
                 f.write(go_id + "\\t" + go_list[0] + "\\t" + "\\t".join(tmp) + "\\n")
+        print(f"saved {len(info)} go terms to {filename}")
+
+    def parse_and_save_to_tsv(self, filename: str) -> None:
+        """
+        It parses and saves gene centric information in a tsv file.
+        The final tsv output will be sorted following the input query gene list order.
+        """
+        info = self.parse_gene_based_info()
+        with open(filename, 'w') as f:
+            f.write("\\t".join(info[self.query[0]].keys()) + "\\n")
+            for gene in self.query:  # sorted by query gene list
+                if gene in info:
+                    f.write("\\t".join([str(val) for val in info[gene].values()]) + "\\n")
+        print(f"saved {len(info)} gene centric info to {filename}")
 
 
 def load_list(filename: str, columname: str) -> list:
@@ -294,11 +294,11 @@ if __name__ == "__main__":
             go_category=args.go_category,
             go_evidence=args.go_evidence
         )
-
-    # save info
-    mg.save_to_gmt(args.output_gmt)
+    
+    # parse annotations and save output files
+    mg.parse_and_save_to_gmt(args.output_gmt)
     if args.generate_tsv:
-        mg.save_to_tsv(args.output_tsv)
+        mg.parse_and_save_to_tsv(args.output_tsv)
 
     # write versions to file
     versions_this_module = {}
