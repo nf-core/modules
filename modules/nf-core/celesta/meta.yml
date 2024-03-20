@@ -11,8 +11,8 @@ keywords:
 tools:
   - "celesta":
       description: "Automate unsupervised machine learning cell type identification using both protein expressions and cell spatial neighborhood information"
-      homepage: "https://github.com/plevritis-lab/CELESTA"
-      documentation: "https://github.com/plevritis-lab/CELESTA/blob/main/README.md"
+      homepage: https://github.com/SchapiroLabor/mcmicro-celesta
+      documentation: https://github.com/SchapiroLabor/mcmicro-celesta/blob/main/README.md
       tool_dev_url: "https://github.com/plevritis-lab/CELESTA"
       doi: "10.1038/s41592-022-01498-z"
       licence: ["Apache-2.0"]
@@ -25,7 +25,7 @@ input:
         e.g. `[ id:'test']`
   - img_data:
       type: file
-      description: "Quantification table with single cells as rows, marker intensities and X/Y coordinates as columns"
+      description: "Quantification table with single cells as rows, markers (e.g. CD3 or CD8 but names do not have to match exactly) and X/Y coordinates as columns"
       pattern: "*.csv"
   - signature:
       type: file

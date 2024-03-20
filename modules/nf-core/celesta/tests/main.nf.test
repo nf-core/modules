@@ -13,8 +13,6 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
                     [ id:'test' ],
                     file(params.test_data['imaging']['downstream']['celesta']['data'], checkIfExists: true)

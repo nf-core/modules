@@ -5,7 +5,6 @@ process CELESTA {
     container "ghcr.io/schapirolabor/mcmicro-celesta:v0.0.2"
 
     input:
-
     tuple val(meta), path(img_data)
     path(signature)
     path(high_thresholds)
@@ -23,8 +22,8 @@ process CELESTA {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "celesta module was created only for Docker, Singularity or Podman. It does not support Conda!"
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args               = task.ext.args ?: ''
+    def prefix             = task.ext.prefix ?: "${meta.id}"
     def low_thresholds_cmd = low_thresholds ? "--low $low_thresholds" : ""
     def VERSION = '1.0.0'
 
