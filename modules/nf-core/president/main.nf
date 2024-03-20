@@ -12,9 +12,9 @@ process PRESIDENT {
 
     output:
     tuple val(meta), path("output/*.fasta*"), emit: fasta
-    tuple val(meta), path("output/*.tsv"), emit: report
-    tuple val(meta), path("output/*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val(meta), path("output/*.tsv")   , emit: report
+    tuple val(meta), path("output/*.log")   , emit: log
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
