@@ -14,7 +14,7 @@ tools:
       documentation: "https://decoupler-py.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/saezlab/decoupler-py"
       doi: "10.1093/bioadv/vbac016"
-      licence: ['GPL >=3']
+      licence: ["GPL >=3"]
 
 input:
   # Only when we have meta
@@ -29,10 +29,10 @@ input:
   - resource:
       type: string
       description: String to indicate preferred resource for PKN. One of Dorothea, Progeny, and CollecTRI
-  
+
   - organism:
       type: string
-      description: String to indicate organism. Currently human or mouse 
+      description: String to indicate organism. Currently human or mouse
 
 output:
   - meta:
@@ -42,7 +42,7 @@ output:
         e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
   - network:
       type: file
-      description : CSV-format of prior knowledge network required by decoupler
+      description: CSV-format of prior knowledge network required by decoupler
       pattern: "decoupler_network.csv"
   - versions:
       type: file
