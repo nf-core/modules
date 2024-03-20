@@ -42,12 +42,12 @@ workflow FASTQ_ALIGN_DNA {
                 ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
                 break
             case 'bwamem2':
-                BWAMEM2_MEM  (ch_reads, ch_aligner_index, sort)                  // If aligner is bwa-mem2
+                BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
                 ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
                 ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
                 break
             case 'dragmap':
-                DRAGMAP_ALIGN(ch_reads, ch_aligner_index, sort)                 // If aligner is dragmap
+                DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is dragmap
                 ch_bam = ch_bam.mix(DRAGMAP_ALIGN.out.bam)
                 ch_reports = ch_reports.mix(DRAGMAP_ALIGN.out.log)
                 ch_versions = ch_versions.mix(DRAGMAP_ALIGN.out.versions)
