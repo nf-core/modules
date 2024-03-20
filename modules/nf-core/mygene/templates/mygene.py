@@ -131,18 +131,9 @@ class MyGene:
     This class will query the MyGene.info API and retrieve the go terms
     associated with a list of gene ids.
 
-    Args:
-        query (list) :
-            A list of gene ids. Ideally Ensembl or Entrez ids.
-        species (str) :
-            Comma separated of common name of the species or taxon ids.
-            If not provided, the API will return information for all species.
-        go_category (str) :
-            Comma separated list of GO categories to keep. If not provided,
-            the API will return all categories.
-        go_evidence (str) :
-            Comma separated list of GO evidence codes to keep. If not provided,
-            the API will return all evidence codes.
+    In concrete, if first queries the mygene API to get the mygene ids for each
+    of the query gene. Then, it queries for the annotations, and parses the go
+    terms all together with all the other information.
     """
     def __init__(self, query: list, species: str, scopes: str, entrezonly: bool, ensemblonly: bool, go_category: str = None, go_evidence: str = None) -> None:
         self.query = query
@@ -155,7 +146,7 @@ class MyGene:
         self.go_evidence = go_evidence
         self.mg = mygene.MyGeneInfo()
 
-        # query info
+        # query gene ids
         self.idmap = self.query2idmap()
         print(f"fetched {len(self.idmap)} ids from {len(self.query)} queries")
 
@@ -166,7 +157,7 @@ class MyGene:
 
     def query2idmap(self) -> dict:
         """
-        It returns a dictionary with the query ids as keys and the mygene ids as values.
+        It returns a dictionary with the mygene ids as keys and the query ids as values.
         """
         q = self.mg.querymany(
             self.query,
@@ -181,6 +172,7 @@ class MyGene:
     def id2info(self) -> list:
         """
         It returns a list of dictionaries with the info returned from getgenes for all the query ids.
+        Each dictionary contains the annotations for the corresponding query gene.
         """
         return self.mg.getgenes(list(set(self.idmap)), fields=self.fields, species=self.species)
 
