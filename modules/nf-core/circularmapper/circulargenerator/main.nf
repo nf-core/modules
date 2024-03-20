@@ -25,7 +25,10 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    circulargenerator -e ${elong} -i ${reference} -s ${prefix} $args
+    circulargenerator -e ${elong} \
+        -i ${reference} \
+        -s ${prefix} \
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
