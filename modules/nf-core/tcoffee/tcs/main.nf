@@ -20,13 +20,14 @@ process TCOFFEE_TCS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def lib_arg = lib ? "-lib ${lib}" : ""
-    def header = meta.keySet().join(",")
-    def values = meta.values().join(",")
+    def args          = task.ext.args ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def lib_arg       = lib ? "-lib ${lib}" : ""
+    def header        = meta.keySet().join(",")
+    def values        = meta.values().join(",")
     def unzipped_name = msa.toString() - '.gz'
     """ 
+    export TEMP='./'
     filename=${msa}
     if [[ \$(basename $msa) == *.gz ]] ; then
         unpigz -f $msa
