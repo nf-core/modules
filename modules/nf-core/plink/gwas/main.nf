@@ -12,7 +12,7 @@ process PLINK_GWAS {
     tuple val(meta), path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
-    tuple val(meta4), path (pheno)
+    tuple val(meta4), path(pheno)
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
@@ -32,17 +32,13 @@ process PLINK_GWAS {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
-        input_command = "--vcf ${vcf}"
+        input_command = "--vcf ${vcf} --pheno ${pheno}"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf}"
+        input_command = "--bcf ${bcf} --pheno ${pheno}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else if (pheno) {
-        input_command = "--vcf ${vcf} --bcf ${bcf}"
-        prefix = task.ext.prefix ?: "${meta4.id}"
-        meta = meta4
     } else {
         log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
     }
@@ -73,16 +69,12 @@ process PLINK_GWAS {
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id}"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf}"
+        input_command = "--bcf ${bcf} --pheno ${pheno}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else if (pheno) {
-        input_command = "--vcf ${vcf} --bcf ${bcf}"
-        prefix = task.ext.prefix ?: "${meta4.id}"
-        meta = meta4
     } else {
         log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
     }
