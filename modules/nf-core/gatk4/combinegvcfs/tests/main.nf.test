@@ -28,8 +28,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert file(process.out.combined_gvcf[0][1]).name == "test.combined.g.vcf.gz" }
+                // File has a timestamp in it and is in binary format, need to compare only a portion of the file (after header)
+                { assert snapshot(path(process.out.combined_gvcf[0][1]).linesGzip[102..-1]).match() }
             )
         }
 
