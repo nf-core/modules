@@ -48,14 +48,14 @@ input:
         transcription factor, kinase, etc.)
       pattern: "*.tsv"
   - args:
-    type: string
-    description: |
-      Keyword arguments passed to `decoupler.decouple()` (see
-      documentation for more information here:
-      https://decoupler-py.readthedocs.io/en/latest/generated/decoupler.decouple.html#decoupler.decouple).
-      Arguments specific for a method must be specified with
-      the method name as a prefix e.g. `'gsea_batch_size'`
-    pattern: "{arg: val, ..., method_arg: val}"
+      type: string
+      description: |
+        Keyword arguments passed to `decoupler.decouple()` (see
+        documentation for more information here:
+        https://decoupler-py.readthedocs.io/en/latest/generated/decoupler.decouple.html#decoupler.decouple).
+        Arguments specific for a method must be specified with
+        the method name as a prefix e.g. `'gsea_batch_size'`
+      pattern: "{arg: val, ..., method_arg: val}"
 
 output:
   - meta:
