@@ -1,6 +1,6 @@
 process NANOFILT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,8 +13,8 @@ process NANOFILT {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: filtreads
-    path "versions.yml"                , emit: versions
     path "*.log"                       , optional: true, emit: log_file
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
