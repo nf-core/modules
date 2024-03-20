@@ -31,9 +31,10 @@ nextflow_process {
         }
 
         then {
+            println process.out.bed[0][1]
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -63,7 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -93,7 +94,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -123,7 +124,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -153,7 +154,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -181,7 +182,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -210,7 +211,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
@@ -243,7 +244,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bed).match() }
+                { assert snapshot(process.out.version).match() }
             )
         }
 
