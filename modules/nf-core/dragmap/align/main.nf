@@ -14,12 +14,12 @@ process DRAGMAP_ALIGN {
     val   sort_bam
 
     output:
-    tuple val(meta), path("*.sam"), emit: sam   , optional: true
-    tuple val(meta), path("*.bam"), emit: bam   , optional: true
-    tuple val(meta), path("*.cram"), emit: cram , optional: true
-    tuple val(meta), path("*.crai"), emit: crai , optional: true
-    tuple val(meta), path("*.csi"), emit: csi   , optional: true
-    tuple val(meta), path('*.log'), emit: log
+    tuple val(meta), path("*.sam")  , emit: sam   , optional: true
+    tuple val(meta), path("*.bam")  , emit: bam   , optional: true
+    tuple val(meta), path("*.cram") , emit: cram  , optional: true
+    tuple val(meta), path("*.crai") , emit: crai  , optional: true
+    tuple val(meta), path("*.csi")  , emit: csi   , optional: true
+    tuple val(meta), path('*.log')  , emit: log
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,12 +29,12 @@ process DRAGMAP_ALIGN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_command = meta.single_end ? "-1 $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
-    def samtools_command = sort_bam ? 'sort' : 'view'
-    def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher =  (args2 =~ extension_pattern)
-    def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
-    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
+    def reads_command       = meta.single_end ? "-1 $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def samtools_command    = sort_bam ? 'sort' : 'view'
+    def extension_pattern   = /(--output-fmt|-O)+\s+(\S+)/
+    def extension_matcher   =  (args2 =~ extension_pattern)
+    def extension           = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
+    def reference           = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 
     """
