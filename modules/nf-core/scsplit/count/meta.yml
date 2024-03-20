@@ -12,8 +12,8 @@ tools:
       homepage: "https://github.com/jon-xu/scSplit"
       documentation: "https://github.com/jon-xu/scSplit"
       tool_dev_url: "https://github.com/jon-xu/scSplit"
-      doi: "https://doi.org/10.1186/s13059-019-1852-7"
-      licence: ['MIT']
+      doi: "10.1186/s13059-019-1852-7"
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -23,7 +23,7 @@ input:
         e.g. `[ id:'sample1', single_end:false ]`
   - bam:
       type: file
-      description: BAM index 
+      description: BAM index
       pattern: "*.bam"
   - bai:
       type: file
@@ -33,7 +33,7 @@ input:
       type: file
       description: VCF file
       pattern: "*.vcf"
-  - barcodes:
+  - barcode:
       type: file
       description: Cell barcode list
       pattern: "*.tsv"
@@ -44,7 +44,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - ref_filtered: 
+  - ref_filtered:
       type: file
       description: Reference allele count matrix
       pattern: "*_ref_filtered.csv"
@@ -52,8 +52,8 @@ output:
       type: file
       description: Alternative allele count matrix
       pattern: "*_alt_filtered.csv"
-  - log: 
-      type: file 
+  - log:
+      type: file
       description: scSplit log
       pattern: "*_scSplit.log"
   - versions:
