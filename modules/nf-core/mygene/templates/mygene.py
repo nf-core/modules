@@ -51,16 +51,25 @@ class Arguments:
         parser.add_argument('--species', default=None, help="Comma separated of common name of the species or taxon ids")
         parser.add_argument('--go_category', default=None, help="Comma separated list of GO categories to keep. Default: all")
         parser.add_argument('--go_evidence', default=None, help="Comma separated list of GO evidence codes to keep. Default: all")
+        # additional parameters for querymany
+        parser.add_argument('--scopes', default=None, help="Comma separated list of scopes to search for.")
+        parser.add_argument('--entrezonly', default=False, help="When true, the query returns only the hits with valid Entrez gene ids. Default: false.")
+        parser.add_argument('--ensemblonly', default=False, help="When true, the query returns only the hits with valid Ensembl gene ids. Default: False")
         # output parameters
         parser.add_argument('--generate_tsv', default=False, help="Also generate a tsv file with the gene based information. Default: False")
         args = parser.parse_args(args_list)
 
         # Convert "null" values to default values
+        # convert true to True and false to False
         for attr in vars(args):
             value = getattr(args, attr)
             if value == "null":
                 setattr(args, attr, parser.get_default(attr))
-            
+            elif value == "true":
+                setattr(args, attr, True)
+            elif value == "false":
+                setattr(args, attr, False)
+
         # check if the arguments are valid
         if args.go_category:
             args.go_category = args.go_category.upper()
@@ -73,6 +82,13 @@ class Arguments:
         # Assign args attributes to self attributes
         for attr in vars(args):
             setattr(self, attr, getattr(args, attr))
+
+    def print_args(self) -> None:
+        """
+        Print the arguments.
+        """
+        for attr in vars(self):
+            print(f"{attr}: {getattr(self, attr)}")
 
 
 class Version:
@@ -128,30 +144,50 @@ class MyGene:
             Comma separated list of GO evidence codes to keep. If not provided,
             the API will return all evidence codes.
     """
-    def __init__(self, query: list, species:str = None, go_category: str = None, go_evidence: str = None) -> None:
+    def __init__(self, query: list, species: str, scopes: str, entrezonly: bool, ensemblonly: bool, go_category: str = None, go_evidence: str = None) -> None:
         self.query = query
+        self.fields = "go,symbol,name,taxid"
         self.species = species
+        self.scopes = scopes
+        self.entrezonly = entrezonly
+        self.ensemblonly = ensemblonly
         self.go_category = go_category
         self.go_evidence = go_evidence
         self.mg = mygene.MyGeneInfo()
 
-        # query gene ids
+        # query info
         self.idmap = self.query2idmap()
+        print(f"fetched {len(self.idmap)} ids from {len(self.query)} queries")
 
         # fetch and parse go information into the correct format
         self.gene_based_info = self.parse_gene_based_info()
         self.go_based_info = self.parse_go_based_info()
+        print(f"parsed {len(self.gene_based_info)} gene centric info and {len(self.go_based_info)} go centric info")
 
     def query2idmap(self) -> dict:
         """
         It returns a dictionary with the query ids as keys and the mygene ids as values.
         """
-        return {dic['_id']: dic['query'] for dic in self.mg.querymany(self.query, species=self.species) if '_id' in dic}
+        q = self.mg.querymany(
+            self.query,
+            scopes=self.scopes,
+            species=self.species,
+            entrezonly=self.entrezonly,
+            ensemblonly=self.ensemblonly,
+            returnall=True
+        )
+        return {dic['_id']: dic['query'] for dic in q['out'] if '_id' in dic}
 
-    def parse_gene_based_info(self, fields="go,symbol,name,taxid") -> dict:
+    def id2info(self) -> list:
         """
-        It returns the parsed information for all the query ids.
-        The returned information is a dictionary {query gene: {}} of dictionaries with the following keys:
+        It returns a list of dictionaries with the info returned from getgenes for all the query ids.
+        """
+        return self.mg.getgenes(list(set(self.idmap)), fields=self.fields, species=self.species)
+
+    def parse_gene_based_info(self) -> dict:
+        """
+        It parses the information for all the query ids.
+        At the end it returns a dictionary {query gene: {}} of dictionaries with the following keys:
             - query
             - mygene_id
             - go_id
@@ -164,7 +200,7 @@ class MyGene:
         Note that this is a query gene centric dictionary.
         """
         info = {}
-        for dic in self.mg.getgenes(list(set(self.idmap)), fields=fields, species=self.species):
+        for dic in self.id2info():
 
             if 'go' not in dic:
                 continue
@@ -204,7 +240,7 @@ class MyGene:
         # add all the genes associated to each go entry
         for gene,dic in self.gene_based_info.items():
             go_id = dic['go_id']
-            if gene not in info[go_id]:
+            if gene in info[go_id]:
                 info[go_id].append(gene)
         return info
 
@@ -248,13 +284,24 @@ def load_list(filename: str, columname: str) -> list:
 
 
 if __name__ == "__main__":
+
+    # parse and print arguments
     args = Arguments()
+    args.print_args()
     
     # load gene list
     gene_list = load_list(args.input, args.columname)
 
-    # parse info for each gene
-    mg = MyGene(gene_list, args.species, args.go_category, args.go_evidence)
+    # run mygene api
+    mg = MyGene(
+            gene_list, 
+            species=args.species, 
+            scopes=args.scopes,
+            entrezonly=args.entrezonly,
+            ensemblonly=args.ensemblonly,
+            go_category=args.go_category, 
+            go_evidence=args.go_evidence
+        )
 
     # save info
     mg.save_to_gmt(args.output_gmt)
