@@ -7,12 +7,12 @@ process VELOCYTO {
         'https://depot.galaxyproject.org/singularity/velocyto.py:0.17.17--py38h24c8ff8_6':
         'biocontainers/velocyto.py:0.17.17--py38h24c8ff8_6' }"
 
-    stageInMode 'copy'    
+    stageInMode 'copy'
 
     input:
-    tuple val(meta), path(barcodes), path(bam), path(sorted_bam)    
+    tuple val(meta), path(barcodes), path(bam), path(sorted_bam)
     path gtf
-    
+
     output:
     tuple val(meta), path("*.loom"), path("*.velocyto.log"), emit: loom
     path "versions.yml"            , emit: versions
@@ -22,10 +22,10 @@ process VELOCYTO {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"    
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     velocyto run $args -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf}
-       
+
     cp .command.out ${prefix}.velocyto.log
 
     cat <<-END_VERSIONS > versions.yml
@@ -36,7 +36,7 @@ process VELOCYTO {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"    
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.loom
     touch ${prefix}.velocyto.log
