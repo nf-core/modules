@@ -18,7 +18,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -43,7 +44,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -68,7 +70,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -94,7 +97,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -119,7 +123,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -144,7 +149,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+		[]
                 ]
                 """
             }
@@ -159,5 +165,29 @@ nextflow_process {
         }
     }
 
+    test("Test generation of .gct and .cls files for GSEA") {
+
+        tag "GSEA_input_generation"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gct).match("Test propr/propr while running default parameters and generating GEAS input - gct") },
+                { assert snapshot(process.out.cls).match("Test propr/propr while running default parameters and generating GEAS input - cls") }
+            )
+        }
+    }
 
 }

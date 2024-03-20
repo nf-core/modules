@@ -8,12 +8,16 @@ process PROPR_PROPR {
         'biocontainers/r-propr:5.0.3' }"
 
     input:
-    tuple val(meta), path(count)
+    tuple val(meta), 
+    path(count),
+    path(optFile)
 
     output:
     tuple val(meta), path("*.propr.rds"), emit: propr
     tuple val(meta), path("*.propr.tsv"), emit: matrix
     tuple val(meta), path("*.fdr.tsv"),   emit: fdr         , optional:true
+    tuple val(meta), path("*.gct"),	  emit: gct	    , optional:true
+    tuple val(meta), path("*.cls"),	  emit: cls	    , optional:true
     path "*.R_sessionInfo.log",           emit: session_info
     path "versions.yml",                  emit: versions
 
@@ -21,5 +25,6 @@ process PROPR_PROPR {
     task.ext.when == null || task.ext.when
 
     script:
+    sample_file = (optFile) ? "$optFile" : 'EMPTY'
     template 'propr.R'
 }
