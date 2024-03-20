@@ -2,7 +2,7 @@ process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
-    container "docker.io/nf-core/cellranger:7.2.0"
+    container "nf-core/cellranger:8.0.0"
 
     input:
     path fasta          // optional
