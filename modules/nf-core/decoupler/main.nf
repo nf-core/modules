@@ -48,7 +48,7 @@ process DECOUPLER {
     import decoupler as dc
     import pandas as pd
 
-    mat = pd.read_csv("${mat}", sep="\\t", index_col=0)
+    mat = pd.read_csv("${mat}", sep="\t", index_col=0)
     net = pd.read_csv("${net}", sep="\t", index_col=0)
 
     results = dc.decouple(
