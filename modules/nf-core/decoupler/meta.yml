@@ -30,10 +30,10 @@ tools:
 
 input:
   - meta:
-    type: map
-    description: |
-      Groovy Map containing sample information
-      e.g. [ id:‘test’, single_end ]
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:‘test’, single_end ]
   - mat:
       type: file
       description: |
@@ -50,21 +50,21 @@ input:
 
 output:
   - meta:
-    type: map
-    description: |
-      Groovy Map containing sample information
-      e.g. [ id:‘test’, single_end ]
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:‘test’, single_end ]
   - dc_estimate:
       type: file
       description: |
         The file containing the estimation results of the enrichment(s)
       pattern: "*estimate__decoupler.tsv"
   - dc_pvals:
-    type: file
-    description: |
-      The file containing the p-value associated to the estimation
-      results of the enrichment(s)
-    pattern: "*pvals__decoupler.tsv"
+      type: file
+      description: |
+        The file containing the p-value associated to the estimation
+        results of the enrichment(s)
+      pattern: "*pvals__decoupler.tsv"
   - versions:
       type: file
       description: File containing software versions
