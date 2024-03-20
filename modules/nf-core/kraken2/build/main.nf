@@ -23,7 +23,7 @@ process KRAKEN2_BUILD {
     kraken2-build \\
         --build \\
         $args \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --db ${db}
 
     cat <<-END_VERSIONS > versions.yml
