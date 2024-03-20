@@ -12,7 +12,7 @@ process PLINK_GWAS {
     tuple val(meta), path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
-    tuple val(meta4), path(phe), val(pheno), val(allow-no-sex)
+    tuple val(meta4), path(phe)
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
