@@ -10,7 +10,7 @@ nextflow_process {
 
     test("ascat") {
 
-        config "./simple-nextflow.config"
+        config "./nextflow.config"
 
         when {
             process {
@@ -36,7 +36,8 @@ nextflow_process {
 
         then {
             assertAll (
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
