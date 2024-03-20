@@ -1,6 +1,6 @@
 include { METAPHLAN_MAKEDB      } from '../../../modules/nf-core/metaphlan/makedb/main'
 include { METAPHLAN_METAPHLAN     } from '../../../modules/nf-core/metaphlan/metaphlan/main'
-include { METAPHLAN3_MERGEMETAPHLANTABLES     } from '../../../modules/nf-core/metaphlan3/mergemetaphlantables/main'
+include { METAPHLAN_MERGEMETAPHLANTABLES     } from '../../../modules/nf-core/metaphlan/mergemetaphlantables/main'
 
 
 workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
@@ -18,11 +18,11 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
     METAPHLAN_METAPHLAN ( ch_fastq, METAPHLAN_MAKEDB.out.db )
     ch_versions = ch_versions.mix(METAPHLAN_METAPHLAN.out.versions.first())
 
-    METAPHLAN3_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort: 'deep') )
-    ch_versions = ch_versions.mix(METAPHLAN3_MERGEMETAPHLANTABLES.out.versions.first())
+    METAPHLAN_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort: 'deep') )
+    ch_versions = ch_versions.mix(METAPHLAN_MERGEMETAPHLANTABLES.out.versions.first())
 
     emit:
-    merged_taxa      = METAPHLAN3_MERGEMETAPHLANTABLES.out.txt
+    merged_taxa      = METAPHLAN_MERGEMETAPHLANTABLES.out.txt
 
 
     versions = ch_versions
