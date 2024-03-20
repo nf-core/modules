@@ -8,29 +8,30 @@ nextflow_process {
     tag "modules_nfcore"
     tag "unzip"
 
-    test("sarscov2 genome ncbi_taxmap [zip]") {
+    test("generic [tar] [tar_gz]") {
 
         when {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ],
-                            file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+                            [ id: 'hello' ],
+                            file(params.test_data['generic']['tar']['tar_gz'], checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot( path(process.out.unzipped_archive[0][1]).list() ).match() } // FIX-ME
-            )
+               assertAll(
+                            { assert process.success },
+                            { assert path(process.out.unzipped_archive.get(0).get(1)).exists() },
+                            { assert snapshot(process.out.unzipped_archive).match("unzipped_archive") },
+                            { assert snapshot(process.out.versions).match("versions") }
+          )
         }
-
     }
 
-    test("sarscov2 genome ncbi_taxmap [zip] - stub") {
+    test("generic [tar] [tar_gz] stub") {
 
         options "-stub"
 
@@ -38,8 +39,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ],
-                            file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+                            [ id: 'stub' ],
+                            file(params.test_data['generic']['tar']['tar_gz'], checkIfExists: true)
                 ]
                 """
             }
@@ -48,11 +49,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.unzipped_archive.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                { assert snapshot(process.out.unzipped_archive,
+                                  process.out.versions
+                ).match("stub") }
             )
         }
-
     }
-
 }
