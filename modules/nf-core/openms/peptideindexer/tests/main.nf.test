@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -32,7 +32,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
                 ]
                 input[1] = OPENMS_DECOYDATABASE.out.decoy_fasta
 
@@ -58,7 +58,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
                 ]
                 input[1] = OPENMS_DECOYDATABASE.out.decoy_fasta
 
