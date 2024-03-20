@@ -2,56 +2,64 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "decoupler"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: decoupler is a package containing different statistical methods
+to extract biological activities from omics data within a unified framework.
+It allows to flexibly test any enrichment method with any prior knowledge
+resource and incorporates methods that take into account the sign and weight.
+It can be used with any omic, as long as its features can be linked to a
+biological process based on prior knowledge. For example, in transcriptomics
+gene sets regulated by a transcription factor, or in phospho-proteomics
+phosphosites that are targeted by a kinase.
 keywords:
-  - sort
-  - example
-  - genomics
+  - enrichment
+  - omics
+  - biological activity
+  - functional analysis
+  - prior knowledge
 tools:
   - "decoupler":
       ## TODO nf-core: Add a description and other details for the software below
       description: "Ensemble of methods to infer biological activities from omics data"
-      homepage: "https://saezlab.github.io/decoupleR/"
-      documentation: "https://saezlab.github.io/decoupleR/reference/index.html"
-      tool_dev_url: "https://saezlab.github.io/decoupleR"
+      homepage: "https://github.com/saezlab/decoupler-py"
+      documentation: "https://decoupler-py.readthedocs.io/en/latest/api.html"
+      tool_dev_url: "https://decoupler-py.readthedocs.io"
       doi: "10.1093/bioadv/vbac016"
       licence: ["GPL v3"]
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
-  - meta:
-      type: map
+  - meta, mat:
+      type: tuple (map, file)
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+        Groovy Map containing sample information and the path to the
+        corresponding matrix file (e.g. gene/protein expression, etc.).
+        The matrix file should be in in tab-separated format (`*.tab`)
 
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - net:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        The prior knowledge network linking the features of the
+        expression matrix to a process/component (e.g. gene set,
+        transcription factor, kinase, etc.)
+      pattern: "*.{tsv}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
-  - meta:
-      type: map
+  - meta, result:
+      type: tuple (map, file)
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+        Groovy Map containing sample information and the file
+        containing the results of the enrichment(s).
 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@gabora"
   - "@vicpaton"
-  - "@nic-nic"
+  - "@Nic-Nic"
