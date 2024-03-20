@@ -1,0 +1,39 @@
+name: "demuxem"
+description: Demultiplexing cell nucleus hashing data, using the estimated antibody background probability.
+keywords:
+  - demultiplexing
+  - hashing-based deconvoltion
+  - single-cell
+tools:
+  - demuxem:
+      description: "DemuxEM is the demultiplexing module of Pegasus, which works on cell-hashing and nucleus-hashing genomics data."
+      homepage: "https://demuxEM.readthedocs.io"
+      documentation: "https://demuxEM.readthedocs.io"
+      tool_dev_url: "https://github.com/lilab-bcb/pegasus/tree/master"
+      doi: "10.1038/s41467-019-10756-2"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'sample1' ]
+
+authors:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
+maintainers:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
