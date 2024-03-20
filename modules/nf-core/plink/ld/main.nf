@@ -47,7 +47,8 @@ process PLINK_LD {
     plink \\
         $input_command \\
         --threads $task.cpus \\
-        $args $snpfile \\
+        $args \\
+        $snpfile \\
         --r2 $args2 \\
         --out $prefix
 
