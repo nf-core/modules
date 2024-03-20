@@ -1,0 +1,46 @@
+// nf-core modules test islandpath
+nextflow_process {
+
+    name "Test Process ISLANDPATH"
+    script "../main.nf"
+    process "ISLANDPATH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "islandpath"
+
+    test("bacteroides_fragilis - gbff") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                                    tuple([ id:'test' ], // meta map
+                                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true)),
+                                ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out[0][0]).match() },
+                { assert path(process.out[1][0]).text.contains("Running IslandPath-DIMOB") }
+            )
+        }
+
+    }
+
+}
