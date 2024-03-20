@@ -1,28 +1,24 @@
 nextflow_process {
 
-    name "Test Process STRELKA_SOMATIC"
+    name "Test Process STRELKA_GERMLINE"
     script "../main.nf"
-    process "STRELKA_SOMATIC"
+    process "STRELKA_GERMLINE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "strelka"
-    tag "strelka/somatic"
+    tag "strelka/germline"
 
     test("human - cram") {
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
+                input[0] = [ [ id:'test'], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            [],[],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz.tbi', checkIfExists: true)
-                            ]
+                            [], []
+                        ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 """
@@ -32,29 +28,25 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf_indels.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert path(process.out.vcf_snvs.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.genome_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert snapshot(process.out.version).match("version") }
             )
         }
 
     }
 
-    test("human - cram - best-practise") {
+    test("human - cram - target") {
         config "./nextflow.config"
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
+                input[0] = [ [ id:'test'], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz.tbi', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz.tbi', checkIfExists: true)
-                            ]
+                        ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 """
@@ -64,9 +56,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf_indels.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert path(process.out.vcf_snvs.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.version).match("bp_version") }
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.genome_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert snapshot(process.out.version).match("target_version") }
             )
         }
 
@@ -79,15 +71,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
+                input[0] = [ [ id:'test'], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
-                            [],[],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz.tbi', checkIfExists: true)
-                            ]
+                            [], []
+                        ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 """
