@@ -49,22 +49,22 @@ output:
   - cel:
       type: file
       description: Contains the relation between numerated barcode ID and barcode and the number of SNP and number of UMI for each barcoded droplet.
-      pattern: "*.cel"
+      pattern: "*.cel.gz"
 
   - plp:
       type: file
       description: Contains the overlapping SNP and the corresponding read and base quality for each barcode ID.
-      pattern: "*.plp"
+      pattern: "*.plp.gz"
 
   - var:
       type: file
       description: Contains the position, reference allele and allele frequency for each SNP.
-      pattern: "*.plp"
+      pattern: "*.var.gz"
 
   - umi:
       type: file
       description: Contains the position covered by each umi.
-      pattern: "*.plp"
+      pattern: "*.umi.gz"
 
 authors:
   - "@mari-ga"
