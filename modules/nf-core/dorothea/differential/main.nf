@@ -9,12 +9,11 @@ process DOROTHEA_DIFFERENTIAL_LIMMA {
 
     input:
     
-    tuple val(meta), path(differential_result)
+    tuple val(meta), path(differential_result), path(pkn_network)
 
     output:
     
     tuple val(meta), path("*.dorothea.results.tsv")          , emit: results
-    tuple val(meta), path("*.dorothea.TF_plot.png")  , emit: TF_plot
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
     path "versions.yml"           , emit: versions
 
