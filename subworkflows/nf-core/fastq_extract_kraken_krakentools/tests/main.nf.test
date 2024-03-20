@@ -1,0 +1,131 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS"
+    script "../main.nf"
+    workflow "FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_extract_kraken_krakentools"
+    tag "untar"
+    tag "kraken2"
+    tag "kraken2/kraken2"
+    tag "krakentools"
+    tag "krakentools/extractkrakenreads"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        params.test_data['sarscov2']['genome']['kraken2_tar_gz'],
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 illumina single end [fastq]") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(
+                        params.test_data['sarscov2']['illumina']['test_1_fastq_gz'],
+                        checkIfExists: true
+                    )]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = 2697049
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert workflow.success },
+            { assert snapshot ( workflow.out ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 illumina paired end with fastq output [fastq]") {
+        options "--fastq-output"
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_1_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_2_fastq_gz'],
+                            checkIfExists: true
+                        )
+
+                    ]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = 2697049
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert workflow.success },
+            { assert snapshot ( workflow.out ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 illumina paired end with parents [fastq]") {
+        options "--include-parents"
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_1_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_2_fastq_gz'],
+                            checkIfExists: true
+                        )
+
+                    ]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = '2697049 694009'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert workflow.success },
+            { assert snapshot ( workflow.out ).match() }
+            )
+        }
+    }
+}
