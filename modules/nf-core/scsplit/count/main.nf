@@ -24,21 +24,19 @@ process SCSPLIT_COUNT {
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
-    container "quay.io/irenerobles93/scsplit:0.0.1"
+    container "quay.io/irenerobles93/scsplit:1.0.8"
     //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //    'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
     //    'biocontainers/YOUR-TOOL-HERE' }"
 
     input:
-    tuple val(meta), tuple val(sampleId), path(bam), path(bai), path(vcf)
-    val tag
-    val com
-    val ref
-    val alt
+    tuple val(meta), path(bam), path(bai), path(vcf), path(barcode)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*alt_filtered.csv"), emit: alf_filtered
+    tuple val(meta), path("*ref_filtered.csv"), emit: ref_filtered
+    tuple val(meta), path("*scSplit.log")     , emit: log
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,39 +45,28 @@ process SCSPLIT_COUNT {
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def common_data = com != 'None' ? "--com $com" : ''
-    def vcf_data = "-v $vcf"
-    def bam_data = "-i $bam"
-    def barcode_data = "-b $barcode"
-    def tag_data = "--tag $tag"
 
     """
-    git clone https://github.com/jon-xu/scSplit
-    mkdir scsplit_${prefix}
-    mkdir $out
-    touch scsplit_${prefix}/params.csv
-    echo -e "Argument,Value \n vcf,$vcf \n bam,$bam \n barcode,$barcode \n common_data,${common_data_name} \n num,${num} \n sub,${sub_yesno} \n ems,${ems} \n dbl,${dbl} \n vcf_known_data,${vcf_known_data_name}" >> scsplit_${sampleId}/params.csv
-
+    scSplit count -v $vcf -i $bam -b $barcode -r ${prefix}_ref_filtered.csv -a ${prefix}_alt_filtered.csv -o .
+    mv scSplit.log ${prefix}_scSplit.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        scsplit: \$(samtools --version |& sed '1!d ; s/samtools //')
+        scsplit: 1.0.8
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
-    touch ${prefix}.bam
+    touch ${prefix}_ref_filtered.csv
+    touch ${prefix}_alt_filtered.csv
+    touch ${prefix}_scSplit.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        scsplit: \$(samtools --version |& sed '1!d ; s/samtools //')
+        scsplit: 1.0.8
     END_VERSIONS
     """
 }
