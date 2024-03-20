@@ -1,23 +1,27 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "velocyto"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
-keywords:
-  - sort
-  - example
-  - genomics
-tools:
-  - "velocyto":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "A library for the analysis of RNA velocity."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['MIT']
+description: |
+  Velocyto is a library for the analysis of RNA velocity. velocyto.py CLI use 
+  Path(resolve_path=True) and breaks the nextflow logic of symbolic links.
+  If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
+  it will skip the samtools sort step. Cellsorted bam file should be cell sorted with:
+    samtools sort -t CB -O BAM -o cellsorted_input.bam input.bam
 
-## TODO nf-core: Add a description of all of the variables used as input
+keywords:
+  - count
+  - rnaseq
+  - bam
+
+tools:
+  - velocyto:
+      description: A library for the analysis of RNA velocity.
+      homepage: https://github.com/velocyto-team/velocyto.py
+      documentation: https://velocyto.org/velocyto.py
+      tool_dev_url: https://github.com/velocyto-team/velocyto.py
+      doi: "10.1038/s41586-018-0414-6"
+      licence: ["MIT"]
+
 input:
   # Only when we have meta
   - meta:
@@ -25,14 +29,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
+  - barcodes:
+      type: file
+      description: Valid barcodes file, to filter the bam
+      pattern: "*.tsv.gz"
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      pattern: "*.bam"
+  - sorted_bam:
+      type: file
+      description: Cell sorted BAM/CRAM/SAM file generated with samtools sort -t CB -O BAM -o cellsorted_possorted_genome_bam.bam possorted_genome_bam.bam
+      pattern: "*.bam"
+  - gtf:
+      type: file
+      description: genome annotation file
+      pattern: "*.gtf"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -40,16 +53,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - loom:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Loom file with counts divided in spliced/unspliced/ambiguous.
+      pattern: "*.loom"
 
 authors:
   - "@tucano"
