@@ -9,10 +9,8 @@ process CELLRANGER_COUNT {
     path  reference
 
     output:
-    tuple val(meta), path("**/outs/**")                          , emit: outs
-    tuple val(meta), path("**/outs/filtered_feature_bc_matrix**"), emit: filtered
-    tuple val(meta), path("**/outs/raw_feature_bc_matrix**")     , emit: raw
-    path "versions.yml"                                          , emit: versions
+    tuple val(meta), path("**/outs/**"), emit: outs
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
