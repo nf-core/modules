@@ -10,10 +10,11 @@ process BBMAP_BBMERGE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_merged.fastq"), emit: merged
-    tuple val(meta), path("*_unmerged.fastq"), emit: unmerged
-    tuple val(meta), path("*_ihist.txt"), emit: ihist
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_merged.fastq.gz")  , emit: merged
+    tuple val(meta), path("*_unmerged.fastq.gz"), emit: unmerged
+    tuple val(meta), path("*_ihist.txt")        , emit: ihist
+    path  "versions.yml"                        , emit: versions
+    path  "*.log"                               , emit: log
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +35,10 @@ process BBMAP_BBMERGE {
         $args \\
         &> ${prefix}.bbmerge.log
 
+    gzip ${prefix}_merged.fastq
+    gzip ${prefix}_1_unmerged.fastq
+    gzip ${prefix}_2_unmerged.fastq
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
@@ -45,9 +50,9 @@ process BBMAP_BBMERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}_merged.fastq
-    touch ${prefix}_1_unmerged.fastq
-    touch ${prefix}_2_unmerged.fastq
+    touch ${prefix}_merged.fastq.gz
+    touch ${prefix}_1_unmerged.fastq.gz
+    touch ${prefix}_2_unmerged.fastq.gz
     touch ${prefix}_ihist.txt
     touch ${prefix}.bbmerge.log
 
