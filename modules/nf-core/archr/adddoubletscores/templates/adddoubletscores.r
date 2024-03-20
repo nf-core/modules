@@ -4,9 +4,7 @@
 ################################################
 ################################################
 
-inputFile <- '$fragments'
-# is this a vector of input files?
-sampleNames <- gsub(".fragments.tsv.gz","", gsub(".*/","", inputFile))
+inputFile <- "$fragments"
 sampleName <- "$meta.id"
 # get sample names
 genome <- "$genome"
@@ -17,7 +15,7 @@ threads <- "$task.cpus"
 library(ArchR)
 
 addArchRGenome(genome)
-addArchRThreads(threads = threads) 
+addArchRThreads(threads = threads)
 
 ArrowFiles <- createArrowFiles(
   inputFiles = inputFiles,
@@ -38,7 +36,7 @@ saveRDS(ArrowFiles, file = "arrowfiles.rds")
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(output_prefix, "R_sessionInfo.log", sep = "."))
 print(sessionInfo())
 sink()
 
@@ -48,15 +46,15 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-archr.version <- as.character(packageVersion('ArchR'))
+r.version <- strsplit(version[["version.string"]], " ")[[1]][3]
+archr.version <- as.character(packageVersion("ArchR"))
 
 writeLines(
     c(
         '"${task.process}":',
         paste('    archR:', archr.version)
-    ),
-'versions.yml')
+        ),
+        'versions.yml')
 
 ################################################
 ################################################

@@ -2,39 +2,32 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "archr_createarrowfiles"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
 keywords:
-  - sort
-  - example
+  - singlecell
+  - chromatin
   - genomics
 tools:
   - "archr":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
+      homepage: "https://www.archrproject.com/"
+      documentation: "https://www.archrproject.com/"
+      tool_dev_url: "https://github.com/GreenleafLab/ArchR"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
+
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fragments:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fragments file
+      pattern: "*.fragments.tsv.gz"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -45,11 +38,23 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - arrowfile:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: arrowfile
+      pattern: "*.arrow"
+  - arrowmetadata:
+      type: file
+      description: rds file containing metadata to arrowfile
+      pattern: ".rds"
+  - qualitycontrolplots:
+      type: file
+      description: pdf
+      pattern: ".pdf"
+  - session_info: 
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.R_sessionInfo.log"
+
 
 authors:
   - "@JuliaPhilipp"
