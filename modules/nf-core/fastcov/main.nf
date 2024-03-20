@@ -2,9 +2,7 @@ process FASTCOV {
     tag "$meta.id"
     label 'process_low'
 
-    // This tool is not available on conda
-    //conda "${moduleDir}/environment.yml"
-    //container ${"docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19"}
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' ? 'docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19': 'raverjay/fastcov:0.1.3--ba8c8cf6ae19' }"
 
     input:
