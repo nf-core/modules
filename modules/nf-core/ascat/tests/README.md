@@ -7,6 +7,7 @@ Pytest scripts added here for reference.
 - test.yml
 
 ## main.nf
+
 ```
 #!/usr/bin/env nextflow
 
@@ -120,7 +121,9 @@ workflow test_ascat {
 //                 UNZIP_RT.out.unzipped_archive.map{ it[1] })
 // }
 ```
+
 ## nextflow.config
+
 ```
 process {
 
@@ -164,6 +167,7 @@ process {
 ```
 
 ## test.yml
+
 ```
 - name: ascat test_ascat
   command: nextflow run ./tests/modules/nf-core/ascat -entry test_ascat -c ./tests/config/nextflow.config -stub-run
