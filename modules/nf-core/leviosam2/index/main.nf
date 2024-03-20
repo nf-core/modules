@@ -47,5 +47,4 @@ process LEVIOSAM2_INDEX {
     END_VERSIONS
     """
 }
-
     
