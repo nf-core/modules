@@ -11,7 +11,7 @@ nextflow_workflow {
     tag "subworkflows/fastq_taxonomic_profile_metaphlan"
     tag "metaphlan/makedb"
     tag "metaphlan/metaphlan"
-    tag "metaphlan3/mergemetaphlantables"
+    tag "metaphlan/mergemetaphlantables"
 
 
     test("sarscov2 - fastq - paired_end") {
@@ -19,7 +19,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here.
                 input[0] = Channel.of (
                     [
                         [ id:'test1', single_end:false ], // meta map
