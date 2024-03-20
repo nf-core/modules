@@ -1,43 +1,36 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "datavzrd"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Datavzrd is a tool to create visual HTML reports from collections of CSV/TSV tables.
 keywords:
-  - sort
-  - example
-  - genomics
+  - visualisation
+  - tsv
+  - csv
 tools:
   - "datavzrd":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
-
-## TODO nf-core: Add a description of all of the variables used as input
+      description: Datavzrd is a tool to create visual HTML reports from collections of CSV/TSV tables.
+      homepage: https://datavzrd.github.io/
+      documentation: https://datavzrd.github.io/docs/index.html
+      tool_dev_url: https://github.com/datavzrd/datavzrd
+      licence: ["MIT"]
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - output_path:
+      type: directory
+      description: TSV/CSV formatted files to visualize
+      pattern: "*/report*/"
+  - config:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: configuration file used for visualisation
+      pattern: "*.{yml,yaml}"
 output:
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - output_path:
+      type: directory
+      description: directory with HTML report of provided CSV/TSV files
+      pattern: "*/report*/"
 
 authors:
   - "@vickylaram"
