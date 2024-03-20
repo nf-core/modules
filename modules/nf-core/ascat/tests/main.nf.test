@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process ASCAT"
+    script "../main.nf"
+    process "ASCAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ascat"
+
+    test("ascat") {
+
+        config "./simple-nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success }
+            )
+        }
+    }
+}
