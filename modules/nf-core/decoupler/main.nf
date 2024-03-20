@@ -1,12 +1,3 @@
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
@@ -19,10 +10,8 @@ process DECOUPLER {
     path(net)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
     tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
-    // TODO nf-core: List additional required output channels/values here
     path("versions.yml"), emit: versions
 
     when:
@@ -69,20 +58,4 @@ process DECOUPLER {
         version_file.write('"${task.process}":' + "\\n")
         version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
     """
-
-    // stub: //dryrun, to-do
-    // def args = task.ext.args ?: ''
-    // def prefix = task.ext.prefix ?: "${meta.id}"
-    // // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    // //               Have a look at the following examples:
-    // //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    // //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
-    // """
-    // touch ${prefix}.bam
-
-    // cat <<-END_VERSIONS > versions.yml
-    // "${task.process}":
-    //     : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
-    // END_VERSIONS
-    // """
 }
