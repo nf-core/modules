@@ -52,7 +52,7 @@ nextflow_process {
                         file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
                         file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
                         file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
-                ]
+                        ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
                 input[3] = [ [id:"test"],
