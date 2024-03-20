@@ -1,38 +1,43 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "scsplit_count"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
-  - example
+  - single-cell
+  - demultiplex
   - genomics
 tools:
   - "scsplit":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Genotype-free demultiplexing of pooled single-cell RNA-Seq"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/jon-xu/scSplit"
+      documentation: "https://github.com/jon-xu/scSplit"
+      tool_dev_url: "https://github.com/jon-xu/scSplit"
+      doi: "https://doi.org/10.1186/s13059-019-1852-7"
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM index 
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.bam"
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.vcf"
+  - barcodes:
+      type: file
+      description: Cell barcode list
+      pattern: "*.tsv"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
