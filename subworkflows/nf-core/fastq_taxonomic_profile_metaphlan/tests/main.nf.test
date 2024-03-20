@@ -5,6 +5,7 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
     script "../main.nf"
     workflow "FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
+    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
