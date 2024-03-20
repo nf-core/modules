@@ -21,6 +21,7 @@ process METAPHLAN_MAKEDB {
         --install \\
         --nproc $task.cpus \\
         --bowtie2db metaphlan_db_latest \\
+        --index mpa_vJan21_TOY_CHOCOPhlAnSGB_202103
         $args
 
     cat <<-END_VERSIONS > versions.yml
