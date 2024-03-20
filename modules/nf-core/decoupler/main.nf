@@ -18,36 +18,42 @@ process DECOUPLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '{}'
-    def methods = task.ext.methods ?: 'None'
-    def source = task.ext.source ?: "source"
-    def target = task.ext.target ?: "target"
-    def weight = task.ext.weight ?: "weight"
-    def min_n = task.ext.min_n ?: 5
-    def dense = task.ext.verbose ?: 'False'
-    def consensus = task.ext.verbose ?: 'False'
-    def verbose = task.ext.verbose ?: 'False'
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: "{}"
     """
     #!/usr/bin/env python3
     import decoupler as dc
     import pandas as pd
 
+    methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
+        'ulm', 'viper', 'wmean', 'wsum']
+
     mat = pd.read_csv("${mat}", sep="\t", index_col=0)
     net = pd.read_csv("${net}", sep="\t", index_col=0)
+
+    # Parsing arguments
+    args = "${args}"
+    parsedargs = {'args': {}}
+
+    for k, v in args.items():
+        # Specific method argument
+        if k.split('_')[0] in methods:
+            meth = k.split('_')[0]
+            arg = '_'.join(k.split('_')[1:])
+
+            if meth not in args['args'].keys():
+                parsedargs['args'][meth] = {arg: v}
+            else:
+                parsedargs['args'][meth].update({arg: v})
+
+        # Generic argument
+        else:
+            parsedargs[k] = v
+
 
     results = dc.decouple(
         mat=mat,
         net=net,
-        methods=${methods},
-        source="${source}",
-        target="${target}",
-        weight="${weight}",
-        min_n=int(${min_n}),
-        dense=${dense},
-        consensus=${consensus},
-        verbose=${verbose},
-        args=${args}
+        **parsedargs
     )
 
     for result in results:
