@@ -8,7 +8,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         'biocontainers/picard:3.1.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_index)
 
@@ -24,7 +24,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     script:
     def args = task.ext.args        ?: ''
     def prefix = task.ext.prefix    ?: "${meta.id}"
-    def suffix = task.ext.suffix    ?: "${bam.getExtension()}"
+    def suffix = task.ext.suffix    ?: "${reads.getExtension()}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
     def avail_mem = 3072
@@ -34,7 +34,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
 
-    if ("$bam" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
     picard \\
@@ -43,7 +43,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         $args \\
         $reference \\
         $create_index \\
-        --INPUT ${bam} \\
+        --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
@@ -54,8 +54,8 @@ process PICARD_ADDORREPLACEREADGROUPS {
 
     stub:
     def prefix = task.ext.prefix    ?: "${meta.id}"
-    def suffix = task.ext.suffix    ?: "${bam.getExtension()}"
-    if ("$bam" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def suffix = task.ext.suffix    ?: "${reads.getExtension()}"
+    if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     def create_index = ""
     if (suffix == "bam") {
         create_index = "touch ${prefix}.${suffix}.bai"
