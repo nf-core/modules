@@ -7,22 +7,22 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("Test deepvariant("homo_sapiens - [bam, bai, bed] - fasta - fai") {
+    test("Test deepvariant(homo_sapiens - [bam, bai] - fasta - fai") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai'], checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = [
                     [],[]
@@ -39,23 +39,23 @@ nextflow_process {
         }
     }
 
-    test("Test deepvariant cram intervals") {
+    test("Test deepvariant(homo_sapiens - [cram, crai, genome_bed] - fasta - fai)") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-                      file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = [
                     [],[]
@@ -72,27 +72,27 @@ nextflow_process {
         }
     }
 
-    test("Test deepvariant fasta_gz") {
+    test("Test deepvariant(homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai)") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                      file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
                       []
                 ]
                 input[1] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta_gz'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[2] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta_gz_fai'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true)
                 ]
                 input[3] = [
                     [ id:'genome'],
-                      file(params.test_data['homo_sapiens']['genome']['genome_fasta_gz_gzi'], checkIfExists: true)
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
                 ]
                 """
             }
