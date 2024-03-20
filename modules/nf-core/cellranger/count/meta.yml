@@ -10,7 +10,8 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      licence: 10x Genomics EULA
+      licence:
+        - 10x Genomics EULA
 input:
   - meta:
       type: map
@@ -39,6 +40,14 @@ output:
       type: file
       description: Files containing the outputs of Cell Ranger, see official 10X Genomics documentation for a complete list
       pattern: "${meta.id}/outs/*"
+  - filtered:
+      type: file
+      description: Files containing the filtered outputs of Cell Ranger.
+      pattern: "**/outs/filtered_feature_bc_matrix**"
+  - raw:
+      type: file
+      description: Files containing the raw outputs of Cell Ranger.
+      pattern: "**/outs/raw_feature_bc_matrix**"
   - versions:
       type: file
       description: File containing software version
