@@ -2,10 +2,11 @@ process GET_DECOUPLER_PKN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-decoupler:2.8.0--r43hdfd78af_0':
-        'biocontainers/bioconductor-decoupler:2.8.0--r43hdfd78af_0'}"
+    conda "conda-forge::decoupler-py=1.6.0"
+    container "ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d"
+    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //     'https://depot.galaxyproject.org/singularity/bioconductor-decoupler:2.8.0--r43hdfd78af_0':
+    //     'biocontainers/bioconductor-decoupler:2.8.0--r43hdfd78af_0'}"
 
     input:
     
