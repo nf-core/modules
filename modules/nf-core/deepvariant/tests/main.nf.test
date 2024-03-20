@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("Test deepvariant") {
+    test("Test deepvariant("homo_sapiens - [bam, bai, bed] - fasta - fai") {
         when {
             process {
                 """
@@ -39,7 +39,7 @@ nextflow_process {
         }
     }
 
-    test("Test deepvariant cram intervals) {
+    test("Test deepvariant cram intervals") {
         when {
             process {
                 """
@@ -60,6 +60,7 @@ nextflow_process {
                 input[3] = [
                     [],[]
                 ]
+                """
             }
         }
 
