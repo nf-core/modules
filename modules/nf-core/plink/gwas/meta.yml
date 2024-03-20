@@ -28,6 +28,11 @@ input:
       description: |
         Groovy Map containing sample information,
         e.g. [ id:'test', single_end:false ]
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing sample information,
+        e.g. [ id:'test', single_end:false ]
   - bed:
       type: file
       description: PLINK binary biallelic genotype table file
@@ -52,6 +57,12 @@ input:
       type: file
       description: PLINK file containing family IDs in the first column, within-family IDs in the second column and phenotype information in the third column
       pattern: "*.{phe}"
+  - pheno:
+      type: file
+      description: PLINK command that causes phenotype values to be read from the 3rd column of the specified space- or tab-delimited file, instead of the .fam or .ped file
+  - allow-no-sex:
+      type: file
+      description: PLINK command to etain phenotype values for missing-sex samples
 
 output:
   - meta:
