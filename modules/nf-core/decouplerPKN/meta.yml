@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "get_decoupler_pkn"
+description: Retrieves prior knowledge network for decoupler
+keywords:
+  - Knowledge
+  - Network
+  - Activity
+  - Footprinting
+tools:
+  - "decoupler-py":
+      description: "python package containing different statistical methods to extract biological signatures from prior knowledge within a unified framework"
+      homepage: "https://decoupler-py.readthedocs.io/en/latest/index.html"
+      documentation: "https://decoupler-py.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/saezlab/decoupler-py"
+      doi: "10.1093/bioadv/vbac016"
+      licence: ['GPL >=3']
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information, to be passed as reference
+        and target levels, like '--reference_level $meta.reference
+        --treatment_level $meta.target'
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+
+  - resource:
+      type: string
+      description: String to indicate preferred resource for PKN. One of Dorothea, Progeny, and CollecTRI
+  
+  - organism:
+      type: string
+      description: String to indicate organism. Currently human or mouse 
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - network:
+      type: file
+      description : CSV-format of prior knowledge network required by decoupler
+      pattern: "decoupler_network.csv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@bisho2122"
+maintainers:
+  - "@bisho2122"
