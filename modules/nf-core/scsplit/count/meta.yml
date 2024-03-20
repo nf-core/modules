@@ -47,12 +47,15 @@ output:
   - ref_filtered: 
       type: file
       description: Reference allele count matrix
+      pattern: "*_ref_filtered.csv"
   - alt_filtered:
       type: file
       description: Alternative allele count matrix
+      pattern: "*_alt_filtered.csv"
   - log: 
       type: file 
       description: scSplit log
+      pattern: "*_scSplit.log"
   - versions:
       type: file
       description: File containing software versions
