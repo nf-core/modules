@@ -27,7 +27,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert file(process.out.cel.get(0).get(1).find { file(it).name == "sample1.cel.gz" }).exists() }
+	        { assert path(process.out.cel.get(0).get(1)).exists() },
+		{ assert path(process.out.var.get(0).get(1)).exists() },
+		{ assert path(process.out.umi.get(0).get(1)).exists() },
+		{ assert path(process.out.plp.get(0).get(1)).exists() }
             )
         }
 
@@ -53,7 +56,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("stub-versions") },
-                { assert file(process.out.cel.get(0).get(1).find { file(it).name == "sample1.cel.gz" }).exists() }
+                { assert path(process.out.cel.get(0).get(1)).exists() },
+                { assert path(process.out.var.get(0).get(1)).exists() },
+                { assert path(process.out.umi.get(0).get(1)).exists() },
+                { assert path(process.out.plp.get(0).get(1)).exists() }
             )
         }
 
