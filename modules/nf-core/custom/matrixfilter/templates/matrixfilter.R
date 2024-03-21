@@ -178,7 +178,7 @@ boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
 }))
 
 # Apply the 'most_variant_test' function to identify the most variant rows and add the result to the boolean matrix
-if (is.null(opt\$most_variant_features)) {
+if (! is.null(opt\$most_variant_features)) {
 
   # Function to identify rows that are among the top n most variant
   most_variant_test <- function(matrix_data) {
