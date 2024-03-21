@@ -3,17 +3,18 @@ process TOULLIGQC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/toulligqc:2.5.2--pyhdfd78af_0':
-        'biocontainers/toulligqc:2.5.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/toulligqc:2.5.3--pyhdfd78af_0':
+        'biocontainers/toulligqc:2.5.3--pyhdfd78af_0' }"
 
     input:
     path seq_summary
+    path fastq
 
     output:
-    path "*/*.data", emit: report_data
-    path "*/*.html", emit: report_html, optional: true
-    path "*/images/*.html", emit: plots_html
-    path "*/images/plotly.min.js", emit: plotly_js
+    path "*/*.data"                 , emit: report_data
+    path "*/*.html"                 , emit: report_html, optional: true
+    path "*/images/*.html"          , emit: plots_html
+    path "*/images/plotly.min.js"   , emit: plotly_js
 
     path "versions.yml" , emit: versions
 
@@ -23,8 +24,12 @@ process TOULLIGQC {
     script:
     def args = task.ext.args ?: ''
 
+    def seq_summary_arg = seq_summary ? "-a ${seq_summary}" : ""
+    def fastq_arg = fastq ? "-q ${fastq}" : ""
+
     """
-    toulligqc -a ${seq_summary}
+    toulligqc ${seq_summary_arg} \\
+                ${fastq_arg}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

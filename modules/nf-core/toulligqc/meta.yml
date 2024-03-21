@@ -12,7 +12,6 @@ tools:
       homepage: https://github.com/GenomiqueENS/toulligQC
       documentation: https://github.com/GenomiqueENS/toulligQC
       tool_dev_url: https://github.com/GenomiqueENS/toulligQC
-      doi: ""
       licence: ["CECILL-2.1"]
 
 input:
@@ -20,6 +19,10 @@ input:
       type: file
       description: Basecaller sequencing summary source
       pattern: "*.{fast5, fast5.tar.gz, fast5.tar.bz2}"
+  - fastq:
+      type: file
+      description: FASTQ file (necessary if no sequencing summary file)
+      pattern: "*.{fq, fastq, fastq.gz}"
 
 output:
   - report_data:
