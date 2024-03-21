@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "circularmapper_circulargenerator"
+description: A method to improve mappings on circular genomes, using the BWA mapper.
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "circulargenerator":
+      description: "Creating a modified reference genome, with an elongation of the an specified amount of bases"
+      homepage: "https://github.com/apeltzer/CircularMapper"
+      documentation: "https://github.com/apeltzer/CircularMapper/blob/master/docs/contents/userguide.rst"
+      tool_dev_url: "https://github.com/apeltzer/CircularMapper"
+      doi: "no DOI available"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - reference:
+      type: file
+      description: Genome fasta file
+      pattern: "*.fasta"
+
+  - elong:
+      type: integer
+      description: elongation value for the modified reference genome
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - fasta:
+      type: file
+      description: Genome fasta file
+      pattern: "*.fasta"
+
+authors:
+  - "@apalleja"
+maintainers:
+  - ""
