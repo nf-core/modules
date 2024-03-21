@@ -53,6 +53,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
+  - log:
+      type: file
+      description: log file containing stdout and stderr from bbmerge.sh
+      pattern: "*.log"
+
 authors:
   - "@guille0387"
 maintainers:
