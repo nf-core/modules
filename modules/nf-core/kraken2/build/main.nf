@@ -28,6 +28,9 @@ process KRAKEN2_BUILD {
         --threads ${task.cpus} \\
         --db ${db}
     $runclean
+    if [[ \$(basename ${db}) != "${prefix}" ]]; then
+        mv ${db}/* ${prefix}
+    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
