@@ -30,6 +30,19 @@ process MAGECK_TEST {
         -k $count_table \\
         -n $prefix
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mageck: \$(mageck -v)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gene_summary.txt
+    touch ${prefix}.sgrna_summary.txt
+    touch ${prefix}.R
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
