@@ -54,7 +54,7 @@ process MERFIN_HIST {
     def optional_seqmers        = seqmers ? "-seqmers ${seqmers}" : ""
     """
     touch ${prefix}.hist
-    touch ${prefix}.hist.log
+    touch ${prefix}.hist.stderr.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
