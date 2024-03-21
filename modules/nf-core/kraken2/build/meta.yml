@@ -25,6 +25,9 @@ input:
       type: directory
       description: contains required files to build the database
       pattern: "*/"
+  - cleaning:
+      type: boolean
+      description: activate or deactivate (true or false) cleaning of intermediate files
 output:
   - meta:
       type: map

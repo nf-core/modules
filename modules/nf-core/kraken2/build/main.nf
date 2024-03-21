@@ -8,6 +8,7 @@ process KRAKEN2_BUILD {
 
     input:
     tuple val(meta), path(db)
+    val cleaning
 
     output:
     tuple val(meta), path("$prefix"), emit: db
@@ -19,13 +20,14 @@ process KRAKEN2_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    runclean = cleaning ? "kraken2-build --clean --db ${db}" : ""
     """
     kraken2-build \\
         --build \\
         $args \\
         --threads ${task.cpus} \\
         --db ${db}
-
+    $runclean
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')

@@ -54,6 +54,7 @@ nextflow_process {
             process {
                 """                
                 input[0] = KRAKEN2_ADD.out.db
+                input[1] = true
                 """
             }
         }
@@ -63,7 +64,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.db.get(0).get(1) ==~ ".*/test" },
                 { assert snapshot (
-                        path("${process.out.db[0][1]}/seqid2taxid.map")
+                        path("${process.out.db[0][1]}/hash.k2d"),
+                        path("${process.out.db[0][1]}/taxo.k2d")
                     ).match()
                 }
             )
@@ -79,6 +81,7 @@ nextflow_process {
             process {
                 """                
                 input[0] = KRAKEN2_ADD.out.db
+                input[1] = true
                 """
             }
         }
