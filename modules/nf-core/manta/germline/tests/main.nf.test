@@ -92,10 +92,10 @@ nextflow_process {
                 input[0] = [ [ id:'bed_test', single_end:false ], // meta map
                             [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true)
-                            ]
+                            ],
                             [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram.crai', checkIfExists: true)
-                            ]
+                            ],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz.tbi', checkIfExists: true)
                         ]
