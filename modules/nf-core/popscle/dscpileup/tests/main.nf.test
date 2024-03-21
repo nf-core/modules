@@ -1,4 +1,3 @@
-// nf-core modules test popscle/dscpileup
 nextflow_process {
 
     name "Test Process POPSCLE_DSCPILEUP"
@@ -17,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'sample1' ], // meta map
-                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)
                     ]
                 """
             }
@@ -28,7 +27,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-		        { assert snapshot(file(process.out.cel[0][1]).name).match("sample1.cel.gz")},
+                { assert file(process.out.cel.get(0).get(1).find { file(it).name == "sample1.cel.gz" }).exists() }
             )
         }
 
@@ -43,8 +42,8 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'sample1' ], // meta map
-                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)
                     ]
                 """
             }
@@ -54,7 +53,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("stub-versions") },
-		        { assert snapshot(file(process.out.plp[0][1]).name).match("sample1.plp.gz")},
+                { assert file(process.out.cel.get(0).get(1).find { file(it).name == "sample1.cel.gz" }).exists() }
             )
         }
 
