@@ -21,8 +21,12 @@ process DECOUPLER {
     def args = task.ext.args ?: "{}"
     """
     #!/usr/bin/env python3
-    import decoupler as dc
+    import os
     import pandas as pd
+
+    os.environ["NUMBA_CACHE_DIR"] = "./tmp"
+
+    import decoupler as dc
 
     methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
         'ulm', 'viper', 'wmean', 'wsum']
