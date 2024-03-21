@@ -165,14 +165,16 @@ if (is.null(opt\$minimum_samples_not_na)) {
 }
 
 # Define the tests
+
 tests <- list(
     'abundance' = function(x) sum(x >= opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
     'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
 )
 
-# Apply the 'abundance' and 'na' tests row-wise to the abundance_matrix
+# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
+
 boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
-  sapply(tests, function(f) f(row))
+    sapply(tests, function(f) f(row))
 }))
 
 # Apply the 'most_variant_test' function to identify the most variant rows and add the result to the boolean matrix
