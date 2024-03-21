@@ -1,0 +1,70 @@
+// nf-core modules test cellranger/mkref
+nextflow_process {
+
+    name "Test Process CELLRANGER_MKREF"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "CELLRANGER_MKREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/mkref"
+
+    test("homo_sapiens - chr22 - reference") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[2] = "homo_sapiens_chr22_reference"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path( "${outputDir}/homo_sapiens_chr22_reference/fasta"                 ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/genes"                 ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/reference.json"        ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/SA"               ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/SAindex"          ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/Genome"           ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/geneInfo.tab"     ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab" ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/exonInfo.tab"     ),
+                        path( "${outputDir}/homo_sapiens_chr22_reference/star/sjdbList.out.tab" )
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chr22 - reference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[2] = "homo_sapiens_chr22_reference"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.reference).match() }
+            )
+        }
+
+    }
+
+}

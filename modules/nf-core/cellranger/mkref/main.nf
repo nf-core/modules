@@ -35,4 +35,21 @@ process CELLRANGER_MKREF {
         cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def args = task.ext.args ?: ''
+    """
+    mkdir $reference_name
+    touch ${reference_name}/empty_file
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
+    """
+
 }
