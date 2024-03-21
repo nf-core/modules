@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_ltrretriever_lai"
+description: |
+  Performs long terminal retrotransposons (LTR) annotation with gt/ltrharvest, ltrfinder
+  and ltrretriever along with LTR assembly index (LAI).
+keywords:
+  - genomics
+  - genome
+  - annotation
+  - repeat
+  - transposons
+  - retrotransposons
+  - stats
+  - qc
+components:
+  - custom/shortenfastaids
+  - ltrharvest
+  - ltrfinder
+  - ltrretriever/ltrretriever
+  - cat/cat
+  - ltrretriever/lai
+  - custom/restoregffids
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Channel for the assembly fasta file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fsa/fa/fasta}"
+  - ch_monoploid_seqs:
+      type: file
+      description: |
+        Channel for providing a list of monoploid sequences
+        for correct estimation of LAI for polyploid genomes.
+        This parameter is useful when all the haplotypes are
+        stored in a single fasta file.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+  - skip_lai:
+      type: boolean
+      description: |
+        Skip LAI estimation
+        Structure: [ val(boolean) ]
+output:
+  - ltrlib:
+      type: file
+      description: |
+        LTR library constructed by ltrretriever
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.LTRlib.fa"
+  - annotation_gff:
+      type: file
+      description: |
+        Annotation based on the LTR library
+        Structure: [ val(meta), path(gff3) ]
+      pattern: "*.gff3"
+  - lai_log:
+      type: file
+      description: |
+        Log from LAI
+        Structure: [ val(meta), path(log) ]
+      pattern: "*.LAI.log"
+  - lai_out:
+      type: file
+      description: |
+        LAI output
+        Structure: [ val(meta), path(out) ]
+      pattern: "*.LAI.out"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
