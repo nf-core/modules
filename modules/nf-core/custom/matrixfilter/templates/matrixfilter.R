@@ -183,10 +183,15 @@ boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
 if (! is.null(opt\$most_variant_features)) {
 
   # Function to identify rows that are among the top n most variant
+
   most_variant_test <- function(matrix_data) {
+
     # Determine the indices of the top variant rows based on variance
+
     top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
+
     # Return a boolean vector indicating if each row is among the top variant ones
+
     1:nrow(matrix_data) %in% top_indices
   }
 
