@@ -18,17 +18,19 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
                 """
             }
         }
 
         then {
             assertAll (
-            { assert process.success },
-            { assert snapshot(process.out).match() },
-            { assert process.out.gtf != null },
-            { assert process.out.gffread_gff == [] }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.gtf,
+                    process.out.versions
+                ).match() },
+                { assert process.out.gffread_gff == [] }
             )
         }
 
@@ -36,23 +38,27 @@ nextflow_process {
 
     test("sarscov2-gff3-gff3") {
 
+        config "./nextflow-gff3.config"
+
         when {
             params {
                 outdir = "$outputDir"
             }
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
                 """
             }
         }
 
         then {
             assertAll (
-            { assert process.success },
-            { assert snapshot(process.out).match() },
-            { assert process.out.gtf == [] },
-            { assert process.out.gffread_gff != null },
+                { assert process.success },
+                { assert snapshot(
+                    process.out.gffread_gff,
+                    process.out.versions
+                ).match() },
+                { assert process.out.gtf == [] },
             )
         }
 
