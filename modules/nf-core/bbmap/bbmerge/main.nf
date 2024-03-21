@@ -28,16 +28,12 @@ process BBMAP_BBMERGE {
         -Xmx\$maxmem \\
         in1=${reads[0]} \\
         in2=${reads[1]} \\
-        out=${prefix}_merged.fastq \\
-        outu1=${prefix}_1_unmerged.fastq \\
-        outu2=${prefix}_2_unmerged.fastq \\
+        out=${prefix}_merged.fastq.gz \\
+        outu1=${prefix}_1_unmerged.fastq.gz \\
+        outu2=${prefix}_2_unmerged.fastq.gz \\
         ihist=${prefix}_ihist.txt \\
         $args \\
         &> ${prefix}.bbmerge.log
-
-    gzip ${prefix}_merged.fastq
-    gzip ${prefix}_1_unmerged.fastq
-    gzip ${prefix}_2_unmerged.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -50,9 +46,9 @@ process BBMAP_BBMERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}_merged.fastq.gz
-    touch ${prefix}_1_unmerged.fastq.gz
-    touch ${prefix}_2_unmerged.fastq.gz
+    echo "" | gzip > ${prefix}_merged.fastq.gz
+    echo "" | gzip > ${prefix}_1_unmerged.fastq.gz
+    echo "" | gzip > ${prefix}_2_unmerged.fastq.gz
     touch ${prefix}_ihist.txt
     touch ${prefix}.bbmerge.log
 
