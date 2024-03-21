@@ -114,7 +114,7 @@ nextflow_process {
                         process.out.vcf.collect { file(it[1]).getName() },
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
-                        process.out.f1r2,
+                        process.out.f1r2.collect { file(it[1]).getName() },
                         process.out.versions
                     ).match()
                 }
@@ -256,7 +256,6 @@ nextflow_process {
     }
 
     test("mitochondria"){
-        tag "run"
         when {
             process {
             """
