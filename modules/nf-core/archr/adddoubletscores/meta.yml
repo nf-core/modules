@@ -1,21 +1,19 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "archr_createarrowfiles"
+name: "archr_adddoubletscores"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: "ArchR for analysis of single-cell chromatin accessibility data, calculate doublet scores"
 keywords:
-  - sort
-  - example
+  - chromatin accessibility
+  - doublet
   - genomics
 tools:
   - "archr":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
+      homepage: "https://www.archrproject.com/"
+      documentation: "https://www.archrproject.com/"
+      tool_dev_url: "https://github.com/GreenleafLab/ArchR"
+      licence: ["MIT"]
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -24,8 +22,8 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+        e.g. `[ id:'sample1']`
+
   ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
@@ -40,7 +38,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
