@@ -1,3 +1,17 @@
+#!/usr/bin/env Rscript
+
+parse_args <- function(x){
+    args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
+
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
+}
+
+
 ################################################
 ################################################
 ## Pull in module inputs                      ##
@@ -9,28 +23,27 @@ inputFile <- '$fragments'
 sampleNames <- gsub(".fragments.tsv.gz","", gsub(".*/","", inputFile))
 sampleName <- "$meta.id"
 # get sample names
-genome <- "$genome"
+genome <- "$meta.genome"
 # "hg19","hg38","mm9", and "mm10" currently supported
-threads <- "$task.cpus"
+threads <- $task.cpus
 
 
 library(ArchR)
 
 addArchRGenome(genome)
-addArchRThreads(threads = threads) 
+addArchRThreads(threads = threads)
 
 ArrowFiles <- createArrowFiles(
-  inputFiles = inputFiles,
+  inputFiles = inputFile,
   sampleNames = sampleNames,
   minTSS = 4, #Dont set this too high because you can always increase later
-  minFrags = 1000, 
+  minFrags = 1000,
   addTileMat = TRUE,
   addGeneScoreMat = TRUE
 )
 
 # need to make minTSS and minFrags variables?
 
-saveRDS(ArrowFiles, file = "arrowfiles.rds")
 
 ################################################
 ################################################

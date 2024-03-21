@@ -3,7 +3,7 @@ process ARCHR_CREATEARROWFILES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "archr" // TODO update
+    container "archr_dckr" // TODO update
 
     input:
     tuple val(meta), path(fragments)
@@ -11,7 +11,7 @@ process ARCHR_CREATEARROWFILES {
     output:
     tuple val(meta), path("*.arrow")                , emit: arrowfile
     tuple val(meta), path("*.rds")                  , emit: arrowmetadata
-    tuple val(meta), path(".pdf")                   , emit: qualitycontrolplots
+    tuple val(meta), path("*.pdf")                   , emit: qualitycontrolplots
     tuple val(meta), path("*.R_sessionInfo.log")    , emit: session_info
     path "versions.yml"                             , emit: versions
 
@@ -21,15 +21,16 @@ process ARCHR_CREATEARROWFILES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    template createarrowfiles.r
-    """
+
+    template 'createarrowfiles.r'
+
 
     stub:
     """
-    touch QualityControl/${meta.id}/${meta.id}-Pre-Filter-Metadata.rds
-    touch QualityControl/${meta.id}/${meta.id}-Fragment_Size_Distribution.pdf
-    touch QualityControl/${meta.id}/${meta.id}-TSS_by_Unique_Frags.pdf
+    touch ${meta.id}.arrow
+    touch ${meta.id}-Pre-Filter-Metadata.rds
+    touch ${meta.id}-Fragment_Size_Distribution.pdf
+    touch ${meta.id}-TSS_by_Unique_Frags.pdf
     touch ${meta.id}.R_sessionInfo.log
 
     cat <<-END_VERSIONS > versions.yml
