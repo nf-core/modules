@@ -27,7 +27,6 @@ process PICARD_MARKDUPLICATES {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix    ?: "${reads.getExtension()}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
-    def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[Picard MarkDuplicates] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -45,7 +44,6 @@ process PICARD_MARKDUPLICATES {
         --INPUT $reads \\
         --OUTPUT ${prefix}.${suffix} \\
         $reference \\
-        $create_index \\
         --METRICS_FILE ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
@@ -57,14 +55,9 @@ process PICARD_MARKDUPLICATES {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix    ?: "${reads.getExtension()}"
-    def create_index = ""
-    if (suffix == "bam") {
-        create_index = "touch ${prefix}.${suffix}.bai"
-    }
     if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${suffix}
-    ${create_index}
     touch ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml

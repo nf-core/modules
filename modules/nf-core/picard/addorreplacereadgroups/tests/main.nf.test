@@ -27,7 +27,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(file(process.out.bam[0][1]).name).match("bam_name") },
-                { assert snapshot(file(process.out.bai[0][1]).name).match("bai_name") },
             )
         }
 
