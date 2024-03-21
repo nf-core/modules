@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "archr_adddoubletscores"
+## TODO nf-core: Add a description of the module and list keywords
+description: "ArchR for analysis of single-cell chromatin accessibility data, calculate doublet scores"
+keywords:
+  - chromatin accessibility
+  - doublet
+  - genomics
+tools:
+  - "archr":
+      description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
+      homepage: "https://www.archrproject.com/"
+      documentation: "https://www.archrproject.com/"
+      tool_dev_url: "https://github.com/GreenleafLab/ArchR"
+      licence: ["MIT"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1']`
+
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@JuliaPhilipp"
+maintainers:
+  - "@JuliaPhilipp"
