@@ -38,7 +38,7 @@ process CRABZ_COMPRESS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${file}"
     """
-    touch ${prefix}.gz
+    echo "" | gzip > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
