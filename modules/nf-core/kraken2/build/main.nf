@@ -27,7 +27,7 @@ process KRAKEN2_BUILD {
         $args \\
         --threads ${task.cpus} \\
         --db ${db}
-    $runclean
+    $runclean 
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
