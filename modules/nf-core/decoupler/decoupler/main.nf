@@ -3,7 +3,7 @@ process DECOUPLER {
     label 'process_medium'
 
     conda "conda-forge::decoupler-py=1.6.0"
-    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-2f65a0d"
+    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
 
     input:
     tuple val(meta), path(mat)
