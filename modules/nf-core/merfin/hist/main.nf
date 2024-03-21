@@ -1,6 +1,6 @@
 process MERFIN_HIST {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -27,7 +27,7 @@ process MERFIN_HIST {
     def prefix                  = task.ext.prefix ?: "${meta.id}"
     def optional_lookup_table   = lookup_table ? "-prob ${lookup_table}" : ""
     def optional_seqmers        = seqmers ? "-seqmers ${seqmers}" : ""
-    def mem_adjust              = "${task.memory}".replaceAll(' ', '')
+    def mem_adjust              = "${task.memory}".replaceAll(' ', '')  // Memory parameter - essential to avoid crash
     """
     merfin -hist \\
         -threads $task.cpus \\
