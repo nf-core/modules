@@ -1,6 +1,6 @@
-include { METAPHLAN_MAKEDB      } from '../../../modules/nf-core/metaphlan/makedb/main'
-include { METAPHLAN_METAPHLAN     } from '../../../modules/nf-core/metaphlan/metaphlan/main'
-include { METAPHLAN_MERGEMETAPHLANTABLES     } from '../../../modules/nf-core/metaphlan/mergemetaphlantables/main'
+include { METAPHLAN_MAKEDB               } from '../../../modules/nf-core/metaphlan/makedb/main'
+include { METAPHLAN_METAPHLAN            } from '../../../modules/nf-core/metaphlan/metaphlan/main'
+include { METAPHLAN_MERGEMETAPHLANTABLES } from '../../../modules/nf-core/metaphlan/mergemetaphlantables/main'
 
 
 workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
