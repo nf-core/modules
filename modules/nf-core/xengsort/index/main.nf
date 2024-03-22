@@ -59,16 +59,13 @@ process XENGSORT_INDEX {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
+    xengsort \\
+        index \\
         $args \\
         -@ $task.cpus \\
         $bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xengsort: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
+    xengsort --version > versions.yml
     """
 
     stub:
