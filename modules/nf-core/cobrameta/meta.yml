@@ -48,15 +48,15 @@ input:
         to the resulting assembly FASTA
       pattern: "*.{bam,cram,sam}"
   - assembler:
-      type: value
+      type: string
       description: The name of the tool used to assemble contigs
       pattern: "{metaspades,megahit,idba}"
   - mink:
-      type: value
+      type: integer
       description: The minimum kmer size used to assemble contigs
       pattern: "[0-9]+"
   - maxk:
-      type: value
+      type: integer
       description: The maximum kmer size used to assemble contigs
       pattern: "[0-9]+"
 
