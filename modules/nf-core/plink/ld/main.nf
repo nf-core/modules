@@ -14,8 +14,10 @@ process PLINK_LD {
     tuple val(meta4), path(snpfile)
 
     output:
-    tuple val(meta), path("*.ld")    , emit: ld
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.ld")   , emit: ld
+    tuple val(meta), path("*.log")  , emit: log, optional:true
+    tuple val(meta), path("*.nosex"), emit: nosex, optional:true
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

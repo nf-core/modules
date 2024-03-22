@@ -76,11 +76,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - ld:
       type: file
       description: |
         The output of a linkage disequilibrium analysis in PLINK typically includes a table showing variant pairs and their associated LD values, often expressed as R².
+  - log:
+      type: file
+      description: |
+        Log file of the ld process
+  - nosex:
+      type: file
+      description: |
+        Ambiguous sex ID file
 authors:
   - "@davidebag"
 maintainers:
