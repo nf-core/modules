@@ -1,43 +1,35 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "xengsort_index"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Fast lightweight accurate xenograft sorting
 keywords:
-  - sort
-  - example
+  - xenograft
+  - fastq
   - genomics
 tools:
   - "xengsort":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A fast xenograft read sorter based on space-efficient k-mer hashing"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://gitlab.com/genomeinformatics/xengsort"
+      documentation: "https://gitlab.com/genomeinformatics/xengsort"
+      tool_dev_url: "https://gitlab.com/genomeinformatics/xengsort"
+      doi: "10.4230/LIPIcs.WABI.2020.4"
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File containing reads
+      pattern: "*.{fastq,fq,fasta,fa}"
 
 authors:
   - "@diegomscoelho"
