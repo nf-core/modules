@@ -56,7 +56,8 @@ nextflow_process {
                 input[0] = [ [id:"${params.vep_cache_version}_${params.vep_genome}"],
                         params.vep_genome,
                         params.vep_species,
-                        params.vep_cache_version])
+                        params.vep_cache_version
+                        ]
                 """
             }
         }
