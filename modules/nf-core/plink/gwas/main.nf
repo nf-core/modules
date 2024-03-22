@@ -17,7 +17,7 @@ process PLINK_GWAS {
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
     tuple val(meta), path("*.log")  ,  emit: log
-    tuple val(meta), path("*.nosex"),  emit: nosex, optional: true
+    tuple val(meta), path("*.nosex"),  emit: nosex   , optional:true
     path "versions.yml"             ,  emit: versions
 
     when:
