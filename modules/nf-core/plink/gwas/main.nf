@@ -9,7 +9,7 @@ process PLINK_GWAS {
         'biocontainers/plink:1.90b6.21--h031d066_5' }"
 
     input:
-    tuple val(meta), path(bed), path(bim), path(fam)
+    tuple val(meta),  path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
     tuple val(meta4), path(phe)
