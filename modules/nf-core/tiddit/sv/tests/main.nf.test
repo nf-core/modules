@@ -46,6 +46,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.ploidy.get(0).get(1)).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
                 { assert snapshot(process.out.versions).match("bam_bwa_version") }
             )
         }
@@ -76,6 +78,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.ploidy.get(0).get(1)).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
                 { assert snapshot(process.out.versions).match("bam_version") }
             )
         }
@@ -118,6 +122,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.ploidy.get(0).get(1)).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
                 { assert snapshot(process.out.versions).match("cram_bwa_version") })
         }
 
@@ -147,6 +153,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.1") },
+                { assert path(process.out.ploidy.get(0).get(1)).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
                 { assert snapshot(process.out.versions).match("cram_version") })
         }
 
