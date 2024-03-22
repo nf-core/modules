@@ -36,8 +36,10 @@ process UNZIPFILES {
     """
 
     stub:
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     """
     mkdir "${prefix}"
+    touch "${prefix}/hello.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
