@@ -1,0 +1,49 @@
+---
+name: "dragen"
+description: module to enable various dragen processing steps
+keywords:
+  - illumina
+  - dragen
+  - genomics
+tools:
+  - "dragen":
+      description: ""
+      homepage: ""
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence: ""
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - fastq:
+      type: file
+      description: fastq sequence file
+      pattern: "*.{fastq,fq}{,.gz}"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@marrip"
+  - "@xuyangyuio"
