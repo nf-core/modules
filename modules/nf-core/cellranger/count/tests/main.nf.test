@@ -8,8 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellranger"
     tag "cellranger/count"
-    tag "cellranger/mkref"
-    tag "cellranger/mkgtf"
+    // TODO: Do we really need to also execute count when testing the ones below? For now, commented out.
+    // tag "cellranger/mkref"
+    // tag "cellranger/mkgtf"
 
     setup {
         config "./nextflow.config"
@@ -28,7 +29,7 @@ nextflow_process {
                 """
                 input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
                 input[1] = CELLRANGER_MKGTF.out.gtf
-                input[2] = "homo_sapiens_chr22_reference"
+                input[2] = "homo_sapiens_reference"
                 """
             }
         }
@@ -55,13 +56,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 {
-                  assert snapshot(
-                    process.out.versions,
-                    process.out.outs[0][1].findAll { file(it).name !in [
-                        'web_summary.html', // unstable checksum
-                        'barcodes.tsv.gz' // empty file in test data -> would raise linting error
-                    ]}
-                  ).match()
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.outs[0][1].findAll { file(it).name !in [
+                            'web_summary.html', // unstable checksum
+                            'barcodes.tsv.gz' // empty file in test data -> would raise linting error
+                        ]}
+                    ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() }
