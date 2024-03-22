@@ -73,7 +73,7 @@ read_delim_flexible_raw <- function(file, header = TRUE, row.names = NULL, check
     } else {
         stop(paste("Unknown separator for", ext))
     }
-  
+
     mat <- read.delim(
         file,
         sep = separator,
@@ -110,14 +110,14 @@ writeGCTFile <-  function(countFile,gctFile){
     close(fileConn)
 
     samples <- row.names(mat)
-  
+
     gctDF <- counts[c('gene_name',samples)]
     gctDF['Description'] <- counts['gene_id']
     names(gctDF)[names(gctDF) == "gene_name"] <- "NAME"
     gctDF <- gctDF[c('NAME','Description',samples)]
-  
+
     write.table(
-        gctDF,  
+        gctDF,
         file      = gctFile,
         col.names = TRUE,
         row.names = FALSE,

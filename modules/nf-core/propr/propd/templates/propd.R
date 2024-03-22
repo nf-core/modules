@@ -83,7 +83,7 @@ read_delim_flexible_raw <- function(file, header = TRUE, row.names = NULL, check
         row.names = row.names,
         check.names = check.names
     )
-  
+
     return(mat)
 }
 
@@ -119,7 +119,7 @@ writeGCTFile <-  function(countFile,gctFile){
     gctDF <- gctDF[c('NAME','Description',samples)]
 
     write.table(
-        gctDF,  
+        gctDF,
         file      = gctFile,
         col.names = TRUE,
         row.names = FALSE,
