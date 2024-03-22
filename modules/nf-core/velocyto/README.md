@@ -12,4 +12,12 @@ it will skip the samtools sort step.
 THIS IS WHY I NEED TO HAVE IN work dir a file cellsorted\_ in the same dir
 reference: https://velocyto.org/velocyto.py/tutorial/cli.html#notes-on-first-runtime-and-parallelization
 
-NOTE: Optional mask must be passed with ext.args (see tests)
+NOTE: Optional mask must be passed with `ext.args` and option `--mask`
+
+In order to run test on my temporary fork add this to `test.config`
+
+```
+params {
+    modules_testdata_base_path = "https://raw.githubusercontent.com/tucano/test-datasets/modules/data/"
+}
+```
