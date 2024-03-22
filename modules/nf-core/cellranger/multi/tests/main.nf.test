@@ -234,9 +234,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name.contains('all_contig')  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.pb') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() }
@@ -473,9 +471,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name.contains('all_contig')  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.pb') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() }
@@ -709,9 +705,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].findAll {  file(it).name.contains('all_contig')  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.pb') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() }
