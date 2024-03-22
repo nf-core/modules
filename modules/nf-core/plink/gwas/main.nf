@@ -16,6 +16,8 @@ process PLINK_GWAS {
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
+    tuple val(meta), path("*.log")  ,  emit: log
+    tuple val(meta), path("*.nosex"),  emit: nosex, optional: true
     path "versions.yml"             ,  emit: versions
 
     when:
@@ -69,10 +71,10 @@ process PLINK_GWAS {
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${phe}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno}"
+        input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
