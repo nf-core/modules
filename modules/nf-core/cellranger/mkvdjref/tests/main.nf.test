@@ -1,0 +1,43 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test cellranger/mkvdjref
+nextflow_process {
+
+    name "Test Process CELLRANGER_MKVDJREF"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "CELLRANGER_MKVDJREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/mkvdjref"
+
+    test("mkvdjref - fasta") {
+
+        when {
+            process {
+                """
+                fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                seqs = []
+                reference_name = "homo_sapiens_chr22_reference"
+
+                input[0] = fasta
+                input[1] = gtf
+                input[2] = seqs
+                input[3] = reference_name
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
