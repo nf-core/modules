@@ -8,9 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellranger"
     tag "cellranger/count"
-    // TODO: Do we really need to also execute count when testing the ones below? For now, commented out.
-    // tag "cellranger/mkref"
-    // tag "cellranger/mkgtf"
+    tag "cellranger/mkref"
+    tag "cellranger/mkgtf"
 
     setup {
         config "./nextflow.config"
