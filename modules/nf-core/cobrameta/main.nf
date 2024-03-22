@@ -17,10 +17,10 @@ process COBRAMETA {
     val maxk
 
     output:
-    tuple val(meta), path("${prefix}/COBRA_category_i_self_circular_queries_trimmed.fasta.gz")  , emit: self_circular       , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii_extended_circular_unique.fasta.gz")      , emit: extended_circular   , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii_extended_failed.fasta.gz")               , emit: extended_failed     , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii_extended_partial_unique.fasta.gz")       , emit: extended_partial    , optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_i_self_circular.fasta.gz")                  , emit: self_circular       , optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz")    , emit: extended_circular   , optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz")     , emit: extended_partial    , optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz")             , emit: extended_failed     , optional: true
     tuple val(meta), path("${prefix}/COBRA_category_iii_orphan_end.fasta.gz")                   , emit: orphan_end          , optional: true
     tuple val(meta), path("${prefix}/COBRA_all_assemblies.fasta.gz")                            , emit: all_cobra_assemblies, optional: true
     tuple val(meta), path("${prefix}/COBRA_joining_summary.txt")                                , emit: joining_summary
@@ -47,7 +47,7 @@ process COBRAMETA {
         $args
 
     gzip ${prefix}/*.fasta
-    cat ${prefix}/*fasta.gz > ${prefix}/COBRA_extended.fasta.gz
+    cat ${prefix}/*fasta.gz > ${prefix}/COBRA_all_assemblies.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -60,13 +60,12 @@ process COBRAMETA {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-    touch ${prefix}/COBRA_extended.fasta
-    touch ${prefix}/COBRA_category_i_self_circular_queries_trimmed.fasta
-    touch ${prefix}/COBRA_category_ii_extended_circular_unique.fasta
-    touch ${prefix}/COBRA_category_ii_extended_failed.fasta
-    touch ${prefix}/COBRA_category_ii_extended_partial_unique.fasta
-    touch ${prefix}/COBRA_category_iii_orphan_end.fasta
-    gzip ${prefix}/*.fasta
+    echo "" | gzip > ${prefix}/COBRA_all_assemblies.fasta.gz
+    echo "" | gzip > ${prefix}/COBRA_category_i_self_circular.fasta.gz
+    echo "" | gzip > ${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz
+    echo "" | gzip > ${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz
+    echo "" | gzip > ${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz
+    echo "" | gzip > ${prefix}/COBRA_category_iii_orphan_end.fasta.gz
     touch ${prefix}/COBRA_joining_summary.txt
     touch ${prefix}/log
 
