@@ -74,9 +74,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.self_circular,
-                    process.out.extended_circular,
-                    process.out.extended_failed,
-                    process.out.extended_partial,
                     process.out.joining_summary,
                     process.out.versions,
                     process.out.self_circular,
@@ -84,6 +81,9 @@ nextflow_process {
                 },
                 { assert file(process.out.log.get(0).get(1)).exists() },
                 { assert file(process.out.orphan_end.get(0).get(1)).exists() },
+                { assert file(process.out.extended_circular.get(0).get(1)).exists() },
+                { assert file(process.out.extended_failed.get(0).get(1)).exists() },
+                { assert file(process.out.extended_partial.get(0).get(1)).exists() },
                 { assert file(process.out.all_cobra_assemblies.get(0).get(1)).exists() }
             )
         }
