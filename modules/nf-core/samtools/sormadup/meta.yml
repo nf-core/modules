@@ -88,18 +88,26 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - markdup:
+  - bam:
       type: file
-      description: Sorted and duplicate marked BAM/CRAM file
-      pattern: "*.{bam, cram}"
-  - markdup_index:
+      description: Sorted and duplicate marked BAM file
+      pattern: "*.bam"
+  - cram:
       type: file
-      description: Sorted and duplicate marked BAM/CRAM file
-      pattern: "*.{bai, crai}"
+      description: Sorted and duplicate marked CRAM file
+      pattern: "*.cram"
+  - csi:
+      type: file
+      description: Sorted and duplicate marked BAM index file
+      pattern: "*.csi"
+  - crai:
+      type: file
+      description: Sorted and duplicate marked CRAM index file
+      pattern: "*.crai"
   - metrics:
       type: file
       description: Duplicate metrics file
-      pattern: "*.{metrics}"
+      pattern: "*.metrics"
   - versions:
       type: file
       description: File containing software versions
