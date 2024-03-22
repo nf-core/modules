@@ -40,8 +40,6 @@ process UNZIP {
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     """
     mkdir "${prefix}"
-    touch "${prefix}"/ncbi.map
-    touch "${prefix}"/ncbi.tre
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
