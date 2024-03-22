@@ -15,7 +15,7 @@ process PLINK_LD {
 
     output:
     tuple val(meta), path("*.ld")   , emit: ld
-    tuple val(meta), path("*.log")  , emit: log, optional:true
+    tuple val(meta), path("*.log")  , emit: log 
     tuple val(meta), path("*.nosex"), emit: nosex, optional:true
     path "versions.yml"             , emit: versions
 
