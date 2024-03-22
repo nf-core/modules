@@ -1,11 +1,11 @@
-include { KRAKEN2_KRAKEN2      } from '../../../modules/nf-core/kraken2/kraken2/main'
-include { KRAKENTOOLS_EXTRACTKRAKENREADS     } from '../../../modules/nf-core/krakentools/extractkrakenreads/main'
+include { KRAKEN2_KRAKEN2                } from '../../../modules/nf-core/kraken2/kraken2/main'
+include { KRAKENTOOLS_EXTRACTKRAKENREADS } from '../../../modules/nf-core/krakentools/extractkrakenreads/main'
 
 workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
 
     take:
     ch_reads  // channel: [ val(meta), path(reads) ]
-    ch_db // channel: [ path db ]
+    ch_db     // channel: [ path db ]
     val_taxid // string: taxinomic ids, separated by spaces
 
     main:
@@ -19,9 +19,9 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     ch_versions = ch_versions.mix(KRAKENTOOLS_EXTRACTKRAKENREADS.out.versions.first())
 
     emit:
-    kraken2_report = KRAKEN2_KRAKEN2.out.report // channel: [ val(meta), path ]
+    kraken2_report = KRAKEN2_KRAKEN2.out.report                                          // channel: [ val(meta), path ]
     extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq/fasta ] ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions = ch_versions                                                               // channel: [ versions.yml ]
 }
 
