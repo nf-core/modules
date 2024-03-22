@@ -10,14 +10,12 @@ process PROPR_PROPD {
     input:
     tuple val(meta), path(count)
     tuple val(meta2), path(samplesheet)
-    val GSEA
 
     output:
     tuple val(meta), path("*.propd.rds"), emit: propd
     tuple val(meta), path("*.propd.tsv"), emit: results
     tuple val(meta), path("*.fdr.tsv")  , emit: fdr         , optional:true
-    tuple val(meta), path("*.gct")  , emit: gct         , optional:true
-    tuple val(meta), path("*.cls")  , emit: cls         , optional:true
+    tuple val(meta), path("*.gct")      , emit: gct         , optional:true
     path "*.R_sessionInfo.log"          , emit: session_info
     path "versions.yml"                 , emit: versions
 
@@ -25,6 +23,5 @@ process PROPR_PROPD {
     task.ext.when == null || task.ext.when
 
     script:
-    GSEAopt = GSEA.toString().toUpperCase() // R expects upper case
     template 'propd.R'
 }

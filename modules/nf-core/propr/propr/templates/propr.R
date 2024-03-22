@@ -63,94 +63,69 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 
 #' @return output Data frame
 read_delim_flexible_raw <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
+
+    ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
+
+    if (ext == "tsv" || ext == "txt") {
+        separator <- "\\t"
+    } else if (ext == "csv") {
+        separator <- ","
+    } else {
+        stop(paste("Unknown separator for", ext))
+    }
   
-  ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
-  
-  if (ext == "tsv" || ext == "txt") {
-    separator <- "\\t"
-  } else if (ext == "csv") {
-    separator <- ","
-  } else {
-    stop(paste("Unknown separator for", ext))
-  }
-  
-  mat <- read.delim(
-    file,
-    sep = separator,
-    header = header,
-    row.names = row.names,
-    check.names = check.names
-  )
-  
-  return(mat)
+    mat <- read.delim(
+        file,
+        sep = separator,
+        header = header,
+        row.names = row.names,
+        check.names = check.names
+    )
+
+    return(mat)
 }
 
 writeGCTFile <-  function(countFile,gctFile){
-  # Following instructions on .gct format from: https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#TXT:_Text_file_format_for_expression_dataset_.28.2A.txt.29
-  counts <- read_delim_flexible_raw(
-    countFile,
-    header = TRUE,
-    row.names = NULL,
-    check.names = FALSE
-  )
-  mat <- read_delim_flexible(
-    countFile,
-    header = TRUE,
-    row.names = opt\$features_id_col,
-    check.names = FALSE
-  )
-  
-  mat = t(mat)
-  dimensions <- dim(mat)
-  sampleN <- dimensions[1]
-  geneN <- dimensions[2]
-  
-  fileConn<-file(gctFile)
-  writeLines(c("#1.2",paste(geneN,sampleN,sep='\t')), fileConn)
-  close(fileConn)
-  
-  samples <- row.names(mat)
-  
-  gctDF <- counts[c('gene_name',samples)]
-  gctDF['Description'] <- counts['gene_id']
-  names(gctDF)[names(gctDF) == "gene_name"] <- "NAME"
-  gctDF <- gctDF[c('NAME','Description',samples)]
-  
-  write.table(
-    gctDF,  
-    file      = gctFile,
-    col.names = TRUE,
-    row.names = FALSE,
-    sep       = '\t',
-    quote     = FALSE,
-    append=TRUE
-  )
-  return(samples)
-}
+    # Following instructions on .gct format from: https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#TXT:_Text_file_format_for_expression_dataset_.28.2A.txt.29
+    counts <- read_delim_flexible_raw(
+        countFile,
+        header = TRUE,
+        row.names = NULL,
+        check.names = FALSE
+    )
+    mat <- read_delim_flexible(
+        countFile,
+        header = TRUE,
+        row.names = opt\$features_id_col,
+        check.names = FALSE
+    )
 
-writeCLSFile <-  function(samples,sampleFile,clsFile){
+    mat = t(mat)
+    dimensions <- dim(mat)
+    sampleN <- dimensions[1]
+    geneN <- dimensions[2]
+
+    fileConn<-file(gctFile)
+    writeLines(c("#1.2",paste(geneN,sampleN,sep='\t')), fileConn)
+    close(fileConn)
+
+    samples <- row.names(mat)
   
-  sampleSheetDF = read_delim_flexible_raw(sampleFile)
+    gctDF <- counts[c('gene_name',samples)]
+    gctDF['Description'] <- counts['gene_id']
+    names(gctDF)[names(gctDF) == "gene_name"] <- "NAME"
+    gctDF <- gctDF[c('NAME','Description',samples)]
   
-  sampleSheetDF <- sampleSheetDF[c("sample","treatment")]
-  
-  nSamples <- length(unique(sampleSheetDF\$sample))
-  nTreatments <- length(unique(sampleSheetDF\$treatment))
-  treatments  <- unique(sampleSheetDF\$treatment)
-  
-  treatmentList <- c()
-  for (sample in samples){
-    idx = which(sampleSheetDF\$sample == sample)[1]
-    treatment <- sampleSheetDF\$treatment[idx]
-    treatmentList <- c(treatmentList,treatment)
-  }
-  
-  fileConn<-file(clsFile)
-  firstLine = paste(nSamples,nTreatments,'1',sep='\t')
-  secondLine = paste('#',paste(treatments,collapse='\t'),sep='\t')
-  thirdLine = paste(treatmentList,collapse = '\t')
-  writeLines(c(firstLine,secondLine,thirdLine), fileConn)
-  close(fileConn)  
+    write.table(
+        gctDF,  
+        file      = gctFile,
+        col.names = TRUE,
+        row.names = FALSE,
+        sep       = '\t',
+        quote     = FALSE,
+        append    = TRUE
+    )
+    return(samples)
 }
 
 #' Check if a variable can be numeric or not
@@ -372,8 +347,6 @@ if (opt\$permutation > 0) {
 if (opt\$sample_file!="EMPTY") {
     gctFile <- paste0(opt\$prefix,'.gct')
     samples <- writeGCTFile(opt\$count,gctFile)
-    clsFile <- paste0(opt\$prefix,'.cls')
-    writeCLSFile(samples,opt\$sample_file,clsFile)
 }
 
 ################################################

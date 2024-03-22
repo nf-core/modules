@@ -8,9 +8,9 @@ process PROPR_PROPR {
         'biocontainers/r-propr:5.0.3' }"
 
     input:
-    tuple val(meta), 
+    tuple val(meta),
     path(count),
-    path(optFile)
+    path(opt_file)
 
     output:
     tuple val(meta), path("*.propr.rds"), emit: propr
@@ -25,6 +25,6 @@ process PROPR_PROPR {
     task.ext.when == null || task.ext.when
 
     script:
-    sample_file = (optFile) ? "$optFile" : 'EMPTY'
+    sample_file = (opt_file) ? "$opt_file" : 'EMPTY'
     template 'propr.R'
 }

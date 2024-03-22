@@ -165,7 +165,7 @@ nextflow_process {
         }
     }
 
-    test("Test generation of .gct and .cls files for GSEA") {
+    test("Test generation of .gct file for GSEA") {
 
         tag "GSEA_input_generation"
 
@@ -184,8 +184,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gct).match("Test propr/propr while running default parameters and generating GEAS input - gct") },
-                { assert snapshot(process.out.cls).match("Test propr/propr while running default parameters and generating GEAS input - cls") }
+                { assert snapshot(process.out.gct).match("Test propr/propr while running default parameters and generating GEAS input - gct") }
             )
         }
     }
