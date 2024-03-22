@@ -708,7 +708,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name.contains('all_contig')  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
