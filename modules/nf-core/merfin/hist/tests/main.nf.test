@@ -425,9 +425,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ]).set{ input_zero_ch }
 
-                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db ).multiMap{ meta, asm, meryl_db ->
+                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db ).join( MERYL_COUNT_ASM.out.meryl_db ).multiMap{ meta, asm, meryl_db, asm_meryl_db ->
                     asm_ch: [meta, asm]
                     meryl_ch: [meta, meryl_db]
+                    asm_meryl_ch: [asm_meryl_db]
                 }.set{ multimap_inputs_ch }
 
                 // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
@@ -440,7 +441,7 @@ nextflow_process {
                 input[0] = multimap_inputs_ch.asm_ch
                 input[1] = multimap_inputs_ch.meryl_ch
                 input[2] = lk_ch
-                input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
+                input[3] = multimap_inputs_ch.asm_meryl_ch
                 input[4] = 10
                 """
             }
