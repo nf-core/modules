@@ -1,4 +1,4 @@
-# Dockerfile to create container with Cell Ranger v7.1.0 and bcl2fastq v2.20.0
+# Dockerfile to create container with Cell Ranger v8.0.0 and bcl2fastq v2.20.0
 # Push to nfcore/cellrangermkfastq:<VER>
 
 FROM continuumio/miniconda3:4.8.2
