@@ -34,4 +34,14 @@ process UNZIPFILES {
         7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir "${prefix}"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
+    END_VERSIONS
+    """
 }
