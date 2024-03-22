@@ -30,10 +30,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - reads:
       type: file
-      description: Input BAM file
-      pattern: "*.{bam}"
+      description: Sequence reads file, can be SAM/BAM/CRAM format
+      pattern: "*.{bam,cram,sam}"
   - fasta:
       type: file
       description: Reference genome file
