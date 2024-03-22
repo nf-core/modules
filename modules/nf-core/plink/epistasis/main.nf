@@ -81,7 +81,7 @@ process PLINK_EPISTASIS {
         log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
     }
     """
-    touch ${prefix}.assoc
+    touch ${prefix}.epi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
