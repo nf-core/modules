@@ -11,14 +11,14 @@ nextflow_process {
     tag "cellranger"
     tag "cellranger/mkref"
 
-    test("homo_sapiens - chr22 - reference") {
+    test("homo_sapiens - reference") {
 
         when {
             process {
                 """
                 input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
                 input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                input[2] = "homo_sapiens_chr22_reference"
+                input[2] = "homo_sapiens_reference"
                 """
             }
         }
@@ -27,16 +27,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        path( "${outputDir}/homo_sapiens_chr22_reference/fasta"                 ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/genes"                 ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/reference.json"        ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/SA"               ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/SAindex"          ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/Genome"           ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/geneInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab" ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/exonInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_chr22_reference/star/sjdbList.out.tab" )
+                        path( "${outputDir}/homo_sapiens_reference/fasta"                 ),
+                        path( "${outputDir}/homo_sapiens_reference/genes"                 ),
+                        path( "${outputDir}/homo_sapiens_reference/reference.json"        ),
+                        path( "${outputDir}/homo_sapiens_reference/star/SA"               ),
+                        path( "${outputDir}/homo_sapiens_reference/star/SAindex"          ),
+                        path( "${outputDir}/homo_sapiens_reference/star/Genome"           ),
+                        path( "${outputDir}/homo_sapiens_reference/star/geneInfo.tab"     ),
+                        path( "${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab" ),
+                        path( "${outputDir}/homo_sapiens_reference/star/exonInfo.tab"     ),
+                        path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" )
                     ).match()
                 }
             )
@@ -44,16 +44,16 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - chr22 - reference - stub") {
+    test("homo_sapiens - reference - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-                input[2] = "homo_sapiens_chr22_reference"
+                input[0] = []
+                input[1] = []
+                input[2] = "homo_sapiens_reference"
                 """
             }
         }
