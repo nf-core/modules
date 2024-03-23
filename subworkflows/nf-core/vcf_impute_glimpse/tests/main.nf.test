@@ -3,13 +3,14 @@ nextflow_workflow {
     name "Test Workflow VCF_IMPUTE_GLIMPSE"
     script "../main.nf"
     workflow "VCF_IMPUTE_GLIMPSE"
-    tag "glimpse"
-    tag "glimpse/chunk"
+
+    tag "subworkflows"
+    tag "bcftools/index"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_impute_glimpse"
     tag "glimpse/phase"
     tag "glimpse/ligate"
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "vcf_impute_glimpse"
+    tag "glimpse/chunk"
 
     test("Should run without failures") {
         config "./nextflow.config"
@@ -24,14 +25,14 @@ nextflow_workflow {
 
                 ch_panel = Channel.fromList([
                     [[ ref:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf.csi",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)],
                     [[ ref:'ref_panel2'],
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
                         checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/panel/both/1000GP.chr21_22.noNA12878.s.bcf.csi",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
                         checkIfExists: true)]
                 ])
                 region = Channel.fromList([
@@ -40,13 +41,13 @@ nextflow_workflow {
                 ])
 
                 input_vcf = Channel.fromList([
-                    [[ id:'input'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [[ id:'NA12878'], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
                     ],
-                    [[ id:'input2'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/imputation/data/NA12878/both/NA12878.chr21_22.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [[ id:'NA19401'], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
                     ]
                 ])
                 input_vcf_multiple = input_vcf
@@ -58,10 +59,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file("https://github.com/nf-core/test-datasets/raw/imputation/data/genetic_maps.b38/chr21.b38.gmap.gz", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/GRCh38.chr21.s.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file("https://github.com/nf-core/test-datasets/raw/imputation/data/genetic_maps.b38/chr22.b38.gmap.gz", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/GRCh38.chr22.s.map", checkIfExists: true)
                     ]
                 ])
 
@@ -85,17 +86,7 @@ nextflow_workflow {
         }
 
         then {
-            println(workflow.out.merged_variants)
-            String targetFileName = "input_chr21_ref_panel2_ligate.vcf.gz"
-            File selectedFile = workflow.out.merged_variants.stream()
-                .filter(vector -> vector.size() > 1)
-                .map(vector -> new File(vector.get(1).toString()))
-                .filter(file -> file.getName().equals(targetFileName))
-                .findFirst()
-                .orElse(null)
-            String selectedFilename = selectedFile != null ? selectedFile.getPath() : null
-            def lines = path(selectedFilename).linesGzip.last()
-            print(lines)
+            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(workflow.out.versions).match("versions") },

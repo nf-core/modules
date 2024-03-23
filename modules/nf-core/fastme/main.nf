@@ -8,15 +8,14 @@ process FASTME {
         'biocontainers/fastme:2.1.6.1--hec16e2b_1' }"
 
     input:
-    path infile
-    path initial_tree
+    tuple val(meta), path(infile), path(initial_tree)
 
     output:
-    path "*.nwk"        , emit: nwk
-    path "*_stat.txt"   , emit: stats
+    tuple val(meta), path("*.nwk")       , emit: nwk
+    tuple val(meta), path("*_stat.txt")  , emit: stats
+    tuple val(meta), path("*.matrix.phy"), emit: matrix    , optional: true
+    tuple val(meta), path("*.bootstrap") , emit: bootstrap , optional: true
     path "versions.yml" , emit: versions
-    path "*.matrix.phy" , emit: matrix    , optional: true
-    path "*.bootstrap"  , emit: bootstrap , optional: true
 
     when:
     task.ext.when == null || task.ext.when
