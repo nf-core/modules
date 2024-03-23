@@ -10,7 +10,6 @@ process PROPR_PROPR {
     input:
     tuple val(meta),
     path(count),
-    path(opt_file)
 
     output:
     tuple val(meta), path("*.propr.rds"), emit: propr
@@ -25,6 +24,5 @@ process PROPR_PROPR {
     task.ext.when == null || task.ext.when
 
     script:
-    sample_file = (opt_file) ? "$opt_file" : 'EMPTY'
     template 'propr.R'
 }

@@ -111,9 +111,9 @@ writeGCTFile <-  function(countFile,gctFile){
 
     samples <- row.names(mat)
 
-    gctDF <- counts[c('gene_name',samples)]
-    gctDF['Description'] <- counts['gene_id']
-    names(gctDF)[names(gctDF) == "gene_name"] <- "NAME"
+    gctDF <- counts[c(opt\$features_name_col,samples)]
+    gctDF['Description'] <- counts[opt\$features_id_col]
+    names(gctDF)[names(gctDF) == opt\$features_name_col] <- "NAME"
     gctDF <- gctDF[c('NAME','Description',samples)]
 
     write.table(
@@ -170,36 +170,38 @@ set_reference <- function(ivar, mat){
 ################################################
 
 opt <- list(
-    count            = '$count',
-    prefix           = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    transformation   = 'clr',
-    reference        = NA,
-    alpha            = NA,
-    metric           = 'pcor.bshrink',
-    permutation      = 0,
-    cutoff_min       = NA,
-    cutoff_max       = NA,
-    cutoff_interval  = NA,
-    ncores           = as.integer('$task.cpus'),
-    features_id_col  = 'gene_id',
-    fixseed          = FALSE,
-    sample_file       = '$sample_file'
+    count             = '$count',
+    prefix            = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    transformation    = 'clr',
+    reference         = NA,
+    alpha             = NA,
+    metric            = 'pcor.bshrink',
+    permutation       = 0,
+    cutoff_min        = NA,
+    cutoff_max        = NA,
+    cutoff_interval   = NA,
+    ncores            = as.integer('$task.cpus'),
+    features_id_col   = 'gene_id',
+    features_name_col = 'gene_name',          # column name of feature names
+    fixseed           = FALSE,
+    GSEA              = 'FALSE'
 )
 opt_types <- list(
-    count            = 'character',
-    prefix           = 'character',
-    transformation   = 'character',
-    reference        = 'character',
-    alpha            = 'numeric',
-    metric           = 'character',
-    permutation      = 'numeric',
-    cutoff_min       = 'numeric',
-    cutoff_max       = 'numeric',
-    cutoff_interval  = 'numeric',
-    ncores           = 'numeric',
-    features_id_col  = 'character',
-    fixseed          = 'logical',
-    sample_file       = 'character'
+    count              = 'character',
+    prefix             = 'character',
+    transformation     = 'character',
+    reference          = 'character',
+    alpha              = 'numeric',
+    metric             = 'character',
+    permutation        = 'numeric',
+    cutoff_min         = 'numeric',
+    cutoff_max         = 'numeric',
+    cutoff_interval    = 'numeric',
+    ncores             = 'numeric',
+    features_id_col    = 'character',
+    features_name_col  = 'character',
+    fixseed            = 'logical',
+    GSEA               = 'character'
 )
 
 # Apply parameter overrides
@@ -344,7 +346,7 @@ if (opt\$permutation > 0) {
     )
 }
 
-if (opt\$sample_file!="EMPTY") {
+if (opt\$GSEA=="TRUE") {
     gctFile <- paste0(opt\$prefix,'.gct')
     samples <- writeGCTFile(opt\$count,gctFile)
 }

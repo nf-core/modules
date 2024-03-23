@@ -113,9 +113,9 @@ writeGCTFile <-  function(countFile,gctFile){
 
     samples <- row.names(mat)
 
-    gctDF <- counts[c('gene_name',samples)]
-    gctDF['Description'] <- counts['gene_id']
-    names(gctDF)[names(gctDF) == "gene_name"] <- "NAME"
+    gctDF <- counts[c(opt\$features_name_col,samples)]
+    gctDF['Description'] <- counts[opt\$features_id_col]
+    names(gctDF)[names(gctDF) == opt\$features_name_col] <- "NAME"
     gctDF <- gctDF[c('NAME','Description',samples)]
 
     write.table(
@@ -137,36 +137,38 @@ writeGCTFile <-  function(countFile,gctFile){
 ################################################
 
 opt <- list(
-    prefix          = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    count           = '$count',
-    samplesheet     = '$samplesheet',
-    features_id_col = 'gene_id',            # column name of feature ids
-    obs_id_col      = 'sample',             # column name of observation ids
-    group_col       = 'treatment',          # column name of grouping variable
-    metric          = 'theta_d',            # differential proportionality metric: theta_d, theta_e or theta_f
-    alpha           = NA,                   # alpha for boxcox transformation
-    permutation     = 0,                    # permutation cycles for computing FDR
-    cutoff_min      = NA,                   # minimun threshold to test
-    cutoff_max      = NA,                   # maximun threshold to test
-    cutoff_interval = NA,                   # interval between thresholds
-    ncores          = as.integer('$task.cpus'),
-    GSEA            = "FALSE"
+    prefix            = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    count             = '$count',
+    samplesheet       = '$samplesheet',
+    features_id_col   = 'gene_id',            # column name of feature ids
+    features_name_col = 'gene_name',          # column name of feature names
+    obs_id_col        = 'sample',             # column name of observation ids
+    group_col         = 'treatment',          # column name of grouping variable
+    metric            = 'theta_d',            # differential proportionality metric: theta_d, theta_e or theta_f
+    alpha             = NA,                   # alpha for boxcox transformation
+    permutation       = 0,                    # permutation cycles for computing FDR
+    cutoff_min        = NA,                   # minimun threshold to test
+    cutoff_max        = NA,                   # maximun threshold to test
+    cutoff_interval   = NA,                   # interval between thresholds
+    ncores            = as.integer('$task.cpus'),
+    GSEA              = "FALSE"
 )
 opt_types <- list(
-    prefix          = 'character',
-    count           = 'character',
-    samplesheet     = 'character',
-    features_id_col = 'character',
-    obs_id_col      = 'character',
-    group_col       = 'character',
-    metric          = 'character',
-    alpha           = 'numeric',
-    permutation     = 'numeric',
-    cutoff_min      = 'numeric',
-    cutoff_max      = 'numeric',
-    cutoff_interval = 'numeric',
-    ncores          = 'numeric',
-    GSEA           = 'character'
+    prefix            = 'character',
+    count             = 'character',
+    samplesheet       = 'character',
+    features_id_col   = 'character',
+    features_name_col = 'character',
+    obs_id_col        = 'character',
+    group_col         = 'character',
+    metric            = 'character',
+    alpha             = 'numeric',
+    permutation       = 'numeric',
+    cutoff_min        = 'numeric',
+    cutoff_max        = 'numeric',
+    cutoff_interval   = 'numeric',
+    ncores            = 'numeric',
+    GSEA              = 'character'
 )
 
 # Apply parameter overrides

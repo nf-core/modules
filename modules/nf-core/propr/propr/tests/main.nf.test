@@ -168,14 +168,14 @@ nextflow_process {
     test("Test generation of .gct file for GSEA") {
 
         tag "GSEA_input_generation"
+        config "./GSEA.config"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true),
-                    file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+                    file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
                 ]
                 """
             }
