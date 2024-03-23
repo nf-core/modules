@@ -12,21 +12,18 @@ nextflow_process {
     test('datavzrd - csv') {
 
         setup {
-                run('DOWNLOAD_CSV') {
-                    process {
-                        '''
-                        input[0] = Channel.fromList(file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/csv/test.csv"))
-                        '''
-                    }
+                process {
+                    '''
+                    input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/csv/test.csv")
+                    '''
                 }
         }
 
         when {
             process {
                 '''
-                input[1] = DOWNLOAD_CSV.out.map{ it[1] }
                 input[0] = [[id: "csv_config"], file("https://raw.githubusercontent.com/vickylaram/test-datasets/modules/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true)]
-            '''
+                '''
             }
         }
 
@@ -46,7 +43,7 @@ nextflow_process {
         setup {
                 process {
                     '''
-                    input[0] = Channel.fromList(file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/tsv/network.tsv"))
+                    input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/tsv/network.tsv", checkIfExists: true)
                     '''
                 }
 
@@ -56,7 +53,6 @@ nextflow_process {
             process {
                 '''
                 input[0] = [[id: "tsv_config"], file("https://raw.githubusercontent.com/vickylaram/test-datasets/modules/data/generic/config/config_network.datavzrd.yaml", checkIfExists: true)]
-                input[1] = DOWNLOAD_TSV.out.map{ it[1] }
                 '''
             }
         }
