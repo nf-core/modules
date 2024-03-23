@@ -8,12 +8,10 @@ process DATAVZRD {
         'biocontainers/datavzrd:2.23.2' }"
 
     input:
-    path config
-    path output_path
-
+    tuple val(meta), file (config_file)
 
     output:
-    path "*.html", emit: output_path
+    tuple val(meta), path ("output"), emit: report
     path "versions.yml"           , emit: versions
 
     when:
@@ -22,18 +20,15 @@ process DATAVZRD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def overwrite = overwrite ? "--overwrite-output" : ""
-    def debug = debug ? "--debug" : ""
-    def webview_url = webview_url ? "--webview-url ${}" : ""
+
 
     """
+    mkdir output
     datavzrd \\
-        ${debug} \\
-        ${overwrite} \\
-        ${debug} \\
-        ${webview_url} \\
-        --output ${input.output_path} \\
-        
+        ${config_file} \\
+        --output output \\
+        ${args}
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,19 +38,23 @@ process DATAVZRD {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def overwrite = overwrite ? "--overwrite-output" : ""
-    def debug = debug ? "--debug" : ""
-    def webview_url = webview_url ? "--webview-url ${}" : ""
-    
+    prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    datavzrd \\
-        ${debug} \\
-        ${overwrite} \\
-        ${debug} \\
-        ${webview_url} \\
-        --output ${input.output_path} \\
-      
+    touch ./output/index.html
+    touch ./output/static/bootstrap.min.css
+    touch ./output/static/bootstrap-select.min.css
+    touch ./output/static/bootstrap-table.min.css
+    touch ./output/static/bootstrap-table-fixed-columns.min.css
+    touch ./output/static/bundle.js
+    touch ./output/static/datavzrd.css
+    touch ./output/network/index_1.html
+    touch ./output/network/config.js
+    touch ./output/network/functions.js
+    touch ./output/network/heatmap.js
+    touch ./output/network/data/data_1.js
+    touch ./output/network/plots/plot_0.js
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

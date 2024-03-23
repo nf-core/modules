@@ -14,11 +14,7 @@ tools:
       tool_dev_url: https://github.com/datavzrd/datavzrd
       licence: ["MIT"]
 input:
-  - output_path:
-      type: directory
-      description: TSV/CSV formatted files to visualize
-      pattern: "*/report*/"
-  - config:
+  - config_file:
       type: file
       description: configuration file used for visualisation
       pattern: "*.{yml,yaml}"
@@ -27,10 +23,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - output_path:
+  - report:
       type: directory
       description: directory with HTML report of provided CSV/TSV files
-      pattern: "*/report*/"
+      pattern: "/output/"
 
 authors:
   - "@vickylaram"
