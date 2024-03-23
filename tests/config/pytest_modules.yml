@@ -100,10 +100,6 @@ bandage/image:
 barrnap:
   - modules/nf-core/barrnap/**
   - tests/modules/nf-core/barrnap/**
-bases2fastq:
-  - modules/nf-core/untar/**
-  - modules/nf-core/bases2fastq/**
-  - tests/modules/nf-core/bases2fastq/**
 basicpy:
   - modules/nf-core/basicpy/**
   - tests/modules/nf-core/basicpy/**
@@ -161,9 +157,6 @@ bcftools/roh:
 bcftools/split:
   - modules/nf-core/bcftools/split/**
   - tests/modules/nf-core/bcftools/split/**
-bcftools/stats:
-  - modules/nf-core/bcftools/stats/**
-  - tests/modules/nf-core/bcftools/stats/**
 beagle5/beagle:
   - modules/nf-core/beagle5/beagle/**
   - tests/modules/nf-core/beagle5/beagle/**
@@ -373,9 +366,6 @@ cnvkit/access:
 cnvkit/antitarget:
   - modules/nf-core/cnvkit/antitarget/**
   - tests/modules/nf-core/cnvkit/antitarget/**
-cnvkit/batch:
-  - modules/nf-core/cnvkit/batch/**
-  - tests/modules/nf-core/cnvkit/batch/**
 cnvkit/call:
   - modules/nf-core/cnvkit/call/**
   - tests/modules/nf-core/cnvkit/call/**
@@ -526,9 +516,6 @@ deeptools/plotpca:
 deeptools/plotprofile:
   - modules/nf-core/deeptools/plotprofile/**
   - tests/modules/nf-core/deeptools/plotprofile/**
-deepvariant:
-  - modules/nf-core/deepvariant/**
-  - tests/modules/nf-core/deepvariant/**
 delly/call:
   - modules/nf-core/delly/call/**
   - tests/modules/nf-core/delly/call/**
@@ -589,9 +576,6 @@ emmtyper:
 endorspy:
   - modules/nf-core/endorspy/**
   - tests/modules/nf-core/endorspy/**
-ensemblvep/download:
-  - modules/nf-core/ensemblvep/download/**
-  - tests/modules/nf-core/ensemblvep/download/**
 ensemblvep/filtervep:
   - modules/nf-core/ensemblvep/filtervep/**
   - tests/modules/nf-core/ensemblvep/filtervep/**
@@ -701,9 +685,9 @@ gatk/unifiedgenotyper:
 gatk4/applyvqsr:
   - modules/nf-core/gatk4/applyvqsr/**
   - tests/modules/nf-core/gatk4/applyvqsr/**
-gatk4/asereadcounter:
-  - modules/nf-core/gatk4/asereadcounter/**
-  - tests/modules/nf-core/gatk4/asereadcounter/**
+gatk4/bedtointervallist:
+  - modules/nf-core/gatk4/bedtointervallist/**
+  - tests/modules/nf-core/gatk4/bedtointervallist/**
 gatk4/calculatecontamination:
   - modules/nf-core/gatk4/calculatecontamination/**
   - tests/modules/nf-core/gatk4/calculatecontamination/**
@@ -719,9 +703,6 @@ gatk4/collectreadcounts:
 gatk4/collectsvevidence:
   - modules/nf-core/gatk4/collectsvevidence/**
   - tests/modules/nf-core/gatk4/collectsvevidence/**
-gatk4/combinegvcfs:
-  - modules/nf-core/gatk4/combinegvcfs/**
-  - tests/modules/nf-core/gatk4/combinegvcfs/**
 gatk4/composestrtablefile:
   - modules/nf-core/gatk4/composestrtablefile/**
   - tests/modules/nf-core/gatk4/composestrtablefile/**
@@ -740,9 +721,6 @@ gatk4/createsomaticpanelofnormals:
 gatk4/determinegermlinecontigploidy:
   - modules/nf-core/gatk4/determinegermlinecontigploidy/**
   - tests/modules/nf-core/gatk4/determinegermlinecontigploidy/**
-gatk4/estimatelibrarycomplexity:
-  - modules/nf-core/gatk4/estimatelibrarycomplexity/**
-  - tests/modules/nf-core/gatk4/estimatelibrarycomplexity/**
 gatk4/fastqtosam:
   - modules/nf-core/gatk4/fastqtosam/**
   - tests/modules/nf-core/gatk4/fastqtosam/**
@@ -1079,9 +1057,6 @@ iphop/download:
 iphop/predict:
   - modules/nf-core/iphop/predict/**
   - tests/modules/nf-core/iphop/predict/**
-islandpath:
-  - modules/nf-core/islandpath/**
-  - tests/modules/nf-core/islandpath/**
 ismapper:
   - modules/nf-core/ismapper/**
   - tests/modules/nf-core/ismapper/**
@@ -1232,15 +1207,6 @@ mageck/test:
 manta/convertinversion:
   - modules/nf-core/manta/convertinversion/**
   - tests/modules/nf-core/manta/convertinversion/**
-manta/germline:
-  - modules/nf-core/manta/germline/**
-  - tests/modules/nf-core/manta/germline/**
-manta/somatic:
-  - modules/nf-core/manta/somatic/**
-  - tests/modules/nf-core/manta/somatic/**
-manta/tumoronly:
-  - modules/nf-core/manta/tumoronly/**
-  - tests/modules/nf-core/manta/tumoronly/**
 mapad/index:
   - modules/nf-core/mapad/index/**
   - tests/modules/nf-core/mapad/index/**
@@ -1472,9 +1438,6 @@ nucmer:
 oncocnv:
   - modules/nf-core/oncocnv/**
   - tests/modules/nf-core/oncocnv/**
-openms/idmerger:
-  - modules/nf-core/openms/idmerger/**
-  - tests/modules/nf-core/openms/idmerger/**
 paftools/sam2paf:
   - modules/nf-core/paftools/sam2paf/**
   - test/modules/nf-core/paftools/sam2paf/**
@@ -1577,9 +1540,6 @@ phispy:
 phyloflash:
   - modules/nf-core/phyloflash/**
   - tests/modules/nf-core/phyloflash/**
-picard/addorreplacereadgroups:
-  - modules/nf-core/picard/addorreplacereadgroups/**
-  - tests/modules/nf-core/picard/addorreplacereadgroups/**
 picard/bedtointervallist:
   - modules/nf-core/picard/bedtointervallist/**
   - tests/modules/nf-core/picard/bedtointervallist/**
@@ -1685,9 +1645,6 @@ porechop/abi:
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
   - tests/modules/nf-core/preseq/ccurve/**
-pretextmap:
-  - modules/nf-core/pretextmap/**
-  - tests/modules/nf-core/pretextmap/**
 pretextsnapshot:
   - modules/nf-core/pretextsnapshot/**
   - tests/modules/nf-core/pretextsnapshot/**
@@ -2076,12 +2033,6 @@ stitch:
 stranger:
   - modules/nf-core/stranger/**
   - tests/modules/nf-core/stranger/**
-strelka/germline:
-  - modules/nf-core/strelka/germline/**
-  - tests/modules/nf-core/strelka/germline/**
-strelka/somatic:
-  - modules/nf-core/strelka/somatic/**
-  - tests/modules/nf-core/strelka/somatic/**
 subworkflows/align_bowtie2:
   - subworkflows/nf-core/align_bowtie2/**
   - tests/subworkflows/nf-core/align_bowtie2/**
@@ -2235,9 +2186,6 @@ tbprofiler/profile:
 tiara/tiara:
   - modules/nf-core/tiara/tiara/**
   - tests/modules/nf-core/tiara/tiara/**
-tiddit/sv:
-  - modules/nf-core/tiddit/sv/**
-  - tests/modules/nf-core/tiddit/sv/**
 topas/gencons:
   - modules/nf-core/topas/gencons/**
   - tests/modules/nf-core/topas/gencons/**
