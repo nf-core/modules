@@ -27,7 +27,12 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
-                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*spades.fasta" }
+                { assert path(process.out.gfa.get(0).get(1)).readLines().any { it.contains("S") } },
+                { assert path(process.out.gfa.get(0).get(1)).readLines().any { it.contains("KC") } },
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*spades.fasta" },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains(">") } },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("NODE") } },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
             )
         }
 
@@ -39,8 +44,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                [ file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_1.fastq.gz", checkIfExists: true),
-                file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_2.fastq.gz", checkIfExists: true) ]
+                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                 ]
                 """
             }
@@ -51,7 +56,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
-                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*skesa.fasta" }
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*skesa.fasta" },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains(">Contig_1") } },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
             )
         }
 
@@ -62,8 +69,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                [ file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_1.fastq.gz", checkIfExists: true),
-                file("https://github.com/nf-core/test-datasets/raw/bacass/ERR044595_1M_2.fastq.gz", checkIfExists: true) ]
+                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                 ]
                 """
             }
@@ -74,7 +81,32 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(path(process.out.versions.get(0))).match() },
                 { assert process.out.raw_contigs.size() == 1 },
-                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*megahit.fasta" }
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*megahit.fasta" },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
+            )
+        }
+
+    }
+    test("shovill with velvet") {
+        config "./nextflow.velvet.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(path(process.out.versions.get(0))).match() },
+                { assert process.out.raw_contigs.size() == 1 },
+                { assert process.out.raw_contigs.get(0).get(1) ==~ ".*velvet.fasta" },
+                { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
             )
         }
 
