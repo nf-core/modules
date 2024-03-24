@@ -4,15 +4,16 @@ process LEARNMSA_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/learnmsa:1.3.2--pyhdfd78af_0':
-        'biocontainers/learnmsa:1.3.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' :
+        'biocontainers/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' }"
 
     input:
-    tuple val(meta),  path(fasta)
+    tuple val(meta), path(fasta)
+    val(compress)
 
     output:
-    tuple val(meta), path("*.aln"), emit: alignment
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,15 +21,17 @@ process LEARNMSA_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def write_output = compress ? ">(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "${prefix}.aln"
     """
     learnMSA \\
         $args \\
-        -i $fasta \\
-        -o ${prefix}.aln
+        -i <(unpigz -cdf $fasta) \\
+        -o $write_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -36,11 +39,12 @@ process LEARNMSA_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln
+    touch ${prefix}.aln${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }

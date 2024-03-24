@@ -10,7 +10,7 @@ nextflow_process {
     tag "learnmsa"
     tag "learnmsa/align"
 
-    test("sarscov2 - fasta") {
+    test("sarscov2 - fasta - uncompressed") {
 
         when {
             process {
@@ -18,6 +18,7 @@ nextflow_process {
                 input[0] = [ [ id:'test' ], // meta map
                              file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
                            ]
+                input[1] = false
                 """
             }
         }
@@ -26,7 +27,30 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions_structure") }
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - compressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+                           ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains(">sample1") },
+                { assert snapshot(process.out.versions).match("versions1") }
             )
         }
 
