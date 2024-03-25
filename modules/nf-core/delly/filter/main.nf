@@ -41,7 +41,7 @@ process DELLY_FILTER {
 
     """
     if [ "$samples_arg" ]; then echo "$sample_list" > samples.tsv; fi
-    
+
     delly \\
         filter \\
         $args \\
@@ -49,7 +49,7 @@ process DELLY_FILTER {
         -o ${prefix}.bcf \\
         $samples_arg \\
         $bcf
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         delly: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
