@@ -82,6 +82,8 @@ process PLINK_GWAS {
     }
     """
     touch ${prefix}.assoc
+    touch ${prefix}.nosex
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
