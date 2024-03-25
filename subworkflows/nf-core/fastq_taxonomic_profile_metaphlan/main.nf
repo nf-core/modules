@@ -18,7 +18,7 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
     METAPHLAN_METAPHLAN ( ch_fastq, METAPHLAN_MAKEDB.out.db )
     ch_versions = ch_versions.mix(METAPHLAN_METAPHLAN.out.versions.first())
 
-    METAPHLAN_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort:true) )
+    METAPHLAN_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort: "deep") )
     ch_versions = ch_versions.mix(METAPHLAN_MERGEMETAPHLANTABLES.out.versions.first())
 
     emit:

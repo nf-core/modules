@@ -29,8 +29,8 @@ nextflow_workflow {
                     [
                         [ id:'test2', single_end:false ], // meta map
                             [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
                             ]
                     ]
                 )
