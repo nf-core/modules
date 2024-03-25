@@ -239,7 +239,8 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions-PBMC") }
             )
         }
 
@@ -478,7 +479,8 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions-with-cmo") }
             )
         }
 
@@ -714,7 +716,8 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
-                ).match() }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions-with-vdj") }
             )
         }
 
