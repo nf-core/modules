@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "scsplit_count"
+description: build allele count matrices for scSplit
+keywords:
+  - single-cell
+  - demultiplex
+  - genomics
+tools:
+  - "scsplit":
+      description: "Genotype-free demultiplexing of pooled single-cell RNA-Seq"
+      homepage: "https://github.com/jon-xu/scSplit"
+      documentation: "https://github.com/jon-xu/scSplit"
+      tool_dev_url: "https://github.com/jon-xu/scSplit"
+      doi: "10.1186/s13059-019-1852-7"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - bam:
+      type: file
+      description: BAM index
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.bam"
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.vcf"
+  - barcode:
+      type: file
+      description: Cell barcode list
+      pattern: "*.tsv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - ref_filtered:
+      type: file
+      description: Reference allele count matrix
+      pattern: "*_ref_filtered.csv"
+  - alt_filtered:
+      type: file
+      description: Alternative allele count matrix
+      pattern: "*_alt_filtered.csv"
+  - log:
+      type: file
+      description: scSplit log
+      pattern: "*_scSplit.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@IreneRobles"
+maintainers:
+  - "@IreneRobles"
