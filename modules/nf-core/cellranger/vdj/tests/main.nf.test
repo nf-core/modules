@@ -43,7 +43,8 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name.contains('metrics_summary.csv') },
                     process.out.outs[0][1].findAll {  file(it).name.contains('reference.json') },
                     process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') }
-                ).match() }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
