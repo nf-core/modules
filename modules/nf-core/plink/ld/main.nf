@@ -15,7 +15,7 @@ process PLINK_LD {
 
     output:
     tuple val(meta), path("*.ld")   , emit: ld
-    tuple val(meta), path("*.log")  , emit: log 
+    tuple val(meta), path("*.log")  , emit: log
     tuple val(meta), path("*.nosex"), emit: nosex, optional:true
     path "versions.yml"             , emit: versions
 
@@ -85,6 +85,8 @@ process PLINK_LD {
     }
     """
     touch ${prefix}.ld
+    touch ${prefix}.log
+    touch ${prefix}.nosex
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
