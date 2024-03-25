@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process CELLRANGER_COUNT"
     script "../main.nf"
+    config "./nextflow.config"
     process "CELLRANGER_COUNT"
 
     tag "modules"
