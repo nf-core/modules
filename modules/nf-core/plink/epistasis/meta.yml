@@ -76,20 +76,20 @@ output:
       pattern: "versions.yml"
   - epi:
       type: file
-      description: PLINK GWAS association file
-      pattern: "*.{assoc}"
+      description: PLINK epistasis file
+      pattern: "*.{epi.cc}"
   - episummary:
       type: file
-      description: PLINK GWAS association file
-      pattern: "*.{assoc}"
+      description: PLINK epistasis summary file
+      pattern: "*.{epi.cc.summary}"
   - log:
       type: file
-      description: PLINK GWAS association file
-      pattern: "*.{assoc}"
+      description: PLINK epistasis log file
+      pattern: "*.{log}"
   - nosex:
       type: file
-      description: PLINK GWAS association file
-      pattern: "*.{assoc}"
+      description: Ambiguous sex ID file
+      pattern: "*.{nosex}"
 
 authors:
   - "@davidebag"

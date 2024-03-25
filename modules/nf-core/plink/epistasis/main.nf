@@ -82,6 +82,9 @@ process PLINK_EPISTASIS {
     }
     """
     touch ${prefix}.epi
+    touch ${prefix}.episummary
+    touch ${prefix}.log
+    touch ${prefix}.nosex
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
