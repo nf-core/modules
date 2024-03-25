@@ -15,9 +15,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ]
                 // bed
                 input[1] = []
                 // diff_variant_file
@@ -42,9 +43,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
                 // bed
                 input[1] = []
                 // diff_variant_file
@@ -69,9 +71,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ]
                 // bed
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 // diff_variant_file
@@ -96,9 +99,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
                 // bed
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 // diff_variant_file
@@ -123,9 +127,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
                 // bed
                 input[1] = []
                 // diff_variant_file
