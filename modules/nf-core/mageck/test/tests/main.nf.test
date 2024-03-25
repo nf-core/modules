@@ -26,6 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.gene_summary[0][1]).readLines().first().contains("pos|p-value") },
                 { assert snapshot(process.out.version).match("version") }
             )
         }
@@ -49,6 +50,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.gene_summary[0][1]).readLines().first().contains("pos|p-value") },
                 { assert snapshot(process.out.version).match("day0_version") }
             )
         }
