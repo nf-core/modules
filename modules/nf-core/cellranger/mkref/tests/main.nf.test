@@ -3,6 +3,7 @@ nextflow_process {
 
     name "Test Process CELLRANGER_MKREF"
     script "../main.nf"
+    config "./nextflow.config"
     process "CELLRANGER_MKREF"
 
     tag "modules"
@@ -36,7 +37,8 @@ nextflow_process {
                         path( "${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab" ),
                         path( "${outputDir}/homo_sapiens_reference/star/exonInfo.tab"     ),
                         path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" )
-                    ).match()
+                    ).match(),
+                { assert snapshot(process.out.versions).match("versions") }
                 }
             )
         }
@@ -60,7 +62,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.reference).match() }
+                { assert snapshot(process.out.reference).match() },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
