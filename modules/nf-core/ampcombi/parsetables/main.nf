@@ -4,14 +4,14 @@ process AMPCOMBI_PARSETABLES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:0.2.1--pyhdfd78af_0':
-        'biocontainers/ampcombi:0.2.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ampcombi:0.2.2--pyhdfd78af_0':
+        'biocontainers/ampcombi:0.2.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(amp_input)
-    path( faa_input )
-    path( gbk_input )
-    path( opt_amp_db )
+    path(faa_input)
+    path(gbk_input)
+    path(opt_amp_db)
 
     output:
     tuple val(meta), path("${meta.id}*")                        , emit: sample_dir
@@ -38,27 +38,17 @@ process AMPCOMBI_PARSETABLES {
     def gbk = gbk_input.isDirectory() ? "--gbk ${gbk_input}/" : "--gbk ${gbk_input}"
     """
     ampcombi parse_tables \\
-        $args \\
-        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
-        --sample_list ${prefix} \\
-        --aminoacid_length 2000 \\
-        --db_evalue 2000 \\
-        --amp_cutoff 0 \\
-        --ampir_file '.tsv' \\
-        --amplify_file '.tsv' \\
-        --macrel_file '.prediction' \\
-        --neubi_file '.fasta' \\
-        --hmmsearch_file 'candidates.txt' \\
-        --ampgram_file '.tsv' \\
-        --amptransformer_file '.txt' \\
-        --threads $task.cpus \\
-        ${db} \\
-        ${faa} \\
-        ${gbk}
+    $args \\
+    --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
+    --sample_list ${prefix} \\
+    --threads ${task.cpus} \\
+    ${db} \\
+    --faa ${faa_input} \\
+    --gbk ${gbk_input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ampcombi: \$(ampcombi parse_tables --version | sed 's/ampcombi//')
+        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
 
@@ -66,9 +56,12 @@ process AMPCOMBI_PARSETABLES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
+    def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
+    def gbk = gbk_input.isDirectory() ? "--gbk ${gbk_input}/" : "--gbk ${gbk_input}"
+
     """
     mkdir -p ${prefix}
-    touch ${prefix.id}/*diamond_matches.txt
+    touch ${prefix}/*diamond_matches.txt
     touch ${prefix}/*ampcombi.tsv
     touch ${prefix}/*amp.faa
     touch ${prefix}/*_ampcombi.log
@@ -81,7 +74,7 @@ process AMPCOMBI_PARSETABLES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi//')
+        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
 }
