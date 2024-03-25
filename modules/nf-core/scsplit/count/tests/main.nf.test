@@ -33,19 +33,15 @@ nextflow_process {
             process {
                 """
                 bam_channel = Channel.of([
-                        [
                             [ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true)
-                        ]
                     ] )
                 bai_channel = SAMTOOLS_INDEX.out.bai
 
                 vcf_barcode_channel = Channel.of([
-                        [
                             [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
                             file(params.barcodes, checkIfExists: true)
-                        ]
                     ] )
 
                 input[0] = bam_channel.join(bai_channel).join(vcf_barcode_channel)
