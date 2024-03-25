@@ -18,12 +18,11 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
     METAPHLAN_METAPHLAN ( ch_fastq, METAPHLAN_MAKEDB.out.db )
     ch_versions = ch_versions.mix(METAPHLAN_METAPHLAN.out.versions.first())
 
-    METAPHLAN_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort: "deep") )
+    metaphlan_merged_profiles_txt = METAPHLAN_MERGEMETAPHLANTABLES ( METAPHLAN_METAPHLAN.out.profile.map{ [ [id:'all_samples'], it[1] ] }.groupTuple( sort: { it.getName() }  ) ).txt
     ch_versions = ch_versions.mix(METAPHLAN_MERGEMETAPHLANTABLES.out.versions.first())
 
     emit:
-    merged_taxa      = METAPHLAN_MERGEMETAPHLANTABLES.out.txt
-
+    merged_taxa      = metaphlan_merged_profiles_txt
 
     versions = ch_versions
 }
