@@ -19,10 +19,10 @@ nextflow_process {
                 process {
                     """
                     input[0] =[
-                            [ id:'test1', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true)                        
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true)
                         ]
-            
+
                     """
                 }
             }
@@ -31,13 +31,13 @@ nextflow_process {
 
         when {
             process {
-                """ 
+                """
                 bam_channel = Channel.of([
                         [
                             [ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true)
                         ]
-                    ] )  
+                    ] )
                 bai_channel = SAMTOOLS_INDEX.out.bai
 
                 vcf_barcode_channel = Channel.of([
@@ -67,7 +67,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.bam, checkIfExists: true),
