@@ -1,4 +1,4 @@
-process AMPCOMBI {
+process AMPCOMBI_AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
 
@@ -10,7 +10,7 @@ process AMPCOMBI {
     input:
     tuple val(meta),  path(amp_input)
     path(faa_input)
-    path( opt_amp_db )
+    path(opt_amp_db)
 
     output:
     tuple val(meta), path("${meta.id}*")                        , emit: sample_dir
@@ -43,6 +43,31 @@ process AMPCOMBI {
         --threads ${task.cpus} \\
         ${db} \\
         ${faa}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
+    END_VERSIONS
+    """
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def db = opt_amp_db? "--amp_database $opt_amp_db": ""
+    def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
+
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/*diamond_matches.txt
+    touch ${prefix}/*ampcombi.csv
+    touch ${prefix}/*amp.faa
+    touch AMPcombi_summary.csv
+    touch AMPcombi_summary.html
+    touch *.log
+
+    mkdir -p amp_ref_database
+    touch amp_ref_database/*.dmnd
+    touch amp_ref_database/*.clean.fasta
+    touch amp_ref_database/*.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
