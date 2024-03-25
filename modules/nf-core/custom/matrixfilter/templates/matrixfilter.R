@@ -80,7 +80,8 @@ opt <- list(
     minimum_proportion = 0,
     grouping_variable = NULL,
     minimum_proportion_not_na = 0.5,
-    minimum_samples_not_na = NULL
+    minimum_samples_not_na = NULL,
+    most_variant_features = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -175,6 +176,28 @@ tests <- list(
 boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
     sapply(tests, function(f) f(row))
 }))
+
+# Apply the 'most_variant_test' function to identify the most variant rows and add 
+# the result to the boolean matrix
+
+if (! is.null(opt\$most_variant_features)) {
+
+  # Function to identify rows that are among the top n most variant
+
+  most_variant_test <- function(matrix_data) {
+
+    # Determine the indices of the top variant rows based on variance
+
+    top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
+
+    # Return a boolean vector indicating if each row is among the top variant ones
+
+    1:nrow(matrix_data) %in% top_indices
+  }
+
+  most_variant_vectors <- most_variant_test(abundance_matrix)
+  boolean_matrix <- cbind(boolean_matrix, most_variant_vectors)
+}
 
 # We will retain features passing all tests
 
