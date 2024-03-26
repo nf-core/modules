@@ -22,6 +22,9 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+  - kvalue:
+      type: integer
+      description: An integer value of k to use as the k-mer value.
 output:
   - meta:
       type: map
