@@ -25,18 +25,46 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - input_index:
+      type: file
+      description: index file for input file
+      pattern: "*.{bai,crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'reference' ]`
   - vcf:
       type: file
       description: VCF file
       pattern: "*.{vcf.gz}"
+  - tbi:
+      type: file
+      description: index file for VCF file
+      pattern: "*.{vcf.gz.tbi}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'reference' ]`
   - fasta:
       type: file
       description: fasta file
       pattern: "*.{fasta,fa}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'reference' ]`
   - fai:
       type: file
       description: fasta index file
       pattern: "*.{fai}"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'reference' ]`
   - dict:
       type: file
       description: dictionary file
