@@ -34,4 +34,18 @@ process MERYL_COUNT {
         meryl: \$( meryl --version |& sed 's/meryl //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    for READ in $reads; do
+        touch read.\${READ%.f*}.meryldb
+    done
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        meryl: \$( meryl --version |& sed 's/meryl //' )
+    END_VERSIONS
+    """
 }
