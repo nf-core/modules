@@ -33,4 +33,16 @@ process MERYL_HISTOGRAM {
         meryl: \$( meryl --version |& sed 's/meryl //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.hist
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        meryl: \$( meryl --version |& sed 's/meryl //' )
+    END_VERSIONS
+    """
 }
