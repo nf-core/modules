@@ -59,7 +59,7 @@ input:
       pattern: "*.{vcf}"
   - phe:
       type: file
-      description: PLINK file containing phenotype information. This phenotype information can be read from the third column with the --pheno option or from a specific column with the --pheno-name option.
+      description: PLINK file containing phenotype information. This phenotype information can be read from the third column with the --pheno option or from a specific column with the --pheno-name option
       pattern: "*.{phe}"
 
 output:
@@ -72,6 +72,14 @@ output:
       type: file
       description: PLINK GWAS association file
       pattern: "*.{assoc}"
+  - log:
+      type: file
+      description: PLINK GWAS association log file
+      pattern: "*.{log}"
+  - nosex:
+      type: file
+      description: PLINK GWAS association file that retains phenotypes for samples with ambiguous sex. Produced with the option --allow-no-sex
+      pattern: "*.{nosex}"
   - versions:
       type: file
       description: File containing software versions
