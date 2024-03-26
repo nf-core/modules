@@ -1,22 +1,23 @@
-name: "idemux"
+name: idemux
 description: Demultiplex paired-end FASTQ files from QuantSeq-Pool
 keywords:
   - demultiplex
   - lexogen
   - fastq
 tools:
-  - "idemux":
-      description: "A Lexogen tool for demultiplexing and index error correcting fastq files. Works with Lexogen i7, i5 and i1 barcodes."
-      homepage: "https://github.com/Lexogen-Tools/idemux"
-      documentation: "https://github.com/Lexogen-Tools/idemux"
-      tool_dev_url: "https://github.com/Lexogen-Tools/idemux"
+  - idemux:
+      description: |
+        A Lexogen tool for demultiplexing and index error correcting fastq files. Works with Lexogen i7, i5 and i1 barcodes.
+      homepage: https://github.com/Lexogen-Tools/idemux
+      documentation: https://github.com/Lexogen-Tools/idemux
+      tool_dev_url: https://github.com/Lexogen-Tools/idemux
       licence: ['LEXOGEN']
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'NVQ', lane:1 ]`
+        e.g. [ id:'NVQ', lane:1 ]
   - reads:
       type: file
       description: |
@@ -24,7 +25,7 @@ input:
       pattern: "Undetermined_S*.fastq.gz"
   - samplesheet:
       type: file
-      description: "Input samplesheet"
+      description: Input samplesheet
       pattern: "*.{csv}"
 output:
   - versions:

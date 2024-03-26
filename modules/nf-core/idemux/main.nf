@@ -39,7 +39,7 @@ process IDEMUX {
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
     sed 1d ${samplesheet} | while IFS=, read -r sampleName _ _ _; do
         touch "\${sampleName}_R1.fastq"
