@@ -40,15 +40,17 @@ process IDEMUX {
     stub:
     def args = task.ext.args ?: ''
 
-    """
+    """ 
+    echo -e "sample_name\twritten_reads" > demultipexing_stats.tsv
+
     sed 1d ${samplesheet} | while IFS=, read -r sampleName _ _ _; do
         touch "\${sampleName}_R1.fastq"
         touch "\${sampleName}_R2.fastq"
+        echo -e "\${sampleName}\t100" >> demultipexing_stats.tsv
     done
 
     touch undetermined_R1.fastq
     touch undetermined_R2.fastq
-    touch demultipexing_stats.tsv
     gzip *.fastq
 
     cat <<-END_VERSIONS > versions.yml
