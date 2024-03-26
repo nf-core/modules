@@ -28,6 +28,8 @@ process CELLRANGER_MKREF {
         --genome=$reference_name \\
         --fasta=$fasta \\
         --genes=$gtf \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

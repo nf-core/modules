@@ -34,6 +34,8 @@ process CELLRANGER_MKVDJREF {
         ${gtf_in} \\
         ${fasta_in} \\
         ${seqs_in} \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
