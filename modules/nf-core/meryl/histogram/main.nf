@@ -9,6 +9,7 @@ process MERYL_HISTOGRAM {
 
     input:
     tuple val(meta), path(meryl_db)
+    val kvalue
 
     output:
     tuple val(meta), path("*.hist"), emit: hist
@@ -22,6 +23,7 @@ process MERYL_HISTOGRAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     meryl histogram \\
+        k=$kvalue \\
         threads=$task.cpus \\
         $args \\
         $meryl_db > ${prefix}.hist
