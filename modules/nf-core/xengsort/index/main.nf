@@ -8,12 +8,11 @@ process XENGSORT_INDEX {
         'biocontainers/xengsort:2.0.5--pyhdfd78af_0' }"
 
     input:
-    path host_fasta
-    path graft_fasta
-    string index
-    string nobjects
-    string mask
-    string args
+    path(host_fasta, stageAs: "?/*")
+    path(graft_fasta)
+    val index
+    val nobjects
+    val mask
 
     output:
     path "${index}.hash"          , emit: hash
