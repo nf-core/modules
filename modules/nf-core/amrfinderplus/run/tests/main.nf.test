@@ -30,7 +30,6 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                 ]
-                def fake_mash
                 input[1] = AMRFINDERPLUS_UPDATE.out.db
                 """
             }
