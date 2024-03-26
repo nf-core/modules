@@ -4,8 +4,8 @@ process GENOMESCOPE2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genomescope2:2.0--py310r41hdfd78af_5':
-        'biocontainers/genomescope2:2.0--py310r41hdfd78af_5' }"
+        'https://depot.galaxyproject.org/singularity/genomescope2:2.0--py311r42hdfd78af_6':
+        'biocontainers/genomescope2:2.0--py311r42hdfd78af_6' }"
 
     input:
     tuple val(meta), path(histogram)
