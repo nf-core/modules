@@ -47,7 +47,16 @@ retry_with_backoff !{args2} \
     !{args} \
     !{id}
 
-[ -f !{id}.sralite ] && vdb-validate !{id}.sralite || vdb-validate !{id}
+# check file integrity using md5sum or vdb-validate as fallback
+MD5SUM=$(
+	curl -s 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=!{id}' |
+	grep -o '"md5": "[^"]*"' | cut -f4 -d'"'
+)
+if [ -n "$MD5SUM" ]; then
+	[ "$(md5sum !{id}/* | cut -f1 -d' ')" = "$MD5SUM" ]
+else
+	vdb-validate !{id}
+fi || exit 1
 
 cat <<-END_VERSIONS > versions.yml
 "!{task.process}":
