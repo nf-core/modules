@@ -18,7 +18,7 @@ process GENOMESCOPE2 {
     tuple val(meta), path("${prefix}_model.txt")                  , emit: model
     tuple val(meta), path("${prefix}_summary.txt")                , emit: summary
     tuple val(meta), path("${prefix}_lookup_table.txt")           , emit: lookup_table, optional: true
-    tuple val(meta), path("${prefix}_fitted_histogram.png")       , emit: fitted_histogram_png, optional: true
+    tuple val(meta), path("${prefix}_fitted_hist.png")            , emit: fitted_histogram_png, optional: true
     path "versions.yml"                                           , emit: versions
 
     when:
