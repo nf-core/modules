@@ -4,8 +4,8 @@ process GECCO_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.9.8--pyhdfd78af_0':
-        'biocontainers/gecco:0.9.8--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gecco:0.9.10--pyhdfd78af_0':
+        'biocontainers/gecco:0.9.10--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(hmm)
@@ -38,6 +38,20 @@ process GECCO_RUN {
         -g ${input} \\
         $custom_model \\
         $custom_hmm
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.genes.tsv
+    touch ${prefix}.features.tsv
+    touch ${prefix}.clusters.tsv
+    touch NC_018507.1_cluster_1.gbk
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
