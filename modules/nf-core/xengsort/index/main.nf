@@ -32,7 +32,7 @@ process XENGSORT_INDEX {
         -H $host_fasta \\
         -G $graft_fasta \\
         --nobjects $nobjects \\
-        --mask $mask \\
+        --mask '$mask' \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
