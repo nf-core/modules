@@ -15,10 +15,15 @@ tools:
       licence: ["CECILL-2.1"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - seq_summary:
       type: file
       description: Basecaller sequencing summary source
-      pattern: "*.{fast5, fast5.tar.gz, fast5.tar.bz2}"
+      pattern: "*.txt"
   - fastq:
       type: file
       description: FASTQ file (necessary if no sequencing summary file)
@@ -29,6 +34,11 @@ input:
       pattern: "*.bam"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - report_data:
       type: file
       description: Report data emitted from toulligqc
