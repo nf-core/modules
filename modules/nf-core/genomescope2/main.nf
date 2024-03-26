@@ -11,15 +11,15 @@ process GENOMESCOPE2 {
     tuple val(meta), path(histogram)
 
     output:
-    tuple val(meta), path("*_linear_plot.png")            , emit: linear_plot_png
-    tuple val(meta), path("*_transformed_linear_plot.png"), emit: transformed_linear_plot_png
-    tuple val(meta), path("*_log_plot.png")               , emit: log_plot_png
-    tuple val(meta), path("*_transformed_log_plot.png")   , emit: transformed_log_plot_png
-    tuple val(meta), path("*_model.txt")                  , emit: model
-    tuple val(meta), path("*_summary.txt")                , emit: summary
-    tuple val(meta), path("*_lookup_table.txt")           , emit: lookup_table, optional: true
-    tuple val(meta), path("*_fitted_histogram.png")       , emit: fitted_histogram, optional: true
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("${prefix}_linear_plot.png")            , emit: linear_plot_png
+    tuple val(meta), path("${prefix}_transformed_linear_plot.png"), emit: transformed_linear_plot_png
+    tuple val(meta), path("${prefix}_log_plot.png")               , emit: log_plot_png
+    tuple val(meta), path("${prefix}_transformed_log_plot.png")   , emit: transformed_log_plot_png
+    tuple val(meta), path("${prefix}_model.txt")                  , emit: model
+    tuple val(meta), path("${prefix}_summary.txt")                , emit: summary
+    tuple val(meta), path("${prefix}_lookup_table.txt")           , emit: lookup_table, optional: true
+    tuple val(meta), path("${prefix}_fitted_histogram.png")       , emit: fitted_histogram_png, optional: true
+    path "versions.yml"                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
