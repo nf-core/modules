@@ -14,7 +14,7 @@ tools:
       documentation: "https://gitlab.com/genomeinformatics/xengsort"
       tool_dev_url: "https://gitlab.com/genomeinformatics/xengsort"
       doi: "10.4230/LIPIcs.WABI.2020.4"
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - host_fasta:
@@ -32,12 +32,12 @@ input:
   - nobjects:
     type: string
     description: |
-      Number of k-mers that will be stored in the hash table. 
+      Number of k-mers that will be stored in the hash table.
   - mask:
     type: string
     description: |
       Gapped k-mer mask (quoted string like '#__##_##__#').
-      
+
 output:
   - hash:
       type: file

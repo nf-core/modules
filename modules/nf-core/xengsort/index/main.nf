@@ -25,7 +25,6 @@ process XENGSORT_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    
     """
     xengsort \\
         index \\
