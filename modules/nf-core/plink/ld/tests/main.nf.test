@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process PLINK_LD"
@@ -35,7 +34,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.version).match("version") },
-                { assert snapshot(process.out.ld).match() }
+                { assert snapshot(
+                    process.out.ld,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -66,7 +69,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.ld).match() }
+                { assert snapshot(
+                    process.out.ld
+                ).match() },
+            { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -95,7 +101,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.ld).match() }
+                { assert snapshot(
+                    process.out.ld,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
