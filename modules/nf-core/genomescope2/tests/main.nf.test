@@ -1,0 +1,75 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test genomescope2
+nextflow_process {
+
+    name "Test Process GENOMESCOPE2"
+    script "../main.nf"
+    process "GENOMESCOPE2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genomescope2"
+
+    setup {
+        run('MERYL_COUNT'){
+            script "../../../../modules/nf-core/meryl/count/main.nf"
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id: 'test', single_end: true ], // meta map
+                    file( "${params.modules_testdata_base_path}/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz", checkIfExists: true )
+                ])
+                """
+            }
+        }
+        run('MERYL_HISTOGRAM'){
+            script "../../../../modules/nf-core/meryl/histogram/main.nf"
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                """
+            }
+        }
+    }
+
+    test("bacteroides_fragilis - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = MERYL_HISTOGRAM.out.hist
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MERYL_HISTOGRAM.out.hist
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
