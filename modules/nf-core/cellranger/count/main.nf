@@ -2,7 +2,7 @@ process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:7.1.0"
+    container "nf-core/cellranger:8.0.0"
 
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
