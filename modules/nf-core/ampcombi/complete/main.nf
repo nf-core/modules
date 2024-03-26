@@ -11,9 +11,9 @@ process AMPCOMBI_COMPLETE {
     path(summaries)
 
     output:
-    tuple val(meta), path("Ampcombi_summary.tsv")   , emit: tsv
-    tuple val(meta), path("Ampcombi_complete.log")  , optional:true, emit: log
-    path "versions.yml"                             , emit: versions
+    path("Ampcombi_summary.tsv")   , emit: tsv
+    path("Ampcombi_complete.log")  , optional:true, emit: log
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
