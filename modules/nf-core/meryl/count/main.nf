@@ -9,6 +9,7 @@ process MERYL_COUNT {
 
     input:
     tuple val(meta), path(reads)
+    val kvalue
 
     output:
     tuple val(meta), path("*.meryldb"), emit: meryl_db
@@ -23,6 +24,7 @@ process MERYL_COUNT {
     """
     for READ in $reads; do
         meryl count \\
+            k=$kvalue \\
             threads=$task.cpus \\
             $args \\
             $reads \\
@@ -42,7 +44,7 @@ process MERYL_COUNT {
     for READ in $reads; do
         touch read.\${READ%.f*}.meryldb
     done
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         meryl: \$( meryl --version |& sed 's/meryl //' )
