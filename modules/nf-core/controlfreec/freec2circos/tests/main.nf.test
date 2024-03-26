@@ -11,13 +11,9 @@ nextflow_process {
     tag "controlfreec/freec"
     tag "untar"
 
-    test("human - freec_ratio") {
+    setup {
 
-        config "./nextflow.config"
-
-        setup {
-
-            run("UNTAR") {
+        run("UNTAR") {
                 script "../../../../nf-core/untar/main.nf"
                 process {
                     """
@@ -26,7 +22,15 @@ nextflow_process {
                             ]
                     """
                 }
-            }
+        }
+
+    }
+
+    test("human - freec_ratio") {
+
+        config "./nextflow.config"
+
+        setup {
 
             run("CONTROLFREEC_FREEC") {
                 script "../../../../nf-core/controlfreec/freec/main.nf"
@@ -84,17 +88,6 @@ nextflow_process {
 
         setup {
 
-            run("UNTAR") {
-                script "../../../../nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] =  [ [],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                            ]
-                    """
-                }
-            }
-
             run("CONTROLFREEC_FREEC") {
                 script "../../../../nf-core/controlfreec/freec/main.nf"
                 process {
@@ -150,17 +143,6 @@ nextflow_process {
         options "-stub"
 
         setup {
-
-            run("UNTAR") {
-                script "../../../../nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] =  [ [],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                            ]
-                    """
-                }
-            }
 
             run("CONTROLFREEC_FREEC") {
                 script "../../../../nf-core/controlfreec/freec/main.nf"
