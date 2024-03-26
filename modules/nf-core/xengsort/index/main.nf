@@ -33,8 +33,6 @@ process XENGSORT_INDEX {
         -G $graft_fasta \\
         --nobjects $nobjects \\
         --mask '$mask' \\
-        --threads-read 1 \\
-        --threads-split 1 \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
