@@ -46,7 +46,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert file(process.out.linear_plot_png[0][1].find { file(it).name.endsWith("_linear_plot.png") }).exists() }, // PNG md5sum mismatches using conda
+                { assert file(process.out.transformed_linear_plot_png[0][1].find { file(it).name.endsWith("_transformed_linear_plot.png") }).exists() }, // PNG md5sum mismatches using conda
+                { assert file(process.out.log_plot_png[0][1].find { file(it).name.endsWith("_log_plot.png") }).exists() }, // PNG md5sum mismatches using conda
+                { assert file(process.out.transformed_log_plot_png[0][1].find { file(it).name.endsWith("_transformed_log_plot.png") }).exists() }, // PNG md5sum mismatches using conda
+                { assert snapshot(process.out.model).match("model") },
+                { assert snapshot(process.out.summary).match("summary") },
+                { assert snapshot(process.out.lookup_table).match("lookup_table") },
+                { assert snapshot(process.out.fitted_histogram_png).match("fitted_histogram_png") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
