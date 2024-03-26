@@ -53,7 +53,7 @@ nextflow_process {
                 { assert snapshot(process.out.model).match("model") },
                 { assert snapshot(process.out.summary).match("summary") },
                 { assert snapshot(process.out.lookup_table).match("lookup_table") },
-                { assert snapshot(process.out.fitted_histogram_png).match("fitted_histogram_png") },
+                { assert file(process.out.fitted_histogram_png[0][1]).exists() }, // PNG md5sum mismatches using conda
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
