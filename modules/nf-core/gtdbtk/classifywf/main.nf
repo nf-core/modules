@@ -62,7 +62,7 @@ process GTDBTK_CLASSIFYWF {
 
     ## If nothing aligns, no output, so only run
     if [[ -d align/ ]]; then
-        mv align/* .\
+        mv align/* .
     fi
 
     mv gtdbtk.log "gtdbtk.${prefix}.log"
