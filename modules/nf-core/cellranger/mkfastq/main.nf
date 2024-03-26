@@ -2,7 +2,7 @@ process CELLRANGER_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "docker.io/nfcore/cellrangermkfastq:7.1.0"
+    container "nf-core/cellrangermkfastq:8.0.0"
 
     input:
     path bcl
@@ -44,7 +44,14 @@ process CELLRANGER_MKFASTQ {
     def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
     mkdir -p "${prefix}/outs/fastq_path/"
-    touch ${prefix}/outs/fastq_path/fake_file.fastq.gz
+    # data with something to avoid breaking nf-test java I/O stream
+    cat <<-FAKE_FQ > ${prefix}/outs/fastq_path/fake_file.fastq
+    @SEQ_ID
+    GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
+    +
+    !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
+    FAKE_FQ
+    gzip -n ${prefix}/outs/fastq_path/fake_file.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
