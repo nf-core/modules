@@ -8,8 +8,8 @@ process XENGSORT_INDEX {
         'biocontainers/xengsort:2.0.5--pyhdfd78af_0' }"
 
     input:
-    path(host_fasta, stageAs: "?/*")
-    path(graft_fasta)
+    path(host_fasta, stageAs: "host/*")
+    path(graft_fasta, stageAs: "graft/*")
     val index
     val nobjects
     val mask
