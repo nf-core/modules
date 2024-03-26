@@ -34,7 +34,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fversion).match("version") },
+                { assert snapshot(process.out.version).match("version") },
                 { assert snapshot(
                     process.out.fepi,
                     process.out.fepisummary,
