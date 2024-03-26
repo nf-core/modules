@@ -40,7 +40,7 @@ process IDEMUX {
     stub:
     def args = task.ext.args ?: ''
 
-    """ 
+    """
     echo -e "sample_name\twritten_reads" > demultipexing_stats.tsv
 
     sed 1d ${samplesheet} | while IFS=, read -r sampleName _ _ _; do
