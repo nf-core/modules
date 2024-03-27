@@ -15,6 +15,7 @@ process PROPR_PROPD {
     tuple val(meta), path("*.propd.rds"), emit: propd
     tuple val(meta), path("*.propd.tsv"), emit: results
     tuple val(meta), path("*.fdr.tsv")  , emit: fdr         , optional:true
+    tuple val(meta), path("*.gct")      , emit: gct         , optional:true
     path "*.R_sessionInfo.log"          , emit: session_info
     path "versions.yml"                 , emit: versions
 
