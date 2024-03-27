@@ -35,8 +35,8 @@
         //     description: "Upgrade conda dependencies",
         //     fileMatch: ["(^|/)environment(.*).ya?ml$"],
         //     matchStrings: [
-        //         '#\\s*renovate\\s+datasource=conda\\s+depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
-        //         '# renovate: datasource=conda depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
+        //         '#\\s*renovate\\s+datasource=conda\\s+depName=(?<depName>.*?)\\s+-\\s*[\\w-]+:?:?[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
+        //         '# renovate: datasource=conda depName=(?<depName>.*?)\\s+-\\s*[\\w-]+:?:?[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
         //     ],
         //     datasourceTemplate: "conda",
         // },
