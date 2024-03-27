@@ -8,7 +8,7 @@ process GATK4_ASEREADCOUNTER {
         'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(vcf), path(tbi)
+    tuple val(meta),  path(bam), path(bai), path(vcf), path(tbi)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
