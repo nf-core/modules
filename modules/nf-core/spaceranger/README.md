@@ -13,6 +13,6 @@ Space Ranger is a commercial tool by 10X Genomics. The container provided for th
 3. Create the container:
 
    ```bash
-   docker build . -t nfcore/spaceranger:<VERSION>
-   docker push nfcore/spaceranger:<VERSION>
+   docker build . -t quay.io/nf-core/spaceranger:<VERSION>
+   docker push quay.io/nf-core/spaceranger:<VERSION>
    ```
