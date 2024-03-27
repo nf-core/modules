@@ -9,13 +9,15 @@ process PLINK_GWAS {
         'biocontainers/plink:1.90b6.21--h031d066_5' }"
 
     input:
-    tuple val(meta), path(bed), path(bim), path(fam)
+    tuple val(meta),  path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
     tuple val(meta4), path(phe)
 
     output:
     tuple val(meta), path("*.assoc"),  emit: assoc
+    tuple val(meta), path("*.log")  ,  emit: log
+    tuple val(meta), path("*.nosex"),  emit: nosex   , optional:true
     path "versions.yml"             ,  emit: versions
 
     when:
@@ -69,10 +71,10 @@ process PLINK_GWAS {
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${phe}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno}"
+        input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
@@ -80,6 +82,8 @@ process PLINK_GWAS {
     }
     """
     touch ${prefix}.assoc
+    touch ${prefix}.nosex
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

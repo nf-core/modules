@@ -1,12 +1,12 @@
 nextflow_process {
 
-    name "test Plink GWAS function"
+    name "Test Process PLINK_EPISTASIS"
     script "../main.nf"
-    process "PLINK_GWAS"
+    process "PLINK_EPISTASIS"
     tag "modules"
     tag "modules_nfcore"
     tag "plink"
-    tag "plink/gwas"
+    tag "plink/epistasis"
 
     test("plink - VCF") {
 
@@ -31,12 +31,13 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.version).match("version") },
                 { assert snapshot(
-                    process.out.assoc,
+                    process.out.epi,
+                    process.out.episummary,
                     process.out.nosex
                     ).match() },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
@@ -67,12 +68,12 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.assoc,
+                    process.out.epi,
+                    process.out.episummary,
                     process.out.nosex
                     ).match() },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
@@ -102,11 +103,14 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.assoc).match() },
+                { assert snapshot(
+                    process.out.epi,
+                    process.out.episummary,
+                    process.out.nosex
+                    ).match() },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
@@ -135,12 +139,12 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.assoc,
+                    process.out.epi,
+                    process.out.episummary,
                     process.out.nosex
                     ).match() },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
@@ -171,12 +175,12 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.assoc,
+                    process.out.epi,
+                    process.out.episummary,
                     process.out.nosex
                     ).match() },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
