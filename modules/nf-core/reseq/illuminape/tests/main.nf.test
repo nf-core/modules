@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process RESEQ"
+    script "../main.nf"
+    process "RESEQ"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "reseq"
+    tag "reseq/illuminape"
+
+    test("homo sapiens - fasta + bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test_bam', single_end:false ],
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // The md5 sums are changing between runs, even with a set seed - can't compare full snapshots
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.1.fastq.gz" }).exists() },
+                { assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.2.fastq.gz" }).exists() }
+            )
+        }
+
+    }
+}
