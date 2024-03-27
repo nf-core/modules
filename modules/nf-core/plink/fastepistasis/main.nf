@@ -18,7 +18,7 @@ process PLINK_FASTEPISTASIS {
     tuple val(meta), path("*.epi.cc")        ,  emit: fepi
     tuple val(meta), path("*.epi.cc.summary"),  emit: fepisummary, optional:true
     tuple val(meta), path("*.log")           ,  emit: flog
-    tuple val(meta), path("*.nosex")         ,  emit: fnosex, optional:true
+    tuple val(meta), path("*.nosex")         ,  emit: fnosex,      optional:true
     path "versions.yml"                      ,  emit: versions
 
     when:
