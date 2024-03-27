@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "delly_filter"
+description: Filter structural variants
+keywords:
+  - genome
+  - structural
+  - variants
+  - bcf
+tools:
+  - delly:
+      description: Structural variant discovery by integrated paired-end and split-read analysis
+      homepage: https://github.com/dellytools/delly
+      documentation: https://github.com/dellytools/delly/blob/master/README.md
+      doi: "10.1093/bioinformatics/bts378"
+      licence: ["BSD-3-Clause"]
+      args_id: "$args"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bcf:
+      type: file
+      description: BCF file with structural variants
+      pattern: "*.bcf"
+  - csi:
+      type: file
+      description: A csi index that matches the bcf input
+      pattern: "*.bcf.csi"
+  - mode:
+      type: string
+      description: The working mode of Delly filter
+      pattern: "germline|somatic"
+  - samples:
+      type: file
+      description: |
+        A TSV sample description file where the first column
+        is sample id (matching sample names in the BCF file)
+        and the second column is either tumor or normal.
+        Only needed for somatic mode. Alternatively, sample desciptions
+        can be added the meta map as lists of sample ids in the
+        fields 'tumor_samples' and 'control_samples'.
+      pattern: "*.tsv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'sample1', single_end:false ]
+  - bcf:
+      type: file
+      description: Filtered variants in BCF format
+      pattern: "*.bcf"
+  - csi:
+      type: file
+      description: A generated csi index that matches the bcf output
+      pattern: "*.bcf.csi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@alexnater"
+maintainers:
+  - "@alexnater"
