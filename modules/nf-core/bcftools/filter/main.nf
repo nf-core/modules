@@ -43,6 +43,7 @@ process BCFTOOLS_FILTER {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
