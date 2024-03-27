@@ -9,6 +9,7 @@ process MERYL_UNIONSUM {
 
     input:
     tuple val(meta), path(meryl_dbs)
+    val kvalue
 
     output:
     tuple val(meta), path("*.unionsum.meryldb"), emit: meryl_db
@@ -22,10 +23,23 @@ process MERYL_UNIONSUM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     meryl union-sum \\
+        k=$kvalue \\
         threads=$task.cpus \\
         $args \\
         output ${prefix}.unionsum.meryldb \\
         $meryl_dbs
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        meryl: \$( meryl --version |& sed 's/meryl //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.unionsum.meryldb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
