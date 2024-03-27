@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastcov"
+description: generate a coverage plot from one or more bam files
+keywords:
+  - coverage
+  - bam
+  - map
+tools:
+  - "fastcov":
+      description: "generate a coverage plot from one or more bam files"
+      homepage: "https://github.com/RaverJay/fastcov/"
+      documentation: "https://github.com/RaverJay/fastcov/blob/main/README.md"
+      tool_dev_url: "https://github.com/RaverJay/fastcov/tree/main"
+      licence: ["MIT"]
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+
+  - index:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - coverage_plot:
+      type: file
+      description: Image file containing the coverage plot, format is defined by file extension.
+      pattern: "*.{png,svg,pdf}"
+
+authors:
+  - "@davidfischer"
+maintainers:
+  - "@davidfischer"
