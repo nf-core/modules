@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process PBBAM_PBMERGE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PBBAM_PBMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbbam"
+    tag "pbbam/pbmerge"
+
+    test("Main test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['pacbio']['cluster']   , checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['pacbio']['singletons'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
