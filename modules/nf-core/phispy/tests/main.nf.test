@@ -25,19 +25,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                {
+                    with(process.out.log[0]) {
+                        assert path(get(1)).text.contains('NZ_CP069563.1')
+                        assert path(get(1)).text.contains('91')
+                        assert path(get(1)).text.contains('Kept')
+                    }
+                },
+                {
+                    with(process.out.coordinates[0]) {
+                        assert path(get(1)).text.contains('NZ_CP069563.1')
+                        assert path(get(1)).text.contains('pp1')
+                        assert path(get(1)).text.contains('Longest Repeat flanking phage and within 2000 bp')
+                    }
+                },
                 { assert path(process.out.gbk[0][1]).linesGzip.toString().contains('5150703 bp') },
                 { assert snapshot(process.out.versions).match() }
             )
-            with(process.out.log[0]) {
-                assert path(get(1)).text.contains('NZ_CP069563.1')
-                assert path(get(1)).text.contains('91')
-                assert path(get(1)).text.contains('Kept')
-            }
-            with(process.out.coordinates[0]) {
-                assert path(get(1)).text.contains('NZ_CP069563.1')
-                assert path(get(1)).text.contains('pp1')
-                assert path(get(1)).text.contains('Longest Repeat flanking phage and within 2000 bp')
-            }
         }
 
     }
