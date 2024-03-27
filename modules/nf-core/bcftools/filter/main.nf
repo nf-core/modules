@@ -54,8 +54,10 @@ process BCFTOOLS_FILTER {
 
     if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
+    def create_file = extension.endsWith(".gz") ? "echo '' | gzip > ${prefix}.${extension}" : "touch ${prefix}.${extension}"
+
     """
-    touch ${prefix}.${extension}
+    ${create_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
