@@ -29,8 +29,8 @@ process XENGSORT_INDEX {
         index \\
         $args \\
         --index $index \\
-        -H $host_fasta \\
-        -G $graft_fasta \\
+        --host $host_fasta \\
+        --graft $graft_fasta \\
         --nobjects $nobjects \\
         --mask '$mask' \\
 
