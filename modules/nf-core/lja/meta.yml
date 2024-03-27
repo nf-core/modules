@@ -1,0 +1,57 @@
+name: "lja"
+description: De novo assembler for long HiFi reads.
+keywords:
+  - assembly
+  - genome
+  - de novo
+  - genome assembler
+  - single molecule
+  - hifi
+tools:
+  - "lja":
+      description: "La Jolla Assembler(LJA) - tool for genome assembly from PacBio HiFI reads based on de Bruijn graphs"
+      homepage: "https://github.com/AntonBankevich/LJA"
+      documentation: "https://github.com/AntonBankevich/LJA/blob/main/docs/lja_manual.md"
+      tool_dev_url: "https://github.com/AntonBankevich/LJA"
+      doi: "10.1101/2021.05.26.445798"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - reads:
+      type: file
+      description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ format.
+      pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Assembled FASTA file
+      pattern: "*.fasta.gz"
+  - gfa:
+      type: file
+      description: Repeat graph in gfa format
+      pattern: "*.gfa.gz"
+  - log:
+      type: file
+      description: LJA standard output (stdout)
+      pattern: "*.stdout"
+
+authors:
+  - "@MrTomRod"
+  - "@juncafi"
+maintainers:
+  - "@MrTomRod"
