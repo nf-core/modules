@@ -36,7 +36,7 @@ process XENGSORT_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        xengsort: \$(echo \$(xengsort --version))
+        xengsort: \$(xengsort --version)
     END_VERSIONS
     """
 
@@ -48,7 +48,7 @@ process XENGSORT_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        xengsort: \$(echo \$(xengsort --version))
+        xengsort: \$(xengsort --version)
     END_VERSIONS
     """
 }
