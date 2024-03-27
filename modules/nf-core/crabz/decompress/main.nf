@@ -23,7 +23,6 @@ process CRABZ_DECOMPRESS {
     """
     crabz \\
         $args \\
-        -Q \\
         -p $task.cpus \\
         -o ${prefix} \\
         $archive

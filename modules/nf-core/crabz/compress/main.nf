@@ -23,7 +23,6 @@ process CRABZ_COMPRESS {
     """
     crabz \\
         $args \\
-        -Q \\
         -p $task.cpus \\
         -o ${prefix}.gz \\
         $file
