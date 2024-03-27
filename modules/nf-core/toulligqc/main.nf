@@ -35,7 +35,27 @@ process TOULLIGQC {
     toulligqc ${seq_summary_input} \\
                 ${fastq_input} \\
                 ${bam_input} \\
+                --output-directory ${prefix} \\
                 $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        toulligqc: \$(toulligqc --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    mkdir ${prefix}/images
+    touch ${prefix}/report.data
+    touch ${prefix}/images/Correlation_between_read_length_and_PHRED_score.html
+    touch ${prefix}/images/Distribution_of_read_lengths.html
+    touch ${prefix}/images/PHRED_score_density_distribution.html
+    touch ${prefix}/images/Read_count_histogram.html
+    touch ${prefix}/images/plotly.min.js
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
