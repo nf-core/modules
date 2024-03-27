@@ -36,12 +36,12 @@ input:
       pattern: "[*amptool.tsv, *amptool.tsv]"
   - faa_input:
       type: file
-      description: The path to the folder or file corresponding to the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
-      pattern: "*/"
+      description: The path to the file corresponding to the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
+      pattern: "*.faa"
   - gbk_input:
       type: file
-      description: The path to the folder or file corresponding to the respective annotated files with either '.gbk' or '.gbff' extensions. Filenames must contain the corresponding sample-name, i.e. sample_1.faa
-      pattern: "*/"
+      description: The path to the file corresponding to the respective annotated files with either '.gbk' or '.gbff' extensions. Filenames must contain the corresponding sample-name, i.e. sample_1.faa
+      pattern: "*.gbk"
   - opt_amp_db:
       type: directory
       description: The path to the folder containing the fasta and tsv database files.
@@ -76,6 +76,10 @@ output:
       type: directory
       description: The output directory that contains the summary output and related alignment files for one sample.
       pattern: "/*"
+  - contig_gbks:
+      type: directory
+      description: The output subdirectory that contains the gbk files containing the AMP hits for each sample.
+      pattern: "/*/contig_gbks"
   - results_db:
       type: directory
       description: If the AMP reference database is not provided by the user using the flag `--amp_database', by default the DRAMP database will be downloaded, filtered and stored in this folder.

@@ -1,14 +1,15 @@
 nextflow_process {
 
-    name "Test Process AMPCOMBI_COMPLETE"
+    name "Test Process AMPCOMBI_CLUSTER"
     script "../main.nf"
-    process "AMPCOMBI_COMPLETE"
+    process "AMPCOMBI_CLUSTER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "ampcombi"
     tag "ampcombi/complete"
     tag "ampcombi/parsetables"
+    tag "ampcombi/cluster"
     tag "macrel/contigs"
     tag "ampir"
     tag "gunzip"
@@ -181,10 +182,8 @@ nextflow_process {
                 """
             }
         }
-    }
-
-    test("ampcombi_complete - bacteroides_fragilis") {
-        when {
+        run("AMPCOMBI_COMPLETE") {
+            script "../../../ampcombi/complete/main.nf"
             process {
                 """
                 ch_one = AMPCOMBI_PARSETABLES_1.out.tsv
@@ -203,6 +202,16 @@ nextflow_process {
                 """
             }
         }
+    }
+
+    test("ampcombi_cluster - bacteroides_fragilis") {
+        when {
+            process {
+                """
+                input[0] = AMPCOMBI_COMPLETE.out.tsv
+                """
+            }
+        }
 
         then {
             assertAll(
@@ -212,24 +221,12 @@ nextflow_process {
         }
     }
 
-    test("ampcombi_complete - bacteroides_fragilis - stub") {
+    test("ampcombi_cluster - bacteroides_fragilis - stub") {
         options "-stub"
         when {
             process {
                 """
-                ch_one = AMPCOMBI_PARSETABLES_1.out.tsv
-                ch_two = AMPCOMBI_PARSETABLES_2.out.tsv
-
-                ch_one
-                    .mix( ch_two )
-                    .map{
-                        [ it[1] ]
-                    }
-                    .collect()
-                    .set { ch_input_for_ampcombi }
-
-                input[0] = ch_input_for_ampcombi
-
+                input[0] = AMPCOMBI_COMPLETE.out.tsv
                 """
             }
         }

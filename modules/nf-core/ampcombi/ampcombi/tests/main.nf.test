@@ -76,25 +76,23 @@ nextflow_process {
         }
     }
 
-    test("ampcombi_parsetables - bacteroides_fragilis") {
+    test("ampcombi_ampcombi - bacteroides_fragilis") {
         when {
             process {
                 """
-                ch_amp_results = Channel.empty()
-                ch_amp_results.mix(AMPIR.out.amps_tsv)
-                ch_amp_results.mix(GUNZIP_MACREL.out.gunzip)
-                ch_faa = GUNZIP_FAA.out.gunzip.map{ it[1] } //this does not require a meta
+                ch_ampir = AMPIR.out.amps_tsv
+                ch_macrel = GUNZIP_MACREL.out.gunzip
 
-                ch_input = ch_amp_results
-                    .groupTuple()
-                    .join( ch_faa )
-                    .multiMap{
-                        input: [ it[0], it[1] ]
-                        faa: it[2]
+                ch_ampir
+                    .mix( ch_macrel )
+                    .map{
+                        [ it[0], it[1] ]
                     }
+                    .collect()
+                    .set { ch_input_for_ampcombi }
 
-                input[0] = ch_input.input
-                input[1] = ch_input.faa
+                input[0] = ch_input_for_ampcombi
+                input[1] = GUNZIP_FAA.out.gunzip.map{ it[1] }
                 input[2] = []
                 """
             }
@@ -108,26 +106,24 @@ nextflow_process {
         }
     }
 
-    test("ampcombi_parsetables - bacteroides_fragilis - stub") {
+    test("ampcombi_ampcombi - bacteroides_fragilis - stub") {
         options "-stub"
         when {
             process {
                 """
-                ch_amp_results = Channel.empty()
-                ch_amp_results.mix(AMPIR.out.amps_tsv)
-                ch_amp_results.mix(GUNZIP_MACREL.out.gunzip)
-                ch_faa = GUNZIP_FAA.out.gunzip.map{ it[1] } //this does not require a meta
+                ch_ampir = AMPIR.out.amps_tsv
+                ch_macrel = GUNZIP_MACREL.out.gunzip
 
-                ch_input = ch_amp_results
-                    .groupTuple()
-                    .join( ch_faa )
-                    .multiMap{
-                        input: [ it[0], it[1] ]
-                        faa: it[2]
+                ch_ampir
+                    .mix( ch_macrel )
+                    .map{
+                        [ it[0], it[1] ]
                     }
+                    .collect()
+                    .set { ch_input_for_ampcombi }
 
-                input[0] = ch_input.input
-                input[1] = ch_input.faa
+                input[0] = ch_input_for_ampcombi
+                input[1] = GUNZIP_FAA.out.gunzip.map{ it[1] }
                 input[2] = []
                 """
             }

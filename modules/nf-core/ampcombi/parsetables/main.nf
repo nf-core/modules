@@ -14,18 +14,18 @@ process AMPCOMBI_PARSETABLES {
     path(opt_amp_db)
 
     output:
-    tuple val(meta), path("${meta.id}*")                        , emit: sample_dir
-    tuple val(meta), path("${meta.id}/*diamond_matches.txt")    , emit: txt
-    tuple val(meta), path("${meta.id}/*ampcombi.tsv")           , emit: tsv
-    tuple val(meta), path("${meta.id}/*amp.faa")                , emit: faa
-    tuple val(meta), path("${meta.id}/*_ampcombi.log")          , optional:true, emit: sample_log
-    tuple val(meta), path("Ampcombi_parse_tables.log")          , optional:true, emit: full_log
-    tuple val(meta), path("*/amp_ref_database")                 , optional:true, emit: results_db
-    tuple val(meta), path("*/amp_ref_database/*.dmnd")          , optional:true, emit: results_db_dmnd
-    tuple val(meta), path("*/amp_ref_database/*.clean.fasta")   , optional:true, emit: results_db_fasta
-    tuple val(meta), path("*/amp_ref_database/*.tsv")           , optional:true, emit: results_db_tsv
-    path "versions.yml"                                         , emit: versions
-
+    tuple val(meta), path("${meta.id}/")                                , emit: sample_dir
+    tuple val(meta), path("${meta.id}/contig_gbks/")                    , emit: contig_gbks
+    tuple val(meta), path("${meta.id}/${meta.id}_diamond_matches.txt")  , emit: txt
+    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")         , emit: tsv
+    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")              , emit: faa
+    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.log")         , optional:true, emit: sample_log
+    tuple val(meta), path("Ampcombi_parse_tables.log")                  , optional:true, emit: full_log
+    tuple val(meta), path("amp_ref_database/")                          , optional:true, emit: results_db
+    tuple val(meta), path("amp_ref_database/*.dmnd")                    , optional:true, emit: results_db_dmnd
+    tuple val(meta), path("amp_ref_database/*.clean.fasta")             , optional:true, emit: results_db_fasta
+    tuple val(meta), path("amp_ref_database/*.tsv")                     , optional:true, emit: results_db_tsv
+    path "versions.yml"                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,37 +34,33 @@ process AMPCOMBI_PARSETABLES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-    def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
-    def gbk = gbk_input.isDirectory() ? "--gbk ${gbk_input}/" : "--gbk ${gbk_input}"
     """
     ampcombi parse_tables \\
-    $args \\
     --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
     --sample_list ${prefix} \\
-    --threads ${task.cpus} \\
     ${db} \\
     --faa ${faa_input} \\
-    --gbk ${gbk_input}
+    --gbk ${gbk_input} \\
+    $args \\
+    --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
-
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-    def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
-    def gbk = gbk_input.isDirectory() ? "--gbk ${gbk_input}/" : "--gbk ${gbk_input}"
 
     """
     mkdir -p ${prefix}
-    touch ${prefix}/*diamond_matches.txt
-    touch ${prefix}/*ampcombi.tsv
-    touch ${prefix}/*amp.faa
-    touch ${prefix}/*_ampcombi.log
+    mkdir -p ${prefix}/contig_gbks
+    touch ${prefix}/${meta.id}_diamond_matches.txt
+    touch ${prefix}/${meta.id}_ampcombi.tsv
+    touch ${prefix}/${meta.id}_amp.faa
+    touch ${prefix}/${meta.id}_ampcombi.log
     touch Ampcombi_parse_tables.log
 
     mkdir -p amp_ref_database
