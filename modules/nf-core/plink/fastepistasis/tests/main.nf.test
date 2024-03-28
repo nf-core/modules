@@ -1,0 +1,190 @@
+nextflow_process {
+
+    name "Test Process PLINK_FASTEPISTASIS"
+    script "../main.nf"
+    process "PLINK_FASTEPISTASIS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/fastepistasis"
+
+    test("plink - VCF") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(
+                    process.out.fepi,
+                    process.out.fepisummary,
+                    process.out.fnosex
+                    ).match() },
+                { assert process.out.flog.get(0).get(1) ==~ ".*/*.log" }
+            )
+        }
+    }
+
+    test("plink - VCF with phenotype name") {
+
+        config "./pheno_name.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phenoname'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fepi,
+                    process.out.fepisummary,
+                    process.out.fnosex
+                    ).match() },
+                { assert process.out.flog.get(0).get(1) ==~ ".*/*.log" }
+            )
+        }
+    }
+
+    test("plink - binary") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                input[3] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fepi,
+                    process.out.fepisummary,
+                    process.out.fnosex
+                    ).match() },
+                { assert process.out.flog.get(0).get(1) ==~ ".*/*.log" }
+            )
+        }
+    }
+
+    test("plink - BCF") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [ [id:"null"], []]
+                input[2] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phe'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fepi,
+                    process.out.fepisummary,
+                    process.out.fnosex
+                    ).match() },
+                { assert process.out.flog.get(0).get(1) ==~ ".*/*.log" }
+            )
+        }
+    }
+
+    test("plink - BCF with phenotype name") {
+
+        config "./pheno_name.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_simulated_phenoname'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fepi,
+                    process.out.fepisummary,
+                    process.out.fnosex
+                    ).match() },
+                { assert process.out.flog.get(0).get(1) ==~ ".*/*.log" }
+            )
+        }
+    }
+}
