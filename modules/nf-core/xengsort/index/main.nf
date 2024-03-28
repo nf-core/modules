@@ -13,7 +13,6 @@ process XENGSORT_INDEX {
     val index
     val nobjects
     val mask
-    val subtables
 
     output:
     path "${index}.hash"          , emit: hash
@@ -34,7 +33,6 @@ process XENGSORT_INDEX {
         --graft $graft_fasta \\
         --nobjects $nobjects \\
         --mask '$mask' \\
-        --subtables $subtables \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
