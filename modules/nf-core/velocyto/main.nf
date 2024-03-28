@@ -24,9 +24,7 @@ process VELOCYTO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    velocyto run $args -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf}
-
-    cp .command.out ${prefix}.velocyto.log
+    velocyto run $args -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf} > ${prefix}.velocyto.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
