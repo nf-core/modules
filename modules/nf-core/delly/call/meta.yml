@@ -66,12 +66,17 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        Groovy Map containing reference information
+        e.g. [ id:'test_reference' ]
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test_reference' ]
   - fai:
       type: file
       description: Index of reference fasta file to identify split-reads

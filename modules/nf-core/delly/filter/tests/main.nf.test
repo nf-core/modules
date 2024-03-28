@@ -29,7 +29,10 @@ nextflow_process {
                         ]
                     input[1] = [
                         [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'human' ],
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
                     """
@@ -76,7 +79,10 @@ nextflow_process {
                         ]
                     input[1] = [
                         [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'human' ],
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
                     """
@@ -156,7 +162,10 @@ nextflow_process {
                         ]
                     input[1] = [
                         [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'human' ],
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
                     """
@@ -204,7 +213,10 @@ nextflow_process {
                         ]
                     input[1] = [
                         [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        ]
+                    input[2] = [
+                        [ id:'human' ],
                         file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
                         ]
                     """
