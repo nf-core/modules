@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process CONTROLFREEC_FREEC2CIRCOS"
     script "../main.nf"
     process "CONTROLFREEC_FREEC2CIRCOS"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -59,8 +60,6 @@ nextflow_process {
 
     test("human - freec_ratio") {
 
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -72,6 +71,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(path(process.out.circos.get(0).get(1)).readLines()[0]).match() },
                 { assert snapshot(process.out.versions).match("version") }
             )
         }
