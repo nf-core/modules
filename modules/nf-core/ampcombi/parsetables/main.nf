@@ -37,10 +37,10 @@ process AMPCOMBI_PARSETABLES {
     """
     ampcombi parse_tables \\
     --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
-    --sample_list ${prefix} \\
-    ${db} \\
     --faa ${faa_input} \\
     --gbk ${gbk_input} \\
+    --sample_list ${prefix} \\
+    ${db} \\
     $args \\
     --threads ${task.cpus}
 
