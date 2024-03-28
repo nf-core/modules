@@ -2,7 +2,7 @@ process IDEMUX {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::idemux=0.1.6-0"
+    conda "bioconda::idemux=0.1.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/idemux:0.1.6--pyhdfd78af_0':
         'biocontainers/idemux:0.1.6--pyhdfd78af_0' }"
