@@ -4,8 +4,8 @@ process MAGUS_GUIDETREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/magus-msa:0.1.3--pyhdfd78af_0':
-        'biocontainers/magus-msa:0.1.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/magus-msa:0.2.0--pyhdfd78af_0':
+        'biocontainers/magus-msa:0.2.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
