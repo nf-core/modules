@@ -14,13 +14,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['nanopore']['test2_sequencing_summary'], checkIfExists: true)
-                    ]
-                input[1] = [
-                    [],
-                    []
-                    ]
-                input[2] = [
+                    file(params.test_data['sarscov2']['nanopore']['test2_sequencing_summary'], checkIfExists: true),
                     [],
                     []
                     ]
@@ -43,15 +37,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [],
-                    []
-                    ]
-                input[1] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
-                    ]
-                input[2] = [
                     [],
+                    file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true),
                     []
                     ]
                 """
@@ -73,15 +61,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [],
-                    []
-                    ]
-                input[1] = [
-                    [],
-                    []
-                    ]
-                input[2] = [
                     [ id:'test' ], // meta map
+                    [],
+                    [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
                     ]
                 """
@@ -105,15 +87,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [],
-                    []
-                    ]
-                input[1] = [
-                    [],
-                    []
-                    ]
-                input[2] = [
                     [ id:'test' ], // meta map
+                    [],
+                    [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
                     ]
                 """
@@ -126,5 +102,4 @@ nextflow_process {
             )
         }
     }
-
 }

@@ -8,9 +8,7 @@ process TOULLIGQC {
         'biocontainers/toulligqc:2.5.4--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(seq_summary)
-    tuple val(meta), path(fastq)
-    tuple val(meta), path(bam)
+    tuple val(meta), path(seq_summary), path(fastq), path(bam)
 
     output:
     tuple val(meta), path("*/*.data")   , emit: report_data
@@ -32,7 +30,7 @@ process TOULLIGQC {
     def bam_input = bam ? "--bam ${bam}" : ""
 
     """
-    toulligqc \\ 
+    toulligqc \\
         ${seq_summary_input} \\
         ${fastq_input} \\
         ${bam_input} \\
