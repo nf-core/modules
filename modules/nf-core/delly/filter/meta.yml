@@ -15,7 +15,20 @@ tools:
       doi: "10.1093/bioinformatics/bts378"
       licence: ["BSD-3-Clause"]
       args_id: "$args"
-
+  - bgzip:
+      description: Bgzip compresses or decompresses files in a similar manner to, and compatible with, gzip.
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: http://www.htslib.org/doc/bgzip.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      args_id: "$args2"
+  - tabix:
+      description: Generic indexer for TAB-delimited genome position files.
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: https://www.htslib.org/doc/tabix.1.html
+      doi: 10.1093/bioinformatics/btq671
+      licence: ["MIT"]
+      args_id: "$args3"
 input:
   - meta:
       type: map
@@ -39,12 +52,21 @@ input:
       description: |
         A TSV sample description file where the first column
         is sample id (matching sample names in the BCF file)
-        and the second column is either tumor or normal.
+        and the second column is either tumor or control.
         Only needed for somatic mode. Alternatively, sample desciptions
         can be added the meta map as lists of sample ids in the
         fields 'tumor_samples' and 'control_samples'.
       pattern: "*.tsv"
-
+  - tumor_samples:
+      type: list
+      description: |
+        List of sample ids for tumor samples (matching sample names in the BCF file).
+        Only needed for somatic mode and if no sample description file is provided.
+  - control_samples:
+      type: list
+      description: |
+        List of sample ids for control samples (matching sample names in the BCF file).
+        Only needed for somatic mode and if no sample description file is provided.
 output:
   - meta:
       type: map
@@ -63,7 +85,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
   - "@alexnater"
 maintainers:

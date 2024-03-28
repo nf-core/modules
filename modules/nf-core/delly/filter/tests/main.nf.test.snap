@@ -1,31 +1,68 @@
 {
+    "germline - vcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.filtered.vcf.gz:md5,5ad9b88451652e7016f868afff34663d"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.filtered.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,f45104c406e3750e1f09c3ead45a8829"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.filtered.vcf.gz:md5,5ad9b88451652e7016f868afff34663d"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.filtered.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,f45104c406e3750e1f09c3ead45a8829"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-28T17:12:10.446267262"
+    },
     "somatic - bcf": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "tumor_control",
-                            "tumor_samples": [
-                                "tumour"
-                            ],
-                            "control_samples": [
-                                "normal"
-                            ]
+                            "id": "tumor_control"
                         },
-                        "tumor_control.filtered.bcf:md5,e818059506ca73c763d2d4dc6c52aaf4"
+                        "tumor_control.filtered.bcf:md5,95aa415128c8e9806e3415f9e2598e4a"
                     ]
                 ],
                 "1": [
                     [
                         {
-                            "id": "tumor_control",
-                            "tumor_samples": [
-                                "tumour"
-                            ],
-                            "control_samples": [
-                                "normal"
-                            ]
+                            "id": "tumor_control"
                         },
                         "tumor_control.filtered.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
                     ]
@@ -36,27 +73,15 @@
                 "bcf": [
                     [
                         {
-                            "id": "tumor_control",
-                            "tumor_samples": [
-                                "tumour"
-                            ],
-                            "control_samples": [
-                                "normal"
-                            ]
+                            "id": "tumor_control"
                         },
-                        "tumor_control.filtered.bcf:md5,e818059506ca73c763d2d4dc6c52aaf4"
+                        "tumor_control.filtered.bcf:md5,95aa415128c8e9806e3415f9e2598e4a"
                     ]
                 ],
                 "csi": [
                     [
                         {
-                            "id": "tumor_control",
-                            "tumor_samples": [
-                                "tumour"
-                            ],
-                            "control_samples": [
-                                "normal"
-                            ]
+                            "id": "tumor_control"
                         },
                         "tumor_control.filtered.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
                     ]
@@ -70,7 +95,56 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-25T10:08:12.850193288"
+        "timestamp": "2024-03-28T17:01:49.506842172"
+    },
+    "somatic - vcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.filtered.vcf.gz:md5,462cf52ecf899b3e5fa29beacaf15eb6"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.filtered.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,f67ef5fd2fa49a82ccea58f0d3d5ad0f"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.filtered.vcf.gz:md5,462cf52ecf899b3e5fa29beacaf15eb6"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.filtered.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,f67ef5fd2fa49a82ccea58f0d3d5ad0f"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-28T17:15:30.448939231"
     },
     "germline - stub": {
         "content": [
@@ -129,7 +203,7 @@
                         {
                             "id": "control"
                         },
-                        "control.filtered.bcf:md5,d4b660407b75da66b14ddae2208df514"
+                        "control.filtered.bcf:md5,e34200aa9681cfa2ffd4d62aa7714c70"
                     ]
                 ],
                 "1": [
@@ -148,7 +222,7 @@
                         {
                             "id": "control"
                         },
-                        "control.filtered.bcf:md5,d4b660407b75da66b14ddae2208df514"
+                        "control.filtered.bcf:md5,e34200aa9681cfa2ffd4d62aa7714c70"
                     ]
                 ],
                 "csi": [
@@ -168,6 +242,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-25T10:07:55.589147765"
+        "timestamp": "2024-03-28T17:07:24.711897762"
     }
 }

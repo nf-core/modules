@@ -51,11 +51,19 @@ input:
       type: file
       description: Optional index of the control BAM/CRAM file
       pattern: "*.{bai,crai}"
+  - vcf:
+      type: file
+      description: A BCF/VCF file to genotype with Delly. If this is supplied, the variant calling will be skipped
+      pattern: "*.{vcf.gz,bcf}"
+  - vcf_index:
+      type: file
+      description: The index of the BCF/VCF file
+      pattern: "*.{tbi,csi}"
   - exclude_bed:
       type: file
       description: An optional bed file containing regions to exclude from the called VCF
       pattern: "*.bed"
-  - ref_meta:
+  - meta2:
       type: map
       description: |
         Groovy Map containing sample information
@@ -68,19 +76,6 @@ input:
       type: file
       description: Index of reference fasta file to identify split-reads
       pattern: "*.fai"
-  - vcf_meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: A BCF/VCF file to genotype with Delly. If this is supplied, the variant calling will be skipped
-      pattern: "*.{vcf.gz,bcf}"
-  - vcf_index:
-      type: file
-      description: The index of the BCF/VCF file
-      pattern: "*.{tbi,csi}"
 output:
   - meta:
       type: map

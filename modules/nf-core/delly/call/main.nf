@@ -8,9 +8,8 @@ process DELLY_CALL {
         'biocontainers/delly:1.2.6--hb7e2ac5_0' }"
 
     input:
-    tuple val(meta), path(input_1), path(input_1_idx), path(input_ctrl), path(input_ctrl_idx), path(exclude_bed)
-    tuple val(ref_meta), path(fasta), path(fai)
-    tuple val(vcf_meta), path(vcf), path(vcf_index)
+    tuple val(meta), path(input_1), path(input_1_idx), path(input_ctrl), path(input_ctrl_idx), path(vcf), path(vcf_index), path(exclude_bed)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}"), emit: bcf
