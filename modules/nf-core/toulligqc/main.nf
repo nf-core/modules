@@ -32,11 +32,12 @@ process TOULLIGQC {
     def bam_input = bam ? "--bam ${bam}" : ""
 
     """
-    toulligqc ${seq_summary_input} \\
-                ${fastq_input} \\
-                ${bam_input} \\
-                --output-directory ${prefix} \\
-                $args
+    toulligqc \\ 
+        ${seq_summary_input} \\
+        ${fastq_input} \\
+        ${bam_input} \\
+        --output-directory ${prefix} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
