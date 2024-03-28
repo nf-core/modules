@@ -61,22 +61,4 @@ process GENOMESCOPE2 {
         genomescope2: \$( genomescope2 -v | sed 's/GenomeScope //' )
     END_VERSIONS
     """
-
-    stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}_linear_plot.png
-    touch ${prefix}_transformed_linear_plot.png
-    touch ${prefix}_log_plot.png
-    touch ${prefix}_transformed_log_plot.png
-    touch ${prefix}_model.txt
-    touch ${prefix}_summary.txt
-    touch lookup_table.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    '${task.process}':
-        genomescope2: \$( genomescope2 -v | sed 's/GenomeScope //' )
-    END_VERSIONS
-    """
 }

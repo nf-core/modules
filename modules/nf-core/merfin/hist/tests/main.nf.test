@@ -37,6 +37,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -98,6 +99,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -156,6 +158,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -170,6 +173,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -181,6 +185,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -204,18 +209,12 @@ nextflow_process {
         when {
             process {
                 """
-                // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
-                // we had to do a hack to get this file's path
-                GENOMESCOPE2.out.summary.map{ meta, sum -> {
-                    def res = sum.getParent();
-                    [res/"lookup_table.txt"]
-                    }}.set{ lk_ch }
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 input[1] = MERYL_COUNT_READS.out.meryl_db
-                input[2] = lk_ch
+                input[2] = GENOMESCOPE2.out.lookup_table.map{ meta, lkp -> lkp}
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
                 input[4] = 10
                 """
@@ -233,7 +232,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - paired-end illumina reads plus optional inputs lookup_table and seqmers - stub") {
+    test("sarscov2 - paired-end illumina reads plus inputs lookup_table and seqmers - stub") {
         
         options "-stub"
 
@@ -261,6 +260,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -275,6 +275,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -286,6 +287,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -309,18 +311,12 @@ nextflow_process {
         when {
             process {
                 """
-                // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
-                // we had to do a hack to get this file's path
-                GENOMESCOPE2.out.summary.map{ meta, sum -> {
-                    def res = sum.getParent();
-                    [res/"lookup_table.txt"]
-                    }}.set{ lk_ch }
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 input[1] = MERYL_COUNT_READS.out.meryl_db
-                input[2] = lk_ch
+                input[2] = GENOMESCOPE2.out.lookup_table.map{ meta, lkp -> lkp }
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
                 input[4] = 10
                 """
@@ -366,6 +362,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -383,6 +380,7 @@ nextflow_process {
                     [ id:'test_fragilis', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ])
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -394,6 +392,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -425,22 +424,19 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ]).set{ input_zero_ch }
 
-                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db ).join( MERYL_COUNT_ASM.out.meryl_db ).multiMap{ meta, asm, meryl_db, asm_meryl_db ->
+                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db )
+                             .join( MERYL_COUNT_ASM.out.meryl_db )
+                             .join( GENOMESCOPE2.out.lookup_table )
+                             .multiMap{ meta, asm, meryl_db, asm_meryl_db, lookup_table ->
                     asm_ch: [meta, asm]
                     meryl_ch: [meta, meryl_db]
                     asm_meryl_ch: [asm_meryl_db]
+                    lk_ch: [lookup_table]
                 }.set{ multimap_inputs_ch }
-
-                // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
-                // we had to do a hack to get this file's path
-                GENOMESCOPE2.out.summary.map{ meta, sum -> {
-                    def res = sum.getParent();
-                    [res/"lookup_table.txt"]
-                    }}.set{ lk_ch }
                 
                 input[0] = multimap_inputs_ch.asm_ch
                 input[1] = multimap_inputs_ch.meryl_ch
-                input[2] = lk_ch
+                input[2] = multimap_inputs_ch.lk_ch
                 input[3] = multimap_inputs_ch.asm_meryl_ch
                 input[4] = 10
                 """
@@ -490,6 +486,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -507,6 +504,7 @@ nextflow_process {
                     [ id:'test_fragilis', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ])
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -518,6 +516,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
+                    input[1] = Channel.value(6)
                     """
                 }
             }
@@ -549,21 +548,19 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ]).set{ input_zero_ch }
 
-                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db ).multiMap{ meta, asm, meryl_db ->
+                input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db )
+                             .join( MERYL_COUNT_ASM.out.meryl_db )
+                             .join( GENOMESCOPE2.out.lookup_table )
+                             .multiMap{ meta, asm, meryl_db, asm_meryl_db, lookup_table ->
                     asm_ch: [meta, asm]
                     meryl_ch: [meta, meryl_db]
+                    asm_meryl_ch: [asm_meryl_db]
+                    lk_ch: [lookup_table]
                 }.set{ multimap_inputs_ch }
-
-                // Due the fact that GENOMESCOPE2 module doesnt produce the optional output lookup_table.txt
-                // we had to do a hack to get this file's path
-                GENOMESCOPE2.out.summary.map{ meta, sum -> {
-                    def res = sum.getParent();
-                    [res/"lookup_table.txt"]
-                    }}.set{ lk_ch }
                 
                 input[0] = multimap_inputs_ch.asm_ch
                 input[1] = multimap_inputs_ch.meryl_ch
-                input[2] = lk_ch
+                input[2] = multimap_inputs_ch.lk_ch
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
                 input[4] = 10
                 """
