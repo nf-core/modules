@@ -4,8 +4,8 @@ process MAGUS_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:f77664a2cdf067ddff5dc016cfa26dc129fe8c70-0':
-        'biocontainers/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:f77664a2cdf067ddff5dc016cfa26dc129fe8c70-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:10b41722a6b9471a0945fe6baeb9aff444d8eb1d-0':
+        'biocontainers/mulled-v2-ae4ea1182e75371808710b6c081bef8b228c4815:10b41722a6b9471a0945fe6baeb9aff444d8eb1d-0' }"
 
     input:
     tuple val(meta) , path(fasta)
