@@ -3,7 +3,7 @@
 name: "velocyto"
 description: |
   Velocyto is a library for the analysis of RNA velocity. velocyto.py CLI use
-  Path(resolve_path=True) and breaks the nextflow logic of symbolic links.
+  `Path(resolve_path=True)` and breaks the nextflow logic of symbolic links.
   If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
   it will skip the samtools sort step.
   Cellsorted bam file should be cell sorted with:
