@@ -31,4 +31,14 @@ process MINIMAP2_INDEX {
         minimap2: \$(minimap2 --version 2>&1)
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch ${fasta.baseName}.mmi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minimap2: \$(minimap2 --version 2>&1)
+    END_VERSIONS
+    """
 }
