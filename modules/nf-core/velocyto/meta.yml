@@ -50,7 +50,7 @@ input:
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
-      pattern: "*.bam"
+      pattern: "*.{bam,cram,sam}"
   - sorted_bam:
       type: file
       description: Cell sorted BAM/CRAM/SAM file generated with samtools sort -t CB -O BAM -o cellsorted_possorted_genome_bam.bam possorted_genome_bam.bam
