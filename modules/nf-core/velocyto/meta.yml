@@ -19,8 +19,6 @@ description: |
       }
   ```
   Optional mask must be passed with `ext.args` and option `--mask`
-  If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
-  it will skip the samtools sort step.
   This is why I need to stage in the work dir 2 bam files (cellsorted and original).
   See also [velocyto turorial](https://velocyto.org/velocyto.py/tutorial/cli.html#notes-on-first-runtime-and-parallelization)
 
