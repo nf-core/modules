@@ -5,10 +5,27 @@ description: |
   Velocyto is a library for the analysis of RNA velocity. velocyto.py CLI use
   Path(resolve_path=True) and breaks the nextflow logic of symbolic links.
   If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
-  it will skip the samtools sort step. Cellsorted bam file should be cell sorted with:
-```bash
-    samtools sort -t CB -O BAM -o cellsorted_input.bam input.bam
-```
+  it will skip the samtools sort step.
+  
+  Cellsorted bam file should be cell sorted with:
+  ```bash
+      samtools sort -t CB -O BAM -o cellsorted_input.bam input.bam
+  ```
+  See module test for an example with the SAMTOOLS_SORT nf-core module.
+  
+  Config example to cellsort input bam using SAMTOOLS_SORT:
+  ```groovy
+      withName: SAMTOOLS_SORT {
+          ext.prefix = { "cellsorted_${bam.baseName}" }
+          ext.args = '-t CB -O BAM'
+      }
+  ```
+  Optional mask must be passed with ext.args and option --mask
+  If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
+  it will skip the samtools sort step.
+  This is why I need to stage in the work dir 2 bam files (cellsorted and original).
+  See also [velocyto turorial](https://velocyto.org/velocyto.py/tutorial/cli.html#notes-on-first-runtime-and-parallelization)
+  
 
 keywords:
   - count
