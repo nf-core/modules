@@ -6,7 +6,9 @@ description: |
   Path(resolve_path=True) and breaks the nextflow logic of symbolic links.
   If in the work dir velocyto find a file named EXACTLY cellsorted_[ORIGINALBAMNAME]
   it will skip the samtools sort step. Cellsorted bam file should be cell sorted with:
+```bash
     samtools sort -t CB -O BAM -o cellsorted_input.bam input.bam
+```
 
 keywords:
   - count
