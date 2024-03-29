@@ -208,20 +208,6 @@ jobs:
           - profile: conda
             tags: cellpose
           - profile: conda
-            tags: cellranger/count
-          - profile: conda
-            tags: cellranger/mkfastq
-          - profile: conda
-            tags: cellranger/mkgtf
-          - profile: conda
-            tags: cellranger/mkref
-          - profile: conda
-            tags: cellranger/mkvdjref
-          - profile: conda
-            tags: cellranger/multi
-          - profile: conda
-            tags: cellranger/vdj
-          - profile: conda
             tags: cellrangerarc/count
           - profile: conda
             tags: cellrangerarc/mkfastq
@@ -506,6 +492,8 @@ jobs:
           - profile: conda
             tags: bclconvert
           - profile: conda
+            tags: celesta
+          - profile: conda
             tags: cellpose
           - profile: conda
             tags: cellranger/count
@@ -515,6 +503,12 @@ jobs:
             tags: cellranger/mkgtf
           - profile: conda
             tags: cellranger/mkref
+          - profile: conda
+            tags: cellranger/mkvdjref
+          - profile: conda
+            tags: cellranger/multi
+          - profile: conda
+            tags: cellranger/vdj
           - profile: conda
             tags: custom/dumpsoftwareversions
           - profile: conda
@@ -562,7 +556,11 @@ jobs:
           - profile: conda
             tags: merquryfk/ploidyplot
           - profile: conda
+            tags: molkartgarage/clahe
+          - profile: conda
             tags: quartonotebook
+          - profile: conda
+            tags: scimap/spatiallda
           - profile: conda
             tags: sentieon/bwaindex
           - profile: conda
@@ -587,6 +585,8 @@ jobs:
             tags: bases2fastq
           - profile: conda
             tags: wittyer
+          - profile: conda
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
