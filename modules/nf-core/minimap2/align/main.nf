@@ -24,21 +24,34 @@ process MINIMAP2_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bam_output = bam_format ? "-a | samtools sort | samtools view -@ ${task.cpus} -b -h -o ${prefix}.bam" : "-o ${prefix}.paf"
+    def bam_output = bam_format ? "-a | samtools sort -@ ${task.cpus} -o ${prefix}.bam ${args2}" : "-o ${prefix}.paf"
     def cigar_paf = cigar_paf_format && !bam_format ? "-c" : ''
     def set_cigar_bam = cigar_bam && bam_format ? "-L" : ''
     """
     minimap2 \\
         $args \\
         -t $task.cpus \\
-        "${reference ?: reads}" \\
-        "$reads" \\
+        ${reference ?: reads} \\
+        $reads \\
         $cigar_paf \\
         $set_cigar_bam \\
         $bam_output
 
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minimap2: \$(minimap2 --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_file = bam_format ? "${prefix}.bam" : "${prefix}.paf"
+    """
+    touch $output_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
