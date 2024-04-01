@@ -8,7 +8,6 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fasta_ltrretriever_lai"
-    tag "fasta_ltrretriever_lai"
     tag "gunzip"
     tag "custom/shortenfastaids"
     tag "ltrharvest"
@@ -18,7 +17,7 @@ nextflow_workflow {
     tag "ltrretriever/lai"
     tag "custom/restoregffids"
 
-    test("actinidia_chinensis-genome_21_fasta_gz-success") {
+    test("actinidia_chinensis-genome_21_fasta_gz") {
 
         setup {
             run("GUNZIP") {
@@ -38,9 +37,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0]    = GUNZIP.out.gunzip
-                input[1]    = []
-                input[2]    = false
+                input[0]            = GUNZIP.out.gunzip
+                input[1]            = []
+                input[2]            = false
                 """
             }
         }
@@ -53,6 +52,131 @@ nextflow_workflow {
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
                 { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
                 { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
+            )
+        }
+    }
+
+    test("actinidia_chinensis-genome_21_fasta_gz-with_mono") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../../modules/nf-core/gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                GUNZIP.out.gunzip.map { meta, fasta ->
+                    def fa          = new File('test.fa')
+                    fa.write(fasta.text.replaceAll('>chr1', '>chr_xxxxxxxxxxxxxxx_1'))
+
+                    [ meta, fa.toPath() ]
+                }
+                | set { ch_fa }
+
+                def monoploid_seqs  = new File('test.mono.seq.txt')
+                monoploid_seqs.write("chr_xxxxxxxxxxxxxxx_1")
+
+                input[0]            = ch_fa
+                input[1]            = Channel.of( [ [ id:'test' ], monoploid_seqs.toPath() ] )
+                input[2]            = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.annotation_gff[0][1]).text.contains('Copia_LTR_retrotransposon') },
+                { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
+                { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
+                { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
+                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
+            )
+        }
+    }
+
+    test("actinidia_chinensis-genome_21_fasta_gz-without_lai") {
+
+        options '-stub'
+
+        setup {
+            run("GUNZIP") {
+                script "../../../../modules/nf-core/gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                GUNZIP.out.gunzip.map { meta, fasta ->
+                    def fa          = new File('test.fa')
+                    fa.write(fasta.text.replaceAll('>chr1', '>chr_xxxxxxxxxxxxxxx_1'))
+
+                    [ meta, fa.toPath() ]
+                }
+                | set { ch_fa }
+
+                def monoploid_seqs  = new File('test.mono.seq.txt')
+                monoploid_seqs.write("chr_xxxxxxxxxxxxxxx_1")
+
+                input[0]            = ch_fa
+                input[1]            = Channel.of( [ [ id:'test' ], monoploid_seqs.toPath() ] )
+                input[2]            = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.annotation_gff != null },
+                { assert workflow.out.ltrlib != null },
+                { assert workflow.out.lai_log == [] },
+                { assert workflow.out.lai_out == [] }
+            )
+        }
+    }
+
+    test("empty_fasta_stub") {
+
+        options '-stub'
+
+        when {
+            workflow {
+                """
+                def monoploid_seqs  = new File('test.mono.seq.txt')
+                monoploid_seqs.write("chr_xxxxxxxxxxxxxxx_1")
+
+                input[0]            = Channel.empty()
+                input[1]            = Channel.of( [ [ id:'test' ], monoploid_seqs.toPath() ] )
+                input[2]            = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
             )
         }
     }

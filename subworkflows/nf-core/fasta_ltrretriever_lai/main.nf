@@ -24,10 +24,23 @@ workflow FASTA_LTRRETRIEVER_LAI {
     ch_short_ids_fasta              = ch_fasta
                                     | join(CUSTOM_SHORTENFASTAIDS.out.short_ids_fasta, by:0, remainder:true)
                                     | map { meta, fasta, short_ids_fasta ->
-                                        [ meta, short_ids_fasta ?: fasta ]
+                                        if ( fasta ) { [ meta, short_ids_fasta ?: fasta ] }
                                     }
 
     ch_short_ids_tsv                = CUSTOM_SHORTENFASTAIDS.out.short_ids_tsv
+    ch_short_monoploid_seqs         = ch_short_ids_tsv
+                                    | join(
+                                        ch_monoploid_seqs ?: Channel.empty()
+                                    )
+                                    | map { meta, short_ids_tsv, monoploid_seqs ->
+                                        map_monoploid_seqs_to_new_ids(meta, short_ids_tsv, monoploid_seqs)
+                                    }
+                                    | collectFile(newLine:true)
+                                    | map { seqs ->
+                                        def id = seqs.name.split('.mapped.monoploid.seqs.txt')[0]
+
+                                        [ [ id: id ], seqs ]
+                                    }
     ch_versions                     = ch_versions.mix(CUSTOM_SHORTENFASTAIDS.out.versions.first())
 
     // MODULE: LTRHARVEST
@@ -79,8 +92,7 @@ workflow FASTA_LTRRETRIEVER_LAI {
                                         [ meta.id, meta, fasta, pass, out ]
                                     }
                                     | join(
-                                        ch_monoploid_seqs
-                                        ?: Channel.empty()
+                                        ch_short_monoploid_seqs
                                         | map { meta, mono -> [ meta.id, mono ] },
                                         by:0,
                                         remainder: true
@@ -119,4 +131,32 @@ workflow FASTA_LTRRETRIEVER_LAI {
     lai_log                         = ch_lai_log        // channel: [ val(meta), log ]
     lai_out                         = ch_lai_out        // channel: [ val(meta), out ]
     versions                        = ch_versions       // channel: [ versions.yml ]
+}
+
+
+def map_monoploid_seqs_to_new_ids(meta, short_ids_tsv, monoploid_seqs) {
+
+    def short_ids_head = short_ids_tsv.text.split('\n')[0]
+
+    if (short_ids_head == "IDs have acceptable length and character. No change required.") {
+        return [ "${meta.id}.mapped.monoploid.seqs.txt" ] + monoploid_seqs.text.split('\n')
+    }
+
+    def orig_to_new_ids = [:]
+    short_ids_tsv.text.eachLine { line ->
+        def (original_id, renamed_id) = line.split('\t')
+        orig_to_new_ids[original_id] = renamed_id
+    }
+
+    def mapped_ids = []
+    monoploid_seqs.text.eachLine { original_id ->
+        if (!orig_to_new_ids[original_id]) {
+            error "Faild to find $original_id in ${monoploid_seqs}" +
+            "The monoploid_seqs file is malformed!"
+        }
+
+        mapped_ids.add(orig_to_new_ids[original_id])
+    }
+
+    return [ "${meta.id}.mapped.monoploid.seqs.txt" ] + mapped_ids
 }
