@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -u
+set -u -x
 
 retry_with_backoff() {
     local max_attempts=${1}
@@ -47,18 +47,16 @@ retry_with_backoff !{args2} \
     !{args} \
     !{id}
 
-# check file integrity using md5sum or vdb-validate as fallback
-MD5SUM=$(
-	curl -s 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=!{id}' |
-	grep -o '"md5": "[^"]*"' | cut -f4 -d'"'
-)
-if [ -n "$MD5SUM" ]; then
-	[ "$(md5sum !{id}/* | cut -f1 -d' ')" = "$MD5SUM" ]
-else
-	vdb-validate !{id}
-fi || exit 1
+# check file integrity using vdb-validate or (when archive contains no checksums) md5sum
+vdb-validate !{id} > vdb-validate_result.txt 2>&1 || exit 1
+if grep -q "checksums missing" vdb-validate_result.txt; then
+	VALID_MD5SUMS=$(curl -s -f -L --retry 3 --retry-delay 60 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=!{id}')
+	LOCAL_MD5SUMS=$(md5sum !{id}/* | cut -f1 -d' ')
+	grep -q -F -f <(echo "$LOCAL_MD5SUMS") <(echo "$VALID_MD5SUMS") || exit 1
+fi
 
 cat <<-END_VERSIONS > versions.yml
 "!{task.process}":
     sratools: $(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
+    curl: $(curl --version | head -n 1 | sed 's/^curl //; s/ .*$//')
 END_VERSIONS
