@@ -26,7 +26,7 @@ process REPEATMODELER_BUILDDATABASE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repeatmodeler: \$(RepeatModeler | grep '/usr/local/bin/RepeatModeler - ' | sed 's|/usr/local/bin/RepeatModeler - ||')
+        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process REPEATMODELER_BUILDDATABASE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repeatmodeler: \$(RepeatModeler | grep '/usr/local/bin/RepeatModeler - ' | sed 's|/usr/local/bin/RepeatModeler - ||')
+        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
     END_VERSIONS
     """
 }
