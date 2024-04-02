@@ -2,7 +2,7 @@ process SPACERANGER_MKREF {
     tag "$fasta"
     label 'process_high'
 
-    container "quay.io/nf-core/spaceranger:3.0.0"
+    container "nf-core/spaceranger:3.0.0"
 
     input:
     path fasta
