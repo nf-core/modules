@@ -11,7 +11,7 @@ nextflow_process {
     tag "delly/call"
     tag "delly/filter"
 
-    test("germline - bcf") {
+    test("germline, out:bcf") {
         setup {
             run("DELLY_CALL") {
                 script "../../call/main.nf"
@@ -41,6 +41,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                suffix = 'bcf'
+            }
             process {
                 """
                 input[0] = DELLY_CALL.out.bcf.join(DELLY_CALL.out.csi)
@@ -61,7 +64,7 @@ nextflow_process {
         }
     }
 
-    test("germline - vcf") {
+    test("germline, out:vcf") {
         setup {
             run("DELLY_CALL") {
                 script "../../call/main.nf"
@@ -114,11 +117,14 @@ nextflow_process {
         }
     }
 
-    test("germline - stub") {
+    test("germline, out:bcf - stub") {
 
         options "-stub"
 
         when {
+            params {
+                suffix = 'bcf'
+            }
             process {
                 """
                 input[0] = [
@@ -144,7 +150,7 @@ nextflow_process {
 
     }
 
-    test("somatic - bcf") {
+    test("somatic, out:bcf") {
         setup {
             run("DELLY_CALL") {
                 script "../../call/main.nf"
@@ -173,6 +179,9 @@ nextflow_process {
             }
         }
         when {
+            params {
+                suffix = 'bcf'
+            }
             process {
                 """
                 ch_input = DELLY_CALL.out.bcf
@@ -195,7 +204,7 @@ nextflow_process {
         }
     }
 
-    test("somatic - vcf") {
+    test("somatic, out:vcf") {
         setup {
             run("DELLY_CALL") {
                 script "../../call/main.nf"

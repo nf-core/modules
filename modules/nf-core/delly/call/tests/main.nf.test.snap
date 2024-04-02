@@ -1,4 +1,102 @@
 {
+    "germline, exclude regions, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:38:18.657117653"
+    },
+    "germline, genotype, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:38:27.115125912"
+    },
     "germline - vcf": {
         "content": [
             {
@@ -48,23 +146,23 @@
         },
         "timestamp": "2024-03-28T16:17:08.945129254"
     },
-    "somatic - bcf": {
+    "germline, out:bcf - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "tumor_control"
+                            "id": "test"
                         },
-                        "tumor_control.bcf:md5,ab52d577db09a1e500607c124eacf511"
+                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
                     [
                         {
-                            "id": "tumor_control"
+                            "id": "test"
                         },
-                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -73,17 +171,17 @@
                 "bcf": [
                     [
                         {
-                            "id": "tumor_control"
+                            "id": "test"
                         },
-                        "tumor_control.bcf:md5,ab52d577db09a1e500607c124eacf511"
+                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "csi": [
                     [
                         {
-                            "id": "tumor_control"
+                            "id": "test"
                         },
-                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions": [
@@ -95,56 +193,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-28T16:17:32.903383226"
-    },
-    "germline - genotyping": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "control"
-                        },
-                        "control.bcf:md5,6e2d79f69afc702a08511cb929da6943"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "control"
-                        },
-                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
-                ],
-                "bcf": [
-                    [
-                        {
-                            "id": "control"
-                        },
-                        "control.bcf:md5,6e2d79f69afc702a08511cb929da6943"
-                    ]
-                ],
-                "csi": [
-                    [
-                        {
-                            "id": "control"
-                        },
-                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-28T16:51:43.202596735"
+        "timestamp": "2024-04-02T14:38:32.89939847"
     },
     "somatic - vcf": {
         "content": [
@@ -195,23 +244,23 @@
         },
         "timestamp": "2024-03-28T16:17:43.10253227"
     },
-    "germline - stub": {
+    "germline, in:bam, out:vcf": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "control"
                         },
-                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "control.vcf.gz:md5,39498b6499ebf6d242053ad5a94e63c1"
                     ]
                 ],
                 "1": [
                     [
                         {
-                            "id": "test"
+                            "id": "control"
                         },
-                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
                     ]
                 ],
                 "2": [
@@ -220,17 +269,17 @@
                 "bcf": [
                     [
                         {
-                            "id": "test"
+                            "id": "control"
                         },
-                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "control.vcf.gz:md5,39498b6499ebf6d242053ad5a94e63c1"
                     ]
                 ],
                 "csi": [
                     [
                         {
-                            "id": "test"
+                            "id": "control"
                         },
-                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
                     ]
                 ],
                 "versions": [
@@ -242,7 +291,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-03-21T16:54:36.024035492"
+        "timestamp": "2024-04-02T14:37:55.790132277"
     },
     "germline - bcf": {
         "content": [
@@ -292,5 +341,495 @@
             "nextflow": "23.10.1"
         },
         "timestamp": "2024-03-28T16:16:59.976411614"
+    },
+    "germline, in:cram, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,e299eeb85a4530ef0d02c87f8de98e01"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,a2ba4f0b32a6ea857ec8a5b3068f168f"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,e299eeb85a4530ef0d02c87f8de98e01"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,a2ba4f0b32a6ea857ec8a5b3068f168f"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:52:16.130985801"
+    },
+    "somatic, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:38:44.807181472"
+    },
+    "somatic - bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,ab52d577db09a1e500607c124eacf511"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,ab52d577db09a1e500607c124eacf511"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-28T16:17:32.903383226"
+    },
+    "germline, in:cram, out:vcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.vcf.gz:md5,046f3e38819244b702e66e959fe5badd"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.vcf.gz:md5,046f3e38819244b702e66e959fe5badd"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:52:22.941538376"
+    },
+    "germline, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,0c122469bfed95453f0a27380a3ef895"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:37:47.106638791"
+    },
+    "germline - genotyping": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,6e2d79f69afc702a08511cb929da6943"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf:md5,6e2d79f69afc702a08511cb929da6943"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "control"
+                        },
+                        "control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-28T16:51:43.202596735"
+    },
+    "somatic, in:bam, out:vcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.vcf.gz:md5,0bc178c5b3448623cea7573222bdbc78"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.vcf.gz:md5,0bc178c5b3448623cea7573222bdbc78"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:38:54.072495014"
+    },
+    "somatic, exclude regions, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:39:02.085465473"
+    },
+    "somatic, genotype, in:bam, out:bcf": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf:md5,0abebd43afcc40c5f6b1975511b84589"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "tumor_control"
+                        },
+                        "tumor_control.bcf.csi:md5,66545c77fc791a02dadc7fc252d04635"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-02T14:39:10.663265533"
+    },
+    "germline - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ],
+                "bcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,cf72d737ee881a7cd7eab87abf93b94c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-21T16:54:36.024035492"
     }
 }

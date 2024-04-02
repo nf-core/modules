@@ -10,7 +10,7 @@ nextflow_process {
     tag "delly"
     tag "delly/call"
 
-    test("germline - bcf") {
+    test("germline, in:bam, out:bcf") {
         when {
             params {
                 suffix = 'bcf'
@@ -48,7 +48,7 @@ nextflow_process {
         }
     }
 
-    test("germline - vcf") {
+    test("germline, in:bam, out:vcf") {
         when {
             params {
                 suffix = 'vcf'
@@ -87,49 +87,100 @@ nextflow_process {
         }
     }
 
-    test("germline - genotyping") {
-        setup {
-            run("DELLY_CALL", alias: "DELLY_PRECALL") {
-                script "../main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'control' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-                        [],
-                        [],
-                        [],
-                        [],
-                        []
-                        ]
-                    input[1] = [
-                        [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                        ]
-                    input[2] = [
-                        [ id:'human' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-                        ]
-                    """
-                }
-            }
-        }
-
+    test("germline, in:cram, out:bcf") {
         when {
             params {
                 suffix = 'bcf'
             }
             process {
                 """
-                ch_input = Channel.of([
+                input[0] = [
+                    [ id:'control' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    test("germline, in:cram, out:vcf") {
+        when {
+            params {
+                suffix = 'vcf'
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [ id:'control' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    test("germline, exclude regions, in:bam, out:bcf") {
+        when {
+            params {
+                suffix = 'bcf'
+            }
+            process {
+                """
+                input[0] = [
                     [ id:'control' ], // meta map
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
-                ]).combine(DELLY_PRECALL.out.bcf)
-                  .combine(DELLY_PRECALL.out.csi)
-                  .map { meta, bam, bai, meta2, bcf, meta3, csi -> [ meta, bam, bai, [], [], bcf, csi, [] ] }
-                input[0] = ch_input
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    [],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                    ]
                 input[1] = [
                     [ id:'human' ],
                     file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
@@ -151,7 +202,45 @@ nextflow_process {
         }
     }
 
-    test("germline - stub") {
+    test("germline, genotype, in:bam, out:bcf") {
+        when {
+            params {
+                suffix = 'bcf'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'control' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    [],
+                    [],
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true),
+                    []
+                    ]
+                input[1] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    test("germline, out:bcf - stub") {
 
         options "-stub"
 
@@ -193,7 +282,7 @@ nextflow_process {
 
     }
 
-    test("somatic - bcf") {
+    test("somatic, in:bam, out:bcf") {
         when {
             params {
                 suffix = 'bcf'
@@ -231,7 +320,7 @@ nextflow_process {
         }
     }
 
-    test("somatic - vcf") {
+    test("somatic, in:bam, out:vcf") {
         when {
             params {
                 suffix = 'vcf'
@@ -247,6 +336,82 @@ nextflow_process {
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
                     [],
                     [],
+                    []
+                    ]
+                input[1] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    test("somatic, exclude regions, in:bam, out:bcf") {
+        when {
+            params {
+                suffix = 'bcf'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'tumor_control' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    [],
+                    [],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'human' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    test("somatic, genotype, in:bam, out:bcf") {
+        when {
+            params {
+                suffix = 'bcf'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'tumor_control' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true),
                     []
                     ]
                 input[1] = [
