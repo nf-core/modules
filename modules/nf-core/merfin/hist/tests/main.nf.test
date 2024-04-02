@@ -23,9 +23,11 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
+                    ]
                     """
                 }
             }
@@ -51,7 +53,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = MERYL_COUNT.out.meryl_db
                 input[2] = []
                 input[3] = []
@@ -85,9 +87,11 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
+                    ]
                     """
                 }
             }
@@ -113,7 +117,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = MERYL_COUNT.out.meryl_db
                 input[2] = []
                 input[3] = []
@@ -144,9 +148,11 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
+                    ]
                     """
                 }
             }
@@ -170,8 +176,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     input[1] = Channel.value(6)
                     """
@@ -212,7 +218,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = MERYL_COUNT_READS.out.meryl_db
                 input[2] = GENOMESCOPE2.out.lookup_table.map{ meta, lkp -> lkp}
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
@@ -246,9 +252,11 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
+                    ]
                     """
                 }
             }
@@ -272,8 +280,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     input[1] = Channel.value(6)
                     """
@@ -314,7 +322,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = MERYL_COUNT_READS.out.meryl_db
                 input[2] = GENOMESCOPE2.out.lookup_table.map{ meta, lkp -> lkp }
                 input[3] = MERYL_COUNT_ASM.out.meryl_db.map{ meta, meryl_db -> meryl_db }
@@ -342,15 +350,19 @@ nextflow_process {
                 tag    "seqtk/mergepe"
                 process {
                     """
-                    input[0] = Channel.from([[ id:'test_sars', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
-                        ],
+                    input[0] = Channel.from([
+                        [ id:'test_sars', single_end:false ], // meta map
                         [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ], [
                         [ id:'test_fragilis', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)]
-                        ])
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ])
                     """
                 }
             }
@@ -374,11 +386,11 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.from([
-                    [ id:'test_sars', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test_sars', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ],[
-                    [ id:'test_fragilis', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                        [ id:'test_fragilis', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ])
                     input[1] = Channel.value(6)
                     """
@@ -419,10 +431,11 @@ nextflow_process {
                 Channel.from([
                     [ id:'test_sars', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ],[
+                ],[
                     [ id:'test_fragilis', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                    ]).set{ input_zero_ch }
+                ])
+                .set{ input_zero_ch }
 
                 input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db )
                              .join( MERYL_COUNT_ASM.out.meryl_db )
@@ -466,15 +479,19 @@ nextflow_process {
                 tag    "seqtk/mergepe"
                 process {
                     """
-                    input[0] = Channel.from([[ id:'test_sars', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
-                        ],
+                    input[0] = Channel.from([
+                        [ id:'test_sars', single_end:false ], // meta map
                         [
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ], [
                         [ id:'test_fragilis', single_end:false ], // meta map
-                        [file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)]
-                        ])
+                        [
+                            file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ])
                     """
                 }
             }
@@ -498,11 +515,11 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.from([
-                    [ id:'test_sars', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test_sars', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ],[
-                    [ id:'test_fragilis', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                        [ id:'test_fragilis', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ])
                     input[1] = Channel.value(6)
                     """
@@ -543,10 +560,12 @@ nextflow_process {
                 Channel.from([
                     [ id:'test_sars', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ],[
+                ],[
                     [ id:'test_fragilis', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                    ]).set{ input_zero_ch }
+                ])
+                .set{ input_zero_ch }
+
 
                 input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db )
                              .join( MERYL_COUNT_ASM.out.meryl_db )
@@ -570,8 +589,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.get(0), process.out.get(2)).match() },
-                // The following asserts that the output stdout_log generated by the module is complete
+                { assert snapshot(process.out.get(0), process.out.get(2)).match() }
             )
         }
 
