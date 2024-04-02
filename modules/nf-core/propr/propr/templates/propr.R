@@ -96,6 +96,43 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
+#' Extract the proportionality cutoff for a specified FDR value. 
+#' Gene pairs with a proportionality value higher than the extracted cutoff will be considered significantly proportional.
+#'
+#' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff. 
+#' @param fdrVal FDR value to extract the cutoff for. Per default 0.05
+#'
+#' @return cutoff value. Proportionality values higher than this cutoff are considered significant.
+valCutoff  <- function(object, fdrVal = 0.05){
+  fdr_df <- object@fdr
+  if (prod(dim(fdr_df) == 0)){
+    warning("Please run updateCutoff on propr first")
+  }else{
+    fdr_vals <- fdr_df\$FDR
+    threshold <- any(fdr_vals <= fdrVal)
+    if (threshold == TRUE){
+      fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
+      print(fdr_threshold)
+    }else{
+      warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+      fdr_threshold <- fdr_vals[length(fdr_vals)]
+    }
+    cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
+  }
+  return(cutoff)
+}
+
+#' Convert a proportionality matrix to an adjacency matrix based on a threshold. 
+#'
+#' @param matrix proportionality matrix. Can be extracted from propr object with getMatrix().
+#' @param cutoff Significant proportionality value extracted from valCutoff function.
+#'
+#' @return Adjacency matrix. Gene pairs with a proportionality value higher than the threshold will have 1, otherwise 0.
+convert_to_adjacency <- function(matrix, cutoff) {
+  adjacency <- ifelse(matrix > cutoff, 1, 0)
+  return(adjacency)
+}
+
 ################################################
 ################################################
 ## Parse arguments                            ##
@@ -115,7 +152,9 @@ opt <- list(
     cutoff_interval  = NA,
     ncores           = as.integer('$task.cpus'),
     features_id_col  = 'gene_id',
-    fixseed          = FALSE
+    fixseed          = FALSE,
+    adjacency        = FALSE,
+    fdrVal           = 0.05
 )
 opt_types <- list(
     count            = 'character',
@@ -130,11 +169,14 @@ opt_types <- list(
     cutoff_interval  = 'numeric',
     ncores           = 'numeric',
     features_id_col  = 'character',
-    fixseed          = 'logical'
+    fixseed          = 'logical', 
+    adjacency        = 'logical',
+    fdrVal           = 'numeric'
 )
 
 # Apply parameter overrides
 args_opt <- parse_args('$task.ext.args')
+
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -235,6 +277,7 @@ pro <- propr(
 )
 
 # update FDR by permutation, if required
+
 if (opt\$permutation > 0) {
     cutoff <- seq(
         opt\$cutoff_min,
@@ -242,6 +285,14 @@ if (opt\$permutation > 0) {
         opt\$cutoff_interval
         )
     pro <- updateCutoffs(pro, cutoff=cutoff, ncores=opt\$ncores)
+}
+
+# calculate cutoff and adjacency matrix, if required
+
+if (opt\$adjacency == TRUE) {
+    cutoff <- valCutoff(pro, opt\$fdrVal)
+    matrix <- getMatrix(pro)
+    adj <- convert_to_adjacency(matrix, cutoff)
 }
 
 ################################################
@@ -271,6 +322,17 @@ if (opt\$permutation > 0) {
         col.names = TRUE,
         row.names = FALSE,
         sep       = '\t',
+        quote     = FALSE
+    )
+}
+
+if (opt\$adjacency == TRUE) {
+    write.table(
+        adj,
+        file      = paste0(opt\$prefix, '.adj.csv'),
+        col.names = TRUE,
+        row.names = TRUE,
+        sep       = ',',
         quote     = FALSE
     )
 }
