@@ -68,13 +68,13 @@ nextflow_workflow {
                         workflow.out.counts_gene_length_scaled,
                         workflow.out.tpm_transcript,
                         workflow.out.lengths_transcript,
-                        workflow.out.merged_gene_rds,
-                        workflow.out.merged_gene_rds_length_scaled,
-                        workflow.out.merged_gene_rds_scaled,
                         workflow.out.merged_counts_transcript,
                         workflow.out.merged_tpm_transcript,
-                        workflow.out.merged_transcript_rds,
-                        workflow.out.versions
+                        workflow.out.versions,
+                        file(workflow.out.merged_gene_rds[0][1]).name,
+                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
+                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
+                        file(workflow.out.merged_transcript_rds[0][1]).name
                     ).match()
                 }
             )
@@ -137,11 +137,11 @@ nextflow_workflow {
                         workflow.out.counts_gene_length_scaled,
                         workflow.out.tpm_transcript,
                         workflow.out.lengths_transcript,
-                        workflow.out.merged_gene_rds,
-                        workflow.out.merged_gene_rds_length_scaled,
-                        workflow.out.merged_gene_rds_scaled,
-                        workflow.out.merged_transcript_rds,
-                        workflow.out.versions
+                        workflow.out.versions,
+                        file(workflow.out.merged_gene_rds[0][1]).name,
+                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
+                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
+                        file(workflow.out.merged_transcript_rds[0][1]).name
                     ).match()
                 }
             )
