@@ -18,6 +18,33 @@ nextflow_process {
                     [],
                     []
                     ]
+                input[1] = [
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
+                { assert process.out.report_html[0] ==~ ".*/report.html"}
+            )
+        }
+
+    }
+
+    test("sarscov2 - nanopore sequencing_summary + barcodes") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['nanopore']['test2_sequencing_summary'], checkIfExists: true),
+                    [],
+                    []
+                    ]
+                input[1] = 'barcode01,barcode02,barcode03,barcode04,barcode05,barcode06,barcode07,barcode08,barcode09,barcode10,barcode11,barcode12'
                 """
             }
         }
@@ -41,6 +68,8 @@ nextflow_process {
                     [],
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true),
                     []
+                    ]
+                input[1] = [
                     ]
                 """
             }
@@ -66,6 +95,8 @@ nextflow_process {
                     [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
                     ]
+                input[1] = [
+                    ]
                 """
             }
         }
@@ -79,7 +110,7 @@ nextflow_process {
         }
 
     }
-    test("sarscov2 - naopore bam - stub") {
+    test("sarscov2 - nanopore bam - stub") {
 
         options "-stub"
 
@@ -91,6 +122,8 @@ nextflow_process {
                     [],
                     [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
+                    ]
+                input[1] = [
                     ]
                 """
             }

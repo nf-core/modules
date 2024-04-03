@@ -32,6 +32,9 @@ input:
       type: file
       description: BAM file (necessary if no sequencing summary file)
       pattern: "*.bam"
+  - barcodes:
+      type: string
+      description: Coma separated barcode list (with no spaces)
 
 output:
   - meta:
