@@ -96,30 +96,30 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
-#' Extract the proportionality cutoff for a specified FDR value. 
+#' Extract the proportionality cutoff for a specified FDR value.
 #' Gene pairs with a proportionality value higher than the extracted cutoff will be considered significantly proportional.
 #'
-#' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff. 
+#' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff.
 #' @param fdrVal FDR value to extract the cutoff for. Per default 0.05
 #'
 #' @return cutoff value. Proportionality values higher than this cutoff are considered significant.
 valCutoff  <- function(object, fdrVal = 0.05){
-  fdr_df <- object@fdr
-  if (prod(dim(fdr_df) == 0)){
-    warning("Please run updateCutoff on propr first")
-  }else{
-    fdr_vals <- fdr_df\$FDR
-    threshold <- any(fdr_vals <= fdrVal)
-    if (threshold == TRUE){
-      fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
-      print(fdr_threshold)
+    fdr_df <- object@fdr
+    if (prod(dim(fdr_df) == 0)){
+        warning("Please run updateCutoff on propr first")
     }else{
-      warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-      fdr_threshold <- fdr_vals[length(fdr_vals)]
-    }
+        fdr_vals <- fdr_df\$FDR
+        threshold <- any(fdr_vals <= fdrVal)
+        if (threshold == TRUE){
+            fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
+            print(fdr_threshold)
+        }else{
+            warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+            fdr_threshold <- fdr_vals[length(fdr_vals)]
+        }
     cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
-  }
-  return(cutoff)
+    }
+    return(cutoff)
 }
 
 #' Convert a proportionality matrix to an adjacency matrix based on a threshold. 
@@ -129,8 +129,8 @@ valCutoff  <- function(object, fdrVal = 0.05){
 #'
 #' @return Adjacency matrix. Gene pairs with a proportionality value higher than the threshold will have 1, otherwise 0.
 convert_to_adjacency <- function(matrix, cutoff) {
-  adjacency <- ifelse(matrix > cutoff, 1, 0)
-  return(adjacency)
+    adjacency <- ifelse(matrix > cutoff, 1, 0)
+    return(adjacency)
 }
 
 ################################################
@@ -169,7 +169,7 @@ opt_types <- list(
     cutoff_interval  = 'numeric',
     ncores           = 'numeric',
     features_id_col  = 'character',
-    fixseed          = 'logical', 
+    fixseed          = 'logical',
     adjacency        = 'logical',
     fdrVal           = 'numeric'
 )
