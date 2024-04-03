@@ -28,13 +28,13 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
+  - split:
+      type: file
+      description: Split files
+      pattern: "*split*"
   - versions:
       type: file
       description: The split files
-  - split:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@k1sauce"
