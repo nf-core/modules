@@ -77,31 +77,31 @@ output:
       type: file
       description: |
         Channel containing sample-wise results directories from the
-        pseudoaligner.      
+        pseudoaligner.
   - multiqc:
       type: file
       description: |
         Channel containing those pseudoaligner outputs readable by MultiQC for
         passing to workflow-level reporting.
   - tpm_gene:
-      type: file: |
+      type: file
       description: |
         Gene-level matrix of abundance values in TPM.
       pattern: "*.gene_tpm.tsv"
   - counts_gene:
-      type: file: |
+      type: file
       description: |
         Gene-level matrix of unadjusted estimated counts from tximport
         (`countsFromAbundance = 'no'`).
       pattern: "*.gene_counts.tsv"
   - lengths_gene:
-      type: file: |
+      type: file
       description: |
         Gene-level matrix of length values for modelling in downstream
         analysis.
       pattern: "gene_lengths.tsv"
   - counts_gene_length_scaled:
-      type: file: |
+      type: file
       description: |
         Gene-level matrix of estimated counts, generated from abundance (TPM)
         values by scaling to library size, additionally scaled using the
@@ -109,52 +109,52 @@ output:
         using tximport `countsFromAbundance = 'lengthScaledTPM'`.
       pattern: "*.gene_counts_length_scaled.tsv"
   - counts_gene_scaled:
-      type: file: |
+      type: file
       description: |
         Gene-level matrix of estimated counts, generated from abundance (TPM)
         values by scaling to library size with tximport `countsFromAbundance =
         'scaledTPM'`.
       pattern: "*.gene_counts_length_scaled.tsv"
   - tpm_transcript:
-      type: file: |
+      type: file
       description: |
         Transcript-level matrix of abundance values in TPM.
       pattern: "*.transcript_tpm.tsv"
   - counts_transcript:
-      type: file: |
+      type: file
       description: |
         Transcript-level matrix of unadjusted estimated counts from tximport
         (`countsFromAbundance = 'no'`).
       pattern: "*.transcript_counts.tsv"
   - lengths_transcript:
-      type: file: |
+      type: file
       description: |
         Transcript-level matrix of length values for modelling in downstream
         analysis.
       pattern: "transcript_lengths.tsv"
   - merged_gene_rds:
-      type: file: |
+      type: file
       description: |
         Serialised SummarizedExperiment object containing gene level TPM
         abundance values and counts generated from tximport with
         `countsFromAbundance = 'no'`.
       pattern: "*.rds"
   - merged_gene_rds_length_scaled:
-      type: file: |
+      type: file
       description: |
         Serialised SummarizedExperiment object containing gene level TPM
         abundance values and counts generated from tximport with
         `countsFromAbundance='lengthScaledTPM'`.
       pattern: "*.rds"
   - merged_gene_rds_scaled:
-      type: file: |
+      type: file
       description: |
         Serialised SummarizedExperiment object containing gene level TPM
         abundance values and counts generated from tximport with
         `countsFromAbundance='scaledTPM'`.
       pattern: "*.rds"
   - merged_transcript_rds:
-      type: file: |
+      type: file
       description: |
         Serialised SummarizedExperiment object containing transcript level TPM
         abundance values and counts generated from tximport with
