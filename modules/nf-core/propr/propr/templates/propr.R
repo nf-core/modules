@@ -122,7 +122,7 @@ valCutoff  <- function(object, fdrVal = 0.05){
     return(cutoff)
 }
 
-#' Convert a proportionality matrix to an adjacency matrix based on a threshold. 
+#' Convert a proportionality matrix to an adjacency matrix based on a threshold.
 #'
 #' @param matrix proportionality matrix. Can be extracted from propr object with getMatrix().
 #' @param cutoff Significant proportionality value extracted from valCutoff function.
