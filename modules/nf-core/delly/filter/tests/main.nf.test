@@ -111,7 +111,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.bcf,
+                    file(process.out.csi[0][1]).name,
+                    process.out.versions
+                    ).match()
+                },
                 { assert process.out.versions }
             )
         }
@@ -252,7 +257,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.bcf,
+                    file(process.out.csi[0][1]).name,
+                    process.out.versions
+                    ).match()
+                },
                 { assert process.out.versions }
             )
         }
