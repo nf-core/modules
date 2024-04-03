@@ -1,4 +1,4 @@
- process GNU_SPLIT {
+process GNU_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
@@ -23,7 +23,6 @@
     def suffix = input.extension
     if (suffix == 'gz') {
         def next_suffix = file(input.baseName).getExtension()
-        println next_suffix
         """
         gunzip -c ${input} | split ${args} --additional-suffix=.${next_suffix} - ${prefix}.split.
         gzip ${prefix}.split.*
