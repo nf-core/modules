@@ -8,6 +8,7 @@ process BBMAP_BBMERGE {
 
     input:
     tuple val(meta), path(reads)
+    val(interleave)
 
     output:
     tuple val(meta), path("*_merged.fastq.gz")  , emit: merged
@@ -22,15 +23,19 @@ process BBMAP_BBMERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def in_reads = ( interleave ) ? "in=${reads[0]}" :
+        "in1=${reads[0]} in2=${reads[1]}"
+
+    def out_reads = ( interleave ) ? "out=${prefix}_merged.fastq.gz outu=${prefix}_unmerged.fastq.gz" :
+        "out=${prefix}_merged.fastq.gz outu1=${prefix}_1_unmerged.fastq.gz outu2=${prefix}_2_unmerged.fastq.gz"
+
     """
     maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     bbmerge.sh \\
         -Xmx\$maxmem \\
-        in1=${reads[0]} \\
-        in2=${reads[1]} \\
-        out=${prefix}_merged.fastq.gz \\
-        outu1=${prefix}_1_unmerged.fastq.gz \\
-        outu2=${prefix}_2_unmerged.fastq.gz \\
+        $in_reads \\
+        $out_reads \\
         ihist=${prefix}_ihist.txt \\
         $args \\
         &> ${prefix}.bbmerge.log
@@ -45,10 +50,11 @@ process BBMAP_BBMERGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def out_files = ( interleave ) ? "${prefix}_merged.fastq.gz ${prefix}_unmerged.fastq.gz" :
+        "${prefix}_merged.fastq.gz ${prefix}_1_unmerged.fastq.gz ${prefix}_2_unmerged.fastq.gz"
+
     """
-    echo "" | gzip > ${prefix}_merged.fastq.gz
-    echo "" | gzip > ${prefix}_1_unmerged.fastq.gz
-    echo "" | gzip > ${prefix}_2_unmerged.fastq.gz
+    echo "" | gzip | tee $out_files
     touch ${prefix}_ihist.txt
     touch ${prefix}.bbmerge.log
 
