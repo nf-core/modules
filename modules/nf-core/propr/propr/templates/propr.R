@@ -353,13 +353,11 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 propr.version <- as.character(packageVersion('propr'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')
