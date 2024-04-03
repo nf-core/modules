@@ -147,7 +147,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@5896cecc08fd8a1fbdfaf517e29b571164b031f7 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -207,20 +207,6 @@ jobs:
             tags: bwa/samse
           - profile: conda
             tags: cellpose
-          - profile: conda
-            tags: cellranger/count
-          - profile: conda
-            tags: cellranger/mkfastq
-          - profile: conda
-            tags: cellranger/mkgtf
-          - profile: conda
-            tags: cellranger/mkref
-          - profile: conda
-            tags: cellranger/mkvdjref
-          - profile: conda
-            tags: cellranger/multi
-          - profile: conda
-            tags: cellranger/vdj
           - profile: conda
             tags: cellrangerarc/count
           - profile: conda
@@ -395,7 +381,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@5896cecc08fd8a1fbdfaf517e29b571164b031f7 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -488,6 +474,8 @@ jobs:
         exclude:
           - tags: nf-test
           - profile: conda
+            tags: angsd/gl
+          - profile: conda
             tags: annotsv
           - profile: conda
             tags: happy/sompy
@@ -504,6 +492,8 @@ jobs:
           - profile: conda
             tags: bclconvert
           - profile: conda
+            tags: celesta
+          - profile: conda
             tags: cellpose
           - profile: conda
             tags: cellranger/count
@@ -513,6 +503,12 @@ jobs:
             tags: cellranger/mkgtf
           - profile: conda
             tags: cellranger/mkref
+          - profile: conda
+            tags: cellranger/mkvdjref
+          - profile: conda
+            tags: cellranger/multi
+          - profile: conda
+            tags: cellranger/vdj
           - profile: conda
             tags: custom/dumpsoftwareversions
           - profile: conda
@@ -560,7 +556,11 @@ jobs:
           - profile: conda
             tags: merquryfk/ploidyplot
           - profile: conda
+            tags: molkartgarage/clahe
+          - profile: conda
             tags: quartonotebook
+          - profile: conda
+            tags: scimap/spatiallda
           - profile: conda
             tags: sentieon/bwaindex
           - profile: conda
@@ -583,6 +583,10 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
           - profile: singularity
             tags: bases2fastq
+          - profile: conda
+            tags: wittyer
+          - profile: conda
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -591,7 +595,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - uses: actions/setup-java@5896cecc08fd8a1fbdfaf517e29b571164b031f7 # v4
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
