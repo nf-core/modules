@@ -47,7 +47,7 @@ process GNU_SPLIT {
     def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     """
-    touch ${prefix}.split.000.fastq.gz ${prefix}.split.001.fastq.gz ${prefix}.split.002.fastq.gz
+    touch ${prefix}.split.000.csv ${prefix}.split.001.csv ${prefix}.split.002.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
