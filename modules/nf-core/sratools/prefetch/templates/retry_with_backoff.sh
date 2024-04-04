@@ -52,7 +52,10 @@ vdb-validate !{id} > vdb-validate_result.txt 2>&1 || exit 1
 if grep -q "checksums missing" vdb-validate_result.txt; then
 	VALID_MD5SUMS=$(curl --silent --fail --location --retry 3 --retry-delay 60 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=!{id}')
 	LOCAL_MD5SUMS=$(md5sum !{id}/* | cut -f1 -d' ')
-	grep --quiet --fixed-strings --file=<(echo "$LOCAL_MD5SUMS") <(echo "$VALID_MD5SUMS") || exit 1
+	if ! grep --quiet --fixed-strings --file=<(echo "$LOCAL_MD5SUMS") <(echo "$VALID_MD5SUMS"); then
+		echo "MD5 sum check failed" 1>&2
+		exit 1
+	fi
 fi
 
 cat <<-END_VERSIONS > versions.yml
