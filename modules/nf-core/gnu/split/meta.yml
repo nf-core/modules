@@ -3,8 +3,10 @@
 name: "gnu_split"
 description: Split a file into consecutive or interleaved sections
 keywords:
-  - GNU
+  - gnu
   - split
+  - coreutils
+  - generic
 tools:
   - "gnu":
       description: "The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system. These are the core utilities which are expected to exist on every operating system."
@@ -12,7 +14,7 @@ tools:
       documentation: "https://www.gnu.org/software/coreutils/manual/html_node/index.html"
       tool_dev_url: "https://git.savannah.gnu.org/cgit/coreutils.git"
       doi: "10.5281/zenodo.581670"
-      licence: "https://www.gnu.org/licenses/agpl-3.0.html"
+      licence: ["GPL"]
 input:
   - meta:
       type: map
