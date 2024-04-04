@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -u -x
+set -u
 
 retry_with_backoff() {
     local max_attempts=${1}
