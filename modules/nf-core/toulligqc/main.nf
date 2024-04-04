@@ -42,7 +42,7 @@ process TOULLIGQC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        toulligqc: \$(toulligqc --version 2>&1)
+        toulligqc: \$(toulligqc --version)
     END_VERSIONS
     """
 
@@ -61,7 +61,7 @@ process TOULLIGQC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        toulligqc: \$(toulligqc --version 2>&1)
+        toulligqc: \$(toulligqc --version)
     END_VERSIONS
     """
 }

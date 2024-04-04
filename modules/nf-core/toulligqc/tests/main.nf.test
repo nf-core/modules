@@ -27,6 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
                 { assert process.out.report_html[0] ==~ ".*/report.html"}
             )
@@ -52,6 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
                 { assert process.out.report_html[0] ==~ ".*/report.html"}
             )
@@ -78,6 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..67]).match() },
                 { assert process.out.report_html[0] ==~ ".*/report.html"}
             )
@@ -104,6 +107,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
                 { assert process.out.report_html[0] ==~ ".*/report.html"}
             )
@@ -131,7 +135,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }

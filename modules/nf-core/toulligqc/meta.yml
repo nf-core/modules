@@ -34,7 +34,8 @@ input:
       pattern: "*.bam"
   - barcodes:
       type: string
-      description: Coma separated barcode list (with no spaces)
+      description: Comma separated barcode list (with no spaces). (e.g. BC05,RB09,NB01,barcode10)
+      pattern: "^\\S+$"
 
 output:
   - meta:
