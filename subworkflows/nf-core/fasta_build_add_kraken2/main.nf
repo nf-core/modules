@@ -25,7 +25,7 @@ workflow FASTA_BUILD_ADD_KRAKEN2 {
     KRAKEN2_ADD ( ch_fastas_for_kraken2add, ch_taxonomy_names, ch_taxonomy_nodes, ch_accession2taxid )
     ch_versions = ch_versions.mix(KRAKEN2_ADD.out.versions.first())
 
-    KRAKEN2_BUILD ( KRAKEN2_BUILD.out.db, val_cleanintermediate )
+    KRAKEN2_BUILD ( KRAKEN2_ADD.out.db, val_cleanintermediate )
     ch_versions = ch_versions.mix(KRAKEN2_BUILD.out.versions.first())
 
     emit:

@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core subworkflows test fasta_build_add_kraken2
 nextflow_workflow {
 
     name "Test Subworkflow FASTA_BUILD_ADD_KRAKEN2"
@@ -14,19 +12,36 @@ nextflow_workflow {
     tag "kraken2/build"
 
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - fasta") {
+    test("metagenome - fasta") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                                [id: 'haemophilus_influenzae'],
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                            ])
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                        ]
-                input[1] = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
+                input[0] = Channel.of(
+                                        [
+                                            [id:'sarscov2'],
+                                            file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)
+                                        ]
+                            )
+                            //.mix(GUNZIP.out.gunzip)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[4] = true
                 """
             }
         }
@@ -34,8 +49,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
+                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert snapshot (
+                        path("${process.out.db[0][1]}/hash.k2d"),
+                        path("${process.out.db[0][1]}/taxo.k2d"),
+                        file("${process.out.db[0][1]}/opts.k2d").name,
+                    ).match()
+                }
             )
         }
     }
