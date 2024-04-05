@@ -96,31 +96,63 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
+#' Set the appropiate range for the sequence of cutoffs used in updateCutoffs.
+#' Adjusts the interval to the different metrics.
+#'
+#' @param object propr object. Output from propr function.
+#'
+#' @return sequence of cutoff values.
+seqCutoff <- function(object){
+    matrix <- getMatrix(object)
+    matrix[matrix <= 0] <- NA
+    diag(matrix) <- NA
+    min_cutoff <- round(min(matrix, na.rm = TRUE),3)
+    max_cutoff <- round(max(matrix, na.rm = TRUE),3)
+    step_cutoff <- (max_cutoff - min_cutoff)/ 20
+    seq_cutoff <- seq(min_cutoff, max_cutoff, step_cutoff)
+    return(seq_cutoff)
+}
+
 #' Extract the proportionality cutoff for a specified FDR value.
 #' Gene pairs with a proportionality value higher than the extracted cutoff will be considered significantly proportional.
 #'
 #' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff.
 #' @param fdrVal FDR value to extract the cutoff for. Per default 0.05
+#' @param metric Metric used to calculate the proportionality values. Options are 'cor', 'rho', 'phi', 'phs', 'vlr', 'pcor', 'pcor.shrink', 'pcor.bshrink'
 #'
 #' @return cutoff value. Proportionality values higher than this cutoff are considered significant.
-valCutoff  <- function(object, fdrVal = 0.05){
+valCutoff  <- function(object, metric, fdrVal = 0.05){
     fdr_df <- object@fdr
+    print(fdr_df)
+    metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
     if (prod(dim(fdr_df) == 0)){
         warning("Please run updateCutoff on propr first")
     }else{
         fdr_vals <- fdr_df\$FDR
+        if (any(is.na(fdr_vals))){
+            stop("FDR not defined. This metric is not appropiate for the given dataset")
+        }
         threshold <- any(fdr_vals <= fdrVal)
-        if (threshold == TRUE){
-            fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
-            print(fdr_threshold)
+        if (metric %in% metric_up){
+            if (threshold){
+                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
+            }else{
+                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+                fdr_threshold <- fdr_vals[length(fdr_vals)]
+            }
         }else{
-            warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-            fdr_threshold <- fdr_vals[length(fdr_vals)]
+            if (threshold){
+                fdr_threshold <- fdr_vals[which.min(fdr_vals <= fdrVal) - 1]
+            }else{
+                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+                fdr_threshold <- fdr_vals[1]
+            }
         }
     cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
     }
     return(cutoff)
 }
+
 
 #' Convert a proportionality matrix to an adjacency matrix based on a threshold.
 #'
@@ -128,8 +160,12 @@ valCutoff  <- function(object, fdrVal = 0.05){
 #' @param cutoff Significant proportionality value extracted from valCutoff function.
 #'
 #' @return Adjacency matrix. Gene pairs with a proportionality value higher than the threshold will have 1, otherwise 0.
-convert_to_adjacency <- function(matrix, cutoff) {
-    adjacency <- ifelse(matrix > cutoff, 1, 0)
+convert_to_adjacency <- function(matrix, cutoff, metric) {
+    if (metric == 'cor' || metric == 'rho' || metric == 'pcor' || metric == 'pcor.shrink' || metric == 'pcor.bshrink'){
+        adjacency <- ifelse(matrix > cutoff, 1, 0)
+    } else {
+        adjacency <- ifelse(matrix < cutoff, 1, 0)
+    }
     return(adjacency)
 }
 
@@ -284,15 +320,27 @@ if (opt\$permutation > 0) {
         opt\$cutoff_max,
         opt\$cutoff_interval
         )
+    if (is.na(opt\$cutoff_min) ||  is.na(opt\$cutoff_max) || is.na(opt\$cutoff_interval)) {
+        warning("cutoff values were not provided. Using the default cutoff values.")
+        cutoff <- seqCutoff(pro)
+    }
+    m <- getMatrix(pro)
+    diag(m) <- NA
+    print((opt\$cutoff_max - opt\$cutoff_min)/2 + opt\$cutoff_min)
+    print(max(m, na.rm = TRUE))
+    if ((opt\$cutoff_max - opt\$cutoff_min)/2 + opt\$cutoff_min > max(m, na.rm = TRUE)) {
+        warning("The provided cutoff values are out of range. Using the default cutoff values.")
+        cutoff <- seqCutoff(pro)
+    }
     pro <- updateCutoffs(pro, cutoff=cutoff, ncores=opt\$ncores)
 }
 
 # calculate cutoff and adjacency matrix, if required
 
 if (opt\$adjacency == TRUE) {
-    cutoff <- valCutoff(pro, opt\$fdrVal)
+    cutoff <- valCutoff(pro, opt\$metric, opt\$fdrVal)
     matrix <- getMatrix(pro)
-    adj <- convert_to_adjacency(matrix, cutoff)
+    adj <- convert_to_adjacency(matrix, cutoff, opt\$metric)
 }
 
 ################################################
@@ -336,6 +384,16 @@ if (opt\$adjacency == TRUE) {
         quote     = FALSE
     )
 }
+
+################################################
+################################################
+## WARNINGS                                   ##
+################################################
+################################################
+
+sink(paste0(opt\$prefix, ".warnings.log"))
+print(warnings())
+sink()
 
 ################################################
 ################################################
