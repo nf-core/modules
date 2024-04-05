@@ -94,8 +94,8 @@ jobs:
       - name: Fetch module tags
         id: tags
         run: |
-          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules")))') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
@@ -141,7 +141,12 @@ jobs:
         id: outputs
         run: |
           echo modules=$(echo '${{ steps.list.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo ${{ steps.outputs.outputs.modules }}
+          echo ${{ steps.outputs.outputs.subworkflows }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
@@ -189,7 +194,7 @@ jobs:
       - name: Lint module ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
 
-  nf-core-lint-workflows:
+  nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
@@ -232,7 +237,7 @@ jobs:
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
-        run: nf-core modules lint ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{ matrix.tags }}
 
   pytest:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
