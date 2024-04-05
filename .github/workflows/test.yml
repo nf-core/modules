@@ -76,7 +76,7 @@ jobs:
     name: pytest-changes
     runs-on: ubuntu-latest
     outputs:
-      # Expose matched filters as job 'modules' output variable
+      tags: ${{ steps.filter.outputs.changes }}
       modules: ${{ steps.tags.outputs.modules }}
       subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
@@ -107,6 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
+      paths: ${{ steps.list.outputs.changes }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
 
@@ -243,11 +244,11 @@ jobs:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: pytest
     needs: [pytest-changes]
-    if: needs.pytest-changes.outputs.modules != '[]'
+    if: needs.pytest-changes.outputs.tags != '[]'
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.pytest-changes.outputs.modules) }}"]
+        tags: ["${{ fromJson(needs.pytest-changes.outputs.tags) }}"]
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
@@ -536,132 +537,128 @@ jobs:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-test
     needs: [nf-test-changes]
-    if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' )
+    if: ( needs.nf-test-changes.outputs.paths != '[]' )
     strategy:
       fail-fast: false
       matrix:
-        module:
-          [
-            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
-          ]
+        path: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
         profile: [conda, docker, singularity]
         exclude:
-          - tags: nf-test
+          - path: modules/nf-core/nf-test
           - profile: conda
-            tags: angsd/gl
+            path: modules/nf-core/angsd/gl
           - profile: conda
-            tags: annotsv
+            path: modules/nf-core/annotsv
           - profile: conda
-            tags: happy/sompy
+            path: modules/nf-core/happy/sompy
           - profile: conda
-            tags: backsub
+            path: modules/nf-core/backsub
           - profile: conda
-            tags: bakta/bakta
+            path: modules/nf-core/bakta/bakta
           - profile: conda
-            tags: bakta/baktadbdownload
+            path: modules/nf-core/bakta/baktadbdownload
           - profile: conda
-            tags: bases2fastq
+            path: modules/nf-core/bases2fastq
           - profile: conda
-            tags: bcl2fastq
+            path: modules/nf-core/bcl2fastq
           - profile: conda
-            tags: bclconvert
+            path: modules/nf-core/bclconvert
           - profile: conda
-            tags: celesta
+            path: modules/nf-core/celesta
           - profile: conda
-            tags: cellpose
+            path: modules/nf-core/cellpose
           - profile: conda
-            tags: cellranger/count
+            path: modules/nf-core/cellranger/count
           - profile: conda
-            tags: cellranger/mkfastq
+            path: modules/nf-core/cellranger/mkfastq
           - profile: conda
-            tags: cellranger/mkgtf
+            path: modules/nf-core/cellranger/mkgtf
           - profile: conda
-            tags: cellranger/mkref
+            path: modules/nf-core/cellranger/mkref
           - profile: conda
-            tags: cellranger/mkvdjref
+            path: modules/nf-core/cellranger/mkvdjref
           - profile: conda
-            tags: cellranger/multi
+            path: modules/nf-core/cellranger/multi
           - profile: conda
-            tags: cellranger/vdj
+            path: modules/nf-core/cellranger/vdj
           - profile: conda
-            tags: custom/dumpsoftwareversions
+            path: modules/nf-core/custom/dumpsoftwareversions
           - profile: conda
-            tags: deepcell/mesmer
+            path: modules/nf-core/deepcell/mesmer
           - profile: conda
-            tags: deepvariant
+            path: modules/nf-core/deepvariant
           - profile: conda
-            tags: ensemblvep/vep
+            path: modules/nf-core/ensemblvep/vep
           - profile: conda
-            tags: fastk/fastk
+            path: modules/nf-core/fastk/fastk
           - profile: conda
-            tags: fastk/histex
+            path: modules/nf-core/fastk/histex
           - profile: conda
-            tags: fastk/merge
+            path: modules/nf-core/fastk/merge
           - profile: conda
-            tags: fcs/fcsadaptor
+            path: modules/nf-core/fcs/fcsadaptor
           - profile: conda
-            tags: fcs/fcsgx
+            path: modules/nf-core/fcs/fcsgx
           - profile: conda
-            tags: ganon/buildcustom
+            path: modules/nf-core/ganon/buildcustom
           - profile: conda
-            tags: ganon/classify
+            path: modules/nf-core/ganon/classify
           - profile: conda
-            tags: ganon/report
+            path: modules/nf-core/ganon/report
           - profile: conda
-            tags: ganon/table
+            path: modules/nf-core/ganon/table
           - profile: conda
-            tags: gatk4/cnnscorevariants
+            path: modules/nf-core/gatk4/cnnscorevariants
           - profile: conda
-            tags: gatk4/determinegermlinecontigploidy
+            path: modules/nf-core/gatk4/determinegermlinecontigploidy
           - profile: conda
-            tags: genescopefk
+            path: modules/nf-core/genescopefk
           - profile: conda
-            tags: ilastik/multicut
+            path: modules/nf-core/ilastik/multicut
           - profile: conda
-            tags: ilastik/pixelclassification
+            path: modules/nf-core/ilastik/pixelclassification
           - profile: conda
-            tags: imputeme/vcftoprs
+            path: modules/nf-core/imputeme/vcftoprs
           - profile: conda
-            tags: merquryfk/katcomp
+            path: modules/nf-core/merquryfk/katcomp
           - profile: conda
-            tags: merquryfk/katgc
+            path: modules/nf-core/merquryfk/katgc
           - profile: conda
-            tags: merquryfk/merquryfk
+            path: modules/nf-core/merquryfk/merquryfk
           - profile: conda
-            tags: merquryfk/ploidyplot
+            path: modules/nf-core/merquryfk/ploidyplot
           - profile: conda
-            tags: molkartgarage/clahe
+            path: modules/nf-core/molkartgarage/clahe
           - profile: conda
-            tags: quartonotebook
+            path: modules/nf-core/quartonotebook
           - profile: conda
-            tags: scimap/spatiallda
+            path: modules/nf-core/scimap/spatiallda
           - profile: conda
-            tags: sentieon/bwaindex
+            path: modules/nf-core/sentieon/bwaindex
           - profile: conda
-            tags: sentieon/bwamem
+            path: modules/nf-core/sentieon/bwamem
           - profile: conda
-            tags: spaceranger/mkgtf
+            path: modules/nf-core/spaceranger/mkgtf
           - profile: conda
-            tags: spaceranger/mkref
+            path: modules/nf-core/spaceranger/mkref
           - profile: conda
-            tags: spaceranger/count
+            path: modules/nf-core/spaceranger/count
           - profile: conda
-            tags: svanalyzer/svbenchmark
+            path: modules/nf-core/svanalyzer/svbenchmark
           - profile: conda
-            tags: universc
+            path: modules/nf-core/universc
           - profile: singularity
-            tags: universc
+            path: modules/nf-core/universc
           - profile: conda
-            tags: vt/decompose
-          - profile: conda
-            tags: subworkflows/vcf_annotate_ensemblvep
+            path: modules/nf-core/vt/decompose
           - profile: singularity
-            tags: bases2fastq
+            path: modules/nf-core/bases2fastq
           - profile: conda
-            tags: wittyer
+            path: modules/nf-core/wittyer
           - profile: conda
-            tags: islandpath
+            path: modules/nf-core/islandpath
+          - profile: conda
+            path: subworkflows/nf-core/vcf_annotate_ensemblvep
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -750,7 +747,7 @@ jobs:
             --profile=${{ matrix.profile }} \
             --tap=test.tap \
             --verbose \
-            ${{ matrix.module }} \
+            ${{ matrix.tags }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
