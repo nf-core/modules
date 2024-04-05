@@ -85,23 +85,21 @@ jobs:
       - name: Fetch module tags
         id: tags
         run: |
-          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("subworkflow") | not))') >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules")))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
-          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow") | not))')
-          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow")))')
+          echo ${{ steps.tags.outputs.modules }}
+          echo ${{ steps.tags.outputs.subworkflows }}
 
   nf-test-changes:
     name: nf-test-changes
     runs-on: ubuntu-latest
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
-      modules: ${{ steps.list_modules.outputs.tags }}
-      workflows: ${{ steps.list_workflows.outputs.tags }}
-      modules_lower: ${{ steps.modules_lower_case_export.outputs.tags_lower }}
-      workflows_lower: ${{ steps.workflows_lower_case_export.outputs.tags_lower }}
+      modules: ${{ steps.outputs.outputs.modules }}
+      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
 
     steps:
       - uses: actions/setup-python@v4
@@ -113,62 +111,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: tj-actions/changed-files@v42
-        id: changed_files
-        with:
-          dir_names: "true"
-          output_renamed_files_as_deleted_and_added: "true"
-          files_ignore: |
-            .git*
-            .gitpod.yml
-            .prettierignore
-            .prettierrc.yml
-            **.md
-            **.png
-            modules.json
-            pyproject.toml
-            tower.yml
-
-      - name: nf-test list tags modules
-        id: list_modules
-        if: ${{ steps.changed_files.outputs.any_modified }}
+      - name: Install gitpython find changed files
         run: |
-          echo tags=$(python \
+          python -m pip install --upgrade pip
+          pip install gitpython pyyaml
+
+      - name: List nf-test files
+        id: list
+        run: |
+          echo nf_test_files=$(python \
             .github/python/find_changed_files.py \
-            -t process \
-            -p ${{ steps.changed_files.outputs.all_changed_files }} \
+            -t pipeline workflow process \
+            --head_ref ${{ github.sha }} \
+            --base_ref origin/${{ github.base_ref }} \
           ) >> $GITHUB_OUTPUT
 
-      - name: nf-test list tags workflows
-        id: list_workflows
-        if: ${{ steps.changed_files.outputs.any_modified }}
+      - name: Separate modules and subworkflows
+        id: outputs
         run: |
-          echo tags=$(python \
-            .github/python/find_changed_files.py \
-            -t workflow \
-            -p ${{ steps.changed_files.outputs.all_changed_files }} \
-          ) >> $GITHUB_OUTPUT
-
-      - name: debug
-        run: |
-          echo module_names=${{ steps.list_modules.outputs.tags }}
-          echo subworkflow_names=${{ steps.list_workflows.outputs.tags }}
-
-      - id: modules_to_lower
-        uses: ASzc/change-string-case-action@v6
-        with:
-          string: ${{ steps.list_modules.outputs.tags }}
-
-      - id: modules_lower_case_export
-        run: echo tags_lower=${{ steps.modules_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
-
-      - id: workflows_to_lower
-        uses: ASzc/change-string-case-action@v6
-        with:
-          string: ${{  steps.list_workflows.outputs.tags }}
-
-      - id: workflows_lower_case_export
-        run: echo tags_lower=${{ steps.workflows_to_lower.outputs.lowercase }} >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.list.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))'') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))'') >> $GITHUB_OUTPUT
 
   nf-core-lint-modules:
     runs-on: ubuntu-latest
@@ -181,7 +143,7 @@ jobs:
         tags:
           [
             "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.modules_lower) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
           ]
     steps:
       - uses: actions/checkout@v4
@@ -219,14 +181,14 @@ jobs:
     runs-on: ubuntu-latest
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
-    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.workflows != '[]') }}
+    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.subworkflows != '[]') }}
     strategy:
       fail-fast: false
       matrix:
         tags:
           [
             "${{ fromJson(needs.pytest-changes.outputs.subworkflows) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.workflows_lower) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
           ]
     steps:
       - uses: actions/checkout@v4
@@ -563,14 +525,14 @@ jobs:
     runs-on: ubuntu-latest
     name: nf-test
     needs: [nf-test-changes]
-    if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.workflows != '[]' )
+    if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' )
     strategy:
       fail-fast: false
       matrix:
-        tags:
+        module:
           [
             "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.workflows) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
           ]
         profile: [conda, docker, singularity]
         exclude:
@@ -717,7 +679,6 @@ jobs:
           miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge,bioconda,defaults
-          python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
         run: |
@@ -749,9 +710,9 @@ jobs:
           NFT_WORKDIR=~ \
           nf-test test \
             --profile=${{ matrix.profile }} \
-            --tag ${{ matrix.tags }} \
             --tap=test.tap \
-            --verbose
+            --verbose \
+            ${{ matrix.module }} \
 
       - uses: pcolby/tap-summary@v1
         with:
