@@ -7,6 +7,15 @@ on:
   merge_group:
     types: [checks_requested]
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
 
 # Cancel if a newer run is started
 concurrency:
@@ -23,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-python@v3
-      - uses: pre-commit/action@v3.0.0
+      - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
@@ -35,10 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Install NodeJS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: "20"
 
@@ -51,9 +60,9 @@ jobs:
   editorconfig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: "20"
 
@@ -71,7 +80,7 @@ jobs:
       modules: ${{ steps.tags.outputs.modules }}
       subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -103,6 +112,7 @@ jobs:
 
     steps:
       - uses: actions/setup-python@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           python-version: "3.11"
           architecture: "x64"
@@ -133,7 +143,7 @@ jobs:
           echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))'') >> $GITHUB_OUTPUT
 
   nf-core-lint-modules:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
@@ -146,30 +156,31 @@ jobs:
             "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
           ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-pip
 
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
 
       - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v1
+        uses: nf-core/setup-nextflow@v2
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
@@ -223,7 +234,7 @@ jobs:
         run: nf-core modules lint ${{ matrix.tags }}
 
   pytest:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.modules != '[]'
@@ -260,20 +271,6 @@ jobs:
             tags: bwa/samse
           - profile: conda
             tags: cellpose
-          - profile: conda
-            tags: cellranger/count
-          - profile: conda
-            tags: cellranger/mkfastq
-          - profile: conda
-            tags: cellranger/mkgtf
-          - profile: conda
-            tags: cellranger/mkref
-          - profile: conda
-            tags: cellranger/mkvdjref
-          - profile: conda
-            tags: cellranger/multi
-          - profile: conda
-            tags: cellranger/vdj
           - profile: conda
             tags: cellrangerarc/count
           - profile: conda
@@ -431,22 +428,29 @@ jobs:
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip-pytest
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pytest
+          restore-keys: |
+            ${{ runner.os }}-pip-pytest
 
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow ${{ matrix.NXF_VER }}
-        uses: nf-core/setup-nextflow@v1
+        uses: nf-core/setup-nextflow@v2
         with:
           version: "${{ matrix.NXF_VER }}"
 
@@ -461,7 +465,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@030178870c779d9e5e1b4e563269f3aa69b04081 # v3
         with:
           miniconda-version: "latest"
           channels: conda-forge,bioconda,defaults
@@ -497,10 +501,10 @@ jobs:
         run: |
           sudo apt-get update > /dev/null
           sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
+          batcat --decorations=always --color=always /home/ubuntu/pytest_workflow_*/*/log.{out,err}
 
       - name: Setting global variables
-        uses: actions/github-script@v6
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: parsed
         with:
           script: |
@@ -509,20 +513,20 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
-            /home/runner/pytest_workflow_*/*/.nextflow.log
-            /home/runner/pytest_workflow_*/*/log.out
-            /home/runner/pytest_workflow_*/*/log.err
-            /home/runner/pytest_workflow_*/*/work
-            !/home/runner/pytest_workflow_*/*/work/conda
-            !/home/runner/pytest_workflow_*/*/work/singularity
+            /home/ubuntu/pytest_workflow_*/*/.nextflow.log
+            /home/ubuntu/pytest_workflow_*/*/log.out
+            /home/ubuntu/pytest_workflow_*/*/log.err
+            /home/ubuntu/pytest_workflow_*/*/work
+            !/home/ubuntu/pytest_workflow_*/*/work/conda
+            !/home/ubuntu/pytest_workflow_*/*/work/singularity
             !${{ github.workspace }}/.singularity
 
   nf-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-test
     needs: [nf-test-changes]
     if: ( needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' )
@@ -537,6 +541,8 @@ jobs:
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
+          - profile: conda
+            tags: angsd/gl
           - profile: conda
             tags: annotsv
           - profile: conda
@@ -554,6 +560,8 @@ jobs:
           - profile: conda
             tags: bclconvert
           - profile: conda
+            tags: celesta
+          - profile: conda
             tags: cellpose
           - profile: conda
             tags: cellranger/count
@@ -563,6 +571,12 @@ jobs:
             tags: cellranger/mkgtf
           - profile: conda
             tags: cellranger/mkref
+          - profile: conda
+            tags: cellranger/mkvdjref
+          - profile: conda
+            tags: cellranger/multi
+          - profile: conda
+            tags: cellranger/vdj
           - profile: conda
             tags: custom/dumpsoftwareversions
           - profile: conda
@@ -610,7 +624,11 @@ jobs:
           - profile: conda
             tags: merquryfk/ploidyplot
           - profile: conda
+            tags: molkartgarage/clahe
+          - profile: conda
             tags: quartonotebook
+          - profile: conda
+            tags: scimap/spatiallda
           - profile: conda
             tags: sentieon/bwaindex
           - profile: conda
@@ -633,35 +651,27 @@ jobs:
             tags: subworkflows/vcf_annotate_ensemblvep
           - profile: singularity
             tags: bases2fastq
+          - profile: conda
+            tags: wittyer
+          - profile: conda
+            tags: islandpath
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
       NFTEST_VER: "0.8.4"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v1
-
-      - name: Cache nf-test installation
-        id: cache-software
-        uses: actions/cache@v3
-        with:
-          path: |
-            /usr/local/bin/nf-test
-            /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
+        uses: nf-core/setup-nextflow@v2
 
       - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
-        run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
-          sudo mv nf-test /usr/local/bin/
+        uses: nf-core/setup-nf-test@v1
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
@@ -673,8 +683,23 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
+      - name: Set up Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        id: cache-pip-pdiff
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pdiff
+          restore-keys: |
+            ${{ runner.os }}-pip-pdiff
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip pdiff cryptography
+
       - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@030178870c779d9e5e1b4e563269f3aa69b04081 # v3
         with:
           miniconda-version: "latest"
           auto-update-conda: true
@@ -685,7 +710,6 @@ jobs:
           conda clean -a
           conda install -n base conda-libmamba-solver
           conda config --set solver libmamba
-          pip install pdiff
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
@@ -707,6 +731,13 @@ jobs:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         run: |
+          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+          if [ "${{ matrix.profile }}" == "docker" ]; then
+            PROFILE="docker_self_hosted"
+          else
+            PROFILE=${{ matrix.profile }}
+          fi
+
           NFT_WORKDIR=~ \
           nf-test test \
             --profile=${{ matrix.profile }} \
@@ -714,10 +745,15 @@ jobs:
             --verbose \
             ${{ matrix.module }} \
 
-      - uses: pcolby/tap-summary@v1
+      - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
           path: >-
             test.tap
+
+      - name: Clean up
+        if: always()
+        run: |
+          sudo rm -rf /home/ubuntu/tests/
 
   confirm-pass:
     runs-on: ubuntu-latest

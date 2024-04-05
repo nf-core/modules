@@ -4,8 +4,8 @@ process UMITOOLS_PREPAREFORRSEM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/umi_tools:1.1.4--py38hbff2b2d_1' :
-        'biocontainers/umi_tools:1.1.4--py38hbff2b2d_1' }"
+        'https://depot.galaxyproject.org/singularity/umi_tools:1.1.5--py39hf95cd2a_0' :
+        'biocontainers/umi_tools:1.1.5--py39hf95cd2a_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -19,7 +19,21 @@ process UMITOOLS_PREPAREFORRSEM {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'prepare-for-rsem.py'
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    """
+    umi_tools prepare-for-rsem \\
+        --stdin=$bam \\
+        --stdout=${prefix}.bam \\
+        --log=${prefix}.prepare_for_rsem.log \\
+        $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        umitools: \$( umi_tools --version | sed '/version:/!d; s/.*: //' )
+    END_VERSIONS
+    """
 
     stub:
     """
