@@ -1,0 +1,41 @@
+nextflow_process {
+
+    name "Test Process ANOTA2SEQ_ANOTA2SEQRUN"
+    script "../main.nf"
+    process "ANOTA2SEQ_ANOTA2SEQRUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anota2seq"
+    tag "anota2seq/anota2seqrun"
+
+    test("human - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'treatment_vs_control'], // meta map
+                    'treatment',
+                    'control',
+                    'treatment'
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet.csv"),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
