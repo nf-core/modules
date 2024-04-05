@@ -28,7 +28,7 @@ process MINIMAP2_ALIGN {
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bam_output = bam_format ? "-a | samtools sort -@ ${task.cpus-1} -o ${prefix}.bam ${args2} " : "-o ${prefix}.paf"
+    def bam_output = bam_format ? "-a | samtools sort -@ ${task.cpus-1} -o ${prefix}.bam ${args2}" : "-o ${prefix}.paf"
     def cigar_paf = cigar_paf_format && !bam_format ? "-c" : ''
     def set_cigar_bam = cigar_bam && bam_format ? "-L" : ''
     """
