@@ -47,55 +47,86 @@ nextflow_workflow {
                     ]
                 )
                 """
-
-                //FASTA_NEWICK_EPANG_GAPPA ( ch_input )
             }
         }
 
         then {
             assertAll(
-                { assert workflow.success}
+                { assert workflow.success },
+                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("hmmer.graft.placement.epa_result.newick") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") }
+            )
+        }
+    }
+
+    test("test_fasta_newick_epang_gappa_mafft") {
+    
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        meta: [ id: "mafft" ],
+                        data: [
+                            alignmethod:  'mafft',
+                            queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
+                            refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
+                            refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
+                            model:        "LG",
+                            taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("mafft.graft.placement.epa_result.newick") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("mafft.taxonomy.profile.tsv") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("mafft.taxonomy.per_query.tsv") }
+            )
+        }
+    }
+    test("test_fasta_newick_epang_gappa_nucl_hmmer") {
+    
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        meta: [ id: "nucl_hmmer" ],
+                        data: [
+                            alignmethod:  'hmmer',
+                            queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyn_syn.fna", checkIfExists: true),
+                            refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyanos_16s.alnfna", checkIfExists: true),
+                            refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyanos_16s.newick", checkIfExists: true),
+                            model:        "GTR+F+I+I+R3",
+                            taxonomy:     []
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmert.graft.placement.epa_result.newick") },
             )
         }
     }
 }
-
-/**
-workflow test_fasta_newick_epang_gappa_mafft {
-    
-    ch_input = Channel.of(
-        [
-            meta: [ id: "mafft" ],
-            data: [
-                alignmethod:  'mafft',
-                queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
-                refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
-                refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
-                model:        "LG",
-                taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
-            ]
-        ]
-    )
-
-    FASTA_NEWICK_EPANG_GAPPA ( ch_input )
-}
-
-workflow test_fasta_newick_epang_gappa_nucl_hmmer {
-    
-    ch_input = Channel.of(
-        [
-            meta: [ id: "nucl_hmmer" ],
-            data: [
-                alignmethod:  'hmmer',
-                queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyn_syn.fna", checkIfExists: true),
-                refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyanos_16s.alnfna", checkIfExists: true),
-                refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/cyanos_16s.newick", checkIfExists: true),
-                model:        "GTR+F+I+I+R3",
-                taxonomy:     []
-            ]
-        ]
-    )
-
-    FASTA_NEWICK_EPANG_GAPPA ( ch_input )
-}
-**/
