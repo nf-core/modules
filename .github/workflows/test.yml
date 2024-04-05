@@ -140,8 +140,8 @@ jobs:
       - name: Separate modules and subworkflows
         id: outputs
         run: |
-          echo modules=$(echo '${{ steps.list.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))'') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))'') >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.list.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
@@ -435,6 +435,7 @@ jobs:
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
           python-version: "3.11"
+
       - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
         id: cache-pip-pytest
         with:
