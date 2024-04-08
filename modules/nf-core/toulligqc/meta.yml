@@ -32,6 +32,10 @@ input:
       type: file
       description: BAM file (necessary if no sequencing summary file)
       pattern: "*.bam"
+  - barcodes:
+      type: string
+      description: Comma separated barcode list (with no spaces). (e.g. BC05,RB09,NB01,barcode10)
+      pattern: "^\\S+$"
 
 output:
   - meta:
