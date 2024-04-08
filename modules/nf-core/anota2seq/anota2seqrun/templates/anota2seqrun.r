@@ -308,14 +308,14 @@ rnaseq_data <- count.table[,rnaseq_samples]
 # Make the anota2seqDataSet
 
 anota2seqDataSetFromMatrix_args <- list(
-  dataP = riboseq_data,
-  dataT = rnaseq_data,
-  phenoVec = sample.sheet[rnaseq_samples, opt\$sample_treatment_col],
-  dataType = opt\$dataType,
-  normalize = opt\$normalize,
-  transformation = opt\$transformation,
-  filterZeroGenes = opt\$filterZeroGenes,
-  varCutOff = opt\$varCutOff
+    dataP = riboseq_data,
+    dataT = rnaseq_data,
+    phenoVec = sample.sheet[rnaseq_samples, opt\$sample_treatment_col],
+    dataType = opt\$dataType,
+    normalize = opt\$normalize,
+    transformation = opt\$transformation,
+    filterZeroGenes = opt\$filterZeroGenes,
+    varCutOff = opt\$varCutOff
 )
 
 if (! is.null(opt\$samples_batch_col)){
@@ -327,10 +327,10 @@ ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
 # Run anota2seqRun
 
 contrast_matrix <- matrix(
-  nrow=2,
-  ncol=1,
-  dimnames=list(c(opt\$reference_level, opt\$target_level),c()),
-  c(-1,1)
+    nrow=2,
+    ncol=1,
+    dimnames=list(c(opt\$reference_level, opt\$target_level),c()),
+    c(-1,1)
 )
 
 ads <- anota2seqRun(
