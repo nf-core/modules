@@ -26,6 +26,11 @@ input:
         List of input paired end fastq files
       pattern: "*.{fastq,fq}.gz"
 
+  - interleave:
+      type: boolean
+      description: |
+        Indicates whether the input paired reads are interleaved or not
+
 output:
   - meta:
       type: map
