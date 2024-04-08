@@ -20,7 +20,7 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta), path("*.Anota2seqDataSet.rds")                             , emit: rdata
     tuple val(meta), path("*.fold_change.png")                                  , emit: fold_change_plot
     tuple val(meta), path("*.interaction_p_distribution.pdf")                   , emit: interaction_p_distribution_plot, optional: true
-    tuple val(meta), path("*.residual_distribution_summary.jpeg")               , emit: residual_distribution_plot, optional: true
+    tuple val(meta), path("*.residual_distribution_summary.jpeg")               , emit: residual_distribution_summary_plot, optional: true
     tuple val(meta), path("*.residual_vs_fitted.jpeg")                          , emit: residual_vs_fitted_plot, optional: true
     tuple val(meta), path("*.rvm_fit_for_all_contrasts_group.jpg")              , emit: rvm_fit_for_all_contrasts_group_plot, optional: true
     tuple val(meta), path("*.rvm_fit_for_interactions.jpg")                     , emit: rvm_fit_for_interactions_plot, optional: true
