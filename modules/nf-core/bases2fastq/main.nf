@@ -41,4 +41,21 @@ process BASES2FASTQ {
         bases2fastq: \$(bases2fastq --version | sed -e "s/bases2fastq version //g")
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir output
+    mkdir output/Samples
+    mkdir output/Samples/DefaultSample
+
+    touch output/Metrics.csv
+    touch output/RunManifest.json
+    touch output/UnassignedSequences.csv
+    echo | gzip > output/Samples/DefaultSample/DefaultSample_R1.fastq.gz
+    echo | gzip > output/Samples/DefaultSample/DefaultSample_R2.fastq.gz
+    touch output/Bases2Fastq-Sim_QC.html
+    touch output/RunStats.json
+    touch output/Samples/DefaultSample/DefaultSample_stats.json
+    touch versions.yml
+    """
 }
