@@ -227,7 +227,6 @@ if (!any(measure.cols %in% colnames(intensities.table))) {
 
 # Check that all samples specified in the input sheet are present in the intensities table
 
-#missing_columns <- paste0(opt\$measure_col_prefix, sample.sheet[[opt\$sample_id_col]])
 missing_columns <- measure.cols[!measure.cols %in% colnames(intensities.table)]
 if (length(missing_columns) > 0) {
     stop(paste(
