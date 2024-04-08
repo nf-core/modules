@@ -4,8 +4,8 @@ process OPENMS_IDFILTER {
 
     conda "bioconda::openms=3.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.1.0--h8964181_2' :
-        'biocontainers/openms:3.1.0--h8964181_2' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.1.0--h8964181_3' :
+        'biocontainers/openms:3.1.0--h8964181_3' }"
 
     input:
     tuple val(meta), path(id_file), path(filter_file)
@@ -44,7 +44,7 @@ process OPENMS_IDFILTER {
     def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
-    def filter = filter_file ? "${filter_citerion} ${filter}" : ""
+    def filter = filter_file ? "${filter_citerion} ${filter_file}" : ""
 
     """
     touch ${prefix}.${suffix}
