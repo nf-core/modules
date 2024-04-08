@@ -381,7 +381,7 @@ for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", 
 # Fold change plot
 
 png(
-    file = paste(opt\$output_prefix, 'anota2seq.fold_change.png', sep = '.'),
+    file = paste(opt\$output_prefix, 'fold_change.png', sep = '.'),
     width = 720,
     height = 720
 )
@@ -397,6 +397,10 @@ dev.off()
 # R object for other processes to use
 
 saveRDS(ads, file = paste(opt\$output_prefix, 'Anota2seqDataSet.rds', sep = '.'))
+
+# Rename files files output by anota2seqPerformQC() 
+
+sapply(list.files(pattern = "^ANOTA2SEQ_"), function(f) file.rename(f, sub("^ANOTA2SEQ_", paste0(opt\$output_prefix, '.'), f)))
 
 ################################################
 ################################################
