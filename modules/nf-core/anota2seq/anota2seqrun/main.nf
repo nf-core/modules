@@ -12,8 +12,8 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.translated_mRNA.anota2seq.results.tsv")            , emit: translated_mrna 
-    tuple val(meta), path("*.total_mRNA.anota2seq.results.tsv")                 , emit: total_mrna 
+    tuple val(meta), path("*.translated_mRNA.anota2seq.results.tsv")            , emit: translated_mrna
+    tuple val(meta), path("*.total_mRNA.anota2seq.results.tsv")                 , emit: total_mrna
     tuple val(meta), path("*.translation.anota2seq.results.tsv")                , emit: translation
     tuple val(meta), path("*.buffering.anota2seq.results.tsv")                  , emit: buffering
     tuple val(meta), path("*.mRNA_abundance.anota2seq.results.tsv")             , emit: mrna_abundance

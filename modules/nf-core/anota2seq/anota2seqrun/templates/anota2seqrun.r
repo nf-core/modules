@@ -121,11 +121,11 @@ opt <- list(
     subset_to_contrast_samples = FALSE,
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
-    dataType = "RNAseq",             # for anota2seqDataSetFromMatrix 
-    normalize = TRUE,                # for anota2seqDataSetFromMatrix  
-    transformation = "TMM-log2",     # for anota2seqDataSetFromMatrix 
-    filterZeroGenes = TRUE,          # for anota2seqDataSetFromMatrix 
-    varCutOff = NULL,                # for anota2seqDataSetFromMatrix 
+    dataType = "RNAseq",             # for anota2seqDataSetFromMatrix
+    normalize = TRUE,                # for anota2seqDataSetFromMatrix
+    transformation = "TMM-log2",     # for anota2seqDataSetFromMatrix
+    filterZeroGenes = TRUE,          # for anota2seqDataSetFromMatrix
+    varCutOff = NULL,                # for anota2seqDataSetFromMatrix
     performQC = TRUE,                # for anota2seqRun
     onlyGroup = FALSE,               # for anota2seqRun
     performROT = TRUE,               # for anota2seqRun
@@ -257,7 +257,7 @@ if (!sample_treatment_col %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} 
+}
 
 # Optionally, subset to only the samples involved in the contrast
 
@@ -327,23 +327,23 @@ ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
 # Run anota2seqRun
 
 contrast_matrix <- matrix(
-  nrow=2, 
-  ncol=1, 
-  dimnames=list(c(opt\$reference_level, opt\$target_level),c()), 
+  nrow=2,
+  ncol=1,
+  dimnames=list(c(opt\$reference_level, opt\$target_level),c()),
   c(-1,1)
 )
 
 ads <- anota2seqRun(
     ads,
-    contrasts = contrast_matrix, 
+    contrasts = contrast_matrix,
     performQC = opt\$performQC,
-    onlyGroup = opt\$onlyGroup, 
-    performROT = opt\$performROT, 
+    onlyGroup = opt\$onlyGroup,
+    performROT = opt\$performROT,
     generateSingleGenePlots = opt\$generateSingleGenePlots,
-    analyzeBuffering = opt\$analyzeBuffering, 
-    analyzemRNA = opt\$analyzemRNA, 
-    useRVM = opt\$useRVM, 
-    correctionMethod = opt\$correctionMethod, 
+    analyzeBuffering = opt\$analyzeBuffering,
+    analyzemRNA = opt\$analyzemRNA,
+    useRVM = opt\$useRVM,
+    correctionMethod = opt\$correctionMethod,
     useProgBar = FALSE
 )
 
@@ -360,9 +360,9 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", "mRNA abundance")){
 
     output <- anota2seqGetOutput(
-        ads, 
-        analysis = analysis, 
-        output = opt\$output, 
+        ads,
+        analysis = analysis,
+        output = opt\$output,
         getRVM = opt\$getRVM,
         selContrast = 1
     )
@@ -385,9 +385,9 @@ png(
     height = 720
 )
 anota2seqPlotFC(
-    ads, 
+    ads,
     visualizeRegModes = "all",
-    selContrast = 1, 
+    selContrast = 1,
     contrastName = contrast.name,
     plotToFile = FALSE
 )
@@ -397,7 +397,7 @@ dev.off()
 
 saveRDS(ads, file = paste(opt\$output_prefix, 'Anota2seqDataSet.rds', sep = '.'))
 
-# Rename files files output by anota2seqPerformQC() 
+# Rename files files output by anota2seqPerformQC()
 
 sapply(list.files(pattern = "^ANOTA2SEQ_"), function(f) file.rename(f, sub("^ANOTA2SEQ_", paste0(opt\$output_prefix, '.'), f)))
 

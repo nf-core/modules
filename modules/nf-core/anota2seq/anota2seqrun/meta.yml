@@ -13,7 +13,7 @@ tools:
       homepage: "https://bioconductor.org/packages/release/bioc/html/anota2seq.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/anota2seq/inst/doc/anota2seq.pdf"
       doi: "10.18129/B9.bioc.anota2seq"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 
 input:
   - meta:
@@ -49,7 +49,7 @@ input:
       type: file
       description: |
         Raw TSV or CSV format expression matrix
-    
+
 output:
   - meta:
       type: map
@@ -58,46 +58,41 @@ output:
         blocking:'patient' ]
   - translated_mrna:
       type: file
-      description: 
-        anota2seq results for the 'translated mRNA' analysis, describing
+      description: anota2seq results for the 'translated mRNA' analysis, describing
         differences in RNA levels across conditions for Ribo-seq samples. See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
-        description of output columns. 
+        description of output columns.
       pattern: ".translated_mRNA.anota2seq.results.tsv"
   - total_mrna:
       type: file
-      description: 
-        anota2seq results for the 'translated mRNA' analysis, describing
+      description: anota2seq results for the 'translated mRNA' analysis, describing
         differences in RNA levels across conditions for RNA-seq samples. See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
-        description of output columns. 
+        description of output columns.
       pattern: ".translated_mRNA.anota2seq.results.tsv"
   - translation:
       type: file
-      description: 
-        anota2seq results for the 'translated mRNA' analysis, describing
+      description: anota2seq results for the 'translated mRNA' analysis, describing
         differences in translation across conditions, being differences in
         translated RNA levels not explained by total RNA levels. See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
-        description of output columns. 
+        description of output columns.
       pattern: ".translation.anota2seq.results.tsv"
   - buffering:
       type: file
-      description: 
-        anota2seq results for the 'translated mRNA' analysis, describing
+      description: anota2seq results for the 'translated mRNA' analysis, describing
         buffering across conditions, being stable levels of translated RNA
         (from riboseq samples) across conditions, despite changes in total
         mRNA.  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
-        for description of output columns. 
+        for description of output columns.
       pattern: ".translated_mRNA.anota2seq.results.tsv"
   - mrna_abundance:
       type: file
-      description: 
-        anota2seq results for the 'mRNA abunance' analysis, describing changes
+      description: anota2seq results for the 'mRNA abunance' analysis, describing changes
         across conditions consistent between total mRNA and translated RNA
         (RNA-seq and Riboseq samples).  See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
-        description of output columns. 
+        description of output columns.
       pattern: ".translated_mRNA.anota2seq.results.tsv"
   - rdata:
       type: file
@@ -107,7 +102,7 @@ output:
       type: file
       description: |
         A fold change plot in PNG format, from anota2seq's anota2seqPlotFC()
-        method. 
+        method.
       pattern: ".fold_change.png"
   - interaction_p_distribution_plot:
       type: file
