@@ -240,7 +240,6 @@ if (length(missing_samples) > 0) {
 ################################################
 
 sample_treatment_col <- make.names(opt\$sample_treatment_col)
-blocking.vars <- c()
 
 if (!sample_treatment_col %in% colnames(sample.sheet)) {
     stop(
