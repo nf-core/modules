@@ -134,7 +134,9 @@ opt <- list(
     analyzemRNA = TRUE,              # for anota2seqRun
     useRVM = TRUE,                   # for anota2seqRun
     correctionMethod = "BH",         # for anota2seqRun
-    useProgBar = FALSE               # for anota2seqRun
+    useProgBar = FALSE,              # for anota2seqRun
+    getRVM = TRUE,                   # for anota2seqGetOutput
+    output = 'full'                  # for anota2seqGetOutput
 )
 opt_types <- lapply(opt, class)
 
@@ -301,17 +303,17 @@ if (! is.null(opt\$samples_pairing_col)){
     rnaseq_samples <- rnaseq_samples[order(sample.sheet[rnaseq_samples, opt\$samples_pairing_col])]
 }
 
-riboseq_data <- mat[,riboseq_samples]
-rnaseq_data <- mat[,rnaseq_samples]
+riboseq_data <- count.table[,riboseq_samples]
+rnaseq_data <- count.table[,rnaseq_samples]
 
 # Make the anota2seqDataSet
 
 anota2seqDataSetFromMatrix_args <- list(
   dataP = riboseq_data,
   dataT = rnaseq_data,
-  phenoVec = samples[rnaseq_samples, opt\$samples_treatment_col],
+  phenoVec = sample.sheet[rnaseq_samples, opt\$sample_treatment_col],
   dataType = opt\$dataType,
-  normalize = opt\$Normalize,
+  normalize = opt\$normalize,
   transformation = opt\$transformation,
   filterZeroGenes = opt\$filterZeroGenes,
   varCutOff = opt\$varCutOff
@@ -328,7 +330,7 @@ ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
 contrast_matrix <- matrix(
   nrow=2, 
   ncol=1, 
-  dimnames=list(c(reference_level, target_level),c()), 
+  dimnames=list(c(opt\$reference_level, opt\$target_level),c()), 
   c(-1,1)
 )
 
@@ -367,8 +369,8 @@ for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", 
     )
 
     write.table(
-        out_df,
-        file = paste(opt\$output_prefix, sub(' ', '_', analysis_), 'anota2seq.results.tsv', sep = '.'),
+        output,
+        file = paste(opt\$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
