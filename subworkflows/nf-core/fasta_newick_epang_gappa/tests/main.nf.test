@@ -53,10 +53,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("hmmer.epa_result.jplace.gz") },
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("hmmer.graft.placement.epa_result.newick") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
-                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") }
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.taxonomy.profile.tsv_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.taxonomy.per_query.tsv_lines") },
             )
         }
     }
@@ -89,10 +92,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("mafft.epa_result.jplace.gz") },
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("mafft.graft.placement.epa_result.newick") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("mafft.taxonomy.profile.tsv") },
-                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("mafft.taxonomy.per_query.tsv") }
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft.taxonomy.profile.tsv_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("mafft.taxonomy.per_query.tsv") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft.taxonomy.per_query.tsv_lines") },
             )
         }
     }
@@ -124,8 +130,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.jplace.get(0).get(1) ==~ ".*.jplace.gz" },
-                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmert.graft.placement.epa_result.newick") },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("nucl_hmmer.epa_result.jplace.gz") },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmer.graft.placement.epa_result.newick") },
             )
         }
     }
