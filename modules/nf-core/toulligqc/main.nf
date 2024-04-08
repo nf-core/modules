@@ -9,7 +9,6 @@ process TOULLIGQC {
 
     input:
     tuple val(meta), path(seq_summary), path(fastq), path(bam)
-    val(barcodes)
 
     output:
     tuple val(meta), path("*/*.data")   , emit: report_data
@@ -29,14 +28,12 @@ process TOULLIGQC {
     def seq_summary_input = seq_summary ? "--sequencing-summary-source ${seq_summary}" : ""
     def fastq_input = fastq ? "--fastq ${fastq}" : ""
     def bam_input = bam ? "--bam ${bam}" : ""
-    def barcode_input = barcodes ? "--barcoding --barcodes ${barcodes}" : ""
 
     """
     toulligqc \\
         ${seq_summary_input} \\
         ${fastq_input} \\
         ${bam_input} \\
-        ${barcode_input} \\
         --output-directory ${prefix} \\
         $args
 
