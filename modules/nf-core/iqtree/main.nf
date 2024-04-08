@@ -14,7 +14,7 @@ process IQTREE {
     output:
     tuple val(meta), path("*.treefile") , emit: phylogeny
     tuple val(meta), path("*.iqtree")   , emit: report
-    tuple val(meta), path("*.mldist")   , emit: mldist
+    tuple val(meta), path("*.mldist")   , emit: mldist, optional: true
     tuple val(meta), path("*.ufboot")   , emit: bootstrap, optional: true
     tuple val(meta), path("*.log")      , emit: log
     path "versions.yml"                 , emit: versions
