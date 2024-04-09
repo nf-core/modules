@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from rich import print
-from rich.table import Table
-import click
 import glob
 import os
+
+import click
 import yaml
+from rich import print
+from rich.table import Table
 
 
 @click.command()
@@ -32,30 +33,25 @@ def find_duplicate_md5s(min_dups, search_dir):
     # Loop through all files in tests/ called test.yml
     for test_yml in glob.glob(search_dir, recursive=True):
         # Open file and parse YAML
-        with open(test_yml, "r") as fh:
+        with open(test_yml) as fh:
             test_config = yaml.safe_load(fh)
             # Loop through tests and check for duplicate md5s
             for test in test_config:
                 for test_file in test.get("files", []):
                     if "md5sum" in test_file:
                         md5 = test_file["md5sum"]
-                        md5_filenames[md5] = md5_filenames.get(md5, []) + [
-                            os.path.basename(test_file.get("path"))
-                        ]
+                        md5_filenames[md5] = md5_filenames.get(md5, []) + [os.path.basename(test_file.get("path"))]
                         md5_output_fn_counts[md5] = md5_output_fn_counts.get(md5, 0) + 1
                         # Log the module that this md5 was in
                         modname = os.path.basename(os.path.dirname(test_yml))
                         # If tool/subtool show the whole thing
                         # Ugly code but trying to stat os-agnostic
-                        if os.path.basename(
-                            os.path.dirname(os.path.dirname(test_yml))
-                        ) not in ["modules", "config", "subworkflows"]:
-                            modname = "{}/{}".format(
-                                os.path.basename(
-                                    os.path.dirname(os.path.dirname(test_yml))
-                                ),
-                                os.path.basename(os.path.dirname(test_yml)),
-                            )
+                        if os.path.basename(os.path.dirname(os.path.dirname(test_yml))) not in [
+                            "modules",
+                            "config",
+                            "subworkflows",
+                        ]:
+                            modname = f"{os.path.basename(os.path.dirname(os.path.dirname(test_yml)))}/{os.path.basename(os.path.dirname(test_yml))}"
                         module_counts[md5] = module_counts.get(md5, []) + [modname]
 
     # Set up rich table
