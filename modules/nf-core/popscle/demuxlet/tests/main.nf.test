@@ -19,9 +19,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'sample1'],
                     [],
-                    file(params.test_data['homo_sapiens']['demultiplexing']['bam']),
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
-
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)
                     ]
                 """
             }
@@ -31,10 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-		        { assert snapshot(
-                        file(process.out.demuxlet_result[0][1]).name,
-                    ).match("sample1.best")
-                },
+		        { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
 
@@ -42,29 +38,28 @@ nextflow_process {
 
     test ("demultiplexing - bam - pileup"){
         setup { 
-            run("pileup") {
+            run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
                     """
                     input[0] = [
-                    [ id:'sample1' ], // meta map
-                    file(params.test_data['homo_sapiens']['demultiplexing']['bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
                     ]
                     """
                 }
             }
+        }
 
         when {
             process {
                 """
-                plp_prefix = "${pileup.out.plp.parent}/${pileup.out.plp.baseName}"
-                input[0] = [
-                    [ id:'sample1'],
-                    plp_prefix,
-                    [],
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
-                    ]
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
+                            plp -> [[ id: 'sample1'], 
+                                    plp[0].parent + '/' + plp[0].simpleName, 
+                                    [], 
+                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)]}
                 """
             }
         }
@@ -72,15 +67,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-		        { assert snapshot(
-                        file(process.out.demuxlet_result[0][1]).name,
-                    ).match("sample1.best")
-                },
+                { assert snapshot(process.out.versions).match("pileup-versions") },
+                { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
             
-        }
     }
 
     test("demultiplexing - bam - stub") {
@@ -93,8 +84,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'sample1' ],
                     [],
-                    file(params.test_data['homo_sapiens']['demultiplexing']['bam']),
-                    file(params.test_data['homo_sapiens']['demultiplexing']['donor_genotype'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
                     ]
                 """
             }
@@ -103,11 +94,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-		        { assert snapshot(
-                        file(process.out.demuxlet_result[0][1]).name,
-                    ).match("sample1.best")
-                },
+                { assert snapshot(process.out.versions).match("stub-versions") },
+                { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
 
