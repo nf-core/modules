@@ -5,14 +5,13 @@ nextflow_process {
     script "../main.nf"
     process "POPSCLE_DEMUXLET"
     config "./nextflow.config"
-
     tag "modules"
     tag "modules_nfcore"
     tag "popscle"
+    tag "popscle/dscpileup"
     tag "popscle/demuxlet"
 
     test("demultiplexing - bam") {
-
         when {
             process {
                 """                
@@ -57,7 +56,7 @@ nextflow_process {
                 """
                 input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
                             plp -> [[ id: 'sample1'], 
-                                    plp[0].parent + '/' + plp[0].simpleName, 
+                                    plp[0].toString() - '.plp.gz', 
                                     [], 
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)]}
                 """
