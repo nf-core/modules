@@ -33,6 +33,8 @@ nextflow_process {
 
     test("human - gtf - fasta") {
 
+        config './nextflow.config'
+
         when {
             process {
                 """
