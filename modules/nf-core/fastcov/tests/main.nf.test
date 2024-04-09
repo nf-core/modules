@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "fastcov"
 
-    test("fastcov single input bam") {
+    test("fastcov test data run") {
 
         when {
             process {
@@ -26,13 +26,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") }
+                { assert snapshot(process.out.version).match("fastcov_test_data") },
+                { assert process.out,coverage_plot == "${meta.id}.${task.ext.file_ext ?: 'png'}" }
             )
         }
 
     }
 
-    test("fastcov - stub") {
+    test("fastcov stub run") {
 
         options "-stub"
 
@@ -51,7 +52,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match('fastcov_stub') },
+                { assert process.out,coverage_plot == "${meta.id}.${task.ext.file_ext ?: 'png'}" }
             )
         }
 
