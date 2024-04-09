@@ -188,8 +188,10 @@ pd <- propd(
     group    = group,
     alpha    = opt\$alpha,
     weighted = FALSE,
-    p        = opt\$permutation
+    p        = opt\$permutation,
+    fixseed = opt\$fixseed
 )
+
 if (opt\$metric == 'theta_d'){
     pd <- setDisjointed(pd)
 } else if (opt\$metric == 'theta_e'){
