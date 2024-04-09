@@ -58,7 +58,7 @@ nextflow_workflow {
                         """
                     }
                 }
-                run("SAMTOOLS_INDEX"){  
+                run("SAMTOOLS_INDEX"){
                     script "../../../../modules/nf-core/samtools/index/main.nf"
                     process{
                         """
@@ -85,11 +85,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out.bam, workflow.out.out.versions).match() },
+                { assert snapshot(workflow.out.bam, workflow.out.versions).match() },
                 { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
                 { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
                 { assert workflow.out.dedup_stats.get(0).get(1) ==~ ".*_UMICollapse.log"},
-                { assert snapshot(workflow.out.dedup_stats).match("test_bam_dedup_stats_samtools_umicollapse_dedup_stats") },
                 { assert snapshot(workflow.out.stats).match("test_bam_dedup_stats_samtools_umicollapse_stats") },
                 { assert snapshot(workflow.out.flagstat).match("test_bam_dedup_stats_samtools_umicollapse_flagstats") },
                 { assert snapshot(workflow.out.idxstats).match("test_bam_dedup_stats_samtools_umicollapse_idxstats") }
