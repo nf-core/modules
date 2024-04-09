@@ -17,7 +17,7 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE {
     //
     // umicollapse in bam mode (thus hardcode mode input channel to 'bam')
     //
-    UMICOLLAPSE ( ch_bam_bai, "bam" )
+    UMICOLLAPSE ( ch_bam_bai, channel.value( 'bam' ))
     ch_versions = ch_versions.mix(UMICOLLAPSE.out.versions.first())
 
     //

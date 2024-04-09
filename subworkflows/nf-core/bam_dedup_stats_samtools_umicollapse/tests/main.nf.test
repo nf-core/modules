@@ -19,35 +19,82 @@ nextflow_workflow {
 
     test("sarscov2_bam_bai") {
 
-    when {
-        params {
-            outdir   = "$outputDir"
+        setup{
+                run("UMITOOLS_EXTRACT"){
+                    script "../../../../modules/nf-core/umitools/extract/main.nf"
+                    config "./paired-end-umis.config"
+                    process{
+                        """
+                        input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]
+                        ]
+                        """
+                    }
+                }
+
+                run("BWA_INDEX"){
+                    script "../../../../modules/nf-core/bwa/index/main.nf"
+                    process{
+                        """
+                        input[0] = [
+                                [ id:'sarscov2'],
+                                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                                ]
+                        """
+                    }
+                }
+                run("BWA_MEM"){
+                    script "../../../../modules/nf-core/bwa/mem/main.nf"
+                    process{
+                        """
+                        input[0] = UMITOOLS_EXTRACT.out.reads
+                        input[1] = BWA_INDEX.out.index
+                        input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                        input[3] = true
+                        """
+                    }
+                }
+                run("SAMTOOLS_INDEX"){  
+                    script "../../../../modules/nf-core/samtools/index/main.nf"
+                    process{
+                        """
+                        input[0] = BWA_MEM.out.bam
+                        """
+                    }
+                }
+            }
+
+        when {
+            config "./paired-end-umis.config"
+            params {
+                outdir   = "$outputDir"
+            }
+            workflow {
+                """
+
+                    input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+
+                """
+            }
         }
-        workflow {
-            """
 
-            input[0] = Channel.of([
-                [ id:'test'], // meta map
-                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-            ])
-
-            """
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.bam, workflow.out.out.versions).match() },
+                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
+                { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
+                { assert workflow.out.dedup_stats.get(0).get(1) ==~ ".*_UMICollapse.log"},
+                { assert snapshot(workflow.out.dedup_stats).match("test_bam_dedup_stats_samtools_umicollapse_dedup_stats") },
+                { assert snapshot(workflow.out.stats).match("test_bam_dedup_stats_samtools_umicollapse_stats") },
+                { assert snapshot(workflow.out.flagstat).match("test_bam_dedup_stats_samtools_umicollapse_flagstats") },
+                { assert snapshot(workflow.out.idxstats).match("test_bam_dedup_stats_samtools_umicollapse_idxstats") }
+            )
         }
-    }
-
-    then {
-        assertAll(
-            { assert workflow.success},
-            { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
-            { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
-            { assert workflow.out.dedup_stats.get(0).get(1) ==~ ".*_UMICollapse.log"},
-            { assert snapshot(workflow.out.dedup_stats).match("test_bam_dedup_stats_samtools_umicollapse_dedup_stats") },
-            { assert snapshot(workflow.out.stats).match("test_bam_dedup_stats_samtools_umicollapse_stats") },
-            { assert snapshot(workflow.out.flagstat).match("test_bam_dedup_stats_samtools_umicollapse_flagstats") },
-            { assert snapshot(workflow.out.idxstats).match("test_bam_dedup_stats_samtools_umicollapse_idxstats") }
-        )
-    }
 
 }
 }
