@@ -51,5 +51,5 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         atlas-gene-annotation-manipulation: ${VERSION}
     END_VERSIONS
     """
-    
+
 }
