@@ -237,21 +237,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.global_txt[0][1]).name,
-                    file(process.out.summary_txt[0][1]).name,
-                    file(process.out.regions_txt[0][1]).name,
-                    file(process.out.per_base_d4[0][1]).name,
-                    file(process.out.per_base_bed[0][1]).name,
-                    file(process.out.per_base_csi[0][1]).name,
-                    file(process.out.regions_bed[0][1]).name,
-                    file(process.out.regions_csi[0][1]).name,
-                    file(process.out.quantized_bed[0][1]).name,
-                    file(process.out.quantized_csi[0][1]).name,
-                    file(process.out.thresholds_bed[0][1]).name,
-                    file(process.out.thresholds_csi[0][1]).name,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
