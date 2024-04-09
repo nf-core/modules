@@ -82,6 +82,7 @@ opt <- list(
     cutoff_min      = NA,                   # minimun threshold to test
     cutoff_max      = NA,                   # maximun threshold to test
     cutoff_interval = NA,                   # interval between thresholds
+    fixseed         = FALSE,
     ncores          = as.integer('$task.cpus')
 )
 opt_types <- list(
@@ -97,6 +98,7 @@ opt_types <- list(
     cutoff_min      = 'numeric',
     cutoff_max      = 'numeric',
     cutoff_interval = 'numeric',
+    fixseed         = 'logical',
     ncores          = 'numeric'
 )
 
