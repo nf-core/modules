@@ -21,3 +21,11 @@ repos:
     rev: 37.236.0
     hooks:
       - id: renovate-config-validator
+  # use ruff for python files
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.5
+    hooks:
+      - id: ruff
+        files: \.py$
+        args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
+      - id: ruff-format # formatter
