@@ -4,8 +4,8 @@ process PROPR_PROPD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-propr:4.2.6':
-        'biocontainers/r-propr:4.2.6' }"
+        'https://depot.galaxyproject.org/singularity/r-propr:5.0.3':
+        'biocontainers/r-propr:5.0.3' }"
 
     input:
     tuple val(meta), path(count)
