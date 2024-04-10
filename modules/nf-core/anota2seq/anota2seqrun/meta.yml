@@ -69,7 +69,7 @@ output:
         differences in RNA levels across conditions for RNA-seq samples. See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
         description of output columns.
-      pattern: ".translated_mRNA.anota2seq.results.tsv"
+      pattern: ".total_mRNA.anota2seq.results.tsv"
   - translation:
       type: file
       description: anota2seq results for the 'translated mRNA' analysis, describing
@@ -85,7 +85,7 @@ output:
         (from riboseq samples) across conditions, despite changes in total
         mRNA.  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
         for description of output columns.
-      pattern: ".translated_mRNA.anota2seq.results.tsv"
+      pattern: ".buffering.anota2seq.results.tsv"
   - mrna_abundance:
       type: file
       description: anota2seq results for the 'mRNA abunance' analysis, describing changes
@@ -93,7 +93,7 @@ output:
         (RNA-seq and Riboseq samples).  See
         https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for
         description of output columns.
-      pattern: ".translated_mRNA.anota2seq.results.tsv"
+      pattern: ".mRNA_abundance.anota2seq.results.tsv"
   - rdata:
       type: file
       description: Serialised Anota2seqDataSet object
