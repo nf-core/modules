@@ -747,7 +747,7 @@ jobs:
             --profile=${{ matrix.profile }} \
             --tap=test.tap \
             --verbose \
-            ${{ matrix.tags }}
+            ${{ matrix.path }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
