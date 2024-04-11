@@ -392,7 +392,7 @@ if __name__ == "__main__":
 
     # Combine target nf-test files and nf-test files with changed dependencies
     all_nf_tests = [
-        str(test_path)
+        str(test_path.parent.parent)
         for test_path in set(
             nf_test_files + nf_test_changed_setup + nf_files_changed_include
         )
