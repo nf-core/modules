@@ -19,14 +19,29 @@ process FLASH {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     flash \\
         $args \\
+        $args2 \\
         -o ${prefix} \\
         -z \\
         ${reads[0]} \\
         ${reads[1]}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+
+    touch ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
