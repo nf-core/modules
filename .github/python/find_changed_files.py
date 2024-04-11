@@ -158,31 +158,41 @@ def detect_include_files(
     return new_changed_files
 
 
-def detect_files(changed_files: list[Path], suffix: str) -> list[Path]:
+def detect_files(paths: list[Path], suffix: str) -> list[Path]:
     """
     Detects and returns a list of nf-test files from the given list of changed files.
 
     Args:
-        changed_files (list[Path]): A list of file paths.
+        paths (list[Path]): A list of file paths to scan.
         suffix (str): File suffix to detect
 
     Returns:
         list[Path]: A list of nf-test file paths.
     """
     result: list[Path] = []
-    for path in changed_files:
+
+    for path in paths:
         # If Path is the exact nf-test file add to list:
         if path.match(suffix) and path.exists():
             result.append(path)
         # Else recursively search for nf-test files:
-        else:
-            # Get the enclosing dir so files in the same dir can be found.
+        elif path.is_dir():
+            # Search the dir
+            # e.g.
+            # dir/
+            # ├─ main.nf
+            # ├─ main.nf.test
+            for file in path.rglob(suffix):
+                result.append(file)
+        elif path.is_file():
+            # Search the enclosing dir so files in the same dir can be found.
             # e.g.
             # dir/
             # ├─ main.nf
             # ├─ main.nf.test
             for file in path.parent.rglob(suffix):
                 result.append(file)
+
     return result
 
 
@@ -370,12 +380,14 @@ if __name__ == "__main__":
 
     # Parse nf-test files to identify nf-tests containing "setup" with changed module/subworkflow/workflow
     nf_test_changed_setup = find_nf_tests_with_changed_dependencies(
-        [Path(".")], target_results
+        [Path("./modules/"), Path("./subworkflows/"), Path("./workflows/")],
+        target_results,
     )
 
     # Parse *.nf files to identify nf-files containing include with changed module/subworkflow/workflow
     nf_files_changed_include = find_nf_files_with_changed_dependencies(
-        [Path(".")], target_results
+        [Path("./modules/"), Path("./subworkflows/"), Path("./workflows/")],
+        target_results,
     )
 
     # Combine target nf-test files and nf-test files with changed dependencies
