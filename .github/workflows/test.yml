@@ -136,6 +136,7 @@ jobs:
             -t pipeline workflow process \
             --head_ref ${{ github.sha }} \
             --base_ref origin/${{ github.base_ref }} \
+            --returntype dir \
           ) >> $GITHUB_OUTPUT
 
       - name: Separate modules and subworkflows

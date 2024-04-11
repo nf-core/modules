@@ -75,6 +75,12 @@ def parse_args() -> argparse.Namespace:
         default=["function", "process", "workflow", "pipeline"],
         help="Types of tests to include.",
     )
+    parser.add_argument(
+        "--returntype",
+        choices=["file", "dir"],
+        default="file",
+        help="Return either the nf-test file or modules/subworkflow directory of the changed files",
+    )
     return parser.parse_args()
 
 
@@ -391,12 +397,20 @@ if __name__ == "__main__":
     )
 
     # Combine target nf-test files and nf-test files with changed dependencies
-    all_nf_tests = [
-        str(test_path.parent.parent)
-        for test_path in set(
-            nf_test_files + nf_test_changed_setup + nf_files_changed_include
-        )
-    ]
+    if args.returntype == "file":
+        all_nf_tests = [
+            str(test_path)
+            for test_path in set(
+                nf_test_files + nf_test_changed_setup + nf_files_changed_include
+            )
+        ]
+    elif args.returntype == "dir":
+        all_nf_tests = [
+            str(test_path.parent.parent)
+            for test_path in set(
+                nf_test_files + nf_test_changed_setup + nf_files_changed_include
+            )
+        ]
 
     # Print to stdout
     print(json.dumps(all_nf_tests))
