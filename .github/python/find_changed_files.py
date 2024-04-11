@@ -57,7 +57,7 @@ def parse_args() -> argparse.Namespace:
         "-i",
         "--include",
         type=Path,
-        default=".github/python/include.yaml",
+        default=None,
         help="Path to an include file containing a YAML of key value pairs to include in changed files. I.e., return the current directory if an important file is changed.",
     )
     parser.add_argument(
