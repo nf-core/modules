@@ -64,7 +64,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 }
 
 #' Extract the values for a single metric and convert it into a genes x genes matrix.
-#' 
+#'
 #' @param object propd object
 one_metric_df <- function(object){
     result <- getResults(object)
