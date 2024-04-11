@@ -21,4 +21,9 @@ process CUSTOM_CATADDITIONALFASTA {
 
     script:
     template 'fasta2gtf.py'
+
+    stub:
+    """
+    touch ${meta.id}.fasta ${meta.id}.gtf versions.yml
+    """
 }
