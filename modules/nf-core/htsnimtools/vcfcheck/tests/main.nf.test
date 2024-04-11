@@ -9,8 +9,6 @@ nextflow_process {
     tag "htsnimtools"
     tag "htsnimtools/vcfcheck"
 
-    config "./nextflow.config"
-
     test("sarscov2 - vcf, tbi - background_vcf,background_tbi") {
 
         when {
