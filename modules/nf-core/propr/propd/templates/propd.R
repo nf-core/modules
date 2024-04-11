@@ -82,6 +82,7 @@ opt <- list(
     cutoff_min      = NA,                   # minimun threshold to test
     cutoff_max      = NA,                   # maximun threshold to test
     cutoff_interval = NA,                   # interval between thresholds
+    fixseed         = FALSE,
     ncores          = as.integer('$task.cpus')
 )
 opt_types <- list(
@@ -97,6 +98,7 @@ opt_types <- list(
     cutoff_min      = 'numeric',
     cutoff_max      = 'numeric',
     cutoff_interval = 'numeric',
+    fixseed         = 'logical',
     ncores          = 'numeric'
 )
 
@@ -186,8 +188,10 @@ pd <- propd(
     group    = group,
     alpha    = opt\$alpha,
     weighted = FALSE,
-    p        = opt\$permutation
+    p        = opt\$permutation,
+    fixseed = opt\$fixseed
 )
+
 if (opt\$metric == 'theta_d'){
     pd <- setDisjointed(pd)
 } else if (opt\$metric == 'theta_e'){
@@ -253,13 +257,11 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 propr.version <- as.character(packageVersion('propr'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')
