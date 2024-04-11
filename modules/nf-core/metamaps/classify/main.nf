@@ -12,7 +12,7 @@ process METAMAPS_CLASSIFY {
     tuple val(meta), path(classification_res)
     path database_folder
     path meta_file
-    pat readlengths
+    path readlengths
     path para
 
     output:
