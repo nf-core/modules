@@ -21,10 +21,10 @@ process BEDOPS_CONVERT2BED {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def format = ("$input".endsWith(".gtf")) ? "--gtf" :
-         ("$input".endsWith(".gff")) ? "--gff" :
-         ("$input".endsWith(".bam")) ? "--bam" :
-         ("$input".endsWith(".gvf")) ? "--gvf" :
-         ("$input".endsWith(".psl")) ? "--psl" : ''
+        ("$input".endsWith(".gff")) ? "--gff" :
+        ("$input".endsWith(".bam")) ? "--bam" :
+        ("$input".endsWith(".gvf")) ? "--gvf" :
+        ("$input".endsWith(".psl")) ? "--psl" : ''
     """
     convert2bed \\
         $args \\
