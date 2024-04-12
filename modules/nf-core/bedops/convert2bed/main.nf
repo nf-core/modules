@@ -8,7 +8,7 @@ process BEDOPS_CONVERT2BED {
         'biocontainers/bedops:2.4.41--h4ac6f70_2' }"
 
     input:
-    tuple val(meta), path(gtf)
+    tuple val(meta), path(input)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -20,11 +20,16 @@ process BEDOPS_CONVERT2BED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def format = ("$input".endsWith(".gtf")) ? "--gtf" :
+         ("$input".endsWith(".gff")) ? "--gff" :
+         ("$input".endsWith(".bam")) ? "--bam" :
+         ("$input".endsWith(".gvf")) ? "--gvf" :
+         ("$input".endsWith(".psl")) ? "--psl" : ''
     """
     convert2bed \\
-        -i gtf \\
         $args \\
-        < $gtf \\
+        -i $format \\
+        < $input \\
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
