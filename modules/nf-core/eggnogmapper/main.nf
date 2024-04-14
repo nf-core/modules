@@ -25,8 +25,8 @@ process EGGNOGMAPPER {
     script:
     def args            = task.ext.args                 ?: ''
     def prefix          = task.ext.prefix               ?: "${meta.id}"
-    def is_compressed   = fasta.name.endsWith(".gz")
-    def fasta_name      = fasta.name.replace(".gz", "")
+    def is_compressed   = fasta.extension == '.gz'      ? true                              : false
+    def fasta_name      = is_compressed                 ? fasta.baseName                    : "$fasta"
     def dbmem           = task.memory.toMega() > 40000  ? '--dbmem'                         : ''
     def database_arg    = eggnog_db                     ? "--database $eggnog_db"           : ''
     def dmnd_db_arg     = eggnog_diamond_db             ? "--dmnd_db $eggnog_diamond_db"    : ''
@@ -53,8 +53,8 @@ process EGGNOGMAPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.emapper.annotations
     touch ${prefix}.emapper.seed_orthologs
