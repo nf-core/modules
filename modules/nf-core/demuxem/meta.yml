@@ -33,24 +33,32 @@ input:
       type: string
       description: |
         Output name. All outputs will use it as the prefix.
+  - generate_gender_plot:
+      type: string
+      description: |
+        Generate violin plots using gender-specific genes (e.g. Xist). <gene> is a comma-separated list of gene names.
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'sample1' ]
-  - output_name_demux:
+  - zarr:
       type: file
       description: |
         RNA expression matrix with demultiplexed sample identities in Zarr format.
       pattern: "*_demux.zarr"
 
-  - output_name.out.demuxEM:
+  - out_zarr:
       type: file
       description: |
         DemuxEM-calculated results in Zarr format, containing two datasets, one for HTO and one for RNA.
       pattern: "*.out.demuxEM.zarr"
 
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@mari-ga"
   - "@maxozo"
