@@ -87,18 +87,18 @@ one_metric_df <- function(object){
     return(empty_matrix)
 }
 
-#' Extract the proportionality cutoff for a specified FDR value.
-#' Gene pairs with a proportionality value higher than the extracted cutoff will be considered significantly proportional.
+#' Extract the differential proportionality cutoff for a specified FDR value.
+#' Gene pairs with a value higher than the extracted cutoff will be considered significantly differentially proportional.
 #'
-#' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff.
+#' @param object propd object. Output from propd function. updateCutoffs function should be applied to the object previous to valCutoff.
 #' @param fdrVal FDR value to extract the cutoff for. Per default 0.05.
 #'
-#' @return cutoff value. Proportionality values lower than this cutoff are considered significant.
+#' @return cutoff value. Differential proportionality values lower than this cutoff are considered significant.
 valCutoff  <- function(object, fdrVal = 0.05){
     fdr_df <- object@fdr
     if (prod(dim(fdr_df) == 0)){
-        warning("Please run updateCutoff on propr first")
-        }else{
+        warning("Please run updateCutoff on propd first")
+    }else{
         fdr_vals <- fdr_df\$FDR
         if (!any(is.na(fdr_vals))){ # Si hay algun valor de FDR correcto
             threshold <- any(fdr_vals <= fdrVal)
@@ -108,6 +108,8 @@ valCutoff  <- function(object, fdrVal = 0.05){
                 warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
                 fdr_threshold <- fdr_vals[1]
             }
+        }else{
+            warning("No true counts in the given interval. FDR values are not defined")
         }
     }
     cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
