@@ -1,12 +1,15 @@
-name: "rrnatranscripts"
+name: rrnatranscripts
 description: Ribosomal RNA extraction from a GTF file.
 keywords:
   - ribosomal
   - rna
   - genomics
 tools:
-  - "rrnatranscripts":
-      description: "Ribosomal RNA extraction from a GTF file."
+  - rrnatranscripts:
+      description: |
+        Extraction of ribosomal RNA
+      homepage: https://github.com/nf-core/rnafusion
+      licence: ["GPL-3.0-or-later"]
 input:
   - gtf:
       type: file
