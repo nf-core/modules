@@ -1,19 +1,35 @@
 {
-    "fasta": {
+    "Should query with a file containing a list of protein identifiers against a FASTA DB": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.fasta:md5,0b209b6d43b3d5a160944227d3eb660b"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fasta:md5,0b209b6d43b3d5a160944227d3eb660b"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,9979a0b64c632060d9daac9a9135322c"
+                ],
+                "fasta_batch": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fasta:md5,0b209b6d43b3d5a160944227d3eb660b"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,9979a0b64c632060d9daac9a9135322c"
                 ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-15T19:02:05.113953"
+        "timestamp": "2024-04-15T19:16:15.63089"
     }
 }
