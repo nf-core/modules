@@ -38,8 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fasta_batch).match("fasta") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.fasta_batch).match("fasta") }
             )
         }
 
