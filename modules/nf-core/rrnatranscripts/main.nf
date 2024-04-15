@@ -19,12 +19,15 @@ process RRNATRANSCRIPTS {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    template "get_rrna_transcripts.py $gtf ${prefix}_rrna_intervals.gtf"
+    template "get_rrna_transcripts.py"
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gtf
-    touch versions.yml
+    touch ${prefix}_rrna_intervals.gtf
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed -e "s/Python //g")
+    END_VERSIONS
     """
 }

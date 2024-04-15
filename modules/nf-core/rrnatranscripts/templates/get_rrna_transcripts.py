@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 
-import argparse
 import logging
 import platform
 import sys
 from pathlib import Path
 
+# Configure logging
+logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
-def get_rrna_intervals(file_in, file_out):
+def get_rrna_intervals(gtf: str, rrna_transcripts: str):
     """
     Get lines containing ``#`` or ``gene_type rRNA`` or ```` or ``gene_type rRNA_pseudogene`` or ``gene_type MT_rRNA``
     Create output file
@@ -17,7 +20,6 @@ def get_rrna_intervals(file_in, file_out):
         file_out (pathlib.Path): Where the ribosomal RNA GTF file should
             be created; always in GTF format.
     """
-
     patterns = {
         "#",
         'transcript_biotype "Mt_rRNA"',
@@ -26,7 +28,12 @@ def get_rrna_intervals(file_in, file_out):
     }
     line_starts = {"MT", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
     out_lines = []
-    with file_in.open() as f:
+    path_gtf = Path(gtf)
+    path_rrna_transcripts = Path(rrna_transcripts)
+    if not path_gtf.is_file():
+        logger.error(f"The given input file {gtf} was not found!")
+        sys.exit(2)
+    with path_gtf.open() as f:
         data = f.readlines()
         for line in data:
             for pattern in patterns:
@@ -35,7 +42,7 @@ def get_rrna_intervals(file_in, file_out):
                         if line.startswith(line_start):
                             out_lines.append(line)
 
-    with file_out.open(mode="w") as out_file:
+    with path_rrna_transcripts.open(mode="w") as out_file:
         out_file.writelines(out_lines)
 
 
@@ -59,43 +66,18 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-def parse_args(argv=None):
-    """Define and immediately parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Extract ribosomal RNA intervals from a gtf file.",
-        epilog="Example: python get_rrna_transcripts.py <filename.gtf> <intervals.gtf>",
-    )
-    parser.add_argument(
-        "file_in",
-        metavar="FILE_IN",
-        type=Path,
-        help="Input in GTF format.",
-    )
-    parser.add_argument(
-        "file_out",
-        metavar="FILE_OUT",
-        type=Path,
-        help="Transformed output intervals in GTF format.",
-    )
-    parser.add_argument(
-        "-l",
-        "--log-level",
-        help="The desired log level (default WARNING).",
-        choices=("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"),
-        default="WARNING",
-    )
-    return parser.parse_args(argv)
+if __name__ == "__main__":
+    if '${task.ext.prefix}' != "null":
+        prefix = "${task.ext.prefix}."
+    elif '$meta.id' != "null":
+        prefix = '${meta.id}.'
+    else:
+        prefix = ''
+
+    if not get_rrna_intervals('$gtf', f"{prefix}_rrna_intervals.gtf"):
+        logging.error("Failed to extract rrna transcipts.")
 
 
-def main(argv=None):
-    """Coordinate argument parsing and program execution."""
-    args = parse_args(argv)
-    logging.basicConfig(level=args.log_level, format="[%(levelname)s] %(message)s")
-    if not args.file_in.is_file():
-        logger.error(f"The given input file {args.file_in} was not found!")
-        sys.exit(2)
-    args.file_out.parent.mkdir(parents=True, exist_ok=True)
-    get_rrna_intervals(args.file_in, args.file_out)
 
     # Write the versions
     versions_this_module = {}
@@ -103,6 +85,3 @@ def main(argv=None):
     with open("versions.yml", "w") as f:
         f.write(format_yaml_like(versions_this_module))
 
-
-if __name__ == "__main__":
-    sys.exit(main())
