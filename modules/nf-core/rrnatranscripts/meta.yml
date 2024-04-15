@@ -1,5 +1,5 @@
 name: "rrnatranscripts"
-description: Extract ribosomal RNA from a GTF file
+description: "Ribosomal RNA extraction from a GTF file"
 keywords:
   - ribosomal
   - rna
@@ -9,11 +9,6 @@ tools:
       description: "Extract ribosomal RNA from a GTF file"
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - gtf:
       type: file
       description: GTF file
