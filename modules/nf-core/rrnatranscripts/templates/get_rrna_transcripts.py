@@ -69,10 +69,8 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 if __name__ == "__main__":
     if '${task.ext.prefix}' != "null":
         prefix = "${task.ext.prefix}."
-    elif '$meta.id' != "null":
-        prefix = '${meta.id}.'
     else:
-        prefix = ''
+        prefix = "${task.ext.gtf}."
 
     if not get_rrna_intervals('$gtf', f"{prefix}_rrna_intervals.gtf"):
         logging.error("Failed to extract rrna transcipts.")

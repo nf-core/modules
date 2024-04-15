@@ -5,7 +5,7 @@ process RRNATRANSCRIPTS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/python:3.12' :
-        'baselibrary/python:3.12' }"
+        'biocontainers/python:3.12' }"
 
     input:
     path(gtf)
@@ -18,11 +18,10 @@ process RRNATRANSCRIPTS {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     template "get_rrna_transcripts.py"
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
     touch ${prefix}_rrna_intervals.gtf
     cat <<-END_VERSIONS > versions.yml
