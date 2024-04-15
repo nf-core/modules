@@ -18,7 +18,17 @@ process RRNATRANSCRIPTS {
     task.ext.when == null || task.ext.when
 
     script:
-    template "get_rrna_transcripts.py"
+    def prefix = task.ext.prefix ?: "${gtf.baseName}"
+    """
+    grep -E '^#|rRNA' genome.gtf >${prefix}_rrna_intervals.gtf
+    if [ !  -s ${prefix}_rrna_intervals.gtf ]; then
+        rm ${prefix}_rrna_intervals.gtf
+    fi
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed -e "s/Python //g")
+    END_VERSIONS
+    """
 
     stub:
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
