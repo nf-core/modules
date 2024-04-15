@@ -1,19 +1,17 @@
 name: "rrnatranscripts"
-description: "Ribosomal RNA extraction from a GTF file"
+description: Ribosomal RNA extraction from a GTF file.
 keywords:
   - ribosomal
   - rna
   - genomics
 tools:
   - "rrnatranscripts":
-      description: "Extract ribosomal RNA from a GTF file"
-
+      description: "Ribosomal RNA extraction from a GTF file."
 input:
   - gtf:
       type: file
       description: GTF file
       pattern: "*.{gtf}"
-
 output:
   #
   - versions:
@@ -24,7 +22,6 @@ output:
       type: file
       description: GTF file with ribosomal RNA only
       pattern: "*.{gtf}"
-
 authors:
   - "@rannick"
 maintainers:

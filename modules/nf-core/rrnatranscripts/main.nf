@@ -11,8 +11,8 @@ process RRNATRANSCRIPTS {
     path(gtf)
 
     output:
-    path("*rrna_intervals.gtf")   , emit: rrna_gtf
-    path "versions.yml"           , emit: versions
+    path("*rrna_intervals.gtf") , emit: rrna_gtf, optional: true
+    path "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

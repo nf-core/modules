@@ -41,9 +41,9 @@ def get_rrna_intervals(gtf: str, rrna_transcripts: str):
                     for line_start in line_starts:
                         if line.startswith(line_start):
                             out_lines.append(line)
-
-    with path_rrna_transcripts.open(mode="w") as out_file:
-        out_file.writelines(out_lines)
+    if out_lines != []:
+        with path_rrna_transcripts.open(mode="w") as out_file:
+            out_file.writelines(out_lines)
 
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
