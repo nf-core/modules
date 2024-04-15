@@ -110,6 +110,7 @@ jobs:
       paths: ${{ steps.list.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
+      # Prod for version bumping
 
     steps:
       - uses: actions/checkout@v4
