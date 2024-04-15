@@ -1,0 +1,10 @@
+- name: "dragen"
+  command: nextflow run ./tests/modules/nf-core/dragen -entry test_dragen -c ./tests/config/nextflow.config
+  tags:
+    - "dragen"
+  files:
+    - path: "output/dragen/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/dragen/versions.yml"
+      md5sum: c983e5d38d4fa1ae6de50212114e1178
+
