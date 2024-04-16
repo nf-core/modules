@@ -1,0 +1,179 @@
+nextflow_process {
+
+    name "Test Process DESEQ2_DIFFERENTIAL"
+    script "../main.nf"
+    process "DESEQ2_DIFFERENTIAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deseq2"
+    tag "deseq2/differential"
+
+    test("mouse - contrasts - matrix") {
+
+        config './contrasts_matrix.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - lengths") {
+
+        config './contrasts_matrix_lengths.config'
+
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_lengths = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.spoofed_lengths.tsv', checkIfExists: true)
+                ]
+                
+                ch_spikes = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mouse - contrasts - matrix - no blocking") {
+
+        config './contrasts_matrix_noblocking.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - spikes") {
+
+        config './contrasts_matrix_spikes.config'
+ 
+        setup {
+
+            run("SPOOF_SPIKES") {
+                script "./spoof_spikes.nf"
+                process {
+                    """
+                    rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+                    input[0] = file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                    """
+                }
+            }
+
+        }
+ 
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = SPOOF_SPIKES.out.map{tuple(['id':'ERCC'], it)}
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
