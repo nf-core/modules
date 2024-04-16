@@ -100,7 +100,7 @@ valCutoff  <- function(object, fdrVal = 0.05){
         warning("Please run updateCutoff on propd first")
     }else{
         fdr_vals <- fdr_df\$FDR
-        if (!any(is.na(fdr_vals))){ # Si hay algun valor de FDR correcto
+        if (any(!is.na(fdr_vals))){ # Si hay algun valor de FDR correcto
             threshold <- any(fdr_vals <= fdrVal)
             if (threshold){
                 fdr_threshold <- fdr_vals[which.min(fdr_vals <= fdrVal) - 1]
@@ -109,7 +109,8 @@ valCutoff  <- function(object, fdrVal = 0.05){
                 fdr_threshold <- fdr_vals[1]
             }
         }else{
-            warning("No true counts in the given interval. FDR values are not defined")
+            stop("No true counts in the given interval. FDR values are not defined")
+            geterrmessage()
         }
     }
     cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
