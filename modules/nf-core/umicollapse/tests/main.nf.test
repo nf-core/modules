@@ -34,10 +34,7 @@ nextflow_process {
                 script "../../bwa/index/main.nf"
                 process{
                     """
-                    input[0] = [
-                            [ id:'sarscov2'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                    input[0] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
                     """
                 }
             }
@@ -47,7 +44,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }
@@ -66,6 +64,7 @@ nextflow_process {
             process {
                 """
                 input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                input[1] = 'bam'
                 """
             }
         }
@@ -116,7 +115,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }
@@ -135,6 +135,7 @@ nextflow_process {
             process {
                 """
                 input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                input[1] = 'bam'
                 """
             }
         }
@@ -148,6 +149,32 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("umicollapse fastq tests") {
+
+            when {
+                config "./nextflow_SE.config"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    []
+                    ]
+                    input[1] = 'fastq'
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success },
+                    { assert snapshot(
+                        process.out.fastq,
+                        process.out.versions).match() }
+                )
+            }
     }
 
     test("umicollapse stub tests") {
@@ -186,7 +213,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }
@@ -204,6 +232,7 @@ nextflow_process {
             process {
                 """
                 input[0] =  BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                input[1] = 'bam'
                 """
             }
         }
@@ -216,4 +245,5 @@ nextflow_process {
         }
 
     }
+
 }
