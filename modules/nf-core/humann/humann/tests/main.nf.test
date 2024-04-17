@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process HUMANN_HUMANN"
+    script "../main.nf"
+    process "HUMANN_HUMANN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humann"
+    tag "humann/humann"
+
+    // Dependencies
+    tag "humann/downloadchocophlandb"
+    tag "humann/downloadunirefdb"
+
+    setup {
+        run("HUMANN_DOWNLOADCHOCOPHLANDB") {
+            script "../../downloadchocophlandb/main.nf"
+            process {
+                """
+                input[0] = "DEMO"
+                """
+            }
+        }
+
+        run("HUMANN_DOWNLOADUNIREFDB") {
+            script "../../downloadunirefdb/main.nf"
+            process {
+                """
+                input[0] = "DEMO_diamond"
+                """
+            }
+        }
+    }
+
+
+    test("fastq.gz & DEMO & DEMO_diamond") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file("/workspace/modules/METAPHLAN_PROFILE_FOR_TEST.txt", checkIfExists: true)
+                    ]
+                input[2] = HUMANN_DOWNLOADCHOCOPHLANDB.out.chocophlan_db
+                input[3] = HUMANN_DOWNLOADUNIREFDB.out.uniref_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file("/workspace/modules/METAPHLAN_PROFILE_FOR_TEST.txt", checkIfExists: true)
+                    ]
+                input[2] = HUMANN_DOWNLOADCHOCOPHLANDB.out.chocophlan_db
+                input[3] = HUMANN_DOWNLOADUNIREFDB.out.uniref_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

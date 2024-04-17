@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process HUMANN_DOWNLOADUNIREFDB"
+    script "../main.nf"
+    process "HUMANN_DOWNLOADUNIREFDB"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humann"
+    tag "humann/downloadunireflandb"
+
+    test("DEMO_diamond") {
+        when {
+            process {
+                """
+                input[0] = "DEMO_diamond"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("DEMO_diamond - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = "DEMO_diamond"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

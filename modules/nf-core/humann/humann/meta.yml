@@ -1,0 +1,60 @@
+name: "humann_humann"
+description: Download the uniref database for running HUMAnN
+keywords:
+  - humann
+  - uniref
+  - chocophlan
+  - metaphlan
+  - metagenomics
+  - microbiome
+  - database
+  - biobakery
+tools:
+  - "humann":
+      description: "HUMAnN: The HMP Unified Metabolic Analysis Network, version 3"
+      homepage: "http://huttenhower.sph.harvard.edu/humann"
+      documentation: "http://huttenhower.sph.harvard.edu/humann"
+      tool_dev_url: "https://github.com/biobakery/humann"
+      doi: "10.7554/eLife.65088"
+      licence: ['MIT']
+
+input:
+  - reads:
+      type: file
+      description: Read set (forward and reverse reads merged if paired-end) to be used as input.
+      pattern: "*.{fastq, fastq.gz, fasta, fasta.gz}"
+  - metaphlan_profile:
+      type: file
+      description: Taxonomic profile output by running MetaPhlAn.
+      pattern: "*"
+  - chocophlan_db:
+    type: directory
+    description: Previously downloaded ChocoPhlAn database (can be downloaded with humann/downloadchocophlandb module)
+    pattern: "*"
+  - uniref:
+    type: directory
+    description: Previously downloaded Uniref database (can be downloaded with humann/downloadunirefdb module)
+    pattern: "*"
+
+output:
+  - genefamilies:
+        type: file
+        description: TSV File containing gene family abundances output by HUMAnN.
+        pattern: "*_genefamilies.tsv"
+  - pathabundance:
+        type: file
+        description: TSV File containing pathway abundances output by HUMAnN.
+        pattern: "*_pathabundance.tsv"
+  - pathcoverage:
+        type: file
+        description: TSV File containing pathway coverage output by HUMAnN.
+        pattern: "*_pathcoverage.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"
