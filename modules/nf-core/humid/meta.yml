@@ -17,7 +17,6 @@ tools:
       licence: ["MIT"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -27,6 +26,11 @@ input:
       type: file
       description: Fastq file(s) to deduplicate
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
   - umis:
       type: file
       description: Fastq file(s) containing UMIs
@@ -53,6 +57,11 @@ output:
       type: directory
       description: Directory containg statistics file, use for multiqc.
       pattern: "${prefix}/"
+
+  - log:
+      type: file
+      description: Log file of humid, containing progress and errors
+      pattern: "*.log"
 
   - versions:
       type: file
