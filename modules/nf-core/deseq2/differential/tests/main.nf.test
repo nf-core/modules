@@ -9,6 +9,18 @@ nextflow_process {
     tag "deseq2"
     tag "deseq2/differential"
 
+    setup {
+        run("SPOOF_SPIKES") {
+            script "./spoof_spikes.nf"
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+                input[0] = file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                """
+            }
+        }
+    }
+ 
     test("mouse - contrasts - matrix") {
 
         config './contrasts_matrix.config'
@@ -48,7 +60,7 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - lengths") {
 
-        config './contrasts_matrix_lengths.config'
+        config './contrasts_matrix.config'
 
         when {
             process {
@@ -130,19 +142,42 @@ nextflow_process {
 
         config './contrasts_matrix_spikes.config'
  
-        setup {
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
-            run("SPOOF_SPIKES") {
-                script "./spoof_spikes.nf"
-                process {
-                    """
-                    rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
-                    input[0] = file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                    """
-                }
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = SPOOF_SPIKES.out.map{tuple(['id':'ERCC'], it)}
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
             }
-
         }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - strip spikes") {
+
+        config './contrasts_matrix.config'
  
         when {
             process {
@@ -160,6 +195,160 @@ nextflow_process {
                     file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = SPOOF_SPIKES.out.map{tuple(['id':'ERCC'], it)}
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - csv") {
+
+        config './contrasts_matrix.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+
+                // Convert the matrix to a CSV first
+                ch_matrix = Channel.fromPath(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv')
+                    .splitCsv(header: false)
+                    .map{
+                        it.join('\t')
+                    }
+                    .collectFile(name: 'test.tsv', newLine: true, sort: false)
+                    .map{
+                        [ [ id:'test'], file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true), it]
+                }
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - vst nsub") {
+
+        config './contrasts_matrix_vst_nsub.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - subset to contrast") {
+
+        config './contrasts_matrix_subset_to_contrast.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - exclude samples") {
+
+        config './contrasts_matrix_exclude_samples.config'
+        
+        when {
+            process {
+                """
+                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(rnaseq_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
                 
                 input[0] = ch_contrasts
