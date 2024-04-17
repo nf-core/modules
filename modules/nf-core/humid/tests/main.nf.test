@@ -47,7 +47,7 @@ nextflow_process {
                     process.out.dedup,
                     process.out.annotated,
                     process.out.versions).match()},
-                {assert file(process.out.log).text.contains("Reading data... done.")},
+                {assert path(process.out.log.get(0).get(1)).text.contains("Reading data... done.")},
             )
         }
 
@@ -126,7 +126,7 @@ nextflow_process {
                     process.out.dedup,
                     process.out.annotated,
                     process.out.versions).match()},
-                {assert file(process.out.log).text.contains("Reading data... done.")},
+                {assert path(process.out.log.get(0).get(1)).text.contains("Reading data... done.")},
             )
         }
     }
