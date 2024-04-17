@@ -503,7 +503,7 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
         round_dataframe_columns(
             data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE),
             digits = opt\$round_digits
-	)
+        )
     )
     write.table(
         out_df,
