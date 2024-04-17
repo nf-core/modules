@@ -2,19 +2,19 @@ nextflow_process {
 
     name "Test Process GAWK"
     script "../main.nf"
-    config "./nextflow.config"
     process "GAWK"
 
     tag "modules"
     tag "modules_nfcore"
     tag "gawk"
 
-    test("fasta index to bed format") {
+    test("convert fasta to bed") {
+        config "./nextflow.config"
 
         when {
             process {
                 """
-                input[0] =[
+                input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
@@ -29,15 +29,14 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
-    test("fasta index to bed format with program") {
-
+    test("convert fasta to bed with program file") {
+        config "./nextflow_with_program_file.config"
         when {
             process {
                 """
-                input[0] =[
+                input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]

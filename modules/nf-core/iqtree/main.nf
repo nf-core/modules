@@ -13,7 +13,10 @@ process IQTREE {
 
     output:
     tuple val(meta), path("*.treefile") , emit: phylogeny
+    tuple val(meta), path("*.iqtree")   , emit: report
+    tuple val(meta), path("*.mldist")   , emit: mldist, optional: true
     tuple val(meta), path("*.ufboot")   , emit: bootstrap, optional: true
+    tuple val(meta), path("*.log")      , emit: log
     path "versions.yml"                 , emit: versions
 
     when:
@@ -39,4 +42,20 @@ process IQTREE {
         iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    touch ${prefix}.treefile
+    touch ${prefix}.iqtree
+    touch ${prefix}.mldist
+    touch ${prefix}.ufboot
+    touch ${prefix}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        iqtree: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
+    END_VERSIONS
+    """
+
 }
