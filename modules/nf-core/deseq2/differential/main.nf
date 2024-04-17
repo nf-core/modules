@@ -30,7 +30,7 @@ process DESEQ2_DIFFERENTIAL {
 
     script:
     template 'deseq_de.R'
-    
+
     stub:
     """
     touch ${meta.id}.deseq2.results.tsv
