@@ -77,23 +77,28 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 #'
 #' @return output Data frame
 
-round_dataframe_columns <- function(df, columns = NULL, digits = 8){
-    if (is.null(columns)){
-        columns <- colnames(df)
+round_dataframe_columns <- function(df, columns = NULL, digits = NULL){
+
+    if (is.null(digits)){
+        df
+    } else {
+        if (is.null(columns)){
+            columns <- colnames(df)
+        }
+
+        df[,columns] <- format(
+            data.frame(df[, columns], check.names = FALSE),
+            nsmall = digits
+        )
+
+        # Convert columns back to numeric
+
+        for (c in columns) {
+            df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+            df[[c]] <- as.numeric(df[[c]])
+        }
+        df
     }
-
-    df[,columns] <- format(
-        data.frame(df[, columns], check.names = FALSE),
-        nsmall = digits
-    )
-
-    # Convert columns back to numeric
-
-    for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
-        df[[c]] <- as.numeric(df[[c]])
-    }
-    df
 }
 
 ################################################
@@ -139,7 +144,8 @@ opt <- list(
     shrink_lfc = TRUE,
     cores = 1,
     vs_blind = TRUE,
-    vst_nsub = 1000
+    vst_nsub = 1000,
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -421,9 +427,11 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 out_df <- cbind(
     setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
     round_dataframe_columns(
-        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
+        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE),
+        digits = opt\$round_digits
     )
 )
+
 write.table(
     out_df,
     file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
@@ -493,8 +501,9 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     out_df <- cbind(
         setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
         round_dataframe_columns(
-            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE)
-        )
+            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE),
+            digits = opt\$round_digits
+	)
     )
     write.table(
         out_df,
