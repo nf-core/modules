@@ -9,18 +9,6 @@ nextflow_process {
     tag "deseq2"
     tag "deseq2/differential"
 
-    setup {
-        run("SPOOF_SPIKES") {
-            script "./spoof_spikes.nf"
-            process {
-                """
-                rnaseq_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
-                input[0] = file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                """
-            }
-        }
-    }
- 
     test("mouse - contrasts - matrix") {
 
         config './contrasts_matrix.config'
@@ -157,7 +145,10 @@ nextflow_process {
                     file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
-                ch_spikes = SPOOF_SPIKES.out.map{tuple(['id':'ERCC'], it)}
+                ch_spikes = [
+                    ['id':'ERCC'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
+                ]
                 ch_lengths = [[],[]]
                 
                 input[0] = ch_contrasts
@@ -194,7 +185,10 @@ nextflow_process {
                     file(rnaseq_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(rnaseq_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
-                ch_spikes = SPOOF_SPIKES.out.map{tuple(['id':'ERCC'], it)}
+                ch_spikes = [
+                    ['id':'ERCC'], 
+                    file(rnaseq_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
+                ]
                 ch_lengths = [[],[]]
                 
                 input[0] = ch_contrasts
