@@ -11,7 +11,8 @@ process BRACKEN_BUILD {
     tuple val(meta), path(kraken2db)
 
     output:
-    tuple val(meta), path(kraken2db, includeInputs: true), emit: db
+    tuple val(meta), path(kraken2db               , includeInputs: true), emit: db
+    tuple val(meta), path("${kraken2db}/database*", includeInputs: true), emit: bracken_files
     path "versions.yml"                                  , emit: versions
 
     when:
