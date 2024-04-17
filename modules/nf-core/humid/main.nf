@@ -13,14 +13,11 @@ process HUMID {
     tuple val(meta2), path(umi_file)
 
     output:
-    tuple val(meta), path("${prefix}.log")                   , emit: log
-    tuple val(meta), path("${prefix}/*_dedup*.fastq.gz")     , emit: dedup    , optional: true
-    tuple val(meta), path("${prefix}/*_annotated*.fastq.gz") , emit: annotated, optional: true
-    tuple val(meta), path("${prefix}/stats.dat")             , emit: stats    , optional: true
-    tuple val(meta), path("${prefix}/neigh.dat")             , emit: neigh    , optional: true
-    tuple val(meta), path("${prefix}/counts.dat")            , emit: counts   , optional: true
-    tuple val(meta), path("${prefix}/clusters.dat")          , emit: clusters , optional: true
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("${prefix}.log")         , emit: log
+    tuple val(meta), path("*_dedup*.fastq.gz")     , emit: dedup    , optional: true
+    tuple val(meta), path("*_annotated*.fastq.gz") , emit: annotated, optional: true
+    tuple val(meta), path("${prefix}")             , emit: stats    , optional: true
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,6 +36,8 @@ process HUMID {
         $reads \\
         $umis \\
 
+    mv ${prefix}/*.fastq* .
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         humid: ${VERSION}
@@ -52,10 +51,10 @@ process HUMID {
     def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}
-    touch ${prefix}/${prefix}_1_dedup.fastq.gz
-    touch ${prefix}/${prefix}_2_dedup.fastq.gz
-    touch ${prefix}/${prefix}_1_annotated.fastq.gz
-    touch ${prefix}/${prefix}_2_annotated.fastq.gz
+    touch ${prefix}_1_dedup.fastq.gz
+    touch ${prefix}_2_dedup.fastq.gz
+    touch ${prefix}_1_annotated.fastq.gz
+    touch ${prefix}_2_annotated.fastq.gz
     touch ${prefix}/stats.dat
     touch ${prefix}/neigh.dat
     touch ${prefix}/counts.dat

@@ -1,4 +1,39 @@
 {
+    "sarscov2 - paired-end - stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "clusters.dat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "counts.dat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "neigh.dat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "stats.dat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,2626acbd80290e1ac8a8b3f501c77fcf"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-17T09:31:01.120342706"
+    },
     "sarscov2 - paired-end": {
         "content": [
             {
@@ -8,11 +43,20 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.log:md5,d38b2fbbc910f3ab25fd82e98fd25302"
+                        "test.log:md5,f95f790e60ab3c636d5cb48e76ed1448"
                     ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1_dedup.fastp.fastq.gz:md5,9c736ed873cf976039886229b742e272",
+                            "test_2_dedup.fastp.fastq.gz:md5,730c5450425a26230a5377972b84ba4c"
+                        ]
+                    ]
                 ],
                 "2": [
                     [
@@ -32,37 +76,15 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "stats.dat:md5,1bcd2377bc9261e8466123af79b74c33"
+                        [
+                            "clusters.dat:md5,b88d9d3330fa58f35800ce1df9755509",
+                            "counts.dat:md5,b88d9d3330fa58f35800ce1df9755509",
+                            "neigh.dat:md5,c4780d93e68a773dc1cf29b50319c476",
+                            "stats.dat:md5,1bcd2377bc9261e8466123af79b74c33"
+                        ]
                     ]
                 ],
                 "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "neigh.dat:md5,c4780d93e68a773dc1cf29b50319c476"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "counts.dat:md5,b88d9d3330fa58f35800ce1df9755509"
-                    ]
-                ],
-                "6": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "clusters.dat:md5,b88d9d3330fa58f35800ce1df9755509"
-                    ]
-                ],
-                "7": [
                     "versions.yml:md5,2626acbd80290e1ac8a8b3f501c77fcf"
                 ],
                 "annotated": [
@@ -77,26 +99,17 @@
                         ]
                     ]
                 ],
-                "clusters": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "clusters.dat:md5,b88d9d3330fa58f35800ce1df9755509"
-                    ]
-                ],
-                "counts": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "counts.dat:md5,b88d9d3330fa58f35800ce1df9755509"
-                    ]
-                ],
                 "dedup": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1_dedup.fastp.fastq.gz:md5,9c736ed873cf976039886229b742e272",
+                            "test_2_dedup.fastp.fastq.gz:md5,730c5450425a26230a5377972b84ba4c"
+                        ]
+                    ]
                 ],
                 "log": [
                     [
@@ -104,16 +117,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.log:md5,d38b2fbbc910f3ab25fd82e98fd25302"
-                    ]
-                ],
-                "neigh": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "neigh.dat:md5,c4780d93e68a773dc1cf29b50319c476"
+                        "test.log:md5,f95f790e60ab3c636d5cb48e76ed1448"
                     ]
                 ],
                 "stats": [
@@ -122,7 +126,12 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "stats.dat:md5,1bcd2377bc9261e8466123af79b74c33"
+                        [
+                            "clusters.dat:md5,b88d9d3330fa58f35800ce1df9755509",
+                            "counts.dat:md5,b88d9d3330fa58f35800ce1df9755509",
+                            "neigh.dat:md5,c4780d93e68a773dc1cf29b50319c476",
+                            "stats.dat:md5,1bcd2377bc9261e8466123af79b74c33"
+                        ]
                     ]
                 ],
                 "versions": [
@@ -134,6 +143,105 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-16T10:56:55.211438919"
+        "timestamp": "2024-04-17T09:30:50.739243573"
+    },
+    "sarscov2 - single-end": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log:md5,f95f790e60ab3c636d5cb48e76ed1448"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_dedup.fastp.fastq.gz:md5,44ff29f56dd5d48e376663bc22fbe3b3"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_annotated.fastp.fastq.gz:md5,567bf1de24726825a0f9a9a0aede60d2"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        [
+                            "clusters.dat:md5,6b559f508be032a6f43a6135776655c5",
+                            "counts.dat:md5,6b559f508be032a6f43a6135776655c5",
+                            "neigh.dat:md5,a2e34a81a3cbda2cd61005fa66c31961",
+                            "stats.dat:md5,17d662b83217a6537247903940271bef"
+                        ]
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,2626acbd80290e1ac8a8b3f501c77fcf"
+                ],
+                "annotated": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_annotated.fastp.fastq.gz:md5,567bf1de24726825a0f9a9a0aede60d2"
+                    ]
+                ],
+                "dedup": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_dedup.fastp.fastq.gz:md5,44ff29f56dd5d48e376663bc22fbe3b3"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log:md5,f95f790e60ab3c636d5cb48e76ed1448"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        [
+                            "clusters.dat:md5,6b559f508be032a6f43a6135776655c5",
+                            "counts.dat:md5,6b559f508be032a6f43a6135776655c5",
+                            "neigh.dat:md5,a2e34a81a3cbda2cd61005fa66c31961",
+                            "stats.dat:md5,17d662b83217a6537247903940271bef"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,2626acbd80290e1ac8a8b3f501c77fcf"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-17T11:09:47.78216471"
     }
 }
