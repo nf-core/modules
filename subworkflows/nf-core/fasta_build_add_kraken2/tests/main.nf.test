@@ -11,7 +11,6 @@ nextflow_workflow {
     tag "kraken2"
     tag "kraken2/add"
     tag "kraken2/build"
-    tag "bracken/build"
 
     test("metagenome - fasta") {
 
@@ -37,8 +36,7 @@ nextflow_workflow {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
-                input[4] = false
-                input[5] = true
+                input[4] = true
                 """
             }
         }
@@ -51,10 +49,7 @@ nextflow_workflow {
                         workflow.out.versions,
                         path("${workflow.out.db[0][1]}/hash.k2d"),
                         path("${workflow.out.db[0][1]}/taxo.k2d"),
-                        file("${workflow.out.db[0][1]}/opts.k2d").name,
-                        file("${process.out.db[0][1]}/database100mers.kmer_distrib").name,
-                        file("${process.out.db[0][1]}/database100mers.kraken").name,
-                        file("${process.out.db[0][1]}/database.kraken").name
+                        file("${workflow.out.db[0][1]}/opts.k2d").name
                         ).match()
                 }
             )
@@ -85,8 +80,7 @@ nextflow_workflow {
                 input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
-                input[4] = false
-                input[5] = true
+                input[4] = true
                 """
             }
         }
@@ -100,10 +94,7 @@ nextflow_workflow {
                         path("${workflow.out.db[0][1]}/hash.k2d"),
                         path("${workflow.out.db[0][1]}/taxo.k2d"),
                         file("${workflow.out.db[0][1]}/opts.k2d").name,
-                        file("${workflow.out.db[0][1]}/unmapped.txt").name,
-                        file("${process.out.db[0][1]}/database100mers.kmer_distrib").name,
-                        file("${process.out.db[0][1]}/database100mers.kraken").name,
-                        file("${process.out.db[0][1]}/database.kraken").name
+                        file("${workflow.out.db[0][1]}/unmapped.txt").name
                         ).match()
                 }
             )

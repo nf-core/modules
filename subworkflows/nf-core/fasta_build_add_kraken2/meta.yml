@@ -10,7 +10,6 @@ keywords:
 components:
   - kraken2/add
   - kraken2/build
-  - bracken/build
 input:
   - ch_fasta:
       type: file
@@ -46,7 +45,7 @@ output:
   - db:
       type: directory
       description: |
-        Channel containing KRAKEN2 database directory with or without Bracken files.
+        Channel containing KRAKEN2 database directory files.
         Use `$ext.prefix` in a modules.conf file to change default name
         Structure: [ val(meta), path(db) ]
       pattern: "*/"
