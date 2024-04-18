@@ -401,7 +401,7 @@ comp.results <- `colnames<-`(
     data.frame(
         gene_id = rownames(comp.results),
         comp.results,
-	check.names = FALSE
+        check.names = FALSE
     ),
     c(opt\$gene_id_col, colnames(comp.results))  # Setting all column names
 )
@@ -456,11 +456,11 @@ normalised_matrix <- `colnames<-`(
     data.frame(
         gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
         normalised_matrix,                # Other columns
-	check.names = FALSE
+        check.names = FALSE
     ),
     c(opt\$gene_id_col, colnames(normalised_matrix))  # Setting all column names
 )
-	
+
 write.table(
     normalised_matrix,
     file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
@@ -486,9 +486,9 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     vs_mat <- `colnames<-`(
         data.frame(
             gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
-	    vs_mat,                           # Other columns from vs_mat
+            vs_mat,                           # Other columns from vs_mat
             check.names = FALSE
-	),
+        ),
         c(opt\$gene_id_col, colnames(vs_mat))  # Setting all column names
     )
 
