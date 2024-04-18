@@ -4,7 +4,7 @@ nextflow_process {
     name "Test Process DEMUXEM"
     script "../main.nf"
     process "DEMUXEM"
-    config "../nextflow.config"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -18,14 +18,9 @@ nextflow_process {
                 
                 input[0] = [
                     [ id:'sample1'],
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['hashing_demultiplexing']['h5'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['hashing_demultiplexing']['csv'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_hto_csv'], checkIfExists: true)
                     ]
-
-                 input[1] = [
-                    [:],
-                    []
-                ]
                 """
             }
         }
@@ -50,8 +45,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'sample1'],
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['hashing_demultiplexing']['h5'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['hashing_demultiplexing']['csv'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_rna_raw_h5'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_hto_csv'], checkIfExists: true)
                     ]
                 """
             }
