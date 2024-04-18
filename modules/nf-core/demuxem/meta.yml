@@ -37,6 +37,14 @@ input:
       type: string
       description: |
         Generate violin plots using gender-specific genes (e.g. Xist). It is a comma-separated list of gene names.
+  - genome:
+      type: string
+      description: |
+        Reference genome name. If not provided, the tools infers it from the expression matrix file
+  - generate_diagnostic_plots:
+      type: string
+      description: |
+        Generate diagnostic plots, including the background/signal between HTO counts, estimated background probabilities, HTO distributions.
 
 output:
   - meta:
