@@ -12,15 +12,15 @@ nextflow_workflow {
     tag "kraken2/add"
     tag "kraken2/build"
 
-    test("metagenome - fasta") {
+    test("metagenome - fasta - nocleanup") {
 
         setup {
             run("GUNZIP") {
                 script "modules/nf-core/gunzip/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([\
-                                [id:'haemophilus_influenzae'],
+                    input[0] = Channel.of([
+                                [id:'db'],
                                 file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
                             ]
                     )
@@ -32,11 +32,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[id:'sarscov2'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip)
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
                 input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
-                input[4] = true
+                input[4] = false
                 """
             }
         }
@@ -51,12 +51,14 @@ nextflow_workflow {
                         path("${workflow.out.db[0][1]}/taxo.k2d"),
                         file("${workflow.out.db[0][1]}/opts.k2d").name
                         ).match()
-                }
+                },
+                { assert path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert path("${workflow.out.db[0][1]}/taxonomy/").exists() }
             )
         }
     }
 
-    test("metagenome - fasta - nocleanup") {
+    test("metagenome - fasta - withcleanup") {
 
         setup {
             run("GUNZIP") {
@@ -64,7 +66,7 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = Channel.of([\
-                                [id:'haemophilus_influenzae'],
+                                [id:'db'],
                                 file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
                             ]
                     )
@@ -76,7 +78,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[id:'sarscov2'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip)
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
                 input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
@@ -94,9 +96,11 @@ nextflow_workflow {
                         path("${workflow.out.db[0][1]}/hash.k2d"),
                         path("${workflow.out.db[0][1]}/taxo.k2d"),
                         file("${workflow.out.db[0][1]}/opts.k2d").name,
-                        file("${workflow.out.db[0][1]}/unmapped.txt").name
+                        file("${workflow.out.db[0][1]}/unmapped.txt").name,
                         ).match()
-                }
+                },
+                { assert !path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert !path("${workflow.out.db[0][1]}/taxonomy/").exists() }
             )
         }
     }
