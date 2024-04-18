@@ -86,6 +86,7 @@ nextflow_workflow {
                 input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
                 input[4] = false
+                input[5] = true
                 """
             }
         }
