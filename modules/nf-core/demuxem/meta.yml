@@ -36,7 +36,8 @@ input:
   - generate_gender_plot:
       type: string
       description: |
-        Generate violin plots using gender-specific genes (e.g. Xist). <gene> is a comma-separated list of gene names.
+        Generate violin plots using gender-specific genes (e.g. Xist). It is a comma-separated list of gene names.
+
 output:
   - meta:
       type: map
@@ -47,13 +48,13 @@ output:
       type: file
       description: |
         RNA expression matrix with demultiplexed sample identities in Zarr format.
-      pattern: "*_demux.zarr"
+      pattern: "*_demux.zarr.zip"
 
   - out_zarr:
       type: file
       description: |
         DemuxEM-calculated results in Zarr format, containing two datasets, one for HTO and one for RNA.
-      pattern: "*.out.demuxEM.zarr"
+      pattern: "*.out.demuxEM.zarr.zip"
 
   - versions:
       type: file

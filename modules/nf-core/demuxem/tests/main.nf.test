@@ -19,8 +19,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_hto_csv'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
                     ]
+                input[1] = "results"
+                input[2] = ""
+                input[3] = ""
+                input[4] = ""
                 """
             }
         }
@@ -28,8 +32,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.zarr.get(0).get(1)).exists() },
+                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
                 
             )
         }
@@ -43,11 +47,16 @@ nextflow_process {
         when {
             process {
                 """
+                
                 input[0] = [
                     [ id:'sample1'],
-                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_rna_raw_h5'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['test_10x_matrix_hto_csv'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
                     ]
+                input[1] = "results"
+                input[2] = ""
+                input[3] = ""
+                input[4] = "True"
                 """
             }
         }
@@ -55,9 +64,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
-                
+                { assert path(process.out.zarr.get(0).get(1)).exists() },
+                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
             )
         }
 

@@ -11,10 +11,12 @@ process DEMUXEM {
     tuple val(meta), path(input_raw_gene_bc_matrices_h5), path(input_hto_csv_file)
     val output_name
     val generate_gender_plot
+    val genome
+    val generate_diagnostic_plots
     
     output:
-    tuple val(meta), path("*_demux.zarr"), emit: zarr
-    tuple val(meta), path("*.out.demuxEM.zarr"), emit: out_zarr
+    tuple val(meta), path("*_demux.zarr.zip"), emit: zarr
+    tuple val(meta), path("*.out.demuxEM.zarr.zip"), emit: out_zarr
     path "versions.yml"                        , emit: versions
 
     when:
@@ -23,12 +25,18 @@ process DEMUXEM {
     script:
     def args = task.ext.args ?: '' 
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def generateGenderPlot = generate_gender_plot != null ? "--generateGenderPlot ${generate_gender_plot}" : " "
+    def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
+    def genome_file = genome ? "--genome $genome" : ""
+    def diagnostic_plots = generate_diagnostic_plots ? "--generate-diagnostic-plots $generate_diagnostic_plots" : ""
+    
+
     """
         demuxEM $input_raw_gene_bc_matrices_h5 \\
         $input_hto_csv_file $output_name \\
         $args \\
-        $generateGenderPlot
+        $generateGenderPlot\\
+        $genome_file\\
+        $diagnostic_plots
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -42,7 +50,9 @@ process DEMUXEM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.best
+    touch ${prefix}.out.demuxEM.zarr.zip
+    touch ${prefix}_demux.zarr.zip
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
