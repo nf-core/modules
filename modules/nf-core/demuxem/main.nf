@@ -20,23 +20,23 @@ process DEMUXEM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args ?: '' 
+    def args               = task.ext.args ?: ""
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
     def genome_file        = genome ? "--genome $genome" : ""
     def diagnostic_plots   = generate_diagnostic_plots ? "--generate-diagnostic-plots $generate_diagnostic_plots" : ""
-        """
-        demuxEM $input_raw_gene_bc_matrices_h5 \\
-        $input_hto_csv_file $output_name \\
-        $args \\
-        $generateGenderPlot\\
-        $genome_file\\
-        $diagnostic_plots
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":g
-        echo \$(demuxEM --version  2>&1)
-        END_VERSIONS
-        """
+    """
+    demuxEM $input_raw_gene_bc_matrices_h5 \\
+    $input_hto_csv_file $output_name \\
+    $args \\
+    $generateGenderPlot\\
+    $genome_file\\
+    $diagnostic_plots
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":g
+    echo \$(demuxEM --version  2>&1)
+    END_VERSIONS
+    """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
