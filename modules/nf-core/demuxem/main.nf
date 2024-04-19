@@ -11,6 +11,7 @@ process DEMUXEM {
     val output_name
     val generate_gender_plot
     val genome
+    val generate_diagnostic_plots
     output:
     tuple val(meta), path("*_demux.zarr.zip"), emit: zarr
     tuple val(meta), path("*.out.demuxEM.zarr.zip"), emit: out_zarr
@@ -20,7 +21,7 @@ process DEMUXEM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args ?: ""
+    def args               = task.ext.args ?: ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
     def genome_file        = genome ? "--genome $genome" : ""
