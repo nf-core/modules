@@ -20,11 +20,11 @@ process DEMUXEM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: '' 
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args               = task.ext.args ?: '' 
+    def prefix             = task.ext.prefix ?: "${meta.id}"
     def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
-    def genome_file = genome ? "--genome $genome" : ""
-    def diagnostic_plots = generate_diagnostic_plots ? "--generate-diagnostic-plots $generate_diagnostic_plots" : ""
+    def genome_file        = genome ? "--genome $genome" : ""
+    def diagnostic_plots   = generate_diagnostic_plots ? "--generate-diagnostic-plots $generate_diagnostic_plots" : ""
         """
         demuxEM $input_raw_gene_bc_matrices_h5 \\
         $input_hto_csv_file $output_name \\
