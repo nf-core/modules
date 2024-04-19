@@ -40,7 +40,7 @@ process DEMUXEM {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-           echo \$(demuxEM --version  2>&1)
+        echo \$(demuxEM --version  2>&1)
         END_VERSIONS
         
     """
@@ -52,7 +52,6 @@ process DEMUXEM {
     """
     touch ${prefix}.out.demuxEM.zarr.zip
     touch ${prefix}_demux.zarr.zip
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
