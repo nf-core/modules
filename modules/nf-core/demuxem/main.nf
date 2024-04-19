@@ -20,7 +20,7 @@ process DEMUXEM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '' 
+    def args    = task.ext.args ?: '' 
     def prefix = task.ext.prefix ?: "${meta.id}"
     def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
     def genome_file = genome ? "--genome $genome" : ""
