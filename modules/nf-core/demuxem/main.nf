@@ -11,7 +11,7 @@ process DEMUXEM {
     val output_name
     val generate_gender_plot
     val genome
-    val generate_diagnostic_plots
+    
     output:
     tuple val(meta), path("*_demux.zarr.zip"), emit: zarr
     tuple val(meta), path("*.out.demuxEM.zarr.zip"), emit: out_zarr
@@ -26,6 +26,7 @@ process DEMUXEM {
     def generateGenderPlot = generate_gender_plot ? "--generate-gender-plot $generate_gender_plot" : ""
     def genome_file = genome ? "--genome $genome" : ""
     def diagnostic_plots = generate_diagnostic_plots ? "--generate-diagnostic-plots $generate_diagnostic_plots" : ""
+    
     """
         demuxEM $input_raw_gene_bc_matrices_h5 \\
         $input_hto_csv_file $output_name \\
