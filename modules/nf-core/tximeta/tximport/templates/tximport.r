@@ -118,14 +118,16 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
 ################################################
 
 # Define pattern for file names based on quantification type
-pattern <- ifelse('$quant_type' == "kallisto", "abundance.tsv", "quant.sf")
+pattern <- ifelse('$quant_type' == "kallisto",
+                ifelse(file.exists("quants/abundance.h5"), "abundance.h5", "abundance.tsv"),
+                "quant.sf")
+
 fns <- list.files('quants', pattern = pattern, recursive = T, full.names = T)
 names <- basename(dirname(fns))
 names(fns) <- names
-dropInfReps <- '$quant_type' == "kallisto"
 
 # Import transcript-level quantifications
-txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps)
+txi <- tximport(fns, type = '$quant_type', txOut = TRUE)
 
 # Read transcript and sample data
 transcript_info <- read_transcript_info('$tx2gene')
