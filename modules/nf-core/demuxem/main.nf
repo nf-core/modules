@@ -40,7 +40,6 @@ process DEMUXEM {
     """
 
     stub:
-    
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.out.demuxEM.zarr.zip
