@@ -32,7 +32,7 @@ process BLAST_UPDATEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | sed 's/[^0-9]*//;')
+        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | sed 's/[^0-9]*//;')
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process BLAST_UPDATEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | sed 's/[^0-9]*//;')
+        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | sed 's/[^0-9]*//;')
     END_VERSIONS
     """
 }
