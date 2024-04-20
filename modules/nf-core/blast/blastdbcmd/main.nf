@@ -12,8 +12,8 @@ process BLAST_BLASTDBCMD {
     tuple val(meta2), path(db)
 
     output:
-    tuple val(meta), path("${meta.id}.fasta"), emit: fasta
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +31,7 @@ process BLAST_BLASTDBCMD {
         -entry ${entry} \\
         -db \$DB \\
         ${args} \\
+        -outfmt %f \\
         -out ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
