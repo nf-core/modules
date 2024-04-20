@@ -1,4 +1,4 @@
-name: blast_blastdbcmd
+name: blast_blastdbcmdbatch
 description: Retrieve entries from a BLAST database
 keywords:
   - fasta
@@ -18,9 +18,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - entry:
-      type: string
-      description: Entry identifier of sequence in database
+  - entry_batch:
+      type: file
+      description: File with a list of entry identifiers of sequences in database (one identifier per line)
   - meta2:
       type: map
       description: |

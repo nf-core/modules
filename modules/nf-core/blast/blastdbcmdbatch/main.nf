@@ -1,4 +1,4 @@
-process BLAST_BLASTDBCMD {
+process BLAST_BLASTDBCMDBATCH {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,7 +8,7 @@ process BLAST_BLASTDBCMD {
         'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
-    tuple val(meta) , val(entry)
+    tuple val(meta) , path(entry_batch)
     tuple val(meta2), path(db)
 
     output:
@@ -28,7 +28,7 @@ process BLAST_BLASTDBCMD {
         DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
     fi
     blastdbcmd \\
-        -entry ${entry} \\
+        -entry_batch ${entry_batch} \\
         -db \$DB \\
         ${args} \\
         -out ${prefix}.fasta
