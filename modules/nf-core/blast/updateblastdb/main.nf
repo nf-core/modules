@@ -21,12 +21,14 @@ process BLAST_UPDATEBLASTDB {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
-    cd ${prefix}
+    mkdir ${prefix}; cd ${prefix}
+
     update_blastdb.pl \\
         ${prefix} \\
         --decompress \\
         ${args}
+
+    cd ..
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
