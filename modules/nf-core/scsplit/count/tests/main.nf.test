@@ -41,7 +41,7 @@ nextflow_process {
                 vcf_barcode_channel = Channel.of([
                             [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
-                            file(params.barcodes, checkIfExists: true)
+                            file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
                     ] )
 
                 input[0] = bam_channel.join(bai_channel).join(vcf_barcode_channel)
@@ -57,7 +57,7 @@ nextflow_process {
         }
 
     }
-    test("jurkat_293t - bam, vcf - stub") {
+    test("Homo sapiens - bam, vcf - stub") {
 
         options "-stub"
 
@@ -66,10 +66,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.bam, checkIfExists: true),
-                    file(params.bai, checkIfExists: true),
-                    file(params.vcf, checkIfExists: true),
-                    file(params.barcodes, checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
                     ]
                 """
             }
