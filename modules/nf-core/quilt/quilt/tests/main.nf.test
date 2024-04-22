@@ -23,7 +23,9 @@ def posfile_phasefile = "[[ id:'test', chr:'chr20' ], [$posfile], [$phasefile]]"
 def fasta = "[[id:'test'], []]"
 
 // Input channel quilt
-def ch_input = "[[ id:'test', chr:'chr20' ], $bam, $bai, [$reference_haplotype_file], [$reference_legend_file], $chr, $regions_start, $regions_end, $ngen, $buffer, [$genetic_map_file]]"
+def ch_input = "[ id:'test', chr:'chr20' ], $bam, $bai, [$reference_haplotype_file], [$reference_legend_file], $chr, $regions_start, $regions_end, $ngen, $buffer"
+def ch_input_gmap = "[$ch_input, [$genetic_map_file]]"
+def ch_input_nogmap = "[$ch_input, []]"
 
 nextflow_process {
 
@@ -40,7 +42,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = $ch_input
+                input[0] = $ch_input_gmap
                 input[1] = $posfile_phasefile
                 input[2] = $fasta
                 """
@@ -61,15 +63,8 @@ nextflow_process {
         when {
             process {
                 """
-                posfile = []
-                phasefile = []
-                posfile_phasefile = [[id: null], posfile, phasefile]
-                genetic_map_file = []
-
-                ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end, ngen, buffer, genetic_map_file ]
-
-                input[0] = ch_input
-                input[1] = posfile_phasefile
+                input[0] = ch_input_nogmap
+                input[1] = [[id: null], [], []]
                 input[2] = fasta
                 """
             }
@@ -89,9 +84,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = ch_input
-                input[1] = posfile_phasefile
-                input[2] = fasta
+                input[0] = $ch_input
+                input[1] = $posfile_phasefile
+                input[2] = $fasta
                 """
             }
         }
@@ -110,9 +105,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = ch_input
-                input[1] = posfile_phasefile
-                input[2] = fasta
+                input[0] = $ch_input
+                input[1] = $posfile_phasefile
+                input[2] = $fasta
                 """
             }
         }
