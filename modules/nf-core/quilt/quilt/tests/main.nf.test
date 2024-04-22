@@ -63,9 +63,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = ch_input_nogmap
+                input[0] = $ch_input_nogmap
                 input[1] = [[id: null], [], []]
-                input[2] = fasta
+                input[2] = $fasta
                 """
             }
         }
