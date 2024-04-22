@@ -1,0 +1,129 @@
+// Input data
+def path = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/"
+def bam  = "[${path}NA12878.haplotagged.1.0.bam', checkIfExists: true), ${path}NA12878.ont.1.0.bam', checkIfExists: true), ${path}NA12878.illumina.1.0.bam', checkIfExists: true)]"
+def bai  = "[${path}NA12878.haplotagged.1.0.bam.bai', checkIfExists: true), ${path}NA12878.ont.1.0.bam.bai', checkIfExists: true),${path}NA12878.illumina.1.0.bam.bai', checkIfExists: true)]"
+
+// Input reference data
+def reference_haplotype_file = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.noNA12878.hap.gz', checkIfExists: true)"
+def reference_legend_file    = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.noNA12878.legend.gz', checkIfExists: true)"
+def genetic_map_file         = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/CEU-chr20-final.b38.txt.gz', checkIfExists: true)"
+
+// Parameters
+def chr           = "'chr20'"
+def regions_start = "2000001"
+def regions_end   = "2100000"
+def ngen          = "100"
+def buffer        = "10000"
+
+
+// (optional) input truth data
+def posfile   = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.posfile.txt', checkIfExists: true)"
+def phasefile = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.phasefile.txt', checkIfExists: true)"
+def posfile_phasefile = "[[ id:'test', chr:'chr20' ], [$posfile], [$phasefile]]"
+def fasta = "[[id:'test'], []]"
+
+// Input channel quilt
+def ch_input = "[[ id:'test', chr:'chr20' ], $bam, $bai, [$reference_haplotype_file], [$reference_legend_file], $chr, $regions_start, $regions_end, $ngen, $buffer, [$genetic_map_file]]"
+
+nextflow_process {
+
+    name "Test Process QUILT"
+    script "../main.nf"
+    process "QUILT_QUILT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quilt/quilt"
+
+    test("QUILT") {
+        config ("./quilt_default.config")
+        when {
+            process {
+                """
+                input[0] = $ch_input
+                input[1] = $posfile_phasefile
+                input[2] = $fasta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("QUILT no optional files") {
+        config ("./quilt_default.config")
+        when {
+            process {
+                """
+                posfile = []
+                phasefile = []
+                posfile_phasefile = [[id: null], posfile, phasefile]
+                genetic_map_file = []
+
+                ch_input = [ [ id:"test", chr:"chr20" ], bam, bai, bamlist, reference_haplotype_file, reference_legend_file, chr, regions_start, regions_end, ngen, buffer, genetic_map_file ]
+
+                input[0] = ch_input
+                input[1] = posfile_phasefile
+                input[2] = fasta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("QUILT optional output") {
+        config ("./quilt_optional.config")
+        when {
+            process {
+                """
+                input[0] = ch_input
+                input[1] = posfile_phasefile
+                input[2] = fasta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("QUILT no seed") {
+        config ("./quilt_noseed.config")
+        when {
+            process {
+                """
+                input[0] = ch_input
+                input[1] = posfile_phasefile
+                input[2] = fasta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}
