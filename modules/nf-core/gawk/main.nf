@@ -41,7 +41,7 @@ process GAWK {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.getExtension}"
+    suffix = task.ext.suffix ?: "${input.getExtension()}"
 
     """
     touch ${prefix}.${suffix}
