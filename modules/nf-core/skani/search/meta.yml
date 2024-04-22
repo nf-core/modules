@@ -1,6 +1,7 @@
 name: "skani_search"
 description: Memory-efficient ANI database queries with skani.
 keywords:
+  - ani
   - skani
   - metagenomics
   - genome
@@ -42,7 +43,7 @@ output:
       type: file
       description: |
         TSV file containing ANI and AF as predicted by skani.
-      pattern: "*.sketch"
+      pattern: "*.tsv"
   - versions:
       type: file
       description: File containing software versions
