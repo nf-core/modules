@@ -14,7 +14,7 @@ tools:
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
       doi: "10.22002/D1.1876"
-      licence: MIT License
+      licence: ["MIT"]
 input:
   - fasta:
       type: file
@@ -26,8 +26,8 @@ input:
       pattern: "*.{gtf,gtf.gz}"
   - workflow_mode:
       type: string
-      description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
-      pattern: "{standard,lamanno,nucleus}"
+      description: String value defining workflow to use, can be one of "standard", "nac", "lamanno" (obsolete)
+      pattern: "{standard,lamanno,nac}"
 output:
   - versions:
       type: file
@@ -43,19 +43,19 @@ output:
       pattern: "*t2g.{txt}"
   - cdna:
       type: file
-      description: Cdna fasta file
+      description: cDNA fasta file
       pattern: "*cdna.{fa}"
   - intron:
       type: file
-      description: intron fasta file
+      description: Intron fasta file
       pattern: "*intron.{fa}"
   - cdna_t2c:
       type: file
-      description: cdna transcript to capture file
+      description: cDNA transcript to capture file
       pattern: "*cdna_t2c.{txt}"
   - intron_t2c:
       type: file
-      description: intron transcript to capture file
+      description: Intron transcript to capture file
       pattern: "*intron_t2c.{txt}"
 authors:
   - "@flowuenne"
