@@ -18,7 +18,7 @@ process GNU_SPLIT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = input.extension
     if (suffix == 'gz') {
@@ -44,8 +44,8 @@ process GNU_SPLIT {
     }
 
     stub:
-    def args        = task.ext.args     ?: ''
-    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.split.000.csv ${prefix}.split.001.csv ${prefix}.split.002.csv
 

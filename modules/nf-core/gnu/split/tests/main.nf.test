@@ -16,7 +16,7 @@ nextflow_process {
                 """                
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['generic']['csv']['test_csv'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
                 ])
                 """
             }
@@ -46,7 +46,7 @@ nextflow_process {
                 """                
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 """
             }
@@ -77,7 +77,7 @@ nextflow_process {
                 """                
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 """
             }
