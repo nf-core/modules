@@ -53,9 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.vcf).match("quilt_vcf") },
-                { assert snapshot(process.out.tbi).match("quilt_tbi") },
-                { assert file(process.out.versions[0]).exists()}
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -76,9 +74,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.vcf).match("quilt_noopt_vcf") },
-                { assert snapshot(process.out.tbi).match("quilt_noopt_tbi") },
-                { assert file(process.out.versions[0]).exists()}
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -99,11 +95,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.vcf).match("quilt_opt_vcf") },
-                { assert snapshot(process.out.tbi).match("quilt_opt_tbi") },
-                { assert snapshot(process.out.plots).match("quilt_opt_plots") },
-                { assert snapshot(process.out.rdata).match("quilt_opt_rdata") },
-                { assert file(process.out.versions[0]).exists() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -124,9 +117,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.vcf).match("quilt_noseed_vcf") },
-                { assert snapshot(process.out.tbi).match("quilt_noseed_tbi") },
-                { assert file(process.out.versions[0]).exists()}
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
