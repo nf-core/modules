@@ -78,7 +78,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-23T11:58:59.137414973"
+        "timestamp": "2024-04-23T16:42:42.340060096"
     },
     "QUILT no seed": {
         "content": [
@@ -159,7 +159,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-23T12:00:38.413309308"
+        "timestamp": "2024-04-23T16:44:16.093955491"
     },
     "QUILT no optional files": {
         "content": [
@@ -240,293 +240,148 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-23T11:59:18.714678928"
+        "timestamp": "2024-04-23T16:43:03.398802044"
     },
     "QUILT optional output": {
         "content": [
-            {
-                "0": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "chr": "chr20"
+                    },
+                    "quilt.chr20.2000001.2100000.vcf.gz:md5,8352fbcabdd102a8ba2c4490e0834287"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "chr": "chr20"
+                    },
+                    "quilt.chr20.2000001.2100000.vcf.gz.tbi:md5,88d16933f2ac53058b7a5d5c849dc19a"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "chr": "chr20"
+                    },
                     [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        "quilt.chr20.2000001.2100000.vcf.gz:md5,8352fbcabdd102a8ba2c4490e0834287"
+                        "QUILT_prepared_reference.chr20.2000001.2100000.RData:md5,c2bbcf91085f33536fbaf094b4f0ea05"
                     ]
                 ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        "quilt.chr20.2000001.2100000.vcf.gz.tbi:md5,88d16933f2ac53058b7a5d5c849dc19a"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        [
-                            "QUILT_prepared_reference.chr20.2000001.2100000.RData:md5,c2bbcf91085f33536fbaf094b4f0ea05"
-                        ]
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        [
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.0.truth.png:md5,adfa6e49c996d3452bbc36803b300888",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,653d8927407cb18225c034b9075f2706",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,42a7466f696254eda50c83df71c585df",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,9d0bc91802b4bd27837275b3dfdec4a7",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.0.truth.png:md5,788d52c4439d69dc2350a250c1cb8fa2",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,8db941c1c04fcaed5aa38cadc1a6358a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,327e5a2c15052e3e889d124b19fd88c2",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,804c106ee6496c67150c5a5b5c0dd66f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.0.truth.png:md5,9e704cab6d78ceb6384f2efa7a2a4690",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,b6b2f7fd1efb8c9e8e93a55af11a8ec4",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,a3b2b4ea0b50668122bdc7dd1986587a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,5c0c6003b59bd8a88357a9b8b97ed64c",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.0.truth.png:md5,4b01285293fdc4a9b212625c448435f7",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,f32e56b48c53d000f5a849f3dacd12c8",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,af757df51b856e59b3ffa71ee1562819",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,e148cb878b60212a12c7e892e4339cae",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.0.truth.png:md5,70c801a97f2aaac38d7b6a1aa7be38d5",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,362cd96893c9a322dcbb1a217140e99a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,715f51368ed81d186104d8494e920eae",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,6f05a5e76daef9f9f216496d60d769df",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.0.truth.png:md5,fe4ef6c04f4d2971487543da2e715fdc",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,75f5d5be44a89a0dc8e59da9e0688a1f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,e5238f43a9321d1ad4cde406712b145f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,b2ad0a4f709d62a5a3e1fd96304a3bcc",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.0.truth.png:md5,b4eddd979253145497dbfc555d034a94",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,c5af5ff0cb9c0cb422005a010c238bc5",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,11b6a595ee463b61f2ad073e1d320f73",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,8c824efa4e60923d38cae0d1524fec6d",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.0.truth.png:md5,88baa87e886a185be8db9378ad771d76",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,b766e37019f0b89ccd940b4d301c9483",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,5be6d4165746e3535d8b785af1a7f663",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,c21af6b544f913fe86da4e9dfd28fe2a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.0.truth.png:md5,ff6c52991d271feb3ac4575765f312ff",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,cba569520d5615761473f6a56fdf6a5d",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,c46dc58074bd7f9445c640b1fd063d38",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,9c06f5465266e660d17a147592952ac3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.0.truth.png:md5,c4836b313bd5ab9a2ade7022ab0864a3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,ac568df51df84b2b5cb5d04229bfd258",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,179e7bedfbdad3ba527c306a3d3db9a1",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,c6e9213ac41d9a98477a9f35f8eb2acd",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.0.truth.png:md5,27647222305dda09366d3ca2b24c2233",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,c4aa7a225678d704aea6755e407d5168",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,0d8be9f1ec69612d1fd21c39c996877a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,1bfb8314cd28cda706f3e686582056a9",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.0.truth.png:md5,405c676d658fa4878ff51193e5d57991",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,ac0feb3c5a5ef7c6c4f2c1ea98e95a1e",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,b8b3b6bd8e59c8d0141d430925dbc6d3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,215d2251ba9e0d8ee825784b1827e3f1",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.0.truth.png:md5,cfc36e67a40a39d2b4fcb142d4fe18f7",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,9427834c4e9b3dd3eeccf9b0a0cedbe0",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,d045fbfa93e645e5ac76879f2b2a7e7e",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,6d8e1232fdb1e18a4e80c1b2c63dd932",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.0.truth.png:md5,d55f6b0593b7647fa418a7e3f981859a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,c8dcacf50cd73c1e74f6e71d2be2067c",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,035abe92e27a61f756f2d1359b7d4e67",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,4b05e1926752b77b579b8291ce2a41a0",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.0.truth.png:md5,2ebd6eaea2f288438f65bb9e2f4a6c74",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,6a886ebb82a63d204e7340786d082810",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,c416752e7733aceac4afdaded6c01029",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,b34861d93f0f0a7468e3f855ada47c4f",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.0.truth.png:md5,cec30fa2381744ea67c6f02a3314a5d8",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,25be7c30e3adcb42c2aef5aadc5b9554",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,dc5359d875fbfda7fb6114c924e48a08",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,47c3e10d634907730375b4d8984343ae",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,ee1c2555401f915613b36d7ce4482fed",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,777ef992c3ae4c849137e0bccb5f0feb",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,78e66e5a99fecb79387008fbf0c7d487",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,3004770e24156a378ed00ee01f62839b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,cf2111af24123a39f95a0348cc96e271",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,148bf3e3376dc51bfe2ec2b4bbe5b5d5",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,c5b9a088f13739018480a9737d434dcf",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,17267b054a1a1be9040647c13184d88c",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,1b16b3ed4c10f4f2857cb395119b121a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.0.truth.png:md5,5265fb8ee885a8103b8bd2f89d60d38d",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,31ec935f0f1bd1d3b0189ccfaaaaac6b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,f575930dd2e156f64beaeae71268a62a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,9afc4ad445a3830c69f5f567d68b193e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,9f7dbed3be5f9bf4301045ca05ef2f40",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,ad41f03b7a3cc9be439a6d4bfaf55a60",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,8dc7e91b7b90e09407735df9113f574d",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.0.truth.png:md5,5874a935371c62f4555b978d76f74272",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,86f3c7d576e563dda654531e06055b94",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,4e32f2e28fc403102e2335b686b1ed79",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,6a8b938ac2ea172187a8bc7cf32f5855",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,4824b7e05054057b8a1ba26440a762f6",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,fa8abe156d9afaf47b7a3a08940e69bd",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,5b5cc1bb312ef2f93996c605e5494f2b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,39d583c8adbe344a06213321dc857030",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,e5c78d3f57875b54f9695a3254edad0a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,35866fb5e9f98c0410a72a0948519fc8"
-                        ]
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,6d07cd60389ff6981a44004872bd16b7"
-                ],
-                "plots": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        [
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.0.truth.png:md5,adfa6e49c996d3452bbc36803b300888",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,653d8927407cb18225c034b9075f2706",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,42a7466f696254eda50c83df71c585df",
-                            "haps.NA12878.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,9d0bc91802b4bd27837275b3dfdec4a7",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.0.truth.png:md5,788d52c4439d69dc2350a250c1cb8fa2",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,8db941c1c04fcaed5aa38cadc1a6358a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,327e5a2c15052e3e889d124b19fd88c2",
-                            "haps.NA12878.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,804c106ee6496c67150c5a5b5c0dd66f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.0.truth.png:md5,9e704cab6d78ceb6384f2efa7a2a4690",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,b6b2f7fd1efb8c9e8e93a55af11a8ec4",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,a3b2b4ea0b50668122bdc7dd1986587a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,5c0c6003b59bd8a88357a9b8b97ed64c",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.0.truth.png:md5,4b01285293fdc4a9b212625c448435f7",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,f32e56b48c53d000f5a849f3dacd12c8",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,af757df51b856e59b3ffa71ee1562819",
-                            "haps.NA12878.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,e148cb878b60212a12c7e892e4339cae",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.0.truth.png:md5,70c801a97f2aaac38d7b6a1aa7be38d5",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,362cd96893c9a322dcbb1a217140e99a",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,715f51368ed81d186104d8494e920eae",
-                            "haps.NA12878.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,6f05a5e76daef9f9f216496d60d769df",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.0.truth.png:md5,fe4ef6c04f4d2971487543da2e715fdc",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,75f5d5be44a89a0dc8e59da9e0688a1f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,e5238f43a9321d1ad4cde406712b145f",
-                            "haps.NA12878.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,b2ad0a4f709d62a5a3e1fd96304a3bcc",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.0.truth.png:md5,b4eddd979253145497dbfc555d034a94",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,c5af5ff0cb9c0cb422005a010c238bc5",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,11b6a595ee463b61f2ad073e1d320f73",
-                            "haps.NA12878.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,8c824efa4e60923d38cae0d1524fec6d",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.0.truth.png:md5,88baa87e886a185be8db9378ad771d76",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,b766e37019f0b89ccd940b4d301c9483",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,5be6d4165746e3535d8b785af1a7f663",
-                            "haps.NA12878.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,c21af6b544f913fe86da4e9dfd28fe2a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.0.truth.png:md5,ff6c52991d271feb3ac4575765f312ff",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,cba569520d5615761473f6a56fdf6a5d",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,c46dc58074bd7f9445c640b1fd063d38",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,9c06f5465266e660d17a147592952ac3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.0.truth.png:md5,c4836b313bd5ab9a2ade7022ab0864a3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,ac568df51df84b2b5cb5d04229bfd258",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,179e7bedfbdad3ba527c306a3d3db9a1",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,c6e9213ac41d9a98477a9f35f8eb2acd",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.0.truth.png:md5,27647222305dda09366d3ca2b24c2233",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,c4aa7a225678d704aea6755e407d5168",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,0d8be9f1ec69612d1fd21c39c996877a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,1bfb8314cd28cda706f3e686582056a9",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.0.truth.png:md5,405c676d658fa4878ff51193e5d57991",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,ac0feb3c5a5ef7c6c4f2c1ea98e95a1e",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,b8b3b6bd8e59c8d0141d430925dbc6d3",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,215d2251ba9e0d8ee825784b1827e3f1",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.0.truth.png:md5,cfc36e67a40a39d2b4fcb142d4fe18f7",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,9427834c4e9b3dd3eeccf9b0a0cedbe0",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,d045fbfa93e645e5ac76879f2b2a7e7e",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,6d8e1232fdb1e18a4e80c1b2c63dd932",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.0.truth.png:md5,d55f6b0593b7647fa418a7e3f981859a",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,c8dcacf50cd73c1e74f6e71d2be2067c",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,035abe92e27a61f756f2d1359b7d4e67",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,4b05e1926752b77b579b8291ce2a41a0",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.0.truth.png:md5,2ebd6eaea2f288438f65bb9e2f4a6c74",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,6a886ebb82a63d204e7340786d082810",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,c416752e7733aceac4afdaded6c01029",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,b34861d93f0f0a7468e3f855ada47c4f",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.0.truth.png:md5,cec30fa2381744ea67c6f02a3314a5d8",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,25be7c30e3adcb42c2aef5aadc5b9554",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,dc5359d875fbfda7fb6114c924e48a08",
-                            "haps.NA12878HT.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,47c3e10d634907730375b4d8984343ae",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it1.gibbs.png:md5,ee1c2555401f915613b36d7ce4482fed",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it2.gibbs.png:md5,777ef992c3ae4c849137e0bccb5f0feb",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it3.gibbs.png:md5,78e66e5a99fecb79387008fbf0c7d487",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it1.gibbs.png:md5,3004770e24156a378ed00ee01f62839b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it2.gibbs.png:md5,cf2111af24123a39f95a0348cc96e271",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it3.gibbs.png:md5,148bf3e3376dc51bfe2ec2b4bbe5b5d5",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it1.gibbs.png:md5,c5b9a088f13739018480a9737d434dcf",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it2.gibbs.png:md5,17267b054a1a1be9040647c13184d88c",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it3.gibbs.png:md5,1b16b3ed4c10f4f2857cb395119b121a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.0.truth.png:md5,5265fb8ee885a8103b8bd2f89d60d38d",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it1.gibbs.png:md5,31ec935f0f1bd1d3b0189ccfaaaaac6b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it2.gibbs.png:md5,f575930dd2e156f64beaeae71268a62a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it3.gibbs.png:md5,9afc4ad445a3830c69f5f567d68b193e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it1.gibbs.png:md5,9f7dbed3be5f9bf4301045ca05ef2f40",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it2.gibbs.png:md5,ad41f03b7a3cc9be439a6d4bfaf55a60",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it3.gibbs.png:md5,8dc7e91b7b90e09407735df9113f574d",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.0.truth.png:md5,5874a935371c62f4555b978d76f74272",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it1.gibbs.png:md5,86f3c7d576e563dda654531e06055b94",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it2.gibbs.png:md5,4e32f2e28fc403102e2335b686b1ed79",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it3.gibbs.png:md5,6a8b938ac2ea172187a8bc7cf32f5855",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.0.truth.png:md5,bf54720828a60ae36052a3a334712b5e",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it1.gibbs.png:md5,4824b7e05054057b8a1ba26440a762f6",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it2.gibbs.png:md5,fa8abe156d9afaf47b7a3a08940e69bd",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it3.gibbs.png:md5,5b5cc1bb312ef2f93996c605e5494f2b",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.0.truth.png:md5,55daf61a2bec80e1179bf53bc1a971f9",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it1.gibbs.png:md5,39d583c8adbe344a06213321dc857030",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it2.gibbs.png:md5,e5c78d3f57875b54f9695a3254edad0a",
-                            "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it3.gibbs.png:md5,35866fb5e9f98c0410a72a0948519fc8"
-                        ]
-                    ]
-                ],
-                "rdata": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        [
-                            "QUILT_prepared_reference.chr20.2000001.2100000.RData:md5,c2bbcf91085f33536fbaf094b4f0ea05"
-                        ]
-                    ]
-                ],
-                "tbi": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        "quilt.chr20.2000001.2100000.vcf.gz.tbi:md5,88d16933f2ac53058b7a5d5c849dc19a"
-                    ]
-                ],
-                "vcf": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "chr20"
-                        },
-                        "quilt.chr20.2000001.2100000.vcf.gz:md5,8352fbcabdd102a8ba2c4490e0834287"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6d07cd60389ff6981a44004872bd16b7"
-                ]
-            }
+                "versions.yml:md5,6d07cd60389ff6981a44004872bd16b7"
+            ]
         ],
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-04-23T12:00:05.735793393"
+        "timestamp": "2024-04-23T16:43:46.02397462"
+    },
+    "plots": {
+        "content": [
+            [
+                "haps.NA12878.chr20.2000001.2100000_igs.1.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.1.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.1.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.1.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.2.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.2.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.2.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.2.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.3.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.3.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.3.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.3.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.4.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.4.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.4.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.4.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.5.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.5.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.5.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.5.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.6.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.6.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.6.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.6.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.7.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.7.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.7.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.7.it3.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.8.0.truth.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.8.it1.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.8.it2.gibbs.png",
+                "haps.NA12878.chr20.2000001.2100000_igs.8.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.1.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.1.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.1.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.1.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.2.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.2.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.2.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.2.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.3.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.3.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.3.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.3.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.4.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.4.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.4.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.4.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.5.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.5.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.5.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.5.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.6.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.6.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.6.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.6.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.7.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.7.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.7.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.7.it3.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.8.0.truth.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.8.it1.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.8.it2.gibbs.png",
+                "haps.NA12878HT.chr20.2000001.2100000_igs.8.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.1.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.1.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.2.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.2.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.3.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.3.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.4.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.4.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.5.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.5.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.6.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.6.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.7.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.7.it3.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.8.0.truth.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it1.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it2.gibbs.png",
+                "haps.NA12878ONT.chr20.2000001.2100000_igs.8.it3.gibbs.png"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-04-23T16:43:45.507954653"
     }
 }
