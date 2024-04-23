@@ -12,6 +12,7 @@ nextflow_process {
 
     test("Homo sapiens - bam, vcf") {
         tag "scsplit_count_chr21"
+        tag "samtools/index"
 
         setup {
             run("SAMTOOLS_INDEX") {
