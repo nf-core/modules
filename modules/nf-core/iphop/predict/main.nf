@@ -12,9 +12,9 @@ process IPHOP_PREDICT {
     path iphop_db
 
     output:
-    tuple val(meta), path("*.Host_prediction_to_genus_m*.csv"), emit: iphop_genus
-    tuple val(meta), path("*.Host_prediction_to_genome_m*.csv"), emit: iphop_genome
-    tuple val(meta), path("*.Detailed_output_by_tool.csv"), emit: iphop_detailed_output
+    tuple val(meta), path("*.Host_prediction_to_genus_m*.csv")  , emit: iphop_genus
+    tuple val(meta), path("*.Host_prediction_to_genome_m*.csv") , emit: iphop_genome
+    tuple val(meta), path("*.Detailed_output_by_tool.csv")      , emit: iphop_detailed_output
     path "versions.yml"                                         , emit: versions
 
     when:
@@ -46,7 +46,6 @@ process IPHOP_PREDICT {
     done
 
     mv iphop_results/Detailed_output_by_tool.csv ./${prefix}.Detailed_output_by_tool.csv
-    rm ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
