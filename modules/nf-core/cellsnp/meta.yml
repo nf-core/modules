@@ -3,7 +3,8 @@
 name: "cellsnp"
 description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs on single cells. You can use cellsnp-lite after read alignment to obtain the snp x cell pileup UMI or read count matrices for each alleles of given or detected SNPs.
 keywords:
-  - genotype
+  - genotyping
+  - single cell
   - SNP
 tools:
   - "cellsnp":
@@ -11,7 +12,7 @@ tools:
       homepage: "https://github.com/single-cell-genetics/cellsnp-lite"
       documentation: "https://cellsnp-lite.readthedocs.io"
       tool_dev_url: "https://github.com/single-cell-genetics/cellsnp-lite"
-      doi: ""
+      doi: "10.1093/bioinformatics/btab358"
       licence: ["Apache-2.0"]
 
 input:
@@ -53,9 +54,30 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - cellsnp_output:
-      type: folder
-      description: A folder with the output of cellsnp.
+  - base:
+      type: file
+      description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation (without GT).
+      pattern: "*.base.vcf.gz"
+  - cell:
+      type: file
+      description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation & genotype (GT) information for each cell or sample.
+      pattern: "*.cells.vcf.gz"
+  - sample:
+      type: file
+      description: A TSV file listing cell barcodes or sample IDs.
+      pattern: "*.tsv"
+  - allele_depth:
+      type: file
+      description: A file in “Matrix Market exchange formats”, containing the allele depths of the alternative (ALT) alleles.
+      pattern: "*.tag.AD.mtx"
+  - depth_coverage:
+      type: file
+      description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of the reference and alternative alleles (REF + ALT).
+      pattern: "*.tag.DP.mtx"
+  - depth_other:
+      type: file
+      description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of all the alleles other than REF and ALT.
+      pattern: "*.tag.OTH.mtx"
 
 authors:
   - "@wxicu"

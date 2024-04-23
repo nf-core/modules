@@ -11,7 +11,12 @@ process CELLSNP {
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode), path(sample_list)
 
     output:
-    tuple val(meta), path("$prefix")     , emit: cellsnp_output
+    tuple val(meta), path('*/cellSNP.base.vcf.gz')     , emit: base
+    tuple val(meta), path('*/cellSNP.cells.vcf.gz')    , emit: cell, optional: true
+    tuple val(meta), path('*/cellSNP.samples.tsv')             , emit: sample
+    tuple val(meta), path('*/cellSNP.tag.AD.mtx')      , emit: allele_depth
+    tuple val(meta), path('*/cellSNP.tag.DP.mtx')      , emit: depth_coverage
+    tuple val(meta), path('*/cellSNP.tag.OTH.mtx')     , emit: depth_other
     path 'versions.yml'                  , emit: versions
 
     when:
@@ -31,11 +36,12 @@ process CELLSNP {
         $sample \\
         -O $prefix \\
         --nproc $task.cpus \\
+	--gzip \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellsnp: \$(cellsnp-lite --v |& awk '{print \$2}')
+        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
     END_VERSIONS
     """
 
@@ -48,10 +54,15 @@ process CELLSNP {
 
     """
     mkdir $prefix
+    touch $prefix/cellSNP.base.vcf.gz
+    touch $prefix/cellSNP.samples.tsv
+    touch $prefix/cellSNP.tag.AD.mtx
+    touch $prefix/cellSNP.tag.DP.mtx
+    touch $prefix/cellSNP.tag.OTH.mtx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellsnp: \$(cellsnp-lite --v |& awk '{print \$2}')
+        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
     END_VERSIONS
     """
 }
