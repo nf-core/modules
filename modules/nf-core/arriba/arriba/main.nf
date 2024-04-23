@@ -60,7 +60,9 @@ process ARRIBA_ARRIBA {
     echo stub > ${prefix}.fusions.tsv
     echo stub > ${prefix}.fusions.discarded.tsv
 
-    echo "${task.process}:" > versions.yml
-    echo ' arriba: 2.2.1' >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+    END_VERSIONS
     """
 }
