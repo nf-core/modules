@@ -12,12 +12,12 @@ process CELLSNP {
 
     output:
     tuple val(meta), path('*/cellSNP.base.vcf.gz')     , emit: base
-    tuple val(meta), path('*/cellSNP.cells.vcf.gz')    , emit: cell, optional: true
-    tuple val(meta), path('*/cellSNP.samples.tsv')             , emit: sample
+    tuple val(meta), path('*/cellSNP.cells.vcf.gz')    , emit: cell,          optional: true
+    tuple val(meta), path('*/cellSNP.samples.tsv')     , emit: sample
     tuple val(meta), path('*/cellSNP.tag.AD.mtx')      , emit: allele_depth
     tuple val(meta), path('*/cellSNP.tag.DP.mtx')      , emit: depth_coverage
     tuple val(meta), path('*/cellSNP.tag.OTH.mtx')     , emit: depth_other
-    path 'versions.yml'                  , emit: versions
+    path 'versions.yml'                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +36,7 @@ process CELLSNP {
         $sample \\
         -O $prefix \\
         --nproc $task.cpus \\
-	--gzip \\
+	    --gzip \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
