@@ -639,6 +639,10 @@ jobs:
             path: modules/nf-core/islandpath
           - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
+          - profile: conda
+            path: subworkflows/nf-core/fastq_align_bamcmp_bwa
+          - profile: conda
+            path: subworkflows/nf-core/fastq_align_bwa
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
