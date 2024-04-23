@@ -2,7 +2,7 @@ process SCSPLIT_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/irenerobles93/scsplit:1.0.8"
+    container "irenerobles93/scsplit:1.0.8"
 
     input:
     tuple val(meta), path(bam), path(bai), path(vcf), path(barcode)
