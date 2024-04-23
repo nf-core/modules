@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process HUMANN_DOWNLOADCHOCOPHLANDB"
+    script "../main.nf"
+    process "HUMANN_DOWNLOADCHOCOPHLANDB"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humann"
+    tag "humann/downloadchocophlandb"
+
+    test("DEMO") {
+        when {
+            process {
+                """
+                input[0] = "DEMO"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("DEMO - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = "DEMO"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
