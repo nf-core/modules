@@ -31,11 +31,15 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") },
-                { assert snapshot(process.out.gwas).match() }
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -63,10 +67,15 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gwas).match() }
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -93,10 +102,12 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gwas).match() }
+                { assert snapshot(process.out.assoc).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -124,10 +135,15 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gwas).match() }
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
@@ -155,10 +171,15 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gwas).match() }
+                { assert snapshot(
+                    process.out.assoc,
+                    process.out.nosex
+                    ).match() },
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" }
             )
         }
     }
