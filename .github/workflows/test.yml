@@ -119,7 +119,7 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@rewrite-using-class-instead-of-loops
+        uses: adamrtalbot/detect-nf-test-changes@v0.0.1
         with:
           head: ${{ github.sha }}
           base: origin/${{ github.base_ref }}
