@@ -98,7 +98,7 @@ nextflow_process {
             dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
                 { assert process.success },
-                { assert snapshot(list).match("plots") },
+                { assert snapshot(list.sort()).match("plots") },
                 { assert snapshot(
                     process.out.vcf + process.out.tbi +
                     process.out.rdata + process.out.versions
