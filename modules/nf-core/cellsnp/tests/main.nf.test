@@ -10,17 +10,31 @@ nextflow_process {
     tag "cellsnp"
 
     test("genotyping") {
+        setup { 
+            run("SAMTOOLS_INDEX") {
+                script "../../../samtools/index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
         when {
             process {
-                """                
-                input[0] = [
-                    [ id:'sample1'], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
-                    [],
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
-                    []
-                    ]
+                """ 
+                input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{ 
+                            bai -> [[ id: 'sample1'], 
+                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                                    bai,
+                                    [],
+                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                                    []
+                                    ]}
                 """
             }
         }
@@ -45,6 +59,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'sample1'], // meta map
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    [],
                     [],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),

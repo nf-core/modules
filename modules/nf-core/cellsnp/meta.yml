@@ -25,9 +25,10 @@ input:
       type: file
       description: Indexed BAM/CRAM file(s), comma separated multiple samples.
       pattern: "*.{bam,cram,sam}"
-  - bam_list:
+  - bai:
       type: file
-      description: A file listing BAM/CRAM files, each per line.
+      description: Index of the BAM/CRAM file.
+      pattern: "*.{bai,crai}"
   - region_vcf:
       type: file
       description: A vcf file listing all candidate SNPs, for fetch each variants.
