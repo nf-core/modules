@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cellsnp"
+description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs on single cells. You can use cellsnp-lite after read alignment to obtain the snp x cell pileup UMI or read count matrices for each alleles of given or detected SNPs.
+keywords:
+  - genotype
+  - SNP
+tools:
+  - "cellsnp":
+      description: "Efficient genotyping bi-allelic SNPs on single cells"
+      homepage: "https://github.com/single-cell-genetics/cellsnp-lite"
+      documentation: "https://cellsnp-lite.readthedocs.io"
+      tool_dev_url: "https://github.com/single-cell-genetics/cellsnp-lite"
+      doi: ""
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - bam:
+      type: file
+      description: Indexed BAM/CRAM file(s), comma separated multiple samples.
+      pattern: "*.{bam,cram,sam}"
+  - bam_list:
+      type: file
+      description: A file listing BAM/CRAM files, each per line.
+  - region_vcf:
+      type: file
+      description: A vcf file listing all candidate SNPs, for fetch each variants.
+      pattern: "*.{vcf, vcf.gz}"
+  - barcode:
+      type: file
+      description: A plain file listing all effective cell barcodes.
+      pattern: "*.tsv"
+  - sample_list:
+      type: file
+      description: A list file containing sample IDs, each per line.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1']`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - cellsnp_output:
+      type: folder
+      description: A folder with the output of cellsnp.
+
+authors:
+  - "@wxicu"
+maintainers:
+  - "@wxicu"
