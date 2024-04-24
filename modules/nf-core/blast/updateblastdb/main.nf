@@ -8,7 +8,7 @@ process BLAST_UPDATEBLASTDB {
         'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
-    tuple val(meta)
+    tuple val(meta), val(name)
 
     output:
     tuple val(meta), path("${meta.id}"), emit: db

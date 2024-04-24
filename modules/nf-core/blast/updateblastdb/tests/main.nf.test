@@ -16,7 +16,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'mito'] ]
+                input[0] = [ [id:'mito'], 'mito' ]
                 """
             }
         }
