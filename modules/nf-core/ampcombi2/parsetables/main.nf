@@ -1,4 +1,4 @@
-process AMPCOMBIFILTER_PARSETABLES {
+process AMPCOMBI2_PARSETABLES {
     tag "$meta.id"
     label 'process_medium'
 

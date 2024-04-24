@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "ampcombifilter_cluster"
-description: A submodule that clusters the merged AMP hits generated from ampcombifilter/parsetables and ampcombifilter/complete using MMseqs2 cluster.
+name: "ampcombi2_cluster"
+description: A submodule that clusters the merged AMP hits generated from ampcombi2/parsetables and ampcombi2/complete using MMseqs2 cluster.
 keywords:
   - antimicrobial peptides
   - amps
@@ -11,7 +11,7 @@ keywords:
   - clustering
   - mmseqs2
 tools:
-  - ampcombifilter/cluster:
+  - ampcombi2/cluster:
       description: "A tool for clustering all AMP hits found across many samples and supporting many AMP prediction tools."
       homepage: "https://github.com/Darcy220606/AMPcombi"
       documentation: "https://github.com/Darcy220606/AMPcombi"

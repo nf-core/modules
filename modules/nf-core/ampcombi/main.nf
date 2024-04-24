@@ -4,9 +4,9 @@ WARNING: This module has been deprecated.
 Reason:
 This module is no longer recommended for use to parse results from antimicrobial tools.
 It is recommended to use ampcombi v.0.2.2 submodules instead:
-- nf-core/modules/ampcombifilter/parse_tables
-- nf-core/modules/ampcombifilter/complete
-- nf-core/modules/ampcombifilter/cluster
+- nf-core/modules/ampcombi2/parse_tables
+- nf-core/modules/ampcombi2/complete
+- nf-core/modules/ampcombi2/cluster
 
 """
 process AMPCOMBI {

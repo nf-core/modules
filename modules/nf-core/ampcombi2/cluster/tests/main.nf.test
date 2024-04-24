@@ -1,35 +1,35 @@
 nextflow_process {
 
-    name "Test Process AMPCOMBIFILTER_CLUSTER"
+    name "Test Process AMPCOMBI2_CLUSTER"
     script "../main.nf"
-    process "AMPCOMBIFILTER_CLUSTER"
+    process "AMPCOMBI2_CLUSTER"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "ampcombifilter"
-    tag "ampcombifilter/cluster"
-    tag "ampcombifilter/complete"
+    tag "ampcombi2"
+    tag "ampcombi2/cluster"
+    tag "ampcombi2/complete"
 
     setup {
-        run("AMPCOMBIFILTER_COMPLETE") {
-            script "../../../ampcombifilter/complete/main.nf"
+        run("AMPCOMBI2_COMPLETE") {
+            script "../../../ampcombi2/complete/main.nf"
             process {
                 """
                 input[0] =
                     [
-                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombifilter/sample_1_ampcombi.tsv', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombifilter/sample_2_ampcombi.tsv', checkIfExists: true)
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombi2/sample_1_ampcombi.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombi2/sample_2_ampcombi.tsv', checkIfExists: true)
                     ]
                 """
             }
         }
     }
 
-    test("ampcombifilter_cluster - metagenome") {
+    test("ampcombi2_cluster - metagenome") {
         when {
             process {
                 """
-                input[0] = AMPCOMBIFILTER_COMPLETE.out.tsv
+                input[0] = AMPCOMBI2_COMPLETE.out.tsv
                 """
             }
         }
@@ -45,12 +45,12 @@ nextflow_process {
         }
     }
 
-    test("ampcombifilter_cluster - metagenome - stub") {
+    test("ampcombi2_cluster - metagenome - stub") {
         options "-stub"
         when {
             process {
                 """
-                input[0] = AMPCOMBIFILTER_COMPLETE.out.tsv
+                input[0] = AMPCOMBI2_COMPLETE.out.tsv
                 """
             }
         }

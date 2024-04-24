@@ -1,17 +1,17 @@
 nextflow_process {
 
-    name "Test Process AMPCOMBIFILTER_PARSETABLES"
+    name "Test Process AMPCOMBI2_PARSETABLES"
     script "../main.nf"
-    process "AMPCOMBIFILTER_PARSETABLES"
+    process "AMPCOMBI2_PARSETABLES"
     tag "modules"
     tag "modules_nfcore"
     tag "antimicrobial peptides"
-    tag "ampcombifilter"
-    tag "ampcombifilter/parsetables"
+    tag "ampcombi2"
+    tag "ampcombi2/parsetables"
 
     config "./nextflow.config"
 
-    test("ampcombifilter_parsetables - metagenome") {
+    test("ampcombi2_parsetables - metagenome") {
         when {
             process {
                 """
@@ -49,7 +49,7 @@ nextflow_process {
             )
         }
     }
-    test("ampcombifilter_parsetables - metagenome - stub") {
+    test("ampcombi2_parsetables - metagenome - stub") {
         options "-stub"
         when {
             process {

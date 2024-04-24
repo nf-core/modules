@@ -1,6 +1,6 @@
-process AMPCOMBIFILTER_CLUSTER {
-    tag 'ampcombifilter'
-    label 'process_medium'
+process AMPCOMBI2_COMPLETE {
+    tag "ampcombi2"
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,13 +8,12 @@ process AMPCOMBIFILTER_CLUSTER {
         'biocontainers/ampcombi:0.2.2--pyhdfd78af_0' }"
 
     input:
-    path(summary_file)
+    path(summaries)
 
     output:
-    path("Ampcombi_summary_cluster.tsv")                   , emit: cluster_tsv
-    path("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
-    path("Ampcombi_cluster.log")                           , emit: log, optional:true
-    path "versions.yml"                                    , emit: versions
+    path("Ampcombi_summary.tsv") , emit: tsv
+    path("Ampcombi_complete.log"), emit: log, optional:true
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,23 +21,19 @@ process AMPCOMBIFILTER_CLUSTER {
     script:
     def args = task.ext.args ?: ''
     """
-    ampcombi cluster \\
-        --ampcombi_summary ${summary_file} \\
-        $args \\
-        --threads ${task.cpus}
+    ampcombi complete \\
+        --summaries_files '${summaries.collect{"$it"}.join("' '")}' \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
-
     stub:
     def args = task.ext.args ?: ''
     """
-    touch Ampcombi_summary_cluster.tsv
-    touch Ampcombi_summary_cluster_representative_seq.tsv
-    touch Ampcombi_cluster.log
+    touch Ampcombi_summary.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
