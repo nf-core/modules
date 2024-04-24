@@ -31,7 +31,7 @@ nextflow_process {
                 """
                 input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
                             plp -> [[ id: 'sample1'], 
-                                    plp[0].toString() - '.plp.gz',
+                                    plp[0].getParent(),
                                     2 ]}
                 """
             }

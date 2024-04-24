@@ -23,9 +23,9 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'sample1']`
 
-  - plp_prefix:
-      type: string
-      description: Prefix of pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
+  - plp:
+      type: directory
+      description: Directory contains pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
   - n_sample:
       type: integer
       description: Number of samples multiplexed together.

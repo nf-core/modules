@@ -8,7 +8,7 @@ process POPSCLE_FREEMUXLET {
         'biocontainers/popscle:0.1beta--h2c78cec_0' }"
 
     input:
-    tuple val(meta), val(plp_prefix), val(n_sample)
+    tuple val(meta), path(plp), val(n_sample)
 
     output:
     tuple val(meta), path('*.clust1.samples.gz')  , emit: result
@@ -26,10 +26,10 @@ process POPSCLE_FREEMUXLET {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-
-    """
+    
+    """ 
     popscle freemuxlet \\
-        --plp $plp_prefix \\
+        --plp ${plp}/$prefix \\
         --out $prefix \\
         --nsample $n_sample \\
         $args
