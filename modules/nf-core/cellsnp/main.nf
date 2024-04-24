@@ -34,9 +34,8 @@ process CELLSNP {
         $barcode_file \\
         $region_file \\
         $sample \\
-        -O $prefix \\
+        -O $prefix --gzip \\
         --nproc $task.cpus \\
-	    --gzip \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
