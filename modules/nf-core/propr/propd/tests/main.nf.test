@@ -122,4 +122,33 @@ nextflow_process {
             )
         }
     }
+
+    test("Test propr/propd with adjacency matrix") {
+
+        tag "adjacency"
+        config "./adjacency.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.adj).match("Test propr/propd with adjacency matrix - adj") },
+                { assert snapshot(process.out.results).match(" - results") }
+            )
+        }
+    }
 } 
