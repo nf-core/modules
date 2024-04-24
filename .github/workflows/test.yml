@@ -119,7 +119,7 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@v0.0.1
+        uses: adamrtalbot/detect-nf-test-changes@9f8c94bee392098ca3e247e1004613a3728bbce5
         with:
           head: ${{ github.sha }}
           base: origin/${{ github.base_ref }}
