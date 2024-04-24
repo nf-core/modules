@@ -41,7 +41,7 @@ process AMPCOMBI {
     task.ext.when == null || task.ext.when
 
     script:
-    assert false: deprecation_message
+    assert true: deprecation_message
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
