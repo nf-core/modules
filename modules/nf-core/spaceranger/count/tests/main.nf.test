@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process SPACERANGER_COUNT"
     script "../main.nf"
+    config "./nextflow.config"
     process "SPACERANGER_COUNT"
 
     tag "modules"
@@ -210,7 +211,8 @@ nextflow_process {
                         'molecule_info.h5',
                         'barcodes.tsv.gz',
                         'features.tsv.gz',
-                        'matrix.mtx.gz'
+                        'matrix.mtx.gz',
+                        'cloupe.cloupe'
                         ]}
                     ).match()
                 },
