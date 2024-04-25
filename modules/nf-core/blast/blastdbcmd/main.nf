@@ -8,7 +8,7 @@ process BLAST_BLASTDBCMD {
         'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
-    tuple val(meta) , val(entry)
+    tuple val(meta) , val(entry), path(entry_batch)
     tuple val(meta2), path(db)
 
     output:
@@ -21,6 +21,7 @@ process BLAST_BLASTDBCMD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert (!entry && entry_batch) || (entry && !entry_batch)
     """
     DB=`find -L ./ -name "*.nhr" | sed 's/\\.nhr\$//'`
     if test -z "\$DB"
@@ -28,11 +29,11 @@ process BLAST_BLASTDBCMD {
         DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
     fi
     blastdbcmd \\
-        -entry ${entry} \\
         -db \$DB \\
         ${args} \\
         -outfmt %f \\
-        -out ${prefix}.fasta
+        -out ${prefix}.fasta \\
+        ${entry? "-entry $entry":"-entry_batch $entry_batch"}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
