@@ -14,7 +14,7 @@ process TRIMMOMATIC {
     tuple val(meta), path("*.paired.trim*.fastq.gz")   , emit: trimmed_reads
     tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), optional:true, emit: unpaired_reads
     tuple val(meta), path("*_trim.log")                , emit: trim_log
-    tuple val(meta), path("*_out.log")                 , emit: log
+    tuple val(meta), path("*_out.log")                 , emit: out_log
     tuple val(meta), path("*.summary")                 , emit: summary
     path "versions.yml"                                , emit: versions
 
