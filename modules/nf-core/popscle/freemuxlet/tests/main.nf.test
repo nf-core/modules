@@ -50,9 +50,96 @@ nextflow_process {
 
     }
 
+    test("demultiplexing - auxilary - files") {
+        config "./nextflow.config"
+        setup { 
+            run("POPSCLE_DSCPILEUP") {
+                script "../../dscpileup/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
+                            plp -> [[ id: 'sample1'], 
+                                    plp[0].getParent(),
+                                    2 ]}
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert path(process.out.result.get(0).get(1)).exists() },
+                { assert path(process.out.vcf.get(0).get(1)).exists() },
+                { assert path(process.out.lmix.get(0).get(1)).exists() }
+                { assert path(process.out.singlet_result.get(0).get(1)).exists() },
+                { assert path(process.out.singlet_vcf.get(0).get(1)).exists() },
+                { assert path(process.out.ldist.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
     test("demultiplexing - stub") {
 
         options "-stub"
+        
+        setup { 
+            run("POPSCLE_DSCPILEUP") {
+                script "../../dscpileup/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
+                            plp -> [[ id: 'sample1'], 
+                                    plp[0].toString() - '.plp.gz',
+                                    2 ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions-stub") },
+                { assert path(process.out.result.get(0).get(1)).exists() },
+                { assert path(process.out.vcf.get(0).get(1)).exists() },
+                { assert path(process.out.lmix.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+    test("demultiplexing - auxilary - files - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
 
         setup { 
             run("POPSCLE_DSCPILEUP") {
@@ -87,6 +174,9 @@ nextflow_process {
                 { assert path(process.out.result.get(0).get(1)).exists() },
                 { assert path(process.out.vcf.get(0).get(1)).exists() },
                 { assert path(process.out.lmix.get(0).get(1)).exists() }
+                { assert path(process.out.singlet_result.get(0).get(1)).exists() },
+                { assert path(process.out.singlet_vcf.get(0).get(1)).exists() },
+                { assert path(process.out.ldist.get(0).get(1)).exists() }
             )
         }
 

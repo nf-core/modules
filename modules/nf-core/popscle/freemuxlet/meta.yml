@@ -59,17 +59,17 @@ output:
 
   - singlet_result:
       type: file
-      description: Output file contains the best sample identity assuming all droplets are singlets.
+      description: Optional output file contains the best sample identity assuming all droplets are singlets when writing auxiliary output files is turned on.
       pattern: "*.clust0.samples.gz"
 
   - singlet_vcf:
       type: file
-      description: Output vcf file for each sample inferred and clustered from freemuxlet assuming all droplets are singlets.
+      description: Optional output vcf file for each sample inferred and clustered from freemuxlet assuming all droplets are singlets when writing auxiliary output files is turned on.
       pattern: "*.clust0.vcf.gz"
 
   - ldist:
       type: file
-      description: Output ontains the pairwise Bayes factor for each possible pair of droplets.
+      description: Optional output ontains the pairwise Bayes factor for each possible pair of droplets when writing auxiliary output files is turned on.
       pattern: "*.ldist.gz"
 
 authors:

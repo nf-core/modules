@@ -35,7 +35,7 @@ process POPSCLE_FREEMUXLET {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        popscle freemuxlet: $VERSION
+        popscle: $VERSION
     END_VERSIONS
     """
 
@@ -49,9 +49,15 @@ process POPSCLE_FREEMUXLET {
     touch ${prefix}.clust1.vcf.gz
     touch ${prefix}.lmix
 
+    if [[ "$args" == *"--aux-files"* ]]; then
+        touch ${prefix}.clust0.samples.gz
+        touch ${prefix}.clust0.vcf.gz
+        touch ${prefix}.ldist.gz
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        popscle freemuxlet: $VERSION
+        popscle: $VERSION
     END_VERSIONS
     """
 }
