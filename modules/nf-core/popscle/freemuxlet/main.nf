@@ -16,7 +16,6 @@ process POPSCLE_FREEMUXLET {
     tuple val(meta), path('*.lmix')               , emit: lmix
     tuple val(meta), path('*.clust0.samples.gz')  , emit: singlet_result   , optional: true
     tuple val(meta), path('*.clust0.vcf.gz')      , emit: singlet_vcf      , optional: true
-    tuple val(meta), path('*.ldist.gz')           , emit: ldist            , optional: true
     path 'versions.yml'                           , emit: versions
 
     when:
@@ -52,7 +51,6 @@ process POPSCLE_FREEMUXLET {
     if [[ "$args" == *"--aux-files"* ]]; then
         touch ${prefix}.clust0.samples.gz
         touch ${prefix}.clust0.vcf.gz
-        touch ${prefix}.ldist.gz
     fi
 
     cat <<-END_VERSIONS > versions.yml

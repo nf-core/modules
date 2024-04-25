@@ -82,7 +82,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.versions).match("versions-aux-files") },
                 { assert path(process.out.result.get(0).get(1)).exists() },
                 { assert path(process.out.vcf.get(0).get(1)).exists() },
                 { assert path(process.out.lmix.get(0).get(1)).exists() }
@@ -170,13 +170,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions-stub") },
+                { assert snapshot(process.out.versions).match("versions-aux-files-stub") },
                 { assert path(process.out.result.get(0).get(1)).exists() },
                 { assert path(process.out.vcf.get(0).get(1)).exists() },
                 { assert path(process.out.lmix.get(0).get(1)).exists() }
                 { assert path(process.out.singlet_result.get(0).get(1)).exists() },
                 { assert path(process.out.singlet_vcf.get(0).get(1)).exists() },
-                { assert path(process.out.ldist.get(0).get(1)).exists() }
             )
         }
 
