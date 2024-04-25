@@ -14,16 +14,16 @@ nextflow_workflow {
     tag "mmseqs/taxonomy"
     tag "mmseqs/createtsv"
 
-    test("mmseqs_contig_taxonomy - haemophilus_influenzae - contig") {
+    test("mmseqs_contig_taxonomy - bacteroides_fragilis - contig") {
 
         setup {
             run("GUNZIP") {
                 script "modules/nf-core/gunzip/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([\
-                                [id:'haemophilus_influenzae'],
-                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                    input[0] = Channel.of([
+                                [id:'bacteroides_fragilis'],
+                                file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
                             ]
                     )
                     """
@@ -46,7 +46,9 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot (
                         workflow.out.versions,
-                        file(workflow.out.sample_taxa_tsv[0][1]).readLines(),
+                        //file(workflow.out.sample_taxa_tsv[0][1]).readLines().contains("Bacteria"),
+                        //path(workflow.out.sample_taxa_tsv[0][1]).getText().contains("Bacteria"),
+                        file(workflow.out.sample_taxa_tsv[0][1]).readLines()[0].contains("NZ_CP069563.1"),
                         ).match()
                 },
             )
