@@ -46,8 +46,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot (
                         workflow.out.versions,
-                        //file(workflow.out.sample_taxa_tsv[0][1]).readLines().contains("Bacteria"),
-                        //path(workflow.out.sample_taxa_tsv[0][1]).getText().contains("Bacteria"),
                         file(workflow.out.sample_taxa_tsv[0][1]).readLines()[0].contains("NZ_CP069563.1"),
                         ).match()
                 },
