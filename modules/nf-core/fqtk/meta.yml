@@ -9,8 +9,7 @@ tools:
       description: "A toolkit for working with FASTQ files, written in Rust."
       homepage: "https://github.com/fulcrumgenomics/fqtk"
       documentation: "https://github.com/fulcrumgenomics/fqtk"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
   - fastq_readstructure_pairs:
       type: map
       description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute path to fastq directory>],...]
-
 output:
   - meta:
       type: map
@@ -49,6 +47,9 @@ output:
       description: |
         File containing unmatched fastq records
       pattern: "output/unmatched*.fq.gz"
-
 authors:
-  - "Samantha White @sam-white04"
+  - "@nh13"
+  - "@sam-white04"
+maintainers:
+  - "@nh13"
+  - "@sam-white04"

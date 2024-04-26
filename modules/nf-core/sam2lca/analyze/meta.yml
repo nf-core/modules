@@ -14,7 +14,6 @@ tools:
       documentation: "https://sam2lca.readthedocs.io"
       doi: "10.21105/joss.04360"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: Directory containing the sam2lca database
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -56,6 +54,7 @@ output:
       type: file
       description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic informations
       pattern: "*.bam"
-
 authors:
+  - "@maxibor"
+maintainers:
   - "@maxibor"

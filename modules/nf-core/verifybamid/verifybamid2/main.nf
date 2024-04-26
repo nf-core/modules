@@ -2,7 +2,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
     tag '${meta.id}'
     label 'process_low'
 
-    conda "bioconda::verifybamid2=2.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
         'biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"

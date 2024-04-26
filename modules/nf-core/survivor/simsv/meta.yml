@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -49,7 +48,6 @@ input:
   - sim_reads:
       type: integer
       description: Whether or not to simulate reads (1==yes, else no)
-
 output:
   - meta:
       type: map
@@ -80,6 +78,7 @@ output:
       type: file
       description: A Fasta file file containing insertion sequences
       pattern: "*.insertions.fa"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

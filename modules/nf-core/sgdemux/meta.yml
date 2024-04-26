@@ -9,8 +9,7 @@ tools:
       description: "Tool for demultiplexing sequencing data generated on Singular Genomics' sequencing instruments."
       homepage: "https://github.com/Singular-Genomics/singular-demux"
       documentation: "https://github.com/Singular-Genomics/singular-demux#sgdemux"
-      licence: "['For Singular G4™ Sequencing Platform only']"
-
+      licence: ["For Singular G4™ Sequencing Platform only"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
   - fastqs_dir:
       type: directory
       description: "Input directory containing bgzipped (not gzip) FASTQ files"
-
 output:
   - meta:
       type: map
@@ -63,6 +61,9 @@ output:
         File output for dual-indexed runs with barcodes which are unexpected combinations of
         expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
       pattern: "output/sample_barcode_hop_metrics/tsv"
-
 authors:
-  - "Samantha White: @samfulcrum"
+  - "@nh13"
+  - "@sam-white04"
+maintainers:
+  - "@nh13"
+  - "@sam-white04"

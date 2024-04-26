@@ -6,7 +6,6 @@ keywords:
   - logratio
   - expression
   - propr
-
 tools:
   - "propr":
       description: "Logratio methods for omics data"
@@ -15,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
-
 input:
   - meta:
       type: map
@@ -37,7 +35,6 @@ input:
       type: file
       description: |
         CSV or TSV format sample sheet with sample metadata
-
 output:
   - meta:
       type: map
@@ -65,6 +62,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@suzannejin"
+maintainers:
   - "@suzannejin"

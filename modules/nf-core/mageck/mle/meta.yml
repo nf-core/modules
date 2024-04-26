@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://bitbucket.org/liulab/mageck/src"
       doi: "10.1186/s13059-015-0843-6"
       licence: "['BSD License']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: Design matrix describing the samples and conditions
       pattern: "*.{txt,tsv}"
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
         sgRNA summary file describing the sgRNA and
         associated gene
       pattern: "*.{gene_summary}"
-
 authors:
+  - "@LaurenceKuhl"
+maintainers:
   - "@LaurenceKuhl"

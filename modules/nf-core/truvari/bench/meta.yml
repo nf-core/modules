@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/ACEnglish/truvari"
       doi: "10.1186/s13059-022-02840-6"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -60,7 +59,6 @@ input:
       type: file
       description: Reference FASTA index file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -107,6 +105,7 @@ output:
       type: file
       description: Summary JSON file with results from the benchmark
       pattern: "*.summary.json"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

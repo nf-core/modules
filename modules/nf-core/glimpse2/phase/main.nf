@@ -12,7 +12,7 @@ process GLIMPSE2_PHASE {
     fi
     """
 
-    conda "bioconda::glimpse-bio=2.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
         'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
@@ -22,7 +22,7 @@ process GLIMPSE2_PHASE {
         tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variant
+        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variants
         tuple val(meta), path("*.txt.gz")        , emit: stats_coverage, optional: true
         path "versions.yml"                      , emit: versions
 

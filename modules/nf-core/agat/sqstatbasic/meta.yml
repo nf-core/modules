@@ -6,7 +6,6 @@ keywords:
   - gff
   - gtf
   - statistics
-
 tools:
   - agat:
       description: "AGAT is a toolkit for manipulation and getting information from GFF/GTF files"
@@ -15,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -26,9 +24,8 @@ input:
       type: file
       description: Annotation file in GFF3/GTF format
       pattern: "*.{gff, gtf}"
-
 output:
-  - stats_file:
+  - stats_txt:
       type: file
       description: Output of Statistics execution
       pattern: "*.{txt}"
@@ -36,6 +33,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@toniher"
+maintainers:
   - "@toniher"

@@ -11,9 +11,7 @@ tools:
       homepage: https://github.com/haowenz/chromap
       documentation: https://github.com/haowenz/chromap
       tool_dev_url: https://github.com/haowenz/chromap
-
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
   - fasta:
       type: file
       description: Fasta reference file.
-
 output:
   - versions:
       type: file
@@ -38,7 +35,9 @@ output:
       type: file
       description: Index file of the reference genome
       pattern: "*.{index}"
-
 authors:
+  - "@mahesh-panchal"
+  - "@joseespinosa"
+maintainers:
   - "@mahesh-panchal"
   - "@joseespinosa"

@@ -2,11 +2,11 @@ process GFAFFIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gfaffix=0.1.5"
+    conda "${moduleDir}/environment.yml"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5--h031d066_0 ' :
-        'biocontainers/gfaffix:0.1.5--h031d066_0' }"
+        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5b--h031d066_0' :
+        'biocontainers/gfaffix:0.1.5b--h031d066_0' }"
 
     input:
     tuple val(meta), path(gfa)

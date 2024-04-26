@@ -13,7 +13,6 @@ tools:
       documentation: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -30,11 +29,11 @@ input:
       type: string
       description: Amount of maximum amount of RAM each chunk of database that should be loaded at any one time
       pattern: "*GB"
-  - save_output_fastqs:
+  - save_output_reads:
       type: boolean
       description: |
-        If true, optional commands are added to save classified and unclassified reads
-        as fastq files
+        Optionally commands are added to save classified and unclassified reads as FASTA files.
+        When the input is paired-end, the single output FASTA contains merged reads.
   - save_reads_assignment:
       type: boolean
       description: |
@@ -46,33 +45,37 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - classified_reads_fastq:
+  - classified_reads_fasta:
       type: file
       description: |
         Reads classified as belonging to any of the taxa
-        on the KrakenUniq database.
-      pattern: "*.fastq.gz"
-  - unclassified_reads_fastq:
+        in the KrakenUniq reference database.
+      pattern: "*.classified.fasta.gz"
+  - unclassified_reads_fasta:
       type: file
       description: |
         Reads not classified to any of the taxa
-        on the KrakenUniq database.
-      pattern: "*.fastq.gz"
+        in the KrakenUniq reference database.
+      pattern: "*.unclassified.fasta.gz"
   - classified_assignment:
       type: file
       description: |
         KrakenUniq output file indicating the taxonomic assignment of
         each input read ## DOUBLE CHECK!!
+      pattern: "*.krakenuniq.classified.txt"
   - report:
       type: file
       description: |
-        KrakenUniq report containing stats about classified
-        and not classifed reads.
-      pattern: "*.report.txt"
+        KrakenUniq report containing statistics about classified
+        and unclassified reads.
+      pattern: "*.krakenuniq.report.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@mjamy"
+  - "@Midnighter"
+maintainers:
   - "@mjamy"
   - "@Midnighter"

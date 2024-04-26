@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/ukhsa-collaboration/PneumoCaT"
       doi: "10.7717/peerj.2477"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
       type: file
       description: Input Illunina paired-end FASTQ files
       pattern: "*.{fq.gz,fastq.gz}"
-
 output:
   - meta:
       type: map
@@ -44,6 +42,7 @@ output:
       type: file
       description: A detailed description of the predicted serotype
       pattern: "*.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process TRUVARI_CONSISTENCY"
+    script "../main.nf"
+    process "TRUVARI_CONSISTENCY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "truvari"
+    tag "truvari/consistency"
+
+    test("homo_sapiens - illumina - two vcf") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)]
+                        ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.consistency,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    test("homo_sapiens - illumina - four vcf") {
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'],checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'],checkIfExists: true)]
+                        ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.consistency,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    test("homo_sapiens - illumina - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'],checkIfExists: true)]
+                        ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.consistency,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}
