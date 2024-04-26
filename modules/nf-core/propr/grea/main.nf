@@ -5,7 +5,7 @@ process PROPR_GREA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-propr:5.0.4':
-        'quay.io/biocontainers/r-propr:5.0.4' }"
+        'biocontainers/r-propr:5.0.4' }"
 
     input:
     tuple val(meta), path(adj)
