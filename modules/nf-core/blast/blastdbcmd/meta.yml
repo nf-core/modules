@@ -4,6 +4,8 @@ keywords:
   - fasta
   - blast
   - database
+  - retrieval
+  - identifier
 tools:
   - blast:
       description: |
@@ -20,10 +22,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - entry:
       type: string
-      description: Entry identifier of sequence in database
+      description: Entry identifier of sequence in database. It cannot be used along with entry_batch
   - entry_batch:
       type: file
-      description: File with a list of entry identifiers of sequences in database (one identifier per line)
+      description: |
+        File with a list of entry identifiers of sequences in database (one identifier per line). It cannot be used along with entry
   - meta2:
       type: map
       description: |
