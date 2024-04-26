@@ -2,6 +2,7 @@ name: "Close user-tagged issues and PRs"
 on:
   schedule:
     - cron: "0 0 * * 0" # Once a week
+  workflow_dispatch:
 
 jobs:
   clean-up:
