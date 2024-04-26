@@ -10,7 +10,6 @@ process PROPR_GREA {
     input:
     tuple val(meta), path(adj)
     tuple val(meta2), path(gmt)
-    
 
     output:
     tuple val(meta), path("*.go.tsv"),  emit: enrichedGO

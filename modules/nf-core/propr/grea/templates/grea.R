@@ -88,12 +88,12 @@ gmt_to_K<- function(gmt_df){
     summ_df <- cbind(summ_df, as.data.frame(gmt_df\$GOterm))
     colnames(summ_df)<- c("GeneIDs", "GOterm")
     summ_df<- unique(summ_df)
-    
+
     summ_df\$value <- 1
-    
+
     K <- table(summ_df\$GeneIDs, summ_df\$GOterm)
     K <- as.data.frame.matrix(K)
-    
+
     return(K)
 }
 
@@ -108,7 +108,7 @@ add_missing <- function(adjacency_matrix, knowledge_matrix){
     extra_rows <- data.frame(matrix(0, nrow = length(missing_genes), ncol = ncol(knowledge_matrix)))
     rownames(extra_rows) <- missing_genes
     colnames(extra_rows) <- colnames(knowledge_matrix)
-    
+
     knowledge_matrix <- rbind(knowledge_matrix, extra_rows)
     return(knowledge_matrix)
 }
