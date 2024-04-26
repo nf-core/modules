@@ -12,7 +12,8 @@ process BLAST_BLASTDBCMD {
     tuple val(meta2), path(db)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("*.fasta"), optional: true, emit: fasta
+    tuple val(meta), path("*.txt")  , optional: true, emit: text
     path "versions.yml"             , emit: versions
 
     when:
@@ -21,7 +22,15 @@ process BLAST_BLASTDBCMD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert (!entry && entry_batch) || (entry && !entry_batch)
+    assert (!entry && entry_batch) || (entry && !entry_batch) : "You must use either entry or entry_batch, not both at the same time"
+    def input = ''
+    if (entry) {
+        input = "-entry ${entry}"
+    } else {
+        input = "-entry_batch ${entry_batch}"
+    }
+    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" :
+                     "fasta"
     """
     DB=`find -L ./ -name "*.nhr" | sed 's/\\.nhr\$//'`
     if test -z "\$DB"
@@ -32,9 +41,8 @@ process BLAST_BLASTDBCMD {
     blastdbcmd \\
         -db \$DB \\
         ${args} \\
-        -outfmt %f \\
-        -out ${prefix}.fasta \\
-        ${entry? "-entry $entry":"-entry_batch $entry_batch"}
+        -out ${prefix}.${extension} \\
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,8 +53,10 @@ process BLAST_BLASTDBCMD {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" :
+                     "fasta"
     """
-    touch ${prefix}.fasta
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

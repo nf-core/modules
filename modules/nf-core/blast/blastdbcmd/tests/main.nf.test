@@ -93,4 +93,30 @@ nextflow_process {
 
     }
 
+    test("Should query with a file containing a list of protein identifiers against a FASTA DB - text file") {
+
+        config "./nextflow.txt.config"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+
+                """
+                input[0] = [ [id:'test'], '', file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/blast/proteome.list', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
