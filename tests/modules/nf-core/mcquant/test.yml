@@ -1,9 +1,0 @@
-- name: mcquant test_mcquant
-  command: nextflow run ./tests/modules/nf-core/mcquant -entry test_mcquant -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mcquant/nextflow.config
-  tags:
-    - mcquant
-  files:
-    - path: output/mcquant/cycif_tonsil_registered_cell.csv
-      contains:
-        - "CellID"
-    - path: output/mcquant/versions.yml
