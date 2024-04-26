@@ -29,8 +29,7 @@ process BLAST_BLASTDBCMD {
     } else {
         input = "-entry_batch ${entry_batch}"
     }
-    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" :
-                     "fasta"
+    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
     DB=`find -L ./ -name "*.nhr" | sed 's/\\.nhr\$//'`
     if test -z "\$DB"
@@ -53,8 +52,7 @@ process BLAST_BLASTDBCMD {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" :
-                     "fasta"
+    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
     touch ${prefix}.${extension}
 
