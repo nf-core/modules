@@ -49,22 +49,22 @@ parse_args <- function(x){
 }
 
 
-# Function to print help menu
-print_help_menu <- function() {
-  cat("
-Usage: Rscript ribowaltz.r [options]
-Options:
-  --bams FILE                Path to the BAM file(s). If multiple bams provided, they must be comma-separated. (required)
-  --gtf FILE                 Path to the GTF file. (required)
-  --fasta FILE               Path to the FASTA file. (required)
-  --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
-  --periodicity_threshold INT   Filter out read lengths below specified periodicity threshold for P-site identification. Must be a value between 10 and 100. (default: NULL)
-  --exclude_start INT        Number of nucleotides from start codon used to exclude P-sites near initiating ribosome when calculating CDS coverage. (default: 42)
-  --exclude_stop INT         Number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage. (default: 27)
-  -h, --help                 Display this help message and exit.
-")
-  quit(status = 0)  # Exit after displaying help
-}
+# # Function to print help menu
+# print_help_menu <- function() {
+#   cat("
+# Usage: Rscript ribowaltz.r [options]
+# Options:
+#   --bams FILE                Path to the BAM file(s). If multiple bams provided, they must be comma-separated. (required)
+#   --gtf FILE                 Path to the GTF file. (required)
+#   --fasta FILE               Path to the FASTA file. (required)
+#   --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
+#   --periodicity_threshold INT   Filter out read lengths below specified periodicity threshold for P-site identification. Must be a value between 10 and 100. (default: NULL)
+#   --exclude_start INT        Number of nucleotides from start codon used to exclude P-sites near initiating ribosome when calculating CDS coverage. (default: 42)
+#   --exclude_stop INT         Number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage. (default: 27)
+#   -h, --help                 Display this help message and exit.
+# ")
+#   quit(status = 0)  # Exit after displaying help
+# }
 
 
 # =========
@@ -88,10 +88,10 @@ opt_types <- lapply(opt, class)
 # Parse extra arguments
 args_opt <- parse_args('$task.ext.args')
 
-# Check if help is requested
-if ('-h' %in% args_opt || '--help' %in% args_opt) {
-  print_help_menu()
-}
+# # Check if help is requested
+# if ('-h' %in% args_opt || '--help' %in% args_opt) {
+#   print_help_menu()
+# }
 
 # Apply parameter overrides
 for ( ao in names(args_opt)){
@@ -239,7 +239,7 @@ plot_codon_usage <- function(sample_name, psite_info_ls) {
   cu_barplot <- codon_usage_psite(psite.ls, annotation = annotation.dt, sample = sample_name,
                                   fasta_genome = TRUE, 
                                   fastapath = opt\$fasta,
-                                  gtfpath = gtf,
+                                  gtfpath = opt\$gtf,
                                   frequency_normalization = FALSE) 
   
   cu_barplot.gg <-cu_barplot[[paste0("plot_", sample_name)]] +
@@ -371,7 +371,7 @@ reads.ls <- reads.ls[order(names(reads.ls))]
 
 
 # Get filtered reads: keep only the ones with periodicity evidence based on periodicity_threshold, if privided
-if (!is.mull(opt\$periodicity_threshold)) {
+if (!is.null(opt\$periodicity_threshold)) {
 
   filtered.ls <- length_filter(data = reads.ls,
                              length_filter_mode = "periodicity",
@@ -383,7 +383,7 @@ if (!is.mull(opt\$periodicity_threshold)) {
 }
 
 # Additionally filter them by length, if length_range provided
-if (!is.mull(opt\$length_range)) {
+if (!is.null(opt\$length_range)) {
 
   min_length <- as.integer(strsplit(opt\$length_range, ":")[[1]][1])
   max_length <- as.integer(strsplit(opt\$length_range, ":")[[1]][2])

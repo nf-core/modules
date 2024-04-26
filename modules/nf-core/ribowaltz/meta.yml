@@ -8,11 +8,10 @@ keywords:
   - genomics
 tools:
   - "ribowaltz":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data."
       homepage: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       documentation: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
-      tool_dev_url: "None"
+      tool_dev_url: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       doi: "10.1371/journal.pcbi.1006169"
       licence: ['MIT']
 
@@ -23,8 +22,17 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
+  - meta2:
+      type: map
+      description: |
+        Map containing reference information for the reference genome GTF file
+        e.g. `[ id:'Ensembl human v.111' ]`
+  - meta3:
+      type: map
+      description: |
+        Map containing reference information for the reference genome FASTA file
+        e.g. `[ id:'Ensembl human v.111' ]`
   
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: Transcriptome BAM file
@@ -50,7 +58,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - offset:
       type: file
       description: TSV file containing P-site offsets for each read length (optional, in case no offsets could be determined, usually because no reads pass filtering criteria)
