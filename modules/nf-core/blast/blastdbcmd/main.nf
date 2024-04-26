@@ -28,6 +28,7 @@ process BLAST_BLASTDBCMD {
     then
         DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
     fi
+
     blastdbcmd \\
         -db \$DB \\
         ${args} \\
