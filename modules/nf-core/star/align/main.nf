@@ -4,8 +4,8 @@ process STAR_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:ded3841da0194af2701c780e9b3d653a85d27489-0' :
-        'biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:ded3841da0194af2701c780e9b3d653a85d27489-0' }"
+        'https://depot.galaxyproject.org/singularity/star:2.7.11b--h43eeafb_1' :
+        'biocontainers/star:2.7.11b--h43eeafb_1' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
@@ -73,8 +73,6 @@ process STAR_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
     END_VERSIONS
     """
 
@@ -102,8 +100,6 @@ process STAR_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
     END_VERSIONS
     """
 }
