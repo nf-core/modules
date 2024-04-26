@@ -45,7 +45,9 @@ nextflow_process {
 
     }
 
-    test("Should query with a file containing a list of protein identifiers against a FASTA DB") {
+    test("Should query with a protein identifier against a FASTA DB - stub") {
+
+        options '-stub'
 
         when {
             params {
@@ -53,7 +55,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], '', file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/blast/proteome.list', checkIfExists: true) ]
+                input[0] = [ [id: 'test'], 'ENSSASP00005000002.1', [] ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
@@ -68,9 +70,7 @@ nextflow_process {
 
     }
 
-    test("Should query with a protein identifier against a FASTA DB - stub") {
-
-        options = "-stub"
+    test("Should query with a file containing a list of protein identifiers against a FASTA DB") {
 
         when {
             params {
@@ -78,7 +78,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id: 'test'], 'ENSSASP00005000002.1', [] ]
+                input[0] = [ [id:'test'], '', file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/blast/proteome.list', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
