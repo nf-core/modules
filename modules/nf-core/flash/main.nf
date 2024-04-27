@@ -19,12 +19,10 @@ process FLASH {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     flash \\
         $args \\
-        $args2 \\
         -o ${prefix} \\
         -z \\
         ${reads[0]} \\
