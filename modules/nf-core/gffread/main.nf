@@ -28,6 +28,7 @@ process GFFREAD {
     def output_name = "${prefix}.${extension}"
     def output      = extension == "fasta"      ? "$output_name" : "-o $output_name"
     def args_sorted = args.replaceAll(/(.*)(-[wxy])(.*)/) { all, pre, param, post -> "$pre $post $param" }.trim()
+    // args_sorted  = Move '-w', '-x', and '-y' to the end of the args string as gffread expects the file name after these parameters
     if ( "$output_name" in [ "$gff", "$fasta" ] ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     gffread \\
@@ -46,10 +47,7 @@ process GFFREAD {
     def args        = task.ext.args             ?: ''
     def prefix      = task.ext.prefix           ?: "${meta.id}"
     def extension   = args.contains("-T")       ? 'gtf' : ( ( ['-w', '-x', '-y' ].any { args.contains(it) } ) ? 'fasta' : 'gff3' )
-    def fasta_arg   = fasta                     ? "-g $fasta" : ''
     def output_name = "${prefix}.${extension}"
-    def output      = extension == "fasta"      ? "$output_name" : "-o $output_name"
-    def args_sorted = args.replaceAll(/(.*)(-[wxy])(.*)/) { all, pre, param, post -> "$pre $post $param" }.trim()
     if ( "$output_name" in [ "$gff", "$fasta" ] ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch $output_name
