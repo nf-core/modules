@@ -46,6 +46,7 @@ process IPHOP_PREDICT {
     done
 
     mv iphop_results/Detailed_output_by_tool.csv ./${prefix}.Detailed_output_by_tool.csv
+    rm -f ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
