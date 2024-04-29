@@ -54,7 +54,6 @@ process AMPCOMBI2_PARSETABLES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-
     """
     mkdir -p ${prefix}
     mkdir -p ${prefix}/contig_gbks
