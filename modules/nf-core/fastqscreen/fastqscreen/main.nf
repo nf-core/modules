@@ -35,4 +35,19 @@ process FASTQSCREEN_FASTQSCREEN {
         fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}_fq_screen
+    touch ${prefix}_fq_screen/test_1_screen.html
+    touch ${prefix}_fq_screen/test_1_screen.png
+    touch ${prefix}_fq_screen/test_1_screen.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqscreen: \$(echo \$(fastq_screen --version 2>&1) | sed 's/^.*FastQ Screen v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
