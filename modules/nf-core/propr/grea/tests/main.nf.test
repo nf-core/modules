@@ -53,7 +53,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.enrichedGO).match() }
+                { assert snapshot(process.out.enrichedGO).match("grea chained to propr using default options - enrichedGO") },
+                { assert snapshot(process.out.versions).match("versions") }
+
             )
         }
     }
