@@ -15,7 +15,6 @@ tools:
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -53,7 +52,6 @@ input:
       type: file
       description: Optional file containing the regions to work on (but streams instead of index-jumping)
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -68,6 +66,7 @@ output:
       type: file
       description: The resulting files of the scattering
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

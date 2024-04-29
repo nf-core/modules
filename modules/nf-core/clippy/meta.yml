@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/ulelab/clippy"
       doi: "10.7554/eLife.84034"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
       type: file
       description: FAI file corresponding to the reference sequence
       pattern: "*.{fai}"
-
 output:
   - peaks:
       type: file
@@ -46,7 +44,9 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-
 authors:
+  - "@marc-jones"
+  - "@CharlotteAnne"
+maintainers:
   - "@marc-jones"
   - "@CharlotteAnne"

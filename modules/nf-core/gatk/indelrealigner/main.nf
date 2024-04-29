@@ -2,17 +2,17 @@ process GATK_INDELREALIGNER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk=3.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
         'biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
-    path(fasta)
-    path(fai)
-    path(dict)
-    path(known_vcf)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(known_vcf)
 
     output:
     tuple val(meta), path("*.bam"), path("*.bai"), emit: bam

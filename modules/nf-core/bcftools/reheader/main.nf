@@ -2,13 +2,13 @@ process BCFTOOLS_REHEADER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bcftools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'biocontainers/bcftools:1.17--haef29d1_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
+        'biocontainers/bcftools:1.18--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(header)
+    tuple val(meta), path(vcf), path(header), path(samples)
     tuple val(meta2), path(fai)
 
     output:
@@ -21,8 +21,9 @@ process BCFTOOLS_REHEADER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def update_sequences = fai ? "-f $fai" : ""
-    def new_header       = header ? "-h $header" : ""
+    def fai_argument      = fai ? "--fai $fai" : ""
+    def header_argument   = header ? "--header $header" : ""
+    def samples_argument  = samples ? "--samples $samples" : ""
 
     def args2 = task.ext.args2 ?: '--output-type z'
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
@@ -33,8 +34,9 @@ process BCFTOOLS_REHEADER {
     """
     bcftools \\
         reheader \\
-        $update_sequences \\
-        $new_header \\
+        $fai_argument \\
+        $header_argument \\
+        $samples_argument \\
         $args \\
         --threads $task.cpus \\
         $vcf \\

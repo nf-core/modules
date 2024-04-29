@@ -9,16 +9,13 @@ keywords:
   - aligner
   - bam
   - filter
-
 tools:
   - biscuit:
       description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-bsconv
       tool_dev_url: https://github.com/huishenlab/biscuit
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -35,7 +32,6 @@ input:
       type: dir
       description: Biscuit genome index directory (generated with 'biscuit index')
       pattern: "BiscuitIndex"
-
 output:
   - meta:
       type: map
@@ -50,6 +46,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@njspix"
+maintainers:
   - "@njspix"

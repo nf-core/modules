@@ -2,7 +2,7 @@ process ANGSD_CONTAMINATION {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::angsd=0.940"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
         'biocontainers/angsd:0.939--h468462d_0' }"
@@ -27,7 +27,7 @@ process ANGSD_CONTAMINATION {
         -a ${icounts} \
         -h ${hapmap_file} \
         -p ${task.cpus} \
-        2> ${prefix}.txt
+        2> >(tee ${prefix}.txt >&2)
 
 
     cat <<-END_VERSIONS > versions.yml

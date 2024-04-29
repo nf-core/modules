@@ -12,8 +12,7 @@ tools:
       documentation: "https://pyrodigal.readthedocs.org/"
       tool_dev_url: "https://github.com/althonos/pyrodigal/"
       doi: "10.21105/joss.04296"
-      licence: "['GPL v3']"
-
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -24,7 +23,10 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fasta.gz,fa.gz,fna.gz}"
-
+  - output_format:
+      type: string
+      description: Output format
+      pattern: "{gbk,gff}"
 output:
   - meta:
       type: map
@@ -35,10 +37,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - gff:
+  - annotations:
       type: file
-      description: gene annotations in gff format
-      pattern: "*.{gff.gz}"
+      description: Gene annotations. The file format is specified via input channel "output_format".
+      pattern: "*.{gbk,gff}.gz"
   - faa:
       type: file
       description: protein translations file
@@ -51,6 +53,7 @@ output:
       type: file
       description: all potential genes (with scores)
       pattern: "*.{score.gz}"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

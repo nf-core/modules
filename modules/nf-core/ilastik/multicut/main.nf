@@ -2,11 +2,6 @@ process ILASTIK_MULTICUT {
     tag "$meta.id"
     label 'process_low'
 
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     container "docker.io/biocontainers/ilastik:1.4.0_cv1"
 
     input:
@@ -22,6 +17,10 @@ process ILASTIK_MULTICUT {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -43,6 +42,10 @@ process ILASTIK_MULTICUT {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "ILASTIK_MULTICUT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.4.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

@@ -14,7 +14,17 @@ import groovy.json.JsonSlurper
 
 def getFastpReadsAfterFiltering(json_file) {
     def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
-    return json['after_filtering']['total_reads'].toInteger()
+    return json['after_filtering']['total_reads'].toLong()
+}
+
+def getFastpAdapterSequence(json_file){
+    def Map json = (Map) new JsonSlurper().parseText(json_file.text)
+    try{
+        adapter = json['adapter_cutting']['read1_adapter_sequence']
+    } catch(Exception ex){
+        adapter = ""
+    }
+    return adapter
 }
 
 workflow FASTQ_FASTQC_UMITOOLS_FASTP {
@@ -25,7 +35,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     skip_umi_extract  // boolean: true/false
     umi_discard_read  // integer: 0, 1 or 2
     skip_trimming     // boolean: true/false
-    adapter_fasta     //    file: adapter.fasta
+    adapter_fasta     // file: adapter.fasta
     save_trimmed_fail // boolean: true/false
     save_merged       // boolean: true/false
     min_trimmed_reads // integer: > 0
@@ -75,6 +85,8 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     fastqc_trim_html  = Channel.empty()
     fastqc_trim_zip   = Channel.empty()
     trim_read_count   = Channel.empty()
+    adapter_seq       = Channel.empty()
+
     if (!skip_trimming) {
         FASTP (
             umi_reads,
@@ -100,13 +112,17 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .set { ch_num_trimmed_reads }
 
         ch_num_trimmed_reads
-            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toInteger() }
+            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toLong() }
             .map { meta, reads, num_reads -> [ meta, reads ] }
             .set { trim_reads }
 
         ch_num_trimmed_reads
             .map { meta, reads, num_reads -> [ meta, num_reads ] }
             .set { trim_read_count }
+
+        trim_json
+            .map { meta, json -> [meta, getFastpAdapterSequence(json)] }
+            .set { adapter_seq }
 
         if (!skip_fastqc) {
             FASTQC_TRIM (
@@ -125,6 +141,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     fastqc_raw_zip     // channel: [ val(meta), [ zip ] ]
 
     umi_log            // channel: [ val(meta), [ log ] ]
+    adapter_seq        // channel: [ val(meta), [ adapter_seq] ]
 
     trim_json          // channel: [ val(meta), [ json ] ]
     trim_html          // channel: [ val(meta), [ html ] ]

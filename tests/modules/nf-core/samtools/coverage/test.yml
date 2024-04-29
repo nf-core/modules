@@ -1,9 +1,0 @@
-- name: samtools coverage test_samtools_coverage
-  command: nextflow run ./tests/modules/nf-core/samtools/coverage -entry test_samtools_coverage -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/coverage/nextflow.config
-  tags:
-    - samtools/coverage
-    - samtools
-  files:
-    - path: output/samtools/test.txt
-      md5sum: 99a521b3bf53b6acf8055a44a571ea84
-    - path: output/samtools/versions.yml

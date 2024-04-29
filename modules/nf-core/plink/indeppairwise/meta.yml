@@ -13,7 +13,6 @@ tools:
       documentation: "https://www.cog-genomics.org/plink/1.9/data"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence: ["GPL"]
-
 input:
   - meta:
       type: map
@@ -44,7 +43,6 @@ input:
       type: number
       description: Pairwise r2 threshold. At each step, pairs of variants in the current window with squared correlation greater than the threshold are noted, and variants are greedily pruned from the window until no such pairs remain
       pattern: "*.{}"
-
 output:
   - meta:
       type: map
@@ -63,6 +61,7 @@ output:
       type: file
       description: File with IDs of excluded variants
       pattern: "*.{prune.out}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

@@ -1,23 +1,18 @@
 name: "gatk4_collectreadcounts"
 description: Collects read counts at specified intervals. The count for each interval is calculated by counting the number of read starts that lie in the interval.
 keywords:
+  - collectreadcounts
   - bam
   - cram
-  - CollectReadCounts
-  - gatk
   - gatk4
 tools:
   - gatk4:
-      description:
-        Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
-        with a primary focus on variant discovery and genotyping. Its powerful processing engine
-        and high-performance computing features make it capable of taking on projects of any size.
+      description: Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593911-CombineGVCFs
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -63,7 +58,6 @@ input:
       type: file
       description: Optional - Sequence dictionary of the reference FASTA file
       pattern: "*.dict"
-
 output:
   - meta:
       type: map
@@ -82,6 +76,7 @@ output:
       type: file
       description: The read counts in TSV format
       pattern: "*.tsv"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

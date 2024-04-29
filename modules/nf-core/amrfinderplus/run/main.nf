@@ -2,10 +2,10 @@ process AMRFINDERPLUS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ncbi-amrfinderplus=3.10.42"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.42--h6e70893_0':
-        'biocontainers/ncbi-amrfinderplus:3.10.42--h6e70893_0' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.12.8--h283d18e_0':
+        'biocontainers/ncbi-amrfinderplus:3.12.8--h283d18e_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,7 +23,8 @@ process AMRFINDERPLUS_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
+    def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
+    def is_compressed_db = db.getName().endsWith(".gz") ? true : false
     prefix = task.ext.prefix ?: "${meta.id}"
     organism_param = meta.containsKey("organism") ? "--organism ${meta.organism} --mutation_all ${prefix}-mutations.tsv" : ""
     fasta_name = fasta.getName().replace(".gz", "")
@@ -34,12 +35,16 @@ process AMRFINDERPLUS_RUN {
         }
     }
     """
-    if [ "$is_compressed" == "true" ]; then
+    if [ "$is_compressed_fasta" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
 
-    mkdir amrfinderdb
-    tar xzvf $db -C amrfinderdb
+    if [ "$is_compressed_db" == "true" ]; then
+        mkdir amrfinderdb
+        tar xzvf $db -C amrfinderdb
+    else
+        mv $db amrfinderdb
+    fi
 
     amrfinder \\
         $fasta_param $fasta_name \\
@@ -55,6 +60,21 @@ process AMRFINDERPLUS_RUN {
     "${task.process}":
         amrfinderplus: \$(amrfinder --version)
         amrfinderplus-database: \$(echo \$(echo \$(amrfinder --database amrfinderdb --database_version 2> stdout) | rev | cut -f 1 -d ' ' | rev))
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    VER=\$(amrfinder --version)
+    DBVER=stub_version
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        amrfinderplus: \$(amrfinder --version)
+        amrfinderplus-database: stub_version
     END_VERSIONS
     """
 }

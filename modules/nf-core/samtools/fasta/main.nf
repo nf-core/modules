@@ -2,10 +2,10 @@ process SAMTOOLS_FASTA {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.19.2--h50ea8bc_0' :
+        'biocontainers/samtools:1.19.2--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -24,7 +24,7 @@ process SAMTOOLS_FASTA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output = ( interleave && ! meta.single_end ) ? "> ${prefix}_interleaved.fasta.gz" :
+    def output = ( interleave && ! meta.single_end ) ? "| gzip > ${prefix}_interleaved.fasta.gz" :
         meta.single_end ? "-1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz" :
         "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
     """
@@ -38,7 +38,7 @@ process SAMTOOLS_FASTA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

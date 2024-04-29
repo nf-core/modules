@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
       doi: "10.1101/105346"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -52,7 +51,6 @@ input:
       type: character
       description: Which variant calling algorithm to use. Some may require additional parameters supplied via ext.args. Check atlas documentation.
       pattern: "MLE|Bayesian|allelePresence|randomBase|majorityBase"
-
 output:
   - meta:
       type: map
@@ -67,6 +65,7 @@ output:
       type: file
       description: VCF file with variant calls
       pattern: "*.vcf.gz"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

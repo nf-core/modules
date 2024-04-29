@@ -2,15 +2,14 @@ process KMCP_PROFILE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kmcp=0.9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kmcp:0.9.1--h9ee0642_0':
         'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(search_results)
-    path taxdump
-    path taxid
+    path (db)
     val mode
 
     output:
@@ -24,11 +23,13 @@ process KMCP_PROFILE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    taxid=`find -L ${db} -name "*map"`
+    taxdump=`find -L ${db}/*/ -type d  -not -name "R001"`
     kmcp \\
         profile \\
         $args \\
-        -X $taxdump \\
-        -T $taxid \\
+        -X \$taxdump \\
+        -T \$taxid \\
         -m $mode \\
         -j $task.cpus \\
         -o ${prefix}.profile \\

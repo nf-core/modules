@@ -2,7 +2,7 @@ process METAEUK_EASYPREDICT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::metaeuk=6.a5d39d9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaeuk:6.a5d39d9--pl5321hf1761c0_2':
         'biocontainers/metaeuk:6.a5d39d9--pl5321hf1761c0_2' }"
@@ -25,9 +25,17 @@ process METAEUK_EASYPREDICT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    if [ -d ${database} ]; then
+        ## if supplying an mmseqs database as a directory, metaeuk requires the basename of the database
+        DBBASE=`find ${database}/ -name "*.version" -exec sh -c 'file=\$(basename {}); echo \${file%%.*}' \\;`
+        DB=`echo "${database}/\${DBBASE}"`
+    else
+        DB=${database}
+    fi
+
     metaeuk easy-predict \\
         ${fasta} \\
-        ${database} \\
+        \${DB} \\
         ${prefix} \\
         tmp/ \\
         ${args}

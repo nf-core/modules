@@ -2,10 +2,6 @@ process ILASTIK_PIXELCLASSIFICATION {
     tag "$meta.id"
     label 'process_single'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     container "docker.io/biocontainers/ilastik:1.4.0_cv1"
 
     input:
@@ -20,6 +16,10 @@ process ILASTIK_PIXELCLASSIFICATION {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "h5"
@@ -40,6 +40,10 @@ process ILASTIK_PIXELCLASSIFICATION {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "h5"
 

@@ -4,7 +4,6 @@ keywords:
   - pedigrees
   - ped
   - family
-
 tools:
   - peddy:
       description: genotype, ped correspondence check, ancestry check, sex check. directly, quickly on VCF
@@ -13,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/brentp/peddy
       doi: "10.1016/j.ajhg.2017.01.017"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -32,7 +30,6 @@ input:
       type: file
       description: TBI file
       pattern: "*.{vcf.gz.tbi}"
-
 output:
   - meta:
       type: map
@@ -59,6 +56,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@rannick"
+maintainers:
   - "@rannick"

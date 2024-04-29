@@ -1,6 +1,10 @@
 name: gatk4_baserecalibrator
 description: Generate recalibration table for Base Quality Score Recalibration (BQSR)
 keywords:
+  - base quality score recalibration
+  - table
+  - bqsr
+  - gatk4
   - sort
 tools:
   - gatk4:
@@ -12,7 +16,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -50,7 +53,6 @@ input:
       type: file
       description: Tabix index of the known_sites (optional)
       pattern: "*.vcf.gz.tbi"
-
 output:
   - meta:
       type: map
@@ -65,8 +67,11 @@ output:
       type: file
       description: Recalibration table from BaseRecalibrator
       pattern: "*.{table}"
-
 authors:
+  - "@yocra3"
+  - "@FriederikeHanssen"
+  - "@maxulysse"
+maintainers:
   - "@yocra3"
   - "@FriederikeHanssen"
   - "@maxulysse"

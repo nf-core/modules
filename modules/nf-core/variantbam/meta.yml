@@ -15,7 +15,6 @@ tools:
       tool_dev_url: https://github.com/walaj/VariantBam
       doi: 10.1093/bioinformatics/btw111
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: BAM/CRAM file
       pattern: "*.{bam,cram}"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Filtered or downsampled BAM file
       pattern: "*.{bam}"
-
 authors:
+  - "@bjohnnyd"
+maintainers:
   - "@bjohnnyd"
