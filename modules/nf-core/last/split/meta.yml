@@ -12,9 +12,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
       tool_dev_url: https://gitlab.com/mcfrith/last
-
       licence: ["GPL v3-or-later"]
-
 input:
   - meta:
       type: map
@@ -25,7 +23,6 @@ input:
       type: file
       description: Multiple Aligment Format (MAF) file, compressed with gzip
       pattern: "*.{maf.gz}"
-
 output:
   - meta:
       type: map
@@ -40,6 +37,7 @@ output:
       type: file
       description: Multiple Aligment Format (MAF) file, compressed with gzip
       pattern: "*.{maf.gz}"
-
 authors:
+  - "@aleksandrabliznina"
+maintainers:
   - "@aleksandrabliznina"

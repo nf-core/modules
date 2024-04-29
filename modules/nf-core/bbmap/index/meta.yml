@@ -9,15 +9,12 @@ tools:
       description: BBMap is a short read aligner, as well as various other bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
       documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
-
       licence: ["UC-LBL license (see package)"]
-
 input:
   - fasta:
       type: fasta
       description: fasta formatted file with nucleotide sequences
       pattern: "*.{fna,fa,fasta}"
-
 output:
   - versions:
       type: file
@@ -27,6 +24,7 @@ output:
       type: directory
       description: Directory with index files
       pattern: "ref"
-
 authors:
+  - "@daniellundin"
+maintainers:
   - "@daniellundin"

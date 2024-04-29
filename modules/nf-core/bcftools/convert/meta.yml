@@ -12,8 +12,7 @@ tools:
       documentation: "https://samtools.github.io/bcftools/bcftools.html#convert"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/gigascience/giab008"
-      licence: "['GPL']"
-
+      licence: ["GPL"]
 input:
   - meta:
       type: map
@@ -47,7 +46,6 @@ input:
       type: file
       description: (Optional) The BED file containing the regions for the VCF file
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -86,8 +84,11 @@ output:
       type: file
       description: sample format used by IMPUTE2 and SHAPEIT
       pattern: "*.samples"
-
 authors:
+  - "@nvnieuwk"
+  - "@ramprasadn"
+  - "@atrigila"
+maintainers:
   - "@nvnieuwk"
   - "@ramprasadn"
   - "@atrigila"

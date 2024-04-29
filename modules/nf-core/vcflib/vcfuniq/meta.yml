@@ -11,7 +11,6 @@ tools:
       documentation: https://github.com/vcflib/vcflib#USAGE
       doi: "10.1101/2021.05.21.445151"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: Index of VCF file
       pattern: "*.vcf.gz.tbi"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@drpatelh"
+maintainers:
   - "@drpatelh"

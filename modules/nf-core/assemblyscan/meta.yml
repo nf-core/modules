@@ -9,9 +9,7 @@ tools:
       homepage: https://github.com/rpetit3/assembly-scan
       documentation: https://github.com/rpetit3/assembly-scan
       tool_dev_url: https://github.com/rpetit3/assembly-scan
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: FASTA file for a given assembly
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -37,7 +34,9 @@ output:
       type: file
       description: Assembly statistics in JSON format
       pattern: "*.json"
-
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"

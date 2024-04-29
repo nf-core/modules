@@ -10,7 +10,6 @@ keywords:
 components:
   - fastqc
   - fastp
-
 input:
   - ch_reads:
       type: file
@@ -45,12 +44,10 @@ input:
       description: |
         Structure: val(skip_fastp)
         skip the fastp process if true
-
 output:
   - meta:
       type: value
-      description: Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
@@ -81,7 +78,6 @@ output:
       description: |
         Structure: [ val(meta), path(trim_reads_merged) ]
         Reads that were successfully merged
-
   - fastqc_raw_html:
       type: file
       description: |
@@ -107,4 +103,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"

@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE_LIGATE"
+    script "../main.nf"
+    process "GLIMPSE_LIGATE"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "glimpse"
+    tag "glimpse/ligate"
+    tag "glimpse/phase"
+    tag "bcftools/index"
+
+    test("test_glimpse_ligate") {
+        setup {
+            run("GLIMPSE_PHASE") {
+                script "../../phase/main.nf"
+                process {
+                """
+                ch_sample     = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+                region        = Channel.fromList([
+                    ["chr21:16600000-16750000","chr21:16650000-16700000"],
+                    ["chr21:16650000-16800000","chr21:16700000-16750000"]
+                ])
+                input_vcf     = Channel.of([
+                    [ id:'input'], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
+                ])
+                ref_panel     = Channel.of([
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                ])
+                ch_map        = Channel.of([
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
+                ])
+
+                input[0]      = input_vcf
+                    | combine(ch_sample)
+                    | combine(region)
+                    | combine(ref_panel)
+                    | combine(ch_map)
+                """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index/main.nf"
+                process {
+                """
+                input[0] = GLIMPSE_PHASE.out.phased_variants
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GLIMPSE_PHASE.out.phased_variants
+                    | groupTuple()
+                    | join (BCFTOOLS_INDEX.out.csi.groupTuple())
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.merged_variants.get(0).get(1)).linesGzip.last()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(lines).match("ligate") }
+            )
+        }
+
+    }
+}

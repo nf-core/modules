@@ -31,7 +31,7 @@ input:
       description: BAM file containing read alignments
       pattern: "*.{bam}"
   - index:
-      type: dir
+      type: directory
       description: Bismark genome index directory
       pattern: "BismarkIndex"
 output:
@@ -65,4 +65,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@phue"
+maintainers:
   - "@phue"

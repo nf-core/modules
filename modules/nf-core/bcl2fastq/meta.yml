@@ -10,7 +10,6 @@ tools:
       homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software"
       documentation: "https://support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf"
       licence: "ILLUMINA"
-
 input:
   - meta:
       type: map
@@ -60,4 +59,6 @@ output:
       description: Interop files
       pattern: "*.{bin}"
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

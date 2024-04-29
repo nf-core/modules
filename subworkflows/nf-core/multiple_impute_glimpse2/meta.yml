@@ -6,14 +6,12 @@ keywords:
   - phase
   - ligate
   - split_reference
-
 components:
   - glimpse2/chunk
   - glimpse2/phase
   - glimpse2/ligate
   - glimpse2/splitreference
   - bcftools/index
-
 input:
   - ch_input:
       type: file
@@ -22,7 +20,6 @@ input:
         Index file of the input file.
         File with sample names and ploidy information.
         Structure: [ meta, file, index, txt ]
-
   - ch_ref:
       type: file
       description: |
@@ -31,42 +28,37 @@ input:
         Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
         The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         Structure: [ meta, vcf, csi, region ]
-
   - ch_map:
       type: file
       description: |
         File containing the genetic map.
         Structure: [ meta, gmap ]
-
   - ch_fasta:
       type: file
       description: |
         Reference genome in fasta format.
         Reference genome index in fai format
         Structure: [ meta, fasta, fai ]
-
 output:
   - chunk_chr:
       type: file
       description: |
         Tab delimited output txt file containing buffer and imputation regions.
         Structure: [meta, txt]
-
   - merged_variants:
       type: file
       description: |
         Output VCF/BCF file for the merged regions.
         Phased information (HS field) is updated accordingly for the full region.
         Structure: [ val(meta), bcf ]
-
   - merged_variants_index:
       type: file
       description: Index file of the ligated phased variants files.
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

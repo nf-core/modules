@@ -12,9 +12,7 @@ tools:
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://lima.how/
       tool_dev_url: https://github.com/pacificbiosciences/barcoding/
-
       licence: ["BSD-3-Clause-Clear"]
-
 input:
   - meta:
       type: map
@@ -29,7 +27,6 @@ input:
       type: file
       description: Fasta file, sequences of primers
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -76,6 +73,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

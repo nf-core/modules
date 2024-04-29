@@ -2,7 +2,7 @@ process GAWK {
     tag "$meta.id"
     label 'process_single'
 
-    conda "anaconda::gawk=5.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gawk:5.1.0' :
         'biocontainers/gawk:5.1.0' }"
@@ -22,7 +22,7 @@ process GAWK {
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
     def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.getExtension}"
+    suffix = task.ext.suffix ?: "${input.getExtension()}"
 
     program = program_file ? "-f ${program_file}" : "${args2}"
 
@@ -41,7 +41,7 @@ process GAWK {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.getExtension}"
+    suffix = task.ext.suffix ?: "${input.getExtension()}"
 
     """
     touch ${prefix}.${suffix}

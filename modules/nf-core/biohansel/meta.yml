@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/phac-nml/biohansel"
       doi: "10.1101/2020.01.10.902056"
       licence: "['Apache-2.0 license']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: Scheme subtype metadata table
       pattern: "*.{tab,tsv,txt}"
-
 output:
   - meta:
       type: map
@@ -50,6 +48,7 @@ output:
       type: file
       description: A simple version of summary output
       pattern: "*simple-summary.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

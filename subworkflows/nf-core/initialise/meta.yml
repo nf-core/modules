@@ -18,11 +18,16 @@ input:
       description: |
         Structure: val(help)
         Boolean to show the pipeline help message and exit.
-  - validate_params:
+  - validateParams:
       type: boolean
       description: |
-        Structure: val(validate_params)
+        Structure: val(validateParams)
         Whether to validate the parameters prior to starting the pipeline.
+  - logo:
+      type: boolean
+      description: |
+        Structure: val(logo)
+        Boolean to show the pipeline logo and exit.
 output:
   - summary_params:
       type: value
@@ -30,4 +35,6 @@ output:
         Structure: val(summary_params)
         A map of the parameters used in the pipeline.
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"

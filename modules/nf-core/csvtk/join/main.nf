@@ -2,7 +2,7 @@ process CSVTK_JOIN {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::csvtk=0.26.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/csvtk:0.26.0--h9ee0642_0':
         'biocontainers/csvtk:0.26.0--h9ee0642_0' }"

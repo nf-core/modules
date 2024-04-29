@@ -17,7 +17,6 @@ tools:
       tool_dev_url: https://sourceforge.net/projects/maxbin/
       doi: "10.1093/bioinformatics/btv638"
       licence: ["BSD 3-clause"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
   - abund:
       type: file
       description: Contig abundance files, i.e. reads against each contig. See MaxBin2 README for details. Do not supply at the same time as read files.
-
 output:
   - meta:
       type: map
@@ -74,6 +72,7 @@ output:
       type: file
       description: All sequences that do not meet the minimum length threshold.
       pattern: "*.marker_of_each_gene.tar.gz"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

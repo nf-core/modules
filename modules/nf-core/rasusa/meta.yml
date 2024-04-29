@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/mbhall88/rasusa
       doi: "10.5281/zenodo.3731394"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
   - depth_cutoff:
       type: integer
       description: Depth of coverage cutoff
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: Reads with subsampled coverage
       pattern: "*.fastq.gz"
-
 authors:
+  - "@thanhleviet"
+maintainers:
   - "@thanhleviet"

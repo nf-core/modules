@@ -12,7 +12,6 @@ tools:
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,14 +23,13 @@ input:
       description: The file to find the closest features of
       pattern: "*.{bed,vcf,gff}(.gz)?"
   - input_2:
-      type: file(s)
+      type: list
       description: The input file(s) to find the closest features from
       pattern: "*.{bed,vcf,gff}(.gz)?"
   - fasta_fai:
       type: file
       description: The index of the FASTA reference. Needed when the argument `--sorted` is used
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: The resulting BED file containing the closest features
       pattern: "*.{bed,vcf,gff}"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

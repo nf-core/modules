@@ -18,7 +18,6 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -29,7 +28,6 @@ input:
       type: file
       description: fastq data to be converted to SAM/BAM/CRAM
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-
 output:
   - meta:
       type: map
@@ -52,6 +50,7 @@ output:
       type: file
       description: Unaligned CRAM file
       pattern: "*.cram"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

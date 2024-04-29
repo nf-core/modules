@@ -13,8 +13,7 @@ tools:
       documentation: "https://github.com/MDU-PHL/abritamr"
       tool_dev_url: "https://github.com/MDU-PHL/abritamr"
       doi: "10.1038/s41467-022-35713-4"
-      licence: "['GPL v3']"
-
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -25,13 +24,7 @@ input:
       type: file
       description: Assembled contigs in FASTA format
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -56,6 +49,7 @@ output:
       type: string
       description: raw output from AMRFinder plus (per sequence)
       pattern: "*.amrfinder.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

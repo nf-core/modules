@@ -12,8 +12,7 @@ tools:
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: Pangenome graph in binary ODGI or in GFA v1.0 format
       pattern: "*.{og,gfa}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: Optional output file that contains graph statistics in YAML format.
       pattern: "*.{yaml}"
-
 authors:
+  - "@subwaystation"
+maintainers:
   - "@subwaystation"

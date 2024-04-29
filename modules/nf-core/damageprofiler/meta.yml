@@ -19,7 +19,6 @@ tools:
       tool_dev_url: https://github.com/Integrative-Transcriptomics/DamageProfiler
       doi: "10.1093/bioinformatics/btab190"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -42,7 +41,6 @@ input:
       type: file
       description: OPTIONAL text file with list of target reference headers
       pattern: "*.{txt}"
-
 output:
   - versions:
       type: file
@@ -52,6 +50,7 @@ output:
       type: dir
       description: DamageProfiler results directory
       pattern: "*/*"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

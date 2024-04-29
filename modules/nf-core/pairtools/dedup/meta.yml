@@ -2,15 +2,16 @@ name: pairtools_dedup
 description: Find and remove PCR/optical duplicates
 keywords:
   - dedup
+  - deduplication
+  - PCR/optical duplicates
+  - pairs
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -20,7 +21,6 @@ input:
   - input:
       type: file
       description: pair file
-
 output:
   - meta:
       type: map
@@ -39,6 +39,7 @@ output:
       type: file
       description: stats of the pairs
       pattern: "*.{pairs.stat}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

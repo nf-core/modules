@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/xavierdidelot/ClonalFrameML
       doi: "10.1371/journal.pcbi.1004041"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: A Newick formated tree based on multiple sequence alignment
       pattern: "*.{newick,treefile,dnd}"
-
 output:
   - meta:
       type: map
@@ -62,6 +60,7 @@ output:
       type: file
       description: List of reconstructed recombination events
       pattern: "*.importation_status.txt"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"
