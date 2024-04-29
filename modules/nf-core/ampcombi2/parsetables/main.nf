@@ -49,6 +49,7 @@ process AMPCOMBI2_PARSETABLES {
         ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
