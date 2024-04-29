@@ -2,7 +2,7 @@ process PANGOLIN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pangolin=4.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pangolin:4.2--pyhdfd78af_1' :
         'biocontainers/pangolin:4.2--pyhdfd78af_1' }"

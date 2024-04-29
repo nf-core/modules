@@ -12,13 +12,11 @@ tools:
       tool_dev_url: https://github.com/somme89/rapidNJ
       doi: "10.1007/978-3-540-87361-7_10"
       licence: ["GPL v2"]
-
 input:
   - alignment:
       type: file
       description: A FASTA format multiple sequence alignment file
       pattern: "*.{fasta,fas,fa,mfa}"
-
 output:
   - versions:
       type: file
@@ -33,5 +31,8 @@ output:
       description: An alignment in Stockholm format
       pattern: "*.{sth}"
 authors:
+  - "@aunderwo"
+  - "@avantonder"
+maintainers:
   - "@aunderwo"
   - "@avantonder"

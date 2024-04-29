@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/Mykrobe-tools/mykrobe"
       doi: "10.1038/ncomms10063"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: string
       description: Species to make AMR prediction against
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: AMR predictions in JSON format
       pattern: "*.json"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

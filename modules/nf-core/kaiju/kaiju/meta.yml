@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
-
 input:
   - meta:
       type: map
@@ -27,11 +26,10 @@ input:
         respectively.
       pattern: "*.{fastq,fq,fasta,fa,fsa,fas,fna,fastq.gz,fq.gz,fasta.gz,fa.gz,fsa.gz,fas.gz,fna.gz}"
   - db:
-      type: files
+      type: directory
       description: |
         List containing the database and nodes files for Kaiju
         e.g. [ 'database.fmi', 'nodes.dmp' ]
-
 output:
   - meta:
       type: map
@@ -46,8 +44,11 @@ output:
       type: file
       description: Results with taxonomic classification of each read
       pattern: "*.tsv"
-
 authors:
+  - "@talnor"
+  - "@sofstam"
+  - "@jfy133"
+maintainers:
   - "@talnor"
   - "@sofstam"
   - "@jfy133"

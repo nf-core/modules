@@ -12,7 +12,6 @@ tools:
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -27,6 +26,10 @@ input:
       type: file
       description: New header to add to the VCF
       pattern: "*.{header.txt}"
+  - samples:
+      type: file
+      description: File containing sample names to update (one sample per line)
+      pattern: "*.{samples.txt}"
   - meta2:
       type: map
       description: |
@@ -36,7 +39,6 @@ input:
       type: file
       description: Fasta index to update header sequences with
       pattern: "*.{fai}"
-
 output:
   - meta:
       type: map
@@ -51,8 +53,11 @@ output:
       type: file
       description: VCF with updated header, bgzipped per default
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-
 authors:
+  - "@bjohnnyd"
+  - "@jemten"
+  - "@ramprasadn"
+maintainers:
   - "@bjohnnyd"
   - "@jemten"
   - "@ramprasadn"

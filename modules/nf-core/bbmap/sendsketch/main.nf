@@ -2,7 +2,7 @@ process BBMAP_SENDSKETCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bbmap=39.01"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
         'biocontainers/bbmap:39.01--h5c4e2a8_0' }"

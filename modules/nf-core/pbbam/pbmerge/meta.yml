@@ -9,9 +9,7 @@ tools:
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://pbbam.readthedocs.io/en/latest/tools/pbmerge.html
       tool_dev_url: https://github.com/pacificbiosciences/pbbam/
-
       licence: ["BSD-3-Clause-Clear"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: BAM files to merge
       pattern: "*.bam"
-
 output:
   - meta:
       type: map
@@ -41,6 +38,7 @@ output:
       type: file
       description: BAM Pacbio index file
       pattern: "*.bam.pbi"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

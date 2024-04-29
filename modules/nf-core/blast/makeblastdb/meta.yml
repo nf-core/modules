@@ -13,11 +13,21 @@ tools:
       doi: 10.1016/S0022-2836(05)80360-2
       licence: ["US-Government-Work"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input fasta file
-      pattern: "*.{fa,fasta}"
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - db:
       type: directory
       description: Output directory containing blast database files
@@ -29,3 +39,7 @@ output:
 authors:
   - "@joseespinosa"
   - "@drpatelh"
+maintainers:
+  - "@joseespinosa"
+  - "@drpatelh"
+  - "@vagkaratzas"

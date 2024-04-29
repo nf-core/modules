@@ -2,7 +2,7 @@ process BAMALIGNCLEANER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bamaligncleaner=0.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.1--pyhdfd78af_0' :
         'biocontainers/bamaligncleaner:0.2.1--pyhdfd78af_0' }"

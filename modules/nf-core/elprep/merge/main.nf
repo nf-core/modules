@@ -2,7 +2,7 @@ process ELPREP_MERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::elprep=5.1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
         'biocontainers/elprep:5.1.2--he881be0_0' }"

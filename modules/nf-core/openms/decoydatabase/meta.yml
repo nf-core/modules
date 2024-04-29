@@ -1,0 +1,44 @@
+name: "openms_decoydatabase"
+description: Create a decoy peptide database from a standard FASTA database.
+keywords:
+  - decoy
+  - database
+  - openms
+  - proteomics
+  - fasta
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/nmeth.3959"
+      licence: ["BSD"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - fasta:
+      type: file
+      description: Fasta file containing protein sequences
+      pattern: "*.{fasta}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Fasta file containing proteins and decoy proteins
+      pattern: "*.{fasta}"
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

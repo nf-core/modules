@@ -11,7 +11,6 @@ keywords:
   - somatic structural variations
   - mobile element insertions
   - long reads
-
 tools:
   - nanomonsv:
       description: |
@@ -22,7 +21,6 @@ tools:
       tool_dev_url: https://github.com/friend1ws/nanomonsv
       doi: "10.1101/2020.07.22.214262 "
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -37,7 +35,6 @@ input:
       type: file
       description: BAM index file
       pattern: "*.{bai}"
-
 output:
   - meta:
       type: map
@@ -80,6 +77,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@awgymer"
+maintainers:
   - "@awgymer"

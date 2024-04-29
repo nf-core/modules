@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/takaram/kofam_scan"
       doi: "10.1093/bioinformatics/btz859"
       licence: "['MIT License']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: File containing list of KO entries with their data
       pattern: "*.{fa,fasta}"
-
 output:
   - txt:
       type: file
@@ -45,6 +43,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@toniher"
+maintainers:
   - "@toniher"

@@ -2,7 +2,7 @@ process NANOLYSE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::nanolyse=1.2.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
         'biocontainers/nanolyse:1.2.0--py_0' }"
