@@ -1,8 +1,0 @@
-- name: "fastqscreen buildfromindex"
-  command: nextflow run ./tests/modules/nf-core/fastqscreen/buildfromindex -entry test_fastqscreen_buildfromindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqscreen/buildfromindex/nextflow.config
-  tags:
-    - "fastqscreen"
-    - "fastqscreen/buildfromindex"
-  files:
-    - path: "output/fastqscreen/FastQ_Screen_Genomes"
-    - path: "output/fastqscreen/versions.yml"

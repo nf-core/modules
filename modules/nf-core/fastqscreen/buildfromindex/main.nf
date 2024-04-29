@@ -1,7 +1,7 @@
 process FASTQSCREEN_BUILDFROMINDEX {
     label 'process_single'
 
-    conda "fastq-screen"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastq-screen:0.15.3--pl5321hdfd78af_0':
         'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
@@ -56,6 +56,7 @@ process FASTQSCREEN_BUILDFROMINDEX {
     """
 
     stub:
+    dir = "FastQ_Screen_Genomes"
     """
     mkdir $dir
     touch $dir/fastq_screen.conf
