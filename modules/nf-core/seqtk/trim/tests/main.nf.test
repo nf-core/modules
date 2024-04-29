@@ -1,11 +1,13 @@
 nextflow_process {
 
     name "Test Process SEQTK_TRIM"
-    script "../main.nf"
+    script "modules/nf-core/seqtk/trim/main.nf"
     process "SEQTK_TRIM"
+
+    tag "modules"
+    tag "modules_nfcore"
     tag "seqtk"
     tag "seqtk/trim"
-    tag "modules_nfcore"
 
     test("Single-end") {
 
@@ -15,7 +17,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
@@ -40,11 +42,11 @@ test("Paired-end") {
             }
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    [ 
+                    [
                         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
                 """

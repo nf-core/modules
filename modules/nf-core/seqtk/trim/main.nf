@@ -11,7 +11,7 @@ process SEQTK_TRIM {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*.fastq.gz"), emit: reads
     path "versions.yml"                , emit: versions
 
     when:
