@@ -30,6 +30,7 @@ process AMPCOMBI2_COMPLETE {
         ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
     END_VERSIONS
     """
+
     stub:
     def args = task.ext.args ?: ''
     """
