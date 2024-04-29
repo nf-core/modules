@@ -9,7 +9,7 @@ nextflow_process {
     tag "ampcombi2"
     tag "ampcombi2/complete"
 
-    test("ampcombi2_complete - bacteroides_fragilis") {
+    test("ampcombi2_complete - contigs") {
         when {
             process {
                 """
@@ -32,7 +32,7 @@ nextflow_process {
         }
     }
 
-    test("ampcombi2_complete - bacteroides_fragilis - stub") {
+    test("ampcombi2_complete - contigs - stub") {
         options "-stub"
         when {
             process {
