@@ -2,7 +2,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::krakenuniq=1.0.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h19e8d03_0':
         'biocontainers/krakenuniq:1.0.4--pl5321h19e8d03_0' }"
@@ -11,17 +11,16 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path(fastqs)
     path  db
     val ram_chunk_size
-    val save_output_fastqs
+    val save_output_reads
     val report_file
     val save_output
 
     output:
-    tuple val(meta), path('*.classified{.,_}*')     , optional:true, emit: classified_reads_fastq
-    tuple val(meta), path('*.unclassified{.,_}*')   , optional:true, emit: unclassified_reads_fastq
-    tuple val(meta), path('*classified.txt')        , optional:true, emit: classified_assignment
-    tuple val(meta), path('*report.txt')                           , emit: report
-
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path('*.classified.fasta.gz')      , optional:true, emit: classified_reads_fasta
+    tuple val(meta), path('*.unclassified.fasta.gz')    , optional:true, emit: unclassified_reads_fasta
+    tuple val(meta), path('*.krakenuniq.classified.txt'), optional:true, emit: classified_assignment
+    tuple val(meta), path('*.krakenuniq.report.txt')                   , emit: report
+    path "versions.yml"                                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +29,21 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fastq"' : '"\${PREFIX}.unclassified#.fastq"'
-    def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ''
+    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
+    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
+    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fastqs ? 'gzip --no-name *.fastq' : ''
+    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result=\$1
@@ -62,7 +61,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 $args2 \\
                 "\${FASTQ}"
         done
@@ -77,11 +75,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     } else {
         """
         krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result
@@ -102,7 +100,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 --paired \\
                 $args2 \\
                 "\${FASTQ[@]}"
@@ -121,26 +118,34 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fastq"' : '"\${PREFIX}.unclassified#.fastq"'
-    def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ''
+    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
+    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
+    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
+    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_fastqs ? 'gzip --no-name *.fastq' : ''
+    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result=\$1
             # Strip any file extensions.
             echo "\${result%%.*}"
+        }
+
+        create_file() {
+            echo '<3 nf-core' > "\$1"
+        }
+
+        create_gzip_file() {
+            echo '<3 nf-core' | gzip -n > "\$1"
         }
 
         printf "%s\\n" ${fastqs} | while read FASTQ; do \\
@@ -155,14 +160,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 $args2 \\
                 "\${FASTQ}"
 
-            touch "\${PREFIX}.classified.fastq.gz"
-            touch "\${PREFIX}.krakenuniq.classified.txt"
-            touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.unclassified.fastq.gz"
+            create_file "\${PREFIX}.krakenuniq.classified.txt"
+            create_file "\${PREFIX}.krakenuniq.report.txt"
+            create_gzip_file "\${PREFIX}.classified.fasta.gz"
+            create_gzip_file "\${PREFIX}.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command
@@ -175,11 +179,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     } else {
         """
         echo krakenuniq \\
+            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+            --threads $task.cpus
 
         strip_suffix() {
             local result
@@ -187,6 +191,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             # Strip any trailing dot or underscore.
             result="\${result%_}"
             echo "\${result%.}"
+        }
+
+        create_file() {
+            echo '<3 nf-core' > "\$1"
+        }
+
+        create_gzip_file() {
+            echo '<3 nf-core' | gzip -n > "\$1"
         }
 
         printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
@@ -202,15 +214,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $output_option \\
                 $unclassified_option \\
                 $classified_option \\
-                $output_option \\
                 --paired \\
                 $args2 \\
                 "\${FASTQ[@]}"
 
-            touch "\${PREFIX}.classified_1.fastq.gz" "\${PREFIX}.classified_2.fastq.gz"
-            touch "\${PREFIX}.krakenuniq.classified.txt"
-            touch "\${PREFIX}.krakenuniq.report.txt"
-            touch "\${PREFIX}.unclassified_1.fastq.gz" "\${PREFIX}.unclassified_2.fastq.gz"
+            create_file "\${PREFIX}.krakenuniq.classified.txt"
+            create_file "\${PREFIX}.krakenuniq.report.txt"
+            create_gzip_file "\${PREFIX}.merged.classified.fasta.gz"
+            create_gzip_file "\${PREFIX}.merged.unclassified.fasta.gz"
         done
 
         echo $compress_reads_command

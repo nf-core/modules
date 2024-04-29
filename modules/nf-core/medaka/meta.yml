@@ -10,9 +10,7 @@ tools:
       homepage: https://nanoporetech.github.io/medaka/index.html
       documentation: https://nanoporetech.github.io/medaka/index.html
       tool_dev_url: https://github.com/nanoporetech/medaka
-
       licence: ["Mozilla Public License 2.0"]
-
 input:
   - meta:
       type: map
@@ -27,7 +25,6 @@ input:
       type: file
       description: Genome assembly
       pattern: "*.{fasta,fa}"
-
 output:
   - meta:
       type: map
@@ -42,6 +39,7 @@ output:
       type: file
       description: Polished genome assembly
       pattern: "*.fa.gz"
-
 authors:
+  - "@avantonder"
+maintainers:
   - "@avantonder"

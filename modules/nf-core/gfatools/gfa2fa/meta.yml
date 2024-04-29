@@ -17,26 +17,22 @@ tools:
       tool_dev_url: "https://github.com/lh3/gfatools"
       doi: "no DOI available"
       licence: "['Unknown']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - gfa:
       type: file
       description: GFA or rGFA file
       pattern: "*.gfa"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
@@ -45,6 +41,7 @@ output:
       type: file
       description: FASTA file
       pattern: "*.fasta"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

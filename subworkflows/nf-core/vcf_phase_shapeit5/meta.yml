@@ -7,13 +7,11 @@ keywords:
   - ligate
   - index
   - vcf
-
 components:
   - bedtools/makewindows
   - shapeit5/phasecommon
   - shapeit5/ligate
   - bcftools/index
-
 input:
   - meta:
       type: map
@@ -45,7 +43,6 @@ input:
       type: file
       description: File containing the genetic map.
       Structure: [val(meta), path(map)]
-
 output:
   - meta:
       type: map
@@ -69,4 +66,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

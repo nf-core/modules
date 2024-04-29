@@ -15,7 +15,6 @@ tools:
       documentation: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
       type: file
       description: Sequence dictionary of the reference FASTA file needed when the input is a CRAM file
       pattern: "*.dict"
-
 output:
   - meta:
       type: map
@@ -65,6 +63,7 @@ output:
       type: file
       description: The index of the VCF containing the clustered VCFs
       pattern: "*.vcf.gz.tbi"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

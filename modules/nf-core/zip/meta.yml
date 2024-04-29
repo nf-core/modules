@@ -12,7 +12,6 @@ tools:
       documentation: https://sourceforge.net/projects/p7zip/
       tool_dev_url: https://sourceforge.net/projects/p7zip"
       licence: ["LGPL-2.1-or-later"]
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
   - files:
       type: file
       description: File or list of files to be zipped
-
 output:
   - meta:
       type: map
@@ -37,7 +35,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@jfy133"
+  - "@pinin4fjords"
+maintainers:
   - "@jfy133"
   - "@pinin4fjords"

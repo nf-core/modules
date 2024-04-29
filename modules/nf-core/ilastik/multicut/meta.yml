@@ -1,5 +1,4 @@
 name: "ilastik_multicut"
-
 description: Ilastik is a tool that utilizes machine learning algorithms to classify pixels, segment, track and count cells in images. Ilastik contains a graphical user interface to interactively label pixels. However, this nextflow module will implement the --headless mode, to apply pixel classification using a pre-trained .ilp file on an input image.
 keywords:
   - multicut
@@ -12,7 +11,6 @@ tools:
       documentation: "https://www.ilastik.org/documentation/"
       tool_dev_url: "https://github.com/ilastik/ilastik"
       licence: "GPL3"
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: h5 file containing image stack to classify file
       pattern: "*.{h5,hdf5}"
-
   - meta2:
       type: map
       description: |
@@ -33,7 +30,6 @@ input:
       type: file
       description: Trained ilastik .ilp project file
       pattern: "*.{ilp}"
-
   - meta3:
       type: map
       description: |
@@ -43,7 +39,6 @@ input:
       type: file
       description: Probability map for boundary based segmentation
       pattern: "*.{h5,,hdf5}"
-
 output:
   - meta:
       type: map
@@ -54,11 +49,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - out_tiff:
       type: file
       description: Multicut segmentation mask output.
       pattern: "*.{tiff}"
-
 authors:
+  - "@FloWuenne"
+maintainers:
   - "@FloWuenne"

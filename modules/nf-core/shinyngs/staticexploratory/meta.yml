@@ -6,14 +6,13 @@ keywords:
   - boxplot
   - density
   - PCA
-
 tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
 input:
   - meta:
       type: map
@@ -96,6 +95,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

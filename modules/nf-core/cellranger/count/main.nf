@@ -2,7 +2,7 @@ process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:7.1.0"
+    container "nf-core/cellranger:8.0.0"
 
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
@@ -32,7 +32,7 @@ process CELLRANGER_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
-    touch ${prefix}/outs/fake_file.txt
+    echo "$prefix" > ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

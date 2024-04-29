@@ -1,4 +1,4 @@
-name: "sratoolsncbisettings"
+name: "custom_sratoolsncbisettings"
 description: Test for the presence of suitable NCBI settings or create them on the fly.
 keywords:
   - NCBI
@@ -12,8 +12,7 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: "['Public Domain']"
-
+      licence: ["Public Domain"]
 output:
   - versions:
       type: file
@@ -23,6 +22,7 @@ output:
       type: file
       description: An NCBI user settings file.
       pattern: "*.mkfg"
-
 authors:
+  - "@Midnighter"
+maintainers:
   - "@Midnighter"

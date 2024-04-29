@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: fasta file, or a directory containing FASTA files
       pattern: "**/*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -45,6 +43,7 @@ output:
       type: file
       description: Summary file that is generated for later use
       pattern: "*_info.txt"
-
 authors:
+  - "@sofstam"
+maintainers:
   - "@sofstam"

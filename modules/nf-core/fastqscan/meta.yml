@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/rpetit3/fastq-scan
       documentation: https://github.com/rpetit3/fastq-scan
       tool_dev_url: https://github.com/rpetit3/fastq-scan
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: FASTQ file
       pattern: "*.{fastq.gz,fq.gz}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: JSON formatted file of summary statistics
       pattern: "*.json"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

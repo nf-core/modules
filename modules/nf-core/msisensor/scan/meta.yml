@@ -1,5 +1,4 @@
 name: msisensor_scan
-
 description: Scan a reference genome to get microsatellite & homopolymer information
 keywords:
   - homoploymer,microsatellite
@@ -7,10 +6,8 @@ tools:
   - msisensor:
       description: MSIsensor is a C++ program to detect replication slippage variants at microsatellite regions, and differentiate them as somatic or germline.
       homepage: https://github.com/ding-lab/msisensor
-
       doi: "10.1093/bioinformatics/btt755"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -21,7 +18,6 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fa,fasta}"
-
 output:
   - meta:
       type: map
@@ -36,6 +32,7 @@ output:
       type: file
       description: MSIsensor scan output file of homopolymers & minisatellites
       pattern: "*.msisensor_scan.txt"
-
 authors:
+  - "@kevbrick"
+maintainers:
   - "@kevbrick"

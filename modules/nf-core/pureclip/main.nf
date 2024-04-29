@@ -2,7 +2,7 @@ process PURECLIP {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::pureclip=1.3.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
         'biocontainers/pureclip:1.3.1--0' }"

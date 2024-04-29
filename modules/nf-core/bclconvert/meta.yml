@@ -9,8 +9,7 @@ tools:
       description: "Demultiplex Illumina BCL files"
       homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl-convert.html"
       documentation: "https://support-docs.illumina.com/SW/BCL_Convert/Content/SW/FrontPages/BCL_Convert.htm"
-      licence: "ILLUMINA"
-
+      licence: ["ILLUMINA"]
 input:
   - meta:
       type: map
@@ -61,3 +60,6 @@ output:
       pattern: "*.{bin}"
 authors:
   - "@matthdsm"
+maintainers:
+  - "@matthdsm"
+  - "@maxulysse"

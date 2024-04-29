@@ -13,8 +13,7 @@ tools:
       documentation: https://instrain.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -38,7 +37,6 @@ input:
       type: file
       description: Path to .stb (scaffold to bin) file that was profiled
       pattern: "*.stb"
-
 output:
   - meta:
       type: map
@@ -53,7 +51,9 @@ output:
       type: directory
       description: inStrain compare folders
       pattern: "*.IS_compare/"
-
 authors:
+  - "@margotl9"
+  - "@CarsonJM"
+maintainers:
   - "@margotl9"
   - "@CarsonJM"

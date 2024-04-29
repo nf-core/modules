@@ -15,7 +15,6 @@ tools:
       doi: 10.1158/1538-7445.AM2017-3590
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: Read counts in hdf5 or tsv format.
       pattern: "*.{hdf5,tsv}"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Panel-of-normals file.
       pattern: "*.{hdf5}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

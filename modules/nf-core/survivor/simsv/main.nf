@@ -2,7 +2,7 @@ process SURVIVOR_SIMSV {
     tag "simSV"
     label 'process_single'
 
-    conda "bioconda::survivor=1.0.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2':
         'biocontainers/survivor:1.0.7--hd03093a_2' }"

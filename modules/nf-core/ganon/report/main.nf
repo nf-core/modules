@@ -2,10 +2,10 @@ process GANON_REPORT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::ganon=1.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:1.5.1--py310h8abeb55_0':
-        'biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
+        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
+        'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
 
     input:
     tuple val(meta), path(rep)
@@ -23,13 +23,13 @@ process GANON_REPORT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    dbprefix=\$(find -L . -name '*.ibf' | sed 's/\\.ibf\$//')
+    dbprefix=\$(find -L . -name '*.*ibf' | sed 's/\\.h\\?ibf\$//')
 
     ganon \\
         report \\
         --input ${rep} \\
         --output-prefix ${prefix} \\
-        --db-prefix \${dbprefix%%.ibf} \\
+        --db-prefix \${dbprefix%%.*ibf} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

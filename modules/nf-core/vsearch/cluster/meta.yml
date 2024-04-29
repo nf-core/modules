@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/torognes/vsearch
       doi: 10.7717/peerj.2584
       licence: ["GPL v3-or-later OR BSD-2-clause"]
-
 input:
   - meta:
       type: map
@@ -21,7 +20,6 @@ input:
       type: file
       description: Sequences to cluster in FASTA format
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-
 output:
   - meta:
       type: map
@@ -64,6 +62,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@mirpedrol"
+maintainers:
   - "@mirpedrol"

@@ -3,6 +3,7 @@ description: Computes equivalence classes for reads and quantifies abundances
 keywords:
   - quant
   - kallisto
+  - pseudoalignment
 tools:
   - "kallisto":
       description: "Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads."
@@ -10,8 +11,7 @@ tools:
       documentation: https://pachterlab.github.io/kallisto/manual
       tool_dev_url: https://github.com/pachterlab/kallisto
       doi: "10.1038/nbt.3519"
-      licence: "['BSD_2_clause']"
-
+      licence: ["BSD_2_clause"]
 input:
   - meta:
       type: map
@@ -25,7 +25,7 @@ input:
         respectively.
       pattern: "*.{fastq,fastq.gz}"
   - index:
-      type: index
+      type: file
       description: Kallisto genome index.
       pattern: "*.idx"
   - gtf:
@@ -36,6 +36,12 @@ input:
       type: file
       description: Optional tab separated file with chromosome names and lengths.
       pattern: "*.tsv"
+  - fragment_length:
+      type: integer
+      description: For single-end mode only, the estimated average fragment length.
+  - fragment_length_sd:
+      type: integer
+      description: For single-end mode only, the estimated standard deviation of the fragment length.
 
 output:
   - meta:
@@ -65,6 +71,7 @@ output:
       type: file
       description: A json file containing information about the run
       pattern: "run_info.json"
-
 authors:
+  - "@anoronh4"
+maintainers:
   - "@anoronh4"

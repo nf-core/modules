@@ -11,8 +11,7 @@ tools:
       homepage: "http://www.gsea-msigdb.org/gsea/index.jsp"
       documentation: "https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Main_Page"
       doi: "10.1073/pnas.0506580102"
-      licence: "['BSD-3-clause']"
-
+      licence: ["BSD-3-clause"]
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
         optional Broad-style chip file mapping identifiers in gct to
         those in gene_sets
       pattern: "*.{chip}"
-
 output:
   - meta:
       type: map
@@ -70,8 +68,7 @@ output:
       pattern: "gsea_report_for_reference*.tsv"
   - report_htmls_ref:
       type: file
-      description: Main HTML results report file for the reference group.
-        sample groups
+      description: Main HTML results report file for the reference group. sample groups
       pattern: "gsea_report_for_reference*.html"
   - report_tsvs_target:
       type: file
@@ -111,36 +108,27 @@ output:
       pattern: "ranked_list_corr_2.png"
   - gene_set_tsv:
       type: list
-      description: Where -make_sets is not set to false, TSV files, one file
-        for each gene set, with detail on
-        enrichment for each gene
+      description: Where -make_sets is not set to false, TSV files, one file for each gene set, with detail on enrichment for each gene
       pattern: "[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"
   - gene_set_html:
       type: list
-      description: Where -make_sets is not set to false, HTML files, one file
-        for each gene set, with detail on enrichment for each gene
+      description: Where -make_sets is not set to false, HTML files, one file for each gene set, with detail on enrichment for each gene
       pattern: "[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"
   - gene_set_heatmap:
       type: list
-      description: Where -make_sets is not set to false, PNG-format heatmaps,
-        one file for each gene set, showing
-        expression for each gene
+      description: Where -make_sets is not set to false, PNG-format heatmaps, one file for each gene set, showing expression for each gene
       pattern: "[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"
   - snapshot:
       type: list
-      description: HTML files, one each for positive and negative enrichment,
-        collecting elements of gene_set_enplot
+      description: HTML files, one each for positive and negative enrichment, collecting elements of gene_set_enplot
       pattern: "*_snapshot*.html"
   - gene_set_enplot:
       type: list
-      description: Where -make_sets is not set to false, PNG-format enrichment
-        (barcode) plots, one file for each gene set, showing how genes
-        contribute to enrichment.
+      description: Where -make_sets is not set to false, PNG-format enrichment (barcode) plots, one file for each gene set, showing how genes contribute to enrichment.
       pattern: "enplot*.png"
   - gene_set_dist:
       type: list
-      description: Where -make_sets is not set to false, PNG-format enrichment
-        score distributions plots, one file for each gene set.
+      description: Where -make_sets is not set to false, PNG-format enrichment score distributions plots, one file for each gene set.
       pattern: "gset_rnd_es_dist*.png"
   - archive:
       type: file
@@ -150,6 +138,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

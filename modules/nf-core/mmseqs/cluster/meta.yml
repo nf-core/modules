@@ -16,8 +16,7 @@ tools:
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
-      licence: "['GPL v3']"
-
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
   - input_db:
       type: directory
       description: a MMseqs2 database used for clustering
-
 output:
   - meta:
       type: map
@@ -37,11 +35,11 @@ output:
   - db_cluster:
       type: file
       description: a clustered MMseqs2 database used for clustering
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"
