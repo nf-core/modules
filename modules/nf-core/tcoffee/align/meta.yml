@@ -12,6 +12,10 @@ tools:
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
       licence: ["GPL v3"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 input:
   - meta:
       type: map
@@ -44,6 +48,9 @@ input:
       type: file
       description: Accessory files to be used in the alignment. For example, it could be protein structures or secondary structures.
       pattern: "*"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -52,8 +59,12 @@ output:
         e.g. `[ id:'test']`
   - alignment:
       type: file
-      description: Alignment file.
-      pattern: "*.{aln}"
+      description: Alignment file in FASTA format. May be gzipped.
+      pattern: "*.aln{.gz,}"
+  - lib:
+      type: file
+      description: optional output, the library generated from the MSA file.
+      pattern: "*.*lib"
   - versions:
       type: file
       description: File containing software versions
@@ -61,6 +72,9 @@ output:
 authors:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@alessiovignoli"
 maintainers:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@lrauschning"
+  - "@alessiovignoli"
