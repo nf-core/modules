@@ -12,8 +12,10 @@ process FASTQSCREEN_FASTQSCREEN {
     path database
 
     output:
-    tuple val(meta), path ("*_fq_screen"), emit: fastq_screen
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.txt") , emit: txt
+    tuple val(meta), path("*.png") , emit: png
+    tuple val(meta), path("*.html"), emit: html
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +30,7 @@ process FASTQSCREEN_FASTQSCREEN {
         --conf ${database}/fastq_screen.conf \\
         $reads \\
         $args \\
-        --outdir ${prefix}_fq_screen
+        --outdir .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,10 +41,9 @@ process FASTQSCREEN_FASTQSCREEN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}_fq_screen
-    touch ${prefix}_fq_screen/test_1_screen.html
-    touch ${prefix}_fq_screen/test_1_screen.png
-    touch ${prefix}_fq_screen/test_1_screen.txt
+    touch test_1_screen.html
+    touch test_1_screen.png
+    touch test_1_screen.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
