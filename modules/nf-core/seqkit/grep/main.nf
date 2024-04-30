@@ -1,5 +1,3 @@
-// Fake change if you see this it should not have been merged and can be deleted.
-
 process SEQKIT_GREP {
     tag "$meta.id"
     label 'process_low'

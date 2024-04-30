@@ -1,5 +1,3 @@
-// Fake change if you see this it should not have been merged and can be deleted.
-
 //
 // Sort, index BAM file and run samtools stats, flagstat and idxstats
 //
