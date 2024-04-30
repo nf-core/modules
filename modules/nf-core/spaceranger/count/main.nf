@@ -2,13 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/nfcore/spaceranger:2.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
+    container "nf-core/spaceranger:3.0.0"
 
     input:
     tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
@@ -16,13 +10,17 @@ process SPACERANGER_COUNT {
     path(probeset)
 
     output:
-    tuple val(meta), path("**/outs/**"), emit: outs
+    tuple val(meta), path("outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Add flags for optional inputs on demand.
@@ -48,6 +46,7 @@ process SPACERANGER_COUNT {
         $alignment \\
         $slidefile \\
         $args
+    mv ${prefix}/outs outs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -56,10 +55,13 @@ process SPACERANGER_COUNT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
-    mkdir -p "${prefix}/outs/"
-    touch ${prefix}/outs/fake_file.txt
+    mkdir -p outs/
+    touch outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

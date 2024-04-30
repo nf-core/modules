@@ -2,24 +2,39 @@
 
 nextflow.enable.dsl = 2
 
-include { QUAST }   from '../../../../modules/nf-core/quast/main.nf'
+include { QUAST as QUAST_REF         }   from '../../../../modules/nf-core/quast/main.nf'
+include { QUAST as QUAST_NOREF_NOGFF }   from '../../../../modules/nf-core/quast/main.nf'
+include { QUAST as QUAST_NOGFF       }   from '../../../../modules/nf-core/quast/main.nf'
+include { QUAST as QUAST_NOREF       }   from '../../../../modules/nf-core/quast/main.nf'
 
 workflow test_quast_ref {
-    fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    gff       = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
-    consensus = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
-    use_fasta = true
-    use_gtf   = true
+    consensus = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]
+    fasta     = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    gff       = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)]
 
-    QUAST ( consensus, fasta, gff, use_fasta, use_gtf )
+    QUAST_REF ( consensus, fasta, gff )
+}
+
+workflow test_quast_noref_nogff {
+    consensus = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]
+    fasta     = [[:],[]]
+    gff       = [[:],[]]
+
+    QUAST_NOREF_NOGFF ( consensus, fasta, gff )
+}
+
+workflow test_quast_nogff {
+    consensus = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]
+    fasta     = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    gff       = [[:],[]]
+
+    QUAST_NOGFF ( consensus, fasta, gff )
 }
 
 workflow test_quast_noref {
-    fasta     = file('fasta_dummy')
-    gff       = file('gff_dummy')
-    consensus = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    use_fasta = false
-    use_gtf   = false
+    consensus = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]
+    fasta     = [[:],[]]
+    gff       = [[ id:'test', single_end:false ], file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)]
 
-    QUAST ( consensus, fasta, gff, use_fasta, use_gtf )
+    QUAST_NOREF ( consensus, fasta, gff )
 }

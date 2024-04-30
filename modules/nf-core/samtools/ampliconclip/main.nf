@@ -2,10 +2,10 @@ process SAMTOOLS_AMPLICONCLIP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.19.2--h50ea8bc_0' :
+        'biocontainers/samtools:1.19.2--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,10 +14,10 @@ process SAMTOOLS_AMPLICONCLIP {
     val save_clipstats
 
     output:
-    tuple val(meta), path("*.bam")            , emit: bam
-    tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
-    tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.clipallowed.bam")  , emit: bam
+    tuple val(meta), path("*.clipstats.txt")    , optional:true, emit: stats
+    tuple val(meta), path("*.cliprejects.bam")  , optional:true, emit: rejects_bam
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +36,7 @@ process SAMTOOLS_AMPLICONCLIP {
         $rejects \\
         $stats \\
         -b $bed \\
-        -o ${prefix}.bam \\
+        -o ${prefix}.clipallowed.bam \\
         $bam
 
     cat <<-END_VERSIONS > versions.yml

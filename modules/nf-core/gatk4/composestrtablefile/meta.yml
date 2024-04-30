@@ -1,9 +1,9 @@
 name: "gatk4_composestrtablefile"
 description: This tool looks for low-complexity STR sequences along the reference that are later used to estimate the Dragstr model during single sample auto calibration CalibrateDragstrModel.
 keywords:
-  - gatk4
   - composestrtablefile
   - dragstr
+  - gatk4
 tools:
   - "gatk4":
       description: |
@@ -14,7 +14,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/4405451249819-ComposeSTRTableFile
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - fasta:
       type: file
@@ -28,7 +27,6 @@ input:
       type: file
       description: Sequence dictionary of the FASTA reference file
       pattern: "*.dict"
-
 output:
   - versions:
       type: file
@@ -38,6 +36,7 @@ output:
       type: file
       description: A zipped folder containing the STR table files
       pattern: "*.zip"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

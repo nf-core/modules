@@ -2,15 +2,15 @@ name: pairtools_select
 description: Select pairs according to given condition by options.args
 keywords:
   - select
+  - pairs
+  - filter
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -20,7 +20,6 @@ input:
   - input:
       type: file
       description: pairs file
-
 output:
   - meta:
       type: map
@@ -39,6 +38,7 @@ output:
       type: file
       description: Rest pairs file.
       pattern: "*.{unselected.pairs.gz}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

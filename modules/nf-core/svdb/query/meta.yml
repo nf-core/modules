@@ -2,6 +2,8 @@ name: svdb_query
 description: Query a structural variant database, using a vcf file as query
 keywords:
   - structural variants
+  - query
+  - svdb
 tools:
   - svdb:
       description: structural variant database software
@@ -25,10 +27,14 @@ input:
       type: file
       description: query vcf file
       pattern: "*.{vcf,vcf.gz}"
-  - vcf_db:
+  - vcf_dbs:
       type: file
-      description: database vcf file
+      description: path to a database vcf, or a comma separated list of vcfs
       pattern: "*.{vcf,vcf.gz}"
+  - bedpe_dbs:
+      type: file
+      description: path to a SV database of the following format chrA-posA-chrB-posB-type-count-frequency, or a comma separated list of files
+      pattern: "*.{bedpe}"
 
 output:
   - meta:

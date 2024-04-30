@@ -13,7 +13,6 @@ tools:
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
       documentation: "https://github.com/broadinstitute/gatk-docs"
       licence: "['https://software.broadinstitute.org/gatk/download/licensing', 'BSD', 'https://www.broadinstitute.org/gatk/about/#licensing']"
-
 input:
   - meta:
       type: map
@@ -64,7 +63,6 @@ input:
       type: file
       description: Optional input VCF file(s) with known indels
       pattern: ".vcf"
-
 output:
   - meta:
       type: map
@@ -79,6 +77,7 @@ output:
       type: file
       description: File containg intervals that represent sites of extant and potential indels.
       pattern: "*.intervals"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

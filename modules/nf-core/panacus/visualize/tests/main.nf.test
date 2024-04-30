@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process PANACUS_VISUALIZE"
+    script "../main.nf"
+    process "PANACUS_VISUALIZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "panacus"
+    tag "panacus/visualize"
+
+    test("pangenome - tsv") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['homo_sapiens']['pangenome']['pangenome_panacus_tsv'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.get(0).get(0).get(1) ==~ ".*/test.png" }
+            )
+        }
+
+    }
+
+}

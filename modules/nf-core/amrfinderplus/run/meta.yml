@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
       licence: ["Public Domain"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: A compressed tarball of the AMRFinderPlus database to query
       pattern: "*.tar.gz"
-
 output:
   - meta:
       type: map
@@ -52,8 +50,11 @@ output:
   - db_version:
       type: string
       description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
-
 authors:
+  - "@rpetit3"
+  - "@louperelo"
+  - "@jfy133"
+maintainers:
   - "@rpetit3"
   - "@louperelo"
   - "@jfy133"

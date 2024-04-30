@@ -17,7 +17,6 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-
 input:
   - meta:
       type: map
@@ -44,10 +43,20 @@ input:
       type: file
       description: Tranches file produced when the input vcf was run through VariantRecalibrator in stage 1.
       pattern: ".tranches"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
   - fai:
       type: file
       description: Index of reference fasta file
@@ -71,4 +80,6 @@ output:
       description: File containing software versions.
       pattern: "versions.yml"
 authors:
+  - "@assp8200"
+maintainers:
   - "@assp8200"

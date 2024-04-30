@@ -2,7 +2,7 @@ process GNU_SORT {
     tag "${meta.id}"
     label "process_low"
 
-    conda "bioconda::coreutils=8.25"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/coreutils:8.25--1' :
     'biocontainers/coreutils:8.25--1' }"
@@ -34,7 +34,6 @@ process GNU_SORT {
     """
 
     stub:
-    def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
@@ -42,7 +41,7 @@ process GNU_SORT {
 
     if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    sort ${args} ${input} > ${output_file}
+    touch ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

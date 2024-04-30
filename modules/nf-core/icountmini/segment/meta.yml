@@ -13,14 +13,12 @@ tools:
       tool_dev_url: https://github.com/ulelab/iCount-Mini
       doi: "10.1038/nsmb.1838"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - gtf:
       type: file
       description: A GTF file to use for the segmentation
@@ -29,7 +27,6 @@ input:
       type: file
       description: FAI file corresponding to the reference sequence
       pattern: "*.{fai}"
-
 output:
   - gtf:
       type: file
@@ -39,8 +36,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@marc-jones"
+  - "@chris-cheshire"
+  - "@charlotteanne"
+maintainers:
   - "@marc-jones"
   - "@chris-cheshire"
   - "@charlotteanne"

@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "gfatools_stat"
+description: Summary statistics for GFA files
+keywords:
+  - summary
+  - statistics
+  - gfa
+  - rgfa
+  - graph
+  - genomics
+tools:
+  - "gfatools":
+      description: "Tools for manipulating sequence graphs in the GFA and rGFA formats"
+      homepage: "https://github.com/lh3/gfatools"
+      documentation: "https://github.com/lh3/gfatools"
+      tool_dev_url: "https://github.com/lh3/gfatools"
+      doi: "no DOI available"
+      licence: "['Unknown']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - gfa:
+      type: file
+      description: GFA or rGFA file
+      pattern: "*.gfa"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - stats:
+      type: file
+      description: Summary statistics of the GFA file
+      pattern: "*.stats"
+authors:
+  - "@mahesh-panchal"
+maintainers:
+  - "@mahesh-panchal"

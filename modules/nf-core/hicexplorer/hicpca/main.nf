@@ -2,7 +2,7 @@ process HICEXPLORER_HICPCA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::hicexplorer=3.7.2 numpy=1.23.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1':
         'biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"

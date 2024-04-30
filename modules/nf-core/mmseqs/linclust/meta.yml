@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "mmseqs_linclust"
+description: Cluster sequences in linear time using MMSeqs2 linclust.
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - input_db:
+      type: directory
+      description: a MMseqs2 database used for clustering
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - db_cluster:
+      type: directory
+      description: a clustered MMseqs2 database
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

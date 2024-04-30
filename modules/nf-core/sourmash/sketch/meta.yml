@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
       licence: ["BSD-3-clause"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: FASTA or FASTQ file containing (genomic, transcriptomic, or proteomic) sequence data
       pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: FracMinHash signature of the given sequence
       pattern: "*.{sig}"
-
 authors:
+  - "@Midnighter"
+maintainers:
   - "@Midnighter"

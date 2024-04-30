@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/HCGB-IGTP/spaTyper
       doi: 10.5281/zenodo.4063625
       licence: ["LGPL v3"]
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
       type: file
       description: spa types and order of repeats (Optional)
       pattern: "*.{txt}"
-
 output:
   - meta:
       type: map
@@ -45,6 +43,7 @@ output:
       type: file
       description: Tab-delimited results
       pattern: "*.{tsv}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

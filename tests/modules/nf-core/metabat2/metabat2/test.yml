@@ -4,10 +4,12 @@
     - metabat2
     - metabat2/metabat2
   files:
-    - path: output/metabat2/bins/test.1.fa.gz
+    - path: output/metabat2/test.1.fa.gz
       contains:
         - ">MT192765.1"
     - path: output/metabat2/test.tsv.gz
+      contains:
+        - "MT192765.1\t1"
     - path: output/metabat2/versions.yml
 
 - name: metabat2 metabat2 test_metabat2_depth
@@ -16,9 +18,10 @@
     - metabat2
     - metabat2/metabat2
   files:
-    - path: output/metabat2/bins/test.1.fa.gz
+    - path: output/metabat2/test.1.fa.gz
       contains:
         - ">MT192765.1"
     - path: output/metabat2/test.tsv.gz
-    - path: output/metabat2/test.txt.gz
+      contains:
+        - "MT192765.1\t1"
     - path: output/metabat2/versions.yml

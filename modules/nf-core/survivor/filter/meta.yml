@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -39,7 +38,6 @@ input:
   - minnumreads:
       type: integer
       description: Min number of reads support [RE flag (-1 to disable)]
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
       type: file
       description: Filtered VCF file
       pattern: "*.{vcf}"
-
 authors:
+  - "@LlaneroHiboreo"
+maintainers:
   - "@LlaneroHiboreo"

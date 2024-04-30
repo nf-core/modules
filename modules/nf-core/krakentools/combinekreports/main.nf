@@ -1,7 +1,7 @@
 process KRAKENTOOLS_COMBINEKREPORTS {
     label 'process_single'
 
-    conda "bioconda::krakentools=1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakentools:1.2--pyh5e36f6f_0':
         'biocontainers/krakentools:1.2--pyh5e36f6f_0' }"

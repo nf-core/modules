@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/moonso/stranger
       doi: "10.5281/zenodo.4548873"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: json file with repeat expansion sites to genotype
       pattern: "*.{json}"
-
 output:
   - meta:
       type: map
@@ -48,6 +46,7 @@ output:
       type: file
       description: annotated VCF with keys STR_STATUS, NormalMax and PathologicMin
       pattern: "*.{vcf.gz}"
-
 authors:
+  - "@ljmesi"
+maintainers:
   - "@ljmesi"

@@ -3,7 +3,7 @@ process TIARA_TIARA {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "conda-forge::tiara=1.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiara:1.0.3' :
         'biocontainers/tiara:1.0.3' }"

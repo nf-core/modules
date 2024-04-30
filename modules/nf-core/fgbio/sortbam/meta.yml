@@ -10,7 +10,6 @@ tools:
       homepage: https://github.com/fulcrumgenomics/fgbio
       documentation: http://fulcrumgenomics.github.io/fgbio/
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       description: |
         The input SAM or BAM file to be sorted.
       pattern: "*.{bam,sam}"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@sruthipsuresh"
+maintainers:
   - "@sruthipsuresh"
