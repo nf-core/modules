@@ -49,8 +49,23 @@ process SHINYNGS_APP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+
+    """
+    mkdir -p $prefix
+    touch ${prefix}/data.rds
+    touch ${prefix}/app.R
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
 }
