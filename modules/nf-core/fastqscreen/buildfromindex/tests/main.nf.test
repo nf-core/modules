@@ -10,23 +10,23 @@ nextflow_process {
     tag "fastqscreen/buildfromindex"
     tag "bowtie2/build"
 
-    test("sarscov2 - human") {
+    setup {
 
-        setup {
-
-            run("BOWTIE2_BUILD") {
-                script "../../../bowtie2/build/main.nf"
-                process {
-                    """
-                    input[0] =  Channel.from([
-                                        [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                        [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
-                                ])
-                    """
-                }
+        run("BOWTIE2_BUILD") {
+            script "../../../bowtie2/build/main.nf"
+            process {
+                """
+                input[0] =  Channel.from([
+                                    [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
+                                    [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
+                            ])
+                """
             }
-
         }
+
+    }
+
+    test("sarscov2 - human") {
 
         when {
             process {
@@ -49,21 +49,6 @@ nextflow_process {
     test("sarscov2 - human - stub") {
 
         options "-stub"
-
-        setup {
-
-            run("BOWTIE2_BUILD") {
-                script "../../../bowtie2/build/main.nf"
-                process {
-                    """
-                    input[0] =  Channel.from([
-                                        [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                        [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             process {
