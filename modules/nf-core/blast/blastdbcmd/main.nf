@@ -22,7 +22,7 @@ process BLAST_BLASTDBCMD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert (!entry && entry_batch) || (entry && !entry_batch) : "You must use either entry or entry_batch, not both at the same time"
+    assert (!entry && entry_batch) || (entry && !entry_batch) : "ERROR: You must use either entry or entry_batch, not both at the same time"
     def input = ''
     if (entry) {
         input = "-entry ${entry}"

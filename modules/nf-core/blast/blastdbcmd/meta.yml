@@ -44,11 +44,12 @@ output:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: Output fasta file
+      description: Output fasta file (default format)
       pattern: "*.{fasta}"
   - text:
       type: file
-      description: Output text file
+      description: |
+        Output text file (generic format if fasta not used)
       pattern: "*.{txt}"
   - versions:
       type: file
