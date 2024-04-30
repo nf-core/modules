@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test unicycler
 nextflow_process {
 
     name "Test Process UNICYCLER"
@@ -16,26 +14,22 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ], // meta map
-                            [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)],
-                               []
-                            ])
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)],
+                    []
+                ])
                 """
             }
         }
 
         then {
-            assertAll(
+            assertAll (
                 { assert process.success },
-                { assert file(process.out.scaffolds[0][1].find {
-                    file(it).name == "test.scaffolds.fa.gz" }).exists() },
-                { assert file(process.out.gfa[0][1].find {
-                    file(it).name == "test.assembly.gfa.gz" }).exists() },
-                { assert file(process.out.log[0][1].find {
-                    file(it).name == "test.unicycler.log" }).exists() }
+                { assert path(process.out.scaffolds[0][1]).exists() },
+                { assert path(process.out.gfa[0][1]).exists() },
+                { assert path(process.out.log[0][1]).exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
-
 }
