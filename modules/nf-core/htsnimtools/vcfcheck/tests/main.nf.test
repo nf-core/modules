@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process HTSNIMTOOLS_VCFCHECK"
+    script "../main.nf"
+    process "HTSNIMTOOLS_VCFCHECK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "htsnimtools"
+    tag "htsnimtools/vcfcheck"
+
+    test("sarscov2 - vcf, tbi - background_vcf,background_tbi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'background' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tsv.collect {
+                        it.collect { it instanceof Map ? it : file(it).name }
+                    },
+                    process.out.versions
+                ).match("vcf") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'background' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+
+    }
+
+}

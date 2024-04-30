@@ -208,20 +208,6 @@ jobs:
           - profile: conda
             tags: cellpose
           - profile: conda
-            tags: cellranger/count
-          - profile: conda
-            tags: cellranger/mkfastq
-          - profile: conda
-            tags: cellranger/mkgtf
-          - profile: conda
-            tags: cellranger/mkref
-          - profile: conda
-            tags: cellranger/mkvdjref
-          - profile: conda
-            tags: cellranger/multi
-          - profile: conda
-            tags: cellranger/vdj
-          - profile: conda
             tags: cellrangerarc/count
           - profile: conda
             tags: cellrangerarc/mkfastq
@@ -518,6 +504,12 @@ jobs:
           - profile: conda
             tags: cellranger/mkref
           - profile: conda
+            tags: cellranger/mkvdjref
+          - profile: conda
+            tags: cellranger/multi
+          - profile: conda
+            tags: cellranger/vdj
+          - profile: conda
             tags: custom/dumpsoftwareversions
           - profile: conda
             tags: deepcell/mesmer
@@ -555,6 +547,8 @@ jobs:
             tags: ilastik/pixelclassification
           - profile: conda
             tags: imputeme/vcftoprs
+          - profile: conda
+            tags: mcquant
           - profile: conda
             tags: merquryfk/katcomp
           - profile: conda
