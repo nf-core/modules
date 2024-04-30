@@ -15,10 +15,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                               [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)],
                                []
-                            ]
+                            ])
                 """
             }
         }
@@ -26,9 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path("${process.out.gfa[0][1]}/test.assembly.gfa.gz").exists() }
-                // { assert file(process.out.scaffolds.find { file(it).name == "test.scaffolds.fa.gz" }).exists() }
-                // { assert file(process.out.log.find { file(it).name == "test.unicycler.log" }).exists() }
+                { assert file(process.out.scaffolds[0][1].find {
+                    file(it).name == "test.scaffolds.fa.gz" }).exists() },
+                { assert file(process.out.gfa[0][1].find {
+                    file(it).name == "test.assembly.gfa.gz" }).exists() },
+                { assert file(process.out.log[0][1].find {
+                    file(it).name == "test.unicycler.log" }).exists() }
             )
         }
 
