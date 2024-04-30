@@ -25,7 +25,6 @@ process BLAST_UPDATEBLASTDB {
 
     update_blastdb.pl \\
         ${prefix} \\
-        --decompress \\
         ${args}
 
     cd ..

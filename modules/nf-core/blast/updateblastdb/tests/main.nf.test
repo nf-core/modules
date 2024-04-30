@@ -10,6 +10,8 @@ nextflow_process {
 
     test("Should download a blast db folder from a db name") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 outdir = "$outputDir"
@@ -24,7 +26,58 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should download a blast db folder from a db name - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'mito'], 'mito' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+
+    test("Should download a blast db folder from a db name - keep compressed") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'mito'], 'mito' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.tar.gz'}!= null },
                 { assert process.out.versions }
             )
         }
