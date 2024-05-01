@@ -198,12 +198,12 @@ plot_length_bins <- function(sample_name, df_list) {
                                             multisamples = "average",
                                             plot_style = "facet",
                                             colour = c("#699FC4", "gray70"))
-  }
+    }
 
     length_dist_split.gg <- length_dist_split[["plot"]] +
         ggplot2::theme(plot.background = ggplot2::element_blank(),
-                      panel.grid.minor = ggplot2::element_blank(),
-                      panel.grid.major = ggplot2::element_blank()) +
+                        panel.grid.minor = ggplot2::element_blank(),
+                        panel.grid.major = ggplot2::element_blank()) +
         ggplot2::ggtitle(sample_name)
 
 
@@ -214,11 +214,11 @@ plot_length_bins <- function(sample_name, df_list) {
 plot_metaheatmap <- function(sample_name, df_list, annotation) {
 
     ends_heatmap <- rends_heat(df_list, annotation, sample = sample_name,
-                              cl = 100,
-                              utr5l = 25, cdsl = 40, utr3l = 25)
+                                cl = 100,
+                                utr5l = 25, cdsl = 40, utr3l = 25)
 
     ends_heatmap.gg <- ends_heatmap[[paste0("plot_", sample_name)]] +
-      ggplot2::ylim(20,45)
+        ggplot2::ylim(20, 45)
 
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".ends_heatmap.pdf"), ends_heatmap.gg, dpi = 400, width = 12, height = 8)
 
@@ -237,8 +237,8 @@ plot_codon_usage <- function(sample_name, psite_info_ls) {
 
     cu_barplot.gg <-cu_barplot[[paste0("plot_", sample_name)]] +
         ggplot2::theme(plot.background = ggplot2::element_blank(),
-                      panel.grid.minor = ggplot2::element_blank(),
-                      panel.grid.major = ggplot2::element_blank())
+                        panel.grid.minor = ggplot2::element_blank(),
+                        panel.grid.major = ggplot2::element_blank())
 
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".codon_usage.pdf"), cu_barplot.gg, dpi = 400, width = 10, height = 7)
 }
@@ -271,7 +271,7 @@ stop_quietly <- function() {
 
 save_length_distribution_plot <- function(sample_name, dt.ls) {
 
-  # Read lengths averaged across samples
+    # Read lengths averaged across samples
     length_dist <- rlength_distr(reads.ls, sample = sample_name, multisamples = "average", cl = 99, colour = "grey70")
 
     length_dist.gg <- length_dist[[paste0("plot_", sample_name)]] +
@@ -279,8 +279,8 @@ save_length_distribution_plot <- function(sample_name, dt.ls) {
         ggplot2::scale_fill_manual(values = "grey70") +
         ggplot2::scale_color_manual(values = "grey30") +
         ggplot2::theme(plot.background = ggplot2::element_blank(),
-                      panel.grid.minor = ggplot2::element_blank(),
-                      panel.grid.major = ggplot2::element_blank())
+                        panel.grid.minor = ggplot2::element_blank(),
+                        panel.grid.major = ggplot2::element_blank())
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_distribution.pdf"), length_dist.gg, dpi = 400)
 
@@ -310,8 +310,8 @@ save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_
     frames <- frame_psite(dt.ls, region = "all", length_range = min_length:max_length, sample = sample_name, annotation = annotation.df, colour = "grey70")
     frames.gg <- frames[[paste0("plot_", sample_name)]] +
         ggplot2::theme(plot.background = ggplot2::element_blank(),
-                      panel.grid.minor = ggplot2::element_blank(),
-                      panel.grid.major = ggplot2::element_blank())
+                        panel.grid.minor = ggplot2::element_blank(),
+                        panel.grid.major = ggplot2::element_blank())
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames.pdf"), frames.gg, dpi = 600, height = 9 , width = 9)
 
@@ -336,16 +336,14 @@ save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
 # Prepare annotation: for each transcript, obtain total length, 5'UTR, CDS and 3'UTR length, respectively.
 annotation.dt <- create_annotation(opt\$gtf)
 data.table::fwrite(annotation.dt,
-                   paste0(getwd(), "/", strsplit(opt\$gtf, "gtf")[[1]][1],"transcript_info.tsv.gz"),
-                   sep = "\t")
+                    paste0(getwd(), "/", strsplit(opt\$gtf, "gtf")[[1]][1],"transcript_info.tsv.gz"),
+                    sep = "\t")
 
 # Load BAM file
 bam_name <- opt\$output_prefix
 names(bam_name) <- strsplit(basename(opt\$bam), ".bam")[[1]][1]
 
-reads.ls <- bamtolist(bamfolder = getwd(),
-                      annotation = annotation.dt,
-                      name_samples = bam_name)
+reads.ls <- bamtolist(bamfolder = getwd(), annotation = annotation.dt, name_samples = bam_name)
 
 stopifnot(length(reads.ls) == 1) # check that a single bam has been provided and will be analysed
 
@@ -399,8 +397,7 @@ if (length(filtered.ls) == 0) {
 message("Calculating P-site offsets and P-site positions defined by the riboWaltz method...")
 
 # Compute P-site offsets: temporary and corrected
-psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TRUE,
-                         plot = TRUE, plot_format = "pdf")
+psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TRUE, plot = TRUE, plot_format = "pdf")
 
 # Save offsets for each sample
 lapply(unique(psite_offset.dt\$sample), export_offsets, df = psite_offset.dt)
@@ -430,7 +427,7 @@ cds_coverage_psite.dt <- cds_coverage(filtered_psite.ls, annotation = annotation
 # Compute the number of in-frame P-sites per coding sequences excluding the first 15 codons and the last 10 codons
 cds_coverage_psite_window.dt <- cds_coverage(filtered_psite.ls, annotation = annotation.dt, start_nts = opt\$exclude_start, stop_nts = opt\$exclude_stop)
 lapply(sample_name.ls, export_cds_coverage_tables, cds_coverage = cds_coverage_psite.dt, cds_window_coverage = cds_coverage_psite_window.dt,
-      exclude_start = opt\$exclude_start, exclude_stop = opt\$exclude_stop)
+        exclude_start = opt\$exclude_start, exclude_stop = opt\$exclude_stop)
 
 # =========
 # Diagnostic plots
@@ -458,7 +455,7 @@ lapply(sample_name.ls, save_psite_region_plot, dt.ls = filtered_psite.ls, annota
 # Plots should show an enrichment of P-sites in the first frame on the coding sequence but not the UTRs, as expected for ribosome protected fragments from protein coding mRNAs.
 
 lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt,
-       min_length = min_rl, max_length = max_rl)
+        min_length = min_rl, max_length = max_rl)
 
 # Trinucleotide periodicity along coding sequences: metaprofiles (the merge of single, transcript-specific profiles) based on P-sites mapping around the start and the stop codon of annotated CDSs.
 lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, annotation.df = annotation.dt)

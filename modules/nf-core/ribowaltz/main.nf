@@ -39,7 +39,7 @@ process RIBOWALTZ {
     touch ${prefix}.cds_coverage_psite.tsv
     mkdir -p offset_plot/${prefix} && touch offset_plot/${prefix}/29.pdf
     mkdir -p ribowaltz_qc && touch ribowaltz_qc/${prefix}.metaprofile_psite.pdf
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bioconductor-ribowaltz: \$(Rscript -e "library(riboWaltz); cat(as.character(packageVersion('riboWaltz')))")
