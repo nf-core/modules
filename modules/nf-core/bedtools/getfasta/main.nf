@@ -21,6 +21,7 @@ process BEDTOOLS_GETFASTA {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     bedtools \\
         getfasta \\
@@ -37,6 +38,7 @@ process BEDTOOLS_GETFASTA {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.fa
 
