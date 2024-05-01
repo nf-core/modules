@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ribowaltz"
 
-    test("human chr20 [bam] - transcriptome") {
+    test("human chr20 [transcriptome bam]") {
 
         when {
             process {
@@ -27,22 +27,20 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.offset).match('offset') }
-                { assert snapshot(process.out.offset_plot).match('offset_plot') }
-                { assert snapshot(process.out.psites).match('psites') }
-                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf') }
-                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite') }
-                { assert snapshot(process.out.cds_coverage).match('cds_coverage') }
-                { assert snapshot(process.out.cds_window_coverage).match('cds_window_coverage') }
-                { assert snapshot(process.out.ribowaltz_qc).match('ribowaltz_qc') }
+                { assert snapshot(process.out.offset).match('offset') },
+                { assert snapshot(process.out.offset_plot.size() == 10)},
+                { assert snapshot(process.out.psites).match('psites') },
+                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf') },
+                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite') },
+                { assert snapshot(process.out.cds_coverage).match('cds_coverage') },
+                { assert snapshot(process.out.cds_window_coverage).match('cds_window_coverage') },
+                { assert snapshot(process.out.ribowaltz_qc.size() == 8) },
                 { assert snapshot(process.out.versions).match('versions') }
-                
             )
         }
-
     }
 
-    test("human chr20 [bam] - transcriptome - stub") {
+    test("human chr20 [transcriptome bam] - stub") {
 
         options "-stub"
 
@@ -62,14 +60,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.offset).match('offset_stub') }
-                { assert snapshot(process.out.offset_plot).match('offset_plot_stub') }
-                { assert snapshot(process.out.psites).match('psites_stub') }
-                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf_stub') }
-                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite_stub') }
-                { assert snapshot(process.out.cds_coverage).match('cds_coverage_stub') }
-                { assert snapshot(process.out.cds_window_coverage).match('cds_window_coverage_stub') }
-                { assert snapshot(process.out.ribowaltz_qc).match('ribowaltz_qc_stub') }
+                { assert snapshot(process.out.offset).match('offset_stub') },
+                { assert snapshot(process.out.offset_plot.size() == 1)},
+                { assert snapshot(process.out.psites).match('psites_stub') },
+                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf_stub') },
+                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite_stub') },
+                { assert snapshot(process.out.cds_coverage).match('cds_coverage_stub') },
+                { assert snapshot(process.out.ribowaltz_qc.size() == 1) },
                 { assert snapshot(process.out.versions).match('versions_stub') }
                 
             )

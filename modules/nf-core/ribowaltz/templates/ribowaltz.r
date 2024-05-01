@@ -2,10 +2,10 @@
 
 # Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data
 # Author: Ira Iosub
-# Usage: Rscript ribowaltz.r --bams SRX11780887.Aligned.toTranscriptome.out.bam,SRX11780888.Aligned.toTranscriptome.out.bam --gtf Homo_sapiens.GRCh38.111_chr20.gtf --fasta Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz --length_range "26:34" --periodicity_threshold 50 --exclude_start 42 --exclude_stop 27
-
+# Example usage: Rscript ribowaltz.r --bam SRX11780887.Aligned.toTranscriptome.out.bam--gtf Homo_sapiens.GRCh38.111_chr20.gtf --fasta Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz --length_range "26:34" --periodicity_threshold 50 --exclude_start 42 --exclude_stop 27
 
 suppressPackageStartupMessages(library(riboWaltz))
+suppressPackageStartupMessages(library(dplyr))
 
 # Allow data.table to use all available threads
 data.table::setDTthreads(0)
@@ -49,22 +49,22 @@ parse_args <- function(x){
 }
 
 
-# # Function to print help menu
-# print_help_menu <- function() {
-#   cat("
-# Usage: Rscript ribowaltz.r [options]
-# Options:
-#   --bams FILE                Path to the BAM file(s). If multiple bams provided, they must be comma-separated. (required)
-#   --gtf FILE                 Path to the GTF file. (required)
-#   --fasta FILE               Path to the FASTA file. (required)
-#   --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
-#   --periodicity_threshold INT   Filter out read lengths below specified periodicity threshold for P-site identification. Must be a value between 10 and 100. (default: NULL)
-#   --exclude_start INT        Number of nucleotides from start codon used to exclude P-sites near initiating ribosome when calculating CDS coverage. (default: 42)
-#   --exclude_stop INT         Number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage. (default: 27)
-#   -h, --help                 Display this help message and exit.
-# ")
-#   quit(status = 0)  # Exit after displaying help
-# }
+# Function to print help menu
+print_help_menu <- function() {
+  cat("
+Usage: Rscript ribowaltz.r [options]
+Options:
+  --bam FILE                Path to the BAM file(s). (required)
+  --gtf FILE                 Path to the GTF file. (required)
+  --fasta FILE               Path to the FASTA file. (required)
+  --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
+  --periodicity_threshold INT   Filter out read lengths below specified periodicity threshold for P-site identification. Must be a value between 10 and 100. (default: NULL)
+  --exclude_start INT        Number of nucleotides from start codon used to exclude P-sites near initiating ribosome when calculating CDS coverage. (default: 42)
+  --exclude_stop INT         Number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage. (default: 27)
+  -h, --help                 Display this help message and exit.
+")
+  quit(status = 0)  # Exit after displaying help
+}
 
 
 # =========
@@ -74,7 +74,7 @@ parse_args <- function(x){
 # Set defaults and classes
 opt <- list(
     output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    bams = '$bam',
+    bam = '$bam',
     gtf = '$gtf',
     fasta = '$fasta',
     length_range = NULL,
@@ -88,10 +88,10 @@ opt_types <- lapply(opt, class)
 # Parse extra arguments
 args_opt <- parse_args('$task.ext.args')
 
-# # Check if help is requested
-# if ('-h' %in% args_opt || '--help' %in% args_opt) {
-#   print_help_menu()
-# }
+# Check if help is requested
+if ('-h' %in% args_opt || '--help' %in% args_opt) {
+  print_help_menu()
+}
 
 # Apply parameter overrides
 for ( ao in names(args_opt)){
@@ -108,7 +108,7 @@ for ( ao in names(args_opt)){
 }
 
 # Check file inputs are valid
-for (file_input in c('bams', 'gtf', 'fasta')){
+for (file_input in c('bam', 'gtf', 'fasta')){
     if (! is_valid_string(opt[[file_input]])) {
         stop(paste("Please provide", file_input), call. = FALSE)
     }
@@ -120,7 +120,7 @@ for (file_input in c('bams', 'gtf', 'fasta')){
 
 
 # Print inputs and parsed arguments
-cat("BAM file(s): ", opt\$bams, "\n")
+cat("BAM file: ", opt\$bam, "\n")
 cat("GTF file: ", opt\$gtf, "\n")
 cat("FASTA file: ", opt\$fasta, "\n")
 cat("Length range for filtering: ", opt\$length_range, "\n")
@@ -136,10 +136,10 @@ dir.create("ribowaltz_qc")
 # Functions for riboWaltz analysis
 # =========
 
-
 export_offsets <- function(name, df) {
   
-  df <- df[sample == name]
+  df <- df %>%
+    dplyr::filter(sample == name)
   
   data.table::fwrite(df, paste0(getwd(), "/", name, ".offset.tsv.gz"), sep = "\t")
   return(df)
@@ -149,10 +149,11 @@ export_offsets <- function(name, df) {
 export_psites <- function(name, df_list) {
   
   df <- df_list[[name]]
-  df$sample <- name
-  
+  df <- df %>%
+    dplyr::mutate(sample = name)
+
   data.table::fwrite(df, paste0(getwd(), "/", name, ".psite.tsv.gz"), sep = "\t")
-  return(df)
+  return(data.table::data.table(df))
   
 }
 
@@ -296,7 +297,7 @@ save_length_distribution_plot <- function(sample_name, dt.ls) {
 save_psite_region_plot <- function(sample_name, dt.ls, annotation.df) {
   
   psite_region <- region_psite(dt.ls, annotation = annotation.df, sample = sample_name)
-  psite_region.gg <- psite_region$plot + 
+  psite_region.gg <- psite_region[["plot"]] + 
     ggplot2::theme(plot.background = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(), panel.grid.major = ggplot2::element_blank()) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
   
@@ -304,11 +305,7 @@ save_psite_region_plot <- function(sample_name, dt.ls, annotation.df) {
   
 }
 
-# A fundamental characteristic of ribosome profiling data is the trinucleotide periodicity of ribosome footprints along coding sequences. 
-# Functions frame_psite_length and frame_psite show if, and to which extent, the identified P-sites results in codon periodicity on the CDS. 
-# Both functions compute the percentage of P-sites falling in the three possible translation reading frames for 5’ UTRs, CDSs and 3’ UTRs with one difference: 
-# frame_psite_length analyses all read lengths separately and generates a heatmap for each transcript region, while frame_psite processes all reads at once, returning three bar plots.
-save_frame_plots <- function(sample_name, dt.ls, annotation.df) {
+save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_length) {
   
   frames_stratified <- frame_psite_length(dt.ls, region = "all", sample = sample_name, length_range = min_length:max_length, annotation = annotation.df)
   frames_stratified.gg <- frames_stratified[[paste0("plot_", sample_name)]] +
@@ -340,7 +337,6 @@ save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
   
 }
 
-
 # =========
 # Load data and prepare annotation
 # =========
@@ -351,26 +347,21 @@ data.table::fwrite(annotation.dt,
                    paste0(getwd(), "/", strsplit(opt\$gtf, "gtf")[[1]][1],"transcript_info.tsv.gz"),
                    sep = "\t")
 
-# Load BAM files
-bams <- as.list(strsplit(opt\$bams, ",")[[1]]) # if multiple bams are provided, creates a list
+# Load BAM file
+bam_name <- opt\$output_prefix
+names(bam_name) <- strsplit(basename(opt\$bam), ".bam")[[1]][1]
 
-name_of_bams <- lapply(bams, function(x) strsplit(basename(x), ".transcriptome.sorted.bam")[[1]][1])
-name_of_bams <- lapply(name_of_bams, function(x) strsplit(basename(x), ".Aligned.toTranscriptome.sorted.out.bam")[[1]][1])
-name_of_bams <- lapply(name_of_bams, function(x) strsplit(basename(x), ".Aligned.toTranscriptome.out.bam")[[1]][1])
-
-
-names(name_of_bams) <- lapply(bams, function(x) strsplit(basename(x), ".bam")[[1]][1])
-
-# Load bams
 reads.ls <- bamtolist(bamfolder = getwd(), 
                       annotation = annotation.dt,
-                      name_samples = unlist(name_of_bams))
+                      name_samples = bam_name)
+
+stopifnot(length(reads.ls) == 1) # check that a single bam has been provided and will be analysed
 
 # Order named list alphabetically
 reads.ls <- reads.ls[order(names(reads.ls))]
 
 
-# Get filtered reads: keep only the ones with periodicity evidence based on periodicity_threshold, if privided
+# Get filtered reads: keep only the ones with periodicity evidence based on periodicity_threshold, if provided
 if (!is.null(opt\$periodicity_threshold)) {
 
   filtered.ls <- length_filter(data = reads.ls,
@@ -393,7 +384,6 @@ if (!is.null(opt\$length_range)) {
                               length_range = min_length:max_length)
 } 
 
-
 # Remove sample if no reads left after filtering steps
 filtered.ls <- Filter(function(x) dim(x)[1] > 0, filtered.ls)
 
@@ -410,7 +400,6 @@ if (length(filtered.ls) == 0) {
   stop_quietly()
 }
 
-
 # =========
 # Identify P-sites
 # =========
@@ -422,14 +411,14 @@ psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TR
                          plot = TRUE, plot_format = "pdf")
 
 # Save offsets for each sample
-lapply(unique(psite_offset.dt$sample), export_offsets, df = psite_offset.dt)
+lapply(unique(psite_offset.dt\$sample), export_offsets, df = psite_offset.dt)
 
 
 # Update reads information according to the inferred P-sites
 filtered_psite.ls <- psite_info(filtered.ls, psite_offset.dt, site = "psite",
                                 fasta_genome = TRUE, refseq_sep = " ",
                                 fastapath = opt\$fasta,
-                                gtfpath = gtf)
+                                gtfpath = opt\$gtf)
 
 sample_name.ls <- unique(names(filtered_psite.ls))
 
@@ -439,18 +428,10 @@ lapply(sample_name.ls, export_psites, df_list = filtered_psite.ls)
 message("Calculating codon and CDS coverage...")
 
 # 1. codon_coverage called by export_codon_coverage_tables computes the number of read footprints or P-sites mapping on each triplet of annotated coding sequences and UTRs. 
-# Such data can be exploited to generate occupancy profiles at codon resolution showing the abundance of RPFs along single transcripts
-# This function computes transcript-specific codon coverages, defined as the number of either read footprints or P-sites mapping on each triplet of coding sequences and UTRs
 lapply(sample_name.ls, export_codon_coverage_tables, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
-
 # 2. Compute the number of P-sites mapping on annotated coding sequences or whole transcripts. 
-# Such data can be used as starting point for downstream quantitative analyses (e.g. differential analyses)
-# By default, only in-frame P-sites falling in annotated coding sequences are considered 
-# no nucleotides at the beginning or at the end of the CDSs are excluded for restricting the analysis to a portion of the original coding sequences. 
-# These settings can be modified through the parameters in_frame, start_nts and start_nts. 
-# The parameter whole_transcript specifies if whole transcripts should be considered instead of the annotated coding sequence (not used here)
-
+# By default, only in-frame P-sites falling in annotated coding sequences are considered.
 # All over the CDS
 cds_coverage_psite.dt <- cds_coverage(filtered_psite.ls, annotation = annotation.dt)
 
@@ -459,12 +440,19 @@ cds_coverage_psite_window.dt <- cds_coverage(filtered_psite.ls, annotation = ann
 lapply(sample_name.ls, export_cds_coverage_tables, cds_coverage = cds_coverage_psite.dt, cds_window_coverage = cds_coverage_psite_window.dt,
       exclude_start = opt\$exclude_start, exclude_stop = opt\$exclude_stop)
 
-
 # =========
 # Diagnostic plots
 # =========
 
 message("Generating diagnostic plots...")
+
+# Define min and max length if not provided as a param
+if (is.null(opt\$length_range)) {
+
+  min_rl <- as.integer(min(psite_offset.dt[,"length"]))
+  max_rl <- as.integer(max(psite_offset.dt[,"length"] ))
+}
+
 
 lapply(names(reads.ls), save_length_distribution_plot, dt.ls = reads.ls)
 
@@ -474,19 +462,20 @@ ends_heatmap.gg.ls <- lapply(names(reads.ls), plot_metaheatmap, df_list = reads.
 # Ribosome profiling data should highlight the CDS of transcripts as the region with the higher percentage of reads. 
 lapply(sample_name.ls, save_psite_region_plot, dt.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
+# trinucleotide periodicity of ribosome footprints along coding sequences. 
+# Compute the percentage of P-sites falling in the three possible translation reading frames for 5’ UTRs, CDSs and 3’ UTRs.
 # Plots should show an enrichment of P-sites in the first frame on the coding sequence but not the UTRs, as expected for ribosome protected fragments from protein coding mRNAs.
-lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
-# Trinucleotide periodicity along coding sequences is provided by the function metaprofile_psite. 
-# It generates metaprofiles (the merge of single, transcript-specific profiles) based on P-sites mapping around the start and the stop codon of annotated CDSs.
+lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt,
+       min_length = min_rl, max_length = max_rl)
+
+# Trinucleotide periodicity along coding sequences: metaprofiles (the merge of single, transcript-specific profiles) based on P-sites mapping around the start and the stop codon of annotated CDSs.
 lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
-
 
 # Codon usage
 lapply(names(filtered_psite.ls), plot_codon_usage, psite_info_ls = filtered_psite.ls)
 
 message("riboWaltz analysis succesfully completed!")
-
 
 # =========
 # Export versions
