@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       tool_dev_url: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       doi: "10.1371/journal.pcbi.1006169"
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   # Only when we have meta
@@ -32,7 +32,7 @@ input:
       description: |
         Map containing reference information for the reference genome FASTA file
         e.g. `[ id:'Ensembl human v.111' ]`
-  
+
   - bam:
       type: file
       description: Transcriptome BAM file
@@ -53,7 +53,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
