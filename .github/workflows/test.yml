@@ -126,7 +126,7 @@ jobs:
         uses: adamrtalbot/detect-nf-test-changes@v0.0.3
         with:
           head: ${{ github.sha }}
-          base: origin/${{ github.event.pull_request.base.ref || github.event.merge_group.base_ref }}
+          base: origin/${{ github.event.pull_request.base.ref || github.event.merge_group.base_sha }}
           n_parents: 2
 
       - name: Separate modules and subworkflows
