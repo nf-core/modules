@@ -1,5 +1,5 @@
 process BEDTOOLS_GETFASTA {
-    tag "$bed"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,19 +8,19 @@ process BEDTOOLS_GETFASTA {
         'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     input:
-    path bed
+    tuple val(meta), path(bed)
     path fasta
 
     output:
-    path "*.fa"         , emit: fasta
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.fa"), emit: fasta
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${bed.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bedtools \\
         getfasta \\
