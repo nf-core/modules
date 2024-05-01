@@ -117,10 +117,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: what the hell is in the merge_group context?!
-        run: |
-          echo ${{ toJson(github.event.merge_group) }}
-
       - name: List nf-test files
         id: list
         uses: adamrtalbot/detect-nf-test-changes@v0.0.3
