@@ -1,14 +1,14 @@
-process BUSCO {
+process BUSCO_BUSCO {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.5.0--pyhdfd78af_0':
-        'biocontainers/busco:5.5.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/busco:5.7.1--pyhdfd78af_0':
+        'biocontainers/busco:5.7.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path('tmp_input/*')
+    tuple val(meta), path(fasta, stageAs:'tmp_input/*')
     val mode                              // Required:    One of genome, proteins, or transcriptome
     val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
@@ -16,13 +16,13 @@ process BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt")                , emit: batch_summary
-    tuple val(meta), path("short_summary.*.txt")                      , emit: short_summaries_txt, optional: true
-    tuple val(meta), path("short_summary.*.json")                     , emit: short_summaries_json, optional: true
-    tuple val(meta), path("*-busco/*/run_*/full_table.tsv")           , emit: full_table, optional: true
-    tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")   , emit: missing_busco_list, optional: true
-    tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa") , emit: single_copy_proteins, optional: true
+    tuple val(meta), path("short_summary.*.txt")                      , emit: short_summaries_txt   , optional: true
+    tuple val(meta), path("short_summary.*.json")                     , emit: short_summaries_json  , optional: true
+    tuple val(meta), path("*-busco/*/run_*/full_table.tsv")           , emit: full_table            , optional: true
+    tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")   , emit: missing_busco_list    , optional: true
+    tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa") , emit: single_copy_proteins  , optional: true
     tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir
-    tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir, optional: true
+    tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir        , optional: true
     tuple val(meta), path("*-busco")                                  , emit: busco_dir
     path "versions.yml"                                               , emit: versions
 
@@ -85,6 +85,19 @@ process BUSCO {
     # Move files to avoid staging/publishing issues
     mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix      = task.ext.prefix ?: "${meta.id}-${lineage}"
+    def fasta_name  = files(fasta).first().name - '.gz'
+    """
+    touch ${prefix}-busco.batch_summary.txt
+    mkdir -p ${prefix}-busco/$fasta_name/run_${lineage}/busco_sequences
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
