@@ -2,7 +2,7 @@
 
 # Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data
 # Author: Ira Iosub
-# Example usage: Rscript ribowaltz.r --bam SRX11780887.Aligned.toTranscriptome.out.bam--gtf Homo_sapiens.GRCh38.111_chr20.gtf --fasta Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz --length_range "26:34" --periodicity_threshold 50 --exclude_start 42 --exclude_stop 27
+# Example usage: Rscript ribowaltz.r --bam SRX11780887.Aligned.toTranscriptome.out.bam --gtf Homo_sapiens.GRCh38.111_chr20.gtf --fasta Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz --length_range "26:34" --periodicity_threshold 50 --exclude_start 42 --exclude_stop 27
 
 suppressPackageStartupMessages(library(riboWaltz))
 suppressPackageStartupMessages(library(dplyr))
@@ -54,7 +54,7 @@ print_help_menu <- function() {
     cat("
 Usage: Rscript ribowaltz.r [options]
 Options:
-    --bam FILE                Path to the BAM file(s). (required)
+    --bam FILE                Path to the BAM file. (required)
     --gtf FILE                 Path to the GTF file. (required)
     --fasta FILE               Path to the FASTA file. (required)
     --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
@@ -397,7 +397,7 @@ if (length(filtered.ls) == 0) {
 message("Calculating P-site offsets and P-site positions defined by the riboWaltz method...")
 
 # Compute P-site offsets: temporary and corrected
-psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TRUE, plot = TRUE, plot_format = "pdf")
+psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TRUE, plot = TRUE, plot_format = "pdf", txt_file = paste0(bam_name, ".best_offset.txt"))
 
 # Save offsets for each sample
 lapply(unique(psite_offset.dt\$sample), export_offsets, df = psite_offset.dt)
@@ -421,7 +421,6 @@ lapply(sample_name.ls, export_codon_coverage_tables, df.ls = filtered_psite.ls, 
 
 # 2. Compute the number of P-sites mapping on annotated coding sequences or whole transcripts.
 # By default, only in-frame P-sites falling in annotated coding sequences are considered.
-# All over the CDS
 cds_coverage_psite.dt <- cds_coverage(filtered_psite.ls, annotation = annotation.dt)
 
 # Compute the number of in-frame P-sites per coding sequences excluding the first 15 codons and the last 10 codons
