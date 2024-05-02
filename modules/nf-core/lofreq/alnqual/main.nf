@@ -7,6 +7,7 @@ process LOFREQ_ALNQUAL {
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10' :
         'biocontainers/lofreq:2.1.5--py310h47ef89e_10' }"
 
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     input:
     tuple val(meta), path(bam)
     path(fasta)
