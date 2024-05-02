@@ -15,6 +15,10 @@ tools:
       tool_dev_url: "http://yanglab.nankai.edu.cn/mTM-align/"
       doi: "10.1093/bioinformatics/btx828"
       licence: ["None"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 input:
   - meta:
       type: map
@@ -23,9 +27,12 @@ input:
         e.g. `[ id:'test']`
   - pdbs:
       type: file
-      description: Input protein structures in PDB format.
+      description: Input protein structures in PDB format. Files may be gzipped or uncompressed.
         They should contain exactly one chain!
       pattern: "*.{pdb}"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -34,12 +41,12 @@ output:
         e.g. `[ id:'test']`
   - alignment:
       type: file
-      description: Alignment in FASTA format.
-      pattern: "*.aln"
+      description: Alignment in FASTA format. May be gzipped or uncompressed.
+      pattern: "*.aln{.gz,}"
   - structure:
       type: file
-      description: Overlaid structures in PDB format.
-      pattern: "${prefix}.pdb"
+      description: Overlaid structures in PDB format. May be gzipped or uncompressed.
+      pattern: "${prefix}.pdb{.gz,}"
   - versions:
       type: file
       description: File containing software versions
