@@ -1,6 +1,6 @@
 process RIBOWALTZ {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,15 +13,16 @@ process RIBOWALTZ {
     tuple val(meta3), path(fasta)
 
     output:
-    tuple val(meta), path("*.psite_offset.tsv{,.gz}"), emit: offset, optional: true
-    tuple val(meta), path("offset_plot/*"), emit: offset_plot, optional: true
-    tuple val(meta), path("*.psite.tsv{,.gz}"), emit: psites, optional: true
-    tuple val(meta), path("*.codon_coverage_rpf.tsv{,.gz}"), emit: codon_coverage_rpf, optional: true
-    tuple val(meta), path("*.codon_coverage_psite.tsv{,.gz}"), emit: codon_coverage_psite, optional: true
-    tuple val(meta), path("*.cds_coverage_psite.tsv{,.gz}"), emit: cds_coverage, optional: true
-    tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}"), emit: cds_window_coverage, optional: true
-    tuple val(meta), path("ribowaltz_qc/*.pdf"), emit: ribowaltz_qc, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.best_offset.txt")                , emit: best_offset          , optional: true
+    tuple val(meta), path("*.psite_offset.tsv{,.gz}")         , emit: offset               , optional: true
+    tuple val(meta), path("offset_plot/*")                    , emit: offset_plot          , optional: true
+    tuple val(meta), path("*.psite.tsv{,.gz}")                , emit: psites               , optional: true
+    tuple val(meta), path("*.codon_coverage_rpf.tsv{,.gz}")   , emit: codon_coverage_rpf   , optional: true
+    tuple val(meta), path("*.codon_coverage_psite.tsv{,.gz}") , emit: codon_coverage_psite , optional: true
+    tuple val(meta), path("*.cds_coverage_psite.tsv{,.gz}")   , emit: cds_coverage         , optional: true
+    tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}")     , emit: cds_window_coverage  , optional: true
+    tuple val(meta), path("ribowaltz_qc/*.pdf")               , emit: ribowaltz_qc         , optional: true
+    path "versions.yml"                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,6 +33,7 @@ process RIBOWALTZ {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}.best_offset.txt
     touch ${prefix}.psite_offset.tsv
     touch ${prefix}.psite.tsv
     touch ${prefix}.codon_coverage_rpf.tsv

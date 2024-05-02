@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribowaltz"
-description: Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data.
+description: Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data
 keywords:
   - sort
   - example
@@ -16,7 +16,6 @@ tools:
       licence: ["MIT"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -32,7 +31,6 @@ input:
       description: |
         Map containing reference information for the reference genome FASTA file
         e.g. `[ id:'Ensembl human v.111' ]`
-
   - bam:
       type: file
       description: Transcriptome BAM file
@@ -47,17 +45,15 @@ input:
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
+  - best_offset:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: Text file with the extremity used for the offset correction step and the best offset for each sample (optional, in case no offsets could be determined, usually because no reads pass filtering criteria)
+      pattern: "*.best_offset.txt"
   - offset:
       type: file
       description: TSV file containing P-site offsets for each read length (optional, in case no offsets could be determined, usually because no reads pass filtering criteria)
@@ -90,6 +86,10 @@ output:
       type: file
       description: riboWaltz diagnostic plots (optional)
       pattern: "ribowaltz_qc/*"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@iraiosub"

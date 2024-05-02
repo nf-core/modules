@@ -27,6 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.best_offset).match('best_offset') },
                 { assert snapshot(process.out.offset).match('offset') },
                 { assert snapshot(process.out.offset_plot.size() == 10)},
                 { assert snapshot(process.out.psites).match('psites') },
@@ -60,6 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.best_offset).match('best_offset_stub') },
                 { assert snapshot(process.out.offset).match('offset_stub') },
                 { assert snapshot(process.out.offset_plot.size() == 1)},
                 { assert snapshot(process.out.psites).match('psites_stub') },
@@ -68,10 +70,7 @@ nextflow_process {
                 { assert snapshot(process.out.cds_coverage).match('cds_coverage_stub') },
                 { assert snapshot(process.out.ribowaltz_qc.size() == 1) },
                 { assert snapshot(process.out.versions).match('versions_stub') }
-                
             )
         }
-
     }
-
 }

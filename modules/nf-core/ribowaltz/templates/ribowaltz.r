@@ -2,18 +2,13 @@
 
 # Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data
 # Author: Ira Iosub
-# Example usage: Rscript ribowaltz.r --bam SRX11780887.Aligned.toTranscriptome.out.bam --gtf Homo_sapiens.GRCh38.111_chr20.gtf --fasta Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz --length_range "26:34" --periodicity_threshold 50 --exclude_start 42 --exclude_stop 27
 
 suppressPackageStartupMessages(library(riboWaltz))
 suppressPackageStartupMessages(library(dplyr))
 
-# Allow data.table to use all available threads
-data.table::setDTthreads(0)
-
 # =========
 # Options and paths
 # =========
-
 
 #' Check for Non-Empty, Non-Whitespace String
 #'
@@ -48,25 +43,332 @@ parse_args <- function(x){
     parsed_args[! is.na(parsed_args)]
 }
 
+# =========
+# Functions for riboWaltz analysis
+# =========
 
-# Function to print help menu
-print_help_menu <- function() {
-    cat("
-Usage: Rscript ribowaltz.r [options]
-Options:
-    --bam FILE                Path to the BAM file. (required)
-    --gtf FILE                 Path to the GTF file. (required)
-    --fasta FILE               Path to the FASTA file. (required)
-    --length_range RANGE       Specify a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
-    --periodicity_threshold INT   Filter out read lengths below specified periodicity threshold for P-site identification. Must be a value between 10 and 100. (default: NULL)
-    --exclude_start INT        Number of nucleotides from start codon used to exclude P-sites near initiating ribosome when calculating CDS coverage. (default: 42)
-    --exclude_stop INT         Number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage. (default: 27)
-    -h, --help                 Display this help message and exit.
-")
-    quit(status = 0)  # Exit after displaying help
+#' Export P-site offset table produced by the `riboWaltz::psite` function for each BAM file based on sample name
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df dataframe produced by the riboWaltz psite function with P-site offsets for each read-length and a sample column
+#'
+#' @return filtered dataframe for the sample specified with sample_name. It creates and saves a TSV file to disk.
+
+export_offsets <- function(sample_name, df) {
+
+    df <- dplyr::filter(df, sample == sample_name)
+    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".offset.tsv.gz"), sep = "\t")
+    return(df)
+
+}
+
+#' Export P-sites table produced by the `riboWaltz::psite_info` function for each BAM file based on sample name
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df_list dataframe list produced by the riboWaltz psite_info function with P-sites information for each alignment
+#'
+#' @return filtered dataframe for the sample specified with sample_name. It creates and saves a TSV file to disk.
+
+export_psites <- function(sample_name, df_list) {
+
+    df <- df_list[[sample_name]]
+    df <- dplyr::mutate(df, sample = sample_name)
+    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".psite.tsv.gz"), sep = "\t")
+    return(data.table::data.table(df))
+
+}
+
+#' Export codon P-site and RPF coverage tables produced by the `riboWaltz::codon_coverage` function for each BAM file based on sample name
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df.ls dataframe list produced by the riboWaltz psite_info function with P-sites information for all samples
+#' @param annotation.df annotation dataframe list produced by the riboWaltz create_annotation function with CDS, UTR length etc info for each transcript
+#'
+#' @return This function does not return a value. It creates and saves a TSV file to disk.
+
+export_codon_coverage_tables <- function(sample_name, df.ls, annotation.df) {
+
+    rpf_coverage.dt <- riboWaltz::codon_coverage(df.ls, annotation = annotation.df, sample = sample_name, psite = FALSE)
+    psite_coverage.dt <- riboWaltz::codon_coverage(df.ls, annotation = annotation.df, sample = sample_name, psite = TRUE)
+    data.table::fwrite(rpf_coverage.dt, paste0(getwd(),"/",sample_name, ".codon_coverage_rpf.tsv.gz"), sep = "\t")
+    data.table::fwrite(psite_coverage.dt, paste0(getwd(),"/",sample_name, ".codon_coverage_psite.tsv.gz"), sep = "\t")
+
+}
+
+#' Export CDS P-site count tables produced by the `riboWaltz::cds_coverage` function for each BAM file based on sample name, for the entire CDS and a defined CDS window
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param cds_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the entire CDS of transcripts
+#' @param cds_window_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the defined CDS window of transcripts using the start_nts and stop_nts params
+#' @param exclude_start number of nucleotides from start codon that were excluded when defining the CDS window for counting (provide same calue as start_nts param)
+#' @param exclude_stop number of nucleotides from stop codon that were excluded when defining the CDS window for counting (provide same calue as stop_nts param)
+#'
+#' @return This function does not return a value. It creates and saves two TSV files to disk.
+
+export_cds_coverage_tables <- function(sample_name, cds_coverage, cds_window_coverage, exclude_start, exclude_stop) {
+
+    cols <- c("transcript", "length_cds", sample_name)
+    cds_coverage.dt <- cds_coverage[,..cols]
+    cds_window_coverage.dt <- cds_window_coverage[,..cols]
+    # Export CDS coverage tables
+    data.table::fwrite(cds_coverage.dt, paste0(getwd(),"/",sample_name, ".cds_coverage_psite.tsv.gz"), sep = "\t")
+    data.table::fwrite(cds_window_coverage.dt, paste0(getwd(), "/", sample_name, ".cds_","plus", exclude_start, "nt_minus", exclude_stop, "nt_coverage_psite.tsv.gz"), sep = "\t")
+
+}
+
+#' Export plots read-length distribution of reads used for P-site offset identification produced by the `riboWaltz::rlength_distr` function
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df_list dataframe list containig data for all samples
+#'
+#' @return This function does not return a value. It creates and saves a PDF file to disk.
+
+plot_length_bins <- function(sample_name, df_list) {
+
+    comparison_list <- list()
+    comparison_list[["start_codon"]] <- df_list[[sample_name]][end5 <= cds_start & end3 >= cds_start]
+    comparison_list[["whole_sample"]] <- df_list[[sample_name]]
+
+    if(nrow(comparison_list[["start_codon"]]) == 0) {
+        comparison_list <- list()
+        comparison_list[["whole_sample"]] <- df_list[[sample_name]]
+        rpf_list <- list("All" = c("whole_sample"))
+        length_dist_split <-  riboWaltz::rlength_distr(comparison_list,
+                                            sample = rpf_list,
+                                            multisamples = "average",
+                                            plot_style = "split",
+                                            colour = c("gray70"))
+
+    } else {
+
+        rpf_list <- list("Only_start" = c("start_codon"), "All" = c("whole_sample"))
+
+        length_dist_split <-  riboWaltz::rlength_distr(comparison_list,
+                                            sample = rpf_list,
+                                            multisamples = "average",
+                                            plot_style = "facet",
+                                            colour = c("#699FC4", "gray70"))
+    }
+
+    length_dist_split.gg <- length_dist_split[["plot"]] +
+        ggplot2::ggtitle(sample_name)
+
+
+    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".length_bins_for_psite.pdf"), length_dist_split.gg, dpi = 400, width = 10, height = 5)
+
+}
+
+#' Export meta-heatmaps of read extremities around start and stop codons produced by the `riboWaltz::rends_heat` function
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df_list dataframe list produced by the riboWaltz bam_to_list function
+#' @param annotation annotation dataframe list produced by the riboWaltz create_annotation function with CDS, UTR length etc info for each transcript
+#'
+#' @return This function does not return a value. It creates and saves a PDF file to disk.
+
+plot_metaheatmap <- function(sample_name, df_list, annotation) {
+
+    ends_heatmap <- riboWaltz::rends_heat(df_list, annotation, sample = sample_name,
+                                cl = 100, utr5l = 25, cdsl = 40, utr3l = 25)
+
+    ends_heatmap.gg <- ends_heatmap[[paste0("plot_", sample_name)]] +
+        ggplot2::ylim(20, 45)
+
+    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".ends_heatmap.pdf"), ends_heatmap.gg, dpi = 400, width = 12, height = 8)
+
+}
+
+#' Export meta-heatmaps of read extremities around start and stop codons produced by the `riboWaltz::codon_usage_psite` function
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param psite_info_ls dataframe list produced by the riboWaltz psite_info function with P-sites information for each alignment
+#' @param frequency_normalization ogical value whether to normalize the
+#' 64 codon usage indexes for the corresponding codon frequencies in coding
+#' sequences. Default is TRUE.
+#'
+#' @return This function does not return a value. It creates and saves a PDF file to disk.
+
+plot_codon_usage <- function(sample_name, psite_info_ls, frequency_normalization = TRUE) {
+
+    psite.ls <- psite_info_ls[sample_name]
+
+    cu_barplot <- riboWaltz::codon_usage_psite(psite.ls, annotation = annotation.dt, sample = sample_name,
+                                    fasta_genome = TRUE,
+                                    fastapath = opt\$fasta,
+                                    gtfpath = opt\$gtf,
+                                    frequency_normalization = frequency_normalization)
+
+    cu_barplot.gg <-cu_barplot[[paste0("plot_", sample_name)]]
+
+    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".codon_usage.pdf"), cu_barplot.gg, dpi = 400, width = 10, height = 7)
 }
 
 
+#' Exclude a sample from the dataframe list if no reads overlap start codon
+#'
+#' @param sample_name string specifying the sample name associated with the BAM file
+#' @param df_list dataframe list produced by the riboWaltz bam_to_list function
+#'
+#' @return vector with sample names to be excluded
+
+exclude_samples <- function(sample_name, df_list) {
+
+    sample_list <- list()
+    exclude <- c()
+    sample_list[["start_codon"]] <- df_list[[sample_name]][end5 <= cds_start & end3 >= cds_start]
+
+    if(nrow(sample_list[["start_codon"]]) == 0) {
+        message("No reads overlapping start codon. Removing sample from analysis.")
+
+        exclude <- sample_name
+
+    } else {
+
+        message("This sample will not be excluded.")
+    }
+
+    return(exclude)
+}
+
+#' Quietly Stops the R Session
+#'
+#' This function stops the R session without printing any error messages to the console.
+#' It temporarily suppresses error messages during the stopping process, ensuring that
+#' the session halts smoothly without displaying potentially confusing or distracting output.
+#'
+#' @return This function does not return a value. It simply stops the R session.
+
+stop_quietly <- function() {
+
+    opt <- options(show.error.messages = FALSE)
+    on.exit(options(opt))
+    stop()
+}
+
+#' Save Length Distribution Plot
+#'
+#' This function generates a plot of read length distributions using the `riboWaltz::rlength_distr` function across a given sample and saves it to disk.
+#'
+#' @param sample_name A string specifying the name of the sample for which to create the plot.
+#' @param dt.ls A list of dataframes containing the data for all samples.
+#'
+#' @details
+#' The function first generates a length distribution plot using the `riboWaltz::rlength_distr` function.
+#' The plot is saved to a PDF file in the "ribowaltz_qc" directory.
+#'
+#' @return This function does not return a value. It creates and saves a PDF file to disk.
+
+save_length_distribution_plot <- function(sample_name, dt.ls) {
+
+    # Read lengths averaged across samples
+    length_dist <- riboWaltz::rlength_distr(reads.ls, sample = sample_name, multisamples = "average", cl = 99, colour = "grey70")
+
+    length_dist.gg <- length_dist[[paste0("plot_", sample_name)]] +
+        ggplot2::theme(legend.position = "none", legend.title=ggplot2::element_blank())
+
+    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_distribution.pdf"), length_dist.gg, dpi = 400)
+
+}
+
+#' Save P-site Region Plot
+#'
+#' This function generates and saves a plot of P-site region distributions using the `riboWaltz::region_psite` across a given sample,
+#' displaying the distribution of reads mapping onto annotated regions.
+#'
+#' @param sample_name A string specifying the name of the sample for which to create the plot.
+#' @param dt.ls A list of dataframes containing data for all samples.
+#' @param annotation.df A dataframe containing transcript annotations, which include lengths of
+#' the 5' UTR, CDS, and 3' UTR for each transcript.
+#'
+#' @details
+#' This function calculates and visualizes the distribution of P-sites across different transcript
+#' regions: 5' UTR, CDS, and 3' UTR. The plot is saved as a PDF in the "ribowaltz_qc" directory.
+#'
+#' @return This function does not return a value. It generates and saves a PDF file to disk.
+
+save_psite_region_plot <- function(sample_name, dt.ls, annotation.df) {
+
+    psite_region <- riboWaltz::region_psite(dt.ls, annotation = annotation.df, sample = sample_name)
+    psite_region.gg <- psite_region[["plot"]] +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+
+    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".psite_region.pdf"), psite_region.gg, dpi = 400, width = 10)
+
+}
+
+#' Save Frame Plots
+#'
+#' This function generates and saves plots displaying the distribution of P-sites across
+#' different reading frames and transcript regions using the `riboWaltz::frame_psite_length` and `riboWaltz::frame_psite` functions.
+#'
+#' @param sample_name A string specifying the name of the sample for which to create the plots.
+#' @param dt.ls A data.frame list containing data for all samples.
+#' @param annotation.df A dataframe containing transcript annotations, which include lengths of
+#' the 5' UTR, CDS, and 3' UTR for each transcript.
+#' @param min_length An integer specifying the minimum read length to consider for plotting.
+#' @param max_length An integer specifying the maximum read length to consider for plotting.
+#'
+#' @details
+#' The function first generates a stratified frame plot using the `riboWaltz::frame_psite_length` function.
+#' This function visualizes the percentage of P-sites falling into each reading frame for each read length,
+#' across all transcript regions. The plot is then enhanced with axis and background customizations,
+#' and saved as a PDF in the "ribowaltz_qc" directory.
+#'
+#' Next, a second frame plot is generated using `riboWaltz::frame_psite` which aggregates
+#' the distribution of P-sites across all read lengths for each transcript region.
+#' The plot is similarly enhanced and saved.
+#'
+#' @return This function does not return a value. It generates and saves two PDF files to disk.
+
+save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_length) {
+
+    frames_stratified <- riboWaltz::frame_psite_length(dt.ls, region = "all", sample = sample_name, length_range = min_length:max_length, annotation = annotation.df)
+    frames_stratified.gg <- frames_stratified[[paste0("plot_", sample_name)]] +
+        ggplot2::scale_y_continuous(limits = c(min_length - 0.5, max_length + 0.5), breaks = seq(min(min_length + ((min_length) %% 2), max_length), max(min_length + ((min_length) %% 2), max_length),
+                                                                                                by = max(2, floor((max_length - min_length) / 7))))
+
+    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames_stratified.pdf"), frames_stratified.gg, dpi = 600, height = 9 , width = 12)
+
+
+    frames <- riboWaltz::frame_psite(dt.ls, region = "all", length_range = min_length:max_length, sample = sample_name, annotation = annotation.df, colour = "grey70")
+    frames.gg <- frames[[paste0("plot_", sample_name)]]
+
+    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames.pdf"), frames.gg, dpi = 600, height = 9 , width = 9)
+
+}
+
+
+#' Save Metaprofile P-site Plot
+#'
+#' This function generates and saves a metaprofile plot showing the distribution of P-sites
+#' around start and stop codons for a specific sample using the `riboWaltz::metaprofile_psite` function.
+#'
+#' @param sample_name A string specifying the name of the sample for which to create the plot.
+#' @param df.ls A list containing data for all samples.
+#' @param annotation.df A dataframe containing transcript annotations, including information 
+#' about UTR and CDS lengths for each transcript.
+#'
+#' @details
+#' This function uses the `riboWaltz::metaprofile_psite` function to compute a metaprofile that
+#' aggregates P-site positions across all transcripts for the specified sample. The plot visualizes
+#' P-site abundance around start and stop codons, taking into account specified regions of
+#' 25 nucleotides before the start, 40 nucleotides in the coding sequence, and 25 nucleotides after the stop.
+#'
+#' The generated plot saved as a PDF file in the "ribowaltz_qc" directory in a wide format.
+#'
+#' @return This function does not return a value. It generates and saves a PDF file to disk.
+
+save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
+
+    metaprofile <- riboWaltz::metaprofile_psite(df.ls, annotation.df, sample = sample_name,
+                                    utr5l = 25, cdsl = 40, utr3l = 25, colour = "black")
+
+    metaprofiles.gg <- metaprofile[[paste0("plot_", sample_name)]]
+
+    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".metaprofile_psite.pdf"), metaprofiles.gg,
+                    dpi = 400, width = 12, height = 6) # save in wide format
+
+}
 # =========
 # Parse parameters for Nextflow
 # =========
@@ -74,24 +376,22 @@ Options:
 # Set defaults and classes
 opt <- list(
     output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    threads = '$task.cpus',
     bam = '$bam',
     gtf = '$gtf',
     fasta = '$fasta',
     length_range = NULL,
     periodicity_threshold = NULL,
-    exclude_start = 42,               # number of nt from start codon used to exclude P-sites near initiating ribosome when calculating CDS P-site counts.
-    exclude_stop = 27
+    start = TRUE,
+    extremity = 'auto',
+    start_nts = 42,                    # number of nt from start codon used to exclude P-sites near initiating ribosome when calculating CDS P-site counts
+    stop_nts = 27,                     # number of nt from stop codon used to exclude from CDS when calculating CDS P-site counts
+    frequency_normalization = TRUE     # for codon usage index calculation
 )
 opt_types <- lapply(opt, class)
 
-
 # Parse extra arguments
 args_opt <- parse_args('$task.ext.args')
-
-# Check if help is requested
-if ('-h' %in% args_opt || '--help' %in% args_opt) {
-    print_help_menu()
-}
 
 # Apply parameter overrides
 for ( ao in names(args_opt)){
@@ -118,223 +418,18 @@ for (file_input in c('bam', 'gtf', 'fasta')){
     }
 }
 
-
-# Print inputs and parsed arguments
-cat("BAM file: ", opt\$bam, "\n")
-cat("GTF file: ", opt\$gtf, "\n")
-cat("FASTA file: ", opt\$fasta, "\n")
-cat("Length range for filtering: ", opt\$length_range, "\n")
-cat("Periodicity threshold: ", opt\$periodicity_threshold, "\n")
-cat("Exclude start codons (in nt) up to: ", opt\$exclude_start, "\n")
-cat("Exclude stop codons (in nt) up to: ", opt\$exclude_stop, "\n")
+# Set number of threads for data.table
+data.table::setDTthreads(opt\$threads)
 
 # Create folder for plots
 dir.create("ribowaltz_qc")
-
-
-# =========
-# Functions for riboWaltz analysis
-# =========
-
-export_offsets <- function(name, df) {
-
-    df <- dplyr::filter(df, sample == name)
-    data.table::fwrite(df, paste0(getwd(), "/", name, ".offset.tsv.gz"), sep = "\t")
-    return(df)
-
-}
-
-export_psites <- function(name, df_list) {
-
-    df <- df_list[[name]]
-    df <- dplyr::mutate(df, sample = name)
-    data.table::fwrite(df, paste0(getwd(), "/", name, ".psite.tsv.gz"), sep = "\t")
-    return(data.table::data.table(df))
-
-}
-
-export_codon_coverage_tables <- function(sample_name, df.ls, annotation.df) {
-
-    rpf_coverage.dt <- codon_coverage(df.ls, annotation = annotation.df, sample = sample_name, psite = FALSE)
-    psite_coverage.dt <- codon_coverage(df.ls, annotation = annotation.df, sample = sample_name, psite = TRUE)
-    data.table::fwrite(rpf_coverage.dt, paste0(getwd(),"/",sample_name, ".codon_coverage_rpf.tsv.gz"), sep = "\t")
-    data.table::fwrite(psite_coverage.dt, paste0(getwd(),"/",sample_name, ".codon_coverage_psite.tsv.gz"), sep = "\t")
-
-}
-
-export_cds_coverage_tables <- function(sample_name, cds_coverage, cds_window_coverage, exclude_start, exclude_stop) {
-
-    cols <- c("transcript", "length_cds", sample_name)
-    cds_coverage.dt <- cds_coverage[,..cols]
-    cds_window_coverage.dt <- cds_window_coverage[,..cols]
-    # Export CDS coverage tables
-    data.table::fwrite(cds_coverage.dt, paste0(getwd(),"/",sample_name, ".cds_coverage_psite.tsv.gz"), sep = "\t")
-    data.table::fwrite(cds_window_coverage.dt, paste0(getwd(), "/", sample_name, ".cds_","plus", exclude_start, "nt_minus", exclude_stop, "nt_coverage_psite.tsv.gz"), sep = "\t")
-
-}
-
-plot_length_bins <- function(sample_name, df_list) {
-
-    comparison_list <- list()
-    comparison_list[["start_codon"]] <- df_list[[sample_name]][end5 <= cds_start & end3 >= cds_start]
-    comparison_list[["whole_sample"]] <- df_list[[sample_name]]
-
-    if(nrow(comparison_list[["start_codon"]]) == 0) {
-        comparison_list <- list()
-        comparison_list[["whole_sample"]] <- df_list[[sample_name]]
-        rpf_list <- list("All" = c("whole_sample"))
-        length_dist_split <-  rlength_distr(comparison_list,
-                                            sample = rpf_list,
-                                            multisamples = "average",
-                                            plot_style = "split",
-                                            colour = c("gray70"))
-
-    } else {
-
-        rpf_list <- list("Only_start" = c("start_codon"), "All" = c("whole_sample"))
-
-        length_dist_split <-  rlength_distr(comparison_list,
-                                            sample = rpf_list,
-                                            multisamples = "average",
-                                            plot_style = "facet",
-                                            colour = c("#699FC4", "gray70"))
-    }
-
-    length_dist_split.gg <- length_dist_split[["plot"]] +
-        ggplot2::theme(plot.background = ggplot2::element_blank(),
-                        panel.grid.minor = ggplot2::element_blank(),
-                        panel.grid.major = ggplot2::element_blank()) +
-        ggplot2::ggtitle(sample_name)
-
-
-    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".length_bins_for_psite.pdf"), length_dist_split.gg, dpi = 400, width = 10, height = 5)
-
-}
-
-plot_metaheatmap <- function(sample_name, df_list, annotation) {
-
-    ends_heatmap <- rends_heat(df_list, annotation, sample = sample_name,
-                                cl = 100,
-                                utr5l = 25, cdsl = 40, utr3l = 25)
-
-    ends_heatmap.gg <- ends_heatmap[[paste0("plot_", sample_name)]] +
-        ggplot2::ylim(20, 45)
-
-    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".ends_heatmap.pdf"), ends_heatmap.gg, dpi = 400, width = 12, height = 8)
-
-    return(ends_heatmap.gg)
-}
-
-plot_codon_usage <- function(sample_name, psite_info_ls) {
-
-    psite.ls <- psite_info_ls[sample_name]
-
-    cu_barplot <- codon_usage_psite(psite.ls, annotation = annotation.dt, sample = sample_name,
-                                    fasta_genome = TRUE,
-                                    fastapath = opt\$fasta,
-                                    gtfpath = opt\$gtf,
-                                    frequency_normalization = FALSE)
-
-    cu_barplot.gg <-cu_barplot[[paste0("plot_", sample_name)]] +
-        ggplot2::theme(plot.background = ggplot2::element_blank(),
-                        panel.grid.minor = ggplot2::element_blank(),
-                        panel.grid.major = ggplot2::element_blank())
-
-    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".codon_usage.pdf"), cu_barplot.gg, dpi = 400, width = 10, height = 7)
-}
-
-exclude_samples <- function(sample_name, df_list) {
-
-    sample_list <- list()
-    exclude <- c()
-    sample_list[["start_codon"]] <- df_list[[sample_name]][end5 <= cds_start & end3 >= cds_start]
-
-    if(nrow(sample_list[["start_codon"]]) == 0) {
-        message("No reads overlapping start codon. Removing sample from analysis.")
-
-        exclude <- sample_name
-
-    } else {
-
-        message("This sample will not be excluded.")
-    }
-
-    return(exclude)
-}
-
-stop_quietly <- function() {
-
-    opt <- options(show.error.messages = FALSE)
-    on.exit(options(opt))
-    stop()
-}
-
-save_length_distribution_plot <- function(sample_name, dt.ls) {
-
-    # Read lengths averaged across samples
-    length_dist <- rlength_distr(reads.ls, sample = sample_name, multisamples = "average", cl = 99, colour = "grey70")
-
-    length_dist.gg <- length_dist[[paste0("plot_", sample_name)]] +
-        ggplot2::theme(legend.position = "none", legend.title=ggplot2::element_blank()) +
-        ggplot2::scale_fill_manual(values = "grey70") +
-        ggplot2::scale_color_manual(values = "grey30") +
-        ggplot2::theme(plot.background = ggplot2::element_blank(),
-                        panel.grid.minor = ggplot2::element_blank(),
-                        panel.grid.major = ggplot2::element_blank())
-
-    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_distribution.pdf"), length_dist.gg, dpi = 400)
-
-}
-
-save_psite_region_plot <- function(sample_name, dt.ls, annotation.df) {
-
-    psite_region <- region_psite(dt.ls, annotation = annotation.df, sample = sample_name)
-    psite_region.gg <- psite_region[["plot"]] +
-        ggplot2::theme(plot.background = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(), panel.grid.major = ggplot2::element_blank()) +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
-
-    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".psite_region.pdf"), psite_region.gg, dpi = 400, width = 10)
-
-}
-
-save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_length) {
-
-    frames_stratified <- frame_psite_length(dt.ls, region = "all", sample = sample_name, length_range = min_length:max_length, annotation = annotation.df)
-    frames_stratified.gg <- frames_stratified[[paste0("plot_", sample_name)]] +
-        ggplot2::scale_y_continuous(limits = c(min_length - 0.5, max_length + 0.5), breaks = seq(min(min_length + ((min_length) %% 2), max_length), max(min_length + ((min_length) %% 2), max_length),
-                                                                                                by = max(2, floor((max_length - min_length) / 7))))
-
-    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames_stratified.pdf"), frames_stratified.gg, dpi = 600, height = 9 , width = 12)
-
-
-    frames <- frame_psite(dt.ls, region = "all", length_range = min_length:max_length, sample = sample_name, annotation = annotation.df, colour = "grey70")
-    frames.gg <- frames[[paste0("plot_", sample_name)]] +
-        ggplot2::theme(plot.background = ggplot2::element_blank(),
-                        panel.grid.minor = ggplot2::element_blank(),
-                        panel.grid.major = ggplot2::element_blank())
-
-    ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames.pdf"), frames.gg, dpi = 600, height = 9 , width = 9)
-
-}
-
-save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
-
-    metaprofile <- metaprofile_psite(df.ls, annotation.df, sample = sample_name,
-                                    utr5l = 25, cdsl = 40, utr3l = 25, colour = "black")
-
-    metaprofiles.gg <- metaprofile[[paste0("plot_", sample_name)]]
-
-    ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".metaprofile_psite.pdf"), metaprofiles.gg,
-                    dpi = 400, width = 12, height = 6) # save in wide format
-
-}
 
 # =========
 # Load data and prepare annotation
 # =========
 
 # Prepare annotation: for each transcript, obtain total length, 5'UTR, CDS and 3'UTR length, respectively.
-annotation.dt <- create_annotation(opt\$gtf)
+annotation.dt <- riboWaltz::create_annotation(opt\$gtf)
 data.table::fwrite(annotation.dt,
                     paste0(getwd(), "/", strsplit(opt\$gtf, "gtf")[[1]][1],"transcript_info.tsv.gz"),
                     sep = "\t")
@@ -343,7 +438,7 @@ data.table::fwrite(annotation.dt,
 bam_name <- opt\$output_prefix
 names(bam_name) <- strsplit(basename(opt\$bam), ".bam")[[1]][1]
 
-reads.ls <- bamtolist(bamfolder = getwd(), annotation = annotation.dt, name_samples = bam_name)
+reads.ls <- riboWaltz::bamtolist(bamfolder = getwd(), annotation = annotation.dt, name_samples = bam_name)
 
 stopifnot(length(reads.ls) == 1) # check that a single bam has been provided and will be analysed
 
@@ -354,7 +449,7 @@ reads.ls <- reads.ls[order(names(reads.ls))]
 # Get filtered reads: keep only the ones with periodicity evidence based on periodicity_threshold, if provided
 if (!is.null(opt\$periodicity_threshold)) {
 
-    filtered.ls <- length_filter(data = reads.ls,
+    filtered.ls <- riboWaltz::length_filter(data = reads.ls,
                                 length_filter_mode = "periodicity",
                                 periodicity_threshold = opt\$periodicity_threshold)
 } else {
@@ -369,7 +464,7 @@ if (!is.null(opt\$length_range)) {
     min_length <- as.integer(strsplit(opt\$length_range, ":")[[1]][1])
     max_length <- as.integer(strsplit(opt\$length_range, ":")[[1]][2])
 
-    filtered.ls <- length_filter(data = filtered.ls,
+    filtered.ls <- riboWaltz::length_filter(data = filtered.ls,
                                 length_filter_mode = "custom",
                                 length_range = min_length:max_length)
 }
@@ -397,14 +492,15 @@ if (length(filtered.ls) == 0) {
 message("Calculating P-site offsets and P-site positions defined by the riboWaltz method...")
 
 # Compute P-site offsets: temporary and corrected
-psite_offset.dt <- psite(filtered.ls, flanking = 6, extremity = "auto", txt = TRUE, plot = TRUE, plot_format = "pdf", txt_file = paste0(bam_name, ".best_offset.txt"))
+psite_offset.dt <- riboWaltz::psite(filtered.ls, flanking = 6, extremity = opt\$extremity, start = opt\$start,
+                        txt = TRUE, plot = TRUE, plot_format = "pdf", txt_file = paste0(bam_name, ".best_offset.txt"))
 
 # Save offsets for each sample
 lapply(unique(psite_offset.dt\$sample), export_offsets, df = psite_offset.dt)
 
 
 # Update reads information according to the inferred P-sites
-filtered_psite.ls <- psite_info(filtered.ls, psite_offset.dt, site = "psite",
+filtered_psite.ls <- riboWaltz::psite_info(filtered.ls, psite_offset.dt, site = "psite",
                                 fasta_genome = TRUE, refseq_sep = " ",
                                 fastapath = opt\$fasta,
                                 gtfpath = opt\$gtf)
@@ -420,13 +516,13 @@ message("Calculating codon and CDS coverage...")
 lapply(sample_name.ls, export_codon_coverage_tables, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
 # 2. Compute the number of P-sites mapping on annotated coding sequences or whole transcripts.
-# By default, only in-frame P-sites falling in annotated coding sequences are considered.
-cds_coverage_psite.dt <- cds_coverage(filtered_psite.ls, annotation = annotation.dt)
+# By default, only in-frame P-sites falling in the full annotated coding sequences are considered.
+cds_coverage_psite.dt <- riboWaltz::cds_coverage(filtered_psite.ls, annotation = annotation.dt)
 
-# Compute the number of in-frame P-sites per coding sequences excluding the first 15 codons and the last 10 codons
-cds_coverage_psite_window.dt <- cds_coverage(filtered_psite.ls, annotation = annotation.dt, start_nts = opt\$exclude_start, stop_nts = opt\$exclude_stop)
+# Additionally compute the number of in-frame P-sites per coding sequences excluding specified number of nucleotides, by default the first 15 codons and the last 10 codons
+cds_coverage_psite_window.dt <- riboWaltz::cds_coverage(filtered_psite.ls, annotation = annotation.dt, start_nts = opt\$start_nts, stop_nts = opt\$stop_nts)
 lapply(sample_name.ls, export_cds_coverage_tables, cds_coverage = cds_coverage_psite.dt, cds_window_coverage = cds_coverage_psite_window.dt,
-        exclude_start = opt\$exclude_start, exclude_stop = opt\$exclude_stop)
+            exclude_start = opt\$start_nts, exclude_stop = opt\$stop_nts)
 
 # =========
 # Diagnostic plots
@@ -449,10 +545,8 @@ ends_heatmap.gg.ls <- lapply(names(reads.ls), plot_metaheatmap, df_list = reads.
 # Ribosome profiling data should highlight the CDS of transcripts as the region with the higher percentage of reads.
 lapply(sample_name.ls, save_psite_region_plot, dt.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
-# trinucleotide periodicity of ribosome footprints along coding sequences.
 # Compute the percentage of P-sites falling in the three possible translation reading frames for 5’ UTRs, CDSs and 3’ UTRs.
 # Plots should show an enrichment of P-sites in the first frame on the coding sequence but not the UTRs, as expected for ribosome protected fragments from protein coding mRNAs.
-
 lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt,
         min_length = min_rl, max_length = max_rl)
 
@@ -460,7 +554,7 @@ lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.d
 lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
 
 # Codon usage
-lapply(names(filtered_psite.ls), plot_codon_usage, psite_info_ls = filtered_psite.ls)
+lapply(names(filtered_psite.ls), plot_codon_usage, psite_info_ls = filtered_psite.ls, frequency_normalization = opt\$frequency_normalization)
 
 message("riboWaltz analysis succesfully completed!")
 
