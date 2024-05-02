@@ -23,7 +23,6 @@ process LOFREQ_ALNQUAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    
     """
     lofreq \\
         alnqual \\
