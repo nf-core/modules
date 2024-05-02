@@ -53,9 +53,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.version).match("version") },
-                { assert file(process.out.txt.get(0).get(1)).exists()},
-                { assert file(process.out.png.get(0).get(1)).exists()},
-                { assert file(process.out.html.get(0).get(1)).exists()}
+                { assert file(process.out.txt.get(0).get(1)).exists() },
+                { assert file(process.out.png.get(0).get(1)).exists() },
+                { assert file(process.out.html.get(0).get(1)).exists() }
             )
         }
 
