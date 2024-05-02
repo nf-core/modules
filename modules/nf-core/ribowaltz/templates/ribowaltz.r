@@ -380,13 +380,13 @@ opt <- list(
     bam = '$bam',
     gtf = '$gtf',
     fasta = '$fasta',
-    length_range = NULL,
-    periodicity_threshold = NULL,
-    start = TRUE,
-    extremity = 'auto',
-    start_nts = 42,                    # number of nt from start codon used to exclude P-sites near initiating ribosome when calculating CDS P-site counts
-    stop_nts = 27,                     # number of nt from stop codon used to exclude from CDS when calculating CDS P-site counts
-    frequency_normalization = TRUE     # for codon usage index calculation
+    length_range = NULL,               # specifies a range of read lengths for P-site identification, formatted as two integers separated by a colon (e.g., '26:34'). If unspecified, all lengths are considered.
+    periodicity_threshold = NULL,      # filter out read lengths below specified periodicity threshold for P-site identification. must be a value between 10 and 100. If null, no periodicity filtering is done.
+    start = TRUE,                      # use the translation initiation site as reference codon for calculating offsets. If 'FALSE', the second last codon is used instead.
+    extremity = 'auto',                # specifies if the offset correction step should be based on 5' extremities ('5end') or 3'extremities ('3end') or 'auto' i.e. the optimal extremity is automatically selected.
+    start_nts = 42,                    # number of nt from start codon used to exclude P-sites near initiating ribosome when calculating CDS window P-site counts.
+    stop_nts = 27,                     # number of nucleotides from stop codon used to exclude P-sites near terminating ribosome when calculating CDS coverage when calculating CDS window P-site counts.
+    frequency_normalization = TRUE     # for codon usage index calculation.
 )
 opt_types <- lapply(opt, class)
 
