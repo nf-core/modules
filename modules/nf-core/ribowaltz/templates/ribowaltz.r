@@ -345,7 +345,7 @@ save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_
 #'
 #' @param sample_name A string specifying the name of the sample for which to create the plot.
 #' @param df.ls A list containing data for all samples.
-#' @param annotation.df A dataframe containing transcript annotations, including information 
+#' @param annotation.df A dataframe containing transcript annotations, including information
 #' about UTR and CDS lengths for each transcript.
 #'
 #' @details
