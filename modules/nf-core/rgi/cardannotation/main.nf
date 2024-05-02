@@ -3,8 +3,8 @@ process RGI_CARDANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_0':
-        'biocontainers/rgi:6.0.3--pyha8f3691_0' }"
+        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_1':
+        'biocontainers/rgi:6.0.3--pyha8f3691_1' }"
 
     input:
     path(card)
