@@ -12,11 +12,8 @@ process METAMAPS_MAPDIRECTLY {
     path database
 
     output:
-    tuple val(meta), path("*classification_res")                          , emit: classification_res
-    tuple val(meta), path("*classification_res.meta")                     , emit: meta_file
-    tuple val(meta), path("*classification_res.meta.unmappedReadsLengths"), emit: meta_unmappedreadsLengths
-    tuple val(meta), path("*classification_res.parameters")               , emit: para_file
-    path "versions.yml"                                                   , emit: versions
+    tuple val(meta), path("*classification_res"),path("*classification_res.meta"), path("*classification_res.meta.unmappedReadsLengths"),path("*classification_res.parameters")                        , emit: classification_res
+    path "versions.yml"                                                                                                                                                                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
