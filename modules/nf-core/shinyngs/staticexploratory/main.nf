@@ -46,7 +46,7 @@ process SHINYNGS_STATICEXPLORATORY {
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
@@ -63,7 +63,7 @@ process SHINYNGS_STATICEXPLORATORY {
     touch ${prefix}/png/mad_correlation.png
     touch ${prefix}/html/mad_correlation.html
     touch ${prefix}/png/sample_dendrogram.png
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
