@@ -8,7 +8,9 @@ process TOULLIGQC {
         'biocontainers/toulligqc:2.5.6--pyhdfd78af_0' }"
 
     input:
+
     tuple val(meta), path(ontfile)
+
 
     output:
     tuple val(meta), path("*/*.data")                   , emit: report_data
