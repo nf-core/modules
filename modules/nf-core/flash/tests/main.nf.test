@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process FLASH"
+    script "../main.nf"
+    process "FLASH"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "flash"
+
+    test("sarscov2 - bam") {
+
+        when {
+            params{
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: "test", single_end:false], // meta map
+                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
