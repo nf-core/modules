@@ -2,10 +2,10 @@ process BCFTOOLS_NORM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/bcftools/norm/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'biocontainers/bcftools:1.17--haef29d1_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
+        'biocontainers/bcftools:1.18--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

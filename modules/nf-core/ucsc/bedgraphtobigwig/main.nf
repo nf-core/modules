@@ -3,7 +3,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda 'modules/nf-core/ucsc/bedgraphtobigwig/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:445--h954228d_0' :
         'biocontainers/ucsc-bedgraphtobigwig:445--h954228d_0' }"

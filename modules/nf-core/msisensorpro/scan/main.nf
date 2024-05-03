@@ -2,7 +2,7 @@ process MSISENSORPRO_SCAN {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/msisensorpro/scan/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
         'biocontainers/msisensor-pro:1.2.0--hfc31af2_0' }"

@@ -54,10 +54,11 @@ parse_args <- function(x) {
 #' @param file Input file
 #' @param header Passed to read.delim()
 #' @param row.names Passed to read.delim()
+#' @param nrows Passed to read.delim()
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = F) {
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = F, nrows = -1) {
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -74,7 +75,8 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
         sep = separator,
         header = header,
         row.names = row.names,
-        check.names = check.names
+        check.names = check.names,
+        nrows = nrows
     )
 }
 
@@ -192,7 +194,8 @@ library(proteus)
 intensities.table <-
     read_delim_flexible(
         file = opt\$intensities_file,
-        check.names = FALSE
+        check.names = FALSE,
+        nrows = 1 # Here, we are only interested in the header of the table
     )
 
 sample.sheet <-
@@ -218,16 +221,19 @@ sample.sheet\$condition <- sample.sheet[[opt\$contrast_variable]]
 
 measure.cols <- setNames(paste0(opt\$measure_col_prefix, sample.sheet[[opt\$sample_id_col]]), sample.sheet[[opt\$sample_id_col]])
 
+if (!any(measure.cols %in% colnames(intensities.table))) {
+    measure.cols <- setNames(paste0(paste0(opt\$measure_col_prefix, " "), sample.sheet[[opt\$sample_id_col]]), sample.sheet[[opt\$sample_id_col]])
+}
+
 # Check that all samples specified in the input sheet are present in the intensities table
 
-missing_columns <- paste0(opt\$measure_col_prefix, sample.sheet[[opt\$sample_id_col]])
-missing_columns <- missing_columns[!missing_columns %in% colnames(intensities.table)]
+missing_columns <- measure.cols[!measure.cols %in% colnames(intensities.table)]
 if (length(missing_columns) > 0) {
     stop(paste(
         length(missing_columns),
         'specified samples do not have a(n)',
         opt\$measure_col_prefix,
-        'column in intensities table. The following columns are missing:',
+        'column in intensities table (tried prefix both with and without adding a whitespace), please check the value of parameter --measure_col_prefix. The following columns are missing:',
         paste(missing_columns, collapse = ', ')
     ))
 }

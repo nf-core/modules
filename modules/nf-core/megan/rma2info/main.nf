@@ -2,7 +2,7 @@ process MEGAN_RMA2INFO {
     tag "$meta.id"
     label 'process_single'
 
-    conda 'modules/nf-core/megan/rma2info/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/megan:6.24.20--h9ee0642_0':
         'biocontainers/megan:6.24.20--h9ee0642_0' }"

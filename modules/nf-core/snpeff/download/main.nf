@@ -2,7 +2,7 @@ process SNPEFF_DOWNLOAD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda 'modules/nf-core/snpeff/download/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.1--hdfd78af_2' :
         'biocontainers/snpeff:5.1--hdfd78af_2' }"

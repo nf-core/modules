@@ -2,7 +2,7 @@ process ARIBA_GETREF {
     tag "$db_name"
     label 'process_low'
 
-    conda 'modules/nf-core/ariba/getref/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
         'biocontainers/ariba:2.14.6--py39h67e14b5_3' }"

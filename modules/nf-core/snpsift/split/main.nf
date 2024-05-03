@@ -2,7 +2,7 @@ process SNPSIFT_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/snpsift/split/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
         'biocontainers/snpsift:4.3.1t--hdfd78af_3' }"

@@ -1,0 +1,22 @@
+nextflow_process {
+
+    name "Test Process CHECKM2_DATABASEDOWNLOAD"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "checkm2"
+    tag "checkm2/databasedownload"
+    script "modules/nf-core/checkm2/databasedownload/main.nf"
+    process "CHECKM2_DATABASEDOWNLOAD"
+
+    test("Test CheckM2 Database Download") {
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+            )
+        }
+
+    }
+
+}
