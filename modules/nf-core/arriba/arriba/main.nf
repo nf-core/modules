@@ -2,7 +2,7 @@ process ARRIBA_ARRIBA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::arriba=2.4.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
@@ -60,7 +60,9 @@ process ARRIBA_ARRIBA {
     echo stub > ${prefix}.fusions.tsv
     echo stub > ${prefix}.fusions.discarded.tsv
 
-    echo "${task.process}:" > versions.yml
-    echo ' arriba: 2.2.1' >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+    END_VERSIONS
     """
 }

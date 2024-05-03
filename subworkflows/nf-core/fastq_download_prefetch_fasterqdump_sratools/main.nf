@@ -17,7 +17,7 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     //
     // Detect existing NCBI user settings or create new ones.
     //
-    CUSTOM_SRATOOLSNCBISETTINGS()
+    CUSTOM_SRATOOLSNCBISETTINGS ( ch_sra_ids.collect() )
     ch_ncbi_settings = CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings
     ch_versions = ch_versions.mix(CUSTOM_SRATOOLSNCBISETTINGS.out.versions)
 

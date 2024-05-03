@@ -2,7 +2,7 @@ process SCOARY {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::scoary=1.6.16"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/scoary:1.6.16--py_2' :
         'biocontainers/scoary:1.6.16--py_2' }"

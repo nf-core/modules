@@ -2,7 +2,7 @@ process BIOHANSEL {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bio_hansel=2.6.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bio_hansel:2.6.1--py_0':
         'biocontainers/bio_hansel:2.6.1--py_0' }"

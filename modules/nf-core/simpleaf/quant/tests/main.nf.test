@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process SIMPLEAF_QUANT"
+    script "../main.nf"
+    process "SIMPLEAF_QUANT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "simpleaf"
+    tag "simpleaf/quant"
+    tag "simpleaf/index"
+
+
+    //Requires SIMPLEAF_INDEX to run prior to quant
+    setup {
+        run("SIMPLEAF_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                meta = [ 'id': 'human']
+
+                input[0] = Channel.of([meta, genome_fasta])
+                input[1] = Channel.of([meta, gtf])
+                input[2] = Channel.of([[],[]])
+                """
+            }
+        }
+    }
+
+    test("test_simpleaf_quant") {
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                meta = [id:'test_10x', single_end:false, strandedness:'auto']
+                files = [
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                ]
+                input[0] = Channel.of([meta, '10xv3', files])
+                input[1] = SIMPLEAF_INDEX.out.index
+                input[2] = SIMPLEAF_INDEX.out.transcript_tsv
+                input[3] = Channel.of('cr-like')
+                input[4] = Channel.of([[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path("${process.out.results[0][1]}/af_map/map.rad"),
+                    path("${process.out.results[0][1]}/af_map/unmapped_bc_count.bin"),
+                    path("${process.out.results[0][1]}/af_quant/alevin/quants_mat_rows.txt"),
+                    path("${process.out.results[0][1]}/af_quant/alevin/quants_mat_rows.txt"),
+                    path("${process.out.results[0][1]}/af_quant/all_freq.bin"),
+                    path("${process.out.results[0][1]}/af_quant/map.collated.rad"),
+                    path("${process.out.results[0][1]}/af_quant/permit_freq.bin"))
+                    .match() }
+            )
+        }
+
+    }
+
+    test("test_simpleaf_quant stub") {
+        options "-stub-run"
+
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                meta = [id:'test_10x', single_end:false, strandedness:'auto']
+                files = [
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                ]
+                input[0] = Channel.of([meta, '10xv3', files])
+                input[1] = SIMPLEAF_INDEX.out.index
+                input[2] = SIMPLEAF_INDEX.out.transcript_tsv
+                input[3] = Channel.of('cr-like')
+                input[4] = Channel.of([[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
+
+

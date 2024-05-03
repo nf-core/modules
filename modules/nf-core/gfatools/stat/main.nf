@@ -2,7 +2,7 @@ process GFATOOLS_STAT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gfatools=0.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfatools:0.5--he4a0461_4':
         'biocontainers/gfatools:0.5--he4a0461_4' }"

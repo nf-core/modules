@@ -2,7 +2,7 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
         'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
@@ -32,6 +32,7 @@ process CNVKIT_BATCH {
 
     def tumor_exists = tumor ? true : false
     def normal_exists = normal ? true : false
+    def reference_exists = reference ? true : false
 
     // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
     def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
@@ -62,6 +63,10 @@ process CNVKIT_BATCH {
         else {
             normal_args = normal_prefix ? "--normal $normal_out" : ""
         }
+        if (reference_exists){
+            fasta_args = ""
+            normal_args = ""
+        }
     }
 
     // generation of panel of normals
@@ -73,7 +78,7 @@ process CNVKIT_BATCH {
         tumor_out = ""
     }
 
-    def target_args = targets ? "--targets $targets" : ""
+    def target_args = targets && !reference_exists ? "--targets $targets" : ""
     def reference_args = reference ? "--reference $reference" : ""
 
     def samtools_cram_convert = ''

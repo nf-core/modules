@@ -23,6 +23,10 @@ input:
       type: file
       description: Nucleic or amino acid sequence file in FASTA format.
       pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
+  - mode:
+      type: string
+      description: The mode to run Busco in. One of genome, proteins, or transcriptome
+      pattern: "{genome,proteins,transcriptome}"
   - lineage:
       type: string
       description: The BUSCO lineage to use, or "auto" to automatically select lineage
