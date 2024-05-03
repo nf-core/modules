@@ -66,10 +66,9 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
-        .view()
         .map{ meta, vcf, csi ->
             newmeta = meta + [id: meta.id.split("_")[0..-2].join("_")]
-            [newmeta, vcf, csi]}.view()
+            [newmeta, vcf, csi]}
         .combine(ch_chunks_number, by:0)
         .map{meta, vcf, csi, chunks_num ->
             [groupKey(meta, chunks_num), vcf, csi]}

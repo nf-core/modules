@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/aria2/aria2/"
       licence: ["GPL v2"]
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -29,8 +28,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
+        e.g. `[ id:'sample1', single_end:false ]`
   - downloaded_file:
       type: file
       description: Downloaded file from source
