@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "panacus_visualize"
+description: Create visualizations from a tsv coverage histogram created with panacus.
+keywords:
+  - statistics
+  - pangenome
+  - graph
+  - visualization
+  - tsv
+  - genomics
+tools:
+  - "panacus":
+      description: "panacus is a tool for computing counting statistics for GFA files"
+      homepage: "https://github.com/marschall-lab/panacus"
+      documentation: "https://github.com/marschall-lab/panacus"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - tsv:
+      type: file
+      description: TSV coverage histogram created with panacus histgrowth
+      pattern: "*.tsv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - image:
+      type: file
+      description: Visualizations created from the coverage histogram
+      pattern: "*.{eps,jpg,jpeg,pdf,pgf,png,ps,raw,rgba,svg,svgz,tif,tiff,webp}"
+
+authors:
+  - "@heringerp"
+maintainers:
+  - "@heringerp"
+  - "@subwaystation"

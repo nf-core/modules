@@ -2,7 +2,7 @@ process EIDO_VALIDATE {
     tag "$samplesheet"
     label 'process_single'
 
-    conda "conda-forge::eido=0.1.9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv2/eido_0.1.9_cv2.sif' :
         'docker.io/biocontainers/eido:0.1.9_cv2' }"

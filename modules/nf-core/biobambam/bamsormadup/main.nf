@@ -2,16 +2,17 @@ process BIOBAMBAM_BAMSORMADUP {
     tag "$meta.id"
     label "process_medium"
 
-    conda "bioconda::biobambam=2.0.183"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
-    tuple val(meta), path(bams, stageAs: "?/*")
-    path(fasta)
+    tuple val(meta) , path(bams, stageAs: "?/*")
+    tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.{bam,cram}")       ,emit: bam
+    tuple val(meta), path("*.bam")              ,optional:true, emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
+    tuple val(meta), path("*.cram")             ,optional:true, emit: cram
     tuple val(meta), path("*.metrics.txt")      ,emit: metrics
     path "versions.yml"                         ,emit: versions
 
@@ -20,6 +21,7 @@ process BIOBAMBAM_BAMSORMADUP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("outputformat=cram") ? "cram" : "bam"
     def input_string = bams instanceof List ? bams.join(" I=") : bams
@@ -31,6 +33,7 @@ process BIOBAMBAM_BAMSORMADUP {
         level=0 \\
     | bamcollate2 \\
         level=0 \\
+        $args2 \\
     | bamsormadup \\
         $args \\
         M=${prefix}.metrics.txt \\

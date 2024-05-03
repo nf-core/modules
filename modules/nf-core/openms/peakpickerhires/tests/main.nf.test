@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process OPENMS_PEAKPICKERHIRES"
+    script "../main.nf"
+    process "OPENMS_PEAKPICKERHIRES"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/peakpickerhires"
+
+    test("proteomics - mzML") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.mzml.get(0).get(1)).readLines().contains('\t\t\t<cvParam cvRef="MS" accession="MS:1000294" name="mass spectrum" />') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - mzML - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub'], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

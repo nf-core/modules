@@ -2,7 +2,7 @@ process CHECKV_ENDTOEND {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::checkv=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
         'biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
@@ -35,6 +35,25 @@ process CHECKV_ENDTOEND {
         -d $db \\
         $fasta \\
         $prefix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/quality_summary.tsv
+    touch ${prefix}/completeness.tsv
+    touch ${prefix}/contamination.tsv
+    touch ${prefix}/complete_genomes.tsv
+    touch ${prefix}/proviruses.fna
+    touch ${prefix}/viruses.fna
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

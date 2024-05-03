@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process BCL2FASTQ"
+    script "modules/nf-core/bcl2fastq/main.nf"
+    process "BCL2FASTQ"
+    config "./nextflow.config"
+    tag "bcl2fastq"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("homo sapiens illumina [bcl]") {
+        when {
+            process {
+                //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
+                """
+                input[0] = [
+                    [ id: 'test', lane:1 ],
+                    file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -3,13 +3,13 @@ process STRELKA_GERMLINE {
     label 'process_medium'
     label 'error_retry'
 
-    conda "bioconda::strelka=2.9.10"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1' :
         'biocontainers/strelka:2.9.10--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path (target_bed), path (target_bed_tbi)
+    tuple val(meta), path(input), path(input_index), path (target_bed), path (target_bed_index)
     path  fasta
     path  fai
 
@@ -46,6 +46,20 @@ process STRELKA_GERMLINE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         strelka: \$( configureStrelkaGermlineWorkflow.py --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.genome.vcf.gz
+    touch ${prefix}.genome.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.variants.vcf.gz
+    touch ${prefix}.variants.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        strelka: \$( configureStrelkaSomaticWorkflow.py --version )
     END_VERSIONS
     """
 }

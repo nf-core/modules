@@ -3,7 +3,7 @@ process PHANTOMPEAKQUALTOOLS {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::phantompeakqualtools=1.2.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0' :
         'biocontainers/phantompeakqualtools:1.2.2--0' }"

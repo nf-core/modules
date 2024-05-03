@@ -1,7 +1,7 @@
 process NGSCHECKMATE_VAFNCM {
     label 'process_single'
 
-    conda "bioconda::ngscheckmate=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' :
         'biocontainers/ngscheckmate:1.0.1--py27pl5321r40hdfd78af_1' }"
@@ -52,7 +52,7 @@ process NGSCHECKMATE_VAFNCM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
     END_VERSIONS
     """
 }
