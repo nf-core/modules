@@ -10,9 +10,7 @@ tools:
       homepage: "https://github.com/quinlan-lab/vcf2db"
       documentation: "https://github.com/quinlan-lab/vcf2db"
       tool_dev_url: "https://github.com/quinlan-lab/vcf2db"
-
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -27,7 +25,6 @@ input:
       type: file
       description: PED file
       pattern: "*.ped"
-
 output:
   - meta:
       type: map
@@ -42,6 +39,7 @@ output:
       type: file
       description: Gemini-compatible database file
       pattern: "*.db"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

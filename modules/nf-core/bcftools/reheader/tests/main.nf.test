@@ -1,0 +1,197 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_REHEADER"
+    script "../main.nf"
+    process "BCFTOOLS_REHEADER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/reheader"
+
+    test("sarscov2 - [vcf, [], []], fai - vcf output") {
+
+        config "./vcf.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, [], []], fai - vcf.gz output") {
+
+        config "./vcf.gz.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, [], []], fai - bcf output") {
+
+        config "./bcf.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, header, []], []") {
+
+        config "./vcf.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                    []
+                ]
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, [], samples], fai") {
+
+        config "./vcf.config"
+        when {
+
+            process {
+                """
+                ch_no_samples = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    []
+                ])
+                ch_samples = Channel.of(["samples.txt", "new_name"])
+                    .collectFile(newLine:true)
+                input[0] = ch_no_samples.combine(ch_samples)
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [vcf, [], []], fai - stub") {
+
+        options "-stub"
+        config "./vcf.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ 
+                    [ id:'genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions,
+                ).match() }
+            )
+        }
+
+    }
+
+}

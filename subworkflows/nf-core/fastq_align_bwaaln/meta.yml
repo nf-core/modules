@@ -26,7 +26,6 @@ input:
         Structure: [ val(meta), path(index) ]
         A directory containing bwa aln reference indices as from `bwa index`
         Contains files ending in extensions such as .amb, .ann, .bwt etc.
-
 output:
   - bam:
       description: |
@@ -48,4 +47,6 @@ output:
         Files containing software versions
         Structure: [ path(versions.yml) ]
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

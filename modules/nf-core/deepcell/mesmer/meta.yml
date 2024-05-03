@@ -11,8 +11,7 @@ tools:
       documentation: "https://github.com/vanvalenlab/intro-to-deepcell/tree/master/pretrained_models"
       tool_dev_url: "https://githu/b.com/vanvalenlab/deepcell-tf"
       doi: 10.1038/s41587-021-01094-0
-      licence: "APACHE2"
-
+      licence: ["APACHE2"]
 input:
   # Only when we have meta
   - meta:
@@ -20,12 +19,19 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # We always need to have an image of the tissue. (That's the whole point fo cell segmentation)
   - img:
       type: file
       description: Multichannel image file
       pattern: "*.{tiff,tif,h5,hdf5}"
-
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - membrane_img:
+      type: file
+      description: Optional membrane image to be provided separately.
+      pattern: "*.{tiff,tif,h5,hdf5}"
 output:
   #Only when we have meta
   - meta:
@@ -33,17 +39,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
+  - mask:
+      type: file
+      description: File containing the mask.
+      pattern: "*.{tif, tiff}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 
-  - mask:
-      type: file
-      description: File containing the mask.
-      pattern: "*.{tif, tiff}"
-
 authors:
+  - "@migueLib"
+  - "@chiarasch"
+maintainers:
   - "@migueLib"
   - "@chiarasch"

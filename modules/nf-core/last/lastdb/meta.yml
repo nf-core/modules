@@ -11,9 +11,7 @@ tools:
       homepage: https://gitlab.com/mcfrith/last
       documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastdb.rst
       tool_dev_url: https://gitlab.com/mcfrith/last
-
       licence: ["GPL-3.0-or-later"]
-
 input:
   - meta:
       type: map
@@ -23,10 +21,9 @@ input:
   - fastx:
       type: file
       description: >
-        Sequence file in FASTA or FASTQ format.
-        May be compressed with gzip.
-      pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
+        Sequence file in FASTA or FASTQ format. May be compressed with gzip.
 
+      pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
 output:
   - versions:
       type: file
@@ -36,6 +33,7 @@ output:
       type: directory
       description: directory containing the files of the LAST index
       pattern: "lastdb/"
-
 authors:
+  - "@charles-plessy"
+maintainers:
   - "@charles-plessy"

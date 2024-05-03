@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://bitbucket.org/genomicepidemiology/plasmidfinder"
       doi: "10.1128/AAC.02412-14"
       licence: "['Apache-2.0']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: Input FASTA or FASTQ formatted genome sequences
       pattern: "*.{fastq.gz,fq.gz,fastq.gz,fna.gz,fa.gz}"
-
 output:
   - meta:
       type: map
@@ -55,4 +53,6 @@ output:
       description: FASTA of plasmid sequences with a hit against the input
       pattern: "*-plasmid_seqs.fsa"
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

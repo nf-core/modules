@@ -33,7 +33,6 @@ input:
       type: file
       description: List of SNAP genome index files
       pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
-
 output:
   - meta:
       type: map
@@ -53,4 +52,6 @@ output:
       description: Optional aligned BAM file index
       pattern: "*.{bai}"
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

@@ -2,7 +2,7 @@ process MASH_DIST {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mash=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
         'biocontainers/mash:2.3--he348c14_1' }"

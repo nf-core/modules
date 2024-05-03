@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/ExaScience/elprep"
       doi: "10.1371/journal.pone.0244471"
       licence: "['AGPL v3']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: List of BAM/SAM chunks to merge
       pattern: "*.{bam,sam}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: Merged BAM/SAM file
       pattern: "*.{bam,sam}"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

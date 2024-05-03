@@ -1,7 +1,10 @@
 name: "bracken_combinebrackenoutputs"
 description: Combine output of metagenomic samples analyzed by bracken.
 keywords:
-  - sort
+  - bracken
+  - metagenomics
+  - postprocessing
+  - reporting
 tools:
   - "bracken":
       description: Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly accurate statistical method that computes the abundance of species in DNA sequences from a metagenomics sample.
@@ -10,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/jenniferlu717/Bracken
       doi: "10.7717/peerj-cs.104"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -21,7 +23,6 @@ input:
       type: file
       description: List of output files from bracken
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -36,6 +37,7 @@ output:
       type: file
       description: Combined output in table format
       pattern: "*.txt"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"
