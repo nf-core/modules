@@ -17,7 +17,7 @@ process TOULLIGQC {
     tuple val(meta), path("*/*.html")                   , emit: report_html, optional: true
     tuple val(meta), path("*/images/*.html")            , emit: plots_html
     tuple val(meta), path("*/images/plotly.min.js")     , emit: plotly_js
-    path "versions.yml" , emit: versions
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
