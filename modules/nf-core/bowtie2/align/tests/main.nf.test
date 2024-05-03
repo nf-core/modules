@@ -6,10 +6,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "bowtie2"
-    tag "bowtie2/build"
     tag "bowtie2/align"
 
-    test("sarscov2 - fastq, index, fasta, false, false - bam") {
+    test("sarscov2 - fastq, index, false, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -33,9 +32,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -44,7 +42,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -54,7 +52,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, false - sam") {
+    test("sarscov2 - fastq, index, false, false - sam") {
 
         config "./sam.config"
         setup {
@@ -79,9 +77,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -90,7 +87,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.aligned[0][1]).readLines()[0..4],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -100,7 +97,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, false - sam2") {
+    test("sarscov2 - fastq, index, false, false - sam2") {
 
         config "./sam2.config"
         setup {
@@ -125,9 +122,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -136,7 +132,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.aligned[0][1]).readLines()[0..4],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -146,7 +142,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, true - bam") {
+    test("sarscov2 - fastq, index, false, true - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -170,9 +166,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = true //sort
                 """
             }
         }
@@ -181,7 +176,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -191,7 +186,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, false, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -218,9 +213,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -229,7 +223,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -239,7 +233,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, true - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, false, true - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -266,9 +260,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = true //sort
                 """
             }
         }
@@ -277,7 +270,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -287,7 +280,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, large_index, fasta, false, false - bam") {
+    test("sarscov2 - fastq, large_index, false, false - bam") {
 
         config "./large_index.config"
         setup {
@@ -312,9 +305,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -323,7 +315,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -333,7 +325,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], large_index, fasta, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], large_index, false, false - bam") {
 
         config "./large_index.config"
         setup {
@@ -361,9 +353,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -372,7 +363,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -382,7 +373,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, true, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -409,9 +400,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = true //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -420,7 +410,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -430,7 +420,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, true, false - bam") {
+    test("sarscov2 - fastq, index, true, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -454,9 +444,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = true //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -465,7 +454,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -476,54 +465,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram") {
-
-        config "./cram_crai.config"
-        setup {
-            run("BOWTIE2_BUILD") {
-                script "../../build/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-                    ]
-                ]
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = true //sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name
-                ).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, false - stub") {
+    test("sarscov2 - [fastq1, fastq2], index, false, false - stub") {
 
         options "-stub"
         setup {
@@ -551,9 +493,8 @@ nextflow_process {
                     ]
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = false //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -562,8 +503,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.csi[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     file(process.out.log[0][1]).name,
                     process.out.fastq,
                     process.out.versions
@@ -573,7 +513,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, true, false - stub") {
+    test("sarscov2 - fastq, index, true, false - stub") {
 
         options "-stub"
         setup {
@@ -598,9 +538,8 @@ nextflow_process {
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = [[ id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
-                input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[2] = true //save_unaligned
+                input[3] = false //sort
                 """
             }
         }
@@ -609,15 +548,14 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.csi[0][1]).name,
+                    file(process.out.aligned[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    process.out.fastq,
+                    file(process.out.fastq[0][1]).name,
                     process.out.versions
                 ).match() }
             )
         }
 
     }
-
+    
 }
