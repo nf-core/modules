@@ -1,0 +1,154 @@
+nextflow_process {
+
+    name "Test Process SHINYNGS_STATICEXPLORATORY"
+    script "../main.nf"
+    process "SHINYNGS_STATICEXPLORATORY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shinyngs"
+    tag "shinyngs/staticexploratory"
+
+    test("mouse - defaults") {
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.boxplots_png[0][1]).name,
+                    file(process.out.densities_png[0][1]).name,
+                    file(process.out.mad_png[0][1]).name,
+                    file(process.out.pca2d_png[0][1]).name,
+                    file(process.out.pca3d_png[0][1]).name,
+                    file(process.out.dendro[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    
+    test("mouse - defaults - stub") {
+        
+        options "-stub"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.boxplots_png[0][1]).name,
+                    file(process.out.densities_png[0][1]).name,
+                    file(process.out.mad_png[0][1]).name,
+                    file(process.out.pca2d_png[0][1]).name,
+                    file(process.out.pca3d_png[0][1]).name,
+                    file(process.out.dendro[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mouse - specify log") {
+
+        config './nextflow_specify_log.conf'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.boxplots_png[0][1]).name,
+                    file(process.out.densities_png[0][1]).name,
+                    file(process.out.mad_png[0][1]).name,
+                    file(process.out.pca2d_png[0][1]).name,
+                    file(process.out.pca3d_png[0][1]).name,
+                    file(process.out.dendro[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    
+    test("mouse - html") {
+
+        config './nextflow_html.conf'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.boxplots_png[0][1]).name,
+                    file(process.out.densities_png[0][1]).name,
+                    file(process.out.mad_png[0][1]).name,
+                    file(process.out.pca2d_png[0][1]).name,
+                    file(process.out.pca3d_png[0][1]).name,
+                    file(process.out.dendro[0][1]).name,
+                    path(process.out.boxplots_html[0][1]).readLines().contains('ENSMUSG00000027456","Gm37080'),
+                    path(process.out.densities_html[0][1]).readLines().contains('-1.4916353753463203,-1.3078530974016225,-1.1240708194569247,-0.94028854151222707'),
+                    path(process.out.mad_html[0][1]).readLines().contains('0,-0.74295280067699376,0.67449075947659531,-0.6744907594765952'),
+                    path(process.out.pca2d_html[0][1]).readLines().contains('SRX8042381","SRX8042382'),
+                    path(process.out.pca3d_html[0][1]).readLines().contains('SRX8042381","SRX8042382'),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}
