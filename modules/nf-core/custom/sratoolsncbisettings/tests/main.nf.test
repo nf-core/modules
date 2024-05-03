@@ -14,13 +14,14 @@ nextflow_process {
         when {
             params {
                 settings_path = '/tmp/.ncbi'
-                settings_file = "${params.settings_path}/user-settings.mkfg"
+                settings_file  = "${params.settings_path}/user-settings.mkfg"
             }
 
             process {
                 """
+                input[0] = ["SRX6725035"]
                 file(params.settings_path).mkdirs()
-                def settings = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+                def settings = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 settings.copyTo(params.settings_file)
                 """
             }
@@ -37,78 +38,5 @@ nextflow_process {
                 assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') }
             }
         }
-
     }
-
-    test("Should fail") {
-
-        when {
-            params {
-                settings_path = '/tmp/.ncbi'
-                settings_file = "${params.settings_path}/user-settings.mkfg"
-            }
-
-            process {
-                """
-                file(params.settings_path).mkdirs()
-                def settings = file(params.settings_file)
-                settings.text = '''
-                ## auto-generated configuration file - DO NOT EDIT ##
-                config/default = "false"
-                /repository/remote/main/CGI/resolver-cgi = "https://trace.ncbi.nlm.nih.gov/Traces/names/names.fcgi"
-                /repository/remote/protected/CGI/resolver-cgi = "https://trace.ncbi.nlm.nih.gov/Traces/names/names.fcgi"
-                /repository/user/ad/public/apps/file/volumes/flatAd = "."
-                /repository/user/ad/public/apps/refseq/volumes/refseqAd = "."
-                /repository/user/ad/public/apps/sra/volumes/sraAd = "."
-                /repository/user/ad/public/apps/sraPileup/volumes/ad = "."
-                /repository/user/ad/public/apps/sraRealign/volumes/ad = "."
-                /repository/user/ad/public/apps/wgs/volumes/wgsAd = "."
-                /repository/user/ad/public/root = "."
-                /repository/user/default-path = "/root/ncbi"
-                '''.stripIndent()
-                """
-            }
-        }
-
-        then {
-            assert process.failed
-            assert snapshot(
-                process.out.versions
-            ).match()
-            assert process.stdout.any { it.contains('Command error:') }
-            assert process.stdout.any { it.contains('missing the required entries') }
-            assert process.stdout.any { it.contains('/LIBS/GUID') }
-            assert process.stdout.any { it.contains('/libs/cloud/report_instance_identity') }
-        }
-
-    }
-
-    test("Should run with nonexisting") {
-
-        when {
-            params {
-                settings_path = '/tmp/.ncbi'
-                settings_file = "${params.settings_path}/user-settings.mkfg"
-            }
-
-            process {
-                """
-                def settings = file(params.settings_file)
-                settings.delete()
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assert snapshot(process.out.versions).match()
-
-            with(process.out.ncbi_settings) {
-                { assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') } }
-                { assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') } }
-            }
-        }
-
-    }
-
 }

@@ -4,8 +4,8 @@ process SEQTK_SAMPLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
-        'biocontainers/seqtk:1.3--h5bf99c6_3' }"
+        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
+        'biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
     tuple val(meta), path(reads), val(sample_size)
@@ -42,4 +42,17 @@ process SEQTK_SAMPLE {
         seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }

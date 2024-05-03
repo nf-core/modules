@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process PICARD_CROSSCHECKFINGERPRINTS"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "PICARD_CROSSCHECKFINGERPRINTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/crosscheckfingerprints"
+
+    test("homo sapiens - bam - index") {
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], //meta
+                            [
+                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
+                            ],  // input1
+                            [
+                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                            ], // input1_index
+                            [], // input2
+                            [], // input2_index
+                            file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true) // haplotype_map
+                        ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.crosscheck_metrics[0][1]).name).match("Crosscheck - bam") },
+                { assert snapshot(process.out.versions).match("Crosscheck versions - bam") }
+            )
+        }
+    }
+
+    test("homo sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], //meta
+                            [
+                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
+                            ],  // input1
+                            [
+                                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                            ], // input1_index
+                            [], // input2
+                            [], // input2_index
+                            file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true) // haplotype_map
+                        ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.crosscheck_metrics[0][1]).name).match("Crosscheck stub") },
+                { assert snapshot(process.out.versions).match("Crosscheck versions stub") }
+            )
+        }
+
+    }
+
+}

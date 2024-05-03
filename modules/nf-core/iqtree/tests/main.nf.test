@@ -1,0 +1,118 @@
+nextflow_process {
+
+    name "Test Process IQTREE"
+    script "../main.nf"
+    process "IQTREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "iqtree"
+
+    test("setoxin - basic") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref")]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.phylogeny.get(0).get(1)).exists() },
+                { assert path(process.out.mldist.get(0).get(1)).exists() },
+                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert snapshot( process.out.versions ).match("basic") }
+            )
+        }
+    }
+
+    test("setoxin - basic - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref")]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out.phylogeny,
+                                    process.out.report,
+                                    process.out.mldist,
+                                    process.out.log,
+                                    process.out.versions ).match("basic_stub")
+                }
+            )
+        }
+    }
+
+    test("setoxin - bootstrap") {
+
+        config "./bootstrap.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.phylogeny.get(0).get(1)).exists() },
+                { assert path(process.out.mldist.get(0).get(1)).exists() },
+                { assert path(process.out.bootstrap.get(0).get(1)).exists() },
+                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert snapshot( process.out.versions ).match("bootstrap") }
+            )
+        }
+    }
+
+    test("setoxin - bootstrap - stub") {
+
+        options "-stub"
+
+        config "./bootstrap.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out.phylogeny,
+                                    process.out.report,
+                                    process.out.log,
+                                    process.out.mldist,
+                                    process.out.versions,
+                                    process.out.bootstrap ).match("bootstrap_stub")
+                }
+            )
+        }
+    }
+}
