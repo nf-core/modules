@@ -5,7 +5,7 @@
 include { BWA_MEM as BWA_MEM_PRIMARY     } from '../../../modules/nf-core/bwa/mem/main'
 include { BWA_MEM as BWA_MEM_CONTAMINANT } from '../../../modules/nf-core/bwa/mem/main'
 include { BAMCMP                         } from '../../../modules/nf-core/bamcmp/main'
-inlcude { BAM_STATS_SAMTOOLS             } from '../bam_stats_samtools/main'
+include { BAM_STATS_SAMTOOLS             } from '../bam_stats_samtools/main'
 include { BAM_SORT_STATS_SAMTOOLS        } from '../bam_sort_stats_samtools/main'
 
 workflow FASTQ_ALIGN_BAMCMP_BWA {
