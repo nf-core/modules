@@ -1,0 +1,44 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_ISEC"
+    script "../main.nf"
+    process "BCFTOOLS_ISEC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/isec"
+
+    config "./nextflow.config"
+
+    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test' ], // meta map
+                    [ 
+                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)],
+                    [ 
+                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

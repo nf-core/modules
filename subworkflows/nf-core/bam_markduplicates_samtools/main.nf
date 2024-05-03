@@ -19,7 +19,7 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
     ch_versions = Channel.empty()
 
 
-    SAMTOOLS_COLLATE ( ch_bam, ch_fasta )
+    SAMTOOLS_COLLATE ( ch_bam, ch_fasta.map { [[], it] } )
     ch_versions = ch_versions.mix(SAMTOOLS_COLLATE.out.versions.first())
 
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )

@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process LEVIOSAM2_INDEX"
+    script "../main.nf"
+    process "LEVIOSAM2_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "leviosam2"
+    tag "leviosam2/index"
+    tag "gunzip"
+
+    test("index") {
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], 
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("index - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
