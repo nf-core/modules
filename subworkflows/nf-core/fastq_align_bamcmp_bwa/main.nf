@@ -64,7 +64,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat    // channel: [ val(meta), path(flagstat) ]
     idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats    // channel: [ val(meta), path(idxstats) ]
     contaminant_bam = BAMCMP.out.contamination_bam     // channel: [ val(meta), path(bam) ]
-    primary_stats = BAM_STATS_SAMTOOLS.out.stats      // channel: [ val(meta), path(stats) ]
+    primary_stats = BAM_STATS_SAMTOOLS.out.stats       // channel: [ val(meta), path(stats) ]
     primary_flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
     primary_idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
 
