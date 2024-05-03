@@ -1,0 +1,28 @@
+- name: cellrangerarc_mkfastq test_cellrangerarc_mkfastq_simple_atac
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/mkfastq -entry test_cellrangerarc_mkfastq_simple_atac -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellrangerarc/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellrangerarc
+    - cellrangerarc/mkfastq
+  files:
+    - path: output/cellrangerarc/cellranger-arc-tiny-bcl-atac-1/outs/fastq_path/fake_file.fastq.gz
+- name: cellrangerarc_mkfastq test_cellrangerarc_mkfastq_simple_gex
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/mkfastq -entry test_cellrangerarc_mkfastq_simple_gex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellrangerarc/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellrangerarc
+    - cellrangerarc/mkfastq
+  files:
+    - path: output/cellrangerarc/cellranger-arc-tiny-bcl-gex-1/outs/fastq_path/fake_file.fastq.gz
+- name: cellrangerarc_mkfastq test_cellrangerarc_mkfastq_illumina_atac
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/mkfastq -entry test_cellrangerarc_mkfastq_illumina_atac -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellrangerarc/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellrangerarc
+    - cellrangerarc/mkfastq
+  files:
+    - path: output/cellrangerarc/cellranger-arc-tiny-bcl-atac-1/outs/fastq_path/fake_file.fastq.gz
+- name: cellrangerarc_mkfastq test_cellrangerarc_mkfastq_illumina_atac_gex
+  command: nextflow run ./tests/modules/nf-core/cellrangerarc/mkfastq -entry test_cellrangerarc_mkfastq_illumina_gex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellrangerarc/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellrangerarc
+    - cellrangerarc/mkfastq
+  files:
+    - path: output/cellrangerarc/cellranger-arc-tiny-bcl-gex-1/outs/fastq_path/fake_file.fastq.gz
