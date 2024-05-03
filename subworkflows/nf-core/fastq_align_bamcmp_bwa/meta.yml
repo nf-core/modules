@@ -16,6 +16,7 @@ components:
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_stats_samtools
   - bam_sort_stats_samtools
 input:
   - ch_reads:
@@ -68,6 +69,18 @@ output:
   - idxstats:
       description: |
         File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+  - primary_stats:
+      description: |
+        File containing samtools stats output for primary alignment.
+        Structure: [ val(meta), path(stats) ]
+  - primary_flagstat:
+      description: |
+        File containing samtools flagstat output for primary alignment.
+        Structure: [ val(meta), path(flagstat) ]
+  - primary_idxstats:
+      description: |
+        File containing samtools idxstats output for primary alignment.
         Structure: [ val(meta), path(idxstats) ]
   - versions:
       description: |
