@@ -8,13 +8,13 @@ process MALTEXTRACT {
         'biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
-    path rma6
+    tuple val(meta), path(rma6)
     path taxon_list
     path ncbi_dir
 
     output:
-    path "results"      , emit: results
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("results")      , emit: results
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

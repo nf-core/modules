@@ -1,0 +1,120 @@
+nextflow_process {
+
+    name "Test Process GNU_SORT"
+    script "modules/nf-core/gnu/sort/main.nf"
+    process "GNU_SORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gnu"
+    tag "gnu/sort"
+
+    test("unsorted_genome_sort") {
+        config "./sort_simple_bed.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'genome_test'],
+                                file(params.test_data['generic']['unsorted_data']['unsorted_text']['genome_file'],
+                                checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.sorted[0][1]).name
+                                ).match("genome_sort")
+                }
+            )
+        }
+
+    }
+
+    test("unsorted_intervals_sort") {
+        config "./sort_simple_bed.config"
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'test'],
+                                file(params.test_data['generic']['unsorted_data']['unsorted_text']['intervals'],
+                                checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.sorted[0][1]).name
+                                ).match("interval_sort")
+                }
+            )
+        }
+
+    }
+
+    test("unsorted_csv_sort") {
+        config "./sort_complex.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'test'],
+                                file(params.test_data['generic']['unsorted_data']['unsorted_text']['numbers_csv'],
+                                checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.sorted[0][1]).name
+                                ).match("csv_sort")
+                }
+            )
+        }
+
+    }
+
+    test("unsorted_csv_sort_stub") {
+        config "./sort_complex.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'test'],
+                                file(params.test_data['generic']['unsorted_data']['unsorted_text']['numbers_csv'],
+                                checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}
