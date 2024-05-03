@@ -28,9 +28,6 @@ nextflow_workflow {
     test("test_fasta_newick_epang_gappa_hmmer") {
         
         when {
-            params {
-                outdir = "$outputDir"
-            }
             workflow {
                 """
                 input[0] = Channel.of(
