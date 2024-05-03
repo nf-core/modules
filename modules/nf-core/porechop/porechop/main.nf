@@ -33,4 +33,16 @@ process PORECHOP_PORECHOP {
         porechop: \$( porechop --version )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.fastq
+    gzip ${prefix}.fastq
+    touch ${prefix}.log
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        porechop: \$( porechop --version )
+    END_VERSIONS
+    """
 }

@@ -13,10 +13,20 @@ tools:
       doi: 10.1093/molbev/msaa015
       licence: ["GPL v2-or-later"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy map containing sample information
+        e.g. [ id: 'test' ]
   - alignment:
       type: file
       description: A FASTA format multiple sequence alignment file
       pattern: "*.{fasta,fas,fa,mfa}"
+  - constant_sites:
+      type: string
+      description: Number of constant sites to add,
+        see iqtree documentation for details
+        (http://www.iqtree.org/doc/Command-Reference)
 output:
   - versions:
       type: file
@@ -26,6 +36,27 @@ output:
       type: file
       description: A phylogeny in Newick format
       pattern: "*.{treefile}"
+  - bootstrap:
+      type: file
+      description: |
+        A file containing all bootstrap trees,
+        only generated if bootstrap is on
+        and the -wbt flag is passed in ext.args
+      pattern: "*.{ufboot}"
+  - report:
+      type: file
+      description: |
+        Main report file containing computational
+        results as well as a textual visualisation
+        of the final tree.
+  - mldist:
+      type: file
+      description: |
+        File containing the pairwise maximum
+        likelihood distances as a matrix.
+  - log:
+      type: file
+      description: Log file of entire run
 authors:
   - "@avantonder"
   - "@aunderwo"
