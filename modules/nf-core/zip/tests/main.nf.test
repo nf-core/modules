@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.zipped_archive.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                                  process.out.versions ).match() }
             )
         }
 
