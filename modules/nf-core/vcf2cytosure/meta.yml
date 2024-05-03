@@ -13,7 +13,7 @@ tools:
       homepage: "https://github.com/NBISweden/vcf2cytosure"
       documentation: "https://github.com/NBISweden/vcf2cytosure"
       tool_dev_url: "https://github.com/NBISweden/vcf2cytosure"
-      licence: "['MIT']"
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -53,7 +53,7 @@ input:
         VCF file with SNVs to calculate probe coverage,
         not compatible with coverage_bed
         pattern: "*.{vcf,vcf.gz}"
-  - blacklilst_bed:
+  - blacklist_bed:
       type: file
       description: Bed file with regions to exclude
       pattern: "*.bed"

@@ -1,0 +1,155 @@
+nextflow_process {
+
+    name "Test Process FASTME"
+    script "../main.nf"
+    process "FASTME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastme"
+    tag "tcoffee/seqreformat"
+    tag "famsa/guidetree"
+
+    test("setoxin - phylip - basic") {
+
+        config "./main.config"
+
+        setup {
+            run("TCOFFEE_SEQREFORMAT") {
+                script "../../tcoffee/seqreformat/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: "test" ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .map { meta, aln -> [meta, aln, []] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("setoxin - phylip - with_tree") {
+
+        config "./main.config"
+
+        setup {
+            run("TCOFFEE_SEQREFORMAT") {
+                script "../../tcoffee/seqreformat/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: "test" ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("FAMSA_GUIDETREE") {
+                script "../../famsa/guidetree/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: "test" ],
+                                file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .join(FAMSA_GUIDETREE.out.tree, by: 0)
+                    .map { meta, aln, tree -> [meta, aln, tree] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("setoxin - phylip - bootstrap") {
+
+        config "./optionals.config"
+
+        setup {
+            run("TCOFFEE_SEQREFORMAT") {
+                script "../../tcoffee/seqreformat/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id: "test" ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
+                    .map { meta, aln -> [meta, aln, []] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.nwk[0][1]).text.contains("1atx:") },
+                { assert path(process.out.matrix[0][1]).text.contains("1apf") },
+                { assert path(process.out.bootstrap[0][1]).text.contains("1atx:") },
+                { assert snapshot(path(process.out.stats[0][1]).readLines()[0..12]).match("stats_boot") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("setoxin - phylip - stub") {
+
+        config "./main.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
