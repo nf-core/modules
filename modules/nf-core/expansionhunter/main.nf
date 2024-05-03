@@ -48,8 +48,8 @@ process EXPANSIONHUNTER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.json.gz
     touch ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
