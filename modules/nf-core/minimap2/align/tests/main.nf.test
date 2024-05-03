@@ -135,6 +135,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
+                    file(process.out.csi[0][1]).name,
                     process.out.versions
                 ).match() }
             )
@@ -169,6 +170,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.paf[0][1]).name,
+                    file(process.out.csi[0][1]).name,
                     process.out.versions
                 ).match() }
             )
