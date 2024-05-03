@@ -40,7 +40,7 @@ process EXPANSIONHUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """
@@ -54,7 +54,7 @@ process EXPANSIONHUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """
