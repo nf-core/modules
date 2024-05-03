@@ -5,7 +5,7 @@ nextflow_workflow {
     workflow "BAM_VARIANT_DEMIX_BOOT_FREYJA"
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "bam_varaint_demix_boot_freyja"
+    tag "bam_variant_demix_boot_freyja"
     tag "subworkflows/bam_variant_demix_boot_freyja"
     tag "freyja"
     tag "freyja/variants"
@@ -20,7 +20,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
                 input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[2] = false
@@ -36,7 +36,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
-                                workflow.out.versions).match() },
+                                  workflow.out.versions).match() },
                 // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
@@ -65,7 +65,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
                 input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[2] = false
@@ -81,7 +81,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
-                                workflow.out.versions).match() },
+                                  workflow.out.versions).match() },
                 // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
@@ -99,7 +99,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
                 input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[2] = true
@@ -115,7 +115,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
-                                workflow.out.versions).match() },
+                                  workflow.out.versions).match() },
                 // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.barcodes.get(0)).exists() },
