@@ -37,7 +37,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
                                 workflow.out.versions).match() },
-                // All depend on a database that get's updated regurlarly
+                // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
                 { assert path(workflow.out.lineages.get(0).get(1)).getText().contains("0.025,") },
@@ -82,7 +82,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
                                 workflow.out.versions).match() },
-                // All depend on a database that get's updated regurlarly
+                // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
                 { assert path(workflow.out.lineages.get(0).get(1)).getText().contains("0.025,") },
@@ -116,7 +116,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(workflow.out.variants,
                                 workflow.out.versions).match() },
-                // All depend on a database that get's updated regurlarly
+                // All depend on a database that gets updated regularly
                 { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
                 { assert path(workflow.out.barcodes.get(0)).exists() },
                 { assert path(workflow.out.lineages_meta.get(0)).exists() },
