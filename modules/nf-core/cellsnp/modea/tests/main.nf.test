@@ -74,8 +74,13 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out).match("stub") }
-            )
+            { assert snapshot(
+                    process.out.base,
+                    process.out.sample,
+                    process.out.allele_depth,
+                    process.out.depth_coverage,
+                    process.out.depth_other).match("stub")
+            })
         }
 
     }
