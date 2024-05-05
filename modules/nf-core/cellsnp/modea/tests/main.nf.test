@@ -86,9 +86,10 @@ nextflow_process {
                     process.out.depth_coverage,
                     process.out.depth_other).match("stub")
             },
-	    { assert path(process.out.base.get(0).get(1)).exists() }
+	        { assert path(process.out.base.get(0).get(1)).exists() } )
 	
 
+        }
     }
 
 }
