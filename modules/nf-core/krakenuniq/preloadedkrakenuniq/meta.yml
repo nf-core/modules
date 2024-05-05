@@ -19,12 +19,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fastqs:
+  - sequences:
       type: file
-      description: List of input FastQ files
+      description: List of input files containing sequences. All of them must be either in FASTA or FASTQ format.
   - sequence_type:
       type: string
-      description: Format of all given sequencing files, either FASTA or FASTQ.
+      description: Format of all given sequencing files as literal string, either 'fasta' or 'fastq'.
   - db:
       type: directory
       description: KrakenUniq database

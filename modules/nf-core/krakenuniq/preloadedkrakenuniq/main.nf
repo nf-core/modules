@@ -8,7 +8,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         'biocontainers/krakenuniq:1.0.4--pl5321h19e8d03_0' }"
 
     input:
-    tuple val(meta), path(fastqs)
+    tuple val(meta), path(sequences)
     val sequence_type
     path  db
     val ram_chunk_size
@@ -52,7 +52,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo "\${result%%.*}"
         }
 
-        printf "%s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s\\n" ${sequences} | while read FASTQ; do \\
             PREFIX="\$(strip_suffix "\${FASTQ}")"
 
             krakenuniq \\
@@ -90,7 +90,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo "\${result%.}"
         }
 
-        printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s %s\\n" ${sequences} | while read FASTQ; do \\
             read -r -a FASTQ <<< "\${FASTQ}"
             PREFIX="\$(printf "%s\\n" "\${FASTQ[@]}" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' | strip_suffix)"
 
@@ -149,7 +149,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        printf "%s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s\\n" ${sequences} | while read FASTQ; do \\
             echo "\${FASTQ}"
             PREFIX="\$(strip_suffix "\${FASTQ}")"
             echo "\${PREFIX}"
@@ -202,7 +202,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s %s\\n" ${sequences} | while read FASTQ; do \\
             read -r -a FASTQ <<< "\${FASTQ}"
             echo "\${FASTQ[@]}"
             PREFIX="\$(printf "%s\\n" "\${FASTQ[@]}" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' | strip_suffix)"
