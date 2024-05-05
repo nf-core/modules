@@ -48,18 +48,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - classified_reads_fasta:
+  - classified_reads:
       type: file
       description: |
         Reads classified as belonging to any of the taxa
         in the KrakenUniq reference database.
-      pattern: "*.classified.fasta.gz"
-  - unclassified_reads_fasta:
+      pattern: "*.classified.{fastq,fasta}.gz"
+  - unclassified_reads:
       type: file
       description: |
         Reads not classified to any of the taxa
         in the KrakenUniq reference database.
-      pattern: "*.unclassified.fasta.gz"
+      pattern: "*.unclassified.{fastq,fasta}.gz"
   - classified_assignment:
       type: file
       description: |
