@@ -11,12 +11,12 @@ process CELLSNP_MODEA {
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode)
 
     output:
-    tuple val(meta), path('cellSNP.base.vcf.gz') , emit: base
-    tuple val(meta), path('cellSNP.cells.vcf.gz'), emit: cell          , optional: true
-    tuple val(meta), path('cellSNP.samples.tsv') , emit: sample
-    tuple val(meta), path('cellSNP.tag.AD.mtx')  , emit: allele_depth
-    tuple val(meta), path('cellSNP.tag.DP.mtx')  , emit: depth_coverage
-    tuple val(meta), path('cellSNP.tag.OTH.mtx') , emit: depth_other
+    tuple val(meta), path('*.base.vcf.gz') , emit: base
+    tuple val(meta), path('*.cells.vcf.gz'), emit: cell          , optional: true
+    tuple val(meta), path('*.samples.tsv') , emit: sample
+    tuple val(meta), path('*.tag.AD.mtx')  , emit: allele_depth
+    tuple val(meta), path('*.tag.DP.mtx')  , emit: depth_coverage
+    tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
     path 'versions.yml'                            , emit: versions
 
     when:
@@ -35,6 +35,13 @@ process CELLSNP_MODEA {
         --nproc $task.cpus \\
         $args
 
+    mv cellSNP.base.vcf.gz $prefix.base.vcf.gz
+    mv cellSNP.cells.vcf.gz $prefix.cells.vcf.gz
+    mv cellSNP.tag.AD.mtx $prefix.tag.AD.mtx
+    mv cellSNP.tag.DP.mtx $prefix.tag.DP.mtx
+    mv cellSNP.tag.OTH.mtx $prefix.tag.OTH.mtx
+    mv cellSNP.samples.tsv $prefix.samples.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
@@ -45,11 +52,11 @@ process CELLSNP_MODEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
-    touch $prefix/cellSNP.base.vcf.gz
-    touch $prefix/cellSNP.samples.tsv
-    touch $prefix/cellSNP.tag.AD.mtx
-    touch $prefix/cellSNP.tag.DP.mtx
-    touch $prefix/cellSNP.tag.OTH.mtx
+    touch $prefix.base.vcf.gz
+    touch $prefix.samples.tsv
+    touch $prefix.tag.AD.mtx
+    touch $prefix.tag.DP.mtx
+    touch $prefix.tag.OTH.mtx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
