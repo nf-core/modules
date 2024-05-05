@@ -35,12 +35,14 @@ process CELLSNP_MODEA {
         --nproc $task.cpus \\
         $args
 
-    mv cellSNP.base.vcf.gz $prefix.base.vcf.gz
-    mv cellSNP.cells.vcf.gz $prefix.cells.vcf.gz
-    mv cellSNP.tag.AD.mtx $prefix.tag.AD.mtx
-    mv cellSNP.tag.DP.mtx $prefix.tag.DP.mtx
-    mv cellSNP.tag.OTH.mtx $prefix.tag.OTH.mtx
-    mv cellSNP.samples.tsv $prefix.samples.tsv
+    mv cellSNP.base.vcf.gz ${prefix}.base.vcf.gz
+    if [[ "$args" == *"--genotype"* ]]; then
+        mv cellSNP.cells.vcf.gz ${prefix}.cells.vcf.gz
+    fi
+    mv cellSNP.tag.AD.mtx ${prefix}.tag.AD.mtx
+    mv cellSNP.tag.DP.mtx ${prefix}.tag.DP.mtx
+    mv cellSNP.tag.OTH.mtx ${prefix}.tag.OTH.mtx
+    mv cellSNP.samples.tsv ${prefix}.samples.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,11 +54,11 @@ process CELLSNP_MODEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
-    touch $prefix.base.vcf.gz
-    touch $prefix.samples.tsv
-    touch $prefix.tag.AD.mtx
-    touch $prefix.tag.DP.mtx
-    touch $prefix.tag.OTH.mtx
+    touch ${prefix}.base.vcf.gz
+    touch ${prefix}.samples.tsv
+    touch ${prefix}.tag.AD.mtx
+    touch ${prefix}.tag.DP.mtx
+    touch ${prefix}.tag.OTH.mtx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
