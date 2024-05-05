@@ -82,7 +82,137 @@
                 ]
             }
         ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
         "timestamp": "2023-11-21T15:38:47.810576872"
+    },
+    "unclassified_reads": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.unclassified.fasta.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T17:58:11.141421901"
+    },
+    "versions": {
+        "content": [
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T17:58:11.170870639"
+    },
+    "fastq-single": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_1.classified.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_1.unclassified.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_1.krakenuniq.classified.txt:md5,f885fa1cdbfc5460af0772219991bf6d"
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T18:23:05.006550509"
+    },
+    "fastq-paired": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.merged.classified.fastq.gz:md5,dd7651837cce63e6108e28f4f019aedb"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.merged.unclassified.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.krakenuniq.classified.txt:md5,ed5e19c7a88312cc04e483ac5f2579cd"
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T18:23:58.552757471"
+    },
+    "classified_reads": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.classified.fasta.gz:md5,e73599798195a519ba2565c3f0275b93"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T17:58:11.118692443"
     },
     "sarscov2 - Illumina FASTQ single - stub-run": {
         "content": [
@@ -167,6 +297,79 @@
                 ]
             }
         ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
         "timestamp": "2023-11-21T15:38:42.894597091"
+    },
+    "sarscov2 - FASTA": {
+        "content": [
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T17:34:48.097270291"
+    },
+    "classified": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.krakenuniq.classified.txt:md5,8aafacd89a6aac98aaf512df0a7493d1"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T17:58:11.151787536"
+    },
+    "fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.classified.fasta.gz:md5,e73599798195a519ba2565c3f0275b93"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.unclassified.fasta.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.krakenuniq.classified.txt:md5,8aafacd89a6aac98aaf512df0a7493d1"
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T18:22:11.5007558"
     }
 }

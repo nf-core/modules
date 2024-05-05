@@ -9,6 +9,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     input:
     tuple val(meta), path(fastqs)
+    val sequence_type
     path  db
     val ram_chunk_size
     val save_output_reads
@@ -16,8 +17,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     val save_output
 
     output:
-    tuple val(meta), path('*.classified.fasta.gz')      , optional:true, emit: classified_reads_fasta
-    tuple val(meta), path('*.unclassified.fasta.gz')    , optional:true, emit: unclassified_reads_fasta
+    tuple val(meta), path("*.classified.${sequence_type}.gz")      , optional:true, emit: classified_reads
+    tuple val(meta), path("*.unclassified.${sequence_type}.gz")    , optional:true, emit: unclassified_reads
     tuple val(meta), path('*.krakenuniq.classified.txt'), optional:true, emit: classified_assignment
     tuple val(meta), path('*.krakenuniq.report.txt')                   , emit: report
     path "versions.yml"                                                , emit: versions
@@ -29,13 +30,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
-    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
+    def classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
+    def unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
+    def classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
+    def unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
+    def compress_reads_command = save_output_reads ? "gzip --no-name *.${sequence_type}" : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -118,8 +119,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
+    def classified   = meta.single_end ? '"\${PREFIX}.classified.${sequence_type}"'   : '"\${PREFIX}.merged.classified.${sequence_type}"'
+    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.${sequence_type}"' : '"\${PREFIX}.merged.unclassified.${sequence_type}"'
     def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
     def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
@@ -165,8 +166,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
             create_file "\${PREFIX}.krakenuniq.classified.txt"
             create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.classified.fasta.gz"
-            create_gzip_file "\${PREFIX}.unclassified.fasta.gz"
+            create_gzip_file "\${PREFIX}.classified.${sequence_type}.gz"
+            create_gzip_file "\${PREFIX}.unclassified.${sequence_type}.gz"
         done
 
         echo $compress_reads_command
@@ -220,8 +221,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
             create_file "\${PREFIX}.krakenuniq.classified.txt"
             create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.merged.classified.fasta.gz"
-            create_gzip_file "\${PREFIX}.merged.unclassified.fasta.gz"
+            create_gzip_file "\${PREFIX}.merged.classified.${sequence_type}.gz"
+            create_gzip_file "\${PREFIX}.merged.unclassified.${sequence_type}.gz"
         done
 
         echo $compress_reads_command

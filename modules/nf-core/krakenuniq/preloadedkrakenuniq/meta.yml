@@ -22,6 +22,9 @@ input:
   - fastqs:
       type: file
       description: List of input FastQ files
+  - sequence_type:
+      type: string
+      description: Format of all given sequencing files, either FASTA or FASTQ.
   - db:
       type: directory
       description: KrakenUniq database
