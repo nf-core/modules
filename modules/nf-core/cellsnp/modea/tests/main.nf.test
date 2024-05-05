@@ -42,11 +42,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-	            { assert path(process.out.base.get(0).get(1)).exists() },
-                { assert path(process.out.sample.get(0).get(1)).exists() },
-                { assert path(process.out.allele_depth.get(0).get(1)).exists() },
-                { assert path(process.out.depth_coverage.get(0).get(1)).exists() },
-                { assert path(process.out.depth_other.get(0).get(1)).exists() }           
+	        { assert path(process.out.base.get(0).get(1)).exists() },
+		{ assert snapshot(
+			process.out.sample,
+			process.out.allele_depth,
+			process.out.depth_coverage,
+			process.out.depth_other).match()
+		}
+                //{ assert path(process.out.sample.get(0).get(1)).exists() },
+                //{ assert path(process.out.allele_depth.get(0).get(1)).exists() },
+                //{ assert path(process.out.depth_coverage.get(0).get(1)).exists() },
+                //{ assert path(process.out.depth_other.get(0).get(1)).exists() }           
 	    )
         }
 
@@ -75,13 +81,13 @@ nextflow_process {
             assertAll(
             { assert process.success },
             { assert snapshot(
-                    process.out.base,
                     process.out.sample,
                     process.out.allele_depth,
                     process.out.depth_coverage,
                     process.out.depth_other).match("stub")
-            })
-        }
+            },
+	    { assert path(process.out.base.get(0).get(1)).exists() }
+	
 
     }
 
