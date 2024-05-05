@@ -36,7 +36,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? "gzip --no-name *.${sequence_type}" : ''
+    def compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -125,7 +125,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
+    def compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
@@ -170,7 +170,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             create_gzip_file "\${PREFIX}.unclassified.${sequence_type}.gz"
         done
 
-        echo $compress_reads_command
+        echo "$compress_reads_command"
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -225,7 +225,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             create_gzip_file "\${PREFIX}.merged.unclassified.${sequence_type}.gz"
         done
 
-        echo $compress_reads_command
+        echo "$compress_reads_command"
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
