@@ -1,94 +1,5 @@
 {
-    "sarscov2 - Illumina FASTQ paired-end - stub-run": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ],
-                "classified_assignment": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "classified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "report": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "unclassified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2023-11-21T15:38:47.810576872"
-    },
-    "unclassified_reads": {
+    "fastq-single-stub": {
         "content": [
             [
                 [
@@ -96,18 +7,27 @@
                         "id": "test",
                         "single_end": true
                     },
-                    "genome.unclassified.fasta.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    "test_1.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-05T17:58:11.141421901"
-    },
-    "versions": {
-        "content": [
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_1.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
             [
                 "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
             ]
@@ -116,7 +36,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-05-05T17:58:11.170870639"
+        "timestamp": "2024-05-05T20:06:12.429642913"
     },
     "fastq-single": {
         "content": [
@@ -196,143 +116,6 @@
         },
         "timestamp": "2024-05-05T18:23:58.552757471"
     },
-    "classified_reads": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "genome.classified.fasta.gz:md5,e73599798195a519ba2565c3f0275b93"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-05T17:58:11.118692443"
-    },
-    "sarscov2 - Illumina FASTQ single - stub-run": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ],
-                "classified_assignment": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "classified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "report": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "unclassified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2023-11-21T15:38:42.894597091"
-    },
-    "sarscov2 - FASTA": {
-        "content": [
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-05T17:34:48.097270291"
-    },
-    "classified": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "genome.krakenuniq.classified.txt:md5,8aafacd89a6aac98aaf512df0a7493d1"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-05T17:58:11.151787536"
-    },
     "fasta": {
         "content": [
             [
@@ -371,5 +154,83 @@
             "nextflow": "23.10.1"
         },
         "timestamp": "2024-05-05T18:22:11.5007558"
+    },
+    "fasta-stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.classified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.unclassified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "genome.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T20:06:04.61914063"
+    },
+    "fastq-paired-stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.merged.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.merged.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-05T20:06:20.262529457"
     }
 }
