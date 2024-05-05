@@ -17,11 +17,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     val save_output
 
     output:
-    tuple val(meta), path("*.classified.${sequence_type}.gz")      , optional:true, emit: classified_reads
-    tuple val(meta), path("*.unclassified.${sequence_type}.gz")    , optional:true, emit: unclassified_reads
-    tuple val(meta), path('*.krakenuniq.classified.txt'), optional:true, emit: classified_assignment
-    tuple val(meta), path('*.krakenuniq.report.txt')                   , emit: report
-    path "versions.yml"                                                , emit: versions
+    tuple val(meta), path("*.classified.${sequence_type}.gz")  , optional:true, emit: classified_reads
+    tuple val(meta), path("*.unclassified.${sequence_type}.gz"), optional:true, emit: unclassified_reads
+    tuple val(meta), path('*.krakenuniq.classified.txt')       , optional:true, emit: classified_assignment
+    tuple val(meta), path('*.krakenuniq.report.txt')           , emit: report
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
