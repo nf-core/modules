@@ -33,9 +33,7 @@ nextflow_process {
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                                     bai,
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
-                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
-                                    []
-                                    ]}
+                                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true)                                    ]}
                 """
             }
         }
@@ -67,8 +65,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                     [],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
-                    []
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true)
                     ]
                 """
             }
