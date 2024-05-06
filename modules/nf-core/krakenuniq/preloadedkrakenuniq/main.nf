@@ -32,13 +32,13 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
-    def unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
-    def classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
-    def unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
+    classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
+    unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
+    classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
+    unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
+    compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -118,16 +118,18 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     }
 
     stub:
+    assert sequence_type in ['fasta', 'fastq']
+
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
-    def unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
-    def classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
-    def unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
+    classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
+    unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
+    classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
+    unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
+    compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
