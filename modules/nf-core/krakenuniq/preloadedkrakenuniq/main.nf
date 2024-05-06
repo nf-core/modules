@@ -27,6 +27,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     task.ext.when == null || task.ext.when
 
     script:
+    assert sequence_type in ['fasta', 'fastq']
+
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
