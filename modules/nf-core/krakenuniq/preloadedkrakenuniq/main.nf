@@ -10,7 +10,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     input:
     tuple val(meta), path(sequences)
     val sequence_type
-    path  db
+    path db
     val ram_chunk_size
     val save_output_reads
     val report_file
