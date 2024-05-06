@@ -15,11 +15,11 @@ nextflow_process {
             params {
                 settings_path = '/tmp/.ncbi'
                 settings_file  = "${params.settings_path}/user-settings.mkfg"
-                outdir        = "$outputDir"
             }
 
             process {
                 """
+                input[0] = ["SRX6725035"]
                 file(params.settings_path).mkdirs()
                 def settings = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 settings.copyTo(params.settings_file)

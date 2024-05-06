@@ -32,7 +32,7 @@ workflow test_shapeit5_ligate {
     phase_input = Channel.of([[ id:'NA12878_1X']])
                         .combine(BCFTOOLS_VIEW.out.vcf.collect().map{it[1]})
                         .combine(BCFTOOLS_INDEX.out.csi.collect().map{it[1]})
-                        .combine(sample).view()
+                        .combine(sample)
                         .combine(region)
                         .map{ meta, vcf, csi, sample, region ->
                             [meta + [region: region.replace(":","_")],
@@ -43,7 +43,6 @@ workflow test_shapeit5_ligate {
     
     phased_variant = SHAPEIT5_PHASECOMMON.output.phased_variant
                         .map{ meta, vcf -> [meta.subMap(["id"]), vcf]}
-                        .view()
 
     BCFTOOLS_INDEX2 ( phased_variant )
 
@@ -55,6 +54,5 @@ workflow test_shapeit5_ligate {
                                 a.getName() <=> b.getName()},
                             csi]}
 
-    ligate_input.view()
     SHAPEIT5_LIGATE ( ligate_input )
 }

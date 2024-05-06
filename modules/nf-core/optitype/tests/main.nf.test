@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process OPTITYPE"
+    script "../main.nf"
+    process "OPTITYPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "optitype"
+
+    test("hla - bam") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.hla_type[0][1])
+                    .readLines()[1]
+                    .toString()
+                    // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
+                    .split('\t')[3..7])
+                    .match("bam_hla_type") },
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
+            )
+        }
+    }
+
+    test("hla - bam - cbc") {
+        config "./optitype_cbc.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.hla_type[0][1])
+                    .readLines()[1]
+                    .toString()
+                    // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
+                    .split('\t')[3..7])
+                    .match("bam_cbc_hla_type") },
+                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
+                { assert snapshot(process.out.versions).match("bam_cbc_versions") }
+            )
+        }
+    }
+
+}
