@@ -32,9 +32,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:true],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                    ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = UNTAR.out.untar.map { it[1] }
@@ -51,9 +49,9 @@ nextflow_process {
                 { assert process.success },
                 // Report contains a timestamp.
                 { assert file(process.out.report.get(0).get(1)).name == 'genome.krakenuniq.report.txt' },
+                { assert file(process.out.unclassified_reads.get(0).get(1)).name == 'genome.unclassified.fasta.gz' },
                 { assert snapshot(
                     process.out.classified_reads,
-                    process.out.unclassified_reads,
                     process.out.classified_assignment,
                     process.out.versions
                 ).match('fasta') },
@@ -87,7 +85,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 // Report contains a timestamp.
-                { assert file(process.out.report.get(0).get(1)).name == 'test.krakenuniq.report.txt' },
+                { assert file(process.out.report.get(0).get(1)).name == 'test_interleaved.krakenuniq.report.txt' },
                 { assert snapshot(
                     process.out.classified_reads,
                     process.out.unclassified_reads,
@@ -128,9 +126,9 @@ nextflow_process {
                 { assert process.success },
                 // Report contains a timestamp.
                 { assert file(process.out.report.get(0).get(1)).name == 'test.krakenuniq.report.txt' },
+                { assert file(process.out.unclassified_reads.get(0).get(1)).name == 'test.merged.unclassified.fastq.gz' },
                 { assert snapshot(
                     process.out.classified_reads,
-                    process.out.unclassified_reads,
                     process.out.classified_assignment,
                     process.out.versions
                 ).match('fastq-paired') },
@@ -150,7 +148,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:true],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = UNTAR.out.untar.map { it[1] }
@@ -167,6 +165,7 @@ nextflow_process {
                 { assert process.success },
                 // Report contains a timestamp.
                 { assert file(process.out.report.get(0).get(1)).name == 'genome.krakenuniq.report.txt' },
+                { assert file(process.out.unclassified_reads.get(0).get(1)).name == 'genome.unclassified.fasta.gz' },
                 { assert snapshot(
                     process.out.classified_reads,
                     process.out.unclassified_reads,
@@ -205,7 +204,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 // Report contains a timestamp.
-                { assert file(process.out.report.get(0).get(1)).name == 'test.krakenuniq.report.txt' },
+                { assert file(process.out.report.get(0).get(1)).name == 'test_interleaved.krakenuniq.report.txt' },
                 { assert snapshot(
                     process.out.classified_reads,
                     process.out.unclassified_reads,
