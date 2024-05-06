@@ -56,11 +56,11 @@
                         "id": "test"
                     },
                     [
+                        "##FILTER=<ID=MaxMQ0Frac,Description=\"For a small variant (<1000 base), the fraction of reads with MAPQ0 around either breakend exceeds 0.4\">",
+                        "##ALT=<ID=INV,Description=\"Inversion\">",
                         "##ALT=<ID=DEL,Description=\"Deletion\">",
                         "##ALT=<ID=INS,Description=\"Insertion\">",
-                        "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
-                        "##cmdline=/usr/local/bin/configManta.py --tumorBam test2.paired_end.recalibrated.sorted.cram --reference genome.fasta --runDir manta",
-                        "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\ttumour"
+                        "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">"
                     ]
                 ]
             ],
@@ -80,6 +80,6 @@
             "nf-test": "0.8.4",
             "nextflow": "24.03.0"
         },
-        "timestamp": "2024-05-06T10:33:32.189645014"
+        "timestamp": "2024-05-06T13:34:11.206457972"
     }
 }

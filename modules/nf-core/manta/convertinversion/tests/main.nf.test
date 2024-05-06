@@ -55,7 +55,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : path(it).linesGzip[-5..-1] } },
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : path(it).linesGzip[-7..-3] } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.versions
                 ).match() }
