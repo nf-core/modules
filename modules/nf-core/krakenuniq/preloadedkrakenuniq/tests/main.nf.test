@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'krakenuniq'],
-                    file('https://github.com/jfy133/nf-core-test-datasets/raw/modules/data/genomics/sarscov2/genome/db/krakenuniq.tar.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -33,7 +33,7 @@ nextflow_process {
                 input[0] = [
                     [id:'test', single_end:true],
                     [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'fasta'
@@ -71,9 +71,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:true],
-                    [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                    ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = 'fastq'
                 input[2] = UNTAR.out.untar.map { it[1] }
@@ -89,7 +87,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 // Report contains a timestamp.
-                { assert file(process.out.report.get(0).get(1)).name == 'test_1.krakenuniq.report.txt' },
+                { assert file(process.out.report.get(0).get(1)).name == 'test.krakenuniq.report.txt' },
                 { assert snapshot(
                     process.out.classified_reads,
                     process.out.unclassified_reads,
@@ -111,8 +109,8 @@ nextflow_process {
                 input[0] = [
                     [id:'test', single_end:false],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'fastq'
@@ -152,9 +150,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:true],
-                    [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
-                    ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = UNTAR.out.untar.map { it[1] }
@@ -193,9 +189,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:true],
-                    [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                    ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = 'fastq'
                 input[2] = UNTAR.out.untar.map { it[1] }
@@ -211,7 +205,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 // Report contains a timestamp.
-                { assert file(process.out.report.get(0).get(1)).name == 'test_1.krakenuniq.report.txt' },
+                { assert file(process.out.report.get(0).get(1)).name == 'test.krakenuniq.report.txt' },
                 { assert snapshot(
                     process.out.classified_reads,
                     process.out.unclassified_reads,
@@ -235,8 +229,8 @@ nextflow_process {
                 input[0] = [
                     [id:'test', single_end:false],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'fastq'
