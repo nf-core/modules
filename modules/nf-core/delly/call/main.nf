@@ -9,8 +9,8 @@ process DELLY_CALL {
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
-    path fasta
-    path fai
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
@@ -55,7 +55,7 @@ process DELLY_CALL {
     def suffix = task.ext.suffix ?: "bcf"
 
     def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf && touch ${prefix}.bcf.csi" : ""
-    def vcf_output = suffix == "vcf" ? "touch ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
+    def vcf_output = suffix == "vcf" ? "echo '' | gzip > ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
 
     """
     ${bcf_output}
