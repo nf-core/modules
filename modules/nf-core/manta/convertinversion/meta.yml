@@ -22,6 +22,15 @@ input:
       type: file
       description: VCF file produces by Manta
       pattern: "*.vcf.gz"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing fasta information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.{fasta,fa,fna}"
 output:
   - meta:
       type: map
