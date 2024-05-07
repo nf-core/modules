@@ -2,18 +2,17 @@ process VGAN_HAPLOCART {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::vgan=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vgan:1.0.1--h9ee0642_0':
-        'quay.io/biocontainers/vgan:1.0.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vgan:3.0.0--h9ee0642_0':
+        'biocontainers/vgan:3.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)
-    path(hc_files)
     val(is_interleaved)
 
     output:
-    tuple val(meta), path("*[!posterior].txt") , emit: txt
+    tuple val(meta), path("*.output.txt") , emit: txt
     tuple val(meta), path("*.posterior.txt")   , emit: posterior
     path "versions.yml"                        , emit: versions
 
@@ -23,7 +22,7 @@ process VGAN_HAPLOCART {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_args = meta.single_end ? "-fq1 ${reads}" : "-fq1 ${reads[0]} -fq2 ${reads[1]}"
+    def reads_args = (meta.single_end || is_interleaved ) ? "-fq1 ${reads}" : "-fq1 ${reads[0]} -fq2 ${reads[1]}"
     def interleaved = is_interleaved ? "-i" : ""
     """
     vgan haplocart \\
@@ -31,8 +30,7 @@ process VGAN_HAPLOCART {
         -t $task.cpus \\
         $reads_args \\
         $interleaved \\
-        -o ${prefix}.txt \\
-        --hc-files ${hc_files} \\
+        -o ${prefix}.output.txt \\
         -pf ${prefix}.posterior.txt
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,9 +42,8 @@ process VGAN_HAPLOCART {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
+    touch ${prefix}.output.txt
     touch ${prefix}.posterior.txt
-    touch versions.yml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

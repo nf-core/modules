@@ -1,0 +1,59 @@
+// nf-core modules test vgan/haplocart
+nextflow_process {
+
+    name "Test Process VGAN_HAPLOCART"
+    script "../main.nf"
+    process "VGAN_HAPLOCART"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vgan"
+    tag "vgan/haplocart"
+
+   test("rCRS") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true) ]
+                           ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("rCRS - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true) ]
+                           ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

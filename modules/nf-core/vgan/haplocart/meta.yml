@@ -10,28 +10,21 @@ keywords:
   - haplogroup
   - variation graph
 tools:
-  - "vgan":
+  - vgan:
       description: "Suite of tools for pangenomics built using vg"
       homepage: "https://github.com/grenaud/vgan"
       documentation: "https://github.com/grenaud/vgan"
       tool_dev_url: "https://github.com/grenaud/vgan"
-      doi: ""
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 
 input:
   - meta:
       type: map
       description: Groovy Map containing reference information.
-
   - reads:
       type: file
       description: Input file
       pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
-
-  - hcfiles:
-      type: directory
-      description: Requisite graph files for HaploCart. Please see https://github.com/grenaud/vgan for instructions on how to download them.
-
   - is_interleaved:
       type: boolean
       description: Specified when specifying interleaved paired-end fastq
@@ -40,11 +33,6 @@ output:
   - meta:
       type: map
       description: Groovy Map containing reference information.
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
       type: file
       description: HaploCart output file with predicted mtDNA haplogroup
@@ -53,6 +41,10 @@ output:
       type: file
       description: HaploCart posterior output file
       pattern: "*.{posterior.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@JoshuaDanielRubin"
