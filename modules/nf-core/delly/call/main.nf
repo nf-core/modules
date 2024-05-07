@@ -4,8 +4,8 @@ process DELLY_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/delly:1.2.6--hb7e2ac5_0':
-        'biocontainers/delly:1.2.6--hb7e2ac5_0' }"
+        'https://depot.galaxyproject.org/singularity/delly:1.2.6--hb7e2ac5_1' :
+        'biocontainers/delly:1.2.6--hb7e2ac5_1' }"
 
     input:
     tuple val(meta), path(input_1), path(input_1_idx), path(input_ctrl), path(input_ctrl_idx), path(vcf), path(vcf_index), path(exclude_bed)
@@ -57,7 +57,7 @@ process DELLY_CALL {
     def suffix = task.ext.suffix ?: "bcf"
 
     def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf && touch ${prefix}.bcf.csi" : ""
-    def vcf_output = suffix == "vcf" ? "touch ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
+    def vcf_output = suffix == "vcf" ? "echo '' | gzip > ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
 
     """
     ${bcf_output}

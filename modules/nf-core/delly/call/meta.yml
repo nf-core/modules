@@ -66,8 +66,8 @@ input:
   - meta2:
       type: map
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test_reference' ]
+        Groovy Map containing fasta information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: The reference fasta file
@@ -75,8 +75,8 @@ input:
   - meta3:
       type: map
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test_reference' ]
+        Groovy Map containing fasta index information
+        e.g. [ id:'test', single_end:false ]
   - fai:
       type: file
       description: Index of reference fasta file to identify split-reads
