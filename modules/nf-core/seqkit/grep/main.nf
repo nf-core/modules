@@ -48,7 +48,7 @@ process SEQKIT_GREP {
     def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
 
     """
-    touch ${prefix}.${suffix}.gz
+    echo "" | gzip > ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
