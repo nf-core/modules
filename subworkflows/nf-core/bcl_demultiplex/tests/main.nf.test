@@ -35,7 +35,7 @@ nextflow_workflow {
                     workflow.out.reports,
                     workflow.out.versions,
                     workflow.out.fastq,
-                    file(workflow.out.logs.get(0).get(1)).list().sort(),
+                    workflow.out.stats,
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
