@@ -1,5 +1,5 @@
 name: "fastq_extract_kraken_krakentools"
-description: Extract classified Kraken2 output by taxonomic id
+description: Extract classified Kraken2 reads by taxonomic id
 keywords:
   - classify
   - metagenomics
@@ -8,6 +8,7 @@ keywords:
   - kraken2
   - krakentools
   - extract
+  - extractreads
 components:
   - kraken2/kraken2
   - krakentools/extractkrakenreads
@@ -26,17 +27,21 @@ input:
       type: directory
       description: Kraken2 database
   - val_taxid:
-      type: string
-      description: A list of taxid separated by spaces
+      description: A string of one or more of taxid separated by spaces
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
+  - report:
+      type: file
+      description: |
+        Kraken2 report containing stats about classified
+        and not classifed reads.
   - extracted_kraken2_reads:
       type: file
-      description: Reads assigned to a taxid list.
+      description: FASTQ or FASTA file of just reads assigned to the taxid list.  
       pattern: "*.{fastq,fasta}"
   - versions:
       type: file
