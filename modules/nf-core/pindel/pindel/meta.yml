@@ -10,7 +10,6 @@ tools:
       homepage: "https://gmt.genome.wustl.edu/packages/pindel/"
       documentation: https://gmt.genome.wustl.edu/packages/pindel/user-manual.html
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
   - fai:
       type: file
       description: Input reference genome fasta index file
-
 output:
   - meta:
       type: map
@@ -86,6 +84,7 @@ output:
       type: file
       description: File containing tandem duplications
       pattern: "*_{TD}"
-
 authors:
+  - "@marrip"
+maintainers:
   - "@marrip"

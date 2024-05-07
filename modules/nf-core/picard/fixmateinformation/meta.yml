@@ -2,6 +2,9 @@ name: picard_fixmateinformation
 description: Verify mate-pair information between mates and fix if needed
 keywords:
   - mate-pair
+  - picard
+  - bam
+  - sam
 tools:
   - picard:
       description: |
@@ -11,7 +14,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036713471-FixMateInformation-Picard-
       tool_dev_url: https://github.com/broadinstitute/picard
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +24,6 @@ input:
       type: file
       description: BAM file
       pattern: "*.{bam}"
-
 output:
   - meta:
       type: map
@@ -37,8 +38,11 @@ output:
       type: file
       description: mate-pair verified BAM file
       pattern: "*.{bam}"
-
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
   - "@hseabolt"

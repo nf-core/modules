@@ -2,7 +2,7 @@ process SNPEFF_SNPEFF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snpeff=5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.1--hdfd78af_2' :
         'biocontainers/snpeff:5.1--hdfd78af_2' }"
@@ -10,14 +10,14 @@ process SNPEFF_SNPEFF {
     input:
     tuple val(meta), path(vcf)
     val   db
-    path  cache
+    tuple val(meta2), path(cache)
 
     output:
-    tuple val(meta), path("*.ann.vcf"), emit: vcf
-    path "*.csv"                      , emit: report
-    path "*.html"                     , emit: summary_html
-    path "*.genes.txt"                , emit: genes_txt
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.ann.vcf"),   emit: vcf
+    tuple val(meta), path("*.csv"),       emit: report
+    tuple val(meta), path("*.html"),      emit: summary_html
+    tuple val(meta), path("*.genes.txt"), emit: genes_txt
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

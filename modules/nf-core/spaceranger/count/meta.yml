@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_count"
-description: Module to use the 10x Spaceranger pipeline to proces 10x spatial transcriptomics data
+description: Module to use the 10x Space Ranger pipeline to process 10x spatial transcriptomics data
 keywords:
   - align
   - count
@@ -20,8 +20,8 @@ tools:
       homepage: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       documentation: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       tool_dev_url: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
-      licence: "10x Genomics EULA"
-
+      licence:
+        - "10x Genomics EULA"
 input:
   - meta:
       type: map
@@ -70,12 +70,11 @@ input:
       pattern: "*.json"
   - reference:
       type: directory
-      description: Folder containing all the reference indices needed by Spaceranger
+      description: Folder containing all the reference indices needed by Space Ranger
   - probeset:
       type: file
       description: OPTIONAL - Probe set specification.
       pattern: "*.csv"
-
 output:
   - meta:
       type: map
@@ -84,12 +83,13 @@ output:
         e.g. [ id:'test', single_end:false ]
   - outs:
       type: file
-      description: Files containing the outputs of Cell Ranger, see official 10X Genomics documentation for a complete list
-      pattern: "${meta.id}/outs/*"
+      description: Files containing the outputs of Space Ranger, see official 10X Genomics documentation for a complete list
+      pattern: "outs/*"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@grst"
+maintainers:
   - "@grst"

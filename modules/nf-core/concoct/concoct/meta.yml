@@ -18,7 +18,6 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: "['FreeBSD']"
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -68,6 +66,7 @@ output:
       type: file
       description: Transformed PCA compontent values
       pattern: "*_PCA_transformed_data_gt1000.csv"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

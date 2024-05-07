@@ -2,7 +2,7 @@ process SVTYPER_SVTYPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::svtyper=0.7.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtyper:0.7.0--py27h24bf2e0_1':
         'biocontainers/svtyper:0.7.0--py27h24bf2e0_1' }"

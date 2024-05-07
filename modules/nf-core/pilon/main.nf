@@ -2,7 +2,7 @@ process PILON {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::pilon=1.24"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pilon:1.24--hdfd78af_0':
         'biocontainers/pilon:1.24--hdfd78af_0' }"

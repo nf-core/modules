@@ -6,13 +6,14 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
   - bowtie2/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - meta:
       type: map
@@ -36,7 +37,7 @@ input:
   - sort_bam:
       type: boolean
       description: |
-        Save reads that do not map to the reference (true) or discard them (false)
+        Use samtools sort (true) or samtools view (false)
       default: false
   - ch_fasta:
       type: file
@@ -60,6 +61,7 @@ output:
       type: file
       description: Alignment log
       pattern: "*.log"
-# TODO Add samtools outputs
 authors:
+  - "@drpatelh"
+maintainers:
   - "@drpatelh"

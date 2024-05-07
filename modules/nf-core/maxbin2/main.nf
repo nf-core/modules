@@ -2,7 +2,7 @@ process MAXBIN2 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::maxbin2=2.2.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/maxbin2:2.2.7--he1b5a44_2' :
         'biocontainers/maxbin2:2.2.7--he1b5a44_2' }"

@@ -1,6 +1,7 @@
 - name: fastq_download_prefetch_fasterqdump_sratools test_fastq_download_prefetch_fasterqdump_sratools_single_end
   command: nextflow run ./tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools -entry test_fastq_download_prefetch_fasterqdump_sratools_single_end -c ./tests/config/nextflow.config
   tags:
+    - custom
     - custom/sratoolsncbisettings
     - sratools
     - sratools/prefetch
@@ -16,6 +17,7 @@
 - name: fastq_download_prefetch_fasterqdump_sratools test_fastq_download_prefetch_fasterqdump_sratools_paired_end
   command: nextflow run ./tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools -entry test_fastq_download_prefetch_fasterqdump_sratools_paired_end -c ./tests/config/nextflow.config
   tags:
+    - custom
     - custom/sratoolsncbisettings
     - sratools
     - sratools/prefetch

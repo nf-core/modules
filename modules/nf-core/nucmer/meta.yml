@@ -11,7 +11,6 @@ tools:
       tool_dev_url: http://mummer.sourceforge.net/
       doi: "10.1186/gb-2004-5-2-r12"
       licence: ["The Artistic License"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: FASTA file of the query sequence
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -44,7 +42,9 @@ output:
       type: file
       description: NUCmer1.1 coords output file
       pattern: "*.{coords}"
-
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"

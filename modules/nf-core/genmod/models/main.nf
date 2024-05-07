@@ -2,10 +2,10 @@ process GENMOD_MODELS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::genmod=3.7.4 conda-forge::python=3.4.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
-        'biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/genmod:3.8.2--pyhdfd78af_0':
+        'biocontainers/genmod:3.8.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_vcf)

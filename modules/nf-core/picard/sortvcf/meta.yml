@@ -10,7 +10,6 @@ tools:
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/command-line-overview.html#SortVcf
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -39,7 +38,6 @@ input:
       type: file
       description: Reference genome dictionary file
       pattern: "*.{dict}"
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
       type: file
       description: Sorted VCF file
       pattern: "*.{vcf}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

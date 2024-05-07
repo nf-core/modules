@@ -3,6 +3,7 @@ description: write your description here
 keywords:
   - classify
   - metagenomics
+  - taxonomic profiling
 tools:
   - kaiju:
       description: Fast and sensitive taxonomic classification for metagenomics
@@ -11,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
-
 input:
   - meta:
       type: map
@@ -27,7 +27,6 @@ input:
       description: |
         Taxonomic rank to display in report
         pattern: "phylum|class|order|family|genus|species"
-
 output:
   - meta:
       type: map
@@ -43,8 +42,11 @@ output:
       description: |
         Summary table for a given taxonomic rank
       pattern: "*.{tsv}"
-
 authors:
+  - "@sofstam"
+  - "@talnor"
+  - "@jfy133"
+maintainers:
   - "@sofstam"
   - "@talnor"
   - "@jfy133"
