@@ -18,7 +18,7 @@ process BUSCO_GENERATEPLOT {
 
     script:
     def args    = task.ext.args     ?: ''
-    def prefix  = task.ext.prefix   ?: "busco_figure"
+    def prefix  = task.ext.prefix   ?: 'busco_figure'
     """
     generate_plot.py \\
         $args \\
@@ -33,7 +33,7 @@ process BUSCO_GENERATEPLOT {
     """
 
     stub:
-    def prefix  = task.ext.prefix   ?: "busco_figure"
+    def prefix  = task.ext.prefix   ?: 'busco_figure'
     """
     touch ${prefix}.png
 
