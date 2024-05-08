@@ -4,8 +4,8 @@ process ANNOTSV_INSTALLANNOTATIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annotsv:3.3.6--py311hdfd78af_0' :
-        'biocontainers/annotsv:3.3.6--py311hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/annotsv:3.4.1--py312hdfd78af_1' :
+        'biocontainers/annotsv:3.4.1--py312hdfd78af_1' }"
 
     output:
     path "AnnotSV_annotations", emit: annotations
@@ -27,6 +27,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
     stub:
     """
     mkdir AnnotSV_annotations
+    touch AnnotSV_annotations/stub_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
