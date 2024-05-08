@@ -17,9 +17,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['pacbio']['lima'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.bam', checkIfExists: true),
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true),
                 """
             }
         }

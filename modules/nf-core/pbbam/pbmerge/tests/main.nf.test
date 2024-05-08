@@ -18,8 +18,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['pacbio']['cluster']   , checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['pacbio']['singletons'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam'           , checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam', checkIfExists: true)
                     ]
                 ]
                 """
