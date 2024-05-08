@@ -4,8 +4,8 @@ process ANNOTSV_ANNOTSV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annotsv:3.3.6--py311hdfd78af_0' :
-        'biocontainers/annotsv:3.3.6--py311hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/annotsv:3.4.1--py312hdfd78af_0' :
+        'biocontainers/annotsv:3.4.1--py312hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)
