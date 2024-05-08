@@ -35,7 +35,25 @@ process SEQKIT_REPLACE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "fastq"
+    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/) {
+        extension = "fasta"
+    }
+    def endswith = task.ext.suffix ?: "${extension}.gz"
+
+    """
+    echo "" | gzip > ${prefix}.${endswith}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+    END_VERSIONS
+    """
+
 }

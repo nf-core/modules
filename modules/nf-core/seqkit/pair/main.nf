@@ -34,7 +34,20 @@ process SEQKIT_PAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_1.paired.fastq.gz
+    echo "" | gzip > ${prefix}_2.paired.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+    END_VERSIONS
+    """
+
 }
