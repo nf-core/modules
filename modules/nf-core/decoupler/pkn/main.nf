@@ -9,7 +9,6 @@ process DECOUPLER_PKN {
     tuple val(meta), val(resource), val(organism)
 
     output:
-
     tuple val(meta), path("*.csv") , emit: network
     path "versions.yml"            , emit: versions
 
