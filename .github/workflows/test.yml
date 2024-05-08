@@ -1,7 +1,5 @@
 name: Run tests
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
   merge_group:
@@ -232,8 +230,6 @@ jobs:
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
-          - profile: conda
-            tags: annotsv
           - profile: conda
             tags: backsub
           - profile: conda
@@ -528,7 +524,7 @@ jobs:
           - profile: conda
             path: modules/nf-core/angsd/gl
           - profile: conda
-            path: modules/nf-core/annotsv
+            path: modules/nf-core/annotsv/installannotations
           - profile: conda
             path: modules/nf-core/happy/sompy
           - profile: conda
