@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process AMPCOMBI"
+    script "../main.nf"
+    process "AMPCOMBI"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antimicrobial peptides"
+    tag "ampcombi"
+
+    test("ampcombi - metagenome") {
+        when {
+            process {
+                """
+                amp_input = [
+                    [id:'sample_1'],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv', checkIfExists: true)
+                    ]
+                ]
+                faa_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa/sample_1.faa', checkIfExists: true)
+
+                input[0] = amp_input
+                input[1] = faa_input
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
+                                  process.out.txt.collect { file(it[1]).readLines()[0] } +
+                                  process.out.csv.collect { file(it[1]).readLines()[0] } +
+                                  process.out.faa.collect { file(it[1]).readLines()[0] } +
+                                  process.out.log.collect { file(it[1]).readLines().contains("ampir") } +
+                                  process.out.summary_csv.collect { file(it[1]).readLines().contains("Structure_Description") } +
+                                  process.out.versions ).match() }
+            )
+        }
+    }
+
+    test("ampcombi - metagenome - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                amp_input = [
+                    [id:'sample_1'],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv', checkIfExists: true)
+                    ]
+                ]
+                faa_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa/sample_1.faa', checkIfExists: true)
+
+                input[0] = amp_input
+                input[1] = faa_input
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
