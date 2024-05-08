@@ -4,8 +4,8 @@ process AGAT_CONVERTSPGFF2TSV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.2.0--pl5321hdfd78af_0' :
-        'biocontainers/agat:1.2.0--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.4.0--pl5321hdfd78af_0' :
+        'biocontainers/agat:1.4.0--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
@@ -28,7 +28,7 @@ process AGAT_CONVERTSPGFF2TSV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed '3!d; s/.*v//' | sed 's/ .*//')
+        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 
@@ -40,7 +40,7 @@ process AGAT_CONVERTSPGFF2TSV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed '3!d; s/.*v//' | sed 's/ .*//')
+        agat: \$(agat_convert_sp_gff2tsv.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 }
