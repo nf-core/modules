@@ -1,6 +1,6 @@
 process CELLSNP_MODEA {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -17,7 +17,7 @@ process CELLSNP_MODEA {
     tuple val(meta), path('*.tag.AD.mtx')  , emit: allele_depth
     tuple val(meta), path('*.tag.DP.mtx')  , emit: depth_coverage
     tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
-    path 'versions.yml'                            , emit: versions
+    path 'versions.yml'                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
