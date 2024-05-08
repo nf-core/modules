@@ -40,7 +40,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CELLSNP_MODEA.out.collect{ meta, cell -> cell }.map{ 
+                input[0] = CELLSNP_MODEA.out.cell.collect{ meta, cell -> cell }.map{ 
                             cell -> [[id:'test'],
                                       cell,
                                       2,
