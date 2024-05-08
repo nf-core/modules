@@ -233,8 +233,6 @@ jobs:
         exclude:
           - tags: nf-test
           - profile: conda
-            tags: annotsv/installannotations
-          - profile: conda
             tags: backsub
           - profile: conda
             tags: bases2fastq
@@ -528,7 +526,7 @@ jobs:
           - profile: conda
             path: modules/nf-core/angsd/gl
           - profile: conda
-            path: modules/nf-core/annotsv
+            path: modules/nf-core/annotsv/installannotations
           - profile: conda
             path: modules/nf-core/happy/sompy
           - profile: conda
