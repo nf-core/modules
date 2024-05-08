@@ -4,8 +4,8 @@ process SEQKIT_PAIR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.1.0--h9ee0642_0':
-        'biocontainers/seqkit:2.1.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0':
+        'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -34,7 +34,20 @@ process SEQKIT_PAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}_1.paired.fastq.gz
+    echo "" | gzip > ${prefix}_2.paired.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+    END_VERSIONS
+    """
+
 }
