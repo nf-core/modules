@@ -2,6 +2,9 @@ name: "bcftools_roh"
 description: A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered.
 keywords:
   - roh
+  - biallelic
+  - homozygosity
+  - autozygosity
 tools:
   - "roh":
       description: "A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered."
@@ -9,7 +12,6 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -38,7 +40,6 @@ input:
   - targets_file:
       type: file
       description: "Targets can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
-
 output:
   - meta:
       type: map
@@ -53,6 +54,7 @@ output:
       type: file
       description: Contains site-specific and/or per-region runs of homo/autozygosity calls.
       pattern: "*.{roh}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

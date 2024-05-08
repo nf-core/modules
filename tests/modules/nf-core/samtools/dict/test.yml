@@ -1,8 +1,8 @@
 - name: samtools dict test_samtools_dict
   command: nextflow run ./tests/modules/nf-core/samtools/dict -entry test_samtools_dict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/dict/nextflow.config
   tags:
-    - samtools
     - samtools/dict
+    - samtools
   files:
     - path: output/samtools/genome.fasta.dict
       contains:

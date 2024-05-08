@@ -12,9 +12,7 @@ tools:
       homepage: https://github.com/fannyhb/fargene
       documentation: https://github.com/fannyhb/fargene
       tool_dev_url: https://github.com/fannyhb/fargene
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -28,7 +26,6 @@ input:
   - hmm_model:
       type: string
       description: name of custom hidden markov model to be used [pre-defined class_a, class_b_1_2, class_b_3, class_c, class_d_1, class_d_2, qnr, tet_efflux, tet_rpg, tet_enzyme]
-
 output:
   - meta:
       type: map
@@ -95,6 +92,7 @@ output:
       type: file
       description: The from FASTQ to FASTA converted input files and their translated input sequences. Are only saved if option --store-peptides is used.
       pattern: "*.{fasta}"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

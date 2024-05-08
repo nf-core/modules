@@ -3,6 +3,7 @@ description: Convert ascii format wig file to binary big wig format
 keywords:
   - wig
   - bigwig
+  - ucsc
 tools:
   - ucsc:
       description: |
@@ -10,7 +11,6 @@ tools:
         or bedGraph format) to binary big wig format
       homepage: http://www.genome.ucsc.edu/goldenPath/help/bigWig.html
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
 input:
   - meta:
       type: map
@@ -24,7 +24,6 @@ input:
   - chromsizes:
       type: file
       description: chromosome sizes file
-
 output:
   - versions:
       type: file
@@ -34,7 +33,9 @@ output:
       type: file
       description: bigwig file
       pattern: "*.{bw}"
-
 authors:
+  - "@jianhong"
+  - "@projectoriented"
+maintainers:
   - "@jianhong"
   - "@projectoriented"

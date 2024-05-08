@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process DEEPARG_DOWNLOADDATA"
+    script "../main.nf"
+    process "DEEPARG_DOWNLOADDATA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeparg"
+    tag "deeparg/downloaddata"
+
+    test("downloaddata") {
+
+
+        when {
+            process {
+                """
+                // No input required
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                     file(process.out.db.get(0)).list().sort(),
+                     process.out.versions,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("downloaddata - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // No input required
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

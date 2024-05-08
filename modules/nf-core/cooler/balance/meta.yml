@@ -1,7 +1,10 @@
 name: "cooler_balance"
 description: Run matrix balancing on a cool file
 keywords:
-  - balance
+  - cooler/balance
+  - cooler
+  - cool
+  - cooler
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -10,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
 input:
   - meta:
       type: map
@@ -22,9 +24,8 @@ input:
       description: Path to COOL file
       pattern: "*.{cool,mcool}"
   - resolution:
-      type: value
+      type: integer
       description: Resolution
-
 output:
   - meta:
       type: map
@@ -39,7 +40,9 @@ output:
       type: file
       description: Output COOL file balancing weigths
       pattern: "*.cool"
-
 authors:
+  - "@nservant"
+  - "@muffato"
+maintainers:
   - "@nservant"
   - "@muffato"

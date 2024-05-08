@@ -11,7 +11,6 @@ tools:
       tool_dev_url: https://github.com/katholt/Kleborate
       doi: 10.1038/s41467-021-24448-3
       licence: ["GPL v3 or later (GPL v3+)"]
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: files
       description: Klebsiella genome assemblies to be screened
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -37,7 +35,9 @@ output:
       type: file
       description: Result file generated after screening
       pattern: "*.txt"
-
 authors:
+  - "@abhi18av"
+  - "@rpetit3"
+maintainers:
   - "@abhi18av"
   - "@rpetit3"

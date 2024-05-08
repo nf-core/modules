@@ -2,10 +2,10 @@ process VERIFYBAMID_VERIFYBAMID {
     tag "${meta.id}"
     label "process_single"
 
-    conda "bioconda::verifybamid=1.1.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid%3A1.1.3--h5b5514e_6':
-        'quay.io/biocontainers/verifybamid:1.1.3--h5b5514e_6' }"
+        'biocontainers/verifybamid:1.1.3--h5b5514e_6' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

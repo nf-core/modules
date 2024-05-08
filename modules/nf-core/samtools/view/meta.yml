@@ -26,12 +26,17 @@ input:
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
   - index:
-      type: optional file
-      description: BAM.BAI/CRAM.CRAI file
-      pattern: "*.{.bai,.crai}"
+      type: file
+      description: BAM.BAI/BAM.CSI/CRAM.CRAI file (optional)
+      pattern: "*.{.bai,.csi,.crai}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
-      type: optional file
-      description: Reference file the CRAM was created with
+      type: file
+      description: Reference file the CRAM was created with (optional)
       pattern: "*.{fasta,fa}"
   - qname:
       type: file
@@ -73,6 +78,11 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@drpatelh"
+  - "@joseespinosa"
+  - "@FriederikeHanssen"
+  - "@priyanka-surana"
+maintainers:
   - "@drpatelh"
   - "@joseespinosa"
   - "@FriederikeHanssen"

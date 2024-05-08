@@ -3,6 +3,7 @@ description: Index FASTA file
 keywords:
   - index
   - fasta
+  - faidx
 tools:
   - samtools:
       description: |
@@ -17,18 +18,31 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: FASTA file
       pattern: "*.{fa,fasta}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.{fai}"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - fa:
+      type: file
+      description: FASTA file
+      pattern: "*.{fa}"
   - fai:
       type: file
       description: FASTA index file
@@ -42,6 +56,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@drpatelh"
+  - "@ewels"
+  - "@phue"
+maintainers:
   - "@drpatelh"
   - "@ewels"
   - "@phue"

@@ -26,7 +26,7 @@ workflow test_semibin_singleeasybin {
     
     Channel.fromPath(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
         .map { it -> [[ id:'test', single_end:true ], it] }
-        .join(BOWTIE2_ALIGN.out.bam)
+        .join(BOWTIE2_ALIGN.out.aligned)
         .set { input_semibin }
 
     SEMIBIN_SINGLEEASYBIN ( input_semibin )

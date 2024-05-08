@@ -18,9 +18,7 @@ tools:
       homepage: http://github.com/pezmaster31/bamtools
       documentation: https://github.com/pezmaster31/bamtools/wiki
       tool_dev_url: http://github.com/pezmaster31/bamtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -31,7 +29,6 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
-
 output:
   - meta:
       type: map
@@ -46,6 +43,7 @@ output:
       type: file
       description: The data in the asked format (bed, fasta, fastq, json, pileup, sam, yaml)
       pattern: "*.{bed,fasta,fastq,json,pileup,sam,yaml}"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

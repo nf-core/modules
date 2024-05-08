@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
       licence: "['GPL v3, MIT']"
-
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
       type: file
       description: File with individual quality score thresholds
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -67,6 +65,7 @@ output:
       type: file
       description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
       pattern: "*.icnts.gz"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

@@ -1,5 +1,4 @@
 name: "phantompeakqualtools"
-
 description: |
   "This package computes informative enrichment and quality measures
   for ChIP-seq/DNase-seq/FAIRE-seq/MNase-seq data. It can also be used
@@ -16,12 +15,10 @@ tools:
         for ChIP-seq/DNase-seq/FAIRE-seq/MNase-seq data. It can also be used
         to obtain robust estimates of the predominant fragment length or
         characteristic tag shift values in these assays."
-
       documentation: "https://github.com/kundajelab/phantompeakqualtools"
       tool_dev_url: "https://github.com/kundajelab/phantompeakqualtools"
       doi: "10.1101/gr.136184.111"
       licence: "['BSD-3-clause']"
-
 input:
   - meta:
       type: map
@@ -32,7 +29,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
 output:
   - meta:
       type: map
@@ -57,8 +53,11 @@ output:
       type: file
       description: Rdata file containing the R session
       pattern: "*.{Rdata}"
-
 authors:
   - "@drpatelh"
-  - "@Emiller88"
+  - "@edmundmiller"
+  - "@JoseEspinosa"
+maintainers:
+  - "@drpatelh"
+  - "@edmundmiller"
   - "@JoseEspinosa"

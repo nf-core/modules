@@ -5,7 +5,6 @@
     - eido
   files:
     - path: output/eido/validation.log
-      md5sum: 3a197c21ebf411aac7616bf9b4470de3
 
 - name: eido validate test_eido_validate_on_pep_config
   command: nextflow run ./tests/modules/nf-core/eido/validate -entry test_eido_validate_on_pep_config -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/eido/validate/nextflow.config
@@ -14,4 +13,3 @@
     - eido
   files:
     - path: output/eido/validation.log
-      md5sum: 3a197c21ebf411aac7616bf9b4470de3

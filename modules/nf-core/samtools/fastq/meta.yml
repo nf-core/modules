@@ -15,7 +15,6 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -29,7 +28,6 @@ input:
   - interleave:
       type: boolean
       description: Set true for interleaved fastq file
-
 output:
   - meta:
       type: map
@@ -56,7 +54,9 @@ output:
       type: file
       description: Compressed FASTQ file with reads with either both READ1 and READ2 flags set or unset
       pattern: "*_other.fastq.gz"
-
 authors:
+  - "@priyanka-surana"
+  - "@suzannejin"
+maintainers:
   - "@priyanka-surana"
   - "@suzannejin"

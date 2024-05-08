@@ -11,8 +11,8 @@ workflow test_shapeit5_switch {
     [ id:'input', single_end:false ], // meta map
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-    "chr21",
-    []
+    [],
+    "chr21"
     ])
 
     ref_panel = Channel.of([[],[],[]])

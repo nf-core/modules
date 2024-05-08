@@ -20,7 +20,6 @@ tools:
       tool_dev_url: https://github.com/Ecogenomics/CheckM
       doi: "10.1101/gr.186072.114"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -32,12 +31,11 @@ input:
       description: One or a list of multiple FASTA files of each bin, with extension defined with the fasta_ext value
       pattern: "*.{$fasta_ext}"
   - fasta_ext:
-      type: value
+      type: string
       description: The file-type extension suffix of the input FASTA files (e.g., fasta, fna, fa, fas)
   - db:
       type: directory
       description: Optional directory pointing to checkM database to prevent re-downloading
-
 output:
   - meta:
       type: map
@@ -60,6 +58,7 @@ output:
       type: file
       description: CheckM summary completeness statistics table
       pattern: "*.tsv"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

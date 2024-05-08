@@ -3,9 +3,9 @@ description: |
   Summarizes counts of reads that support reference, alternate and other alleles for given sites. Results can be used with CalculateContamination. Requires a common germline variant sites file, such as from gnomAD.
 keywords:
   - gatk4
+  - germlinevariantsites
   - getpileupsumaries
   - readcountssummary
-  - germlinevariantsites
 tools:
   - gatk4:
       description: |
@@ -16,7 +16,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -35,14 +34,29 @@ input:
       type: file
       description: File containing specified sites to be used for the summary. If this option is not specified, variants file is used instead automatically.
       pattern: "*.interval_list"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - fai:
       type: file
       description: Index of reference fasta file
       pattern: "*.fasta.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
   - dict:
       type: file
       description: GATK sequence dictionary
@@ -55,7 +69,6 @@ input:
       type: file
       description: Index file for the germline resource.
       pattern: "*.vcf.gz.tbi"
-
 output:
   - pileup:
       type: file
@@ -65,6 +78,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@GCJMackenzie"
+maintainers:
   - "@GCJMackenzie"

@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process MUSCLE5_SUPER5"
+        script "../main.nf"
+        process "MUSCLE5_SUPER5"
+        config "./nextflow.config"
+
+        tag "modules"
+        tag "modules_nfcore"
+        tag "muscle5"
+        tag "muscle5/super5"
+
+        test("fasta - align_sequence - uncompressed") {
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = false
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
+                        )
+            }
+        }
+
+        test("fasta - align_sequence - compressed") {
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = true
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("alignment - compressed")},
+                        )
+            }
+        }
+        test("fasta - align_sequence - compressed - perm_all") {
+            config "./perm_all.config"
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = true
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("perm-all")},
+                        )
+            }
+        }
+}

@@ -6,7 +6,7 @@ include { ANGSD_CONTAMINATION } from '../../../../../modules/nf-core/angsd/conta
 include { ANGSD_DOCOUNTS } from '../../../../../modules/nf-core/angsd/docounts/main.nf'
 
 workflow test_angsd_contamination {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
@@ -14,7 +14,7 @@ workflow test_angsd_contamination {
         []
     ]
 
-    hapmap_file = [ [id:'test2'], file("https://github.com/jbv2/nf-core-test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz")]
+    hapmap_file = [ [id:'test2'], file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz")]
 
     ANGSD_DOCOUNTS ( input )
     ANGSD_CONTAMINATION ( ANGSD_DOCOUNTS.out.icounts, hapmap_file )

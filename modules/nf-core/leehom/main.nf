@@ -3,10 +3,10 @@ process LEEHOM {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::leehom=1.2.15"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
-        'quay.io/biocontainers/leehom:1.2.15--h29e30f7_1' }"
+        'biocontainers/leehom:1.2.15--h29e30f7_1' }"
 
     input:
     tuple val(meta), path(reads)

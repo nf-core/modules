@@ -14,40 +14,35 @@ tools:
       tool_dev_url: "https://github.com/pachterlab/gget"
       doi: "10.1093/bioinformatics/btac836"
       licence: "['BSD-2-clause']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-
   - files:
       type: files
       description: |
         Optional input files which can be specified for certain tools. This is mostly used to supply a FASTA file for gget muscle.
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - output:
       type: file
       description: File containing output of gget command (-o for most gget tools).
       pattern: "*.{json,csv}"
-
   - file:
       type: file
       description: Path to any file downloaded by gget
       pattern: "*"
-
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"

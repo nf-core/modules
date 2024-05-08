@@ -1,10 +1,10 @@
 process BISMARK_SUMMARY {
     label 'process_low'
 
-    conda "bioconda::bismark=0.24.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'quay.io/biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
 
     input:
     val(bam)

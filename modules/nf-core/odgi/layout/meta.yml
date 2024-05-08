@@ -12,8 +12,7 @@ tools:
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: Pangenome graph in GFA v1.0 format or in ODGI binary format
       pattern: "*.{gfa,og}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: File containing a 2D layout of a pangenome graph in TSV format. Optional output specified by the `--tsv FILE` argument. Either this or the binary layout output must be specified.
       pattern: "*.{tsv}"
-
 authors:
+  - "@subwaystation"
+maintainers:
   - "@subwaystation"

@@ -46,10 +46,10 @@ input:
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
 output:
-  - bam:
+  - aligned:
       type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
+      description: Output BAM/SAM file containing read alignments
+      pattern: "*.{bam,sam}"
   - versions:
       type: file
       description: File containing software versions
@@ -63,5 +63,8 @@ output:
       description: Aligment log
       pattern: "*.log"
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

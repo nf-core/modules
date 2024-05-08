@@ -2,10 +2,10 @@ process SHINYNGS_STATICEXPLORATORY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.5.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.5.6--r42hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.5.6--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.8--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.8--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
@@ -19,7 +19,7 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/html/pca2d.html")                  , emit: pca2d_html, optional: true
     tuple val(meta), path("*/png/pca3d.png")                    , emit: pca3d_png
     tuple val(meta), path("*/html/pca3d.html")                  , emit: pca3d_html, optional: true
-    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png
+    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png, optional: true
     tuple val(meta), path("*/html/mad_correlation.html")        , emit: mad_html, optional: true
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
     path "versions.yml"                                         , emit: versions
@@ -43,7 +43,29 @@ process SHINYNGS_STATICEXPLORATORY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    mkdir -p ${prefix}/png ${prefix}/html
+    touch ${prefix}/png/boxplot.png
+    touch ${prefix}/html/boxplot.html
+    touch ${prefix}/png/density.png
+    touch ${prefix}/html/density.html
+    touch ${prefix}/png/pca2d.png
+    touch ${prefix}/html/pca3d.html
+    touch ${prefix}/png/pca3d.png
+    touch ${prefix}/html/pca2d.html
+    touch ${prefix}/png/mad_correlation.png
+    touch ${prefix}/html/mad_correlation.html
+    touch ${prefix}/png/sample_dendrogram.png
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """

@@ -6,16 +6,13 @@ keywords:
   - admixture
   - reference panels
   - gwas
-
 tools:
   - "admixture":
       description: "ADMIXTURE is a software tool for maximum likelihood estimation of individual ancestries from multilocus SNP genotype datasets."
       homepage: "https://dalexander.github.io/admixture/"
       documentation: "https://dalexander.github.io/admixture/admixture-manual.pdf"
-
       doi: "10.1101/gr.094052.109"
-      licence: "['Free for Academic Use']"
-
+      licence: ["Free for Academic Use"]
 input:
   - meta:
       type: map
@@ -35,10 +32,9 @@ input:
       description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace with an empty channel if input is ".ped" or ".geno".
       pattern: "*.{fam}"
   - K:
-      type: value
+      type: integer
       description: Belief of the number of ancestral populations.
       pattern: "{*}"
-
 output:
   - meta:
       type: map
@@ -57,6 +53,7 @@ output:
       type: file
       description: Space-delimited files containing the allele frequencies of the inferred ancestral populations. The output filenames have the number of populations (K) that was assumed for the analysis.
       pattern: "*.{P}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

@@ -1,6 +1,6 @@
 
 process SHINYNGS_APP {
-    tag '$sample'
+    tag "$meta.id"
     label 'process_single'
 
     // To be able to pass the necessary secrets for shinyapps.io deployment,
@@ -8,20 +8,20 @@ process SHINYNGS_APP {
     // following in the nextflow.config:
     //
     // withName: SHINYNGS_APP {
-    //     secret 'SHINYAPPS_TOKEN'
-    //     secret 'SHINYAPPS_SECRET
+    //     secret = [ 'SHINYAPPS_TOKEN', 'SHINYAPPS_SECRET' ]
     // }
     //
     // Those values must then be set in your Nextflow secrets.
 
-    conda "bioconda::r-shinyngs=1.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.3.2--r41hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.3.2--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.8--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:1.8.8--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
     tuple val(meta2), path(contrasts), path(differential_results)           // Differential info: contrasts and differential stats
+    val(contrast_stats_assay)
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
@@ -42,14 +42,30 @@ process SHINYNGS_APP {
         --feature_metadata $feature_meta \\
         --assay_files ${assay_files.join(',')} \\
         --contrast_file $contrasts \\
+        --contrast_stats_assay $contrast_stats_assay \\
         --differential_results ${differential_results.join(',')} \\
         --output_dir $prefix \\
         $args \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+
+    """
+    mkdir -p $prefix
+    touch ${prefix}/data.rds
+    touch ${prefix}/app.R
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
 }

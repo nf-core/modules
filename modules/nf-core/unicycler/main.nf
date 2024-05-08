@@ -2,10 +2,10 @@ process UNICYCLER {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::unicycler=0.4.8"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/unicycler:0.4.8--py38h8162308_3' :
-        'quay.io/biocontainers/unicycler:0.4.8--py38h8162308_3' }"
+        'biocontainers/unicycler:0.4.8--py38h8162308_3' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)

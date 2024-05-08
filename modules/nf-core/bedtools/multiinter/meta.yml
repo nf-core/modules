@@ -3,13 +3,15 @@ description: Identifies common intervals among multiple (and subsets thereof) so
 keywords:
   - bedtools
   - multinterval
+  - bed
+  - vcf
+  - gff
 tools:
   - bedtools:
       description: |
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/multiinter.html
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +26,6 @@ input:
       type: file
       description: Chromosome sizes file
       pattern: "*{.sizes,.txt}"
-
 output:
   - meta:
       type: map
@@ -39,6 +40,7 @@ output:
       type: file
       description: Common interval bed
       pattern: "*.{bed}"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

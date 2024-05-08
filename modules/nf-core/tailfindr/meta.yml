@@ -1,8 +1,9 @@
 name: "tailfindr"
 description: Estimating poly(A)-tail lengths from basecalled fast5 files produced by Nanopore sequencing of RNA and DNA
 keywords:
-  - polyA
+  - polya tail
   - fast5
+  - nanopore
 tools:
   - "tailfindr":
       description: "An R package for estimating poly(A)-tail lengths in Oxford Nanopore RNA and DNA reads."
@@ -11,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/adnaniazi/tailfindr"
       doi: "10.1261/rna.071332.119"
       licence: "['AGPL v3']"
-
 input:
   - meta:
       type: map
@@ -22,7 +22,6 @@ input:
       type: file
       description: fast5 file
       pattern: "*.fast5"
-
 output:
   - meta:
       type: map
@@ -37,6 +36,7 @@ output:
       type: file
       description: Compressed csv file
       pattern: "*.csv.gz"
-
 authors:
+  - "@lucacozzuto"
+maintainers:
   - "@lucacozzuto"

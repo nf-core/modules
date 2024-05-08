@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { RHOCALL_ANNOTATE } from '../../../../../modules/nf-core/rhocall/annotate/main.nf'
-include { BCFTOOLS_ROH } from '../../../../../modules/nf-core/bcftools/roh/main.nf'
+include { BCFTOOLS_ROH     } from '../../../../../modules/nf-core/bcftools/roh/main.nf'
 
 workflow test_rhocall_annotate {
 

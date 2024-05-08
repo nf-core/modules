@@ -1,0 +1,98 @@
+nextflow_process {
+
+    name "Test Process KALLISTOBUSTOOLS_COUNT"
+    script "../main.nf"
+    process "KALLISTOBUSTOOLS_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kallistobustools"
+    tag "kallistobustools/count"
+    tag "kallistobustools/ref"
+
+    setup {
+        run("KALLISTOBUSTOOLS_REF") {
+            script "../../ref/main.nf"
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[2] = "standard"
+                """
+            }
+        }
+    }
+
+    test("genome.fasta + genome.gtf + '10X3' + 'standard'") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test'], // meta map
+                        [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = KALLISTOBUSTOOLS_REF.out.index
+                input[2] = KALLISTOBUSTOOLS_REF.out.t2g
+                input[3] = KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }   // when empty the module doesn't run unless something is passed.
+                input[4] = KALLISTOBUSTOOLS_REF.out.intron_t2c.ifEmpty{ [] } // when empty the module doesn't run unless something is passed.
+                input[5] = "10XV3"
+                input[6] = "standard"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.matrix,
+                    path(process.out.count.get(0).get(1)).list().findAll { file(it.toString()).name != "run_info.json" && file(it.toString()).name != "kb_info.json" },
+                    file(path(process.out.count.get(0).get(1)).list().find { file(it.toString()).name == "kb_info.json" }.toString()).readLines()[15..22],
+                    file(path(process.out.count.get(0).get(1)).list().find { file(it.toString()).name == "run_info.json" }.toString()).readLines()[0..9]
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("genome.fasta + genome.gtf + '10X3' + 'standard' - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test'], // meta map
+                        [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = KALLISTOBUSTOOLS_REF.out.index
+                input[2] = KALLISTOBUSTOOLS_REF.out.t2g
+                input[3] = KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }   // when empty the module doesn't run unless something is passed.
+                input[4] = KALLISTOBUSTOOLS_REF.out.intron_t2c.ifEmpty{ [] } // when empty the module doesn't run unless something is passed.
+                input[5] = "10XV3"
+                input[6] = "standard"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
