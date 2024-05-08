@@ -43,7 +43,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-	        { assert path(process.out.base.get(0).get(1)).exists() },
+	            { assert path(process.out.base.get(0).get(1)).exists() },
                 { assert snapshot(
                     process.out.sample,
                     process.out.allele_depth,
