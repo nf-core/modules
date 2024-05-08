@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "get_decoupler_pkn"
+name: "decoupler_pkn"
 description: Retrieves prior knowledge network for decoupler
 keywords:
   - Knowledge
@@ -17,7 +17,6 @@ tools:
       licence: ["GPL >=3"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -43,7 +42,7 @@ output:
   - network:
       type: file
       description: CSV-format of prior knowledge network required by decoupler
-      pattern: "decoupler_network.csv"
+      pattern: "*.csv"
   - versions:
       type: file
       description: File containing software versions

@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process GET_DECOUPLER_PKN"
+    name "Test Process DECOUPLER_PKN"
     script "../main.nf"
-    process "GET_DECOUPLER_PKN"
+    process "DECOUPLER_PKN"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,6 +10,30 @@ nextflow_process {
     tag "decoupler/pkn"
 
     test("decouplerPKN_test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'progeny',
+                    'human'
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("decouplerPKN_test - stub") {
+        options("--stub")
 
         when {
             process {
