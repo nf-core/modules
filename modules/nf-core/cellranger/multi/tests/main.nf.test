@@ -165,7 +165,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -173,22 +173,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
@@ -390,7 +390,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -398,22 +398,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
@@ -438,7 +438,7 @@ nextflow_process {
                 ch_cmo_reference_10k_pbmc_cmo = Channel.of( cmo_reference_10k_pbmc_cmo )
 
                 // empty vdj reference
-                ch_vdj_ref_empty = Channel.fromPath( empty_file )
+                ch_vdj_ref_empty = []
 
                 // CMO analysis needs barcodes
                 ch_cmo_barcodes_10k_pbmc_cmo = Channel.fromPath( cmo_barcodes_csv )
@@ -630,7 +630,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -638,22 +638,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
