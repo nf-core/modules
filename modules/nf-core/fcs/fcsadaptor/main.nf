@@ -4,8 +4,8 @@ process FCS_FCSADAPTOR {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.4.0/fcs-adaptor.sif':
-        'docker.io/ncbi/fcs-adaptor:0.4.0' }"
+        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.5.0/fcs-adaptor.sif':
+        'docker.io/ncbi/fcs-adaptor:0.5.0' }"
 
     input:
     tuple val(meta), path(assembly)
@@ -28,9 +28,9 @@ process FCS_FCSADAPTOR {
     }
     def args = task.ext.args ?: '--prok' // --prok || --euk
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def FCSADAPTOR_VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    /app/fcs/bin/av_screen_x \\
+    av_screen_x \\
         -o output/ \\
         $args \\
         $assembly
@@ -55,10 +55,10 @@ process FCS_FCSADAPTOR {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSGX_VERSION = '0.4.0'
+    def FCSADAPTOR_VERSION = '0.5.0'
 
     """
     touch ${prefix}.fcs_adaptor_report.txt
