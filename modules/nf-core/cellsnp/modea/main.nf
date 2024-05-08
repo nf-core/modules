@@ -54,7 +54,7 @@ process CELLSNP_MODEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
-    touch ${prefix}.base.vcf.gz
+    echo "" | gzip > ${prefix}.base.vcf.gz
     touch ${prefix}.samples.tsv
     touch ${prefix}.tag.AD.mtx
     touch ${prefix}.tag.DP.mtx
