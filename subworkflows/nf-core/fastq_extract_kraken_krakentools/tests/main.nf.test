@@ -56,8 +56,9 @@ nextflow_workflow {
     }
 
     test("sarscov2 illumina paired end with fastq output [fastq]") {
-        options "--fastq-output"
+        config "./fastq.nextflow.config"
         when {
+
             params {
                 outdir   = "$outputDir"
             }
@@ -93,7 +94,7 @@ nextflow_workflow {
     }
 
     test("sarscov2 illumina paired end with parents [fastq]") {
-        options "--include-parents"
+        config "./includeparents.nextflow.config"
         when {
             params {
                 outdir   = "$outputDir"
