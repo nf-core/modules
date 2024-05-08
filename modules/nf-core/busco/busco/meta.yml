@@ -1,4 +1,4 @@
-name: busco
+name: busco_busco
 description: Benchmarking Universal Single Copy Orthologs
 keywords:
   - quality control
@@ -74,10 +74,10 @@ output:
       type: directory
       description: BUSCO sequence directory
       pattern: "busco_sequences"
-  - translated_proteins:
+  - translated_dir:
       type: directory
       description: Six frame translations of each transcript made by the transcriptome mode
-      pattern: "translated_proteins"
+      pattern: "translated_dir"
   - versions:
       type: file
       description: File containing software versions
@@ -88,9 +88,11 @@ authors:
   - "@mahesh-panchal"
   - "@muffato"
   - "@jvhagey"
+  - "@gallvp"
 maintainers:
   - "@priyanka-surana"
   - "@charles-plessy"
   - "@mahesh-panchal"
   - "@muffato"
   - "@jvhagey"
+  - "@gallvp"
