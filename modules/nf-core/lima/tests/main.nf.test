@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "lima"
 
-    test("Input => bam") {
+    test("LIMA - Primer Removal - Input => bam") {
 
         when {
             process {
@@ -41,7 +41,7 @@ nextflow_process {
 
     }
 
-    test("Input => fa") {
+    test("LIMA - Primer Removal - Input => fa") {
 
         when {
             process {
@@ -62,7 +62,7 @@ nextflow_process {
 
     }
 
-        test("Input => fa.gz") {
+        test("LIMA - Primer Removal - Input => fa.gz") {
 
         when {
             process {
@@ -83,7 +83,7 @@ nextflow_process {
 
     }
 
-    test("Input => fq") {
+    test("LIMA - Primer Removal - Input => fq") {
 
         when {
             process {
@@ -104,7 +104,7 @@ nextflow_process {
 
     }
 
-    test("Input => fq.gz") {
+    test("LIMA - Primer Removal - Input => fq.gz") {
 
         when {
             process {
