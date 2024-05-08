@@ -10,11 +10,11 @@ process VIREO {
     input:
     tuple val(meta), path(cell_data), val(n_donor), path(donor_file), path(vartrix_data)
     output:
-    tuple val(meta), path("*_summary.tsv")        , emit: summary
-    tuple val(meta), path("*_donor_ids.tsv")      , emit: donor_ids
-    tuple val(meta), path("*_prob_singlet.tsv.gz"), emit: prob_singlets
-    tuple val(meta), path("*_prob_doublet.tsv.gz"), emit: prob_doublets
-    path 'versions.yml'                         , emit: versions
+    tuple val(meta), path('*_summary.tsv')        , emit: summary
+    tuple val(meta), path('*_donor_ids.tsv')      , emit: donor_ids
+    tuple val(meta), path('*_prob_singlet.tsv.gz'), emit: prob_singlets
+    tuple val(meta), path('*_prob_doublet.tsv.gz'), emit: prob_doublets
+    path 'versions.yml'                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process VIREO {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = cell_data       ?: " -c ${cell_data}" : "--vartrixData ${vartrix_data}"
+    def input  = cell_data       ? "-c ${cell_data}" : "--vartrixData ${vartrix_data}"
 
     """
     vireo \\
@@ -31,7 +31,7 @@ process VIREO {
         -d ${donor_file} \\
         -p $task.cpus \\
         -o . \\
-        $args \\
+        $args
 
     mv summary.tsv ${prefix}_summary.tsv
     mv donor_ids.tsv ${prefix}_donor_ids.tsv
@@ -45,7 +45,7 @@ process VIREO {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
