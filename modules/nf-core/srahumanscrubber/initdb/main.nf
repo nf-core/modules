@@ -17,7 +17,7 @@ process SRAHUMANSCRUBBER_INITDB {
     def VERSION = '2.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DBVERSION=\$(curl "https://ftp.ncbi.nlm.nih.gov/sra/dbs/human_filter/current/version.txt")
-    curl -f "https://ftp.ncbi.nlm.nih.gov/sra/dbs/human_filter/\${DBVERSION}.human_filter.db" -o "\${DBVERSION}.human_filter.db"
+    curl -f "https://ftp.ncbi.nlm.nih.gov/sra/dbs/human_filter/human_filter.db.\${DBVERSION}" -o "\${DBVERSION}.human_filter.db"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
