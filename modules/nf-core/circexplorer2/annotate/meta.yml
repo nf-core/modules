@@ -10,7 +10,6 @@ tools:
       documentation: "https://circexplorer2.readthedocs.io/en/latest/"
       doi: "10.1101/gr.202895.115"
       licence: "['MIT License']"
-
 input:
   - meta:
       type: map
@@ -29,7 +28,6 @@ input:
       type: file
       description: Reformatted GTF file for CIRCexplorer2
       pattern: "*.{txt}"
-
 output:
   - meta:
       type: map
@@ -44,6 +42,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@BarryDigby"
+maintainers:
   - "@BarryDigby"

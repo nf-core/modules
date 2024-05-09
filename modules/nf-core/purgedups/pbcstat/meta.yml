@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/dfguan/purge_dups"
       doi: "10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: PAF alignment file
       pattern: "*.paf"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: PacBio Base coverage file
       pattern: "*.PB.base.cov"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

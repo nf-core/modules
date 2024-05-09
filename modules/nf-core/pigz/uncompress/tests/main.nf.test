@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process PIGZ_UNCOMPRESS"
+    script "modules/nf-core/pigz/uncompress/main.nf"
+    process "PIGZ_UNCOMPRESS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pigz"
+    tag "pigz/uncompress"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

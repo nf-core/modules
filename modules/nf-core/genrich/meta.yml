@@ -13,7 +13,6 @@ tools:
       homepage: https://github.com/jsh58/Genrich
       documentation: https://github.com/jsh58/Genrich#readme
       tool_dev_url: https://github.com/jsh58/Genrich
-
       licence: ["MIT"]
 input:
   - meta:
@@ -23,11 +22,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - treatment_bam:
       type: file
-      description: Coordinate sorted BAM/SAM file from treatment sample
+      description: Coordinate sorted BAM/SAM file from treatment sample or list of BAM/SAM files from biological replicates
       pattern: "*.{bam,sam}"
   - control_bam:
       type: file
-      description: Coordinate sorted BAM/SAM file from control sample
+      description: Coordinate sorted BAM/SAM file from control sample or list of BAM/SAM files from control samples
       pattern: "*.{bam,sam}"
   - blacklist_bed:
       type: file
@@ -77,3 +76,7 @@ output:
       pattern: "*.{version.txt}"
 authors:
   - "@JoseEspinosa"
+  - "@samuelruizperez"
+maintainers:
+  - "@JoseEspinosa"
+  - "@samuelruizperez"

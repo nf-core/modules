@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process HMMCOPY_MAPCOUNTER"
+    script "../main.nf"
+    process "HMMCOPY_MAPCOUNTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmcopy"
+    tag "hmmcopy/mapcounter"
+    tag "hmmcopy/generatemap"
+    
+    test("sarscov2") {
+
+        setup {
+            run("HMMCOPY_GENERATEMAP") {
+                script "../../generatemap/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                """
+            }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = HMMCOPY_GENERATEMAP.out.bigwig
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

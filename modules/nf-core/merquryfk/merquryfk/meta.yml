@@ -1,16 +1,15 @@
 name: "merquryfk_merquryfk"
 description: FastK based version of Merqury
 keywords:
-  - sort
+  - Merqury
+  - reference-free
+  - assembly evaluation
 tools:
   - "merquryfk":
       description: "FastK based version of Merqury"
       homepage: "https://github.com/thegenemyers/MERQURY.FK"
-
       tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
-
       licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
-
 input:
   - meta:
       type: map
@@ -33,7 +32,6 @@ input:
       type: file
       description: Assembly haplotigs (fasta format)
       pattern: ".fasta"
-
 output:
   - meta:
       type: map
@@ -108,6 +106,7 @@ output:
       type: file
       description: "error and qv of each assembly as a whole"
       pattern: "*.qv"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

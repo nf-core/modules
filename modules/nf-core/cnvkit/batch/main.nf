@@ -2,17 +2,17 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.9 bioconda::samtools=1.16.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' :
-        'quay.io/biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
+        'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
 
     input:
     tuple val(meta), path(tumor), path(normal)
-    path  fasta
-    path  fasta_fai
-    path  targets
-    path  reference
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(targets)
+    tuple val(meta5), path(reference)
     val   panel_of_normals
 
     output:
@@ -32,6 +32,7 @@ process CNVKIT_BATCH {
 
     def tumor_exists = tumor ? true : false
     def normal_exists = normal ? true : false
+    def reference_exists = reference ? true : false
 
     // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
     def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
@@ -62,6 +63,10 @@ process CNVKIT_BATCH {
         else {
             normal_args = normal_prefix ? "--normal $normal_out" : ""
         }
+        if (reference_exists){
+            fasta_args = ""
+            normal_args = ""
+        }
     }
 
     // generation of panel of normals
@@ -73,12 +78,14 @@ process CNVKIT_BATCH {
         tumor_out = ""
     }
 
-    def target_args = targets ? "--targets $targets" : ""
+    def target_args = targets && !reference_exists ? "--targets $targets" : ""
     def reference_args = reference ? "--reference $reference" : ""
 
     def samtools_cram_convert = ''
     samtools_cram_convert += normal_cram ? "    samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out\n" : ''
+    samtools_cram_convert += normal_cram ? "    samtools index $normal_out\n" : ''
     samtools_cram_convert += tumor_cram ? "    samtools view -T $fasta $fai_reference $tumor -@ $task.cpus -o $tumor_out\n" : ''
+    samtools_cram_convert += tumor_cram ? "    samtools index $tumor_out\n" : ''
     def versions = normal_cram || tumor_cram ?
         "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')" :
         "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"

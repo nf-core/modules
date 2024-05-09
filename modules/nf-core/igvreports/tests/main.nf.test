@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process IGVREPORTS"
+    script "../main.nf"
+    process "IGVREPORTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "igvreports"
+
+    test("testvariantsWithFasta - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test'], // meta map
+                             file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                {
+                    with(process.out.report) {
+                        with(get(0)) {
+                            assert get(1).endsWith("_report.html")
+                        }
+                    }
+                }
+            )
+        }
+
+    }
+
+
+
+    test("testvariantsWithGenome - vcf") {
+    config "./nextflow_genome.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                     file("https://raw.githubusercontent.com/igvteam/igv-reports/master/test/data/variants/variants.vcf")
+                    ]
+                // Need to specify the empty optional fasta input
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                {
+                    with(process.out.report) {
+                        with(get(0)) {
+                            assert get(1).endsWith("_report.html")
+                        }
+                    }
+                }
+            )
+        }
+
+    }
+
+    test("testvariantWithGenome - vcf - stub") {
+    config "./nextflow_genome.config"
+
+        options "-stub"
+
+        when {
+            process {
+         """
+                input[0] = [
+                    [ id:'test'], // meta map
+                     file("https://raw.githubusercontent.com/igvteam/igv-reports/master/test/data/variants/variants.vcf")
+                    ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                {
+                    with(process.out.report) {
+                        with(get(0)) {
+                            assert get(1).endsWith("_report.html")
+                        }
+                    }
+                }
+            )
+        }
+
+    }
+
+}
