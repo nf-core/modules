@@ -23,8 +23,8 @@ tools:
       licence: ["GPL-3.0-or-later"]
 input:
   - bam:
-      type: value
-      description: Array of Bismark alignment BAM filenames
+      type: list
+      description: List of Bismark alignment BAM filenames
       pattern: "*.bam"
   - align_report:
       type: file
@@ -52,4 +52,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@phue"
+maintainers:
   - "@phue"

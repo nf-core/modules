@@ -2,10 +2,10 @@ process WINDOWMASKER_USTAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::blast=2.13.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0':
-        'quay.io/biocontainers/blast:2.13.0--hf3cf87c_0' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
+        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
     tuple val(meta) , path(counts)
@@ -41,7 +41,7 @@ process WINDOWMASKER_USTAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -63,7 +63,7 @@ process WINDOWMASKER_USTAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1)
+        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
     END_VERSIONS
     """
 }

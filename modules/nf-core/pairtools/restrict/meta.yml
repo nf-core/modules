@@ -1,16 +1,16 @@
 name: pairtools_restrict
 description: Assign restriction fragments to pairs
 keywords:
-  - sort
+  - pairs
+  - pairstools
+  - restriction fragments
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -26,7 +26,6 @@ input:
         a tab-separated BED file with the positions of restriction fragments
         (chrom, start, end).
         Can be generated using cooler digest.
-
 output:
   - meta:
       type: map
@@ -41,6 +40,7 @@ output:
       type: file
       description: Filtered pairs file
       pattern: "*.{pairs.gz}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

@@ -1,5 +1,4 @@
 name: msisensor_msi
-
 description: Evaluate microsattelite instability (MSI) using paired tumor-normal sequencing data
 keywords:
   - homoploymer,microsatellite
@@ -7,10 +6,8 @@ tools:
   - msisensor:
       description: MSIsensor is a C++ program to detect replication slippage variants at microsatellite regions, and differentiate them as somatic or germline.
       homepage: https://github.com/ding-lab/msisensor
-
       doi: "10.1093/bioinformatics/btt755"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -37,7 +34,6 @@ input:
       type: file
       description: Output file from MSIsensor scan module
       pattern: "*.msisensor_scan.tab"
-
 output:
   - meta:
       type: map
@@ -65,4 +61,6 @@ output:
       description: MSIsensor MSI somatic report file
       pattern: "*.output_somatic"
 authors:
+  - "@kevbrick"
+maintainers:
   - "@kevbrick"

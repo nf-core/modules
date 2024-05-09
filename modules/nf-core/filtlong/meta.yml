@@ -11,11 +11,8 @@ tools:
   - filtlong:
       description: Filtlong is a tool for filtering long reads. It can take a set of long reads and produce a smaller, better subset. It uses both read length (longer is better) and read identity (higher is better) when choosing which reads pass the filter.
       homepage: https://anaconda.org/bioconda/filtlong
-
       tool_dev_url: https://github.com/rrwick/Filtlong
-
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -30,7 +27,6 @@ input:
       type: file
       description: fastq file
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-
 output:
   - meta:
       type: map
@@ -49,7 +45,9 @@ output:
       type: file
       description: Standard error logging file containing summary statistics
       pattern: "*.log"
-
 authors:
+  - "@d4straub"
+  - "@sofstam"
+maintainers:
   - "@d4straub"
   - "@sofstam"

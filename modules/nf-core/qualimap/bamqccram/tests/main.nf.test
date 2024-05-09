@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process QUALIMAP_BAMQCCRAM"
+    script "../main.nf"
+    process "QUALIMAP_BAMQCCRAM"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qualimap"
+    tag "qualimap/bamqccram"
+
+    test("homo_sapiens [cram]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                gff = []
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ])
+                input[1] = gff
+                input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
+                input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
+                { assert snapshot(path("${process.out.results[0][1]}/genome_results.txt")).match("genome_results") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

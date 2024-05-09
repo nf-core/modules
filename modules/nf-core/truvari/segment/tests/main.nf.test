@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process TRUVARI_SEGMENT"
+    script "../main.nf"
+    process "TRUVARI_SEGMENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "truvari"
+    tag "truvari/segment"
+
+    test("homo_sapiens - illumina") {
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    test("homo_sapiens - illumina - passonly") {
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+    test("homo_sapiens - illumina - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

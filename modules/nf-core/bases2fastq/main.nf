@@ -2,12 +2,7 @@ process BASES2FASTQ {
     tag "$meta.id"
     label 'process_high'
 
-    container "elembio/bases2fastq:1.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/bases2fastq:1.1.0"
 
     input:
     tuple val(meta), path(run_manifest), path(run_dir)
@@ -26,6 +21,10 @@ process BASES2FASTQ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
@@ -41,5 +40,22 @@ process BASES2FASTQ {
     "${task.process}":
         bases2fastq: \$(bases2fastq --version | sed -e "s/bases2fastq version //g")
     END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir output
+    mkdir output/Samples
+    mkdir output/Samples/DefaultSample
+
+    touch output/Metrics.csv
+    touch output/RunManifest.json
+    touch output/UnassignedSequences.csv
+    echo | gzip > output/Samples/DefaultSample/DefaultSample_R1.fastq.gz
+    echo | gzip > output/Samples/DefaultSample/DefaultSample_R2.fastq.gz
+    touch output/Bases2Fastq-Sim_QC.html
+    touch output/RunStats.json
+    touch output/Samples/DefaultSample/DefaultSample_stats.json
+    touch versions.yml
     """
 }

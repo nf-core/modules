@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/liampshaw/mcroni"
       documentation: "https://github.com/liampshaw/mcroni"
       tool_dev_url: "https://github.com/liampshaw/mcroni"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
       type: file
       description: A fasta file.
       pattern: "*.{fasta.gz,fasta,fa.gz,fa,fna.gz,fna}"
-
 output:
   - meta:
       type: map
@@ -41,6 +38,7 @@ output:
       type: file
       description: mcr-1 matching sequences
       pattern: "*.fa"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

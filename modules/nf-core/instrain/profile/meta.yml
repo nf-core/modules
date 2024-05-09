@@ -13,28 +13,26 @@ tools:
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
       description: Groovy Map containing sample information e.g. [ id:'test']
   - bam:
-      type: path
+      type: file
       description: Path to .bam file to be profiled
       pattern: "*.{bam,sam}"
   - genome_fasta:
-      type: path
+      type: file
       description: Path to .fasta file to be profiled; MUST be the .fasta file that was mapped to to create the .bam file
       pattern: "*.{fasta,fna,fa}"
   - genes_fasta:
-      type: path
+      type: file
       description: Path to .fna file of genes to be profiled (OPTIONAL)
       pattern: "*.{fasta,fna,fa}"
   - stb_file:
-      type: path
+      type: file
       description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
       pattern: "*.stb"
-
 output:
   - meta:
       type: map
@@ -46,9 +44,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - profile:
-      type: path
+      type: directory
       description: InStrain profile folder
       pattern: "*.IS/"
-
 authors:
+  - "@mrolm"
+maintainers:
   - "@mrolm"

@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process AMPCOMBI2_PARSETABLES"
+    script "../main.nf"
+    process "AMPCOMBI2_PARSETABLES"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antimicrobial peptides"
+    tag "ampcombi2"
+    tag "ampcombi2/parsetables"
+
+    config "./nextflow.config"
+
+    test("ampcombi2_parsetables - metagenome") {
+        when {
+            process {
+                """
+                amp_input = [
+                    [id:'sample_1'],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files_0.2/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files_0.2/amplify/sample_1/sample_1.amplify.tsv', checkIfExists: true)
+                    ]
+                ]
+                faa_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa_0.2/sample_1.faa', checkIfExists: true)
+                gbk_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_gbk_0.2/sample_1.gbff', checkIfExists: true)
+
+                input[0] = amp_input
+                input[1] = faa_input
+                input[2] = gbk_input
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
+                                  process.out.results_db.collect { file(it[1]).getName() } +
+                                  process.out.contig_gbks.collect { file(it[1]).getName() } +
+                                  process.out.full_log.collect { file(it[1]).readLines().contains("<--AMP_database>") } +
+                                  process.out.sample_log.collect { file(it[1]).readLines().contains("found ampir file") } +
+                                  process.out.txt.collect { file(it[1]).readLines()[0] } +
+                                  process.out.tsv.collect { file(it[1]).readLines()[0] } +
+                                  process.out.faa.collect { file(it[1]).readLines()[0] } +
+                                  process.out.summary_csv.collect { file(it[1]).readLines().contains("Structure_Description") } +
+                                  process.out.versions ).match() }
+            )
+        }
+    }
+    test("ampcombi2_parsetables - metagenome - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                amp_input = [
+                    [id:'sample_1'],
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files_0.2/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files_0.2/amplify/sample_1/sample_1.amplify.tsv', checkIfExists: true)
+                    ]
+                ]
+                faa_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa_0.2/sample_1.faa', checkIfExists: true)
+                gbk_input = file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_gbk_0.2/sample_1.gbff', checkIfExists: true)
+
+                input[0] = amp_input
+                input[1] = faa_input
+                input[2] = gbk_input
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
