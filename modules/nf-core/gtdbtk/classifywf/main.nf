@@ -51,11 +51,19 @@ process GTDBTK_CLASSIFYWF {
         --min_perc_aa $params.gtdbtk_min_perc_aa \\
         --min_af $params.gtdbtk_min_af
 
-    mv classify/* .
+    ## If mash db given, classify/ and identify/ directories won't be created
+    if [[ -d classify/ ]]; then
+        mv classify/* .
+    fi
 
-    mv identify/* .
+    if [[ -d identify/ ]]; then
+        mv identify/* .
+    fi
 
-    mv align/* .\
+    ## If nothing aligns, no output, so only run
+    if [[ -d align/ ]]; then
+        mv align/* .
+    fi
 
     mv gtdbtk.log "gtdbtk.${prefix}.log"
 
@@ -74,10 +82,10 @@ process GTDBTK_CLASSIFYWF {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch gtdbtk.${prefix}.stub.summary.tsv
-    touch gtdbtk.${prefix}.stub.classify.tree.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.classify.tree.gz
     touch gtdbtk.${prefix}.stub.markers_summary.tsv
-    touch gtdbtk.${prefix}.stub.msa.fasta.gz
-    touch gtdbtk.${prefix}.stub.user_msa.fasta.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.msa.fasta.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.user_msa.fasta.gz
     touch gtdbtk.${prefix}.stub.filtered.tsv
     touch gtdbtk.${prefix}.log
     touch gtdbtk.${prefix}.warnings.log

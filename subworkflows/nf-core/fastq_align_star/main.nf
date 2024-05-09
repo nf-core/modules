@@ -39,6 +39,7 @@ workflow FASTQ_ALIGN_STAR {
     //
 
     BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta )
+    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.versions)
 
     emit:
 

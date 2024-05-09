@@ -124,4 +124,12 @@ process VCFTOOLS {
         vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
+    END_VERSIONS
+    """
 }
