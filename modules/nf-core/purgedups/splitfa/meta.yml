@@ -9,9 +9,8 @@ tools:
       homepage: "https://github.com/dfguan/purge_dups"
       documentation: "https://github.com/dfguan/purge_dups"
       tool_dev_url: "https://github.com/dfguan/purge_dups"
-      doi: "https://doi.org/10.1093/bioinformatics/btaa025"
+      doi: "10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: file
       description: Draft assembly file
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -37,6 +35,7 @@ output:
       type: file
       description: Fasta split by N's
       pattern: "*.fasta.gz"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

@@ -10,9 +10,8 @@ tools:
       homepage: https://github.com/scwatts/hicap
       documentation: https://github.com/scwatts/hicap
       tool_dev_url: https://github.com/scwatts/hicap
-      doi: "https://doi.org/10.1128/JCM.00190-19"
+      doi: "10.1128/JCM.00190-19"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: Optional - Prodigal model to use for gene prediction
       pattern: "*.{bin}"
-
 output:
   - meta:
       type: map
@@ -54,6 +52,7 @@ output:
       type: file
       description: Detailed summary of cap locus annotations
       pattern: "*.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

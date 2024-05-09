@@ -2,18 +2,18 @@ process GATK4_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gatk4=4.3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model)
-    path  fasta
-    path  fai
-    path  dict
-    path  dbsnp
-    path  dbsnp_tbi
+    tuple val(meta),  path(input), path(input_index), path(intervals), path(dragstr_model)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(dbsnp)
+    tuple val(meta6), path(dbsnp_tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
@@ -32,14 +32,15 @@ process GATK4_HAPLOTYPECALLER {
     def dragstr_command = dragstr_model ? "--dragstr-params-path $dragstr_model" : ""
     def bamout_command = args.contains("--bam-writer-type") ? "--bam-output ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam" : ""
 
-    def avail_mem = 3
+    def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        avail_mem = task.memory.giga
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" HaplotypeCaller \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        HaplotypeCaller \\
         --input $input \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\

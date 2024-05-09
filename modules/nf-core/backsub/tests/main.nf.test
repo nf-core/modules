@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process BACKSUB"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "BACKSUB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "backsub"
+
+
+    test("Should run without failures") {
+        when {
+            process {
+                """
+                // define inputs of the process here. Example:
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['imaging']['background_subtraction']['image'], checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.test_data['imaging']['background_subtraction']['markers'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.backsub_tif },
+                { assert snapshot(process.out.markerout).match("markerout") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

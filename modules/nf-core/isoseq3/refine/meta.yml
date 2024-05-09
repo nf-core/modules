@@ -1,17 +1,18 @@
 name: isoseq3_refine
-description: Generate transcripts by clustering HiFi reads
+description: Remove polyA tail and artificial concatemers
 keywords:
-  - isoseq3
-  - isoseq3/refine
+  - isoseq
+  - refine
+  - ccs
+  - pacbio
+  - polyA_tail
 tools:
   - isoseq3:
       description: IsoSeq3 - Scalable De Novo Isoform Discovery
       homepage: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       documentation: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
       tool_dev_url: https://github.com/PacificBiosciences/IsoSeq/blob/master/isoseq-clustering.md
-      doi: ""
       licence: ["BSD-3-Clause-Clear"]
-
 input:
   - meta:
       type: map
@@ -26,7 +27,6 @@ input:
       type: file
       description: fasta file of primers
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -57,6 +57,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

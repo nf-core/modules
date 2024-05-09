@@ -1,0 +1,59 @@
+name: "admixture"
+description: ADMIXTURE is a program for estimating ancestry in a model-based manner from large autosomal SNP genotype datasets, where the individuals are unrelated (for example, the individuals in a case-control association study).
+keywords:
+  - ancestry
+  - population genetics
+  - admixture
+  - reference panels
+  - gwas
+tools:
+  - "admixture":
+      description: "ADMIXTURE is a software tool for maximum likelihood estimation of individual ancestries from multilocus SNP genotype datasets."
+      homepage: "https://dalexander.github.io/admixture/"
+      documentation: "https://dalexander.github.io/admixture/admixture-manual.pdf"
+      doi: "10.1101/gr.094052.109"
+      licence: ["Free for Academic Use"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed_ped_geno:
+      type: file
+      description: One of PLINK ".bed" file or PLINK ".ped" or EIGENSTRAT ".geno" file. If you provide ".bed" then you need to provide ".bim" and  "fam" files. If you provide ".ped" or ".geno" then you need to provide a ".map" file and an empty channel.
+      pattern: "*.{bed}"
+  - bim_map:
+      type: file
+      description: Mandatory accompanying file. One of PLINK ".bim" file or PLINK ".map" file. Provide ".bim" if ".bed" is the input. Provide ".map" if ".ped" or ".geno" is the input.
+      pattern: "*.{bim}"
+  - fam:
+      type: file
+      description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace with an empty channel if input is ".ped" or ".geno".
+      pattern: "*.{fam}"
+  - K:
+      type: integer
+      description: Belief of the number of ancestral populations.
+      pattern: "{*}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - Q-ancestry-fractions:
+      type: file
+      description: Space-delimited files containing ancestry fractions. The output filenames have the number of populations (K) that was assumed for the analysis.
+      pattern: "*.{Q}"
+  - P-allele-frequencies:
+      type: file
+      description: Space-delimited files containing the allele frequencies of the inferred ancestral populations. The output filenames have the number of populations (K) that was assumed for the analysis.
+      pattern: "*.{P}"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

@@ -18,9 +18,8 @@ tools:
       homepage: "https://pints.yulab.org/"
       documentation: "https://github.com/hyulab/PINTS/blob/main/README.md"
       tool_dev_url: "https://github.com/hyulab/PINTS"
-      doi: "https://doi.org/10.1038/s41587-022-01211-7"
+      doi: "10.1038/s41587-022-01211-7"
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -31,7 +30,6 @@ input:
       type: file
       description: BAM/ file
       pattern: "*.{bam}"
-
 output:
   - meta:
       type: map
@@ -61,6 +59,7 @@ output:
       type: file
       description: Peakcalling log for debugging purposes
       pattern: "peakcalling_*.log"
-
 authors:
-  - "@Emiller88"
+  - "@edmundmiller"
+maintainers:
+  - "@edmundmiller"

@@ -7,12 +7,9 @@ keywords:
 tools:
   - "pindel":
       description: "Pindel can detect breakpoints of large deletions, medium sized insertions, inversions, tandem duplications and other structural variants at single-based resolution from next-gen sequence data"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://gmt.genome.wustl.edu/packages/pindel/"
+      documentation: https://gmt.genome.wustl.edu/packages/pindel/user-manual.html
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -37,7 +34,6 @@ input:
   - fai:
       type: file
       description: Input reference genome fasta index file
-
 output:
   - meta:
       type: map
@@ -88,6 +84,7 @@ output:
       type: file
       description: File containing tandem duplications
       pattern: "*_{TD}"
-
 authors:
+  - "@marrip"
+maintainers:
   - "@marrip"

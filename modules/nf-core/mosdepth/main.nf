@@ -2,15 +2,14 @@ process MOSDEPTH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::mosdepth=0.3.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.3--hdfd78af_1' :
-        'quay.io/biocontainers/mosdepth:0.3.3--hdfd78af_1'}"
+        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.8--hd299d5a_0' :
+        'biocontainers/mosdepth:0.3.8--hd299d5a_0'}"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    path  bed
-    path  fasta
+    tuple val(meta),  path(bam), path(bai), path(bed)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path('*.global.dist.txt')      , emit: global_txt
@@ -36,10 +35,10 @@ process MOSDEPTH {
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
     if (bed && args.contains("--by")) {
-        exit 1, "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
+        error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
     if (!bed && args.contains("--thresholds")) {
-        exit 1, "'--thresholds' can only be specified in conjunction with '--by'"
+        error "'--thresholds' can only be specified in conjunction with '--by'"
     }
 
     """
@@ -64,13 +63,13 @@ process MOSDEPTH {
     touch ${prefix}.region.dist.txt
     touch ${prefix}.summary.txt
     touch ${prefix}.per-base.d4
-    touch ${prefix}.per-base.bed.gz
+    echo "" | gzip > ${prefix}.per-base.bed.gz
     touch ${prefix}.per-base.bed.gz.csi
-    touch ${prefix}.regions.bed.gz
+    echo "" | gzip > ${prefix}.regions.bed.gz
     touch ${prefix}.regions.bed.gz.csi
-    touch ${prefix}.quantized.bed.gz
+    echo "" | gzip > ${prefix}.quantized.bed.gz
     touch ${prefix}.quantized.bed.gz.csi
-    touch ${prefix}.thresholds.bed.gz
+    echo "" | gzip > ${prefix}.thresholds.bed.gz
     touch ${prefix}.thresholds.bed.gz.csi
 
     cat <<-END_VERSIONS > versions.yml
