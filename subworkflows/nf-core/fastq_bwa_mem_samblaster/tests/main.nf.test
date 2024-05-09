@@ -1,0 +1,75 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_BWA_MEM_SAMBLASTER"
+    script "../main.nf"
+    workflow "FASTQ_BWA_MEM_SAMBLASTER"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_bwa_mem_samblaster"
+    tag "samblaster"
+    tag "bwa/index"
+    tag "bwa/mem"
+
+
+    test("sarscov2-fq-gz") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ],
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [ [ id: 'genome' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [] ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2-fq-gz-stub") {
+
+        options '-stub'
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ],
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [ [ id: 'genome' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [] ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
