@@ -4,5 +4,9 @@
     - pairtools/select
     - pairtools
   files:
-    - path: output/pairtools/test.selected.pairs.gz
-    - path: output/pairtools/test.unselected.pairs.gz
+    - path: output/pairtools/test.selected.pairs.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
+      contains:
+        - "readid01\tchr1\t1\tchr2\t20\t+\t+\tUU\treadid01"
+    - path: output/pairtools/test.unselected.pairs.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
+      contains:
+        - "readid06\t!\t0\tchr1\t3\t-\t+\tNU\treadid06"

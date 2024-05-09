@@ -1,0 +1,9 @@
+- name: sentieon test_dnamodelapply
+  command: nextflow run ./tests/modules/nf-core/sentieon/dnamodelapply -entry test_dnamodelapply -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/dnamodelapply/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/dnamodelapply
+  files:
+    - path: ./output/sentieon/test.vcf.gz
+    - path: ./output/sentieon/test.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml

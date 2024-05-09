@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process VCF2DB"
+    script "../main.nf"
+    process "VCF2DB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcf2db"
+
+    test("homo_sapiens - vcf, ped") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf, ped - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

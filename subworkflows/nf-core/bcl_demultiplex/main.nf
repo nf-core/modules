@@ -6,7 +6,9 @@
 
 include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
-include { UNTAR      } from "../../../modules/nf-core/untar/main"
+
+// Define the log file path before the workflow starts
+def logFile = new File("${params.outdir}/invalid_fastqs.log")
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -14,13 +16,13 @@ workflow BCL_DEMULTIPLEX {
         demultiplexer   // bclconvert or bcl2fastq
 
     main:
-        ch_versions = Channel.empty()
-        ch_fastq    = Channel.empty()
-        ch_reports  = Channel.empty()
-        ch_stats    = Channel.empty()
-        ch_interop  = Channel.empty()
+        ch_versions      = Channel.empty()
+        ch_fastq         = Channel.empty()
+        ch_reports       = Channel.empty()
+        ch_stats         = Channel.empty()
+        ch_interop       = Channel.empty()
 
-        // Split flowcells into separate channels containg run as tar and run as path
+        // Split flowcells into separate channels containing run as tar and run as path
         // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
         ch_flowcell
             .branch { meta, samplesheet, run ->
@@ -34,15 +36,14 @@ workflow BCL_DEMULTIPLEX {
                 run_dirs: [ meta, run ]
             }.set { ch_flowcells_tar }
 
-        // MODULE: untar
         // Runs when run_dir is a tar archive
         // Re-join the metadata and the untarred run directory with the samplesheet
-        ch_flowcells_tar_merged = ch_flowcells_tar.samplesheets.join( UNTAR ( ch_flowcells_tar.run_dirs ).untar )
-        ch_versions = ch_versions.mix(UNTAR.out.versions)
+        ch_flowcells_tar_merged = ch_flowcells_tar
+                                    .samplesheets
+                                    .join( ch_flowcells_tar.run_dirs )
 
         // Merge the two channels back together
         ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
-
 
         // MODULE: bclconvert
         // Demultiplex the bcl files
@@ -53,7 +54,6 @@ workflow BCL_DEMULTIPLEX {
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
             ch_versions = ch_versions.mix(BCLCONVERT.out.versions)
         }
-
 
         // MODULE: bcl2fastq
         // Demultiplex the bcl files
@@ -67,7 +67,7 @@ workflow BCL_DEMULTIPLEX {
         }
 
         // Generate meta for each fastq
-        ch_fastq_with_meta = generate_fastq_meta(ch_fastq)
+        ch_fastq_with_meta = generate_fastq_meta(ch_fastq, logFile)
 
     emit:
         fastq    = ch_fastq_with_meta
@@ -83,34 +83,58 @@ workflow BCL_DEMULTIPLEX {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// Add meta values to fastq channel
-def generate_fastq_meta(ch_reads) {
-    // Create a tuple with the meta.id and the fastq
-    ch_reads.transpose().map{
-        fc_meta, fastq ->
-        def meta = [
-            "id": fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/,
-            "samplename": fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/,
-            "readgroup": [:],
-            "fcid": fc_meta.id,
-            "lane": fc_meta.lane
-        ]
-        meta.readgroup = readgroup_from_fastq(fastq)
-        meta.readgroup.SM = meta.samplename
-
-        return [ meta , fastq ]
+// This function appends a given text to a specified log file.
+// If the log file does not exist, it creates a new one.
+def appendToLogFile(String text, File logFile) {
+    if (!logFile.exists()) {
+        logFile.createNewFile()
     }
+    // Convert the text to String if it's a GString
+    String textToWrite = text.toString()
+    logFile << textToWrite + "\n" // Appends the text to the file with a new line
+}
+
+// Add meta values to fastq channel and skip invalid FASTQ files
+def generate_fastq_meta(ch_reads, logFile) {
+    // Create a tuple with the meta.id and the fastq
+    ch_reads.transpose().map { fc_meta, fastq ->
+        // Check if the FASTQ file is empty or has invalid content
+        def isValid = fastq.withInputStream { is ->
+            new java.util.zip.GZIPInputStream(is).withReader('ASCII') { reader ->
+                def line = reader.readLine()
+                line != null && line.startsWith('@')
+            }
+        }
+
+        def meta = null
+        if (isValid) {
+            meta = [
+                "id": fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/,
+                "samplename": fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/,
+                "readgroup": [:],
+                "fcid": fc_meta.id,
+                "lane": fc_meta.lane
+            ]
+            meta.readgroup = readgroup_from_fastq(fastq)
+            meta.readgroup.SM = meta.samplename
+        } else {
+            appendToLogFile(
+                "Empty or invalid FASTQ file: ${fastq}",
+                logFile
+                )
+                fastq = null
+                }
+
+        return [meta, fastq]
+    }.filter { it[0] != null }
     // Group by meta.id for PE samples
     .groupTuple(by: [0])
     // Add meta.single_end
-    .map {
-        meta, fastq ->
-        if (fastq.size() == 1){
-            meta.single_end = true
-        } else {
-            meta.single_end = false
-        }
-        return [ meta, fastq.flatten() ]
+    .map { meta, fastq ->
+        if (meta != null) {
+                meta.single_end = fastq.size() == 1
+                }
+        return [meta, fastq.flatten()]
     }
 }
 

@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/lh3/miniasm
       doi: "10.1093/bioinformatics/btw152"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: Alignment in PAF format
       pattern: "*{.paf,.paf.gz}"
-
 output:
   - meta:
       type: map
@@ -46,6 +44,7 @@ output:
       type: file
       description: Genome assembly
       pattern: "*.fasta.gz"
-
 authors:
+  - "@avantonder"
+maintainers:
   - "@avantonder"

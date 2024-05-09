@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_AMPLICONCLIP"
+    script "../main.nf"
+    process "SAMTOOLS_AMPLICONCLIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/ampliconclip"
+
+    test("sarscov2 - bam, bed") {
+
+        when {
+            process {
+                """
+                save_cliprejects = false
+                save_clipstats = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
+                input[2] = save_cliprejects
+                input[3] = save_clipstats
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bed_name") },
+                { assert snapshot(process.out.stats).match("bam_bed_stats") },
+                { assert snapshot(process.out.rejects_bam).match("bam_bed_rejects_bam") },
+                { assert snapshot(process.out.versions).match("bam_bed_versions") }
+            )
+        }
+    }
+
+
+    test("sarscov2 - bam, bed, save_cliprejects") {
+
+        when {
+            process {
+                """
+                save_cliprejects = true
+                save_clipstats = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
+                input[2] = save_cliprejects
+                input[3] = save_clipstats
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bed_save_clipsats_name") },
+                { assert snapshot(process.out.stats).match("bam_bed_save_clipsats_stats") },
+                { assert snapshot(process.out.rejects_bam).match("bam_bed_save_clipsats_rejects_bam") },
+                { assert snapshot(process.out.versions).match("bam_bed_save_clipsats_versions") }
+            )
+        }
+    }
+
+    test("sarscov2 - bam, bed, save_cliprejects, save_clipstats") {
+
+        when {
+            process {
+                """
+                save_cliprejects = true
+                save_clipstats = true
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true))
+                input[2] = save_cliprejects
+                input[3] = save_clipstats
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bed_save_all_name") },
+                { assert snapshot(process.out.stats).match("bam_bed_save_all_stats") },
+                { assert snapshot(process.out.rejects_bam).match("bam_bed_save_all_rejects_bam") },
+                { assert snapshot(process.out.versions).match("bam_bed_save_all_versions") }
+            )
+        }
+    }
+}

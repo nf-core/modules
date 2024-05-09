@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process NONPAREIL_NONPAREIL"
+    script "../main.nf"
+    process "NONPAREIL_NONPAREIL"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nonpareil"
+    tag "nonpareil/nonpareil"
+
+    test("candidatus_portiera_aleyrodidarum - gzipped") {
+
+        when {
+            params {
+                // define parameters here. Example:
+            // outdir = "tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = 'fastq'
+                input[2] = 'kmer'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.npa[0][1]).name,
+                        file(process.out.npc[0][1]).name,
+                        path(process.out.npo[0][1]).readLines()[0],
+                        path(process.out.npl[0][1])
+                    ).match()
+                },
+                { assert snapshot(process.out.versions).match("versions") },
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - uncompressed") {
+
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                // define parameters here. Example:
+            // outdir = "tests/results"
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'fastq'
+                input[2] = 'kmer'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.npa[0][1]).name,
+                        file(process.out.npc[0][1]).name,
+                        path(process.out.npo[0][1]).readLines()[0],
+                        path(process.out.npl[0][1])
+                    ).match()
+                },
+                { assert snapshot(process.out.versions).match("versions") },
+            )
+        }
+
+    }
+
+}

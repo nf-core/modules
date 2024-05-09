@@ -10,9 +10,7 @@ tools:
       homepage: http://github.com/pezmaster31/bamtools
       documentation: https://github.com/pezmaster31/bamtools/wiki
       tool_dev_url: http://github.com/pezmaster31/bamtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: File containing alignment statistics
       pattern: "*.stats"
-
 authors:
+  - "@lescai"
+maintainers:
   - "@lescai"

@@ -133,17 +133,3 @@ workflow test_endorspy_qualityfilter_dedup {
     ch_input_flagstat = SAMTOOLS_FLAGSTAT1.out.flagstat.join(SAMTOOLS_FLAGSTAT2.out.flagstat).map{[it[0], [], it[1], it[2]]}
     ENDORSPY ( ch_input_flagstat )
 }
-workflow test_endorspy_dedup {
-
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
-    ]
-
-
-    SAMTOOLS_FLAGSTAT1 ( input )
-
-    ch_input_flagstat = SAMTOOLS_FLAGSTAT1.out.flagstat.map{[it[0], [], [], it[1]]}
-    ENDORSPY ( ch_input_flagstat )
-}
