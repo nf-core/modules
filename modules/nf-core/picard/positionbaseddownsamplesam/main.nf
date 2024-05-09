@@ -5,15 +5,15 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     conda "bioconda::picard=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'biocontainers/picard:3.0.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), val(fraction)
 
     output:
     tuple val(meta), path("*.ds*.bam")        , emit: bam
-    tuple val(meta), path("*.ds*.bai")        , optional:true, emit: bai
-    tuple val(meta), env(ACTUAL_NUM_READS)    , optional:true, emit: num_reads
+    tuple val(meta), path("*.ds*.bai")        , emit: bai, optional:true
+    tuple val(meta), env(ACTUAL_NUM_READS)    , emit: num_reads, optional:true
     path  "versions.yml"                      , emit: versions
 
     when:
