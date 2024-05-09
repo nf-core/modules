@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "test Plink HWE function"
+    script "../main.nf"
+    process "PLINK_HWE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/hwe"
+
+    test("plink - VCF") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(process.out.hwe).match() }
+            )
+        }
+    }
+
+    test("plink - binary") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.hwe).match() }
+            )
+        }
+    }
+
+    test("plink - BCF") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [ [id:"null"], []]
+                input[2] = [
+                    [id:"test"],
+                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.hwe).match() }
+            )
+        }
+    }
+}

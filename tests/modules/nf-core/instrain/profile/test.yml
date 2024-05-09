@@ -1,9 +1,0 @@
-- name: "instrain"
-  command: nextflow run ./tests/modules/nf-core/instrain/profile -entry test_instrain_profile -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/instrain/profile/nextflow.config
-  tags:
-    - instrain
-    - instrain/profile
-  files:
-    - path: output/instrain/versions.yml
-    - path: output/instrain/test.IS/output/test.IS_SNVs.tsv
-      md5sum: 1d753903af5a25be540dcff255e25a1f

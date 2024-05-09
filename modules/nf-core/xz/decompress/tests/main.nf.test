@@ -1,0 +1,60 @@
+nextflow_process {
+    name "Test Process XZ_DECOMPRESS"
+    script "../main.nf"
+    process "XZ_DECOMPRESS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "xz"
+    tag "xz/decompress"
+
+    test("sarscov2 - genome - fasta") {
+        setup {
+            run("XZ_COMPRESS") {
+                script "../../compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = XZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file("test.xz")
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.file[0][1]).name).match() }
+            )
+        }
+    }
+}

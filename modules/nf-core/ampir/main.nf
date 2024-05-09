@@ -44,4 +44,27 @@ process AMPIR {
     writeLines(version_ampir, f)
     close(f)
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    #!/usr/bin/env Rscript
+    library(ampir)
+
+    t <- file("${prefix}.tsv", "w")
+    close(t)
+
+    a <- file("${prefix}.faa", "w")
+    close(a)
+
+    version_file_path <- "versions.yml"
+    version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
+    f <- file(version_file_path, "w")
+    writeLines('"${task.process}":', f)
+    writeLines("    ampir: ", f, sep = "")
+    writeLines(version_ampir, f)
+    close(f)
+    """
 }
