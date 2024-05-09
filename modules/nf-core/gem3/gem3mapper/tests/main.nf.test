@@ -10,18 +10,18 @@ nextflow_process {
     tag "gem3/gem3mapper"
     tag "gem3/gem3indexer"
 
-    test("sarscov2 - fastq, index, false") {
-
-        setup {
-            run("GEM3_GEM3INDEXER") {
-                script "../../gem3indexer/main.nf"
-                process {
-                    """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                    """
-                }
+    setup {
+        run("GEM3_GEM3INDEXER") {
+            script "../../gem3indexer/main.nf"
+            process {
+                """
+                input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                """
             }
         }
+    }
+
+    test("sarscov2 - fastq, index, false") {
 
         when {
             process {
@@ -31,7 +31,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
-                
+
                 input[2] = false
                 """
             }
@@ -51,17 +51,6 @@ nextflow_process {
 
     test("sarscov2 - fastq, index, true") {
 
-        setup {
-            run("GEM3_GEM3INDEXER") {
-                script "../../gem3indexer/main.nf"
-                process {
-                    """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -70,7 +59,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
                 ]
-                
+
                 input[2] = true
                 """
             }
@@ -90,17 +79,6 @@ nextflow_process {
 
     test("sarscov2 - [fastq1, fastq2], index, false") {
 
-        setup {
-            run("GEM3_GEM3INDEXER") {
-                script "../../gem3indexer/main.nf"
-                process {
-                    """
-                    input[0] = [ [:], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -112,7 +90,7 @@ nextflow_process {
                         file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
                     ]
                 ]
-                
+
                 input[2] = true
                 """
             }
