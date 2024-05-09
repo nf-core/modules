@@ -1,8 +1,7 @@
-VERSION = '2.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 process SRAHUMANSCRUBBER_INITDB {
     label 'process_single'
 
-    conda "bioconda::sra-human-scrubber=2.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sra-human-scrubber:2.0.0--hdfd78af_0':
         'quay.io/biocontainers/sra-human-scrubber:2.0.0--hdfd78af_0' }"
@@ -15,6 +14,7 @@ process SRAHUMANSCRUBBER_INITDB {
     task.ext.when == null || task.ext.when
 
     script:
+    def VERSION = '2.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DBVERSION=\$(curl "https://ftp.ncbi.nlm.nih.gov/sra/dbs/human_filter/current/version.txt")
     curl -f "https://ftp.ncbi.nlm.nih.gov/sra/dbs/human_filter/\${DBVERSION}.human_filter.db" -o "\${DBVERSION}.human_filter.db"
@@ -27,6 +27,7 @@ process SRAHUMANSCRUBBER_INITDB {
     """
 
     stub:
+    def VERSION = '2.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     DBVERSION="STUBRUN"
     touch "\${DBVERSION}.human_filter.db"

@@ -1,8 +1,0 @@
-- name: srahumanscrubber initdb test_srahumanscrubber_initdb
-  command: nextflow run ./tests/modules/nf-core/srahumanscrubber/initdb -entry test_srahumanscrubber_initdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/srahumanscrubber/initdb/nextflow.config -stub-run
-  tags:
-    - srahumanscrubber/initdb
-    - srahumanscrubber
-  files:
-    - path: output/srahumanscrubber/STUBRUN.human_filter.db
-    - path: output/srahumanscrubber/versions.yml
