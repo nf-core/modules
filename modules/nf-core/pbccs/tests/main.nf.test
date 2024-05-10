@@ -35,4 +35,29 @@ nextflow_process {
 
     }
 
+    test("PacBio pbccs - Compute CSS test - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'alz' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true)
+                ]
+                input[1] = 2
+                input[2] = 3
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
 }
