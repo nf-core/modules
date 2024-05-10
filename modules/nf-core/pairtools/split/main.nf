@@ -14,8 +14,8 @@ process PAIRTOOLS_SPLIT {
 
     output:
     tuple val(meta), path("*.split.pairs.gz"), emit:pairs
-    tuple val(meta), path("*.bam"), optional:true, emit:bam
-    path("versions.yml"), emit:versions
+    tuple val(meta), path("*.bam")           , emit:bam   , optional:true
+    path("versions.yml")                     , emit:versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,6 +24,7 @@ process PAIRTOOLS_SPLIT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=tmp
     pairtools split \
         --nproc-in ${task.cpus} --nproc-out ${task.cpus} \
         --output-pairs ${prefix}.split.pairs.gz \
@@ -35,4 +36,16 @@ process PAIRTOOLS_SPLIT {
         pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools, version //')
     END_VERSIONS
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    export MPLCONFIGDIR=tmp
+    echo "" | gzip > ${prefix}.split.pairs.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools, version //')
+    END_VERSIONS
+    """
+
 }
