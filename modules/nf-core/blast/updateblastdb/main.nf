@@ -11,15 +11,15 @@ process BLAST_UPDATEBLASTDB {
     tuple val(meta), val(name)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path(prefix), emit: db
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}; cd ${prefix}
 
@@ -37,7 +37,7 @@ process BLAST_UPDATEBLASTDB {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     touch ${prefix}/${name}.ndb
