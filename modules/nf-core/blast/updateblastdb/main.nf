@@ -1,4 +1,4 @@
-process BLAST_UPDATEBLASTDB {
+⁷process BLAST_UPDATEBLASTDB {
     tag "$meta.id"
     label 'process_medium'
 
@@ -31,7 +31,7 @@ process BLAST_UPDATEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | sed 's/[^0-9]*//;')
+        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev )
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process BLAST_UPDATEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | sed 's/[^0-9]*//;')
+        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev )
     END_VERSIONS
     """
 }
