@@ -13,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'mito'], 'mito' ]
+                input[0] = [ [id:'test'], 'mito' ]
                 """
             }
         }
@@ -21,8 +21,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
-                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.tar.gz'}!= null },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName().contains('mito')} },
                 { assert process.out.versions }
             )
         }
@@ -36,7 +36,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'mito'], 'mito' ]
+                input[0] = [ [id:'test'], 'mito' ]
                 """
             }
         }
@@ -44,7 +44,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
                 { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
                 { assert process.out.versions }
             )
@@ -59,7 +59,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'mito'], 'mito' ]
+                input[0] = [ [id:'test'], 'mito' ]
                 """
             }
         }
@@ -67,7 +67,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('mito') },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
                 { assert process.out.versions }
             )
         }

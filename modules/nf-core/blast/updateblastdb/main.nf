@@ -11,8 +11,8 @@ process BLAST_UPDATEBLASTDB {
     tuple val(meta), val(name)
 
     output:
-    tuple val(meta), path("${meta.id}"), emit: db
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${prefix}"), emit: db
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process BLAST_UPDATEBLASTDB {
     mkdir ${prefix}; cd ${prefix}
 
     update_blastdb.pl \\
-        ${prefix} \\
+        ${name} \\
         ${args}
 
     cd ..
@@ -40,6 +40,7 @@ process BLAST_UPDATEBLASTDB {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
+    touch ${prefix}/${name}.ndb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
