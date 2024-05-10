@@ -1,8 +1,0 @@
-- name: bismark coverage2cytosine test_bismark_coverage2cytosine
-  command: nextflow run ./tests/modules/nf-core/bismark/coverage2cytosine -entry test_bismark_coverage2cytosine -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bismark/coverage2cytosine/nextflow.config
-  tags:
-    - bismark
-    - bismark/coverage2cytosine
-  files:
-    - path: output/bismark/test.CpG_report.txt.gz
-    - path: output/bismark/test.cytosine_context_summary.txt

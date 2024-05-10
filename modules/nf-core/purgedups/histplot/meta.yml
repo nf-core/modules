@@ -14,14 +14,12 @@ tools:
       tool_dev_url: "https://github.com/dfguan/purge_dups"
       doi: "10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - statfile:
       type: file
       description: A Purge dups statistic file
@@ -30,14 +28,12 @@ input:
       type: file
       description: A Purge dups cutoff file
       pattern: "*.cutoffs"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
@@ -46,6 +42,7 @@ output:
       type: file
       description: A png file of the read depth coverage.
       pattern: "*.png"
-
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

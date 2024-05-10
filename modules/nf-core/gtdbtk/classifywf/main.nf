@@ -3,7 +3,7 @@ process GTDBTK_CLASSIFYWF {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::gtdbtk=2.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gtdbtk:2.3.2--pyhdfd78af_0' :
         'biocontainers/gtdbtk:2.3.2--pyhdfd78af_0' }"
@@ -51,17 +51,25 @@ process GTDBTK_CLASSIFYWF {
         --min_perc_aa $params.gtdbtk_min_perc_aa \\
         --min_af $params.gtdbtk_min_af
 
-    mv classify/* .
+    ## If mash db given, classify/ and identify/ directories won't be created
+    if [[ -d classify/ ]]; then
+        mv classify/* .
+    fi
 
-    mv identify/* .
+    if [[ -d identify/ ]]; then
+        mv identify/* .
+    fi
 
-    mv align/* .\
+    ## If nothing aligns, no output, so only run
+    if [[ -d align/ ]]; then
+        mv align/* .
+    fi
 
     mv gtdbtk.log "gtdbtk.${prefix}.log"
 
     mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
 
-    find -name gtdbtk.${prefix}.*.classify.tree | xargs -r gzip # do not fail if .tree is missing
+    find -name "gtdbtk.${prefix}.*.classify.tree" | xargs -r gzip # do not fail if .tree is missing
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -74,10 +82,10 @@ process GTDBTK_CLASSIFYWF {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch gtdbtk.${prefix}.stub.summary.tsv
-    touch gtdbtk.${prefix}.stub.classify.tree.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.classify.tree.gz
     touch gtdbtk.${prefix}.stub.markers_summary.tsv
-    touch gtdbtk.${prefix}.stub.msa.fasta.gz
-    touch gtdbtk.${prefix}.stub.user_msa.fasta.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.msa.fasta.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.user_msa.fasta.gz
     touch gtdbtk.${prefix}.stub.filtered.tsv
     touch gtdbtk.${prefix}.log
     touch gtdbtk.${prefix}.warnings.log

@@ -13,9 +13,7 @@ tools:
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: https://github.com/broadinstitute/picard
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -33,7 +31,6 @@ input:
   - readlist:
       type: file
       description: Optional text file containing reads IDs to include or exclude
-
 output:
   - meta:
       type: map
@@ -48,6 +45,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

@@ -2,7 +2,7 @@ process ENDORSPY {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::endorspy=1.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/endorspy:1.3--hdfd78af_0':
         'biocontainers/endorspy:1.3--hdfd78af_0' }"

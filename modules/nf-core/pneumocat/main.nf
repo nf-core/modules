@@ -3,7 +3,7 @@ process PNEUMOCAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pneumocat=1.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pneumocat:1.2.1--0':
         'biocontainers/pneumocat:1.2.1--0' }"

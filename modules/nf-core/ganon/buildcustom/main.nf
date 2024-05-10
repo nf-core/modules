@@ -2,10 +2,10 @@ process GANON_BUILDCUSTOM {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::ganon=1.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:1.5.1--py310h8abeb55_0':
-        'quay.io/biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
+        'https://depot.galaxyproject.org/singularity/ganon:2.0.0--py39ha35b9be_0':
+        'biocontainers/ganon:2.0.0--py39ha35b9be_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +13,7 @@ process GANON_BUILDCUSTOM {
     path genome_size_files
 
     output:
-    tuple val(meta), path("*.{ibf,tax}")          , emit: db
+    tuple val(meta), path("*.{hibf,ibf,tax}")     , emit: db
     tuple val(meta), path("*.info.tsv")           , emit: info            , optional: true
     path "versions.yml"                           , emit: versions
 
@@ -47,7 +47,7 @@ process GANON_BUILDCUSTOM {
     def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
     def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
-    touch ${prefix}.ibf
+    touch ${prefix}.hibf
     touch ${prefix}.tax
     touch ${prefix}.info.tsv
 

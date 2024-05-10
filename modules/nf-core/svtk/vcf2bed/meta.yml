@@ -12,9 +12,7 @@ tools:
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -29,7 +27,6 @@ input:
       type: file
       description: The index for the VCF file
       pattern: "*.vcf.gz.tbi"
-
 output:
   - meta:
       type: map
@@ -44,6 +41,7 @@ output:
       type: file
       description: The created BED file
       pattern: "*.bed"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

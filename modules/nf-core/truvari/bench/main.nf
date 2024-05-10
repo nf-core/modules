@@ -2,7 +2,7 @@ process TRUVARI_BENCH {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::truvari=4.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/truvari:4.1.0--pyhdfd78af_0':
         'biocontainers/truvari:4.1.0--pyhdfd78af_0' }"

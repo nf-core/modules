@@ -10,9 +10,7 @@ tools:
       homepage: "https://github.com/GeneDx/scramble"
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
-
       licence: "['CC']"
-
 input:
   - meta:
       type: map
@@ -31,7 +29,6 @@ input:
       type: file
       description: The reference FASTA file (mandatory when using CRAM files)
       pattern: "*.{fasta,fa}"
-
 output:
   - meta:
       type: map
@@ -46,6 +43,7 @@ output:
       type: file
       description: Tab-delimited file containing the soft-clipped clusters
       pattern: "*.clusters.txt"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

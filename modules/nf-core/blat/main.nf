@@ -2,7 +2,7 @@ process BLAT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::blat=36"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blat:36--0':
         'biocontainers/blat:36--0' }"

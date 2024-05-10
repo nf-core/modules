@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
 input:
   - meta:
       type: map
@@ -43,7 +43,6 @@ input:
       description: |
         CSV or TSV matrix file to use alongside differential statistics in
         interpretation. Usually a normalised form.
-
 output:
   - meta:
       type: map
@@ -64,6 +63,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"
