@@ -42,4 +42,20 @@ process PBCCS {
         pbccs: \$(echo \$(ccs --version 2>&1) | grep 'ccs' | sed 's/^.*ccs //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.chunk1.bam
+    touch dummy.chunk1.bam.pbi
+    touch dummy.report.txt
+    touch dummy.report.json
+    touch dummy.metrics.json.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pbccs: \$(echo \$(ccs --version 2>&1) | grep 'ccs' | sed 's/^.*ccs //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

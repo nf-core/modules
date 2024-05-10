@@ -67,4 +67,18 @@ process LIMA {
         lima: \$( lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.counts
+    touch dummy.report
+    touch dummy.summary
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        lima: \$( lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g' )
+    END_VERSIONS
+    """
 }

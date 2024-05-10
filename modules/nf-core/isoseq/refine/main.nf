@@ -39,4 +39,20 @@ process ISOSEQ_REFINE {
         isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.bam
+    touch dummy.bam.pbi
+    touch dummy.consensusreadset.xml
+    touch dummy.filter_summary.report.json
+    touch dummy.report.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        isoseq: \$( isoseq refine --version | head -n 1 | sed 's/isoseq refine //' | sed 's/ (commit.\\+//' )
+    END_VERSIONS
+    """
 }

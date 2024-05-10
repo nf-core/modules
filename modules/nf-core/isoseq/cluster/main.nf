@@ -42,4 +42,20 @@ process ISOSEQ_CLUSTER {
         isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.transcripts.bam
+    touch dummy.transcripts.bam.pbi
+    touch dummy.transcripts.cluster
+    touch dummy.transcripts.cluster_report.csv
+    touch dummy.transcripts.transcriptset.xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
+    END_VERSIONS
+    """
 }
