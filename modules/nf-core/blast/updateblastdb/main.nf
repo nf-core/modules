@@ -1,4 +1,4 @@
-⁷process BLAST_UPDATEBLASTDB {
+process BLAST_UPDATEBLASTDB {
     tag "$meta.id"
     label 'process_medium'
 
