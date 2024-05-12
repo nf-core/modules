@@ -23,7 +23,12 @@ process SCSPLIT_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    scSplit count -v $vcf -i $bam -b $barcode -r ${prefix}_ref_filtered.csv -a ${prefix}_alt_filtered.csv -o .
+    if [ -z "${workflow.containerEngine}" ];
+        then scsplit_path="scSplit";
+    else
+        scsplit_path="python \$(python -c 'import site; print("".join(site.getsitepackages()))')/scSplit/scSplit";
+    fi
+    \$scsplit_path count -v $vcf -i $bam -b $barcode -r ${prefix}_ref_filtered.csv -a ${prefix}_alt_filtered.csv -o .
     mv scSplit.log ${prefix}_scSplit.log
 
     cat <<-END_VERSIONS > versions.yml

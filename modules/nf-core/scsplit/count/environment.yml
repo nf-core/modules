@@ -1,9 +1,18 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 name: "scsplit_count"
+
 channels:
   - conda-forge
   - bioconda
   - defaults
+
 dependencies:
-  - "bioconda::scsplit=1.0.8.2"
+  - numpy
+  - pandas<2.0
+  - pyVCF
+  - pysam
+  - python=3.9
+  - scSplit
+  - scikit-learn==1.1.3
+  - scipy
+  - setuptools<58
