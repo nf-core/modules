@@ -23,7 +23,7 @@ process SCSPLIT_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    if [ -z "${workflow.containerEngine}" ];
+    if [ -z "${workflowcontainerEngine+x}" ];
         then scsplit_path="scSplit";
     else
         scsplit_path="python \$(python -c 'import site; print("".join(site.getsitepackages()))')/scSplit/scSplit";
