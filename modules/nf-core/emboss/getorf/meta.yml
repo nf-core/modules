@@ -15,7 +15,7 @@ tools:
       documentation: "https://www.bioinformatics.nl/cgi-bin/emboss/help/getorf"
       tool_dev_url: "https://github.com/kimrutherford/EMBOSS/blob/master/emboss/getorf.c"
       doi: "10.1016/s0168-9525(00)02024-2"
-      licence: "['GPL']"
+      licence: ["GPL"]
 
 input:
   # Only when we have meta
@@ -41,7 +41,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - outseq:
+  - orf:
       type: file
       description: Converted sequence file
       pattern: "*"
