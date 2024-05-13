@@ -1,20 +1,18 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rtn_tni"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Uses the RTN R package for transcriptional regulatory network inference (TNI).
 keywords:
-  - sort
-  - example
-  - genomics
+  - regulatory network
+  - transcriptomics
+  - transcription factors
 tools:
   - "rtn":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "RTN: Reconstruction of Transcriptional regulatory Networks and analysis of regulons"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/vignettes/RTN/inst/doc/RTN.html"
+      tool_dev_url: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      doi: "http://dx.doi.org/10.1038/ncomms3464"
       licence: ['Artistic-2.0']
 
 ## TODO nf-core: Add a description of all of the variables used as input

@@ -1,21 +1,14 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
 // TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
 //               All other parameters MUST be provided using the "task.ext" directive, see here:
 //               https://www.nextflow.io/docs/latest/process.html#ext
 //               where "task.ext" is a string.
 //               Any parameters that need to be evaluated in the context of a particular sample
 //               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process RTN_TNI {
+    debug true
     tag "{$expression_matrix.name}"
     label 'process_medium'
 
@@ -25,13 +18,13 @@ process RTN_TNI {
         'biocontainers/bioconductor-rtn:2.26.0--r43hdfd78af_0' }"
 
     input:
-    path expression_matrix
+    tuple val(meta), path(expression_matrix)
 
     output:
-    path "tni.rdata.rdata"             , emit: tni
-    path "tni-permutated.rdata"        , emit:tni_perm
-    path "tni-bootstrapped.rdata"      , emit: tni_bootstrap
-    path "tni-filtered.rdata"          , emit: tni_filtered
+    path "tni.rds"                     , emit: tni
+ //   path "tni-permutated.rds"          , emit: tni_perm
+ //   path "tni-bootstrapped.rds  "      , emit: tni_bootstrap
+    path "tni_filtered.rds"            , emit: tni_filtered
     path "versions.yml"                , emit: versions
 
     when:
@@ -49,10 +42,10 @@ process RTN_TNI {
     def args = task.ext.args ?: ''
 
     """
-    touch tni.rdata
-    touch tni-permutated.rdata
-    touch tni-bootstrapped.rdata
-    touch tni-filtered.rdata
+    touch tni.rds
+    touch tni_permutated.rds
+    touch tni_bootstrapped.rds
+    touch tni_filtered.rds
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

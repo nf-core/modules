@@ -30,7 +30,7 @@ output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.pref
 threads <- $task.cpus
 args_opt <- parse_args('$task.ext.args')
 
-n_perm <- ifelse('n_permutations' %in% args_opt), args_opt[['n_permutations']], 10)
+n_perm <- ifelse(('n_permutations' %in% args_opt), args_opt[['n_permutations']], 10)
 
 # Debug messages (stderr)
 message("Expression matrix file   : ", input_expr_matrix)
@@ -43,38 +43,41 @@ library("RTN")
 library("snow")
 # Load data
 data(tfsData)
+data(tniData)
 
 # Preprocess
 # Input 1: 'expData', a named gene expression matrix (genes on rows, samples on cols);
 # Input 2: 'regulatoryElements', a vector listing genes regarded as TFs
 # Input 3: 'rowAnnotation', an optional data frame with gene annotation
 # Input 4: 'colAnnotation', an optional data frame with sample annotation
-tfs <- tfsData$Lambert2018$SYMBOL
-# tfs <- c("ENSMUSG00000001517", "ENSMUSG00000018983", "ENSMUSG00000016477",
-#         "ENSMUSG00000039153", "ENSMUSG00000020415")
+tfs <- tfsData\$Lambert2018\$SYMBOL
 
-exp_data <- read.csv(expression_matrix,
-                     sep='\t')
-rownames(exp_data) <- exp_data$Geneid
-rowAnnotation <- exp_data[,1:2]
+# exp_data <- read.csv(input_expr_matrix,
+#                      sep='\t')
+exp_data <- tniData
+rownames(exp_data) <- exp_data\$Geneid
+#rowAnnotation <- exp_data[,1:2]
+rowAnnotation <- tniData\$rowAnnotation
 colnames(rowAnnotation) <- c('PROBEID', 'SYMBOL')
-rowAnnotation$SYMBOL <- toupper(rowAnnotation$SYMBOL)
-exp_data[,1:2] <- NULL
+rowAnnotation\$SYMBOL <- toupper(rowAnnotation\$SYMBOL)
+#exp_data[,1:2] <- NULL
 
 # Regulatory Transcriptional Network Inference
-rtni <- tni.constructor(expData = as.matrix(exp_data),
+#rtni <- tni.constructor(expData = as.matrix(exp_data),
+tfs <- c("FOXM1","E2F2","E2F3","RUNX2","PTTG1")
+rtni <- tni.constructor(expData = exp_data\$expData,
                         regulatoryElements = tfs,
                         rowAnnotation = rowAnnotation)
 
 #options(cluster=snow::makeCluster(spec=threads, "SOCK"))
 
 # Please set nPermutations >= 1000
-#rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff = 1e-7)
+rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff = 1e-7)
 
 # Unstable interactions are subsequently removed by bootstrap analysis using the
 # tni.bootstrap() function, which creates a consensus bootstrap network, referred
 # here as refnet (reference network).
-#rtni_bootstrapped <- tni.bootstrap(rtni_permutation)
+rtni_bootstrapped <- tni.bootstrap(rtni_permutation)
 
 #stopCluster(getOption("cluster"))
 
@@ -82,28 +85,27 @@ rtni <- tni.constructor(expData = as.matrix(exp_data),
 # target gene, preserving the dominant TF-target pair (ARACNe)
 rtni_filtered <- tni.dpi.filter(rtni_bootstrapped)
 
-# Summary of the resulting regulatory network
-tni.regulon.summary(rtni, regulatoryElements = c("RUNX2"))
-# tni.regulon.summary(rtni, regulatoryElements = "ENSMUSG00000001517")
+saveRDS(rtni, file = "tni.rds")
+saveRDS(rtni_filtered, file = "tni_filtered.rds")
 
 # Plot
-pdf(paste0(output_prefix, "_RTN.pdf"))
-tni.graph(rtni, regulatoryElements = c("AEBP2", "AKAP8"))
-title("Regulatory Transcriptional Network")
-mtext(output_prefix, side=3)
-dev.off()
-cat(
-    paste("- Threads::", threads),
-    fill=TRUE, labels=output_prefix,
-    file=paste0(output_prefix, "_intercept_slope.txt"), append=FALSE
-)
+#pdf(paste0(output_prefix, "_RTN.pdf"))
+#tni.graph(rtni_filtered, regulatoryElements = c("FOXM1", "E2F2"))
+#title("Regulatory Transcriptional Network")
+#mtext(output_prefix, side=3)
+#dev.off()
+#cat(
+#    paste("- Threads::", threads),
+#    fill=TRUE, labels=output_prefix,
+#    file=paste0(output_prefix, "_intercept_slope.txt"), append=FALSE
+#)
 
-write(line,file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),append=TRUE)
-write.table(
-    cbind(curve_x, curve_y),
-    file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),
-    quote=FALSE, row.names=FALSE, col.names=FALSE, append=TRUE,
-)
+#write(line,file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),append=TRUE)
+#write.table(
+#    cbind(curve_x, curve_y),
+#    file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),
+#    quote=FALSE, row.names=FALSE, col.names=FALSE, append=TRUE,
+#)
 
 ################################################
 ################################################
