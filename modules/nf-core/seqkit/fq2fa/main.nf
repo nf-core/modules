@@ -2,17 +2,17 @@ process SEQKIT_FQ2FA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::seqkit=2.5.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.5.0--h9ee0642_0':
-        'biocontainers/seqkit:2.5.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0' :
+        'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: fasta
-    path "versions.yml"           , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,19 +31,18 @@ process SEQKIT_FQ2FA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(seqkit version 2>&1) | sed 's/seqkit v//' ))
+        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa.gz
+    echo "" | gzip > ${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(seqkit version 2>&1) | sed 's/seqkit v//' ))
+        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
     END_VERSIONS
     """
 }
