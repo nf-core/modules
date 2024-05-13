@@ -2,17 +2,17 @@ process BEDOPS_GTF2BED {
     tag "$gtf"
     label 'process_low'
 
-    conda "bioconda::bedops=2.4.41"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedops:2.4.41--h9f5acd7_0':
-        'biocontainers/bedops:2.4.41--h9f5acd7_0' }"
+        'https://depot.galaxyproject.org/singularity/bedops:2.4.41--h4ac6f70_2':
+        'biocontainers/bedops:2.4.41--h4ac6f70_2' }"
 
     input:
-    path gtf
+    tuple val(meta), path(gtf)
 
     output:
-    path '*.bed'       , emit: bed
-    path "versions.yml", emit: versions
+    tuple val(meta), path('*.bed'), emit: bed
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,4 +34,16 @@ process BEDOPS_GTF2BED {
         gtf2bed: \$(bedops --version | grep version | awk ' { print \$2 } ')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${gtf.baseName}"
+    """
+    touch ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gtf2bed: \$(bedops --version | grep version | awk ' { print \$2 } ')
+    END_VERSIONS
+    """
+
 }
