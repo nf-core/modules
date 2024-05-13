@@ -83,7 +83,7 @@ output:
       type: file
       description: Serialised DESeq2 object
       pattern: "dds.rld.rds"
-  - sizefactors:
+  - size_factors:
       type: file
       description: Size factors
       pattern: "deseq2.sizefactors.tsv"
@@ -91,14 +91,26 @@ output:
       type: file
       description: TSV-format counts matrix, normalised to size factors
       pattern: "normalised_counts.tsv"
-  - variance_stabilised_counts:
+  - rlog_counts:
       type: file
-      description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
-      pattern: "variance_stabilised_counts.tsv"
+      description: |
+        Optional, TSV-format counts matrix, normalised to size factors, with
+        variance stabilisation applied via `rlog()`.
+      pattern: "rlog.tsv"
+  - vst_counts:
+      type: file
+      description: |
+        Optional, TSV-format counts matrix, normalised to size factors, with
+        variance stabilisation applied via `vst()`.
+      pattern: "vst_counts.tsv"
   - model:
       type: file
       description: TXT-format DESeq2 model
       pattern: "deseq2.model.tsv"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
   - versions:
       type: file
       description: File containing software versions
