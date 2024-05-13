@@ -69,7 +69,7 @@ install_cdf_db <- function(celfile, annotation = FALSE){
     if (annotation){
         exts <- c(exts, '.db')
     }
-
+    options(timeout=600)
     for (package in paste0(cleaned.cdfName, exts)){
         install.packages(
             package,
@@ -133,7 +133,8 @@ opt <- list(
     rm.mask = FALSE,
     rm.outliers = FALSE,
     rm.extra = FALSE,
-    build_annotation = FALSE
+    build_annotation = FALSE,
+    keep.log2 = TRUE
 )
 if (opt\$description == ''){
     opt\$description = NULL
@@ -223,6 +224,9 @@ eset <- justRMA(
 
 # This should happen as part of the above, not sure why it doesn't
 sampleNames(eset) <- sample.sheet[[opt\$sample_name_col]]
+
+# unlog2 the data, if keep.log2 is set to FALSE
+if (!opt\$keep.log2) exprs(eset) <- 2**exprs(eset)
 
 ################################################
 ################################################

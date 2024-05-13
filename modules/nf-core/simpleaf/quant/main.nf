@@ -2,10 +2,10 @@ process SIMPLEAF_QUANT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::simpleaf=0.14.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.14.1--h4ac6f70_0':
-        'biocontainers/simpleaf:0.14.1--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.15.1--h4ac6f70_0':
+        'biocontainers/simpleaf:0.15.1--h4ac6f70_0' }"
 
     input:
     //
@@ -46,9 +46,9 @@ process SIMPLEAF_QUANT {
 
     # run simpleaf quant
     simpleaf quant \\
+        -i ${index} \\
         -1 ${forward.join( "," )} \\
         -2 ${reverse.join( "," )} \\
-        -i ${index} \\
         -c $chemistry \\
         -r $resolution \\
         -o ${prefix} \\
@@ -69,7 +69,15 @@ process SIMPLEAF_QUANT {
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
+    mkdir -p ${prefix}/af_map
+    mkdir -p ${prefix}/af_quant/alevin
+
+    touch ${prefix}/af_map/map.rad
+    touch ${prefix}/af_map/unmapped_bc_count.bin
+    touch ${prefix}/af_quant/alevin/quants_mat_rows.txt
+    touch ${prefix}/af_quant/all_freq.bin
+    touch ${prefix}/af_quant/map.collated.rad
+    touch ${prefix}/af_quant/permit_freq.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

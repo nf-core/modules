@@ -3,13 +3,14 @@ description: Generates a count of coverage of alleles
 keywords:
   - allele
   - count
+  - coverage
 tools:
   - allelecounter:
       description: Takes a file of locations and a [cr|b]am file and generates a count of coverage of each allele at that location (given any filter settings)
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
-      licence: A-GPL 3.0
+      licence: ["GPL 3.0"]
 input:
   - meta:
       type: map
@@ -41,7 +42,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - alleleCount:
+  - allelecount:
       type: file
       description: Allele count file
       pattern: "*.{alleleCount}"

@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process EKLIPSE"
+    script "../main.nf"
+    process "EKLIPSE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eklipse"
+
+    test("homo_sapiens [bam]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_illumina_mt_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_illumina_mt_bam_bai'], checkIfExists: true)
+                ]
+                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_mt_gb'], checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(file(process.out.deletions[0][1]),
+                                  file(process.out.genes[0][1]),
+                                  file(process.out.circos[0][1]),
+                                  file(process.out.versions[0])).match()
+                                }
+            )
+        }
+    }
+}

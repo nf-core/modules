@@ -23,15 +23,15 @@ input:
       description: Output .mapping.ARG file from DeepARG
       pattern: "*.mapping.ARG"
   - format:
-      type: value
+      type: string
       description: Type of report file to be produced
       pattern: "tsv|json"
   - software_version:
-      type: value
+      type: string
       description: Version of DeepARG used
       pattern: "[0-9].[0-9].[0-9]"
   - reference_db_version:
-      type: value
+      type: integer
       description: Database version of DeepARG used
       pattern: "[0-9]"
 output:

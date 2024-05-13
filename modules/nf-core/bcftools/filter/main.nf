@@ -2,10 +2,10 @@ process BCFTOOLS_FILTER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bcftools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'biocontainers/bcftools:1.17--haef29d1_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
+        'biocontainers/bcftools:1.18--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -43,6 +43,7 @@ process BCFTOOLS_FILTER {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
@@ -53,8 +54,10 @@ process BCFTOOLS_FILTER {
 
     if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
+    def create_file = extension.endsWith(".gz") ? "echo '' | gzip > ${prefix}.${extension}" : "touch ${prefix}.${extension}"
+
     """
-    touch ${prefix}.${extension}
+    ${create_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

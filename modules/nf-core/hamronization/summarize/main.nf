@@ -1,10 +1,10 @@
 process HAMRONIZATION_SUMMARIZE {
     label 'process_single'
 
-    conda "bioconda::hamronization=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hamronization:1.1.1--pyhdfd78af_0':
-        'biocontainers/hamronization:1.1.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/hamronization:1.1.4--pyhdfd78af_0':
+        'biocontainers/hamronization:1.1.4--pyhdfd78af_0' }"
 
     input:
     path(reports)
@@ -29,6 +29,17 @@ process HAMRONIZATION_SUMMARIZE {
         -t ${format} \\
         $args \\
         -o hamronization_combined_report.${outformat}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
+    END_VERSIONS
+    """
+
+    stub:
+    def outformat = format == 'interactive' ? 'html' : format
+    """
+    touch hamronization_combined_report.${outformat}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

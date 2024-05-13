@@ -1,7 +1,7 @@
 process CHECKV_UPDATEDATABASE {
     label 'process_low'
 
-    conda "bioconda::checkv=1.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
         'biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
@@ -22,7 +22,6 @@ process CHECKV_UPDATEDATABASE {
     prefix    = task.ext.prefix ?: "${meta.id}"
     def checkv_db = db ?: ''
     def update_sequence = fasta ?: ''
-
     """
     checkv update_database \\
         --threads $task.cpus \\
@@ -30,6 +29,20 @@ process CHECKV_UPDATEDATABASE {
         $checkv_db \\
         ./$prefix/  \\
         $update_sequence \\
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def checkv_db = db ?: ''
+    def update_sequence = fasta ?: ''
+    """
+    touch -p ${prefix}/**
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
