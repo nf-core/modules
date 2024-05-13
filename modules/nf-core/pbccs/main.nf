@@ -51,7 +51,8 @@ process PBCCS {
     touch dummy.chunk1.bam.pbi
     touch dummy.report.txt
     touch dummy.report.json
-    touch dummy.metrics.json.gz
+    echo "test" > dummy.metrics.json
+    gzip dummy.metrics.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
