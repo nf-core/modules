@@ -44,24 +44,23 @@ process CELLRANGER_MULTI {
 
     // if references + FASTQ are empty, then don't run corresponding analyses
     // get names of references, if they exist
-    // empty reference channels stage as "references"
+    // empty reference channels (all under references/) can stage as "[]" when skipped by the workflow
     // empty FASTQ channels stage as "fastqs"
-    // empty files stage as the file name, we check against 'EMPTY'
-    gex_reference_name      = gex_reference.getName() != 'references'     ? gex_reference.getName()          : ''
-    gex_frna_probeset_name  = gex_frna_probeset.getBaseName() != 'EMPTY'  ? gex_frna_probeset.getName()      : ''
-    gex_targetpanel_name    = gex_targetpanel.getBaseName() != 'EMPTY'    ? gex_targetpanel.getName()        : ''
-    fb_reference_name       = fb_reference.getBaseName() != 'EMPTY'       ? fb_reference.getName()           : ''
-    vdj_reference_name      = vdj_reference.getName() != 'references'     ? vdj_reference.getName()          : ''
-    cmo_reference_name      = cmo_reference.getName() != 'EMPTY'          ? cmo_reference.getName()          : ''
-    cmo_sample_assignment   = cmo_barcode_assignment.getName() != 'EMPTY' ? cmo_barcode_assignment.getName() : ''
-    beam_antigen_panel_name = beam_antigen_panel.getName() != 'EMPTY' ? beam_antigen_panel.getName() : ''
+    gex_reference_name      = gex_reference          ? gex_reference.getName()          : ''
+    gex_frna_probeset_name  = gex_frna_probeset      ? gex_frna_probeset.getName()      : ''
+    gex_targetpanel_name    = gex_targetpanel        ? gex_targetpanel.getName()        : ''
+    fb_reference_name       = fb_reference           ? fb_reference.getName()           : ''
+    vdj_reference_name      = vdj_reference          ? vdj_reference.getName()          : ''
+    cmo_reference_name      = cmo_reference          ? cmo_reference.getName()          : ''
+    cmo_sample_assignment   = cmo_barcode_assignment ? cmo_barcode_assignment.getName() : ''
+    beam_antigen_panel_name = beam_antigen_panel     ? beam_antigen_panel.getName()     : ''
 
     include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference           ? '[gene-expression]'     : ''
     include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference           ? '[vdj]'                 : ''
     include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel     ? '[antigen-specificity]' : ''
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
-    include_fb   = fb_reference.first().getName() != 'references'                      ? '[feature]'             : ''
-    include_frna = gex_frna_probeset_name && frna_sampleinfo.getBaseName() != 'EMPTY'  ? '[samples]'             : ''
+    include_fb   = ab_fastqs.first().getName() != 'fastqs' && fb_reference             ? '[feature]'             : ''
+    include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
@@ -74,7 +73,7 @@ process CELLRANGER_MULTI {
     frna_probeset = include_frna && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
 
     // VDJ inner primer set
-    primer_index = vdj_primer_index.getBaseName() != 'EMPTY' ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
+    primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
 
     // BEAM antigen list, remember that this is a Feature Barcode file
     beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,./$beam_antigen_panel_name" : ''
@@ -86,7 +85,7 @@ process CELLRANGER_MULTI {
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [] )
+    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [])
 
     // collect options for each section
     // these are pulled from the meta maps
