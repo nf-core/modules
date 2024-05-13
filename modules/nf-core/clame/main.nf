@@ -2,7 +2,7 @@ process CLAME {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::clame=1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clame:1.0--he1b5a44_1':
         'biocontainers/clame:1.0--he1b5a44_1' }"
@@ -30,8 +30,22 @@ process CLAME {
         $args \\
         -nt $task.cpus \\
         -multiFasta ${fasta} \\
-        -output ${prefix} \\
-        || test -f ${prefix}.binning
+        -output ${prefix} || test -f ${prefix}.binning
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        clame: \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.binning
+    touch ${prefix}.fm9
+    touch ${prefix}.index
+    touch ${prefix}.links
+    touch ${prefix}.result
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clame: \$(echo \$(clame -h | sed -n '2p' | cut -d ' ' -f 2 ))
