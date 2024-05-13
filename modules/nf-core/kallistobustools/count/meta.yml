@@ -12,7 +12,7 @@ tools:
       homepage: https://www.kallistobus.tools/
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
-      licence: MIT License
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -34,16 +34,16 @@ input:
       pattern: "*t2g.txt"
   - t1c:
       type: file
-      description: kb ref's c1 spliced_t2c file
+      description: kb ref's c1 cdna_t2c file
       pattern: "*.{cdna_t2c.txt}"
   - t2c:
       type: file
-      description: kb ref's c2 unspliced_t2c file
-      pattern: "*.{introns_t2c.txt}"
+      description: kb ref's c2 intron_t2c file
+      pattern: "*.{intron_t2c.txt}"
   - workflow_mode:
       type: string
-      description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
-      pattern: "{standard,lamanno,nucleus,kite}"
+      description: String value defining workflow to use, can be one of "standard", "nac", "lamanno" (obsolete)
+      pattern: "{standard,lamanno,nac}"
   - technology:
       type: string
       description: String value defining the sequencing technology used.
