@@ -13,5 +13,13 @@ RUN apt-get update \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 # Link hostname cmd to fix hardcoded path
 RUN ln -s /bin/hostname /usr/bin/hostname
+
+# Add executable to image
 COPY bcl2fastq /usr/local/bin/bcl2fastq
-RUN chmod +x /usr/local/bin/bcl2fastq
+
+# Add external libs to image
+COPY css /usr/local/share/css
+COPY xsl /usr/local/share/xsl
+
+# Set permission
+RUN chmod +x /usr/local/bin/bcl2fastq && chmod -R +rX /usr/local/share/css && chmod -R +rX /usr/local/share/xsl

@@ -13,7 +13,6 @@ tools:
       documentation: https://csb5.github.io/lofreq/commands/
       doi: "10.1093/nar/gks918 "
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: VCF input file
       pattern: "*.{vcf}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: VCF filtered output file
       pattern: "*.{vcf}"
-
 authors:
+  - "@bjohnnyd"
+maintainers:
   - "@bjohnnyd"

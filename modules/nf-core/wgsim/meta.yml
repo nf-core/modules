@@ -10,9 +10,7 @@ tools:
       homepage: "https://github.com/lh3/wgsim"
       documentation: "https://github.com/lh3/wgsim"
       tool_dev_url: "https://github.com/lh3/wgsim"
-      doi: ""
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: Genome fasta file
       pattern: "*.{fa,fasta}"
-
 output:
   - meta:
       type: map
@@ -38,6 +35,7 @@ output:
       type: file
       description: Simulated FASTQ read files
       pattern: "*.{fastq}"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

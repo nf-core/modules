@@ -12,7 +12,7 @@ tools:
         short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
         These files are generated as output by short read aligners like BWA.
       homepage: http://www.htslib.org/
-      documentation: hhttp://www.htslib.org/doc/samtools.html
+      documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
 input:
@@ -39,10 +39,22 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - alignment_index:
+  - bam:
       type: file
-      description: filtered/converted BAM/CRAM file + index
-      pattern: "*{.bam/cram,.bai/crai}"
+      description: filtered/converted BAM file
+      pattern: "*{.bam}"
+  - cram:
+      type: file
+      description: filtered/converted CRAM file
+      pattern: "*{cram}"
+  - bai:
+      type: file
+      description: filtered/converted BAM index
+      pattern: "*{.bai}"
+  - crai:
+      type: file
+      description: filtered/converted CRAM index
+      pattern: "*{.crai}"
   - version:
       type: file
       description: File containing software version
@@ -50,3 +62,7 @@ output:
 authors:
   - "@FriederikeHanssen"
   - "@maxulysse"
+maintainers:
+  - "@FriederikeHanssen"
+  - "@maxulysse"
+  - "@matthdsm"

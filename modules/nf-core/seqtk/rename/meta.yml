@@ -2,6 +2,8 @@ name: seqtk_rename
 description: Rename sequence names in FASTQ or FASTA files.
 keywords:
   - rename
+  - fastx
+  - header
 tools:
   - seqtk:
       description: Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. The seqtk rename command renames sequence names.
@@ -9,7 +11,6 @@ tools:
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -20,7 +21,6 @@ input:
       type: file
       description: A FASTQ or FASTA file
       pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz, fna, fna.gz}"
-
 output:
   - meta:
       type: map
@@ -35,8 +35,11 @@ output:
       type: file
       description: FASTQ/FASTA file containing renamed sequences
       pattern: "*.{fastq.gz, fasta.gz}"
-
 authors:
+  - "@hseabolt"
+  - "@mjcipriano"
+  - "@sateeshperi"
+maintainers:
   - "@hseabolt"
   - "@mjcipriano"
   - "@sateeshperi"

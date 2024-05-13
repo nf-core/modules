@@ -1,27 +1,83 @@
 - name: happy happy test_happy_vcf
-  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_vcf -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/happy/nextflow.config
   tags:
     - happy
     - happy/happy
   files:
     - path: output/happy/test.extended.csv
-      md5sum: ef79c7c789ef4f146ca2e50dafaf22b3
+      md5sum: a40a55f396bf7eda8cf43da23226495f
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
     - path: output/happy/test.runinfo.json
     - path: output/happy/test.summary.csv
-      md5sum: f8aa5d36d3c48dede2f607fd565894ad
+      md5sum: 81889e226e95a09ddae03bff35a66042
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
     - path: output/happy/versions.yml
-      md5sum: 82243bf6dbdc71aa63211ee2a89f47f2
 
 - name: happy happy test_happy_gvcf
-  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_gvcf -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/happy/nextflow.config
   tags:
     - happy
     - happy/happy
   files:
     - path: output/happy/test.extended.csv
-      md5sum: 3d5c21b67a259a3f6dcb088d55b86cd3
+      md5sum: a40a55f396bf7eda8cf43da23226495f
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
     - path: output/happy/test.runinfo.json
     - path: output/happy/test.summary.csv
-      md5sum: 03044e9bb5a0c6f0947b7e910fc8a558
+      md5sum: 81889e226e95a09ddae03bff35a66042
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
     - path: output/happy/versions.yml
-      md5sum: 551fa216952d6f5de78e6e453b92aaab
+
+- name: happy happy test_happy_false_positives
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_false_positives -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/happy/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: 4ab541f70bbed6f9f8305a61b36c4df8
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
+    - path: output/happy/test.runinfo.json
+    - path: output/happy/test.summary.csv
+      md5sum: 81889e226e95a09ddae03bff35a66042
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
+    - path: output/happy/versions.yml
+
+- name: happy happy test_happy_stratification
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_stratification -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/happy/happy/nextflow.config
+  tags:
+    - happy
+    - happy/happy
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: 0b9e38bd8ac6346e9c4b8b94eb1ea5a9
+    - path: output/happy/test.metrics.json.gz
+    - path: output/happy/test.roc.Locations.INDEL.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.INDEL.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.PASS.csv.gz
+    - path: output/happy/test.roc.Locations.SNP.csv.gz
+    - path: output/happy/test.roc.all.csv.gz
+    - path: output/happy/test.runinfo.json
+    - path: output/happy/test.summary.csv
+      md5sum: 81889e226e95a09ddae03bff35a66042
+    - path: output/happy/test.vcf.gz
+    - path: output/happy/test.vcf.gz.tbi
+    - path: output/happy/versions.yml

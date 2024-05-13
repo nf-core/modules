@@ -9,9 +9,8 @@ tools:
       homepage: "http://griffan.github.io/VerifyBamID"
       documentation: "http://griffan.github.io/VerifyBamID"
       tool_dev_url: "https://github.com/Griffan/VerifyBamID"
-      doi: "https://doi.org/10.1101/gr.246934.118"
+      doi: "10.1101/gr.246934.118"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -46,7 +45,6 @@ input:
       type: file
       description: Reference panel VCF with genotype information, for generation of .UD .mu .bed files [Optional]
       pattern: "*.vcf"
-
 output:
   - meta:
       type: map
@@ -81,6 +79,7 @@ output:
       type: file
       description: PC coordinates for both intended sample and contaminating sample, with each row being one PC.
       pattern: "*.Ancestry"
-
 authors:
+  - "@manifestoso"
+maintainers:
   - "@manifestoso"

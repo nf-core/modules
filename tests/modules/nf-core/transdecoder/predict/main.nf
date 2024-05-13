@@ -16,3 +16,13 @@ workflow test_transdecoder_predict {
 
 }
 
+workflow test_transdecoder_predict_gz_input {
+    
+    input = [ 
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)]
+    
+    TRANSDECODER_LONGORF ( input )
+    TRANSDECODER_PREDICT ( input, TRANSDECODER_LONGORF.out.folder )
+
+}

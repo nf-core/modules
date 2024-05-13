@@ -4,4 +4,6 @@
     - pairtools/flip
     - pairtools
   files:
-    - path: output/pairtools/test.flip.gz
+    - path: output/pairtools/test.flip.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
+      contains:
+        - "readid01\tchr1\t1\tchr1\t2\t+\t+\tUU"

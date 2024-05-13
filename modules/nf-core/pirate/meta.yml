@@ -10,9 +10,8 @@ tools:
       homepage: https://github.com/SionBayliss/PIRATE
       documentation: https://github.com/SionBayliss/PIRATE/wiki
       tool_dev_url: https://github.com/SionBayliss/PIRATE
-      doi: "https://doi.org/10.1093/gigascience/giz119"
+      doi: "10.1093/gigascience/giz119"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: A set of GFF3 formatted files
       pattern: "*.{gff}"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: Core-genome alignment produced by PIRATE (Optional)
       pattern: "*.{fasta}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

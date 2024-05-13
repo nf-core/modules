@@ -1,8 +1,9 @@
 name: gatk4_splitncigarreads
 description: Splits reads that contain Ns in their cigar string
 keywords:
-  - vcf
+  - gatk4
   - merge
+  - vcf
 tools:
   - gatk4:
       description: |
@@ -30,14 +31,29 @@ input:
   - intervals:
       type: file
       description: Bed file with the genomic regions included in the library (optional)
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'reference' ]
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'reference' ]
   - fai:
       type: file
       description: Index of reference fasta file
       pattern: "*.fasta.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'reference' ]
   - dict:
       type: file
       description: GATK sequence dictionary
@@ -52,4 +68,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@kevinmenden"
+maintainers:
   - "@kevinmenden"

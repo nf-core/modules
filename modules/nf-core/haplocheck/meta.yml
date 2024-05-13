@@ -16,40 +16,35 @@ tools:
       tool_dev_url: "https://github.com/genepi/haplocheck"
       doi: 10.1101/gr.256545.119
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - vcf:
       type: file
       description: VCF file
       pattern: "*.{vcf.gz}"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - txt:
       type: file
       description: Raw report in txt format
       pattern: "*.{txt}"
-
   - html:
       type: file
       description: Haplocheck HTML report
       pattern: "*.{html}"
-
 authors:
+  - "@lmtani"
+maintainers:
   - "@lmtani"
