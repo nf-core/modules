@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://bitbucket.org/liulab/mageck/src"
       doi: "10.1186/s13059-015-0843-6"
       licence: "['BSD License']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
         sgRNA name (1st column), target gene (2nd column)
         and read counts in each sample.
       pattern: "*.{txt,tsv}"
-
 output:
   - meta:
       type: map
@@ -56,6 +54,7 @@ output:
         R script allowing to output plots
         from main hit genes
       pattern: "*.R"
-
 authors:
+  - "@LaurenceKuhl"
+maintainers:
   - "@LaurenceKuhl"

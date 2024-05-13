@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process FALCO"
+    script "../main.nf"
+    process "FALCO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "falco"
+
+    test("sarscov2 - fastq - single end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:true ],
+                    [
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_1_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                    ],
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.txt,
+                    file(process.out.html.get(0).get(1)).list(),
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_1_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_2_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                    ],
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.html.get(0).get(1).collect{ it.split("/")[-1] }.sort(),
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - interleaved") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(
+                            params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'],
+                            checkIfExists: true
+                        ),
+                    ],
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.txt,
+                    file(process.out.html.get(0).get(1)).list(),
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+}

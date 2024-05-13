@@ -1,10 +1,10 @@
 name: gatk4_intervallisttools
-
 description: Splits the interval list file into unique, equally-sized interval files and place it under a directory
 keywords:
-  - sort
   - bed
-  - interval list
+  - gatk4
+  - interval_list
+  - sort
 tools:
   - gatk4:
       description: |
@@ -15,19 +15,16 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - interval_list:
       type: file
       description: Interval list file
       pattern: "*.interval_list"
-
 output:
   - meta:
       type: map
@@ -42,6 +39,7 @@ output:
       type: file
       description: Interval list files
       pattern: "*.interval_list"
-
 authors:
+  - "@praveenraj2018"
+maintainers:
   - "@praveenraj2018"

@@ -10,14 +10,11 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
       tool_dev_url: https://github.com/broadinstitute/picard
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
-      description: Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - input_vcf:
       type: file
       description: VCF file
@@ -48,12 +45,10 @@ input:
   - chain:
       type: file
       description: The liftover chain file
-
 output:
   - meta:
       type: map
-      description: Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
@@ -66,7 +61,9 @@ output:
       type: file
       description: VCF file containing unsuccessfully lifted variants
       pattern: "*.{unlifted.vcf.gz}"
-
 authors:
+  - "@lucpen"
+  - "@ramprasadn"
+maintainers:
   - "@lucpen"
   - "@ramprasadn"

@@ -2,10 +2,10 @@ process MMSEQS_CREATEDB {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mmseqs2=14.7e284"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
-        'biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
+        'https://depot.galaxyproject.org/singularity/mmseqs2:15.6f452--pl5321h6a68c12_0':
+        'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
 
     input:
     tuple val(meta), path(sequence)
@@ -20,12 +20,18 @@ process MMSEQS_CREATEDB {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = sequence.getExtension() == "gz" ? true : false
+    def sequence_name = is_compressed ? sequence.getBaseName() : sequence
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${sequence} > ${sequence_name}
+    fi
+
     mkdir -p ${prefix}
 
     mmseqs \\
         createdb \\
-        ${sequence} \\
+        ${sequence_name} \\
         ${prefix}/${prefix} \\
         $args \\
         --compressed 1
@@ -40,6 +46,8 @@ process MMSEQS_CREATEDB {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
+
     touch ${prefix}/${prefix}
     touch ${prefix}/${prefix}.dbtype
     touch ${prefix}/${prefix}.index

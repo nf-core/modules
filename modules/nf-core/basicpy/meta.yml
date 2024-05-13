@@ -13,35 +13,31 @@ tools:
       tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
       doi: 10.1038/ncomms14836
       licence: "MIT License"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-
   - image:
       type: file
       description: Tiff file to be used for dark and flat field illumination correction
       pattern: "*.{tiff,tif}"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - fields:
       type: file
       description: Tiff fields for dark and flat field illumination correction
       pattern: "*.{tiff,tif}"
-
 authors:
+  - "@FloWuenne"
+maintainers:
   - "@FloWuenne"

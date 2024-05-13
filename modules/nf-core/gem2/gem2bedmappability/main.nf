@@ -3,7 +3,7 @@ process GEM2_GEM2BEDMAPPABILITY {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::gem2=20200110"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gem2:20200110--h9ee0642_1':
         'biocontainers/gem2:20200110--h9ee0642_1' }"

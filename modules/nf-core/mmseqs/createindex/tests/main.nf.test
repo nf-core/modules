@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_CREATEINDEX"
+    script "../main.nf"
+    process "MMSEQS_CREATEINDEX"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/createindex"
+
+    test("sars-cov-2 - mmseqs.tar.gz") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            def filesToExclude = [
+                "aln.1",
+                "aln.2",
+                "aln.3",
+                "aln.6",
+                "aln.7",
+                "mmseqs.idx",
+                "mmseqs_aln.1",
+                "mmseqs_aln.3",
+                "mmseqs_aln.4",
+                "mmseqs_aln.5",
+                "mmseqs_aln.6",
+                "mmseqs_clu.1",
+                "mmseqs_clu.2",
+                "mmseqs_clu.3",
+                "mmseqs_clu.4",
+                "mmseqs_clu.5",
+                "mmseqs_clu.6",
+                "mmseqs_clu.7",
+                "pref_filter2.0",
+                "pref_filter2.2",
+                "pref_filter2.3",
+                "pref_filter2.4",
+                "pref_filter2.5",
+                "pref_filter2.6",
+                "pref_rescore1.0",
+                "pref_rescore1.1",
+                "pref_rescore1.3",
+                "pref_rescore1.5",
+                "pref_rescore1.6",
+                "pref_rescore1.7",
+                "tmp" // This one is hidden in the snapshot
+            ]
+            def outputDirectory = new File(process.out.db_indexed[0][1])
+
+            def filesExist = outputDirectory.listFiles().any { file ->
+                filesToExclude.any { excludeName ->
+                    file.getName().endsWith(excludeName) && file.exists()
+                }
+            }
+
+            def filteredFiles = outputDirectory
+                .listFiles()
+                .findAll { file ->
+                    !filesToExclude.any { excludeName ->
+                        file.getName().endsWith(excludeName)
+                    }
+                }
+                .sort{ it.getName()}
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(filteredFiles).match("createindex_filtered_files")},
+                { assert filesExist : "One or more files to exclude do not exist" },
+                { assert snapshot(process.out.versions).match("versions")}
+            )
+        }
+    }
+}

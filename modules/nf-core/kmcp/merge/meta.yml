@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: The output file created by kmcp search
       pattern: "*.gz"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: Output file in gzipped format
       pattern: "*.gz"
-
 authors:
+  - "@sofstam"
+maintainers:
   - "@sofstam"

@@ -4,7 +4,7 @@ process SNAKEMAKE {
 
     // You will have to add all modules to this Conda definition and
     // replace the container definition for one that suits your needs
-    conda "bioconda::snakemake=7.31.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snakemake:7.31.0--hdfd78af_1' :
         'biocontainers/snakemake:7.31.0--hdfd78af_1' }"
@@ -14,7 +14,7 @@ process SNAKEMAKE {
     tuple val(meta2), path(snakefile)
 
     output:
-    tuple val(meta), path("**[!.snakemake]"), optional: true      , emit: outputs
+    tuple val(meta), path("[!.snakemake|versions.yml]**")         , emit: outputs      , optional: true
     tuple val(meta), path(".snakemake", type: 'dir', hidden: true), emit: snakemake_dir
     path "versions.yml"                                           , emit: versions
 

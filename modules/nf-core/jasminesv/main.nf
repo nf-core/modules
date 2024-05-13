@@ -2,15 +2,15 @@ process JASMINESV {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::jasminesv=1.1.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/jasminesv:1.1.5--hdfd78af_0':
         'biocontainers/jasminesv:1.1.5--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcfs), path(bams), path(sample_dists)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
     path(chr_norm)
 
     output:
@@ -63,7 +63,7 @@ process JASMINESV {
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

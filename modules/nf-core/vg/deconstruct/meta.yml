@@ -33,7 +33,6 @@ input:
       type: file
       description: Optional GBWT file (from vg gbwt) so to only consider alt traversals that correspond to GBWT threads FILE.
       pattern: "*.{gbwt}"
-
 output:
   - meta:
       type: map
@@ -49,4 +48,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@heuermh, @subwaystation"
+maintainers:
   - "@heuermh, @subwaystation"

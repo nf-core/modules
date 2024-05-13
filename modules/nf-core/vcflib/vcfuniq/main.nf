@@ -3,7 +3,7 @@ process VCFLIB_VCFUNIQ {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::vcflib=1.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
         'biocontainers/vcflib:1.0.3--hecb563c_1' }"

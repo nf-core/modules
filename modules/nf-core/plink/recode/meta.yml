@@ -8,9 +8,7 @@ tools:
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#recode"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
-
       licence: "['GPL']"
-
 input:
   - meta:
       type: map
@@ -29,7 +27,6 @@ input:
       type: file
       description: PLINK sample information file
       pattern: "*.{fam}"
-
 output:
   - meta:
       type: map
@@ -136,6 +133,7 @@ output:
       type: file
       description: Compressed variant calling file (VCF). Produced by "--recode vcf bgz".
       pattern: "*.{vcf.gz}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

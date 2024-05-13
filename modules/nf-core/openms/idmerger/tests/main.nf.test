@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process OPENMS_IDMERGER"
+    script "../main.nf"
+    process "OPENMS_IDMERGER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idmerger"
+
+    test("proteomics - openms - idxml") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test'], // meta map
+                            [ file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
+                              file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep2_small.idXML', checkIfExists: true)]
+                        ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                
+                // check single line substrings in output idxml file
+                { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("</PeptideHit>") }},
+                { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("<VariableModification name=\"Oxidation (M)\" />") }},
+                { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("accession=\"sp|P48507|GSH0_HUMAN\"") }},
+                { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("accession=\"DECOY_sp|Q96SQ7|ATOH8_HUMAN\"") }}
+            )
+            }
+
+    }
+
+    test("proteomics - openms - idxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test'], // meta map
+                            [ file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
+                              file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep2_small.idXML', checkIfExists: true)]
+                        ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

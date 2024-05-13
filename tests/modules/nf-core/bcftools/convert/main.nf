@@ -4,6 +4,7 @@ nextflow.enable.dsl = 2
 
 include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_GVCF } from '../../../../../modules/nf-core/bcftools/convert/main.nf'
 include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_BCF  } from '../../../../../modules/nf-core/bcftools/convert/main.nf'
+include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_HAP  } from '../../../../../modules/nf-core/bcftools/convert/main.nf'
 
 workflow test_bcftools_convert_gvcf {
 
@@ -51,4 +52,20 @@ workflow test_bcftools_convert_gvcf_to_bcf {
             file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
     BCFTOOLS_CONVERT_BCF ( input, fasta, bed )
+}
+
+workflow test_bcftools_convert_vcf_to_hap {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
+        []
+    ]
+
+    bed = []
+
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    BCFTOOLS_CONVERT_HAP ( input, fasta, bed )
 }
