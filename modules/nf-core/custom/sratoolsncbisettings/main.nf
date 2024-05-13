@@ -7,6 +7,9 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
         'https://depot.galaxyproject.org/singularity/sra-tools:3.0.8--h9f5acd7_0' :
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
+    input:
+    val ids
+
     output:
     path('*.mkfg')     , emit: ncbi_settings
     path 'versions.yml', emit: versions

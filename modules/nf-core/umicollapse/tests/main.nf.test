@@ -34,10 +34,7 @@ nextflow_process {
                 script "../../bwa/index/main.nf"
                 process{
                     """
-                    input[0] = [
-                            [ id:'sarscov2'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                    input[0] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
                     """
                 }
             }
@@ -47,7 +44,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }
@@ -117,7 +115,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }
@@ -214,7 +213,8 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = true
+                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[3] = true
                     """
                 }
             }

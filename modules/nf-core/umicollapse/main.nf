@@ -29,7 +29,7 @@ process UMICOLLAPSE {
     // umicollapse. We set the stack size to 5% of the available memory, the heap size to 90%
     // which leaves 5% for stuff happening outside of java without the scheduler killing the process.
     def max_heap_size_mega = (task.memory.toMega() * 0.9).intValue()
-    def max_stack_size_mega = (task.memory.toMega() * 0.05).intValue()
+    def max_stack_size_mega = 999 //most java jdks will not allow Xss > 1GB, so fixing this to the allowed max
     if ( mode !in [ 'fastq', 'bam' ] ) {
         error "Mode must be one of 'fastq' or 'bam'."
     }

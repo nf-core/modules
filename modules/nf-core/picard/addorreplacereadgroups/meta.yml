@@ -20,10 +20,28 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
       type: file
-      description: Input BAM file
-      pattern: "*.{bam}"
+      description: Sequence reads file, can be SAM/BAM/CRAM format
+      pattern: "*.{bam,cram,sam}"
+  - fasta:
+      type: file
+      description: Reference genome file
+      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - fasta_index:
+      type: file
+      description: Reference genome index file
+      pattern: "*.{fai,fasta.fai,fa.fai,fasta.gz.fai,fa.gz.fai}"
 output:
   - meta:
       type: map
@@ -40,8 +58,12 @@ output:
       pattern: "*.{bam}"
   - bai:
       type: file
-      description: BAM index file
+      description: An optional BAM index file
       pattern: "*.{bai}"
+  - cram:
+      type: file
+      description: Output CRAM file
+      pattern: "*.{cram}"
 authors:
   - "@sateeshperi"
   - "@mjcipriano"
