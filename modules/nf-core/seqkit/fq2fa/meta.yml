@@ -10,7 +10,7 @@ tools:
       homepage: "https://github.com/shenwei356/seqkit"
       documentation: "https://bioinf.shenwei.me/seqkit/"
       doi: "10.1371/journal.pone.0163962"
-      licence: "['MIT']"
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -18,7 +18,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - fastq:
       type: file
       description: Sequence file in fastq format
@@ -30,7 +30,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
