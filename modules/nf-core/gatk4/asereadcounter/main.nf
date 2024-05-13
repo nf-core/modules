@@ -8,11 +8,10 @@ process GATK4_ASEREADCOUNTER {
         'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
-    tuple val(meta2), path(vcf), path(tbi)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fai)
-    tuple val(meta5), path(dict)
+    tuple val(meta),  path(bam), path(bai), path(vcf), path(tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
     path intervals
 
     output:
@@ -39,7 +38,7 @@ process GATK4_ASEREADCOUNTER {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ASEReadCounter \\
         --output ${prefix}_ase.csv \\
-        --input ${input} \\
+        --input ${bam} \\
         --variant ${vcf} \\
         $reference_command \\
         $intervals_command \\

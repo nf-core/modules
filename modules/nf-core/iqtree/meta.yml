@@ -43,6 +43,20 @@ output:
         only generated if bootstrap is on
         and the -wbt flag is passed in ext.args
       pattern: "*.{ufboot}"
+  - report:
+      type: file
+      description: |
+        Main report file containing computational
+        results as well as a textual visualisation
+        of the final tree.
+  - mldist:
+      type: file
+      description: |
+        File containing the pairwise maximum
+        likelihood distances as a matrix.
+  - log:
+      type: file
+      description: Log file of entire run
 authors:
   - "@avantonder"
   - "@aunderwo"

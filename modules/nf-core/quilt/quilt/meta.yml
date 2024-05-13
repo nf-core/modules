@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/rwdavies/quilt"
       tool_dev_url: "https://github.com/rwdavies/quilt"
       doi: "10.1038/s41588-021-00877-0"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -28,10 +28,6 @@ input:
       type: file
       description: (Mandatory) BAM/CRAM index files
       pattern: "*.{bai}"
-  - bamlist:
-      type: file
-      description: (Mandatory) "Path to file with bam file locations. File is one row per entry, path to bam files. Bam index files should exist in same directory as for each bam, suffixed either .bam.bai or .bai.
-      pattern: "*.{txt}"
   - reference_haplotype_file:
       type: file
       description: (Mandatory) Reference haplotype file in IMPUTE format (file with no header and no rownames, one row per SNP, one column per reference haplotype, space separated, values must be 0 or 1)
@@ -99,9 +95,12 @@ output:
       type: file
       description: TBI file of the VCF.
       pattern: "*.{vcf.gz.tbi}"
-  - RData:
+  - rdata:
       type: directory
       description: Optional directory path to prepared RData file with reference objects (useful with --save_prepared_reference=TRUE).
+  - plots:
+      type: directory
+      description: Optional directory path to save plots.
 authors:
   - "@atrigila"
 maintainers:
