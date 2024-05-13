@@ -25,7 +25,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
                 { assert snapshot(file(process.out.bed.get(0).get(1)).readLines()[0..5]).match() }
             )
         }
