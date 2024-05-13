@@ -49,7 +49,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     """
 
     stub:
-    def prefixgit = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.vcf.gz
