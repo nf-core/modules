@@ -24,19 +24,21 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out.counts).match("counts"),
-            assert snapshot(process.out.report).match("report"),
-            assert snapshot(process.out.summary).match("summary"),
-            assert snapshot(process.out.versions).match("versions"),
-            assert snapshot(process.out.bam).match("bam"),
-            assert snapshot(process.out.pbi).match("pbi"),
-            assert snapshot(process.out.fasta).match("fasta"),
-            assert snapshot(process.out.fastagz).match("fastagz"),
-            assert snapshot(process.out.fastq).match("fastq"),
-            assert snapshot(process.out.fastqgz).match("fastqgz"),
-            assert snapshot(process.out.clips).match("clips"),
-            assert snapshot(process.out.guess).match("guess")
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.counts).match("counts") },
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.summary).match("summary") },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.bam).match("bam") },
+                { assert snapshot(process.out.pbi).match("pbi") },
+                { assert snapshot(process.out.fasta).match("fasta") },
+                { assert snapshot(process.out.fastagz).match("fastagz") },
+                { assert snapshot(process.out.fastq).match("fastq") },
+                { assert snapshot(process.out.fastqgz).match("fastqgz") },
+                { assert snapshot(process.out.clips).match("clips") },
+                { assert snapshot(process.out.guess).match("guess") }
+            )
         }
 
     }
@@ -56,8 +58,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -77,8 +81,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -98,8 +104,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -119,8 +127,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -142,8 +152,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -165,8 +177,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -188,8 +202,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -211,8 +227,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
@@ -234,8 +252,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success,
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
 
     }
