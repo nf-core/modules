@@ -2,7 +2,7 @@ process MYKROBE_PREDICT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mykrobe=0.11.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
         'biocontainers/mykrobe:0.11.0--py39h2add14b_1' }"

@@ -11,18 +11,18 @@ include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpile
 include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP_TWO } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
 
 workflow test_ngscheckmate_ncm_bam {
-    input    = [ [ id: 'combined_bams'],
-                [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true,      ),
-                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true ),
-                  file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true ),
-                  file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true )
-                  ]
+    input    = [ [ id: 'combined_bams' ],
+                [file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam']               , checkIfExists: true ),
+                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai']           , checkIfExists: true ),
+                 file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam']    , checkIfExists: true ),
+                 file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true )
+                 ]
             ]
 
-    fasta    = [ [ id:'sarscov2'],
+    fasta    = [ [ id:'sarscov2' ],
                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
-    inputBed = [ [ id:'test'],
+    inputBed = [ [ id:'test' ],
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
 
     BEDTOOLS_MAKEWINDOWS(inputBed).
@@ -33,11 +33,11 @@ workflow test_ngscheckmate_ncm_bam {
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    fasta    = [ [ id:'sarscov2'],
+    fasta    = [ [ id:'sarscov2' ],
                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 ]
 
-    inputBed = [ [ id:'test'],
+    inputBed = [ [ id:'test' ],
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
                 ]
 

@@ -10,7 +10,6 @@ tools:
       homepage: "https://github.com/Infinidat/slimfastq"
       tool_dev_url: "https://github.com/Infinidat/slimfastq"
       licence: "['BSD-3-clause']"
-
 input:
   - meta:
       type: map
@@ -21,7 +20,6 @@ input:
       type: file
       description: Either a single-end FASTQ file or paired-end files.
       pattern: "*.{fq.gz,fastq.gz}"
-
 output:
   - meta:
       type: map
@@ -36,6 +34,7 @@ output:
       type: file
       description: Either one or two sequence files in slimfastq compressed format.
       pattern: "*.{sfq}"
-
 authors:
+  - "@Midnighter"
+maintainers:
   - "@Midnighter"

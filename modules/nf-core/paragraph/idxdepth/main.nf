@@ -2,7 +2,7 @@ process PARAGRAPH_IDXDEPTH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::paragraph=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h8908b6f_0':
         'biocontainers/paragraph:2.3--h8908b6f_0' }"

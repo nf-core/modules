@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
       licence: ["https://card.mcmaster.ca/about"]
-
 input:
   - meta:
       type: map
@@ -23,6 +22,14 @@ input:
       type: file
       description: Nucleotide or protein sequences in FASTA format
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+  - card:
+      type: directory
+      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
+      pattern: "*/"
+  - wildcard:
+      type: directory
+      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
+      pattern: "*/"
 
 output:
   - meta:
@@ -42,7 +49,7 @@ output:
       type: file
       description: Tab-delimited file with RGI results
       pattern: "*.{txt}"
-  - temp:
+  - tmp:
       type: directory
       description: Directory containing various intermediate files
       pattern: "temp/"
@@ -55,3 +62,8 @@ output:
 authors:
   - "@rpetit3"
   - "@jfy133"
+  - "@jasmezz"
+maintainers:
+  - "@rpetit3"
+  - "@jfy133"
+  - "@jasmezz"

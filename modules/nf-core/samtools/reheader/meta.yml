@@ -20,26 +20,22 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - bam:
       type: file
       description: BAM/CRAM file to be reheaded
       pattern: "*.{bam,cram}"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
@@ -48,6 +44,7 @@ output:
       type: file
       description: Reheaded BAM/CRAM file
       pattern: "*.{bam,cram}"
-
 authors:
+  - "@louislenezet"
+maintainers:
   - "@louislenezet"

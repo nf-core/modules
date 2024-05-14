@@ -15,7 +15,6 @@ tools:
       documentation: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
       type: file
       description: The CRAM file to split
       pattern: "*.cram"
-
 output:
   - meta:
       type: map
@@ -41,6 +39,7 @@ output:
       type: file
       description: A list of split CRAM files
       pattern: "*.cram"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

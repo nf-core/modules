@@ -8,11 +8,9 @@ keywords:
   - cram
   - plots
   - genomics
-
 components:
   - wisecondorx/convert
   - wisecondorx/predict
-
 input:
   - ch_bam:
       description: |
@@ -34,7 +32,6 @@ input:
       description: |
         An optional channel containing a BED file with regions to mask from the analyis
         Structure: [ val(meta5), path(blacklist) ]
-
 output:
   - aberrations_bed:
       description: |
@@ -65,4 +62,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

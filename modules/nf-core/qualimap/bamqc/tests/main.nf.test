@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process QUALIMAP_BAMQC"
+    script "../main.nf"
+    process "QUALIMAP_BAMQC"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qualimap"
+    tag "qualimap/bamqc"
+
+    test("homo_sapiens [bam]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                gff = []
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = gff
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
+                { assert snapshot(path("${process.out.results[0][1]}/genome_results.txt")).match("genome_results") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

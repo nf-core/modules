@@ -13,7 +13,6 @@ tools:
       documentation: "https://genome.sph.umich.edu/wiki/Vt"
       tool_dev_url: "https://github.com/atks/vt"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -50,7 +49,6 @@ input:
       type: file
       description: The index of the reference fasta file (OPTIONAL)
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -69,6 +67,7 @@ output:
       type: file
       description: The created index of the reference fasta file (only when the fai wasn't supplied)
       pattern: "*.fai"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

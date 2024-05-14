@@ -15,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/alexherbig/MultiVCFAnalyzer"
       doi: "10.1038/nature13591"
       licence: "['GPL >=3']"
-
 input:
   - vcfs:
       type: file
@@ -62,7 +61,6 @@ input:
         file listing positions that will be 'filtered' (i.e. ignored)
         (Optional)
       pattern: "*.vcf"
-
 output:
   - versions:
       type: file
@@ -72,7 +70,6 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
   - full_alignment:
       type: file
       description: Fasta a fasta file of all positions contained in the VCF files i.e. including ref calls
@@ -117,6 +114,7 @@ output:
       type: file
       description: Summary statistics in MultiQC JSON format
       pattern: ".json"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

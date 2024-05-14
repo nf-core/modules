@@ -10,9 +10,7 @@ tools:
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,6 @@ input:
   - pairs:
       type: file
       description: pairs file
-
 output:
   - meta:
       type: map
@@ -37,6 +34,7 @@ output:
       type: file
       description: stats of the pairs
       pattern: "*.{pairs.stat}"
-
 authors:
+  - "@nservant"
+maintainers:
   - "@nservant"

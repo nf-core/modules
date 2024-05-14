@@ -3,14 +3,14 @@ description: Score compounds
 keywords:
   - compound
   - genmod
+  - ranking
 tools:
   - "genmod":
       description: "Annotate genetic inheritance models in variant files"
       homepage: "https://github.com/Clinical-Genomics/genmod"
       documentation: "https://github.com/Clinical-Genomics/genmod"
       tool_dev_url: "https://github.com/moonso"
-
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -35,6 +35,7 @@ output:
       type: file
       description: Output VCF file
       pattern: "*.{vcf}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"
