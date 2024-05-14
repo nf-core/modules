@@ -14,6 +14,8 @@ process PROPR_PROPR {
     tuple val(meta), path("*.propr.rds"), emit: propr
     tuple val(meta), path("*.propr.tsv"), emit: matrix
     tuple val(meta), path("*.fdr.tsv"),   emit: fdr         , optional:true
+    tuple val(meta), path("*.adj.csv"),   emit: adj         , optional:true
+    path "*.warnings.log",                emit: warnings
     path "*.R_sessionInfo.log",           emit: session_info
     path "versions.yml",                  emit: versions
 
