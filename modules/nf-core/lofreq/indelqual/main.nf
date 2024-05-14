@@ -2,7 +2,7 @@ process LOFREQ_INDELQUAL {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::lofreq=2.1.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"

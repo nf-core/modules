@@ -16,7 +16,6 @@ tools:
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -32,13 +31,7 @@ input:
       pattern: "*.gz"
   - mode:
       type: integer
-      description: Profiling mode.
-        0-pathogen detection
-        1-higher recall
-        2-high recall
-        3-default
-        4-high precision
-        5-higher precision
+      description: Profiling mode. 0-pathogen detection 1-higher recall 2-high recall 3-default 4-high precision 5-higher precision
 output:
   - meta:
       type: map
@@ -53,6 +46,7 @@ output:
       type: file
       description: Tab-delimited format file with 17 columns.
       pattern: "*.profile"
-
 authors:
+  - "@sofstam"
+maintainers:
   - "@sofstam"

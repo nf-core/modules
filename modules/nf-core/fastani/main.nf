@@ -2,7 +2,7 @@ process FASTANI {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::fastani=1.32"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0' :
         'biocontainers/fastani:1.32--he1c1bb9_0' }"

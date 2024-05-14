@@ -11,7 +11,6 @@ tools:
       documentation: "https://github.com/abyzovlab/CNVnator/blob/master/README.md"
       tool_dev_url: "https://github.com/abyzovlab/CNVnator"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -53,7 +52,6 @@ input:
       type: file
       description: Path to a fasta file index
       pattern: "*.fai"
-
 output:
   - output_meta:
       type: map
@@ -72,6 +70,7 @@ output:
       type: file
       description: A tab file containing cnvnator calls
       pattern: "*.tab"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

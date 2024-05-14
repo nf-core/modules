@@ -1,6 +1,5 @@
 ---
 name: "umicollapse"
-
 description: Deduplicate reads based on the mapping co-ordinate and the UMI attached to the read.
 keywords:
   - umicollapse
@@ -14,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/Daniel-Liu-c0deb0t/UMICollapse"
       doi: "10.7717/peerj.8275"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -29,8 +27,14 @@ input:
   - bai:
       type: file
       description: |
-        BAM index files corresponding to the input BAM file.
+        BAM index files corresponding to the input BAM file. Optionally can be skipped using [] when using FastQ input.
       pattern: "*.{bai}"
+  - mode:
+      type: string
+      description: |
+        Selects the mode of Umicollapse - either fastq or bam need to be provided.
+      pattern: "{fastq,bam}"
+
 output:
   - meta:
       type: map
@@ -41,6 +45,10 @@ output:
       type: file
       description: BAM file with deduplicated UMIs.
       pattern: "*.{bam}"
+  - log:
+      type: file
+      description: A log file with the deduplication statistics.
+      pattern: "*_{UMICollapse.log}"
   - versions:
       type: file
       description: File containing software versions
@@ -48,3 +56,8 @@ output:
 authors:
   - "@CharlotteAnne"
   - "@chris-cheshire"
+maintainers:
+  - "@CharlotteAnne"
+  - "@chris-cheshire"
+  - "@apeltzer"
+  - "@MatthiasZepper"

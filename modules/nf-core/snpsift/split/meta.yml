@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/pcingola/SnpEff
       doi: "10.3389/fgene.2012.00035"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file (split) or list of files (join)
       description: VCF file(s)
       pattern: "*.{vcf,vcf.gz}"
-
 output:
   - meta:
       type: map
@@ -38,7 +36,9 @@ output:
       type: file
       description: Split/Joined VCF file(s)
       pattern: "*.vcf"
-
 authors:
+  - "@SusiJo"
+  - "@jonasscheid"
+maintainers:
   - "@SusiJo"
   - "@jonasscheid"

@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/phac-nml/ecoli_serotyping
       documentation: https://github.com/phac-nml/ecoli_serotyping
       tool_dev_url: https://github.com/phac-nml/ecoli_serotyping
-
       licence: ["Apache 2"]
-
 input:
   - meta:
       type: map
@@ -23,7 +21,6 @@ input:
       type: file
       description: FASTA formatted assembly file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -46,6 +43,7 @@ output:
       type: file
       description: Allele report generated from BLAST results
       pattern: "*.tst"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

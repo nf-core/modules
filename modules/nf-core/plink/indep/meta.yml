@@ -12,9 +12,7 @@ tools:
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
-
       licence: ["GPL"]
-
 input:
   - meta:
       type: map
@@ -45,7 +43,6 @@ input:
       type: value
       description: Variance inflation factor (VIF) threshold. At each step, all variants in the current window with VIF exceeding the threshold are removed.
       pattern: "*.{}"
-
 output:
   - meta:
       type: map
@@ -64,6 +61,7 @@ output:
       type: file
       description: File with IDs of excluded variants
       pattern: "*.{prune.out}"
-
 authors:
+  - "@atrigila"
+maintainers:
   - "@atrigila"

@@ -2,10 +2,10 @@ process SAMTOOLS_IMPORT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0':
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.19.2--h50ea8bc_0':
+        'biocontainers/samtools:1.19.2--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -26,11 +26,11 @@ process SAMTOOLS_IMPORT {
                 args.contains("--output-fmt bam") ? "bam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    def input = reads instanceof List && meta.single_end ? reads.join(" -0") :              // multiple single-end files
-                reads instanceof List && !meta.single_end ? "-1 $reads[0] -2 $reads[1]":    // paired end file
-                meta.single_end ? "-0 $reads" :                                             // single single-end file
-                !meta.single_end ? "-s $reads":                                             // interleave paired-end file
-                reads                                                                       // if all else fails, just add the reads without flags
+    def input = reads instanceof List && meta.single_end ? reads.join(" -0") :               // multiple single-end files
+                reads instanceof List && !meta.single_end ? "-1 ${reads[0]} -2 ${reads[1]}": // paired end file
+                meta.single_end ? "-0 $reads" :                                              // single single-end file
+                !meta.single_end ? "-s $reads":                                              // interleave paired-end file
+                reads                                                                        // if all else fails, just add the reads without flags
     """
     samtools \\
         import \\

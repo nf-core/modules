@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/sguizard/gs-tama
       doi: "10.1186/s12864-020-07123-7"
       licence: ["GPL v3 License"]
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: Full Length Non Chimeric reads in fasta format
       pattern: "*.{fa,fasta}"
-
 output:
   - meta:
       type: map
@@ -50,6 +48,7 @@ output:
       type: file
       description: A gzip compressed FASTA file of trimmed polyA tails.
       pattern: "*_tama_tails.fa.gz"
-
 authors:
+  - "@sguizard"
+maintainers:
   - "@sguizard"

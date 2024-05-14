@@ -12,13 +12,11 @@ tools:
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
       licence: ["MIT"]
-
 input:
   - species:
       type: string
       description: Latin name of the species for which a mitochondrial genome should be fetched
       pattern: "[A-Z]?[a-z]* [a-z]*"
-
 output:
   - versions:
       type: file
@@ -32,6 +30,7 @@ output:
       type: file
       description: Downloaded mitochondrial genome in Genbank format
       pattern: "*.gb"
-
 authors:
+  - "@verku"
+maintainers:
   - "@verku"

@@ -10,7 +10,6 @@ tools:
       homepage: "https://www.gnu.org"
       documentation: "https://man7.org/linux/man-pages/man1/md5sum.1.html"
       licence: GPLv3+
-
 input:
   - meta:
       type: map
@@ -21,7 +20,6 @@ input:
       type: file
       description: Any file
       pattern: "*.*"
-
 output:
   - meta:
       type: map
@@ -36,6 +34,7 @@ output:
       type: file
       description: File containing checksum
       pattern: "*.md5"
-
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

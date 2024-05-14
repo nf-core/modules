@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://github.com/sanger-pathogens/Roary/
       doi: "10.1093/bioinformatics/btv421"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: A set of GFF3 formatted files
       pattern: "*.{gff}"
-
 output:
   - meta:
       type: map
@@ -42,6 +40,7 @@ output:
       type: file
       description: Core-genome alignment produced by Roary (Optional)
       pattern: "*.{aln}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

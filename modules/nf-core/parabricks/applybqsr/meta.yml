@@ -11,7 +11,6 @@ tools:
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/"
       licence: "custom"
-
 input:
   - meta:
       type: map
@@ -38,7 +37,6 @@ input:
       type: file
       description: Reference fasta - must be unzipped.
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -57,6 +55,7 @@ output:
       type: file
       description: bai index corresponding to output bam file.
       pattern: "*.bai"
-
 authors:
+  - "@bsiranosian"
+maintainers:
   - "@bsiranosian"

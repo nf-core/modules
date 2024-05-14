@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -44,7 +43,6 @@ input:
   - min_sv_size:
       type: integer
       description: Minimum size of SVs to be taken into account
-
 output:
   - meta:
       type: map
@@ -59,6 +57,7 @@ output:
       type: file
       description: The merged VCF file
       pattern: "*.vcf"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

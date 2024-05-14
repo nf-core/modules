@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/francescojm/CRISPRcleanR/tree/v3.0.0"
       doi: "10.1186/s12864-018-4989-y"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: file
       description: sgRNA library
       pattern: "*.tsv"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: normalized count file
       pattern: "*.tsv"
-
 authors:
+  - "@LaurenceKuhl"
+maintainers:
   - "@LaurenceKuhl"

@@ -10,9 +10,7 @@ tools:
       homepage: https://github.com/seqan/seqan
       documentation: https://github.com/seqan/seqan
       tool_dev_url: https://github.com/seqan/seqan
-
       licence: ["https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"]
-
 input:
   - meta:
       type: map
@@ -27,7 +25,6 @@ input:
   - index:
       type: file
       description: YARA genome index files
-
 output:
   - meta:
       type: map
@@ -46,6 +43,7 @@ output:
       type: file
       description: Sorted BAM file index
       pattern: "*.{bai}"
-
 authors:
+  - "@apeltzer"
+maintainers:
   - "@apeltzer"

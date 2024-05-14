@@ -12,9 +12,7 @@ tools:
       homepage: https://github.com/genomehubs/goat-cli
       documentation: https://github.com/genomehubs/goat-cli/wiki
       tool_dev_url: https://genomehubs.github.io/goat-cli/goat_cli/
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -22,7 +20,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test']
   - taxon:
-      type: val
+      type: string
       description: |
         The taxon to search. An NCBI taxon ID, or the name of a taxon at any rank.
   - taxa_file:
@@ -31,7 +29,6 @@ input:
         A file of NCBI taxonomy ID's (tips) and/or binomial names. Each line
         should contain a single entry.File size is limited to 500 entries.
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -46,6 +43,8 @@ output:
       type: file
       description: TSV file containing search results.
       pattern: "*.tsv"
-
 authors:
   - "@alxndrdiaz"
+maintainers:
+  - "@alxndrdiaz"
+  - "@muffato"

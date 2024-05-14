@@ -1,7 +1,12 @@
 name: "centrifuge_kreport"
 description: Creates Kraken-style reports from centrifuge out files
 keywords:
+  - classify
   - metagenomics
+  - fastq
+  - db
+  - report
+  - kraken
 tools:
   - centrifuge:
       description: Centrifuge is a classifier for metagenomic sequences.
@@ -19,7 +24,9 @@ input:
       type: file
       description: File containing the centrifuge classification report
       pattern: "*.{txt}"
-
+  - db:
+      type: directory
+      description: Path to directory containing centrifuge database files
 output:
   - meta:
       type: map
@@ -37,5 +44,8 @@ output:
         out files.
       pattern: "*.{txt}"
 authors:
+  - "@sofstam"
+  - "@jfy133"
+maintainers:
   - "@sofstam"
   - "@jfy133"

@@ -2,7 +2,7 @@ process ABRITAMR_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::abritamr=1.0.14"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abritamr:1.0.14--pyhdfd78af_0':
         'biocontainers/abritamr:1.0.14--pyhdfd78af_0' }"

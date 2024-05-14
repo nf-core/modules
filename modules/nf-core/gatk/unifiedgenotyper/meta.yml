@@ -9,8 +9,12 @@ tools:
       description: "The full Genome Analysis Toolkit (GATK) framework, license restricted."
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
       documentation: "https://github.com/broadinstitute/gatk-docs"
-      licence: "['https://software.broadinstitute.org/gatk/download/licensing', 'BSD', 'https://www.broadinstitute.org/gatk/about/#licensing']"
-
+      licence:
+        [
+          "https://software.broadinstitute.org/gatk/download/licensing",
+          "BSD",
+          "https://www.broadinstitute.org/gatk/about/#licensing",
+        ]
 input:
   - meta:
       type: map
@@ -75,7 +79,7 @@ input:
       description: |
         Groovy Map containing file meta-information for the dbsnps file.
         e.g. [ id:'test', single_end:false ]
-  - dbsnps:
+  - dbsnp:
       type: file
       description: VCF file containing known sites (optional)
       pattern: "*"
@@ -88,7 +92,6 @@ input:
       type: file
       description: Comparison VCF file (optional)
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -103,7 +106,9 @@ output:
       type: file
       description: VCF file containing called variants
       pattern: "*.vcf.gz"
-
 authors:
+  - "@ilight1542"
+  - "@jfy133"
+maintainers:
   - "@ilight1542"
   - "@jfy133"

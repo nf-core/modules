@@ -4,23 +4,19 @@ keywords:
   - ibd
   - hbd
   - beagle
-
 tools:
   - "hapibd":
       description: "Hap-ibd Detects identity-by-descent (IBD) segments and homozygosity-by-descent (HBD) segments in phased genotype data."
       homepage: "https://github.com/browning-lab/hap-ibd/blob/master/README.md"
       documentation: "https://github.com/browning-lab/hap-ibd/blob/master/README.md"
-
       doi: "10.1016/j.ajhg.2020.02.010"
       licence: "['Apache-2.0']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing cohort information
         e.g. [ id:'test' ]
-
   - vcf:
       type: file
       description: phased VCF file with a GT FORMAT subfield with no missing alleles
@@ -33,7 +29,6 @@ input:
       type: file
       description: text file containing samples one sample per line to be excluded from the analysis
       pattern: "*.*"
-
 output:
   - meta:
       type: map
@@ -56,6 +51,7 @@ output:
       type: file
       description: contains a summary of the analysis which includes the analysis parameters the number of markers the number of samples the number of output HBD and IBD segments and the mean number of HBD and IBD segments per sample
       pattern: "*.log"
-
 authors:
+  - "@ashotmarg"
+maintainers:
   - "@ashotmarg"

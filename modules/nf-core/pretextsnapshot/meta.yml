@@ -13,8 +13,7 @@ tools:
       description: "Commandline image generator for Pretext Hi-C genome contact maps."
       homepage: "https://github.com/wtsi-hpag/PretextSnapshot"
       tool_dev_url: "https://github.com/wtsi-hpag/PretextSnapshot"
-      licence: "['https://github.com/wtsi-hpag/PretextSnapshot/blob/master/LICENSE']"
-
+      licence: ["https://github.com/wtsi-hpag/PretextSnapshot/blob/master/LICENSE"]
 input:
   - meta:
       type: map
@@ -25,7 +24,6 @@ input:
       type: file
       description: pretext hic map
       pattern: "*.pretext"
-
 output:
   - meta:
       type: map
@@ -40,6 +38,7 @@ output:
       type: file
       description: image of a hic contact map
       pattern: "*.{png,jpg,bmp}"
-
 authors:
+  - "@epaule"
+maintainers:
   - "@epaule"

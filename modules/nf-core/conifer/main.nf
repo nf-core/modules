@@ -2,7 +2,7 @@ process CONIFER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::conifer=1.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/conifer%3A1.0.2--he4a0461_0':
         'biocontainers/conifer:1.0.2--he4a0461_0' }"

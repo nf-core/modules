@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/BigDataBiology/SemiBin"
       doi: "10.1038/s41467-022-29843-y"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -27,7 +26,6 @@ input:
       type: file
       description: Fasta file of the assembled contigs
       pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
-
 output:
   - meta:
       type: map
@@ -59,4 +57,6 @@ output:
       description: information of bins
       pattern: "*.tsv"
 authors:
+  - "@BigDataBiology"
+maintainers:
   - "@BigDataBiology"

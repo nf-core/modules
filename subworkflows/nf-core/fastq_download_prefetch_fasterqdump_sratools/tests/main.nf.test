@@ -3,12 +3,12 @@ nextflow_workflow {
     name "Test workflow: fastq_download_prefetch_fasterqdump_sratools/main.nf"
     script "../main.nf"
     workflow "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
-    tag "subworkflow"
-    tag "subworkflow_nfcore"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
     tag "custom/sratoolsncbisettings"
     tag "sratools/prefetch"
     tag "sratools/fasterqdump"
-    tag "fastq_download_prefetch_fasterqdump_sratools"
+    tag "subworkflows/fastq_download_prefetch_fasterqdump_sratools"
 
     test("Parameters: default") {
 
@@ -22,15 +22,21 @@ nextflow_workflow {
                 input[1] = []
                 """
             }
-            params {
-                outdir = "output"
-            }
         }
 
         then {
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
+            def selines = path(workflow.out.reads[1][1]).linesGzip
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(pelines1[0..5]).match("test_pe_reads_1_lines") },
+                { assert snapshot(pelines1.size()).match("test_pe_reads_1_size") },
+                { assert snapshot(pelines2[0..5]).match("test_pe_reads_2_lines") },
+                { assert snapshot(pelines2.size()).match("test_pe_reads_2_size") },
+                { assert snapshot(selines[0..5]).match("test_se_reads_lines") },
+                { assert snapshot(selines.size()).match("test_se_reads_size") },
+                { assert snapshot(workflow.out.versions).match("versions") }
             )
         }
     }

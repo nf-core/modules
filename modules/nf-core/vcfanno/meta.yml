@@ -10,12 +10,10 @@ keywords:
 tools:
   - vcfanno:
       description: annotate a VCF with other VCFs/BEDs/tabixed files
-
       documentation: https://github.com/brentp/vcfanno#vcfanno
       tool_dev_url: https://github.com/brentp/vcfanno
       doi: "10.1186/s13059-016-0973-5"
       license: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -44,7 +42,6 @@ input:
   - resources:
       type: map
       description: List of reference files defined in toml config, must also include indices if bgzipped.
-
 output:
   - meta:
       type: map
@@ -59,7 +56,9 @@ output:
       type: file
       description: Annotated VCF file
       pattern: "*.vcf"
-
 authors:
+  - "@projectoriented"
+  - "@matthdsm"
+maintainers:
   - "@projectoriented"
   - "@matthdsm"

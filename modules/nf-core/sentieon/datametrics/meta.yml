@@ -1,4 +1,4 @@
-name: "sentieon_datametrics"
+name: sentieon_datametrics
 description: Collects multiple quality metrics from a bam file
 keywords:
   - metrics
@@ -11,7 +11,6 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-
 input:
   - meta:
       type: map
@@ -44,7 +43,6 @@ input:
       type: file
       description: Index of the genome fasta file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -79,6 +77,7 @@ output:
       type: file
       description: File containing the information about statistical distribution of insert sizes
       pattern: "*.txt"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"
