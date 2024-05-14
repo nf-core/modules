@@ -2,10 +2,10 @@ process GATK4_SPLITINTERVALS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(intervals)
@@ -31,9 +31,9 @@ process GATK4_SPLITINTERVALS {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-
     """
-    gatk --java-options "-Xmx${avail_mem}M" SplitIntervals \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        SplitIntervals \\
         --output ${prefix} \\
         --intervals $intervals \\
         $reference \\

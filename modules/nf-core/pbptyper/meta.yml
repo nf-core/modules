@@ -11,9 +11,7 @@ tools:
       homepage: "https://github.com/rpetit3/pbptyper"
       documentation: "https://github.com/rpetit3/pbptyper"
       tool_dev_url: "https://github.com/rpetit3/pbptyper"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -28,7 +26,6 @@ input:
       type: file
       description: A reference PBP database (optional)
       pattern: "*.{fasta,fna,fa}"
-
 output:
   - meta:
       type: map
@@ -47,6 +44,7 @@ output:
       type: file
       description: A tab-delimited file of all blast hits
       pattern: "*.tblastn.tsv"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

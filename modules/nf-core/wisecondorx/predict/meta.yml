@@ -12,8 +12,7 @@ tools:
       documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
-      licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
-
+      licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
 input:
   - meta:
       type: map
@@ -42,7 +41,6 @@ input:
       type: file
       description: OPTIONAL - A BED file containing blacklist regions (used mainly when the reference is small)
       pattern: "*.bed"
-
 output:
   - meta:
       type: map
@@ -53,14 +51,31 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bed:
+  - aberrations_bed:
       type: file
-      description: OPTIONAL - Output in BED format containing the most important information
-      pattern: "*.bed"
-  - plot:
+      description: OPTIONAL - Output abberations in BED format. This gets created with the `--bed` option
+      pattern: "*_aberrations.bed"
+  - bins_bed:
       type: file
-      description: OPTIONAL - Output in PNG format to easily visualize the results
-      pattern: "*.png"
-
+      description: OPTIONAL - Output bins in BED format. This gets created with the `--bed` option
+      pattern: "*_bins.bed"
+  - segments_bed:
+      type: file
+      description: OPTIONAL - Output segments in BED format. This gets created with the `--bed` option
+      pattern: "*_segments.bed"
+  - chr_statistics:
+      type: file
+      description: OPTIONAL - Statistics per chromosome in TXT format. This gets created with the `--bed` option
+      pattern: "*_chr_statistics.txt"
+  - chr_plots:
+      type: list
+      description: OPTIONAL - A list containing the CNV plots of each chromosome. This gets created with the `--plot` option
+      pattern: "[!genome_wide]*.png"
+  - genome_plot:
+      type: file
+      description: OPTIONAL - A plot containing the CNV information of the whole genome
+      pattern: "genome_wide.png"
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

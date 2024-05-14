@@ -2,17 +2,16 @@ process GATK4_ASEREADCOUNTER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
-    tuple val(meta), path(vcf), path(tbi)
-    path fasta
-    path fai
-    path dict
+    tuple val(meta),  path(bam), path(bai), path(vcf), path(tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
     path intervals
 
     output:
@@ -28,6 +27,7 @@ process GATK4_ASEREADCOUNTER {
     def reference_command = fasta ? "--reference $fasta" : ""
     def dictionary_command = fasta ? "--sequence-dictionary $dict" : ""
     def intervals_command = intervals ? "--intervals $intervals" : ""
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK ASEReadCounter] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -35,9 +35,10 @@ process GATK4_ASEREADCOUNTER {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ASEReadCounter \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ASEReadCounter \\
         --output ${prefix}_ase.csv \\
-        --input ${input} \\
+        --input ${bam} \\
         --variant ${vcf} \\
         $reference_command \\
         $intervals_command \\

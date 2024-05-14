@@ -40,8 +40,8 @@ workflow test_bcftools_merge_bed {
 workflow test_bcftools_merge_gvcf {
     input = [ [ id:'test' ], // meta map
               [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ],
-              [ file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'], checkIfExists: true) ],
+              [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'], checkIfExists: true) ]
             ]
 

@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "NCBITOOLS_VECSCREEN"
+description: NCBI tool for detecting vector contamination in nucleic acid sequences. This tool is older than NCBI's FCS-adaptor, which is for the same purpose
+keywords:
+  - assembly
+  - genomics
+  - quality control
+  - contamination
+  - vector
+  - NCBI
+tools:
+  - "ncbitools":
+      description: |
+        "NCBI libraries for biology applications (text-based utilities)"
+      homepage: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/"
+      documentation: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/interpretation/"
+      tool_dev_url: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/"
+      licence: ["The Open Database License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', taxid:'6973' ]
+  - fasta_file:
+      type: file
+      description: FASTA file that will be screened for contaminants
+  - adapters_database_file:
+      type: file
+      description: Path to a nucleotide BLAST database file with vector sequences
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', taxid:'9606' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vecscreen_output:
+      type: file
+      description: VecScreen report file. This can be in different formats depending on the value of the optional -f  parameter. 0 = HTML format, with alignments. 1 = HTML format, no alignments. 2 = Text list, with alignments. 3 = Text list, no alignments. default = 0
+      pattern: "*.vecscreen.out"
+
+authors:
+  - "@eeaunin"

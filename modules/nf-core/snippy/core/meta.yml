@@ -11,9 +11,7 @@ tools:
       homepage: "https://github.com/tseemann/snippy"
       documentation: "https://github.com/tseemann/snippy"
       tool_dev_url: "https://github.com/tseemann/snippy"
-
       licence: "['GPL v2']"
-
 input:
   - meta:
       type: map
@@ -32,7 +30,6 @@ input:
       type: file
       description: Reference genome in GenBank (preferred) or FASTA format
       pattern: "*.{gbk,gbk.gz,gbff,gbff.gz,fa,fa.gz}"
-
 output:
   - meta:
       type: map
@@ -64,4 +61,6 @@ output:
       description: Tab-separated columnar list of alignment/core-size statistics
       pattern: "*.txt"
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

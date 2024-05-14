@@ -1,5 +1,5 @@
 name: "snpsift_annotate"
-description:
+description: Annotate a VCF file with another VCF file
 keywords:
   - variant calling
   - annotate
@@ -39,7 +39,6 @@ input:
       type: file
       description: Tabix file for compressed database provided
       pattern: "*.{tbi}"
-
 output:
   - meta:
       type: map
@@ -55,6 +54,7 @@ output:
       type: file
       description: Variant Calling File annotated
       pattern: "*.{vcf}"
-
 authors:
+  - "@LlaneroHiboreo"
+maintainers:
   - "@LlaneroHiboreo"

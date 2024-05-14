@@ -10,7 +10,6 @@ tools:
       tool_dev_url: "https://github.com/Illumina/SMNCopyNumberCaller"
       doi: "10.1038/s41436-020-0754-0"
       licence: "Apache License Version 2.0"
-
 input:
   - bam:
       type: file
@@ -25,7 +24,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
 output:
   - meta:
       type: map
@@ -44,6 +42,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@peterpru"
+maintainers:
   - "@peterpru"

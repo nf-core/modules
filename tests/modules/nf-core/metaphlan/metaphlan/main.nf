@@ -53,7 +53,7 @@ workflow test_metaphlan_sam {
     db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan4_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
-    SAMTOOLS_VIEW ( input, [] ,[])
+    SAMTOOLS_VIEW ( input, [[],[]], [])
     METAPHLAN_METAPHLAN ( SAMTOOLS_VIEW.out.sam, UNTAR.out.untar.map{ it[1] } )
 }
 

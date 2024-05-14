@@ -13,9 +13,7 @@ tools:
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
-
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -38,7 +36,6 @@ input:
       type: file
       description: A text file containing information about the sample(s)
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
@@ -53,6 +50,7 @@ output:
       type: file
       description: The results file from the BAF test
       pattern: "*.metrics"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

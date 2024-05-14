@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process BLAST_BLASTP"
+    script "../main.nf"
+    process "BLAST_BLASTP"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/blastp"
+
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../makeblastdb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("Should search for proteins against a blast db and return the default (tsv) file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for zipped proteins against a blast db and return the default (tsv) file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("gz_tsv") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return an xml file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'xml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.xml).match("xml") },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a tsv file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tsv.get(0).get(1)).md5 == "dd58eb09f38e6f951aa00c133a18ef5b" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a csv file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'csv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.csv.get(0).get(1)).md5 == "19214c68e1a208705dd4d6f0c5dea78b" },
+                { assert process.out.versions }
+            )
+        }
+
+    }
+
+}

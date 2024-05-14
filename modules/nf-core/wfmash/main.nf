@@ -2,10 +2,10 @@ process WFMASH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::wfmash=0.10.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wfmash:0.10.3--h71f629c_0':
-        'biocontainers/wfmash:0.10.3--h71f629c_0' }"
+        'https://depot.galaxyproject.org/singularity/wfmash:0.13.0--h11f254b_0':
+        'biocontainers/wfmash:0.13.0--h11f254b_0' }"
 
     input:
     tuple val(meta), path(fasta_gz), path(paf), path(gzi), path(fai)

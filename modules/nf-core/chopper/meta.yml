@@ -33,7 +33,6 @@ input:
       type: file
       description: FastQ with reads from long read sequencing e.g. PacBio or ONT
       pattern: "*.{fastq.gz}"
-
 output:
   - meta:
       type: map
@@ -48,6 +47,7 @@ output:
       type: file
       description: Filtered and trimmed FastQ file
       pattern: "*.{fastq.gz}"
-
 authors:
+  - "@FynnFreyer"
+maintainers:
   - "@FynnFreyer"

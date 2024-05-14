@@ -1,0 +1,55 @@
+---
+name: "svync"
+description: A tool to standardize VCF files from structural variant callers
+keywords:
+  - structural variants
+  - vcf
+  - standardization
+  - standardize
+  - sv
+tools:
+  - "svync":
+      description: "A tool to standardize VCF files from structural variant callers"
+      homepage: "https://github.com/nvnieuwk/svync"
+      documentation: "https://github.com/nvnieuwk/svync"
+      tool_dev_url: "https://github.com/nvnieuwk/svync"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - vcf:
+      type: file
+      description: The input VCF file containing structural variants
+      pattern: "*.{vcf,vcf.gz}"
+  - tbi:
+      type: file
+      description: The index of the input VCF file containing structural variants
+      pattern: "*.tbi"
+  - config:
+      type: file
+      description: The config stating how the standardization should happen
+      pattern: "*.{yml,yaml}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: The standardized VCF file
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

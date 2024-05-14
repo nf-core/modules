@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
       doi: "10.1038/ng.3964"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: VCF files
       pattern: "*.{vcf,vcf.gz}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: Concatenated VCF file index
       pattern: "*.{tbi}"
-
 authors:
+  - "@zachary-foster"
+maintainers:
   - "@zachary-foster"

@@ -3,14 +3,14 @@ description: for annotating regions, frequencies, cadd scores
 keywords:
   - annotate
   - genmod
+  - ranking
 tools:
   - "genmod":
       description: "Annotate genetic inheritance models in variant files"
       homepage: "https://github.com/Clinical-Genomics/genmod"
       documentation: "https://github.com/Clinical-Genomics/genmod"
       tool_dev_url: "https://github.com/moonso"
-
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -32,9 +32,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - vcf:
-      type: vcf
+      type: file
       description: Annotated VCF file
       pattern: "*.{vcf}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

@@ -4,6 +4,8 @@ keywords:
   - quast
   - assembly
   - quality
+  - contig
+  - scaffold
 tools:
   - quast:
       description: |
@@ -20,16 +22,9 @@ input:
       type: file
       description: |
         The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
-  - use_fasta:
-      type: boolean
-      description: Whether to use the provided fasta reference genome file
   - gff:
       type: file
       description: The genome GFF file. Has to contain at least a non-empty string dummy value.
-  - use_gff:
-      type: boolean
-      description: Whether to use the provided gff reference annotation file
-
 output:
   - quast:
       type: directory
@@ -38,13 +33,29 @@ output:
   - report:
       type: file
       description: tab-separated version of the summary, suitable for spreadsheets and mqc
-      pattern: "report.tsv"
-
+      pattern: "${prefix}.tsv"
+  - misassemblies:
+      type: file
+      description: |
+        Report containing misassemblies, only when a reference fasta is provided
+      pattern: "${prefix}_misassemblies.tsv"
+  - transcriptome:
+      type: file
+      description: |
+        Report containing all the alignments of transcriptome to the assembly, only when a reference fasta is provided
+      pattern: "${prefix}_transcriptome.tsv"
+  - unaligned:
+      type: file
+      description: |
+        Report containing unaligned contigs, only when a reference fasta is provided
+      pattern: "${prefix}_unaligned.tsv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@drpatelh"
+  - "@kevinmenden"
+maintainers:
   - "@drpatelh"
   - "@kevinmenden"

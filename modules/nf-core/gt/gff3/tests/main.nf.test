@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process GT_GFF3"
+    script "../main.nf"
+    process "GT_GFF3"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/gff3"
+
+    test("sarscov2-gff3-valid") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.gt_gff3 != null },
+                { assert process.out.error_log == [] }
+            )
+        }
+
+    }
+
+    test("sarscov2-gff3-invalid") {
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    '##gff-version 3',
+                    'chr22\tID=gene:ENSG00000233995;Name=AP000547.1'
+                    )
+                    .collectFile(name: 'sample.gff3', newLine: true)
+                    .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.gt_gff3 == [] },
+                { assert process.out.error_log != null },
+                { assert path(process.out.error_log.get(0).get(1)).getText().contains("gt gff3: error:") }
+            )
+        }
+    }
+
+}

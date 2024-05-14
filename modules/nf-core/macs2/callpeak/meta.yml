@@ -8,12 +8,10 @@ keywords:
 tools:
   - macs2:
       description: Model Based Analysis for ChIP-Seq data
-
       documentation: https://docs.csc.fi/apps/macs2/
       tool_dev_url: https://github.com/macs3-project/MACS
       doi: "10.1101/496521"
       licence: ["BSD"]
-
 input:
   - meta:
       type: map
@@ -28,9 +26,7 @@ input:
       description: The control file
   - macs2_gsize:
       type: string
-      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9),
-        'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8)
-
+      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8)
 output:
   - versions:
       type: file
@@ -56,8 +52,11 @@ output:
       type: file
       description: Optional bedGraph files for input and treatment input samples
       pattern: "*.bdg"
-
 authors:
+  - "@ntoda03"
+  - "@JoseEspinosa"
+  - "@jianhong"
+maintainers:
   - "@ntoda03"
   - "@JoseEspinosa"
   - "@jianhong"

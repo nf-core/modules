@@ -2,7 +2,7 @@ process YARA_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::yara=1.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yara:1.0.2--2' :
         'biocontainers/yara:1.0.2--2' }"

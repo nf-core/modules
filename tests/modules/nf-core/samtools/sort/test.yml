@@ -1,9 +1,0 @@
-- name: samtools sort test_samtools_sort
-  command: nextflow run ./tests/modules/nf-core/samtools/sort -entry test_samtools_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/sort/nextflow.config
-  tags:
-    - samtools/sort
-    - samtools
-  files:
-    - path: output/samtools/test.sorted.bam
-      md5sum: 552279cf91c31d6dba35e6adc243b182
-    - path: output/samtools/versions.yml

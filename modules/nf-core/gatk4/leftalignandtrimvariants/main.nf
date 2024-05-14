@@ -2,10 +2,10 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(intervals)
@@ -25,6 +25,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     def args             = task.ext.args   ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals       ? "--intervals $intervals" : ""
+
     def avail_mem = 3072
     if (!task.memory) {
         log.info '[GATK LeftAlignAndTrimVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -32,7 +33,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         LeftAlignAndTrimVariants \\
         $interval_command \\
         --variant $vcf \\
@@ -46,4 +47,18 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
