@@ -1,57 +1,40 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "openms_idmapper"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: idmapper
+description: Assigns protein/peptide identifications to features or consensus features.
 keywords:
-  - sort
-  - example
-  - genomics
+  - feature
+  - identification
+  - OpenMS
 tools:
-  - "openms":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['BSD']
-
-## TODO nf-core: Add a description of all of the variables used as input
+  - IDMapper:
+      description: |
+        Assigns protein/peptide identifications to features or consensus features.
+      homepage: https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/TOPP_IDMapper.html
+      documentation: https://abibuilder.cs.uni-tuebingen.de/archive/openms/Documentation/nightly/html/TOPP_IDMapper.html
 input:
-  # Only when we have meta
   - meta:
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+      description: Groovy Map containing sample information
+  - id_file:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: |
+        Identifications file
+      pattern: "*.{idXML, mzid}"
+  - map_file:
+      type: file
+      description: Feature map/consensus map file
+      pattern: "*.{featureXML, consensusXML}"
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  - versions:
+  - xml:
       type: file
-      description: File containing software versions
+      description: Output file
+      pattern: "*.{featureXML, consensusXML}"
+  - log:
+      type: file
+      description: log file
+      pattern: "*.log"
+  - version:
+      type: file
+      description: File containing software version
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
 authors:
-  - "@rolivella"
-maintainers:
   - "@rolivella"
