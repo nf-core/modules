@@ -1,0 +1,46 @@
+name: "kalign_align"
+description: "Aligns sequences using kalign"
+keywords:
+  - alignment
+  - MSA
+  - genomics
+tools:
+  - "kalign":
+      description: "Kalign is a fast and accurate multiple sequence alignment algorithm."
+      homepage: "https://msa.sbc.su.se/cgi-bin/msa.cgi"
+      documentation: "https://github.com/TimoLassmann/kalign"
+      tool_dev_url: "https://github.com/TimoLassmann/kalign"
+      doi: "10.1093/bioinformatics/btz795"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - alignment:
+      type: file
+      description: Alignment file.
+      pattern: "*.{aln}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@luisas"

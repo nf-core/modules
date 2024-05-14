@@ -6,7 +6,7 @@ process SAM2LCA_ANALYZE {
     conda (params.enable_conda ? "bioconda::sam2lca=1.1.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sam2lca:1.1.2--pyhdfd78af_1':
-        'quay.io/biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"
+        'biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

@@ -3,5 +3,15 @@
   tags:
     - vardictjava
   files:
-    - path: output/vardictjava/test.vcf.gz
-      md5sum: 3f1f227afc532bddeb58f16fd3013fc8
+    - path: output/vardictjava/test.vcf
+      md5sum: e8411ecae49b4f6afa6ea0b681ea506e
+    - path: output/vardictjava/versions.yml
+
+- name: vardictjava test_vardictjava_paired_bam
+  command: nextflow run ./tests/modules/nf-core/vardictjava -entry test_vardictjava_paired_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vardictjava/nextflow.config
+  tags:
+    - vardictjava
+  files:
+    - path: output/vardictjava/test.vcf
+      md5sum: 8acdd8ca041f024aab55d102fb6b0c38
+    - path: output/vardictjava/versions.yml

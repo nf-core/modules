@@ -1,0 +1,46 @@
+name: "kmcp_merge"
+description: Merge search results from multiple databases.
+keywords:
+  - metagenomics
+  - classify
+  - taxonomic profiling
+  - fastq
+  - sequences
+  - kmers
+tools:
+  - "kmcp":
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations by pseudo-mapping"
+      homepage: "https://github.com/shenwei356/kmcp"
+      documentation: "https://github.com/shenwei356/kmcp#documents"
+      tool_dev_url: "https://github.com/shenwei356/kmcp"
+      doi: "10.1093/bioinformatics/btac845"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - search_out:
+      type: file
+      description: The output file created by kmcp search
+      pattern: "*.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - result:
+      type: file
+      description: Output file in gzipped format
+      pattern: "*.gz"
+
+authors:
+  - "@sofstam"

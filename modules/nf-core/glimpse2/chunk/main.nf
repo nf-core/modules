@@ -14,10 +14,11 @@ process GLIMPSE2_CHUNK {
     conda "bioconda::glimpse-bio=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'quay.io/biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), val(region), path(map)
+    tuple val(meta) , path(input), path(input_index), val(region)
+    tuple val(meta2), path(map)
     val(model)
 
     output:
@@ -41,6 +42,18 @@ process GLIMPSE2_CHUNK {
         --region $region \\
         --threads $task.cpus \\
         --output ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args   ?: ""
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

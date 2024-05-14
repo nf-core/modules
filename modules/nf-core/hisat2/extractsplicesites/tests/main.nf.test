@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process HISAT2_EXTRACTSPLICESITES"
+    script "../main.nf"
+    process "HISAT2_EXTRACTSPLICESITES"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hisat2"
+    tag "hisat2/extractsplicesites"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'],
+                              file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

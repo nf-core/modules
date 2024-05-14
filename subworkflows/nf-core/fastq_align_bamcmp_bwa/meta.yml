@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_align_bamcmp_bwa
+description: Align reads to two different reference genomes using bwa, then use bamcmp to keep only reads that align better to the first genome, then sort with samtools
+keywords:
+  - bam
+  - cram
+  - bamcmp
+  - contamination
+  - align
+components:
+  - bamcmp
+  - bwa/mem
+  - bwa/align
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+  - bam_sort_stats_samtools
+input:
+  - ch_reads:
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_primary_index:
+      description: |
+        BWA genome index files for the primary species.
+        Structure: [ val(meta2), path(primary_index) ]
+  - ch_contaminant_index:
+      description: |
+        BWA genome index files for the contamination species.
+        Structure: [ val(meta3), path(contaminant_index) ]
+  - val_sort_bam:
+      type: boolean
+      description: If true sort resulting primary bam files.
+      pattern: "true|false"
+  - ch_primary_fasta:
+      type: file
+      description: |
+        Optional reference fasta file for the primary genome. This only needs to be given if val_sort_bam = true
+        Structure: [ path(fasta) ]
+
+output:
+  - bam:
+      description: |
+        BAM file, sorted by samtools if requested
+        Structure: [ val(meta), path(bam) ]
+  - contaminant_bam:
+      description: |
+        BAM file of the reads that map better to the contamination genome. Sorted by queryname.
+        Structure: [ val(meta), path(bam) ]
+  - bai:
+      description: |
+        BAI index of the ordered BAM file
+        Structure: [ val(meta), path(bai) ]
+  - csi:
+      description: |
+        CSI index of the ordered BAM file
+        Structure: [ val(meta), path(csi) ]
+  - stats:
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
+  - flagstat:
+      description: |
+        File containing samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats:
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@sppearce"

@@ -1,9 +1,9 @@
 name: "gatk4_postprocessgermlinecnvcalls"
 description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
 keywords:
+  - copy number
   - gatk4
   - postprocessgermlinecnvcalls
-  - copy number
 tools:
   - gatk4:
       description: |
@@ -26,18 +26,17 @@ input:
       description: |
         Optional - A folder containing the ploidy model.
         When a model is supplied to tool will run in CASE mode.
-        The folder can be tar-zipped.
-      pattern: "*.tar.gz"
+      pattern: "*-calls/"
   - calls:
       type: directory
       description: A folder containing the calls from the input files
-      pattern: "*.tar.gz"
+      pattern: "*-cnv-calls/*-calls"
   - model:
       type: directory
       description: |
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).
-      pattern: "*.tar.gz"
+      pattern: "*-cnv-model/*-model"
 
 output:
   - meta:

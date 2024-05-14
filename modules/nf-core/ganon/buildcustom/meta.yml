@@ -1,0 +1,58 @@
+name: "ganon_buildcustom"
+description: Build ganon database using custom reference sequences.
+keywords:
+  - ganon
+  - metagenomics
+  - profiling
+  - taxonomy
+  - k-mer
+  - database
+tools:
+  - "ganon":
+      description: "ganon classifies short DNA sequences against large sets of genomic reference sequences efficiently"
+      homepage: "https://github.com/pirovc/ganon"
+      documentation: "https://github.com/pirovc/ganon"
+      tool_dev_url: "https://github.com/pirovc/ganon"
+      doi: "10.1093/bioinformatics/btaa458"
+      licence: "['MIT License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: |
+        List of input FASTA files, or a directory containing input FASTA files.
+        Note you must supply --input-extension via ext.args if FASTA extensions do not end in the default `fna.gz`.
+      pattern: "*"
+  - taxonomy_files:
+      type: file
+      description: Pre-downloaded taxonomy files of input sequences. See ganon docs for formats
+  - genome_size_files:
+      type: file
+      description: Pre-downloaded NCBI or GTDB genome size files of input sequences. See ganon docs for formats
+      pattern: "{species_genome_size.txt.gz,*_metadata.tar.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: ganon database files
+      pattern: "*.{ibf,tax}"
+  - info:
+      type: file
+      description: Copy of target info generated. Can be used for updating database.
+      pattern: "*info.tsv"
+authors:
+  - "@jfy133"

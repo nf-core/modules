@@ -5,7 +5,7 @@ process CHOPPER {
     conda "bioconda::chopper=0.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/chopper:0.3.0--hd03093a_0':
-        'quay.io/biocontainers/chopper:0.3.0--hd03093a_0' }"
+        'biocontainers/chopper:0.3.0--hd03093a_0' }"
 
     input:
     tuple val(meta), path(fastq)

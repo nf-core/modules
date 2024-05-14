@@ -5,7 +5,7 @@ process PYDAMAGE_ANALYZE {
     conda "bioconda::pydamage=0.70"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
-        'quay.io/biocontainers/pydamage:0.70--pyhdfd78af_0' }"
+        'biocontainers/pydamage:0.70--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

@@ -6,7 +6,7 @@ process SSUISSERO {
     conda "bioconda::ssuissero=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ssuissero%3A1.0.1--hdfd78af_0':
-        'quay.io/biocontainers/ssuissero:1.0.1--hdfd78af_0' }"
+        'biocontainers/ssuissero:1.0.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -5,7 +5,7 @@ process SHIGEIFINDER {
     conda "bioconda::shigeifinder=1.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shigeifinder:1.3.2--pyhdfd78af_0':
-        'quay.io/biocontainers/shigeifinder:1.3.2--pyhdfd78af_0' }"
+        'biocontainers/shigeifinder:1.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(seqs)

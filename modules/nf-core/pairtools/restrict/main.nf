@@ -7,7 +7,7 @@ process PAIRTOOLS_RESTRICT {
     conda "bioconda::pairtools=1.0.2 conda-forge::numpy=1.23"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.0.2--py39h2a9f597_0' :
-        'quay.io/biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
+        'biocontainers/pairtools:1.0.2--py39h2a9f597_0' }"
 
     input:
     tuple val(meta), path(pairs)

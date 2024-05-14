@@ -1,0 +1,42 @@
+name: seqkit_tab2fx
+description: Convert tabular format (first two/three columns) to FASTA/Q format.
+keywords:
+  - fasta
+  - fastq
+  - text
+  - tabular
+  - convert
+tools:
+  - seqkit:
+      description: |
+        Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://github.com/shenwei356/seqkit
+      documentation: https://bioinf.shenwei.me/seqkit/
+      doi: 10.1371/journal.pone.0163962
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - text:
+      type: file
+      description: Text file in tabular format
+      pattern: "*.txt[.gz,.zst]"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastx:
+      type: file
+      description: Sequence file in fasta/q format
+      pattern: "*.{fa,fq}[.gz,.zst]"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@heuermh"

@@ -5,11 +5,11 @@ process GATK4_BEDTOINTERVALLIST {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)
-    path  dict
+    tuple val(meta2), path(dict)
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
@@ -29,7 +29,8 @@ process GATK4_BEDTOINTERVALLIST {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" BedToIntervalList \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        BedToIntervalList \\
         --INPUT $bed \\
         --OUTPUT ${prefix}.interval_list \\
         --SEQUENCE_DICTIONARY $dict \\

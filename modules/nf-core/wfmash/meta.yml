@@ -30,9 +30,8 @@ input:
       description: Optional inpute file in PAF format to derive the precise alignments for.
       pattern: "*.{paf}"
   - query_self:
-      type: val
+      type: boolean
       description: If set to true, the input FASTA will also be used as the query FASTA.
-      pattern: "{true, false}"
   - gzi:
       type: file
       description: The GZI index of the input FASTA file.

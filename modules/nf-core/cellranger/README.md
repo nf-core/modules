@@ -6,18 +6,18 @@ Cell Ranger is a commercial tool from 10X Genomics. The container provided for t
 
 2. Edit the Dockerfile. Update the Cell Ranger versions in this line:
 
-   ```bash
-   ENV CELLRANGER_VER=<VERSION>
-   ```
+```bash
+ENV CELLRANGER_VER=<VERSION>
+```
 
 3. Create and test the container:
 
-   ```bash
-   docker build . -t nfcore/cellranger:<VERSION>
-   ```
+```bash
+docker build . -t nfcore/cellranger:<VERSION>
+```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
 
-   ```bash
-   docker push nfcore/cellranger:<VERSION>
-   ```
+```bash
+docker push nfcore/cellranger:<VERSION>
+```

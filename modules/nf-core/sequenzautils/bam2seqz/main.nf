@@ -2,10 +2,10 @@ process SEQUENZAUTILS_BAM2SEQZ {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::sequenza-utils=3.0.0"
+    conda "bioconda::samtools=1.15.1 bioconda::sequenza-utils=3.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
-        'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
+        'biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
 
     input:
     tuple val(meta), path(normalbam), path(tumourbam)

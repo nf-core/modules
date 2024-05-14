@@ -6,6 +6,8 @@
   files:
     - path: output/bedtools/test_out.bed
       md5sum: d3aeb1ec7b90e0d5a6d1b9a4614ab96a
+    - path: output/bedtools/versions.yml
+      md5sum: 6c219404bf848cd4bd672a934dd4ed56
 
 - name: bedtools map test_bedtools_map_vcf
   command: nextflow run ./tests/modules/nf-core/bedtools/map -entry test_bedtools_map_vcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/map/nextflow.config
@@ -15,3 +17,5 @@
   files:
     - path: output/bedtools/test_out.bed
       md5sum: cabd34d1132834581e31f53dfa66ec03
+    - path: output/bedtools/versions.yml
+      md5sum: ab927c219959af17dc370b0b8eda78bd

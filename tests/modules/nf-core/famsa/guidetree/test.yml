@@ -1,0 +1,9 @@
+- name: famsa guidetree test_famsa_guidetree
+  command: nextflow run ./tests/modules/nf-core/famsa/guidetree -entry test_famsa_guidetree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/famsa/guidetree/nextflow.config
+  tags:
+    - famsa/guidetree
+    - famsa
+  files:
+    - path: output/famsa/test.dnd
+      md5sum: f3ef8b16a7a16cb4548942ebf2e7bad6
+    - path: output/famsa/versions.yml

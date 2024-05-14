@@ -5,7 +5,7 @@ process SICKLE {
     conda "bioconda::sickle-trim=1.33"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sickle-trim:1.33--h7132678_7':
-        'quay.io/biocontainers/sickle-trim:1.33--h5bf99c6_6' }"
+        'biocontainers/sickle-trim:1.33--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(reads), val(qual_type)

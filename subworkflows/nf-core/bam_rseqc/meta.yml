@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: bam_rseqc
 description: Subworkflow to run multiple commands in the RSeqC package
 keywords:
@@ -12,8 +12,16 @@ keywords:
   - readdistribution
   - readduplication
   - tin
-modules:
+components:
   - rseqc
+  - rseqc/tin
+  - rseqc/readduplication
+  - rseqc/readdistribution
+  - rseqc/junctionsaturation
+  - rseqc/junctionannotation
+  - rseqc/innerdistance
+  - rseqc/inferexperiment
+  - rseqc/bamstat
 input:
   - meta:
       type: map

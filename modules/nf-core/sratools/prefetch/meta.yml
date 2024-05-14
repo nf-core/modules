@@ -19,7 +19,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - id:
-      type: val
+      type: string
       description: >
         A string denoting an SRA id.
   - ncbi_settings:
@@ -27,7 +27,11 @@ input:
       description: >
         An NCBI user settings file.
       pattern: "*.mkfg"
-
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the sra-toolkit
+      pattern: "*.cart"
 output:
   - meta:
       type: map

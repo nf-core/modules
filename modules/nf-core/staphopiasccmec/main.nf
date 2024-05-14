@@ -5,7 +5,7 @@ process STAPHOPIASCCMEC {
     conda "bioconda::staphopia-sccmec=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staphopia-sccmec:1.0.0--hdfd78af_0' :
-        'quay.io/biocontainers/staphopia-sccmec:1.0.0--hdfd78af_0' }"
+        'biocontainers/staphopia-sccmec:1.0.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

@@ -2,6 +2,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bclconvert -c ./tests/config/nextflow.config
   tags:
     - bclconvert
+    - bcl2fastq
     - subworkflows
     - subworkflows/bcl_demultiplex
   files:
@@ -54,6 +55,7 @@
 - name: bcl_demultiplex test_bcl_demultiplex_bcl2fastq
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bcl2fastq -c ./tests/config/nextflow.config
   tags:
+    - bclconvert
     - bcl2fastq
     - subworkflows
     - subworkflows/bcl_demultiplex

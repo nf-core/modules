@@ -1,0 +1,10 @@
+- name: learnmsa align test_learnmsa_align
+  command: nextflow run ./tests/modules/nf-core/learnmsa/align -entry test_learnmsa_align -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/learnmsa/align/nextflow.config
+  tags:
+    - learnmsa
+    - learnmsa/align
+  files:
+    - path: output/learnmsa/test.aln
+      contains:
+        - ">sample1"
+    - path: output/learnmsa/versions.yml

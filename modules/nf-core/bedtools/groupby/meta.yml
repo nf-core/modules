@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: bedtools_groupby
+description: Groups features in a BED file by given column(s) and computes summary statistics for each group to another column.
+keywords:
+  - bed
+  - groupby
+  - bedtools
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/groupby.html
+      homepage: https://bedtools.readthedocs.io/en/latest/
+      doi: 10.1093/bioinformatics/btq033
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - bed:
+      type: file
+      description: Input BED file
+      pattern: "*.{bed}"
+  - summary_column:
+      type: integer
+      description: Column to be summarized (1-based)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - bed:
+      type: file
+      description: Grouped by bed file with combined features
+      pattern: "*.{bed}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@mashehu"

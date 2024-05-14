@@ -2,10 +2,10 @@ process GNU_SORT {
     tag "${meta.id}"
     label "process_low"
 
-    conda "conda-forge::coreutils=9.1"
+    conda "bioconda::coreutils=8.25"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-    'ubuntu:20.04' }"
+    'https://depot.galaxyproject.org/singularity/coreutils:8.25--1' :
+    'biocontainers/coreutils:8.25--1' }"
 
     input:
     tuple val(meta), path(input)
@@ -23,7 +23,7 @@ process GNU_SORT {
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
     def VERSION     = "9.1"             // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     sort ${args} ${input} > ${output_file}
 
@@ -39,6 +39,8 @@ process GNU_SORT {
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
     def VERSION     = "9.1"
+
+    if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     sort ${args} ${input} > ${output_file}
 

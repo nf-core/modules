@@ -5,7 +5,7 @@ process DRAGONFLYE {
     conda "bioconda::dragonflye=1.0.11"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dragonflye:1.0.11--hdfd78af_0' :
-        'quay.io/biocontainers/dragonflye:1.0.11--hdfd78af_0' }"
+        'biocontainers/dragonflye:1.0.11--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)

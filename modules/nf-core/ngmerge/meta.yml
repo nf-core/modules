@@ -1,0 +1,60 @@
+---
+name: "ngmerge"
+
+description: Merging paired-end reads and removing sequencing adapters.
+keywords:
+  - sort
+  - reads merging
+  - merge mate pairs
+tools:
+  - "ngmerge":
+      description: "Merging paired-end reads and removing sequencing adapters."
+      homepage: "https://github.com/jsh58/NGmerge"
+      documentation: "https://github.com/jsh58/NGmerge"
+      tool_dev_url: "https://github.com/jsh58/NGmerge"
+      doi: "10.1186/s12859-018-2579-2"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 2; i.e., paired-end data.
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - merged_reads:
+      type: file
+      description: fastq file merged reads
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+
+  - unstitched_read1:
+      type: file
+      description: fastq file unstitched read 1
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+
+  - unstitched_read2:
+      type: file
+      description: fastq file unstitched read 2
+      pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+
+authors:
+  - "@charlotteanne"
+  - "@jsh58"

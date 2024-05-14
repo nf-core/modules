@@ -5,7 +5,7 @@ process BCFTOOLS_ANNOTATE {
     conda "bioconda::bcftools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'quay.io/biocontainers/bcftools:1.17--haef29d1_0' }"
+        'biocontainers/bcftools:1.17--haef29d1_0' }"
 
     input:
     tuple val(meta), path(input), path(index), path(annotations), path(annotations_index), path(header_lines)

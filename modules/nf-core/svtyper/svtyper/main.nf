@@ -5,7 +5,7 @@ process SVTYPER_SVTYPER {
     conda "bioconda::svtyper=0.7.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtyper:0.7.0--py27h24bf2e0_1':
-        'quay.io/biocontainers/svtyper:0.7.0--py27h24bf2e0_1' }"
+        'biocontainers/svtyper:0.7.0--py27h24bf2e0_1' }"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)

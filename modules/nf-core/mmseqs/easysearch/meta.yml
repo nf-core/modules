@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "mmseqs_easysearch"
+description: Searches for the sequences of a fasta file in a databse using MMseqs2
+keywords:
+  - protein sequence
+  - databases
+  - searching
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing input fasta file information
+        e.g. `[ id:'test' ]`
+
+  - fasta:
+      type: file
+      description: Fasta file
+      pattern: "*.{fa,fasta}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing database information
+        e.g. `[ id:'test' ]`
+
+  - db_target:
+      type: directory
+      description: an MMseqs2 database with target data, e.g. uniref90
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing input fasta file information
+        e.g. `[ id:'test']`
+  - tsv:
+      type: file
+      description: tsv file with the results of the search
+      pattern: "*.{tsv}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@luisas"

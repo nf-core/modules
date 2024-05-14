@@ -5,7 +5,7 @@ process NGMASTER {
     conda "bioconda::ngmaster=0.5.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
-        'quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
+        'biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

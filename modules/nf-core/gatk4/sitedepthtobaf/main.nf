@@ -5,7 +5,7 @@ process GATK4_SITEDEPTHTOBAF {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(site_depths), path(site_depths_indices)
@@ -37,7 +37,8 @@ process GATK4_SITEDEPTHTOBAF {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" SiteDepthtoBAF \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        SiteDepthtoBAF \\
         --baf-evidence-output ${prefix}.baf.txt.gz \\
         --baf-sites-vcf ${vcf} \\
         ${site_depth_input} \\

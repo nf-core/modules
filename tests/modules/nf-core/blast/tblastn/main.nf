@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BLAST_TBLASTN } from '../../../../../modules/nf-core/blast/tblastn/main.nf'
 include { BLAST_MAKEBLASTDB } from '../../../../../modules/nf-core/blast/makeblastdb/main.nf'
+include { BLAST_TBLASTN } from '../../../../../modules/nf-core/blast/tblastn/main.nf'
 
 workflow test_blast_tblastn {
 

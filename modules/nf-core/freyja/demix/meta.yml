@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/andersen-lab/Freyja"
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
-      doi: "http://dx.doi.org/10.1038/s41586-022-05049-6"
+      doi: "10.1038/s41586-022-05049-6"
       licence: "['BSD-2-Clause']"
 
 input:
@@ -26,10 +26,10 @@ input:
       pattern: "*.variants.tsv"
 
   - meta2:
-    type: map
-    description: |
-      Groovy Map containing sample information
-      e.g. [ id:'test', single_end:false ]
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - depths:
       type: file
       description: File containing depth of the variants

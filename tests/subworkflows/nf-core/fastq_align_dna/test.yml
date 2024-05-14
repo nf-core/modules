@@ -15,9 +15,10 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bowtie2/test.bam
-      md5sum: 2564cfe56bf60e936fe446558a8fb337
     - path: output/bowtie2/test.bowtie2.log
       md5sum: 7b8a9e61b7646da1089b041333c41a87
+    - path: output/bowtie2/versions.yml
+      md5sum: 221b21ac82e9077089168db1b4ce8352
 
 - name: fastq_align_dna test_fastq_align_bowtie2_PE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bowtie2_PE -c ./tests/config/nextflow.config
@@ -36,7 +37,8 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bowtie2/test.bam
-      md5sum: 13e9ca95507fddd13571c02462d4e519
+    - path: output/bowtie2/test.bowtie2.log
+      md5sum: bd89ce1b28c93bf822bae391ffcedd19
 
 - name: fastq_align_dna test_fastq_align_bwa_SE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bwa_SE -c ./tests/config/nextflow.config
@@ -55,7 +57,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bwamem1/test.bam
-      md5sum: 61eac1213d2bf5e88e225e545010e9b8
 
 - name: fastq_align_dna test_fastq_align_bwa_PE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bwa_PE -c ./tests/config/nextflow.config
@@ -74,7 +75,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bwamem1/test.bam
-      md5sum: 2622f4380f992c505af7dab8c256313f
 
 - name: fastq_align_dna test_fastq_align_bwamem2_SE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bwamem2_SE -c ./tests/config/nextflow.config
@@ -93,7 +93,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bwamem2/test.bam
-      md5sum: ecff344d445d6e924f158fca39ed9bb3
 
 - name: fastq_align_dna test_fastq_align_bwamem2_PE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bwamem2_PE -c ./tests/config/nextflow.config
@@ -112,7 +111,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bwamem2/test.bam
-      md5sum: 1c2c49048187b1db296dd4a98248f888
 
 - name: fastq_align_dna test_fastq_align_dragmap_SE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_dragmap_SE -c ./tests/config/nextflow.config
@@ -131,7 +129,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/dragmap/test.bam
-      md5sum: 5f08f3ca6ef2094fc4244966b2d28008
     - path: output/dragmap/test.dragmap.log
 
 - name: fastq_align_dna test_fastq_align_dragmap_PE
@@ -151,7 +148,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/dragmap/test.bam
-      md5sum: c3a3475e70c8f38ee80581947f507c54
     - path: output/dragmap/test.dragmap.log
 
 - name: fastq_align_dna test_fastq_align_snapaligner_SE
@@ -171,7 +167,6 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/snap/test.bam
-      md5sum: 44ab4e6a4f98bdd0f3eafa0c7c17d056
 
 - name: fastq_align_dna test_fastq_align_snapaligner_PE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_snapaligner_PE -c ./tests/config/nextflow.config
@@ -190,4 +185,3 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/snap/test.bam
-      md5sum: 88bc0591a3ac712f49551a719c3cdcd5

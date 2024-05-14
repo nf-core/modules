@@ -1,0 +1,44 @@
+name: "vrhyme_linkbins"
+description: Linking bins output by vRhyme to create one sequences per bin
+keywords:
+  - bin
+  - binning
+  - link
+  - vrhyme
+  - linkbins
+tools:
+  - "vrhyme":
+      description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
+      homepage: https://github.com/AnantharamanLab/vRhyme
+      documentation: https://github.com/AnantharamanLab/vRhyme
+      tool_dev_url: https://github.com/AnantharamanLab/vRhyme
+      doi: 10.1093/nar/gkac341
+      licence: "['GPL v3 license', 'GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bins:
+      type: directory
+      description: Directory file containing bin FASTA files output by vRhyme (each bin having multiple sequences)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - linked_bins:
+      type: file
+      description: FASTA file containing all bins that have been linked by N's
+      pattern: "*_linked_bins.fasta"
+
+authors:
+  - "@CarsonJM"

@@ -2,30 +2,32 @@ process CELLRANGER_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "nfcore/cellrangermkfastq:7.1.0"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "docker.io/nfcore/cellrangermkfastq:7.1.0"
 
     input:
     path bcl
     path csv
 
     output:
-    path "versions.yml", emit: versions
-    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
+    path "**/outs/fastq_path/*.fastq.gz", emit: fastq
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
-    cellranger mkfastq --id=${bcl.getSimpleName()} \
-        --run=$bcl \
-        --csv=$csv \
+    cellranger \\
+        mkfastq \\
+        --id=${prefix} \\
+        --run=$bcl \\
+        --csv=$csv \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,9 +37,14 @@ process CELLRANGER_MKFASTQ {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
     """
-    mkdir -p "${bcl.getSimpleName()}/outs/fastq_path/"
-    touch ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
+    mkdir -p "${prefix}/outs/fastq_path/"
+    touch ${prefix}/outs/fastq_path/fake_file.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

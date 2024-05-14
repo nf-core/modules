@@ -1,0 +1,50 @@
+name: "bacphlip"
+description: A bacteriophage lifestyle prediction tool
+keywords:
+  - phage
+  - lifestyle
+  - temperate
+  - virulent
+  - bacphlip
+  - hmmsearch
+tools:
+  - "bacphlip":
+      description: "A Random Forest classifier to predict bacteriophage lifestyle"
+      homepage: https://github.com/adamhockenberry/bacphlip
+      documentation: https://github.com/adamhockenberry/bacphlip
+      tool_dev_url: https://github.com/adamhockenberry/bacphlip
+      doi: 10.7717/peerj.11396
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file containing phage contigs/scaffolds/chromosomes (if it is a multi-FASTA file be sure to add the `--multi_fasta` argument)
+      pattern: "*.{fasta,fna,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bacphlip_results:
+      type: file
+      description: TSV file containing Temperate and Virulent scores for each phage sequence
+      pattern: "*.bacphlip"
+  - hmmsearch_results:
+      type: file
+      description: TSV file containing binary output indicating gene presence/absence based on hmmsearch results
+      pattern: "*.hmmsearch.tsv"
+
+authors:
+  - "@CarsonJM"

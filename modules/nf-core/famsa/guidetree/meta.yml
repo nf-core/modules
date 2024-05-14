@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "famsa_guidetree"
+description: Renders a guidetree in famsa
+keywords:
+  - guide tree
+  - msa
+  - newick
+tools:
+  - "famsa":
+      description: "Algorithm for large-scale multiple sequence alignments"
+      homepage: "https://github.com/refresh-bio/FAMSA"
+      documentation: "https://github.com/refresh-bio/FAMSA"
+      tool_dev_url: "https://github.com/refresh-bio/FAMSA"
+      doi: "10.1038/srep33964"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test']`
+
+  - tree:
+      type: file
+      description: Guide tree file in Newick format
+      pattern: "*.{dnd}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@luisas"

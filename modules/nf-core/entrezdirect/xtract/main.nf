@@ -5,7 +5,7 @@ process ENTREZDIRECT_XTRACT {
     conda "bioconda::entrez-direct=16.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
-    'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
+    'biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
     tuple val(meta), path(xml_input)

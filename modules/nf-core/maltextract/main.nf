@@ -5,7 +5,7 @@ process MALTEXTRACT {
     conda "bioconda::hops=0.35"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        'quay.io/biocontainers/hops:0.35--hdfd78af_1' }"
+        'biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
     path rma6

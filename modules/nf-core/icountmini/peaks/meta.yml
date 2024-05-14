@@ -1,0 +1,48 @@
+---
+name: "icountmini_peaks"
+description: Runs iCount peaks on a BED file of crosslinks
+keywords:
+  - iCLIP
+  - bed
+  - genomics
+tools:
+  - icount:
+      description: Computational pipeline for analysis of iCLIP data
+      homepage: https://github.com/ulelab/iCount-Mini
+      documentation: https://github.com/ulelab/iCount-Mini
+      tool_dev_url: https://github.com/ulelab/iCount-Mini
+      doi: "10.1038/nsmb.1838"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file of crosslinks
+      pattern: "*.{bed}"
+  - sigxls:
+      type: file
+      description: TSV file of sigxls from iCount sigxls
+      pattern: "*.{tsv}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - peaks:
+      type: file
+      description: Crosslinks deemed significant by iCount
+      pattern: "*.{bed.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@marc-jones"
+  - "@chris-cheshire"
+  - "@charlotteanne"

@@ -5,7 +5,7 @@ process GATK4_COMBINEGVCFS {
     conda "bioconda::gatk4=4.4.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_idx)
@@ -32,7 +32,8 @@ process GATK4_COMBINEGVCFS {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CombineGVCFs \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CombineGVCFs \\
         $input_list \\
         --output ${prefix}.combined.g.vcf.gz \\
         --reference ${fasta} \\

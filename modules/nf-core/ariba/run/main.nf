@@ -5,7 +5,7 @@ process ARIBA_RUN {
     conda "bioconda::ariba=2.14.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
-        'quay.io/biocontainers/ariba:2.14.6--py39h67e14b5_3' }"
+        'biocontainers/ariba:2.14.6--py39h67e14b5_3' }"
 
     input:
     tuple val(meta), path(reads)

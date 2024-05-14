@@ -1,0 +1,45 @@
+name: "metaphlan_mergemetaphlantables"
+description: Merges output abundance tables from MetaPhlAn4
+keywords:
+  - metagenomics
+  - classification
+  - merge
+  - table
+  - profiles
+tools:
+  - metaphlan4:
+      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
+      homepage: https://huttenhower.sph.harvard.edu/metaphlan/
+      documentation: https://github.com/biobakery/MetaPhlAn
+      doi: "10.1038/s41587-023-01688-w"
+      licence: ["MIT License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - profiles:
+      type: file
+      description: List of per-sample MetaPhlAn4 taxonomic abundance tables
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Combined MetaPhlAn4 table
+      pattern: "*.txt"
+
+authors:
+  - "@jfy133"
+  - "@LilyAnderssonLee"

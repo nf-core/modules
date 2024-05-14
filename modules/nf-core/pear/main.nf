@@ -5,7 +5,7 @@ process PEAR {
     conda "bioconda::pear=0.9.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pear:0.9.6--h67092d7_8':
-        'quay.io/biocontainers/pear:0.9.6--h67092d7_8' }"
+        'biocontainers/pear:0.9.6--h67092d7_8' }"
 
     input:
     tuple val(meta), path(reads)

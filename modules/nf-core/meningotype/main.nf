@@ -5,7 +5,7 @@ process MENINGOTYPE {
     conda "bioconda::meningotype=0.8.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0' :
-        'quay.io/biocontainers/meningotype:0.8.5--pyhdfd78af_0' }"
+        'biocontainers/meningotype:0.8.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

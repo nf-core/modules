@@ -1,5 +1,5 @@
 - name: mafft test_mafft
-  command: nextflow run ./tests/modules/nf-core/mafft -entry test_mafft -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mafft -entry test_mafft -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mafft/nextflow.config
   tags:
     - mafft
   files:
@@ -7,7 +7,7 @@
       md5sum: 23426611f4a0df532b6708f072bd445b
     - path: output/mafft/versions.yml
 - name: mafft test_mafft_add
-  command: nextflow run ./tests/modules/nf-core/mafft -entry test_mafft_add -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mafft -entry test_mafft_add -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mafft/nextflow.config
   tags:
     - mafft
   files:

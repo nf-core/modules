@@ -1,0 +1,9 @@
+- name: clustalo guidetree test_clustalo_guidetree
+  command: nextflow run ./tests/modules/nf-core/clustalo/guidetree -entry test_clustalo_guidetree -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/clustalo/guidetree/nextflow.config
+  tags:
+    - clustalo
+    - clustalo/guidetree
+  files:
+    - path: output/clustalo/test.dnd
+      md5sum: 5428bad500a0a0bd985744bec1a12a70
+    - path: output/clustalo/versions.yml

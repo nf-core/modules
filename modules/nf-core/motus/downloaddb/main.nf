@@ -4,7 +4,7 @@ process MOTUS_DOWNLOADDB {
     conda "bioconda::motus=3.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
-        'quay.io/biocontainers/motus:3.0.3--pyhdfd78af_0' }"
+        'biocontainers/motus:3.0.3--pyhdfd78af_0' }"
 
     input:
     path motus_downloaddb_script

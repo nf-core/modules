@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://github.com/nf-core/modules/tree/master/subworkflows/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dna"
 description: Align fastq files to a reference genome
 keywords:
@@ -9,7 +9,7 @@ keywords:
   - bwamem2
   - dragmap
   - snapaligner
-modules:
+components:
   - bowtie2/align
   - bwa/mem
   - bwamem2/mem

@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "seqkit_grep"
+description: Select sequences from a large file based on name/ID
+keywords:
+  - filter
+  - seqkit
+  - subseq
+  - grep
+tools:
+  - "seqkit":
+      description: Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://bioinf.shenwei.me/seqkit/usage/
+      documentation: https://bioinf.shenwei.me/seqkit/usage/
+      tool_dev_url: https://github.com/shenwei356/seqkit/
+      doi: "10.1371/journal.pone.0163962"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - sequence:
+      type: file
+      description: >
+        Fasta or fastq file containing sequences to be filtered
+      pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
+
+  - pattern:
+      type: file
+      description: >
+        pattern file (one record per line). If no pattern is given, a string can be specificied within the args using '-p pattern_string'
+      pattern: "*.{txt,tsv}"
+
+output:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - filter:
+      type: file
+      description: >
+        Fasta or fastq file containing the filtered sequences
+      pattern: "*.{fa,fq}[.gz]"
+
+authors:
+  - "@Joon-Klaps"

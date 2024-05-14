@@ -5,7 +5,7 @@ process DEDUP {
     conda "bioconda::dedup=0.12.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dedup:0.12.8--hdfd78af_1' :
-        'quay.io/biocontainers/dedup:0.12.8--hdfd78af_1' }"
+        'biocontainers/dedup:0.12.8--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(bam)

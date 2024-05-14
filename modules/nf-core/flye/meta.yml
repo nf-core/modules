@@ -26,7 +26,7 @@ input:
       description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ format.
       pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
   - mode:
-      type: value
+      type: string
       description: Flye mode depending on the input data (source and error rate)
       pattern: "--pacbio-raw|--pacbio-corr|--pacbio-hifi|--nano-raw|--nano-corr|--nano-hq"
 

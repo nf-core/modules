@@ -22,9 +22,10 @@ input:
         e.g. [ id:'test', single_end:false ]
 
   - input:
-      type: files
+      type: file
       description: |
-        Either multiple BAM/CRAM files containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods. When using BAM/CRAM the name of the file is used as samples name.
+        Either multiple BAM/CRAM files containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
+        When using BAM/CRAM the name of the file is used as samples name.
       pattern: "*.{bam,cram,vcf,vcf.gz,bcf,bcf.gz}"
 
   - input_index:
@@ -32,14 +33,27 @@ input:
       description: Index file of the input BAM/CRAM/VCF/BCF file.
       pattern: "*.{bam.bai,cram.crai,vcf.gz.csi,bcf.gz.csi}"
 
+  - samples_file:
+      type: file
+      description: |
+        File with sample names and ploidy information.
+        One sample per line with a mandatory second column indicating ploidy (1 or 2).
+        Sample names that are not present are assumed to have ploidy 2 (diploids).
+        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
+      pattern: "*.{txt,tsv}"
+
   - input_region:
       type: string
-      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+      description: |
+        Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
+        Optional if reference panel is in bin format.
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
   - output_region:
       type: string
-      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+      description: |
+        Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+        Optional if reference panel is in bin format.
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
 
   - reference:
@@ -54,26 +68,23 @@ input:
 
   - map:
       type: file
-      description: File containing the genetic map.
-      pattern: "*.gmap"
-
-  - samples_file:
-      type: file
       description: |
-        File with sample names and ploidy information. One sample per line with a mandatory second column indicating ploidy (1 or 2). Sample names that are not present are assumed to have ploidy 2 (diploids). GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-      pattern: "*.{txt,tsv}"
+        File containing the genetic map.
+        Optional if reference panel is in bin format.
+      pattern: "*.gmap"
 
   - fasta_reference:
       type: file
       description: |
         Faidx-indexed reference sequence file in the appropriate genome build.
-        Necessary for CRAM files
+        Necessary for CRAM files.
       pattern: "*.fasta"
 
   - fasta_reference_index:
       type: file
       description: |
         Faidx index of the reference sequence file in the appropriate genome build.
+        Necessary for CRAM files.
       pattern: "*.fai"
 
 output:

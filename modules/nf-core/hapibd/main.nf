@@ -5,7 +5,7 @@ process HAPIBD {
     conda "bioconda::hap-ibd=1.0.rev20May22.818"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
-        'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
+        'biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)

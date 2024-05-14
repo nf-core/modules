@@ -5,10 +5,10 @@ process LOFREQ_CALLPARALLEL {
     conda "bioconda::lofreq=2.1.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), path(intervals)
     path fasta
     path fai
 
@@ -22,11 +22,13 @@ process LOFREQ_CALLPARALLEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def options_intervals = intervals ? "-l ${intervals}" : ""
     """
     lofreq \\
         call-parallel \\
         --pp-threads $task.cpus \\
         $args \\
+        $options_intervals \\
         -f $fasta \\
         -o ${prefix}.vcf.gz \\
         $bam

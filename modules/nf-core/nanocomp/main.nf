@@ -4,7 +4,7 @@ process NANOCOMP {
     conda "bioconda:nanocomp=1.21.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanocomp:1.21.0--pyhdfd78af_0':
-        'quay.io/biocontainers/nanocomp:1.21.0--pyhdfd78af_0' }"
+        'biocontainers/nanocomp:1.21.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(filelist)

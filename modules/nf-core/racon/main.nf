@@ -5,7 +5,7 @@ process RACON {
     conda "bioconda::racon=1.4.20"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1' :
-        'quay.io/biocontainers/racon:1.4.20--h9a82719_1' }"
+        'biocontainers/racon:1.4.20--h9a82719_1' }"
 
     input:
     tuple val(meta), path(reads), path(assembly), path(paf)

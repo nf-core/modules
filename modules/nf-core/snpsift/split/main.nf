@@ -5,7 +5,7 @@ process SNPSIFT_SPLIT {
     conda "bioconda::snpsift=4.3.1t"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+        'biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
 
     input:
     tuple val(meta), path(vcf)

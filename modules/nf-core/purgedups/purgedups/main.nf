@@ -5,7 +5,7 @@ process PURGEDUPS_PURGEDUPS {
     conda "bioconda::purge_dups=1.2.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--h7132678_0':
-        'quay.io/biocontainers/purge_dups:1.2.6--h7132678_0' }"
+        'biocontainers/purge_dups:1.2.6--h7132678_0' }"
 
     input:
     tuple val(meta), path(basecov), path(cutoff), path(paf)

@@ -1,11 +1,11 @@
 process LOFREQ_SOMATIC {
     tag "$meta.id"
-    label 'process_high'
+    label "process_high"
 
     conda "bioconda::lofreq=2.1.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai), path(target_bed)
@@ -20,7 +20,7 @@ process LOFREQ_SOMATIC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def options_target_bed = target_bed ? "-l ${target_bed}" : ""
     """

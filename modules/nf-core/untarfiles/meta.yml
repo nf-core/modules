@@ -3,6 +3,7 @@ description: Extract files.
 keywords:
   - untar
   - uncompress
+  - files
 tools:
   - untar:
       description: |
@@ -26,7 +27,7 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - files:
-      type: list
+      type: string
       description: A list containing references to individual archive files
       pattern: "*/**"
   - versions:

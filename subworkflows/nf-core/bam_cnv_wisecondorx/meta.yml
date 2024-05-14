@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_cnv_wisecondorx
+description: A subworkflow for calling CNVs using WisecondorX
+keywords:
+  - cnv
+  - bam
+  - bed
+  - cram
+  - plots
+  - genomics
+
+components:
+  - wisecondorx/convert
+  - wisecondorx/predict
+
+input:
+  - ch_bam:
+      description: |
+        An input channel containing BAM/CRAM files and their indices
+        Structure: [ val(meta), path(bam), path(bai) ]
+  - ch_fasta:
+      description: |
+        A channel containing the reference FASTA file
+        Structure: [ val(meta2), path(fasta) ]
+  - ch_fai:
+      description: |
+        A channel containing the index of the reference FASTA file
+        Structure: [ val(meta3), path(fai) ]
+  - ch_ref:
+      description: |
+        A channel containing WisecondorX reference created with `WisecondorX newref`
+        Structure: [ val(meta4), path(reference) ]
+  - ch_blacklist:
+      description: |
+        An optional channel containing a BED file with regions to mask from the analyis
+        Structure: [ val(meta5), path(blacklist) ]
+
+output:
+  - aberrations_bed:
+      description: |
+        A channel containing the BED files with CNV aberrations
+        Structure: [ val(meta), path(bed) ]
+  - bins_bed:
+      description: |
+        A channel containing the BED files with the used bins
+        Structure: [ val(meta), path(bed) ]
+  - segments_bed:
+      description: |
+        A channel containing the segment BED files
+        Structure: [ val(meta), path(bed) ]
+  - chr_statistics:
+      description: |
+        A channel containing TXT files with chromosome statistics
+        Structure: [ val(meta), path(txt) ]
+  - chr_plots:
+      description: |
+        A channel containing lists of chromosome plots
+        Structure: [ val(meta), [ path(png), path(png), ... ] ]
+  - genome_plot:
+      description: |
+        A channel containing the plots of the whole genomes
+        Structure: [ val(meta), path(png) ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@nvnieuwk"

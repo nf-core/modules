@@ -15,6 +15,17 @@ workflow test_shinyngs_staticexploratory {
     )
 }
 
+workflow test_shinyngs_staticexploratory_specify_log {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true) 
+    expression_feature_meta = file(params.test_data['mus_musculus']['genome']['rnaseq_genemeta'], checkIfExists: true) 
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true) 
+
+    SHINYNGS_STATICEXPLORATORY ( 
+        [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ],
+    )
+}
+
 workflow test_shinyngs_staticexploratory_html {
 
     expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true) 

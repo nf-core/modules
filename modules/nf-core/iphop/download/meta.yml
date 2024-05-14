@@ -1,0 +1,31 @@
+name: "iphop_download"
+description: Download, extract, and check md5 of iPHoP databases
+keywords:
+  - metagenomics
+  - iphop
+  - database
+  - download
+  - phage
+  - bacteria
+  - host
+tools:
+  - "iphop":
+      description: Predict host genus from genomes of uncultivated phages.
+      homepage: https://bitbucket.org/srouxjgi/iphop/src/main/
+      documentation: https://bitbucket.org/srouxjgi/iphop/src/main/
+      tool_dev_url: https://bitbucket.org/srouxjgi/iphop/src/main/
+      doi: "10.1371/journal.pbio.3002083"
+      licence: "['Modified GPL v3']"
+
+output:
+  - iphop_db:
+      type: directory
+      description: Directory containing downloaded and md5 checked iPHoP database
+      pattern: "iphop_db/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"

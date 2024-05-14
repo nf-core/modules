@@ -3,6 +3,9 @@ description: main GLIMPSE algorithm, performs phasing and imputation refining ge
 keywords:
   - phase
   - imputation
+  - low-coverage
+  - glimpse
+
 tools:
   - "glimpse":
       description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
@@ -29,6 +32,15 @@ input:
       description: Index file of the input VCF/BCF file containing genotype likelihoods.
       pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
 
+  - samples_file:
+      type: file
+      description: |
+        File with sample names and ploidy information.
+        One sample per line with a mandatory second column indicating ploidy (1 or 2).
+        Sample names that are not present are assumed to have ploidy 2 (diploids).
+        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
+      pattern: "*.{txt,tsv}"
+
   - input_region:
       type: string
       description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
@@ -53,15 +65,6 @@ input:
       type: file
       description: File containing the genetic map.
       pattern: "*.gmap"
-
-  - samples_file:
-      type: file
-      description: |
-        File with sample names and ploidy information.
-        One sample per line with a mandatory second column indicating ploidy (1 or 2).
-        Sample names that are not present are assumed to have ploidy 2 (diploids).
-        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-      pattern: "*.{txt,tsv}"
 
 output:
   - meta:

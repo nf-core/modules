@@ -6,7 +6,7 @@ process PARAGRAPH_MULTIGRMPY {
     conda "bioconda::paragraph=2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
-        'quay.io/biocontainers/paragraph:2.3--h21f15d8_1' }"
+        'biocontainers/paragraph:2.3--h21f15d8_1' }"
 
     input:
     tuple val(meta), path(variants), path(variants_index), path(reads), path(reads_index), path(manifest)

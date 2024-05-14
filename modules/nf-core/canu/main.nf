@@ -5,7 +5,7 @@ process CANU {
     conda "bioconda::canu=2.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/canu:2.2--ha47f30e_0':
-        'quay.io/biocontainers/canu:2.2--ha47f30e_0' }"
+        'biocontainers/canu:2.2--ha47f30e_0' }"
 
     input:
     tuple val(meta), path(reads)

@@ -9,7 +9,7 @@ workflow test_amrfinderplus_run {
     
     input = [ 
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true) 
+        file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
     ]
 
     AMRFINDERPLUS_UPDATE ( )

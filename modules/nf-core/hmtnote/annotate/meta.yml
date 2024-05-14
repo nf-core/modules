@@ -1,0 +1,41 @@
+name: hmtnote_annotate
+description: Human mitochondrial variants annotation using HmtVar. Contains .plk file with annotation, so can be run offline
+keywords:
+  - hmtnote
+  - mitochondria
+  - annotation
+tools:
+  - hmtnote:
+      description: Human mitochondrial variants annotation using HmtVar.
+      homepage: https://github.com/robertopreste/HmtNote
+      documentation: https://hmtnote.readthedocs.io/en/latest/usage.html
+
+      doi: "10.1101/600619"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+  - vcf:
+      type: file
+      description: vcf file
+      pattern: "*.vcf"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: annotated vcf
+      pattern: "*_annotated.vcf"
+
+authors:
+  - "@sysbiocoder"

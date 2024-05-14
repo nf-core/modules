@@ -18,9 +18,15 @@ workflow test_gatk4_mutect2_tumor_normal_pair {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
@@ -40,9 +46,15 @@ workflow test_gatk4_mutect2_tumor_normal_pair_f1r2 {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
@@ -58,9 +70,15 @@ workflow test_gatk4_mutect2_tumor_single {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
@@ -76,9 +94,15 @@ workflow test_gatk4_mutect2_cram_input {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
@@ -94,9 +118,15 @@ workflow test_gatk4_mutect2_generate_pon {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
 
     GATK4_MUTECT2 ( input, fasta, fai, dict, [], [], [], [] )
 }
@@ -112,9 +142,15 @@ workflow test_gatk4_mutect2_mitochondria {
               [ file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)]
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    ]
 
     GATK4_MUTECT2_MITO ( input, fasta, fai, dict, [], [], [], [] )
 }
@@ -130,9 +166,15 @@ workflow test_gatk4_mutect2_tumor_normal_pair_f1r2_stubs {
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    ]
+    fai = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    ]
+    dict = [ [ id:'genome' ], // meta map
+            file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    ]
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)

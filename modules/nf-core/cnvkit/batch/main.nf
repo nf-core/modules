@@ -2,17 +2,17 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.9 bioconda::samtools=1.16.1"
+    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' :
-        'quay.io/biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:3bdd798e4b9aed6d3e1aaa1596c913a3eeb865cb-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' :
+        'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0' }"
 
     input:
     tuple val(meta), path(tumor), path(normal)
-    path  fasta
-    path  fasta_fai
-    path  targets
-    path  reference
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(targets)
+    tuple val(meta5), path(reference)
     val   panel_of_normals
 
     output:

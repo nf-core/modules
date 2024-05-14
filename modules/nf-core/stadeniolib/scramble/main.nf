@@ -5,7 +5,7 @@ process STADENIOLIB_SCRAMBLE {
     conda "bioconda::staden_io_lib=1.14.14"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3' :
-        'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
+        'biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
 
     input:
     tuple val(meta), path(reads)

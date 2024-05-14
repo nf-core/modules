@@ -2,10 +2,10 @@ process ANNOTSV_ANNOTSV {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::annotsv=3.3.4"
+    conda "bioconda::annotsv=3.3.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annotsv:3.3.4--py311hdfd78af_1' :
-        'quay.io/biocontainers/annotsv:3.3.4--py311hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/annotsv:3.3.6--py311hdfd78af_0' :
+        'biocontainers/annotsv:3.3.6--py311hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)

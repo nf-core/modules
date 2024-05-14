@@ -13,7 +13,10 @@ workflow test_bcftools_reheader_update_sequences {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         []
     ]
-    fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai   = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+
     BCFTOOLS_REHEADER ( input, fai )
 }
 
@@ -24,7 +27,10 @@ workflow test_bcftools_reheader_update_sequences_vcf_gz {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         []
     ]
-    fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai   = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+
     BCFTOOLS_REHEADER_VCF_GZ ( input, fai )
 }
 
@@ -35,7 +41,10 @@ workflow test_bcftools_reheader_update_sequences_bcf_gz {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         []
     ]
-    fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai   = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
+
     BCFTOOLS_REHEADER_BCF_GZ ( input, fai )
 }
 
@@ -46,7 +55,7 @@ workflow test_bcftools_reheader_new_header {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
-    fai    = []
+    fai    = [[],[]]
 
     BCFTOOLS_REHEADER ( input, fai )
 }
@@ -58,7 +67,9 @@ workflow test_bcftools_reheader_new_header_update_sequences {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
-    fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai   = [ [ id:'genome' ], // meta map
+                 file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+            ]
 
     BCFTOOLS_REHEADER ( input, fai )
 }

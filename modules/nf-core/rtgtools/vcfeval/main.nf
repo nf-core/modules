@@ -5,7 +5,7 @@ process RTGTOOLS_VCFEVAL {
     conda "bioconda::rtg-tools=3.12.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
+        'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(evaluation_bed)

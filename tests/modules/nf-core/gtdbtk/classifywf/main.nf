@@ -6,18 +6,29 @@ include { GTDBTK_CLASSIFYWF } from '../../../../../modules/nf-core/gtdbtk/classi
 
 process STUB_GTDBTK_DATABASE {
     output:
-    tuple val("gtdbtk_r202_data"), path("database/*"), emit: database
+    tuple val("gtdbtk_r207_v2_data"), path("database/*"), emit: database
 
     stub:
     """
     mkdir database
-    touch database/gtdbtk_r202_data
+    touch database/gtdbtk_r207_v2_data
+    """
+}
+
+process STUB_MASH_DATABASE {
+    output:
+        path("db.msh"), emit: mash_db
+    
+    stub:
+    """
+    touch db.msh
     """
 }
 
 workflow test_gtdbtk_classifywf {
 
     STUB_GTDBTK_DATABASE()
+    STUB_MASH_DATABASE()
 
     input = [ 
         [ id:'test', single_end:false, assembler:'SPADES' ],
@@ -28,5 +39,5 @@ workflow test_gtdbtk_classifywf {
         ]
     ]
 	
-    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database )
+    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK_DATABASE.out.database, STUB_MASH_DATABASE.out.mash_db )
 }

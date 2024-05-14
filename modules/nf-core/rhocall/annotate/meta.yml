@@ -3,6 +3,7 @@ description: "Markup VCF file using rho-calls."
 keywords:
   - roh
   - rhocall
+  - runs_of_homozygosity
 tools:
   - "rhocall":
       description: "Call regions of homozygosity and make tentative UPD calls."
@@ -14,6 +15,11 @@ tools:
 
 input:
   - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - meta2:
       type: map
       description: |
         Groovy Map containing sample information

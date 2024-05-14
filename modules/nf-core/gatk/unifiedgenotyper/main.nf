@@ -5,17 +5,17 @@ process GATK_UNIFIEDGENOTYPER {
     conda "bioconda::gatk=3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
-        'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
+        'biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
-    tuple val(meta), path(input), path(index)
-    path  fasta
-    path  fai
-    path  dict
-    path  intervals
-    path  contamination
-    path  dbsnp
-    path  comp
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(intervals)
+    tuple val(meta6), path(contamination)
+    tuple val(meta7), path(dbsnp)
+    tuple val(meta8), path(comp)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -44,7 +44,7 @@ process GATK_UNIFIEDGENOTYPER {
         -Xmx${avail_mem}M \\
         -nt ${task.cpus} \\
         -T UnifiedGenotyper \\
-        -I ${input} \\
+        -I ${bam} \\
         -R ${fasta} \\
         ${contamination_file} \\
         ${dbsnp_file} \\

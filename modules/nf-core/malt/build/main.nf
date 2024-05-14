@@ -5,7 +5,7 @@ process MALT_BUILD {
     conda "bioconda::malt=0.61"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'quay.io/biocontainers/malt:0.61--hdfd78af_0' }"
+        'biocontainers/malt:0.61--hdfd78af_0' }"
 
     input:
     path fastas

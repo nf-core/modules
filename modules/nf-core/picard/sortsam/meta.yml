@@ -4,6 +4,7 @@ keywords:
   - sort
   - bam
   - sam
+  - picard
 tools:
   - picard:
       description: |
@@ -24,7 +25,7 @@ input:
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,sam}"
   - sort_order:
-      type: value
+      type: string
       description: Picard sort order type
       pattern: "unsorted|queryname|coordinate|duplicate|unknown"
 

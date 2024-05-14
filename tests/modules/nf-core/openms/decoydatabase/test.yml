@@ -1,0 +1,9 @@
+- name: openms decoydatabase test_openms_decoydatabase
+  command: nextflow run ./tests/modules/nf-core/openms/decoydatabase -entry test_openms_decoydatabase -c ./tests/config/nextflow.config
+  tags:
+    - openms/decoydatabase
+    - openms
+  files:
+    - path: output/openms/versions.yml
+    - path: output/openms/yeast_UPS_decoy.fasta
+      md5sum: 96c0295f69e0cb92b705ca4c33e6f047
