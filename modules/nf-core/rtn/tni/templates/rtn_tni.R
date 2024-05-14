@@ -72,7 +72,8 @@ rtni <- tni.constructor(expData = exp_data\$expData,
 #options(cluster=snow::makeCluster(spec=threads, "SOCK"))
 
 # Please set nPermutations >= 1000
-rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff = 1e-7)
+set.seed(123)
+rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff = 1e-4)
 
 # Unstable interactions are subsequently removed by bootstrap analysis using the
 # tni.bootstrap() function, which creates a consensus bootstrap network, referred
@@ -87,6 +88,8 @@ rtni_filtered <- tni.dpi.filter(rtni_bootstrapped)
 
 saveRDS(rtni, file = "tni.rds")
 saveRDS(rtni_filtered, file = "tni_filtered.rds")
+saveRDS(rtni_permutation, file = "tni_permutated.rds")
+saveRDS(rtni_bootstrapped, file = "tni_bootstrapped.rds")
 
 # Plot
 #pdf(paste0(output_prefix, "_RTN.pdf"))

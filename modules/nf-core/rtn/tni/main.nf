@@ -22,8 +22,8 @@ process RTN_TNI {
 
     output:
     path "tni.rds"                     , emit: tni
- //   path "tni-permutated.rds"          , emit: tni_perm
- //   path "tni-bootstrapped.rds  "      , emit: tni_bootstrap
+    path "tni_permutated.rds"          , emit: tni_perm
+    path "tni_bootstrapped.rds"        , emit: tni_bootstrap
     path "tni_filtered.rds"            , emit: tni_filtered
     path "versions.yml"                , emit: versions
 
