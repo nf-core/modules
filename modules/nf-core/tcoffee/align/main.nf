@@ -15,6 +15,8 @@ process TCOFFEE_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    // in the args there might be the request to generate a lib file, so the following is an optional output
+    tuple val(meta), path("*.*lib")     , emit: lib, optional : true
     path "versions.yml"                 , emit: versions
 
     when:
