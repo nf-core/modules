@@ -27,7 +27,7 @@ process TCOFFEE_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
-    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
+    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "${prefix}.aln"
     // using >() is necessary to preserve the tcoffee return value,
     // so nextflow knows to display an error when it failed
     """
@@ -38,7 +38,7 @@ process TCOFFEE_ALIGN {
         $args \
         -thread ${task.cpus} \
         -outfile stdout \
-        $write_output
+        > $write_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
