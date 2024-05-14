@@ -9,14 +9,14 @@ nextflow_process {
     tag "checkqc"
 
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC OK") {
-        config "./test_checkqc.config"
+        config "./nextflow.config"
 
         setup {
             run("UNTAR") {
                 script "../../untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.test_data['homo_sapiens']['illumina']['test_interop_bcl2fastqstats_flowcell'], checkIfExists: true)])
+                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
                     """
                 }
             }
@@ -41,14 +41,13 @@ nextflow_process {
     }
 
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC FAIL") {
-        config "./test_checkqc_fail.config"
 
         setup {
             run("UNTAR") {
                 script "../../untar/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [], file(params.test_data['homo_sapiens']['illumina']['test_interop_bcl2fastqstats_flowcell'], checkIfExists: true)])
+                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
                     """
                 }
             }
