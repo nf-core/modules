@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process VERKKO"
+    script "../main.nf"
+    process "VERKKO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "verkko"
+
+    test("ecoli - pacbio") {
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], // meta map
+                            file("https://obj.umiacs.umd.edu/sergek/shared/ecoli_hifi_subset24x.fastq.gz", checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("ecoli - pacbio - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ],
+                            file("https://obj.umiacs.umd.edu/sergek/shared/ecoli_hifi_subset24x.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

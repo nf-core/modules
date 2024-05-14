@@ -22,6 +22,7 @@ process VERKKO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+
     verkko \\
         $args \\
         -d verkko \\
