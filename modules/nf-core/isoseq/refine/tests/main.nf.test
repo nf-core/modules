@@ -31,7 +31,8 @@ nextflow_process {
                 { assert snapshot(process.out.pbi).match("pbi") },
                 { assert path(process.out.consensusreadset.get(0).get(1)).text.contains("PacBio.DataSet.ConsensusReadSet") },
                 { assert path(process.out.summary.get(0).get(1)).text.contains("pbcopper") },
-                { assert snapshot(process.out.report).match("report") }
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
