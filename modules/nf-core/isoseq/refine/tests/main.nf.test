@@ -19,7 +19,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.bam', checkIfExists: true),
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true),
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
                 """
             }
         }
@@ -29,8 +29,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.bam).match("bam") },
                 { assert snapshot(process.out.pbi).match("pbi") },
-                { assert snapshot(process.out.report).match("report") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert path(process.out.consensusreadset.get(0).get(1)).text.contains("PacBio.DataSet.ConsensusReadSet") },
+                { assert path(process.out.summary.get(0).get(1)).text.contains("pbcopper") },
+                { assert snapshot(process.out.report).match("report") }
             )
         }
     }
@@ -46,7 +47,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.bam', checkIfExists: true),
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true),
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
                 """
             }
         }
