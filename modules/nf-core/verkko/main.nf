@@ -2,7 +2,7 @@ process VERKKO {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::verkko=1.4.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verkko:1.4.1--h48217b1_0':
         'biocontainers/verkko:1.4.1--h48217b1_0' }"
@@ -23,9 +23,9 @@ process VERKKO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     verkko \\
-         $args \\
-         -d verkko \\
-        --hifi $reads_pacbio 
+        $args \\
+        -d verkko \\
+        --hifi $reads_pacbio
 
     mv verkko/assembly.fasta ${prefix}_verkko_assembly.fasta
     mv verkko/assembly.homopolymer-compressed.gfa ${prefix}_homopolymer-compressed.gfa
