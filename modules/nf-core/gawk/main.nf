@@ -42,9 +42,10 @@ process GAWK {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "${input.getExtension()}"
+    def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
 
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd} ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
