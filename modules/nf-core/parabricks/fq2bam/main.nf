@@ -2,7 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
 
     /*
     NOTE: Parabricks requires the files to be non-symlinked
@@ -42,10 +42,11 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+    mv $fasta \$INDEX
 
     pbrun \\
         fq2bam \\
-        --ref $fasta \\
+        --ref \$INDEX \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\

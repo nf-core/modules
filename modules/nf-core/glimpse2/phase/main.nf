@@ -22,7 +22,7 @@ process GLIMPSE2_PHASE {
         tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variant
+        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variants
         tuple val(meta), path("*.txt.gz")        , emit: stats_coverage, optional: true
         path "versions.yml"                      , emit: versions
 

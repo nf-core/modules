@@ -21,6 +21,13 @@ input:
       type: file
       description: List of accessions (one per line) to download
       pattern: "*.txt"
+  - taxids:
+      type: file
+      description: List of taxids (one per line) to download
+      pattern: "*.txt"
+  - groups:
+      type: string
+      description: NCBI taxonomic groups to download. Can be a comma-separated list. Options are ['all', 'archaea', 'bacteria', 'fungi', 'invertebrate', 'metagenomes', 'plant', 'protozoa', 'vertebrate_mammalian', 'vertebrate_other', 'viral']
 output:
   - meta:
       type: map

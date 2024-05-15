@@ -4,8 +4,8 @@ process NONPAREIL_SET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h9f5acd7_2':
-        'biocontainers/nonpareil:3.4.1--r42h9f5acd7_2' }"
+        'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h4ac6f70_4':
+        'biocontainers/nonpareil:3.4.1--r42h4ac6f70_4' }"
 
     input:
     tuple val(meta), path(npos)
