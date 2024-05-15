@@ -1,11 +1,11 @@
-process ISOSEQ3_CLUSTER {
+process ISOSEQ_CLUSTER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq3:3.8.1--h9ee0642_0' :
-        'biocontainers/isoseq3:3.8.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
+        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -31,7 +31,7 @@ process ISOSEQ3_CLUSTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    isoseq3 \\
+    isoseq \\
         cluster \\
         $bam \\
         ${prefix}.transcripts.bam \\
@@ -39,7 +39,23 @@ process ISOSEQ3_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        isoseq3: \$( isoseq3 cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
+        isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.transcripts.bam
+    touch dummy.transcripts.bam.pbi
+    touch dummy.transcripts.cluster
+    touch dummy.transcripts.cluster_report.csv
+    touch dummy.transcripts.transcriptset.xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        isoseq: \$( isoseq cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
     END_VERSIONS
     """
 }
