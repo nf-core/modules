@@ -2,7 +2,7 @@ process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
-    container "nf-core/cellranger:7.1.0"
+    container "nf-core/cellranger:8.0.0"
 
     input:
     path fasta          // optional
@@ -34,6 +34,8 @@ process CELLRANGER_MKVDJREF {
         ${gtf_in} \\
         ${fasta_in} \\
         ${seqs_in} \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,0 +1,334 @@
+nextflow_process {
+
+    name "Test Process RIBOTRICER_DETECTORFS"
+    script "../main.nf"
+    process "RIBOTRICER_DETECTORFS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribotricer"
+    tag "ribotricer/prepareorfs"
+    tag "ribotricer/detectorfs"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+        run("RIBOTRICER_PREPAREORFS") {
+            script "modules/nf-core/ribotricer/prepareorfs/main.nf"
+            process {
+            """
+            input[0] = GUNZIP.out.gunzip.map{[
+                [id:'homo_sapiens_chr20'], 
+                it[1],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+            ]}
+            """
+            }
+        }
+
+    }
+
+    test("human chr20 - bam - filtered - forward") {
+
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p') },
+                { assert path(process.out.metagene_profile_3p[0][1]).getText().contains("26\t0\t[0.0, 0.0, 0.0, 0.0, 2.6132404181184667") },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000370861_62136860_62140830_534\tannotated\ttranslating\t0.515078753637712") },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+    
+    test("human chr20 - bam - filtered - reverse") {
+
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'reverse' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_reverse') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_reverse') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_reverse") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_reverse') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_reverse') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_reverse") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_reverse') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_reverse') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_reverse') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000463943_50840572_50840805_234\tdORF\ttranslating\t0.1428571428571428") },
+                { assert snapshot(process.out.versions).match('versions_reverse') }
+            )
+        }
+    }
+    
+    test("human chr20 - bam - filtered - unspecified strand") {
+
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_unspecified') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_unspecified') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_unspecified") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_unspecified') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_unspecified') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_unspecified") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_unspecified') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_unspecified') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_unspecified') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000463943_50840572_50840805_234\tdORF\ttranslating\t0.1428571428571428") },
+                { assert snapshot(process.out.versions).match('versions_unspecified') }
+            )
+        }
+    }
+
+    test("human chr20 - bam - all - forward") {
+
+        config './nextflow.all.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_all') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_all') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_all") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_all') },
+                { assert path(process.out.metagene_profile_3p[0][1]).getText().contains("26\t0\t[0.0, 0.0, 0.0, 0.0, 2.6132404181184667") },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_all") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_all') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_all') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_all') },
+                { assert path(process.out.orfs[0][1]).getText().contains("ENST00000370861_62136860_62140830_534\tannotated\ttranslating\t0.515078753637712") },
+                { assert snapshot(process.out.versions).match('versions_all') }
+            )
+        }
+
+    }
+    
+    test("human chr20 - bam - filtered - forward - stub") {
+
+        options '-stub'
+        
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_stub') },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+    
+    test("human chr20 - bam - filtered - reverse - stub") {
+        
+        options '-stub'
+
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'reverse' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_reverse_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_reverse_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_reverse_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_reverse_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_reverse_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_reverse_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_reverse_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_reverse_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_reverse_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_reverse_stub') },
+                { assert snapshot(process.out.versions).match('versions_reverse_stub') }
+            )
+        }
+    }
+    
+    test("human chr20 - bam - filtered - unspecified strand - stub") {
+        
+        options '-stub'
+
+        config './nextflow.filtered.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_unspecified_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_unspecified_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_unspecified_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_unspecified_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_unspecified_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_unspecified_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_unspecified_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_unspecified_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_unspecified_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_unspecified_stub') },
+                { assert snapshot(process.out.versions).match('versions_unspecified_stub') }
+            )
+        }
+    }
+
+    test("human chr20 - bam - all - forward - stub") {
+
+        options '-stub'
+        
+        config './nextflow.all.config'
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = RIBOTRICER_PREPAREORFS.out.candidate_orfs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.protocol).match('protocol_all_stub') },
+                { assert snapshot(process.out.bam_summary).match('bam_summary_all_stub') },
+                { assert snapshot(file(process.out.read_length_dist[0][1]).name).match("read_length_dist_all_stub") },
+                { assert snapshot(process.out.metagene_profile_5p).match('metagene_profile_5p_all_stub') },
+                { assert snapshot(process.out.metagene_profile_3p).match('metagene_profile_3p_all_stub') },
+                { assert snapshot(file(process.out.metagene_plots[0][1]).name).match("metagene_plots_all_stub") },
+                { assert snapshot(process.out.psite_offsets).match('psite_offsets_all_stub') },
+                { assert snapshot(process.out.pos_wig).match('pos_wig_all_stub') },
+                { assert snapshot(process.out.neg_wig).match('neg_wig_all_stub') },
+                { assert snapshot(process.out.orfs).match('orfs_all_stub') },
+                { assert snapshot(process.out.versions).match('versions_all_stub') }
+            )
+        }
+
+    }
+}
+
+
+
+
