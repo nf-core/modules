@@ -43,7 +43,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions_base") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert path(process.out.tbi.get(0).get(1)).linesGzip.toString().contains("TBI")},
+                { assert snapshot(file(process.out.stats.get(0).get(1)).readLines()[0]).match() }
             )
         }
 
@@ -82,7 +84,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions_with-files") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert path(process.out.tbi.get(0).get(1)).linesGzip.toString().contains("TBI")},
+                { assert snapshot(file(process.out.stats.get(0).get(1)).readLines()[0..5]).match() }
             )
         }
 
@@ -121,7 +125,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions_use-val") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert path(process.out.tbi.get(0).get(1)).linesGzip.toString().contains("TBI")},
+                { assert snapshot(file(process.out.stats.get(0).get(1)).readLines()[0]).match() }
             )
         }
 
