@@ -34,7 +34,8 @@ process SAMTOOLS_VIEW {
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     input.getExtension()
-    def index_type = task.ext.index_type ?: ''
+    // --write-index has special syntax to determine index type, see https://github.com/samtools/samtools/issues/1196
+    def index_type = task.ext.index_type ?: 'csi'
     def output_name = args.contains("--write-index") ?  "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_type}" :
                     "${prefix}.${file_type}"
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
@@ -62,9 +63,10 @@ process SAMTOOLS_VIEW {
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     input.getExtension()
+    def index_type = task.ext.index_type ?: 'csi'
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def index = args.contains("--write-index") ? "touch ${prefix}.csi" : ""
+    def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
 
     """
     touch ${prefix}.${file_type}

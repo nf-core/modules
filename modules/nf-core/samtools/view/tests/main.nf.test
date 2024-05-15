@@ -144,7 +144,7 @@ nextflow_process {
 
     test("cram_to_bam_index_qname") {
 
-        config "./bam_index.config"
+        config "./bam_index_bai.config"
 
         when {
             process {
@@ -167,7 +167,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_index_qname_bam") },
-                { assert snapshot(file(process.out.csi[0][1]).name).match("cram_to_bam_index_qname_csi") },
+                { assert snapshot(process.out.csi).match("cram_to_bam_index_qname_csi") },
                 { assert snapshot(process.out.bai).match("cram_to_bam_index_qname_bai") },
                 { assert snapshot(process.out.crai).match("cram_to_bam_index_qname_crai") },
                 { assert snapshot(process.out.cram).match("cram_to_bam_index_qname_cram") },
