@@ -47,7 +47,7 @@ process MAGUS_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz' : ''}
+    echo "" | gzip > ${prefix}.aln${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
