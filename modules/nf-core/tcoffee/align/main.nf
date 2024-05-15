@@ -28,9 +28,12 @@ process TCOFFEE_ALIGN {
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : " > ${prefix}.aln"
-    // using >() is necessary to preserve the tcoffee return value,
-    // so nextflow knows to display an error when it failed
     """
+    # set pipefail
+    # otherwise the pipe would swallow tcoffees error code if there is an issue
+    # this should work on all modern shells, as opposed to $PIPESTATUS, which is a bashism
+    set -o pipefail
+
     export TEMP='./'
     t_coffee -seq ${fasta} \
         $tree_args \
