@@ -4,7 +4,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.4.0.0" //Biocontainers is missing a package
+    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
@@ -39,6 +39,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     """
+    export THEANO_FLAGS="base_compiledir=\$PWD"
+
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         DetermineGermlineContigPloidy \\
         ${input_list} \\

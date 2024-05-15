@@ -10,19 +10,19 @@ process PRETEXTMAP {
 
     input:
     tuple val(meta), path(input)
-    path fasta
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.pretext"), emit: pretext
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.pretext")  , emit: pretext
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--reference ${fasta}" : ""
+    def args        = task.ext.args     ?: ''
+    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    def reference   = fasta             ? "--reference ${fasta}" : ""
 
     """
     if [[ $input == *.pairs.gz ]]; then
@@ -47,7 +47,7 @@ process PRETEXTMAP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix      = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pretext
 
