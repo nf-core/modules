@@ -60,7 +60,16 @@ process RGI_MAIN {
         --input_sequence $fasta
 
     mkdir temp/
-    mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json temp/
+    mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes temp/
+
+    ## These files not always generated, so only move if they exist
+    ## Taken from https://stackoverflow.com/a/54655320 (RIP) by @TSJNachos117
+    if [ "\$(ls -A | grep -i \\variant.json\\\$)" ]       ; then mv *variant.json temp/       ; fi
+    if [ "\$(ls -A | grep -i \\rrna.json\\\$)" ]          ; then mv *rrna.json temp/          ; fi
+    if [ "\$(ls -A | grep -i \\protein.json\\\$)" ]       ; then mv *protein.json temp/       ; fi
+    if [ "\$(ls -A | grep -i \\predictedGenes.json\\\$)" ]; then mv *predictedGenes.json temp/; fi
+    if [ "\$(ls -A | grep -i \\overexpression.json\\\$)" ]; then mv *overexpression.json temp/; fi
+    if [ "\$(ls -A | grep -i \\homolog.json\\\$)" ]       ; then mv *homolog.json temp/       ; fi
 
     RGI_VERSION=\$(rgi main --version)
 
