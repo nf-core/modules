@@ -24,7 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("version") },
+                { assert snapshot(process.out.versions).match("versions") },
                 // md5 for these outputs change on each run (they contain dates) and so I can only compare filename
                 { assert snapshot(file(process.out.results_xlsx.get(0).get(1)).name).match("test_results_xlsx") },
                 { assert snapshot(file(process.out.settings_txt.get(0).get(1)).name).match("test_settings_txt") },
