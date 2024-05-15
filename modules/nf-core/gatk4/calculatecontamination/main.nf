@@ -48,6 +48,7 @@ process GATK4_CALCULATECONTAMINATION {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.contamination.table
+    touch ${prefix}.segmentation.table
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

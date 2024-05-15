@@ -35,6 +35,16 @@
         },
         "timestamp": "2024-05-15T11:08:26.99069"
     },
+    "segmentation": {
+        "content": [
+            "#<METADATA>SAMPLE=tumour"
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.0"
+        },
+        "timestamp": "2024-05-15T12:57:38.845287"
+    },
     "human - pileup-table": {
         "content": [
             "sample\tcontamination\terror"
@@ -57,7 +67,12 @@
                     ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.segmentation.table:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
                     "versions.yml:md5,4a72b1da18f7045d470225881e7266a6"
@@ -71,7 +86,12 @@
                     ]
                 ],
                 "segmentation": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.segmentation.table:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "versions": [
                     "versions.yml:md5,4a72b1da18f7045d470225881e7266a6"
@@ -82,7 +102,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.0"
         },
-        "timestamp": "2024-05-15T11:08:33.673987"
+        "timestamp": "2024-05-15T12:56:14.817045"
     },
     "human - pileup-table - matched-pair": {
         "content": [
@@ -94,7 +114,7 @@
         },
         "timestamp": "2024-05-15T11:09:26.408848"
     },
-    "human - pileup-table - segmentation": {
+    "contamination": {
         "content": [
             "sample\tcontamination\terror"
         ],
@@ -102,6 +122,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.0"
         },
-        "timestamp": "2024-05-15T11:09:36.557806"
+        "timestamp": "2024-05-15T12:57:38.840651"
     }
 }

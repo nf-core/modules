@@ -73,7 +73,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions_segmentation") },
-                { assert snapshot(file(process.out.contamination.get(0).get(1)).readLines()[0]).match() }
+                { assert snapshot(file(process.out.contamination.get(0).get(1)).readLines()[0]).match("contamination") },
+                { assert snapshot(file(process.out.segmentation.get(0).get(1)).readLines()[0]).match("segmentation") }
             )
         }
 
