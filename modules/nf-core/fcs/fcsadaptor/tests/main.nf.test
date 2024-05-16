@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process FCS_FCSADAPTOR"
+    script "../main.nf"
+    process "FCS_FCSADAPTOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcs"
+    tag "fcs/fcsadaptor"
+
+    test("bacteroides_fragilis-genome_fna_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cleaned_assembly == [] },
+                { assert process.out.skipped_trims != null }, // md5sum for empty file not allowed in nf-core/tools 2.14.0
+                { assert snapshot(
+                    process.out.adaptor_report,
+                    process.out.pipeline_args,
+                    process.out.versions,
+                    ).match()
+                },
+                { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') }
+            )
+        }
+
+    }
+    test("bacteroides_fragilis-genome_fna_gz-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cleaned_assembly == [] },
+                { assert snapshot(
+                    [
+                        process.out.adaptor_report[0][1],
+                        process.out.log[0][1],
+                        process.out.pipeline_args[0][1],
+                        process.out.skipped_trims[0][1]
+                    ].collect { file(it).name }
+                    ).match()
+                }, // md5sum for empty file not allowed in nf-core/tools 2.14.0
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+    }
+}
