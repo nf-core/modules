@@ -24,8 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.dict).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
