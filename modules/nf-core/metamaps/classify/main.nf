@@ -8,10 +8,7 @@ process METAMAPS_CLASSIFY {
         'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 
     input:
-    tuple val(meta), path(classification_res)
-    tuple val(meta), path(meta_file)
-    tuple val(meta), path(meta_unmappedreadsLengths)
-    tuple val(meta), path(para_file)
+    tuple val(meta), path(classification_res), path(meta_file), path(meta_unmappedreadsLengths), path(para_file)
     path database_folder
 
 
