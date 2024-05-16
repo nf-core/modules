@@ -10,10 +10,11 @@ process METAMAPS_CLASSIFY {
 
     input:
     tuple val(meta), path(classification_res)
+    tuple val(meta), path(meta_file)
+    tuple val(meta), path(meta_unmappedreadsLengths)
+    tuple val(meta), path(para_file)
     path database_folder
-    path meta_file
-    path readlengths
-    path para
+
 
     output:
     tuple val(meta), path("*classification_res.EM.WIMP")                              , emit: wimp

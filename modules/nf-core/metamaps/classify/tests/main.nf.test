@@ -46,10 +46,10 @@ nextflow_process {
             process {
                 """
                 input[0] = METAMAPS_MAPDIRECTLY.out.classification_res
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = METAMAPS_MAPDIRECTLY.out.meta_file
-                input[3] = METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths
-                input[4] = METAMAPS_MAPDIRECTLY.out.para_file
+                input[1] = METAMAPS_MAPDIRECTLY.out.meta_file
+                input[2] = METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths
+                input[3] = METAMAPS_MAPDIRECTLY.out.para_file
+                input[4] = UNTAR.out.untar.map{ it[1] }
                 """
             }
         }
