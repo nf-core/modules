@@ -24,6 +24,18 @@ input:
       type: file
       description: Coordinates where reads map
       pattern: "*.{classification_res}"
+  - meta_file:
+      type: file
+      description: Statistics for mapping result
+      pattern: "*.{classification_res.meta}"
+  - meta_unmappedreadsLengths:
+      type: file
+      description: Statistics for length of unmapped reads
+      pattern: "*.{classification_res.meta.unmappedReadsLengths}"
+  - para_file:
+      type: file
+      description: Log with parameters
+      pattern: "*.{classification_res.parameters}"
   - database_folder:
       type: directory
       description: Path to MetaMaps database
