@@ -12,12 +12,26 @@ process IQTREE {
     val constant_sites
 
     output:
-    tuple val(meta), path("*.treefile") , emit: phylogeny
-    tuple val(meta), path("*.iqtree")   , emit: report
-    tuple val(meta), path("*.mldist")   , emit: mldist, optional: true
-    tuple val(meta), path("*.ufboot")   , emit: bootstrap, optional: true
-    tuple val(meta), path("*.log")      , emit: log
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.treefile")  , emit: phylogeny
+    tuple val(meta), path("*.iqtree")    , emit: report
+    tuple val(meta), path("*.mldist")    , emit: mldist   , optional: true
+    tuple val(meta), path("*.lmap.svg")  , emit: lmap_svg , optional: true
+    tuple val(meta), path("*.lmap.eps")  , emit: lmap_eps , optional: true
+    tuple val(meta), path("*.ufboot")    , emit: bootstrap, optional: true
+    tuple val(meta), path("*.state")     , emit: state    , optional: true
+    tuple val(meta), path("*.contree")   , emit: contree  , optional: true
+    tuple val(meta), path("*.nex")       , emit: nex      , optional: true
+    tuple val(meta), path("*.splits")    , emit: splits   , optional: true
+    tuple val(meta), path("*.suptree")   , emit: suptree  , optional: true
+    tuple val(meta), path("*.alninfo")   , emit: alninfo  , optional: true
+    tuple val(meta), path("*.partlh")    , emit: partlh   , optional: true
+    tuple val(meta), path("*.siteprob")  , emit: siteprob , optional: true
+    tuple val(meta), path("*.sitelh")    , emit: sitelh   , optional: true
+    tuple val(meta), path("*.treels")    , emit: treels   , optional: true
+    tuple val(meta), path("*.rate  ")    , emit: rate     , optional: true
+    tuple val(meta), path("*.mlrate")    , emit: mlrate   , optional: true
+    tuple val(meta), path("*.log")       , emit: log
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,6 +64,8 @@ process IQTREE {
     touch ${prefix}.iqtree
     touch ${prefix}.mldist
     touch ${prefix}.ufboot
+    touch ${prefix}.contree
+    touch ${prefix}.nex
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

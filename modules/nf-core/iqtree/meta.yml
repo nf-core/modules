@@ -28,14 +28,35 @@ input:
         see iqtree documentation for details
         (http://www.iqtree.org/doc/Command-Reference)
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - phylogeny:
       type: file
       description: A phylogeny in Newick format
       pattern: "*.{treefile}"
+  - report:
+      type: file
+      description: |
+        Main report file containing computational
+        results as well as a textual visualisation
+        of the final tree
+      pattern: "*.{iqtree}"
+  - mldist:
+      type: file
+      description: |
+        File containing the pairwise maximum
+        likelihood distances as a matrix
+      pattern: "*.{mldist}"
+  - lmap_svg:
+      type: file
+      description: |
+        File containing likelihood mapping analysis
+        results in .svg format
+      pattern: "*.{lmap.svg}"
+  - lmap_eps:
+      type: file
+      description: |
+        File containing likelihood mapping analysis
+        results in .eps format
+      pattern: "*.{lmap.eps}"
   - bootstrap:
       type: file
       description: |
@@ -43,20 +64,78 @@ output:
         only generated if bootstrap is on
         and the -wbt flag is passed in ext.args
       pattern: "*.{ufboot}"
-  - report:
+  - state:
       type: file
       description: |
-        Main report file containing computational
-        results as well as a textual visualisation
-        of the final tree.
-  - mldist:
+        File containing ancestral sequences for all
+        nodes of the tree (by empirical Bayesian method)
+      pattern: "*.{state}"
+  - contree:
       type: file
       description: |
-        File containing the pairwise maximum
-        likelihood distances as a matrix.
+        File containing consensus tree
+      pattern: "*.{contree}"
+  - nex:
+      type: file
+      description: |
+        File containing consensus network
+      pattern: "*.{nex}"
+  - splits:
+      type: file
+      description: |
+        File containing consensus network in star-dot format
+      pattern: "*.{splits}"
+  - suptree:
+      type: file
+      description: |
+        File containing tree with assigned support
+        values based on supplied "target" tree
+      pattern: "*.{suptree}"
+  - alninfo:
+      type: file
+      description: |
+        File containing alignment site statistics
+      pattern: "*.{alninfo}"
+  - partlh:
+      type: file
+      description: |
+        File containing partition log-likelihoods
+      pattern: "*.{partlh}"
+  - siteprob:
+      type: file
+      description: |
+        File containing site posterior probabilities
+      pattern: "*.{siteprob}"
+  - sitelh:
+      type: file
+      description: |
+        File containing site log-likelihoods
+      pattern: "*.{sitelh}"
+  - treels:
+      type: file
+      description: |
+        File containing all locally optimal trees
+      pattern: "*.{treels}"
+  - rate:
+      type: file
+      description: |
+        File containing inferred site-specific
+        evolutionary rates
+      pattern: "*.{rate}"
+  - mlrate:
+      type: file
+      description: |
+        File containing site-specific subtitution
+        rates determined by maximum likelihood
+      pattern: "*.{mlrate}"
   - log:
       type: file
       description: Log file of entire run
+      pattern: "*.{log}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@avantonder"
   - "@aunderwo"

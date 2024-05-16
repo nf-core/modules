@@ -79,6 +79,8 @@ nextflow_process {
                 { assert path(process.out.phylogeny.get(0).get(1)).exists() },
                 { assert path(process.out.mldist.get(0).get(1)).exists() },
                 { assert path(process.out.bootstrap.get(0).get(1)).exists() },
+                { assert path(process.out.contree.get(0).get(1)).exists() },
+                { assert path(process.out.nex.get(0).get(1)).exists() },
                 { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
                 { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
                 { assert snapshot( process.out.versions ).match("bootstrap") }
@@ -110,7 +112,9 @@ nextflow_process {
                                     process.out.log,
                                     process.out.mldist,
                                     process.out.versions,
-                                    process.out.bootstrap ).match("bootstrap_stub")
+                                    process.out.bootstrap,
+                                    process.out.contree,
+                                    process.out.nex ).match("bootstrap_stub")
                 }
             )
         }
