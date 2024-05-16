@@ -6,9 +6,9 @@ include { MMSEQS_CREATETSV } from '../../../modules/nf-core/mmseqs/createtsv/mai
 workflow MMSEQS_CONTIG_TAXONOMY {
 
     take:
-    ch_contigs                      // channel: tuple val(meta), path(contigs)
-    ch_mmseqs_databases_localpath   // channel: path(mmseqs2_db)
-    ch_mmseqs_databases_id          // channel: [mmseqs2_db_id]
+    contigs            // channel: tuple val(meta), path(contigs)
+    mmseqs_databases   // channel: path(mmseqs2 local db)
+    databases_id       // channel: [mmseqs2_db_id]
 
     main:
 
@@ -20,19 +20,19 @@ workflow MMSEQS_CONTIG_TAXONOMY {
 
     // Download the ref db if not supplied by user
     // MMSEQS_DATABASE
-    if ( !ch_mmseqs_databases_localpath.empty ) {
+    if ( !mmseqs_databases.empty ) {
         ch_mmseqs_db = Channel
-            .fromPath( ch_mmseqs_databases_localpath )
+            .fromPath( mmseqs_databases )
             .first()
     } else {
-        MMSEQS_DATABASES ( ch_mmseqs_databases_id )
+        MMSEQS_DATABASES ( databases_id )
         ch_versions  = ch_versions.mix( MMSEQS_DATABASES.out.versions )
         ch_mmseqs_db = ( MMSEQS_DATABASES.out.database )
     }
 
     // Create db for query contigs, assign taxonomy and convert to table format
     // MMSEQS_CREATEDB
-    MMSEQS_CREATEDB ( ch_contigs )
+    MMSEQS_CREATEDB ( contigs )
     ch_versions         = ch_versions.mix( MMSEQS_CREATEDB.out.versions )
     ch_taxonomy_querydb = MMSEQS_CREATEDB.out.db
 
@@ -47,7 +47,10 @@ workflow MMSEQS_CONTIG_TAXONOMY {
     ch_taxonomy_tsv = MMSEQS_CREATETSV.out.tsv
 
     emit:
-    sample_taxa_tsv = ch_taxonomy_tsv // channel: [ val(meta), tsv ]
-    versions        = ch_versions     // channel: [ versions.yml ]
+    taxonomy    = ch_taxonomy_tsv           // channel: [ val(meta), tsv ]
+    db_mmseqs   = ch_mmseqs_db              // channel: [ val(meta), mmseqs_database ]
+    db_taxonomy = ch_taxonomy_querydb_taxdb // channel: [ val(meta), db_taxonomy ]
+    db_contig   = ch_taxonomy_querydb       // channel: [ val(meta), db ]
+    versions    = ch_versions               // channel: [ versions.yml ]
 }
 
