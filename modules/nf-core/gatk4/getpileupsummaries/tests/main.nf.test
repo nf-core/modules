@@ -32,7 +32,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(file(process.out.table.get(0).get(1)).name).match() }
+                { assert snapshot(process.out.table).match("table_bam") }
             )
         }
 
@@ -67,7 +67,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions_cram") },
-                { assert snapshot(file(process.out.table.get(0).get(1)).name).match() }
+                { assert snapshot(process.out.table).match("table_cram") }
             )
         }
 
