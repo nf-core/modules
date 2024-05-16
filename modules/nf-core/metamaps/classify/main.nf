@@ -1,4 +1,3 @@
-
 process METAMAPS_CLASSIFY {
     tag "$meta.id"
     label 'process_single'
