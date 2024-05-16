@@ -64,7 +64,21 @@ workflow BCL_DEMULTIPLEX {
         }
 
         // Generate meta for each fastq
-        ch_fastq_with_meta = generate_fastq_meta(ch_fastq)
+        ch_fastq_with_meta = ch_fastq
+            .map{ fc_meta, fastq -> 
+                def meta = [
+                    "id": fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/,
+                    "samplename": fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/,
+                    "fcid": fc_meta.id,
+                    "lane": fc_meta.lane
+                ]
+                [meta, fastq] 
+            }
+            .groupTuple(by: [0])
+            .map { meta, fastq -> // Add meta.single_end
+                meta.single_end = fastq.size() == 1
+                return [meta, fastq.flatten()]
+            }
 
     emit:
         fastq    = ch_fastq_with_meta
@@ -72,61 +86,4 @@ workflow BCL_DEMULTIPLEX {
         stats    = ch_stats
         interop  = ch_interop
         versions = ch_versions
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// Add meta values to fastq channel and skip invalid FASTQ files
-def generate_fastq_meta(ch_reads) {
-    // Create a tuple with the meta.id and the fastq
-    ch_reads
-        .transpose()
-        .map { fc_meta, fastq ->
-            def meta = [
-                "id": fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/,
-                "samplename": fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/,
-                "readgroup": [:],
-                "fcid": fc_meta.id,
-                "lane": fc_meta.lane
-            ]
-            meta.readgroup = readgroup_from_fastq(fastq)
-            meta.readgroup.SM = meta.samplename
-            return [meta, fastq]
-        }
-        .filter { it[0] != null }
-        .groupTuple(by: [0]) // Group by meta.id for PE samples
-        .map { meta, fastq -> // Add meta.single_end
-            meta.single_end = fastq.size() == 1
-            return [meta, fastq.flatten()]
-        }
-}
-
-// https://github.com/nf-core/sarek/blob/7ba61bde8e4f3b1932118993c766ed33b5da465e/workflows/sarek.nf#L1014-L1040
-def readgroup_from_fastq(path) {
-    def rg = [:]
-    path.withInputStream { is ->
-        new java.util.zip.GZIPInputStream(is).withReader('ASCII') { reader ->
-            def line = reader.readLine()
-            // Check if the FASTQ file is empty or has invalid content
-            if (line != null && line.startsWith('@')) {
-                line = line.substring(1)
-                def fields = line.split(':')
-                // CASAVA 1.8+ format, from  https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
-                // "@<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos>:<UMI> <read>:<is filtered>:<control number>:<index>"
-                sequencer_serial = fields[0]
-                run_nubmer       = fields[1]
-                fcid             = fields[2]
-                lane             = fields[3]
-                index            = fields[-1] =~ /[GATC+-]/ ? fields[-1] : ""
-                rg.ID = [fcid,lane].join(".")
-                rg.PU = [fcid, lane, index].findAll().join(".")
-                rg.PL = "ILLUMINA"
-            } 
-        }
-    }
-    return rg
 }
