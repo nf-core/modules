@@ -16,7 +16,7 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
 
     KRAKENTOOLS_EXTRACTKRAKENREADS ( val_taxid, KRAKEN2_KRAKEN2.out.classified_reads_assignment, KRAKEN2_KRAKEN2.out.classified_reads_fastq, KRAKEN2_KRAKEN2.out.report )
     ch_versions = ch_versions.mix( KRAKENTOOLS_EXTRACTKRAKENREADS.out.versions.first() )
-    
+
     emit:
     kraken2_report = KRAKEN2_KRAKEN2.out.report                                          // channel: [ val(meta), path ]
     extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq/fasta ] ]
