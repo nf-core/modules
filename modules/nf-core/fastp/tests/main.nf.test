@@ -16,6 +16,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -24,8 +25,9 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -85,6 +87,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -93,8 +96,9 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -130,6 +134,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -139,8 +144,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -214,6 +220,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -223,8 +230,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -260,6 +268,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -268,8 +277,9 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -330,6 +340,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = false
 
@@ -338,8 +349,9 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -374,6 +386,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = true
                 save_merged       = false
 
@@ -382,8 +395,9 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -436,6 +450,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = true
                 save_merged       = false
 
@@ -445,8 +460,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -514,6 +530,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = true
                 input[0] = Channel.of([
@@ -522,8 +539,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -607,6 +625,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = []
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = true
 
@@ -616,8 +635,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -652,6 +672,7 @@ nextflow_process {
             process {
                 """
                 adapter_fasta     = Channel.of([ file(params.modules_testdata_base_path + 'delete_me/fastp/adapters.fasta', checkIfExists: true) ])
+                save_trimmed_pass = true
                 save_trimmed_fail = false
                 save_merged       = true
 
@@ -661,8 +682,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = adapter_fasta
-                input[2] = save_trimmed_fail
-                input[3] = save_merged
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
                 """
             }
         }
@@ -723,3 +745,244 @@ nextflow_process {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    test("test_fastp_single_end_qc_only") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_pass = false
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text  = [ "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)",
+                                "single end (151 cycles)" ]
+            def log_text   = [ "Q20 bases: 12922(92.9841%)",
+								"reads passed filter: 99" ]
+            assertAll(
+                { assert process.success },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { assert snapshot(process.out.json).match("test_fastp_single_end_json_qc_only") },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_single_end_qc_only-_match")
+                },
+                { assert snapshot(process.out.versions).match("versions_single_end_qc_only") }
+            )
+        }
+    }
+
+    test("test_fastp_single_end_qc_only-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_pass = false
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
+                """
+            }
+        }
+
+        then {
+
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { file(it[1]).getName() } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_single_end_qc_only-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_qc_only") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_pass = false
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
+                """
+            }
+        }
+
+        then {
+            def html_text   = [ "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)",
+									"The input has little adapter percentage (~0.000000%), probably it's trimmed before."]
+            def log_text    = [ "No adapter detected for read1",
+									"Q30 bases: 12281(88.3716%)"]
+            def json_text   = ['"passed_filter_reads": 198']
+            assertAll(
+                { assert process.success },
+                { read1_lines.each { read1_line ->
+                    { assert path(process.out.reads.get(0).get(1).get(0)).linesGzip.contains(read1_line) }
+                    }
+                },
+                { read2_lines.each { read2_line ->
+                    { assert path(process.out.reads.get(0).get(1).get(1)).linesGzip.contains(read2_line) }
+                    }
+                },
+                { html_text.each { html_part ->
+                    { assert path(process.out.html.get(0).get(1)).getText().contains(html_part) }
+                    }
+                },
+                { json_text.each { json_part ->
+                    { assert path(process.out.json.get(0).get(1)).getText().contains(json_part) }
+                    }
+                },
+                { log_text.each { log_part ->
+                    { assert path(process.out.log.get(0).get(1)).getText().contains(log_part) }
+                    }
+                },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end_match_qc_only")
+                },
+                { assert snapshot(process.out.versions).match("versions_paired_end_qc_only") }
+            )
+        }
+    }
+
+    test("test_fastp_paired_end_qc_only-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                adapter_fasta     = []
+                save_trimmed_pass = false
+                save_trimmed_fail = false
+                save_merged       = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = adapter_fasta
+                input[2] = save_trimmed_pass
+                input[3] = save_trimmed_fail
+                input[4] = save_merged
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        (
+                            [process.out.reads[0][0].toString()] + // meta
+                            process.out.reads.collect { it[1].collect { item -> file(item).getName() } } +
+                            process.out.json.collect { file(it[1]).getName() } +
+                            process.out.html.collect { file(it[1]).getName() } +
+                            process.out.log.collect { file(it[1]).getName() } +
+                            process.out.reads_fail.collect { file(it[1]).getName() } +
+                            process.out.reads_merged.collect { file(it[1]).getName() }
+                        ).sort()
+                    ).match("test_fastp_paired_end_qc_only-for_stub_match")
+                },
+                { assert snapshot(process.out.versions).match("versions_paired_end-stub") }
+            )
+        }
+    }
