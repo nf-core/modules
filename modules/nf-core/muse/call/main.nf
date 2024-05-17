@@ -2,16 +2,13 @@ process MUSE_CALL {
     tag "$meta.id"
     label 'process_high'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    //conda "${moduleDir}/environment.yml"
+    // TODO Update when maintainer publishes conda package and container
+    // conda "${moduleDir}/environment.yml"
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
     //     'docker.io/library/muse:2.1' }"
 
-    container "muse:2.1"
+    container "docker.io/famkebaeuerle/muse:2.1"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -34,7 +31,8 @@ process MUSE_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    MuSE/MuSE call \\
+    /MuSE/MuSE \\
+        call \\
         $args \\
         -f $reference \\
         -O ${prefix}  \\
