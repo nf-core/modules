@@ -9,7 +9,7 @@ workflow INITIALISE {
     take:
         version         // bool
         help            // bool
-        validate_params // bool
+        validateParams  // bool
         logo            // bool
 
     main:
@@ -47,13 +47,13 @@ workflow INITIALISE {
         log.info citation
 
         // Print help message if needed
-        if (params.help) {
+        if (help) {
             def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv -profile docker"
             log.info paramsHelp(command)
             System.exit(0)
         }
 
-        if ( params.validate_params != false ){
+        if ( validateParams != false ){
             validateParameters()
         }
 
@@ -64,6 +64,13 @@ workflow INITIALISE {
                     "   (2) Using an existing nf-core/configs for your Institution e.g. `-profile crick` or `-profile uppmax`\n" +
                     "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" +
                     "Please refer to the quick start section and usage docs for the pipeline.\n "
+        }
+        // Check that the profile doesn't contain spaces and doesn't end with a trailing comma
+        if (workflow.profile.endsWith(',')) {
+            Nextflow.error "Profile cannot end with a trailing comma. Please remove the comma from the end of the profile string.\nHint: A common mistake is to provide multiple values to `-profile` separated by spaces. Please use commas to separate profiles instead,e.g., `-profile docker,test`."
+        }
+        if (args[0]) {
+            log.warn "nf-core pipelines do not accept positional arguments. The positional argument `${args[0]}` has been detected.\n      Hint: A common mistake is to provide multiple values to `-profile` separated by spaces. Please use commas to separate profiles instead,e.g., `-profile docker,test`."
         }
 
         log.info paramsSummaryLog(workflow)

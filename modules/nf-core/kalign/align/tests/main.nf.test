@@ -1,0 +1,54 @@
+// nf-core modules test kalign/align
+nextflow_process {
+
+    name "Test Process KALIGN_ALIGN"
+    script "../main.nf"
+    process "KALIGN_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kalign"
+    tag "kalign/align"
+
+    test("sarscov2 - fasta - uncompressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                          file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                        ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("SARS-CoV-2 scaffolds fasta - uncompressed")},
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - compressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                          file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                        ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("SARS-CoV-2 scaffolds fasta - compressed")},
+            )
+        }
+    }
+}

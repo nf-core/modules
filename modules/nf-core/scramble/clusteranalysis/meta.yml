@@ -9,9 +9,7 @@ tools:
       homepage: "https://github.com/GeneDx/scramble"
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
-
       licence: "['CC']"
-
 input:
   - meta:
       type: map
@@ -30,7 +28,6 @@ input:
       type: file
       description: Optional fasta file containing the MEI reference. This file should only be supplied in special occasions where the default isn't correct
       pattern: "*.{fasta,fa}"
-
 output:
   - meta:
       type: map
@@ -53,6 +50,7 @@ output:
       type: file
       description: A VCF file containing the MEI calls and/or the predicted deletions (depending on the given arguments)
       pattern: "*.vcf"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

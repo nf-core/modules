@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process CHECKV_DOWNLOADDATABASE"
+    script "../main.nf"
+    process "CHECKV_DOWNLOADDATABASE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "checkv"
+    tag "checkv/downloaddatabase"
+
+    test("No input: download only") {
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+    test("No input: download only - stub") {
+
+        options "-stub"
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process PLINK2_SCORE"
+    script "../main.nf"
+    process "PLINK2_SCORE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/score"
+
+    test("plink2_score") {
+        config "./nextflow.config"
+        setup {
+            run("PLINK2_VCF") {
+                script "../../vcf/main.nf"
+                process {
+                        """
+                    input[0] = [
+                        [ id: 'test', single_end:false ],
+                        [
+                            file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                ch = PLINK2_VCF.out.pgen.concat(PLINK2_VCF.out.psam, PLINK2_VCF.out.pvar).groupTuple().map{ it.flatten() }
+                input[0] = ch
+                input[1] = file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_score'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.score.get(0).get(1) ==~ ".*.sscore" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

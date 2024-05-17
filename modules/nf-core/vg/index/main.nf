@@ -2,7 +2,7 @@ process VG_INDEX {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::vg=1.45.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0':
         'biocontainers/vg:1.45.0--h9ee0642_0' }"

@@ -1,8 +1,0 @@
-- name: flash test_flash
-  command: nextflow run ./tests/modules/nf-core/flash -entry test_flash -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/flash/nextflow.config
-  tags:
-    - flash
-  files:
-    - path: output/flash/test.notCombined_2.fastq.gz
-    - path: output/flash/test.extendedFrags.fastq.gz
-    - path: output/flash/test.notCombined_1.fastq.gz

@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/walaj/svaba"
       doi: "10.1101/gr.221028.117"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
@@ -85,7 +84,6 @@ input:
       type: file
       description: Targeted intervals. Accepts BED file or Samtools-style string
       pattern: "*.bed|*.txt|*.tab"
-
 output:
   - meta:
       type: map
@@ -157,4 +155,6 @@ output:
       description: Log file
       pattern: "*.txt.gz"
 authors:
+  - "@kubranarci"
+maintainers:
   - "@kubranarci"

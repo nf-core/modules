@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process PROTEINORTHO"
+    script "../main.nf"
+    process "PROTEINORTHO"
+    tag "proteinortho"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                file_a = file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+                file_a.copyTo("${workDir}/prot1.fasta")
+                file_a.copyTo("${workDir}/prot2.fasta")
+                file_a = file("${workDir}/prot1.fasta", checkIfExists:true)
+                file_b = file("${workDir}/prot2.fasta", checkIfExists:true)
+                input[0] = [ 
+                    [ id:'test' ], // meta map
+                    [ 
+                        file_a,
+                        file_b,
+                    ] 
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.orthologgroups).match("orthologgroups") },
+                { assert snapshot(process.out.versions).match("versions") },
+            )
+        }
+    }
+}

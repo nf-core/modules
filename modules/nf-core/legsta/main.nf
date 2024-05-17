@@ -2,7 +2,7 @@ process LEGSTA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::legsta=0.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/legsta%3A0.5.1--hdfd78af_2':
         'biocontainers/legsta:0.5.1--hdfd78af_2' }"

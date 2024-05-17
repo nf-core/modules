@@ -1,6 +1,5 @@
 name: "custom_matrixfilter"
-description: filter a matrix based on a minimum value and numbers of samples
-  that must pass.
+description: filter a matrix based on a minimum value and numbers of samples that must pass.
 keywords:
   - matrix
   - filter
@@ -10,7 +9,6 @@ tools:
   - "matrixfilter":
       description: "filter a matrix based on a minimum value and numbers of samples"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/matrixfilter/main.nf"
-
 input:
   - meta:
       type: map
@@ -74,7 +72,6 @@ input:
         Minimum observations that must have a numeric value (not be NA) to retain
         the row/ feature (e.g. gene). Supplied via task.ext.args as
         --minimum_samples_not_na. Overrides minimum_proportion_not_na
-
 output:
   - versions:
       type: file
@@ -93,6 +90,7 @@ output:
       type: file
       description: Boolean matrix with pass/ fail status for each test on each feature
       pattern: "*.tests.tsv"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

@@ -2,10 +2,10 @@ process GATK_UNIFIEDGENOTYPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gatk=3.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
-        'biocontainers/gatk:3.5--hdfd78af_11' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0':
+        'biocontainers/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -53,7 +53,7 @@ process GATK_UNIFIEDGENOTYPER {
         -o ${prefix}.vcf \\
         $args
 
-    gzip -n *.vcf
+    bgzip ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

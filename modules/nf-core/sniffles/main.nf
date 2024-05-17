@@ -2,7 +2,7 @@ process SNIFFLES {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::sniffles=2.0.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sniffles:2.0.7--pyhdfd78af_0' :
         'biocontainers/sniffles:2.0.7--pyhdfd78af_0' }"

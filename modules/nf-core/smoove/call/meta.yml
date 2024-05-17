@@ -11,9 +11,7 @@ tools:
       homepage: https://github.com/brentp/smoove
       documentation: https://brentp.github.io/post/smoove/
       tool_dev_url: https://github.com/brentp/smoove
-
-      licence: "['Apache-2.0']"
-
+      licence: ["Apache-2.0"]
 input:
   - meta:
       type: map
@@ -40,7 +38,6 @@ input:
       type: file
       description: Index of reference fasta file
       pattern: "*.fai"
-
 output:
   - meta:
       type: map
@@ -55,7 +52,9 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
-
 authors:
+  - "@scorreard"
+  - "@nvnieuwk"
+maintainers:
   - "@scorreard"
   - "@nvnieuwk"

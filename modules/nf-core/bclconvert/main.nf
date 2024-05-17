@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nf-core/bclconvert:4.0.3"
+    container "nf-core/bclconvert:4.2.7"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -60,8 +60,7 @@ process BCLCONVERT {
         $args \\
         --output-directory . \\
         --bcl-input-directory ${input_dir} \\
-        --sample-sheet ${samplesheet} \\
-        --bcl-num-parallel-tiles ${task.cpus}
+        --sample-sheet ${samplesheet}
 
     cp -r ${input_dir}/InterOp .
 
