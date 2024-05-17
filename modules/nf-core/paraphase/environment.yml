@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+name: "paraphase"
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconda::paraphase=3.1.1
+  - bioconda::minimap2=2.28
+  - bioconda::samtools=1.19.2
