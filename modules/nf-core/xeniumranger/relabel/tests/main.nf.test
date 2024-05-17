@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process XENIUMRANGER_RELABEL"
+    script "../main.nf"
+    process "XENIUMRANGER_RELABEL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "xeniumranger"
+    tag "xeniumranger/relabel"
+
+    test("") {
+
+        when {
+            process {
+                """
+                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
+                input[1] = file(params.test_data['gene_panel'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out.versions).match() },
+                { assert snapshot( "${process.out.reference[0]}/fasta").match("spaceranger mkref fasta") },
+                { assert snapshot( "${process.out.reference[0]}/genes").match("spaceranger mkref genes") },
+                { assert snapshot( "${process.out.reference[0]}/reference.json").match("spaceranger mkref reference.json") },
+                { assert snapshot( path("${process.out.reference[0]}/star").list().findAll {
+                    it.getFileName().toString() != "genomeParameters.txt"
+                    }).match("spaceranger mkref star")
+                }
+            )
+        }
+
+    }
+
+}
