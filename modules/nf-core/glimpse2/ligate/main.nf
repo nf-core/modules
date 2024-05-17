@@ -22,7 +22,7 @@ process GLIMPSE2_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
+    printf "%s\\n" $input_list | tr -d '[],' | sort -V > all_files.txt
 
     GLIMPSE2_ligate \\
         $args \\
