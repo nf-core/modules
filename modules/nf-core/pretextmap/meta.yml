@@ -20,6 +20,19 @@ input:
       type: file
       description: BAM/CRAM/SAM file or pairs formatted reads file
       pattern: "*.{bam,cram,sam,pairs.gz}"
+  - input:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test2', single_end:false ]
+  - input:
+      type: file
+      description: FASTA file
+      pattern: "*.{fasta,fa,fna}"
+  - input:
+      type: file
+      description: Fasta index
+      pattern: "*.fai"
 output:
   - meta:
       type: map

@@ -20,8 +20,11 @@ input:
         e.g. `[ id:'test']`
   - fasta:
       type: file
-      description: Input sequences in FASTA format
-      pattern: "*.{fa,fasta}"
+      description: Input sequences in FASTA format. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -30,8 +33,8 @@ output:
         e.g. `[ id:'test']`
   - alignment:
       type: file
-      description: Alignment file.
-      pattern: "*.{aln}"
+      description: Alignment file. May be gzipped or uncompressed, depending on if `compress` is set to `true` or `false`.
+      pattern: "*.{aln}{.gz,}"
   - versions:
       type: file
       description: File containing software versions
