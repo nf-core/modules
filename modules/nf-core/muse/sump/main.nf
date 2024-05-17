@@ -2,14 +2,22 @@ process MUSE_SUMP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+    // TODO Update when maintainer publishes conda package and container
+    // conda "${moduleDir}/environment.yml"
+    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+    //     'docker.io/library/muse:2.1' }"
+
+    container "docker.io/famkebaeuerle/muse:2.1"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "MUSE module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(muse_call_txt)
-    tuple val(meta2), path(reference)
+    tuple val(meta2), path(ref_vcf), path(ref_vcf_tbi)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -21,20 +29,19 @@ process MUSE_SUMP {
     script:
     def args = task.ext.args ?: '' // hands -G for WGS data and -E for WES data
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seqtype =
     def VERSION = '2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    MuSE \\
+    /MuSE/MuSE \\
         sump \\
         $args \\
         -I $muse_call_txt \\
         -O ${prefix}.vcf \\
         -n $task.cpus    \\
-        -D $reference
+        -D $ref_vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        muse: \$(samtools --version |& sed '1!d ; s/samtools //')
+        muse: ${VERSION}
     END_VERSIONS
     """
 
@@ -47,7 +54,7 @@ process MUSE_SUMP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        muse: \$(samtools --version |& sed '1!d ; s/samtools //')
+        muse: ${VERSION}
     END_VERSIONS
     """
 }
