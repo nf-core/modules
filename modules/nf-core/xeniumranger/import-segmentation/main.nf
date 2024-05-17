@@ -6,7 +6,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
 
     input:
     path(xenium_bundle)
-    path(segmentation)
+    path(segmentation_file)
 
     output:
     path("outs/**"), emit: outs
@@ -26,8 +26,8 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     // image based segmentation
     def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": ""
     def coordinate_transform = coordinate_transform ? "--coordinate-transform=\"${coordinate_transform}\"": ""
-    def nuclei = nuclei ? "--nuclei=\"${xenium_bundle}/cell.zarrr.zip\"": ""
-    def cells = cells ? "--cells=\"${xenium_bundle}/cells.zarr.zip\"": ""
+    def nuclei = nuclei ? "--nuclei=\"${segmentation_file}\"": ""
+    def cells = cells ? "--cells=\"${segmentation_file}\"": ""
     
     // transcript based segmentation
     def transcript_assignment = transcript_assignment ? "--transcript-assignment=\"${transcript_assignment}\"": ""
