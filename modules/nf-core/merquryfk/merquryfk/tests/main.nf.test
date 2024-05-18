@@ -1,0 +1,153 @@
+nextflow_process {
+
+    name "Test Process MERQURYFK_MERQURYFK"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MERQURYFK_MERQURYFK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "merquryfk"
+    tag "merquryfk/merquryfk"
+    tag "fastk/fastk"
+
+    setup {
+        run("FASTK_FASTK") {
+            script "../../../fastk/fastk"
+            process {
+                """
+                input[0] =  [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("test_merquryfk_merquryfk_png") {
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+
+                haplotigs = [
+                    [ id:'test', single_end:true ], []
+                ]
+
+                input[0] = FASTK_FASTK.out.hist
+                            | join( FASTK_FASTK.out.ktab )
+                            | join( Channel.value( assembly ) )
+                            | join( Channel.value( haplotigs ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_merquryfk_merquryfk_pdf") {
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+
+                haplotigs = [
+                    [ id:'test', single_end:true ], []
+                ]
+
+                input[0] = FASTK_FASTK.out.hist
+                            | join( FASTK_FASTK.out.ktab )
+                            | join( Channel.value( assembly ) )
+                            | join( Channel.value( haplotigs ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("single_minimal_stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+
+                haplotigs = [
+                    [ id:'test', single_end:true ], []
+                ]
+
+                input[0] = FASTK_FASTK.out.hist
+                            | join( FASTK_FASTK.out.ktab )
+                            | join( Channel.value( assembly ) )
+                            | join( Channel.value( haplotigs ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("multiple_minimal_stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+
+                haplotigs = [
+                    [ id:'test', single_end:true ],
+                    file(params.test_data['homo_sapiens']['genome']['genome2_fasta'], checkIfExists: true)
+                ]
+
+                input[0] = FASTK_FASTK.out.hist
+                            | join( FASTK_FASTK.out.ktab )
+                            | join( Channel.value( assembly ) )
+                            | join( Channel.value( haplotigs ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
