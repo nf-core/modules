@@ -32,6 +32,7 @@ workflow FASTA_LTRRETRIEVER_LAI {
                                     | join(
                                         ch_monoploid_seqs ?: Channel.empty()
                                     )
+                                    | filter { meta, tsv, seqs -> seqs } // Cater to channel: [ meta, tsv, [] ]
                                     | map { meta, short_ids_tsv, monoploid_seqs ->
                                         map_monoploid_seqs_to_new_ids(meta, short_ids_tsv, monoploid_seqs)
                                     }
