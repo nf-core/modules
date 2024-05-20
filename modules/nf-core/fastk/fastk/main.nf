@@ -33,6 +33,9 @@ process FASTK_FASTK {
         -N${prefix}_fk \\
         $reads
 
+    find . -name '*.ktab*' \\
+        | xargs chmod +r
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastk: $FASTK_VERSION
