@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process XENIUMRANGER_IMPORTSEGMENTATION"
+    script "../main.nf"
+    process "XENIUMRANGER_IMPORTSEGMENTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "xeniumranger"
+    tag "xeniumranger/import-segmentation"
+
+    test("xeniumranger import-segmentation") {
+
+        when {
+
+            process {
+                """
+                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
+                input[1] = path(params.segmentation_out['segmentation_json'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'analysis_summary.html',
+                        'metrics_summary.csv',
+                        'cell_boundaries.csv.gz',
+                        'cell_boundaries.parquet',
+                        'nucleus_boundaries.csv.gz',
+                        'nucleus_boundaries.parquet',
+                        'cells.csv.gz',
+                        'cells.parquet',
+                        'cells.zarr.zip',
+                        'transcripts.csv.gz',
+                        'transcripts.parquet',
+                        'transcripts.zarr.zip'
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+            )
+        }
+    }
+
+    test("xeniumranger import-segmentation -stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
