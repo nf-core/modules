@@ -34,7 +34,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
         }
     }
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    
+
     """
     fgbio \\
         -Xmx${mem_gb}g \\
