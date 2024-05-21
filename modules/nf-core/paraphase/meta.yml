@@ -1,15 +1,13 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "paraphase"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: "HiFi-based caller for highly homologous genes"
 keywords:
-  - sort
-  - example
-  - genomics
+  - paraphase
+  - long-read
+  - HiFi
 tools:
   - "paraphase":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "HiFi-based caller for highly homologous genes"
       homepage: "https://github.com/PacificBiosciences/paraphase"
       documentation: "https://github.com/PacificBiosciences/paraphase"
@@ -17,24 +15,42 @@ tools:
       doi: "10.1016/j.ajhg.2023.01.001"
       licence: ["BSD-3-clause-Clear"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted BAM file
+      pattern: "*.bam"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - bai:
+      type: file
+      description: Index of BAM file
+      pattern: "*.bai"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing config information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Config file
+      pattern: "*.yaml"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -45,11 +61,22 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: (re)aligned BAM file
+      pattern: "*.paraphase.bam"
+  - bai:
+      type: file
+      description: Index of (re)aligned BAM file
+      pattern: "*.paraphase.bam.bai"
+  - json:
+      type: file
+      description: Summary of haplotype and variant calls
+      pattern: "*.paraphase.json"
+  - vcf:
+      type: file
+      description: VCF file(s) per gene
+      pattern: "*.vcf"
 
 authors:
   - "@fellen31"

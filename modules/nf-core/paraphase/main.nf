@@ -9,15 +9,16 @@ process PARAPHASE {
         'biocontainers/mulled-v2-058de387f9917a7a63953f496cdd203bca83b790:86215829f86df9201683956877a19d025261ff66-0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
+    tuple val(meta3), path(config)
 
     output:
-    tuple val(meta), path("*.json")              , emit: json
-    tuple val(meta), path("*.bam")               , emit: bam
-    tuple val(meta), path("*.bai")               , emit: bai
-    tuple val(meta), path("${prefix}_vcfs/*.vcf"), emit: vcf
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.paraphase.json")              , emit: json
+    tuple val(meta), path("*.paraphase.bam")               , emit: bam
+    tuple val(meta), path("*.paraphase.bam.bai")           , emit: bai
+    tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf"), emit: vcf, optional: true
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +26,8 @@ process PARAPHASE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    def config_file = config ? "--config $config" : ""
     """
     paraphase \\
         $args \\
@@ -32,7 +35,6 @@ process PARAPHASE {
         --bam $bam \\
         --reference $fasta \\
         --prefix $prefix \\
-        --gene DDT \\
         --out .
 
     cat <<-END_VERSIONS > versions.yml
@@ -45,12 +47,12 @@ process PARAPHASE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}_vcfs
+    mkdir ${prefix}_paraphase_vcfs
 
-    touch ${prefix}.json
-    touch ${prefix}_realinged_tagged.bam
-    touch ${prefix}_realigned_tagged.bam.bai
-    touch ${prefix}_vcfs/${prefix}.vcf
+    touch ${prefix}.paraphase.json
+    touch ${prefix}.paraphase.bam
+    touch ${prefix}.paraphase.bam.bai
+    touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
