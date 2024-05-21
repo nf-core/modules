@@ -8,12 +8,13 @@ include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
 
 // Define the log file path before the workflow starts
-def logFile = new File("${params.outdir}/invalid_fastqs.log")
+def logFile = new File("${params.outdir}/skipped_fastqs.log")
 
 workflow BCL_DEMULTIPLEX {
     take:
         ch_flowcell     // [[id:"", lane:""],samplesheet.csv, path/to/bcl/files]
         demultiplexer   // bclconvert or bcl2fastq
+        log_skipped_fastqs // New parameter to control logging of empty FASTQ files
 
     main:
         ch_versions      = Channel.empty()
@@ -118,12 +119,14 @@ def generate_fastq_meta(ch_reads, logFile) {
             meta.readgroup = readgroup_from_fastq(fastq)
             meta.readgroup.SM = meta.samplename
         } else {
-            appendToLogFile(
-                "Empty or invalid FASTQ file: ${fastq}",
-                logFile
+            if (params.log_skipped_fastqs) {
+                appendToLogFile(
+                    "Empty or invalid FASTQ file: ${fastq}",
+                    logFile
                 )
-                fastq = null
-                }
+            }
+            fastq = null
+        }
 
         return [meta, fastq]
     }.filter { it[0] != null }
@@ -132,8 +135,8 @@ def generate_fastq_meta(ch_reads, logFile) {
     // Add meta.single_end
     .map { meta, fastq ->
         if (meta != null) {
-                meta.single_end = fastq.size() == 1
-                }
+            meta.single_end = fastq.size() == 1
+        }
         return [meta, fastq.flatten()]
     }
 }
