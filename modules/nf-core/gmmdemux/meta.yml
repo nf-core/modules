@@ -60,11 +60,6 @@ input:
       type: file
       description: |
         Provide the cell list. Requires a file argument. Only executes if num_cells is set
-  - ambigous:
-      type: integer
-      description: |
-        The estimated chance of having a phony GEM getting included in a pure type GEM cluster by the clustering algorithm. 
-        Only if exclude is executed.
   - skip:
       type: string
       description: |
@@ -73,6 +68,11 @@ input:
       type: string
       description: |
         Names of the sample barcoding tag(s) to extract, separated by ','. Joint tags are linked with '+'.
+  - ambigous:
+      type: integer
+      description: |
+        The estimated chance of having a phony GEM getting included in a pure type GEM cluster by the clustering algorithm. 
+        Only if exclude is executed.
 output:
   #Only when we have meta
   - meta:
