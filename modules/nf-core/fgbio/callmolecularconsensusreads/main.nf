@@ -36,7 +36,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
         --compression=1 \\
         CallMolecularConsensusReads \\
         --input $grouped_bam \\
-        --output ${prefix}.cons.unmapped.bam \\
+        --output ${prefix}.bam \\
         --min-reads ${min_reads} \\
         --min-input-base-quality ${min_baseq} \\
         --threads ${task.cpus} \\
