@@ -20,7 +20,7 @@ process RRNATRANSCRIPTS {
     script:
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
-    grep -E '^#|rRNA' genome.gtf >${prefix}_rrna_intervals.gtf
+    grep -E '^#|rRNA' $gtf >${prefix}_rrna_intervals.gtf
     if [ !  -s ${prefix}_rrna_intervals.gtf ]; then
         rm ${prefix}_rrna_intervals.gtf
     fi
@@ -34,6 +34,7 @@ process RRNATRANSCRIPTS {
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
     touch ${prefix}_rrna_intervals.gtf
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed -e "s/Python //g")
