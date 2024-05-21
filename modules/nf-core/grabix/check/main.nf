@@ -1,7 +1,7 @@
 process GRABIX_CHECK {
     label 'process_low'
 
-    conda "/home/mss/TEST/grabix/check/environment.yml"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/grabix:0.1.8--hdcf5f25_9':
         'biocontainers/grabix:0.1.8--hdcf5f25_9' }"
