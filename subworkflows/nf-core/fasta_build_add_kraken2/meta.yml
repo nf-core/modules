@@ -14,8 +14,8 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Channel containing each fasta as a distinct element with meta
-        Structure: [ val(meta), path(fasta) ]
+        Channel containing a meta with a list of FASTAs to be built
+        Structure: [ val(meta), [ fasta1, fasta2, fasta3 ] ]
       pattern: "*.{fasta,fa,fna}"
   - ch_taxonomy_names:
       type: file
@@ -45,8 +45,8 @@ output:
   - db:
       type: directory
       description: |
-        Channel containing KRAKEN2 database directory.
-        Use `$ext.prefix` in a modules.conf file to change default name
+        Channel containing KRAKEN2 database directory files.
+        Use `ext.prefix` in a modules.conf file to change default name
         Structure: [ val(meta), path(db) ]
       pattern: "*/"
   - versions:
