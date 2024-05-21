@@ -4,16 +4,16 @@ process FGBIO_GROUPREADSBYUMI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
-        'biocontainers/fgbio:2.0.2--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/fgbio:2.2.1--hdfd78af_0' :
+        'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(taggedbam)
     val(strategy)
 
     output:
-    tuple val(meta), path("*_umi-grouped.bam")  , emit: bam
-    tuple val(meta), path("*_umi_histogram.txt"), emit: histogram
+    tuple val(meta), path("*.bam")  , emit: bam
+    tuple val(meta), path("*histogram.txt"), emit: histogram
     path "versions.yml"                         , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process FGBIO_GROUPREADSBYUMI {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_umi-grouped"
 
     """
 
@@ -31,8 +31,8 @@ process FGBIO_GROUPREADSBYUMI {
         -s $strategy \\
         $args \\
         -i $taggedbam \\
-        -o ${prefix}_umi-grouped.bam \\
-        -f ${prefix}_umi_histogram.txt
+        -o ${prefix}.bam \\
+        -f ${prefix}_histogram.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
