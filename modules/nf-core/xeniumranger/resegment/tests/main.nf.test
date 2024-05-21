@@ -13,9 +13,13 @@ nextflow_process {
 
         when {
 
+            params {
+                test_data_base = ""
+            }
+
             process {
                 """
-                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
+                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xenium_bundle'], checkIfExists: true)
                 """
             }
         }
@@ -55,9 +59,13 @@ nextflow_process {
 
         when {
 
+            params {
+                test_data_base = ""
+            }
+
             process {
                 """
-                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
+                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xenium_bundle'], checkIfExists: true)
                 """
             }
         }

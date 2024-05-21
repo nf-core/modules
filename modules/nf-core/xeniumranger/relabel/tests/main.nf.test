@@ -13,10 +13,14 @@ nextflow_process {
 
         when {
 
+            params {
+                test_data_base = ""
+            }
+
             process {
                 """
-                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
-                input[1] = path(params.test_data['gene_panel'], checkIfExists: true)
+                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xeniumbundle'], checkIfExists: true)
+                input[1] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['gene_panel'], checkIfExists: true)
                 """
             }
         }
@@ -27,14 +31,16 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'analysis_summary.html',
                         'cell_feature_matrix.h5',
                         'cell_feature_matrix.zarr.zip',
-                        'barcodes.tsv.gz'
-                        'features.tsv.gz'
-                        'matrix.mtx.gz'
+                        'barcodes.tsv.gz',
+                        'features.tsv.gz',
+                        'matrix.mtx.gz',
                         ]}
                     ).match()
                 },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
@@ -50,10 +56,14 @@ nextflow_process {
 
         when {
 
+            params {
+                test_data_base = ""
+            }
+
             process {
                 """
-                input[0] = path(params.test_data['xenium_bundle'], checkIfExists: true)
-                input[1] = path(params.test_data['gene_panel'], checkIfExists: true)
+                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xenium_bundle'], checkIfExists: true)
+                input[1] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['gene_panel'], checkIfExists: true)
                 """
             }
         }

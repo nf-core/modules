@@ -8,24 +8,26 @@ RUN apt-get update --allow-releaseinfo-change \
     && apt-get install -y \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-ARG VERSION="2.0.0"
+ARG MAJOR="2"
+ARG MINOR="0"
+ARG PATCH="0"
 
 # copy over xeniumranger
-# xenium ranger has been downloaded from https://www.10xgenomics.com/support/software/xenium-ranger/downloads
-COPY xeniumranger-${VERSION}.tar /opt/xeniumranger-${VERSION}.tar
+# the latest version of the xeniumranger tool has been downloaded from https://www.10xgenomics.com/support/software/xenium-ranger/downloads
+COPY xeniumranger-${MAJOR}.${MINOR}.${PATCH}.tar /opt/xeniumranger-${MAJOR}.${MINOR}.${PATCH}.tar
 
 # install xenium ranger
-RUN tar -xzvf /opt/xeniumranger-${VERSION}.tar -C /opt/ && \
-    rm /opt/xeniumranger-${VERSION}.tar
+RUN tar -xzvf /opt/xeniumranger-${MAJOR}.${MINOR}.${PATCH}.tar -C /opt/ && \
+    rm /opt/xeniumranger-${MAJOR}.${MINOR}.${PATCH}.tar
 
 # Set environment variables
-ENV PATH="/opt/xeniumranger-xenium2.0/bin:$PATH"
+ENV PATH="/opt/xeniumranger-xenium${MAJOR}.${MINOR}/bin:$PATH"
 
 # multistage to reduce image size
 FROM ubuntu:20.04
 
 # Set environment variables
-ENV PATH="/opt/xeniumranger-xenium2.0/bin:$PATH"
+ENV PATH="/opt/xeniumranger-xenium${MAJOR}.${MINOR}/bin:$PATH"
 
 # copy over xenium from builder
-COPY --from=builder /opt/xeniumranger-xenium2.0/ /opt/xeniumranger-xenium2.0/
+COPY --from=builder /opt/xeniumranger-xenium${MAJOR}.${MINOR}/ /opt/xeniumranger-xenium${MAJOR}.${MINOR}/
