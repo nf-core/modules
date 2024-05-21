@@ -10,8 +10,8 @@ process GRABIX_CHECK {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), stdout   , emit: compress_bgzip
-    path "versions.yml"       , emit: versions
+    tuple val(meta), stdout, emit: compress_bgzip
+    path "versions.yml"    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
