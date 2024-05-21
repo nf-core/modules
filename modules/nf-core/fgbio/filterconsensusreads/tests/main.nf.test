@@ -16,10 +16,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_duplex_consensus_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_duplex_consensus.bam', checkIfExists: true)
                         ]
                 input[1] = [[ id:'homo_sapiens'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = 3
                 input[3] = 45
@@ -45,10 +45,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_duplex_consensus_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_duplex_consensus.bam', checkIfExists: true)
                         ]
                 input[1] = [[ id:'homo_sapiens'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = 3
                 input[3] = 45

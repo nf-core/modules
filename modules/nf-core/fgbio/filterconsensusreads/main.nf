@@ -35,6 +35,7 @@ process FGBIO_FILTERCONSENSUSREADS {
             mem_gb = task.memory.giga - 1
         }
     }
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
     fgbio \\
@@ -58,6 +59,7 @@ process FGBIO_FILTERCONSENSUSREADS {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_consensus_filtered"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.bam
 

@@ -20,19 +20,21 @@ process FGBIO_SORTBAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_sorted"
-    def fgbio_mem_gb = 4
-
+    def mem_gb = 8
     if (!task.memory) {
-        log.info '[fgbio SortBam] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else if (fgbio_mem_gb > task.memory.giga) {
+        log.info '[fgbio SortBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
+    } else if (mem_gb > task.memory.giga) {
         if (task.memory.giga < 2) {
-            fgbio_mem_gb = 1
+            mem_gb = 1
         } else {
-            fgbio_mem_gb = task.memory.giga - 1
+            mem_gb = task.memory.giga - 1
         }
     }
+
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
     """
-    fgbio -Xmx${fgbio_mem_gb}g \\
+    fgbio -Xmx${mem_gb}g \\
         --async-io=true \\
         --tmp-dir=. \\
         SortBam \\
@@ -47,6 +49,7 @@ process FGBIO_SORTBAM {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_sorted"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.bam
 

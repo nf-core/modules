@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_grouped_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_grouped.bam', checkIfExists: true)
                 ]
                 input[1] = 3
                 input[2] = 20
@@ -42,7 +42,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_grouped_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_grouped.bam', checkIfExists: true)
                 ]
                 input[1] = 3
                 input[2] = 20

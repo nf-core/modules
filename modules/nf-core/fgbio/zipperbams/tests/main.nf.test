@@ -17,19 +17,19 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_mapped_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
                         ]
                 input[1] = [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_unmapped_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true)
                         ]
                 input[2] = [
                             [ id:'test'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[3] = [
                             [ id:'test'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                         ]
                 """
             }
@@ -53,19 +53,19 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_mapped_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_unmapped.bam', checkIfExists: true)
                         ]
                 input[1] = [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_unmapped_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_mapped.bam', checkIfExists: true)
                         ]
                 input[2] = [
                             [ id:'test'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[3] = [
                             [ id:'test'],
-                            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                         ]
                 """
             }
