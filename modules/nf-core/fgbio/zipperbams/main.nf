@@ -4,14 +4,14 @@ process FGBIO_ZIPPERBAMS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
-        'biocontainers/fgbio:2.0.2--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/fgbio:2.2.1--hdfd78af_0' :
+        'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(unmapped_bam)
-    tuple val(meta), path(mapped_bam)
-    path(fasta)
-    path(dict)
+    tuple val(meta2), path(mapped_bam)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(dict)
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam

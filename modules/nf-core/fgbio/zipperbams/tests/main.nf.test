@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process FGBIO_ZIPPERBAMS"
+    script "../main.nf"
+    process "FGBIO_ZIPPERBAMS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgbio"
+    tag "fgbio/zipperbams"
+
+    test("sarscov2 - bam") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_mapped_bam'], checkIfExists: true)
+                        ]
+                input[1] = [
+                            [ id:'test', single_end:false ],
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_unmapped_bam'], checkIfExists: true)
+                        ]
+                input[2] = [
+                            [ id:'test'],
+                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                input[3] = [
+                            [ id:'test'],
+                            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ],
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_mapped_bam'], checkIfExists: true)
+                        ]
+                input[1] = [
+                            [ id:'test', single_end:false ],
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_unmapped_bam'], checkIfExists: true)
+                        ]
+                input[2] = [
+                            [ id:'test'],
+                            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                input[3] = [
+                            [ id:'test'],
+                            file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
