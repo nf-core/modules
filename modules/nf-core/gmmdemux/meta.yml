@@ -1,0 +1,111 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gmmdemux"
+
+description: GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample barcoding data (cell hashing and MULTI-seq).
+keywords:
+  - demultiplexing
+  - hashing-based deconvoltion
+  - single-cell
+tools:
+  - "gmmdemux":
+      description: "GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample barcoding data (cell hashing and MULTI-seq)."
+      homepage: "https://pypi.org/project/GMM-Demux/"
+      documentation: "https://github.com/CHPGenetics/GMM-Demux"
+      tool_dev_url: "https://github.com/CHPGenetics/GMM-demux"
+      doi: "10.1186/s13059-020-02084-2"
+      licence: ["MIT"]
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - cell_hashing_matrix:
+      type: file
+      description: path to file containing matrix from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
+  - cell_hashing_barcodes:
+      type: file
+      description: path to file containing barcodes from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
+  - cell_hashing_features:
+      type: file
+      description: path to file containing features from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
+  - csv:
+      type: string
+      description: |
+        Take input in csv format, instead of mmx format.
+  - hto_names:
+      type: string
+      description: |
+        Comma separated list of HTO names, without whitespace
+  - num_cells:
+      type: integer
+      description: |
+        Generate the statstic summary of the dataset. Requires an estimated total number of cells in the assay as input.
+  - output_dir:
+      type: string
+      description: |
+        The path for storing the Same-Sample-Droplets (SSDs).
+  - full_report:
+      type: string
+      description: |
+        Generate the full classification report. Require a path argument.
+  - simplified_report:
+      type: string
+      description: |
+        Generate the simplified classification report. Require a path argument.
+  - examine:
+      type: file
+      description: |
+        Provide the cell list. Requires a file argument. Only executes if num_cells is set
+  - ambigous:
+      type: integer
+      description: |
+        The estimated chance of having a phony GEM getting included in a pure type GEM cluster by the clustering algorithm. 
+        Only if exclude is executed.
+  - skip:
+      type: string
+      description: |
+        Load a full classification report and skip the mtx folder as input. Require a path argument.
+  - extract:
+      type: string
+      description: |
+        Names of the sample barcoding tag(s) to extract, separated by ','. Joint tags are linked with '+'.
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - barcodes:
+      type: file
+      description: |
+        barcodes tsv file with removed cell-hashing-identifiable multiplets
+      pattern: "test/*.tsv.gz"
+  - matrix:
+      type: file
+      description: |
+        matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
+      pattern: "test/*.tsv.gz"
+  - features:
+      type: file
+      description: |
+        features tsv file with removed cell-hashing-identifiable multiplets
+      pattern: "test/*.tsv.gz"
+authors:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
+maintainers:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"

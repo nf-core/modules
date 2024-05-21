@@ -1,0 +1,86 @@
+// nf-core modules test gmmdemux
+nextflow_process {
+
+    name "Test Process GMMDEMUX"
+    script "../main.nf"
+    process "GMMDEMUX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gmmdemux"
+
+
+    test("Standard_Multiome - 10x mtx") {
+        when {
+            process {
+                """
+                
+                input[0] = [
+                    [ id:'test'], 
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/barcodes.tsv.gz",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/matrix.mtx.gz",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/features.tsv.gz",checkIfExists: true),
+                    "MS-11,MS-12"
+                    ]
+                input[1] = ""
+                input[2] = ""
+                input[3] = "True"
+                input[4] = ""
+                input[5] = ""
+                input[6] = ""
+                input[7] = ""
+                input[8] = ""
+                input[9] = ""
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.barcodes.get(0).get(1)).exists() },
+
+            )
+        }
+
+    }
+
+    test("Standard_Multiome - 10x mtx - Stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                
+                input[0] = [
+                    [ id:'test'], 
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/barcodes.tsv.gz",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/matrix.mtx.gz",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/features.tsv.gz",checkIfExists: true),
+                    "MS-11,MS-12"
+                    ]
+                input[1] = ""
+                input[2] = ""
+                input[3] = ""
+                input[4] = ""
+                input[5] = ""
+                input[6] = ""
+                input[7] = ""
+                input[8] = ""
+                input[9] = ""
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.barcodes.get(0).get(1)).exists() },
+            )
+        }
+
+    }
+
+}
