@@ -22,9 +22,7 @@ process FGBIO_GROUPREADSBYUMI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_umi-grouped"
-
     """
-
     fgbio \\
         --tmp-dir=. \\
         GroupReadsByUmi \\
@@ -33,6 +31,18 @@ process FGBIO_GROUPREADSBYUMI {
         -i $taggedbam \\
         -o ${prefix}.bam \\
         -f ${prefix}_histogram.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}_umi-grouped"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}_histogram.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
