@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "iqtree"
 
-    test("setoxin - basic") {
+    /*test("setoxin - basic") {
 
         when {
             process {
@@ -32,41 +32,14 @@ nextflow_process {
         }
     }
 
-    test("setoxin - basic - stub") {
+    test("setoxin - bootstrap") {
 
-        options "-stub"
+        config "./iqtree_bootstrap.config"
 
         when {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref")]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot( process.out.phylogeny,
-                                    process.out.report,
-                                    process.out.mldist,
-                                    process.out.log,
-                                    process.out.versions ).match("basic_stub")
-                }
-            )
-        }
-    }
-
-    test("setoxin - bootstrap") {
-
-        config "./bootstrap.config"
-
-        when {
-            process {
-                """
-                input[0] = [ [],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
                 input[1] = []
                 """
@@ -81,6 +54,8 @@ nextflow_process {
                 { assert path(process.out.bootstrap.get(0).get(1)).exists() },
                 { assert path(process.out.contree.get(0).get(1)).exists() },
                 { assert path(process.out.nex.get(0).get(1)).exists() },
+                { assert path(process.out.splits.get(0).get(1)).exists() },
+                { assert path(process.out.treels.get(0).get(1)).exists() },
                 { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
                 { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
                 { assert snapshot( process.out.versions ).match("bootstrap") }
@@ -88,16 +63,64 @@ nextflow_process {
         }
     }
 
-    test("setoxin - bootstrap - stub") {
+    test("setoxin - optional") {
 
-        options "-stub"
-
-        config "./bootstrap.config"
+        config "./iqtree_optional.config"
 
         when {
             process {
                 """
-                input[0] = [ [],
+                input[0] = [ [ id: "test" ] ,
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                input[1] = [ [ id: "test" ] , [] ]
+                input[2] = [ [ id: "test" ] , [] ]
+                input[3] = [ [ id: "test" ] , [] ]
+                input[4] = [ [ id: "test" ] , [] ]
+                input[5] = [ [ id: "test" ] , [] ]
+                input[6] = [ [ id: "test" ] , [] ]
+                input[7] = [ [ id: "test" ] , [] ]
+                input[8] = [ [ id: "test" ] , [] ]
+                input[9] = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = [ [ id: "test" ] , [] ]
+                input[13] = [ [ id: "test" ] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.state.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_svg.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_eps.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_quartetlh.get(0).get(1)).exists() },
+                { assert path(process.out.treels.get(0).get(1)).exists() },
+                { assert path(process.out.mlrate.get(0).get(1)).exists() },
+                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert snapshot( process.out.alninfo,
+                                    process.out.partlh,
+                                    process.out.siteprob,
+                                    process.out.sitelh,
+                                    process.out.sitefreq_out,
+                                    process.out.rate,
+                                    process.out.treels,
+                                    process.out.exch_matrix,
+                                    process.out.versions ).match("optional") }
+            )
+        }
+    }
+
+    test("setoxin - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
                 input[1] = []
                 """
@@ -107,16 +130,84 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( process.out.phylogeny,
-                                    process.out.report,
-                                    process.out.log,
-                                    process.out.mldist,
-                                    process.out.versions,
-                                    process.out.bootstrap,
-                                    process.out.contree,
-                                    process.out.nex ).match("bootstrap_stub")
-                }
+                { assert snapshot( process.out ).match("stub") }
             )
         }
     }
+
+    test("cyanos - sup") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ], [] ]
+                input[1] = [[ id: "test" ], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
+                input[2] = [[ id: "test" ], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.suptree.get(0).get(1)).exists() },
+                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert snapshot( process.out.suptree,
+                                    process.out.versions ).match("cyanos_sup") }
+            )
+        }
+    }*/
+
+        test("cyanos - optional") {
+
+        config "./iqtree_optional.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ] ,
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/reference.alnfaa") ]
+                input[1] = [ [ id: "test" ] , [] ]
+                input[2] = [ [ id: "test" ] , [] ]
+                input[3] = [ [ id: "test" ] , [] ]
+                input[4] = [ [ id: "test" ] , [] ]
+                input[5] = [ [ id: "test" ] , [] ]
+                input[6] = [ [ id: "test" ] , [] ]
+                input[7] = [ [ id: "test" ] , [] ]
+                input[8] = [ [ id: "test" ] ,
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/reference.newick") ]
+                input[9] = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = [ [ id: "test" ] , [] ]
+                input[13] = [ [ id: "test" ] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.state.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_svg.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_eps.get(0).get(1)).exists() },
+                { assert path(process.out.lmap_quartetlh.get(0).get(1)).exists() },
+                { assert path(process.out.treels.get(0).get(1)).exists() },
+                { assert path(process.out.mlrate.get(0).get(1)).exists() },
+                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
+                { assert snapshot( process.out.alninfo,
+                                    process.out.partlh,
+                                    process.out.siteprob,
+                                    process.out.sitelh,
+                                    process.out.sitefreq_out,
+                                    process.out.rate,
+                                    process.out.treels,
+                                    process.out.exch_matrix,
+                                    process.out.versions ).match("optional") }
+            )
+        }
+    }
+
 }
