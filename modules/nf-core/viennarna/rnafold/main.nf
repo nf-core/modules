@@ -4,7 +4,7 @@ process VIENNARNA_RNAFOLD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py39pl5321h4e691d4_1':
+        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
         'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
