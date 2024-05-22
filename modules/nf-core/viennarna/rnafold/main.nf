@@ -1,6 +1,6 @@
 process VIENNARNA_RNAFOLD {
     tag '$rna_fastq'
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,7 +11,7 @@ process VIENNARNA_RNAFOLD {
     path fasta
 
     output:
-    path "*.rnafold.out"  , emit: rnafold_txt
+    path "*.fold"         , emit: rnafold_txt
     path "*.ps"           , emit: rnafold_ps
     path "versions.yml"   , emit: versions
 
@@ -22,8 +22,10 @@ process VIENNARNA_RNAFOLD {
     def args = task.ext.args ?: ''
     """
     RNAfold \\
-    --infile=$fasta \\
-    --outfile=${fasta}.rnafold.out
+        ${args} \\
+        --jobs=${task.cpus} \\
+        --infile=$fasta \\
+        --outfile=${fasta}.fold
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,7 +37,7 @@ process VIENNARNA_RNAFOLD {
     def args = task.ext.args ?: ''
     
     """
-    touch ${fasta}.rnafold.out
+    touch ${fasta}.fold
     touch ${fasta}.ps
 
     cat <<-END_VERSIONS > versions.yml
