@@ -23,8 +23,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.index[0][1].find { file(it).name == "genome.index" }).exists() }
-                
+                { assert snapshot(file(process.out.index[0][1]).name).match() }
             )
         }
     }
