@@ -21,18 +21,27 @@ input:
       description: expression matrix in TSV format
       pattern: "*.tsv"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #
+  - tni:
+      type: file
+      description: RDS R Object with the TNI object
+      pattern: "tni.rds"
+  - tni_perm:
+      type: file
+      description: RDS R Object with the TNI object after permutation
+      pattern: "tni_permutated.rds"
+  - tni_bootstrap:
+      type: file
+      description: RDS R Object with the TNI object after permutation and bootstrap
+      pattern: "tni_bootstrapped.rds"
+  - tni_filtered:
+      type: file
+      description: RDS R Object with the TNI object after permutation, bootstrap and filtering
+      pattern: "tni_filtered.rds"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@mribeirodantas"
