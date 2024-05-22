@@ -8,14 +8,26 @@ nextflow_process {
     tag "modules_nfcore"
     tag "iqtree"
 
-    /*test("setoxin - basic") {
+    test("setoxin - basic") {
 
         when {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref")]
-                input[1] = []
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                input[1]  = [ [ id: "test" ] , [] ]
+                input[2]  = [ [ id: "test" ] , [] ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = [ [ id: "test" ] , [] ]
+                input[13] = [ [ id: "test" ] , [] ]
                 """
             }
         }
@@ -23,11 +35,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.phylogeny.get(0).get(1)).exists() },
-                { assert path(process.out.mldist.get(0).get(1)).exists() },
-                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert snapshot( process.out.versions ).match("basic") }
+                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("1apf") },
+                { assert snapshot(  path(process.out.mldist.get(0).get(1)).readLines().first(),
+                                    path(process.out.report.get(0).get(1)).readLines().first(),
+                                    path(process.out.log.get(0).get(1)).readLines().first(),
+                                    process.out.versions ).match() }
             )
         }
     }
@@ -41,46 +53,15 @@ nextflow_process {
                 """
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.phylogeny.get(0).get(1)).exists() },
-                { assert path(process.out.mldist.get(0).get(1)).exists() },
-                { assert path(process.out.bootstrap.get(0).get(1)).exists() },
-                { assert path(process.out.contree.get(0).get(1)).exists() },
-                { assert path(process.out.nex.get(0).get(1)).exists() },
-                { assert path(process.out.splits.get(0).get(1)).exists() },
-                { assert path(process.out.treels.get(0).get(1)).exists() },
-                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert snapshot( process.out.versions ).match("bootstrap") }
-            )
-        }
-    }
-
-    test("setoxin - optional") {
-
-        config "./iqtree_optional.config"
-
-        when {
-            process {
-                """
-                input[0] = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
-                input[1] = [ [ id: "test" ] , [] ]
-                input[2] = [ [ id: "test" ] , [] ]
-                input[3] = [ [ id: "test" ] , [] ]
-                input[4] = [ [ id: "test" ] , [] ]
-                input[5] = [ [ id: "test" ] , [] ]
-                input[6] = [ [ id: "test" ] , [] ]
-                input[7] = [ [ id: "test" ] , [] ]
-                input[8] = [ [ id: "test" ] , [] ]
-                input[9] = [ [ id: "test" ] , [] ]
+                input[1]  = [ [ id: "test" ] , [] ]
+                input[2]  = [ [ id: "test" ] , [] ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
                 input[10] = [ [ id: "test" ] , [] ]
                 input[11] = [ [ id: "test" ] , [] ]
                 input[12] = [ [ id: "test" ] , [] ]
@@ -92,45 +73,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.state.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_svg.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_eps.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_quartetlh.get(0).get(1)).exists() },
-                { assert path(process.out.treels.get(0).get(1)).exists() },
-                { assert path(process.out.mlrate.get(0).get(1)).exists() },
-                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert snapshot( process.out.alninfo,
-                                    process.out.partlh,
-                                    process.out.siteprob,
-                                    process.out.sitelh,
-                                    process.out.sitefreq_out,
-                                    process.out.rate,
-                                    process.out.treels,
-                                    process.out.exch_matrix,
-                                    process.out.versions ).match("optional") }
-            )
-        }
-    }
-
-    test("setoxin - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot( process.out ).match("stub") }
+                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("1apf") },
+                { assert path(process.out.bootstrap.get(0).get(1)).readLines().first().contains("1apf,") },
+                { assert path(process.out.contree.get(0).get(1)).readLines().first().contains("1apf") },
+                { assert path(process.out.splits.get(0).get(1)).readLines().first().contains("*") },
+                { assert snapshot(  path(process.out.nex.get(0).get(1)).readLines()[0..12],
+                                    path(process.out.mldist.get(0).get(1)).readLines().first(),
+                                    path(process.out.report.get(0).get(1)).readLines().first(),
+                                    path(process.out.log.get(0).get(1)).readLines().first(),
+                                    process.out.versions ).match() }
             )
         }
     }
@@ -140,10 +91,26 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id: "test" ], [] ]
-                input[1] = [[ id: "test" ], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
-                input[2] = [[ id: "test" ], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
-                input[3] = []
+                input[0]  = [ [ id: "test" ], [] ]
+                input[1]  = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
+                input[2]  = [ [ id: "test" ] , [] ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = Channel.of([ id: "test" ])
+                            .combine(Channel.of(
+                                file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick", checkIfExists:true)
+                                .text)
+                                .collectFile(name: 'trees2.newick')
+                                )
+                input[13] = [ [ id: "test" ] , [] ]
                 """
             }
         }
@@ -151,33 +118,33 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.suptree.get(0).get(1)).exists() },
                 { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert snapshot( process.out.suptree,
-                                    process.out.versions ).match("cyanos_sup") }
+                { assert snapshot(  path(process.out.log.get(0).get(1)).readLines().first(),
+                                    process.out.suptree,
+                                    process.out.versions ).match() }
             )
         }
-    }*/
+    }
 
-        test("cyanos - optional") {
+    test("hydrogenase - optional") {
 
         config "./iqtree_optional.config"
 
         when {
             process {
                 """
-                input[0] = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/reference.alnfaa") ]
-                input[1] = [ [ id: "test" ] , [] ]
-                input[2] = [ [ id: "test" ] , [] ]
-                input[3] = [ [ id: "test" ] , [] ]
-                input[4] = [ [ id: "test" ] , [] ]
-                input[5] = [ [ id: "test" ] , [] ]
-                input[6] = [ [ id: "test" ] , [] ]
-                input[7] = [ [ id: "test" ] , [] ]
-                input[8] = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/reference.newick") ]
-                input[9] = [ [ id: "test" ] , [] ]
+                input[0]  = [ [ id: "test" ] ,
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa") ]
+                input[1]  = [ [ id: "test" ] , [] ]
+                input[2]  = [ [ id: "test" ] ,
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick")  ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
                 input[10] = [ [ id: "test" ] , [] ]
                 input[11] = [ [ id: "test" ] , [] ]
                 input[12] = [ [ id: "test" ] , [] ]
@@ -189,23 +156,55 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.state.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_svg.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_eps.get(0).get(1)).exists() },
-                { assert path(process.out.lmap_quartetlh.get(0).get(1)).exists() },
-                { assert path(process.out.treels.get(0).get(1)).exists() },
-                { assert path(process.out.mlrate.get(0).get(1)).exists() },
-                { assert path(process.out.report.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert path(process.out.log.get(0).get(1)).readLines().first().contains("IQ-TREE") },
-                { assert snapshot( process.out.alninfo,
+                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("E1QGS5_DESB2/226-309") },
+                { assert snapshot(  path(process.out.lmap_eps.get(0).get(1)).readLines()[0..5],
+                                    path(process.out.lmap_svg.get(0).get(1)).readLines()[0..5],
+                                    path(process.out.lmap_quartetlh.get(0).get(1)).readLines().first(),
+                                    path(process.out.mlrate.get(0).get(1)).readLines().readLines()[0..5],
+                                    path(process.out.report.get(0).get(1)).readLines().first(),
+                                    path(process.out.log.get(0).get(1)).readLines().first(),
+                                    process.out.alninfo,
                                     process.out.partlh,
                                     process.out.siteprob,
                                     process.out.sitelh,
-                                    process.out.sitefreq_out,
                                     process.out.rate,
                                     process.out.treels,
-                                    process.out.exch_matrix,
-                                    process.out.versions ).match("optional") }
+                                    process.out.state,
+                                    process.out.splits,
+                                    process.out.versions ).match() }
+            )
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0]  = [ [ id: "test" ] , [] ]
+                input[1]  = [ [ id: "test" ] , [] ]
+                input[2]  = [ [ id: "test" ] , [] ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = [ [ id: "test" ] , [] ]
+                input[13] = [ [ id: "test" ] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out ).match() }
             )
         }
     }

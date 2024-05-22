@@ -28,14 +28,14 @@ input:
       description: "File containing one or multiple phylogenetic trees (-t):
         - Single tree used e.g. as starting tree for tree search
         - Set of trees used e.g. for distance computation, consensus tree construction"
-      pattern: "*.{tree,treefile,newick,nwk,nex,nexus}"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
   - tree_te:
       type: file
       description: "File containing single phylogenetic tree (-te)
         Use cases:
         - fixed user tree to skip tree search
         - ancestral sequence reconstruction"
-      pattern: "*.{tree,treefile,newick,nwk,nex,nexus}"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
   - lmclust:
       type: file
       description: NEXUS file containing taxon clusters
@@ -49,22 +49,22 @@ input:
       type: file
       description: Partition file for edge-equal partition
         model, all partitions share same set of branch lengths (-q)
-      pattern: "*.{nex,nexus,tree,treefile}"
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
   - partitions_proportional:
       type: file
       description: Partition file for edge-equal partition
         model, all partitions share same set of branch lengths (-spp)
-      pattern: "*.{nex,nexus,tree,treefile}"
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
   - partitions_unlinked:
       type: file
       description: Partition file for edge-equal partition
         model, all partitions share same set of branch lengths (-sp)
-      pattern: "*.{nex,nexus,tree,treefile}"
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
   - guide_tree:
       type: file
       description: File containing guide tree for inference of
         site frequency profiles (-ft)
-      pattern: "*.{nex,nexus,tree,treefile}"
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
   - sitefreq_in:
       type: file
       description: Site frequency file (-fs)
@@ -88,7 +88,7 @@ input:
       type: file
       description: "File containing a second tree set (-rf). Used
         for computing the distance to the primary tree set (`tree`)"
-      pattern: "*.{tree,treefile,newick,nwk,nex,nexus}"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
 output:
   - phylogeny:
       type: file
