@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process MERQURY"
+    script "../main.nf"
+    process "MERQURY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "merqury"
+    tag "meryl/count"
+    tag "meryl/unionsum"
+
+    setup {
+        run("MERYL_COUNT") {
+            script "../../meryl/count"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        run("MERYL_UNIONSUM") {
+            script "../../meryl/unionsum"
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = 21
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens-genome") {
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[0] = MERYL_UNIONSUM.out.meryl_db.join( Channel.value( assembly ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                assembly = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[0] = MERYL_UNIONSUM.out.meryl_db.join( Channel.value( assembly ) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
