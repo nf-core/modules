@@ -27,18 +27,6 @@ input:
       type: directory
       description: Output directory for subsampled read sets
 
-  - count:
-      type: integer
-      description: Number of subsampled read sets to output, default 12
-
-  - genome_size:
-      type: string
-      description: Approximate genome size (e.g. 5.5m), default auto
-
-  - min_read_depth:
-      type: float
-      description: Minimum allowed read depth, default 25.0
-
 output:
   - meta:
       type: map
@@ -46,15 +34,15 @@ output:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - subreads:
       type: file
       description: Subsampled read sets
       pattern: "*.{fastq.gz}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@watsonar"
