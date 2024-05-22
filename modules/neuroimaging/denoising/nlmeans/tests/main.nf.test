@@ -15,7 +15,7 @@ nextflow_process {
 
     setup {
         run("LOAD_TEST_DATA", alias: "LOAD_DATA") {
-            script "../../../../../subworkflows/nf-scil/load_test_data/main.nf"
+            script "../../../../../subworkflows/neuroimaging/load_test_data/main.nf"
             process {
                 """
                 input[0] = Channel.from( [ "heavy.zip" ] )
