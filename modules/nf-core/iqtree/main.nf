@@ -105,6 +105,8 @@ process IQTREE {
     touch "${prefix}.mldist"
     touch "${prefix}.lmap.svg"
     touch "${prefix}.lmap.eps"
+    touch "${prefix}.lmap.quartetlh"
+    touch "${prefix}.sitefreq"
     touch "${prefix}.ufboot"
     touch "${prefix}.state"
     touch "${prefix}.contree"
@@ -116,8 +118,9 @@ process IQTREE {
     touch "${prefix}.siteprob"
     touch "${prefix}.sitelh"
     touch "${prefix}.treels"
-    touch "${prefix}.rate  "
+    touch "${prefix}.rate"
     touch "${prefix}.mlrate"
+    touch "GTRPMIX.nex"
     touch "${prefix}.log"
 
     cat <<-END_VERSIONS > versions.yml
