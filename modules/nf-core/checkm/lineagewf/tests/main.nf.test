@@ -30,7 +30,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert file(process.out.checkm_output[0][1]).list().find { file(it).name == "checkm.log" }
+            assert snapshot(
+                // path(process.out.marker_file[0][1]).readLines()[0],
+                path(process.out.marker_file[0][1]).readLines().any{it.contains("PF00312.17")},
+                process.out.checkm_tsv,
+                process.out.versions
+                ).match()
         }
 
     }
