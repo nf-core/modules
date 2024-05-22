@@ -35,7 +35,7 @@ process VIENNARNA_RNALFOLD {
     def args = task.ext.args ?: ''
 
     """
-    touch ${fasta}.lfold
+    touch ${fasta.baseName}.lfold
     touch ${fasta}.ps
 
     cat <<-END_VERSIONS > versions.yml
