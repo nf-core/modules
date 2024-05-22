@@ -23,7 +23,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(process.out.versions).match("versions") },
                 { assert snapshot(file(process.out.index[0][1]).name).match() }
             )
         }
