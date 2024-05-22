@@ -51,8 +51,7 @@ data(tfsData)
 # Input 4: 'colAnnotation', an optional data frame with sample annotation
 tfs <- tfsData\$Lambert2018\$SYMBOL
 
-exp_data <- read.csv(input_expr_matrix,
-                     sep='\t')
+exp_data <- read.csv(input_expr_matrix, sep='\t')
 rownames(exp_data) <- exp_data[,1]
 
 # Regulatory Transcriptional Network Inference
