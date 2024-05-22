@@ -1,26 +1,25 @@
 nextflow_process {
 
-    name "Test Process CSVTK_JOIN"
+    name "Test Process CSVTK_SPLIT"
     script "../main.nf"
-    process "CSVTK_JOIN"
+    process "CSVTK_SPLIT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "csvtk"
-    tag "csvtk/join"
+    tag "csvtk/split"
 
-    test("join - csv") {
+    test("split - csv") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [
-                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
-                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
-                    ]
+                    [ file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true) ]
                 ]
+                input[1] = "tsv"
+                input[2] = "tsv"
                 """
             }
         }
@@ -34,7 +33,7 @@ nextflow_process {
 
     }
 
-    test("join - csv - stub") {
+    test("split - csv - stub") {
 
         options "-stub"
 
@@ -43,11 +42,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [
-                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
-                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
-                    ]
+                    [ file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true) ]
                 ]
+                input[1] = "tsv"
+                input[2] = "tsv"
                 """
             }
         }
