@@ -1,0 +1,154 @@
+nextflow_process {
+
+    name "Test Process CHROMAP_CHROMAP"
+    script "../main.nf"
+    process "CHROMAP_CHROMAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "chromap"
+    tag "chromap/chromap"
+
+    test("test_chromap_chromap_single_end") {
+
+        setup {
+            run("CHROMAP_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
+                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[2] = CHROMAP_INDEX.out.index
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bed[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("test_chromap_chromap_paired_end") {
+
+        setup {
+            run("CHROMAP_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[2] = CHROMAP_INDEX.out.index
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bed[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }    
+    
+
+    test("test_chromap_chromap_paired_bam") {
+
+        setup {
+            run("CHROMAP_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
+                    """
+                }
+            }
+        }
+        
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[2] = CHROMAP_INDEX.out.index
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }    
+}
