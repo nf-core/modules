@@ -30,13 +30,15 @@ output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.pref
 threads <- $task.cpus
 args_opt <- parse_args('$task.ext.args')
 
-n_perm <- ifelse(('n_permutations' %in% args_opt), args_opt[['n_permutations']], 10)
+n_perm <- ifelse('n_permutations' %in% names(args_opt), strtoi(args_opt[['n_permutations']]), 10)
 
-# Debug messages (stderr)
+# Debug messages (stdout)
+sink(stdout(), type = "message") # sink messages to stdout
 message("Expression matrix file   : ", input_expr_matrix)
 message("Nb permutations          : ", n_perm)
 message("Nb threads               : ", threads)
 message("Output basename          : ", output_prefix)
+sink(NULL, type="message") # close the sink
 
 # Load / install packages
 library("RTN")

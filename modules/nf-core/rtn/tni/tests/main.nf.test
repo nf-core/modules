@@ -28,7 +28,35 @@ nextflow_process {
                 { assert file(process.out.tni_perm[0][1]).exists() },
                 { assert file(process.out.tni_bootstrap[0][1]).exists() },
                 { assert file(process.out.tni_filtered[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() }
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 10') } // the default value is 10
+            )
+        }
+
+    }
+
+    test("musmusculus tni expression matrix with --n_permutations 5") {
+        when {
+        config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'generic/tsv/expression.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 5') }
             )
         }
 
