@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/scilus/nf-scil/main/modules/meta-schema.json
+name: "denoising_nlmeans"
+description: denoise a dataset with the Non Local Means algorithm
+keywords:
+  - nifti
+  - denoising
+  - nlmeans
+  - scilpy
+tools:
+  - "Scilpy":
+      description: "The Sherbrooke Connectivity Imaging Lab (SCIL) Python dMRI processing toolbox."
+      homepage: "https://github.com/scilus/scilpy.git"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - image:
+      type: file
+      description: Nifti image file to denoise
+      pattern: "*.{nii,nii.gz}"
+
+  - mask:
+      type: file
+      description: Nifti image file used to mask the input image
+      pattern: "*.{nii,nii.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - image:
+      type: file
+      description: Denoised Nifti image file
+      pattern: "*_denoised.{nii,nii.gz}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@scilus"
