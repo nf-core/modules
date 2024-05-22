@@ -13,10 +13,10 @@ process PARABRICKS_FQ2BAMFAST {
     output:
     tuple val(meta), path("*.bam")                , emit: bam
     tuple val(meta), path("*.bai")                , emit: bai
+    tuple val(meta), path "qc_metrics", optional:true              , emit: qc_metrics
+    tuple val(meta), path("*.table"), optional:true                , emit: bqsr_table
+    tuple val(meta), path("duplicate-metrics.txt"), optional:true  , emit: duplicate_metrics
     path "versions.yml"                           , emit: versions
-    path "qc_metrics", optional:true              , emit: qc_metrics
-    path("*.table"), optional:true                , emit: bqsr_table
-    path("duplicate-metrics.txt"), optional:true  , emit: duplicate_metrics
 
     when:
     task.ext.when == null || task.ext.when
