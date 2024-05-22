@@ -38,9 +38,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("gatk_hc_vcf_bam_gz_input") },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("gatk_hc_vcf_tbi_bam_gz_input") },
+                { assert snapshot(process.out.versions,
+                                  file(process.out.vcf.get(0).get(1)).name,
+                                  file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
 
@@ -75,9 +75,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert snapshot(file(process.out.vcf.get(0).get(1)).name).match("gatk_hc_vcf_bam_input") },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match("gatk_hc_vcf_tbi_bam_input") },
+                { assert snapshot(process.out.versions,
+                                  file(process.out.vcf.get(0).get(1)).name,
+                                  file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
 
