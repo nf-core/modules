@@ -11,7 +11,7 @@ process VIENNARNA_RNALFOLD {
     path fasta
 
     output:
-    path "*.lfold"         , emit: rnalfold_txt
+    path "*.lfold"        , emit: rnalfold_txt
     path "versions.yml"   , emit: versions
 
     when:
