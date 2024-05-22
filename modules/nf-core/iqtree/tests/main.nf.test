@@ -8,43 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "iqtree"
 
-    test("setoxin - basic") {
-
-        when {
-            process {
-                """
-                input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
-                input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("1apf") },
-                { assert snapshot(  path(process.out.mldist.get(0).get(1)).readLines().first(),
-                                    path(process.out.report.get(0).get(1)).readLines().first(),
-                                    path(process.out.log.get(0).get(1)).readLines().first(),
-                                    process.out.versions ).match() }
-            )
-        }
-    }
-
-    test("setoxin - bootstrap") {
+    test("hydrogenase - bootstrap") {
 
         config "./iqtree_bootstrap.config"
 
@@ -52,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref") ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
                 input[2]  = [ [ id: "test" ] , [] ]
                 input[3]  = [ [ id: "test" ] , [] ]
@@ -73,9 +37,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("1apf") },
-                { assert path(process.out.bootstrap.get(0).get(1)).readLines().first().contains("1apf,") },
-                { assert path(process.out.contree.get(0).get(1)).readLines().first().contains("1apf") },
+                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("E1QGS5_DESB2/226-309") },
+                { assert path(process.out.bootstrap.get(0).get(1)).readLines().first().contains("E1QGS5_DESB2/226-309,") },
+                { assert path(process.out.contree.get(0).get(1)).readLines().first().contains("E1QGS5_DESB2/226-309") },
                 { assert path(process.out.splits.get(0).get(1)).readLines().first().contains("*") },
                 { assert snapshot(  path(process.out.nex.get(0).get(1)).readLines()[0..12],
                                     path(process.out.mldist.get(0).get(1)).readLines().first(),
@@ -86,14 +50,14 @@ nextflow_process {
         }
     }
 
-    test("cyanos - sup") {
+    test("hydrogenase - sup") {
 
         when {
             process {
                 """
                 input[0]  = [ [ id: "test" ], [] ]
                 input[1]  = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick") ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true) ]
                 input[2]  = [ [ id: "test" ] , [] ]
                 input[3]  = [ [ id: "test" ] , [] ]
                 input[4]  = [ [ id: "test" ] , [] ]
@@ -106,9 +70,9 @@ nextflow_process {
                 input[11] = [ [ id: "test" ] , [] ]
                 input[12] = Channel.of([ id: "test" ])
                             .combine(Channel.of(
-                                file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyanos_16s.newick", checkIfExists:true)
+                                file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
                                 .text)
-                                .collectFile(name: 'trees2.newick')
+                                .collectFile(name: 'hydrogenase.newick')
                                 )
                 input[13] = [ [ id: "test" ] , [] ]
                 """
@@ -134,10 +98,10 @@ nextflow_process {
             process {
                 """
                 input[0]  = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa") ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
                 input[2]  = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick")  ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)  ]
                 input[3]  = [ [ id: "test" ] , [] ]
                 input[4]  = [ [ id: "test" ] , [] ]
                 input[5]  = [ [ id: "test" ] , [] ]
