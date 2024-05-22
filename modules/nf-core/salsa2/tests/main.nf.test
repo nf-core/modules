@@ -10,9 +10,6 @@ nextflow_process {
     test("Single-Read") {
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
