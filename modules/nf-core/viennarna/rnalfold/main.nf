@@ -23,7 +23,7 @@ process VIENNARNA_RNALFOLD {
     RNALfold \\
         ${args} \\
         --infile=$fasta \\
-        --outfile=${fasta}.lfold
+        --outfile=${fasta.baseName}.lfold
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
