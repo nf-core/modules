@@ -93,13 +93,6 @@ saveRDS(rtni_filtered, file = "tni_filtered.rds")
 #    file=paste0(output_prefix, "_intercept_slope.txt"), append=FALSE
 #)
 
-#write(line,file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),append=TRUE)
-#write.table(
-#    cbind(curve_x, curve_y),
-#    file=paste0(output_prefix, "_duprateExpDensCurve_mqc.txt"),
-#    quote=FALSE, row.names=FALSE, col.names=FALSE, append=TRUE,
-#)
-
 ################################################
 ################################################
 ## R SESSION INFO                             ##

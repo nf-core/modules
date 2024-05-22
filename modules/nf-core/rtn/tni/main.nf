@@ -4,8 +4,6 @@
 //               where "task.ext" is a string.
 //               Any parameters that need to be evaluated in the context of a particular sample
 //               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
 
 process RTN_TNI {
     debug true
@@ -34,8 +32,6 @@ process RTN_TNI {
     def args = task.ext.args ?: ''
 
     // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     template 'rtn_tni.r'
 
     stub:

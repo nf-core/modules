@@ -15,14 +15,11 @@ tools:
       doi: "10.1038/ncomms3464"
       licence: ["Artistic-2.0"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - expression_matrix:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: expression matrix in TSV format
+      pattern: "*.tsv"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
