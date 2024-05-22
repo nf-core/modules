@@ -20,6 +20,7 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     emit:
     kraken2_report = KRAKEN2_KRAKEN2.out.report                                          // channel: [ val(meta), path ]
     extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq/fasta ] ]
+    multiqc_files = KRAKEN2_KRAKEN2.out.report                                           // channel: [ val(meta), path ]
     versions = ch_versions                                                               // channel: [ versions.yml ]
 }
 
