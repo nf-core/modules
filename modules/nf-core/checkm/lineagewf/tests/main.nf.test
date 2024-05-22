@@ -11,19 +11,14 @@ nextflow_process {
     test("Should run without failures") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "$outputDir"
-            }
             process {
                 """
-                // define inputs of the process here. Example:
                 input[0] = [
                                 [ id:'test', single_end:false ], // meta map
                                 file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
                             ]
                 input[1] = 'fasta'
-                input[2] = [] // Downlod CheckM database
+                input[2] = [] // Download CheckM database
                 """
             }
         }
@@ -32,7 +27,6 @@ nextflow_process {
             assert process.success
             assert file(process.out.checkm_output[0][1]).list().find { file(it).name == "checkm.log" }
             assert snapshot(
-                // path(process.out.marker_file[0][1]).readLines()[0],
                 path(process.out.marker_file[0][1]).readLines().any{it.contains("PF00312.17")},
                 process.out.checkm_tsv,
                 process.out.versions
