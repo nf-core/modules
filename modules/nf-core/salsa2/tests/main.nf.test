@@ -30,8 +30,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.fasta[0][1]).md5 == "32c805e9e447ad47d6437e10f91bd5bf" },
-                { assert path(process.out.agp[0][1]).md5 == "03fe8c559b80730aab465697a6b0e01c" }
+                { assert snapshot(process.out.fasta[0][1],
+                  process.out.agp[0][1]).match() }
             )
         }
     }
