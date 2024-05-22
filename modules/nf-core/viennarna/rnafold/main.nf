@@ -35,7 +35,7 @@ process VIENNARNA_RNAFOLD {
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
     touch ${fasta}.fold
     touch ${fasta}.ps
