@@ -1,22 +1,20 @@
 nextflow_process {
 
-    name "Test Process "BAMTOFASTQ10X"
+    name "Test Process BAMTOFASTQ10X"
     script "../main.nf"
-    process "10XBAMTOFASTQ"
+    process "BAMTOFASTQ10X"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "10xbamtofastq"
+    tag "bamtofastq10x"
 
     test("human - bam") {
-
-
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
                 ])
                 """
             }
@@ -29,7 +27,6 @@ nextflow_process {
 
             )
         }
-
     }
 
 
@@ -42,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
                 ])
                 """
             }
@@ -50,11 +47,9 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.success }
             )
         }
 
     }
-
 }

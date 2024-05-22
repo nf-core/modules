@@ -24,23 +24,22 @@ process BAMTOFASTQ10X {
     bamtofastq \\
         $args \\
         $bam \\
-        $prefix 
+        ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        10xbamtofastq: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
+        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        10xbamtofastq: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
+        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
     END_VERSIONS
     """
 }
