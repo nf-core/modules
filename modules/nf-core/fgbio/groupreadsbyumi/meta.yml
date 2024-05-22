@@ -30,6 +30,7 @@ input:
       pattern: "*.bam"
   - strategy:
       type: string
+      enum: ["Identity", "Edit", "Adjacency", "Paired"]
       description: |
         Reguired argument: defines the UMI assignment strategy.
         Must be chosen among: Identity, Edit, Adjacency, Paired.

@@ -36,7 +36,7 @@ input:
       type: map
       description: |
         Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'GRCh38' ]
   - fasta:
       type: file
       description: fasta file containing genomic sequence information
@@ -45,10 +45,10 @@ input:
       type: map
       description: |
         Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'GRCh38' ]
   - dict:
       type: file
-      description: dict file containing a dictionary for the fasta file
+      description: dict file containing a sequence dictionary for the fasta file
       pattern: "*.{dict}"
 output:
   - meta:
