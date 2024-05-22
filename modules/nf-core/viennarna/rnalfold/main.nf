@@ -1,6 +1,6 @@
-process VIENNARNA_RNAFOLD {
+process VIENNARNA_RNALFOLD {
     tag '$rna_fastq'
-    label 'process_low'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,8 +11,7 @@ process VIENNARNA_RNAFOLD {
     path fasta
 
     output:
-    path "*.fold"         , emit: rnafold_txt
-    path "*.ps"           , emit: rnafold_ps
+    path "*.lfold"         , emit: rnalfold_txt
     path "versions.yml"   , emit: versions
 
     when:
@@ -21,28 +20,27 @@ process VIENNARNA_RNAFOLD {
     script:
     def args = task.ext.args ?: ''
     """
-    RNAfold \\
+    RNALfold \\
         ${args} \\
-        --jobs=${task.cpus} \\
         --infile=$fasta \\
-        --outfile=${fasta}.fold
+        --outfile=${fasta}.lfold
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
+        RNALfold: \$( RNAfold --version |& sed '1!d ; s/RNALfold //')
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
-    touch ${fasta}.fold
+    touch ${fasta}.lfold
     touch ${fasta}.ps
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
+        RNALfold: \$( RNAfold --version |& sed '1!d ; s/RNALfold //')
     END_VERSIONS
     """
 }
