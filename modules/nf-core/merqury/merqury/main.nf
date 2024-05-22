@@ -2,6 +2,7 @@ process MERQURY_MERQURY {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
@@ -35,7 +36,7 @@ process MERQURY_MERQURY {
     script:
     // def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 1.3
+    def VERSION = 1.3 // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -60,7 +61,7 @@ process MERQURY_MERQURY {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 1.3
+    def VERSION = 1.3 // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_only.bed
     touch ${prefix}_only.wig
