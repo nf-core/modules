@@ -1,5 +1,5 @@
 process VIENNARNA_RNACOFOLD {
-    tag rnacofold_fasta
+    tag "$rnacofold_fasta"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -22,6 +22,7 @@ process VIENNARNA_RNACOFOLD {
     def args = task.ext.args ?: ''
     """
     RNAcofold < ${rnacofold_fasta} \\
+        --jobs=${task.cpus} \\
         --output-format="D" \\
         > ${rnacofold_fasta.baseName}.csv
 
@@ -35,6 +36,7 @@ process VIENNARNA_RNACOFOLD {
     def args = task.ext.args ?: ''
     """
     touch ${rnacofold_fasta.baseName}.csv
+    touch ${rnacofold_fasta.baseName}.ps
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
