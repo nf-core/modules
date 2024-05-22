@@ -25,6 +25,7 @@ process MERYL_HISTOGRAM {
     meryl histogram \\
         k=$kvalue \\
         threads=$task.cpus \\
+        memory=${task.memory.toGiga()} \\
         $args \\
         $meryl_db > ${prefix}.hist
 
