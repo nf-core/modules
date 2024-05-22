@@ -22,7 +22,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rnafold_txt,process.out.versions).match() }
+                { assert snapshot(process.out.rnafold_txt, process.out.versions).match() }
             )
         }
     }
