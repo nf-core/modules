@@ -31,7 +31,7 @@ process SAGEPROTEOMICS_SAGE {
 
     """
     export RAYON_NUM_THREADS=$task.cpus
-    
+
     sage $base_config \\
     --disable-telemetry-i-dont-want-to-improve-sage \\
     --fasta $fasta_proteome \\
