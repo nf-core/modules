@@ -13,7 +13,7 @@ nextflow_process {
 
     setup {
         run("MERYL_COUNT") {
-            script "../../meryl/count"
+            script "../../../meryl/count"
             process {
                 """
                 input[0] = [
@@ -29,7 +29,7 @@ nextflow_process {
         }
 
         run("MERYL_UNIONSUM") {
-            script "../../meryl/unionsum"
+            script "../../../meryl/unionsum"
             process {
                 """
                 input[0] = MERYL_COUNT.out.meryl_db
