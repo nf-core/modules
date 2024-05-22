@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "sageproteomics_sage"
+## TODO nf-core: Add a description of the module and list keywords
+description: sage is a search software for proteomics data
+keywords:
+  - proteomics
+  - sage
+  - test
+  - test2
+tools:
+  - "sageproteomics":
+      description: "Proteomics searching so fast it feels like magic."
+      homepage: "https://lazear.github.io/sage/"
+      documentation: "https://lazear.github.io/sage/"
+      tool_dev_url: "https://github.com/lazear/sage"
+      doi: "10.1021/acs.jproteome.3c00486"
+      licence: ["MIT"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1']`
+  - mzML:
+      type: file
+      description: mzML open source mass spectrometry raw data format
+      pattern: "*.{mzML}"
+  - fasta:
+      type: file
+      description: proteome database in fasta format
+      pattern: "*.{fasta, fasta.gz}"
+  - config_json:
+      type: file
+      description: sage configuration json
+      pattern: "*.{json}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1']`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - results_tsv:
+      type: file
+      description: tsv output results
+      pattern: "results.sage.tsv"
+  - results_json:
+      type: file
+      description: json output results
+      pattern: "results.json"
+  - results_pin:
+      type: file
+      description: pin format output results
+      pattern: "results.sage.pin"
+  - tmt:
+      type: file
+      description: tandem mass tag quantification
+      pattern: "tmt.tsv"
+  - lfq:
+      type: file
+      description: label free quantification
+      pattern: "lfq.tsv"
+
+authors:
+  - "@nf-core-bot"
+maintainers:
+  - "@nf-core-bot"
