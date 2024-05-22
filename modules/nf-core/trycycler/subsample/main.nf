@@ -66,7 +66,7 @@ process TRYCYCLER_SUBSAMPLE {
 
     for n in \$(seq -f "%02g" 1 $count); do
         mkdir -p ${prefix}
-        touch ${prefix}/sample_${n}.fastq.gz
+        echo "" | gzip > ${prefix}/sample_${n}.fastq.gz
     done
 
     cat <<-END_VERSIONS > versions.yml
