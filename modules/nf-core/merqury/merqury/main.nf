@@ -1,4 +1,4 @@
-process MERQURY {
+process MERQURY_MERQURY {
     tag "$meta.id"
     label 'process_low'
 
