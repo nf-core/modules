@@ -11,9 +11,9 @@ process VIENNARNA_RNACOFOLD {
     tuple val(meta), path(rnacofold_fasta)
 
     output:
-    tuple val(meta), path("*.csv")          , emit: rnacofold_csv
-    tuple val(meta), path("*.ps")           , emit: rnacofold_ps
-    path "versions.yml"   , emit: versions
+    tuple val(meta), path("*.csv")  , emit: rnacofold_csv
+    tuple val(meta), path("*.ps")   , emit: rnacofold_ps
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

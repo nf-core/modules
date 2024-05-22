@@ -33,6 +33,11 @@ tools:
       licence: ["custom"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - rnacofold_fasta:
       type: file
       description: |
@@ -43,6 +48,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - rnacofold_csv:
       type: file
       description: The CSV Output of RNAcofold that has the predicted structure and energies
