@@ -126,8 +126,8 @@ jobs:
       - name: Separate modules and subworkflows
         id: outputs
         run: |
-          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; "")) | map(gsub("modules/neuroimaging/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; "")) | map(gsub("modules/neuroimaging/"; ""))') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
@@ -643,6 +643,10 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
+          - profile: conda
+            path: modules/neuroimaging
+          - profile: singularity
+            path: modules/neuroimaging
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
