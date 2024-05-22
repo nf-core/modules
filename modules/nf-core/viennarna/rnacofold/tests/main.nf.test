@@ -14,7 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'delete_me/viennarna/rnacofold/test.fa', checkIfExists: true)
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/viennarna/rnacofold/test.fa', checkIfExists: true)
+                ]
                 """
             }
         }
