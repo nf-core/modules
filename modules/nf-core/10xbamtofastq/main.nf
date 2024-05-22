@@ -1,4 +1,4 @@
-process 10XBAMTOFASTQ {
+process BAMTOFASTQ10X {
     tag "$meta.id"
     label 'process_low'
 
@@ -12,7 +12,7 @@ process 10XBAMTOFASTQ {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,17 +20,11 @@ process 10XBAMTOFASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def test = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
-    if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
-    m = args =~ /-format ([a-z]+)/
-    ext = m[0][1]
-
     """
-
     bamtofastq \\
         $args \\
-        $bam
-        $path
+        $bam \\
+        $prefix 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,7 +35,6 @@ process 10XBAMTOFASTQ {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.bam
 
@@ -49,10 +42,5 @@ process 10XBAMTOFASTQ {
     "${task.process}":
         10xbamtofastq: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
     END_VERSIONS
-
     """
 }
-
-
-
-
