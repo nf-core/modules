@@ -21,11 +21,11 @@ process RTN_TNI {
     tuple val(meta), path(expression_matrix)
 
     output:
-    path "tni.rds"                     , emit: tni
-    path "tni_permutated.rds"          , emit: tni_perm
-    path "tni_bootstrapped.rds"        , emit: tni_bootstrap
-    path "tni_filtered.rds"            , emit: tni_filtered
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("tni.rds")               , emit: tni
+    tuple val(meta), path("tni_permutated.rds")    , emit: tni_perm
+    tuple val(meta), path("tni_bootstrapped.rds")  , emit: tni_bootstrap
+    tuple val(meta), path("tni_filtered.rds")      , emit: tni_filtered
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

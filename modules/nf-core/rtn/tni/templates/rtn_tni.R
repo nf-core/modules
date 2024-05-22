@@ -43,7 +43,6 @@ library("RTN")
 library("snow")
 # Load data
 data(tfsData)
-data(tniData)
 
 # Preprocess
 # Input 1: 'expData', a named gene expression matrix (genes on rows, samples on cols);
@@ -52,27 +51,18 @@ data(tniData)
 # Input 4: 'colAnnotation', an optional data frame with sample annotation
 tfs <- tfsData\$Lambert2018\$SYMBOL
 
-# exp_data <- read.csv(input_expr_matrix,
-#                      sep='\t')
-exp_data <- tniData
-rownames(exp_data) <- exp_data\$Geneid
-#rowAnnotation <- exp_data[,1:2]
-rowAnnotation <- tniData\$rowAnnotation
-colnames(rowAnnotation) <- c('PROBEID', 'SYMBOL')
-rowAnnotation\$SYMBOL <- toupper(rowAnnotation\$SYMBOL)
-#exp_data[,1:2] <- NULL
+exp_data <- read.csv(input_expr_matrix,
+                     sep='\t')
+rownames(exp_data) <- exp_data[,1]
 
 # Regulatory Transcriptional Network Inference
-#rtni <- tni.constructor(expData = as.matrix(exp_data),
-tfs <- c("FOXM1","E2F2","E2F3","RUNX2","PTTG1")
-rtni <- tni.constructor(expData = exp_data\$expData,
-                        regulatoryElements = tfs,
-                        rowAnnotation = rowAnnotation)
+tfs <- c("S01","S02")
+rtni <- tni.constructor(expData = as.matrix(exp_data[, -1]),
+                        regulatoryElements = tfs)
 
-#options(cluster=snow::makeCluster(spec=threads, "SOCK"))
+options(cluster=snow::makeCluster(spec=threads, "SOCK"))
 
 # Please set nPermutations >= 1000
-set.seed(123)
 rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff = 1e-4)
 
 # Unstable interactions are subsequently removed by bootstrap analysis using the
@@ -80,16 +70,16 @@ rtni_permutation <- tni.permutation(rtni, nPermutations = n_perm, pValueCutoff =
 # here as refnet (reference network).
 rtni_bootstrapped <- tni.bootstrap(rtni_permutation)
 
-#stopCluster(getOption("cluster"))
+stopCluster(getOption("cluster"))
 
 # remove the weakest interaction in any triplet formed by two TFs and a common
 # target gene, preserving the dominant TF-target pair (ARACNe)
 rtni_filtered <- tni.dpi.filter(rtni_bootstrapped)
 
 saveRDS(rtni, file = "tni.rds")
-saveRDS(rtni_filtered, file = "tni_filtered.rds")
 saveRDS(rtni_permutation, file = "tni_permutated.rds")
 saveRDS(rtni_bootstrapped, file = "tni_bootstrapped.rds")
+saveRDS(rtni_filtered, file = "tni_filtered.rds")
 
 # Plot
 #pdf(paste0(output_prefix, "_RTN.pdf"))

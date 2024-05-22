@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                   [id:'test'],
-                  file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'generic/tsv/expression.tsv', checkIfExists: true)
                 ]
                 """
             }
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                   [id:'test'],
-                   file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'generic/tsv/expression.tsv', checkIfExists: true)
                 ]
                 """
             }
