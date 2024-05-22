@@ -38,9 +38,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bai).match("single-end-bai") },
-                { assert snapshot(process.out.versions).match("single-end-versions") },
-                { assert file(process.out.bam[0][1]).name == "test.bam" }
+                { assert file(process.out.bam[0][1]).name == "test.bam" },
+                { assert file(process.out.bai[0][1]).name == "test.bam.bai" },
+                { assert snapshot(process.out.versions).match("single-end-versions") }
           )
         }
     }
@@ -63,9 +63,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bai).match("paired-end-bai") },
-                { assert snapshot(process.out.versions).match("paired-end-versions") },
-                { assert file(process.out.bam[0][1]).name == "test.bam" }
+                { assert file(process.out.bam[0][1]).name == "test.bam" },
+                { assert file(process.out.bai[0][1]).name == "test.bam.bai" },
+                { assert snapshot(process.out.versions).match("paired-end-versions") }
           )
         }
     }
