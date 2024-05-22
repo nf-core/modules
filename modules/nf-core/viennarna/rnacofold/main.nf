@@ -8,11 +8,11 @@ process VIENNARNA_RNACOFOLD {
         'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
-    path rnacofold_fasta
+    tuple val(meta), path(rnacofold_fasta)
 
     output:
-    path "*.csv"          , emit: rnacofold_csv
-    path "*.ps"           , emit: rnacofold_ps
+    tuple val(meta), path("*.csv")          , emit: rnacofold_csv
+    tuple val(meta), path("*.ps")           , emit: rnacofold_ps
     path "versions.yml"   , emit: versions
 
     when:
