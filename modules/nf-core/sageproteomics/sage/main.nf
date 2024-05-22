@@ -50,6 +50,7 @@ process SAGEPROTEOMICS_SAGE {
     """
     touch results.json
     touch results.sage.tsv
+    touch results.sage.pin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

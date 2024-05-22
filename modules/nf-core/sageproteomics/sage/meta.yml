@@ -6,8 +6,7 @@ description: sage is a search software for proteomics data
 keywords:
   - proteomics
   - sage
-  - test
-  - test2
+  - mass spectrometry
 tools:
   - "sageproteomics":
       description: "Proteomics searching so fast it feels like magic."
@@ -24,15 +23,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1']`
-  - mzML:
+  - "*.mzML":
       type: file
       description: mzML open source mass spectrometry raw data format
-      pattern: "*.{mzML}"
-  - fasta:
+      pattern: "*.{mzML, mzML.gz}"
+  - fasta_proteome:
       type: file
       description: proteome database in fasta format
       pattern: "*.{fasta, fasta.gz}"
-  - config_json:
+  - base_config:
       type: file
       description: sage configuration json
       pattern: "*.{json}"
@@ -59,11 +58,11 @@ output:
       type: file
       description: pin format output results
       pattern: "results.sage.pin"
-  - tmt:
+  - tmt_tsv:
       type: file
       description: tandem mass tag quantification
       pattern: "tmt.tsv"
-  - lfq:
+  - lfq_tsv:
       type: file
       description: label free quantification
       pattern: "lfq.tsv"
