@@ -18,7 +18,7 @@ process VIENNARNA_RNALFOLD {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''`
+    def args = task.ext.args ?: ''
     """
     RNALfold \\
         ${args} \\
