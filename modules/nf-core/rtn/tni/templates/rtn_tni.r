@@ -43,12 +43,12 @@ message("Nb permutations          : ", n_perm)
 message("Nb threads               : ", threads)
 message("Output basename          : ", output_prefix)
 if ('tfs' %in% names(args_opt)) {
-  message("TFs                      : ", args_opt[['tfs']])
-  tfs <- strsplit(args_opt[['tfs']], ',')
+    message("TFs                      : ", args_opt[['tfs']])
+    tfs <- strsplit(args_opt[['tfs']], ',')
 } else {
-  # Load data
-  data(tfsData)
-  tfs <- tfsData\$Lambert2018\$SYMBOL
+    # Load data
+    data(tfsData)
+    tfs <- tfsData\$Lambert2018\$SYMBOL
 }
 sink(NULL, type="message") # close the sink
 
