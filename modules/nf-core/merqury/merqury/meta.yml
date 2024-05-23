@@ -1,4 +1,4 @@
-name: "merqury"
+name: "merqury_merqury"
 description: k-mer based assembly evaluation.
 keywords:
   - "k-mer"
@@ -9,7 +9,7 @@ tools:
       description: "Evaluate genome assemblies with k-mers and more."
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
-      licence: "['PUBLIC DOMAIN']"
+      licence: ["PUBLIC DOMAIN"]
 input:
   - meta:
       type: map
@@ -92,7 +92,12 @@ output:
       type: file
       description: "Ploidy estimate from read k-mer database"
       pattern: "*.hist.ploidy"
+  - hapmers_blob_png:
+      type: file
+      description: "Hap-mer blob plot"
+      pattern: "*.hapmers.blob.png"
 authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+  - "@gallvp"
