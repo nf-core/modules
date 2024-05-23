@@ -1,0 +1,26 @@
+{
+    "database": {
+        "bucket_size": 16384,
+        "fragment_min_mz": 150.0,
+        "fragment_max_mz": 1500.0,
+        "peptide_max_mass": 5000.0,
+        "enzyme": {
+            "missed_cleavages": 1
+        },
+        "static_mods": {
+            "C": 57.0216
+        },
+        "decoy_prefix": "rev_"
+    },
+    "deisotope": true,
+    "chimera": false,
+    "max_fragment_charge": 1,
+    "report_psms": 1,
+    "precursor_tol": {
+        "ppm": [-50, 50]
+    },
+    "fragment_tol": {
+        "ppm": [-10, 10]
+    },
+    "isotope_errors": [-1, 3]
+}

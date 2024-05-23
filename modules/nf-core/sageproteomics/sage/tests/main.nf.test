@@ -17,8 +17,14 @@ nextflow_process {
                     [ id:'test'], // meta map
                     file(params.test_data['proteomics']['msspectra']['profile_spectra'], checkIfExists: true)
 	        ])
-		input[1] = file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
-		input[2] = file('https://raw.githubusercontent.com/lazear/sage/master/tests/config-cli.json')
+		input[1] = Channel.of([
+		    [id:'test'], // meta2 map
+		    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+	        ])
+		input[2] = Channel.of([
+		    [id:'test'], // meta3 map
+		    file('${moduleTestDir}/config-cli.json', checkIfExists: true)
+	        ])
                 """
             }
         }
@@ -36,13 +42,18 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-                		input[0] = Channel.of([
+		input[0] = Channel.of([
                     [ id:'test'], // meta map
                     file(params.test_data['proteomics']['msspectra']['profile_spectra'], checkIfExists: true)
 	        ])
-		input[1] = file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
-		input[2] = file('https://raw.githubusercontent.com/lazear/sage/master/tests/config-cli.json')
+		input[1] = Channel.of([
+		    [id:'test'], // meta2 map
+		    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+	        ])
+		input[2] = Channel.of([
+		    [id:'test'], // meta3 map
+		    file('${moduleTestDir}/config-cli.json', checkIfExists: true)
+	        ])
                 """
             }
         }

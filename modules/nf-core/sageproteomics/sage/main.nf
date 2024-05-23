@@ -8,9 +8,9 @@ process SAGEPROTEOMICS_SAGE {
         'biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
 
     input:
-    tuple val(meta), path("*.mzML")
-    path(fasta_proteome)
-    path(base_config)
+    tuple val(meta),  path("*.mzML")
+    tuple val(meta2), path(fasta_proteome)
+    tuple val(meta3), path(base_config)
 
     output:
     tuple val(meta), path("results.sage.tsv"),        emit: results_tsv
