@@ -19,6 +19,10 @@ parse_args <- function(x){
     parsed_args[! is.na(parsed_args)]
 }
 
+# Load
+library("RTN")
+library("snow")
+
 ################################################
 ################################################
 ## Pull in module inputs                      ##
@@ -38,28 +42,34 @@ message("Expression matrix file   : ", input_expr_matrix)
 message("Nb permutations          : ", n_perm)
 message("Nb threads               : ", threads)
 message("Output basename          : ", output_prefix)
+if ('tfs' %in% names(args_opt)) {
+  message("TFs                      : ", args_opt[['tfs']])
+  tfs <- strsplit(args_opt[['tfs']], ',')
+} else {
+  # Load data
+  data(tfsData)
+  tfs <- tfsData\$Lambert2018\$SYMBOL
+}
 sink(NULL, type="message") # close the sink
-
-# Load / install packages
-library("RTN")
-library("snow")
-# Load data
-data(tfsData)
 
 # Preprocess
 # Input 1: 'expData', a named gene expression matrix (genes on rows, samples on cols);
 # Input 2: 'regulatoryElements', a vector listing genes regarded as TFs
 # Input 3: 'rowAnnotation', an optional data frame with gene annotation
 # Input 4: 'colAnnotation', an optional data frame with sample annotation
-tfs <- tfsData\$Lambert2018\$SYMBOL
 
 exp_data <- read.csv(input_expr_matrix, sep='\t')
 rownames(exp_data) <- exp_data[,1]
+rowAnnotation <- exp_data[,1:2]
+colnames(rowAnnotation) <- c('PROBEID', 'SYMBOL')
+rowAnnotation\$SYMBOL <- toupper(rowAnnotation\$SYMBOL)
+exp_data[,1:2] <- NULL
 
 # Regulatory Transcriptional Network Inference
 tfs <- c('ENSG00000125798', 'ENSG00000125816')
-rtni <- tni.constructor(expData = as.matrix(exp_data[, -c(1:2)]),
-                        regulatoryElements = tfs)
+rtni <- tni.constructor(expData = as.matrix(exp_data),
+                        regulatoryElements = tfs,
+                        rowAnnotation = rowAnnotation)
 
 options(cluster=snow::makeCluster(spec=threads, "SOCK"))
 
