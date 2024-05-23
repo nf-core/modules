@@ -4,8 +4,8 @@ process IQTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iqtree:2.3.3--h21ec9f0_0' :
-        'biocontainers/iqtree:2.3.3--h21ec9f0_0' }"
+        'https://depot.galaxyproject.org/singularity/iqtree:2.3.4--h21ec9f0_0' :
+        'biocontainers/iqtree:2.3.4--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(alignment)
@@ -62,7 +62,7 @@ process IQTREE {
     def partitions_proportional_arg = partitions_proportional ? "-spp $partitions_proportional" : ''
     def partitions_unlinked_arg     = partitions_unlinked     ? "-sp $partitions_unlinked"      : ''
     def guide_tree_arg              = guide_tree              ? "-ft $guide_tree"               : ''
-    def sitefreq_in_arg             = sitefreq_in             ? "-fs $sitefreq_in"                 : ''
+    def sitefreq_in_arg             = sitefreq_in             ? "-fs $sitefreq_in"              : ''
     def constraint_tree_arg         = constraint_tree         ? "-g $constraint_tree"           : ''
     def trees_z_arg                 = trees_z                 ? "-z $trees_z"                   : ''
     def suptree_arg                 = suptree                 ? "-sup $suptree"                 : ''
