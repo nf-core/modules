@@ -29,17 +29,17 @@ process GMMDEMUX {
     script:
     //since this tool has many optional inputs that can be passed in, we need to check if they are null or not
     // in order to produce or not certain reports or outputs
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args           = task.ext.args ?: ''
+    def prefix         = task.ext.prefix ?: "${meta.id}"
     def simplified_rep = simplified_report ? "--simplified $simplified_report" : ""
-    def examine = examine ? "--examine $examine" : ""
-    def extract = extract ? "--extract $extract" : ""
-    def skip = skip ? "--skip $skip" : ""
-    def type = csv ? "-c" : ""
-    def ambigous = examine ? "--ambigous $ambigous " : ""
-    def VERSION = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    def examine        = examine ? "--examine $examine" : ""
+    def extract        = extract ? "--extract $extract" : ""
+    def skip           = skip ? "--skip $skip" : ""
+    def type           = csv ? "-c" : ""
+    def ambigous       = examine ? "--ambigous $ambigous " : ""
+    def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    GMM-demux $type hto_files $hto_names $simplified_rep $examine $ambigous $extract $skip $args
+    GMM-demux $type hto_files $hto_names $args $simplified_rep $examine $ambigous $extract $skip 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         GMM-Demux: $VERSION
@@ -47,8 +47,8 @@ process GMMDEMUX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.2.2.3'
     """
     mkdir test

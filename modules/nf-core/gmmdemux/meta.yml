@@ -51,6 +51,10 @@ input:
       type: string
       description: |
         Names of the sample barcoding tag(s) to extract, separated by ','. Joint tags are linked with '+'.
+  - examine:
+      type: file
+      description: |
+        Provide the cell list. Requires a file argument. Only executes if num_cells is set
   - ambigous:
       type: integer
       description: |
