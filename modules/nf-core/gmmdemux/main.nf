@@ -45,7 +45,7 @@ process GMMDEMUX {
     def ambigous = examine ? "--ambigous $ambigous " : ""
     def VERSION = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    GMM-demux $type hto_files $hto_names $output_path $full_rep $n_cells $simplified_rep $examine $ambigous $extract $skip $args 
+    GMM-demux $type hto_files $hto_names $output_path $full_rep $n_cells $simplified_rep $examine $ambigous $extract $skip $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         GMM-Demux: $VERSION
