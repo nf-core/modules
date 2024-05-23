@@ -57,8 +57,8 @@ exp_data <- read.csv(input_expr_matrix, sep='\t')
 rownames(exp_data) <- exp_data[,1]
 
 # Regulatory Transcriptional Network Inference
-tfs <- c("S01","S02")
-rtni <- tni.constructor(expData = as.matrix(exp_data[, -1]),
+tfs <- c('ENSG00000125798', 'ENSG00000125816')
+rtni <- tni.constructor(expData = as.matrix(exp_data[, -c(1:2)]),
                         regulatoryElements = tfs)
 
 options(cluster=snow::makeCluster(spec=threads, "SOCK"))
