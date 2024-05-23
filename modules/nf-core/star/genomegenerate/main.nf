@@ -4,8 +4,8 @@ process STAR_GENOMEGENERATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/htslib_star:e87a1576b6984a28' :
-        'community.wave.seqera.io/library/htslib_star:5019722cfb571970' }"
+        'https://depot.galaxyproject.org/singularity/star:2.7.11b--h43eeafb_0' :
+        'biocontainers/star:2.7.11b--h43eeafb_0' }"
 
     input:
     tuple val(meta) , path(fasta)
