@@ -2,13 +2,12 @@
 
 # Written by Lorena Pantano with subsequent reworking by Jonathan Manning. Released under the MIT license.
 
-import logging
-import argparse
 import glob
+import logging
 import os
 import platform
 import re
-from collections import Counter, defaultdict, OrderedDict
+from collections import Counter, OrderedDict
 from collections.abc import Set
 from typing import Dict
 
@@ -16,6 +15,7 @@ from typing import Dict
 logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
@@ -36,6 +36,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
             yaml_str += f"{spaces}{key}: {value}\\n"
     return yaml_str
 
+
 def read_top_transcripts(quant_dir: str, file_pattern: str) -> Set[str]:
     """
     Read the top 100 transcripts from the quantification file.
@@ -50,9 +51,13 @@ def read_top_transcripts(quant_dir: str, file_pattern: str) -> Set[str]:
     try:
         # Find the quantification file within the directory
         quant_file_path = glob.glob(os.path.join(quant_dir, "*", file_pattern))[0]
-        with open(quant_file_path, "r") as file_handle:
+        with open(quant_file_path) as file_handle:
             # Read the file and extract the top 100 transcripts
-            return {line.split()[0] for i, line in enumerate(file_handle) if i > 0 and i <= 100}
+            return {
+                line.split()[0]
+                for i, line in enumerate(file_handle)
+                if i > 0 and i <= 100
+            }
     except IndexError:
         # Log an error and raise a FileNotFoundError if the quant file does not exist
         logger.error("No quantification files found.")
@@ -81,7 +86,9 @@ def discover_transcript_attribute(gtf_file: str, transcripts: Set[str]) -> str:
             attributes_str = cols[8]
             attributes = dict(re.findall(r'(\\S+) "(.*?)(?<!\\\\)";', attributes_str))
 
-            votes.update(key for key, value in attributes.items() if value in transcripts)
+            votes.update(
+                key for key, value in attributes.items() if value in transcripts
+            )
 
     if not votes:
         # Error out if no matching attribute is found
@@ -123,7 +130,12 @@ def parse_attributes(attributes_text: str) -> Dict[str, str]:
 
 
 def map_transcripts_to_gene(
-    quant_type: str, gtf_file: str, quant_dir: str, gene_id: str, extra_id_field: str, output_file: str
+    quant_type: str,
+    gtf_file: str,
+    quant_dir: str,
+    gene_id: str,
+    extra_id_field: str,
+    output_file: str,
 ) -> bool:
     """
     Map transcripts to gene names and write the output to a file.
@@ -140,7 +152,9 @@ def map_transcripts_to_gene(
     bool: True if the operation was successful, False otherwise.
     """
     # Read the top transcripts based on quantification type
-    transcripts = read_top_transcripts(quant_dir, "quant.sf" if quant_type == "salmon" else "abundance.tsv")
+    transcripts = read_top_transcripts(
+        quant_dir, "quant.sf" if quant_type == "salmon" else "abundance.tsv"
+    )
     # Discover the attribute that corresponds to transcripts in the GTF
     transcript_attribute = discover_transcript_attribute(gtf_file, transcripts)
 
@@ -156,13 +170,18 @@ def map_transcripts_to_gene(
             attr_dict = parse_attributes(cols[8])
             if gene_id in attr_dict and transcript_attribute in attr_dict:
                 # Create a unique identifier for the transcript-gene combination
-                transcript_gene_pair = (attr_dict[transcript_attribute], attr_dict[gene_id])
+                transcript_gene_pair = (
+                    attr_dict[transcript_attribute],
+                    attr_dict[gene_id],
+                )
 
                 # Check if the combination has already been seen
                 if transcript_gene_pair not in seen:
                     # If it's a new combination, write it to the output and add to the seen set
                     extra_id = attr_dict.get(extra_id_field, attr_dict[gene_id])
-                    output_handle.write(f"{attr_dict[transcript_attribute]}\\t{attr_dict[gene_id]}\\t{extra_id}\\n")
+                    output_handle.write(
+                        f"{attr_dict[transcript_attribute]}\\t{attr_dict[gene_id]}\\t{extra_id}\\n"
+                    )
                     seen.add(transcript_gene_pair)
 
     return True
@@ -170,14 +189,16 @@ def map_transcripts_to_gene(
 
 # Main function to parse arguments and call the mapping function
 if __name__ == "__main__":
-    if '${task.ext.prefix}' != "null":
+    if "${task.ext.prefix}" != "null":
         prefix = "${task.ext.prefix}."
-    elif '$meta.id' != "null":
-        prefix = '${meta.id}.'
+    elif "$meta.id" != "null":
+        prefix = "${meta.id}."
     else:
-        prefix = ''
+        prefix = ""
 
-    if not map_transcripts_to_gene('$quant_type', '$gtf', 'quants', '$id', '$extra', f"{prefix}tx2gene.tsv"):
+    if not map_transcripts_to_gene(
+        "$quant_type", "$gtf", "quants", "$id", "$extra", f"{prefix}tx2gene.tsv"
+    ):
         logger.error("Failed to map transcripts to genes.")
 
     # Write the versions

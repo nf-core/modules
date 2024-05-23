@@ -4,11 +4,12 @@ Automatically rename staged files for input into cellranger count.
 
 Copyright (c) Gregor Sturm 2023 - MIT License
 """
-from subprocess import run
-from pathlib import Path
-from textwrap import dedent
-import shlex
+
 import re
+import shlex
+from pathlib import Path
+from subprocess import run
+from textwrap import dedent
 
 
 def chunk_iter(seq, size):
@@ -34,11 +35,11 @@ fastq_all.mkdir(exist_ok=True)
 # Match R1 in the filename, but only if it is followed by a non-digit or non-character
 # match "file_R1.fastq.gz", "file.R1_000.fastq.gz", etc. but
 # do not match "SRR12345", "file_INFIXR12", etc
-filename_pattern =  r'([^a-zA-Z0-9])R1([^a-zA-Z0-9])'
+filename_pattern = r"([^a-zA-Z0-9])R1([^a-zA-Z0-9])"
 
 for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
     # double escapes are required because nextflow processes this python 'template'
-    if re.sub(filename_pattern, r'\\1R2\\2', r1.name) != r2.name:
+    if re.sub(filename_pattern, r"\\1R2\\2", r1.name) != r2.name:
         raise AssertionError(
             dedent(
                 f"""\
@@ -58,13 +59,19 @@ for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
 run(
     # fmt: off
     [
-        "cellranger", "count",
-        "--id", "${prefix}",
-        "--fastqs", str(fastq_all),
-        "--transcriptome", "${reference.name}",
-        "--localcores", "${task.cpus}",
-        "--localmem", "${task.memory.toGiga()}",
-        *shlex.split("""${args}""")
+        "cellranger",
+        "count",
+        "--id",
+        "${prefix}",
+        "--fastqs",
+        str(fastq_all),
+        "--transcriptome",
+        "${reference.name}",
+        "--localcores",
+        "${task.cpus}",
+        "--localmem",
+        "${task.memory.toGiga()}",
+        *shlex.split("""${args}"""),
     ],
     # fmt: on
     check=True,

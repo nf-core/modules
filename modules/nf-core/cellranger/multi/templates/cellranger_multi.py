@@ -5,11 +5,11 @@ Automatically rename staged files for input into cellranger multi and run it.
 Copyright (c) Felipe Almeida 2024 - MIT License
 """
 
-from subprocess import run
-from pathlib import Path
-from textwrap import dedent
-import shlex
 import re
+import shlex
+from pathlib import Path
+from subprocess import run
+from textwrap import dedent
 
 
 def chunk_iter(seq, size):
@@ -36,7 +36,9 @@ for modality in ["gex", "vdj", "ab", "beam", "cmo", "cirspr"]:
     #   - ...
     # Since we require fastq files in the input channel to be ordered such that a R1/R2 pair
     # of files follows each other, ordering will get us a sequence of [R1, R2, R1, R2, ...]
-    fastqs = sorted(p for p in Path(".").glob(f"fastqs/{modality}/*/*") if p.name != EMPTY_FILE)
+    fastqs = sorted(
+        p for p in Path(".").glob(f"fastqs/{modality}/*/*") if p.name != EMPTY_FILE
+    )
     assert len(fastqs) % 2 == 0
 
     # target directory in which the renamed fastqs will be placed
@@ -46,7 +48,9 @@ for modality in ["gex", "vdj", "ab", "beam", "cmo", "cirspr"]:
     for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
         # will we rename the files or just move it with the same name to
         # the 'fastq_all' directory which is where files are expected?
-        if "${skip_renaming}" == "true":  # nf variables are true/false, which are different from Python
+        if (
+            "${skip_renaming}" == "true"
+        ):  # nf variables are true/false, which are different from Python
             resolved_name_r1 = r1.name
             resolved_name_r2 = r2.name
 
@@ -140,20 +144,24 @@ fastq_id,fastqs,lanes,feature_types
 # check the extra data that is included
 #
 if len("${include_cmo}") > 0:
-    with open("${cmo_csv_text}", "r") as input_conf:
+    with open("${cmo_csv_text}") as input_conf:
         config_txt = config_txt + "\\n${include_cmo}\\n" + input_conf.read() + "\\n"
 
 if len("${include_beam}") > 0:
-    with open("${beam_csv_text}", "r") as input_conf, open("${beam_antigen_csv}", "r") as input_csv:
+    with open("${beam_csv_text}") as input_conf, open(
+        "${beam_antigen_csv}"
+    ) as input_csv:
         config_txt = config_txt + "\\n${include_beam}\\n" + input_conf.read() + "\\n"
         config_txt = config_txt + "[feature]\\n" + input_csv.read() + "\\n"
 
 if len("${include_frna}") > 0:
-    with open("${frna_csv_text}", "r") as input_conf:
+    with open("${frna_csv_text}") as input_conf:
         config_txt = config_txt + "\\n${include_frna}\\n" + input_conf.read() + "\\n"
 
 # Remove blank lines from config text
-config_txt = "\\n".join([line for line in config_txt.split("\\n") if line.strip() != ""])
+config_txt = "\\n".join(
+    [line for line in config_txt.split("\\n") if line.strip() != ""]
+)
 
 # Save config file
 with open("${config}", "w") as file:
