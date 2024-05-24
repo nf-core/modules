@@ -9,6 +9,7 @@ process INTERPROSCAN {
 
     input:
     tuple val(meta), path(fasta)
+    path(interproscan_database, stageAs: data)
     val(out_ext)
 
     output:
@@ -27,8 +28,8 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
 
-    def appl = "-appl TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
-    if ( args.contains("-appl") ) {
+    def appl = "--applications TIGRFAM,FunFam,SFLD,PANTHER,Gene3D,Hamap,ProSiteProfiles,Coils,SMART,CDD,PRINTS,PIRSR,ProSitePatterns,AntiFam,Pfam,MobiDBLite"
+    if ( args.contains("-appl") || args.contains("--applications") ) {
         appl = ""
     }
     switch ( out_ext ) {
@@ -41,21 +42,20 @@ process INTERPROSCAN {
             log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
             break
     }
-
-    //  -dp (disable precalculation) is on so no online dependency
+    // --disable-precalc (disable precalculation) is on so no online dependency
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     interproscan.sh \\
-        -cpu ${task.cpus} \\
-        -i ${fasta_name} \\
-        -f ${out_ext} \\
-        -dp \\
+        --cpu ${task.cpus} \\
+        --input ${fasta_name} \\
+        --formats ${out_ext} \\
+        --disable-precalc \\
         ${appl} \\
         ${args} \\
-        -o ${prefix}.${out_ext}
+        --outfile ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
