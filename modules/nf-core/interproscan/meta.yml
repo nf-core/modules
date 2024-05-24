@@ -22,12 +22,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: Input fasta file containing the amino acid query sequences
+      description: Input fasta file containing the amino acid or dna query sequences
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - out_ext:
-      type: string
-      description: Specify the type of output file to be generated
-      pattern: "tsv|xml|gff3|json"
+  - interproscan_database:
+      type: directory
+      description: Path to the interproscan database (untarred http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
 output:
   - tsv:
       type: file
