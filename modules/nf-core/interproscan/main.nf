@@ -47,30 +47,18 @@ process INTERPROSCAN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
+        interproscan: \$( interproscan.sh --version | sed '1!d ; s/.*version //' )
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    switch ( out_ext ) {
-        case "tsv": break
-        case "xml": break
-        case "gff3": break
-        case "json": break
-        default:
-            out_ext = 'tsv';
-            log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
-            break
-    }
-
     """
-    touch ${prefix}.${out_ext}
+    touch ${prefix}.{tsv,xml,json,gff3}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        interproscan: \$(echo \$(interproscan.sh --version 2>&1) | head -n 1 | sed 's/^.*InterProScan version//' | sed 's/\\s*InterProScan.*//')
+        interproscan: \$( interproscan.sh --version | sed '1!d ; s/.*version //' )
     END_VERSIONS
     """
 }
