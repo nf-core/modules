@@ -8,20 +8,20 @@ process IQTREE {
         'biocontainers/iqtree:2.3.3--h21ec9f0_0' }"
 
     input:
-    tuple val(meta),   path(alignment)
-    tuple val(meta2),  path(tree)
-    tuple val(meta3),  path(tree_te)
-    tuple val(meta4),  path(lmclust)
-    tuple val(meta5),  path(mdef)
-    tuple val(meta6),  path(partitions_equal)
-    tuple val(meta7),  path(partitions_proportional)
-    tuple val(meta8),  path(partitions_unlinked)
-    tuple val(meta9),  path(guide_tree)
-    tuple val(meta10), path(sitefreq_in)
-    tuple val(meta11), path(constraint_tree)
-    tuple val(meta11), path(trees_z)
-    tuple val(meta12), path(suptree)
-    tuple val(meta13), path(trees_rf)
+    tuple val(meta), path(alignment)
+    tuple val(meta2), path(tree)
+    path(tree_te)
+    path(lmclust)
+    path(mdef)
+    path(partitions_equal)
+    path(partitions_proportional)
+    path(partitions_unlinked)
+    path(guide_tree)
+    path(sitefreq_in)
+    path(constraint_tree)
+    path(trees_z)
+    path(suptree)
+    path(trees_rf)
 
     output:
     tuple val(meta), path("*.treefile")      , emit: phylogeny     , optional: true
@@ -52,6 +52,7 @@ process IQTREE {
     task.ext.when == null || task.ext.when
 
     script:
+    def meta                        = meta                    ?: meta2
     def args                        = task.ext.args           ?: ''
     def alignment_arg               = alignment               ? "-s $alignment"                 : ''
     def tree_arg                    = tree                    ? "-t $tree"                      : ''

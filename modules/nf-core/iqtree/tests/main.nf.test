@@ -16,18 +16,18 @@ nextflow_process {
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
+                input[2]  = []
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
                 """
             }
         }
@@ -54,18 +54,18 @@ test("setoxin - treels") {
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
+                input[2]  = []
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
                 """
             }
         }
@@ -94,18 +94,18 @@ test("setoxin - treels") {
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
+                input[2]  = []
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
                 """
             }
         }
@@ -131,26 +131,24 @@ test("setoxin - treels") {
         when {
             process {
                 """
-                input[0]  = [ [ id: "test" ], [] ]
-                input[1]  = [ [ id: "test" ],
+                input[0]  = [ [], [] ]
+                input[1]  = [ [ id: "test2" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true) ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = Channel.of([ id: "test" ])
-                            .combine(Channel.of(
+                input[2]  = []
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = Channel.of(
                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
                                 .text)
                                 .collectFile(name: 'hydrogenase.newick')
-                                )
-                input[13] = [ [ id: "test" ] , [] ]
+                input[13] = []
                 """
             }
         }
@@ -176,19 +174,18 @@ test("setoxin - treels") {
                 input[0]  = [ [ id: "test" ] ,
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true) ]
                 input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)  ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
+                input[2]  = file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
                 """
             }
         }
@@ -224,18 +221,18 @@ test("setoxin - treels") {
                 """
                 input[0]  = [ [ id: "test" ] , [] ]
                 input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = [ [ id: "test" ] , [] ]
-                input[3]  = [ [ id: "test" ] , [] ]
-                input[4]  = [ [ id: "test" ] , [] ]
-                input[5]  = [ [ id: "test" ] , [] ]
-                input[6]  = [ [ id: "test" ] , [] ]
-                input[7]  = [ [ id: "test" ] , [] ]
-                input[8]  = [ [ id: "test" ] , [] ]
-                input[9]  = [ [ id: "test" ] , [] ]
-                input[10] = [ [ id: "test" ] , [] ]
-                input[11] = [ [ id: "test" ] , [] ]
-                input[12] = [ [ id: "test" ] , [] ]
-                input[13] = [ [ id: "test" ] , [] ]
+                input[2]  = []
+                input[3]  = []
+                input[4]  = []
+                input[5]  = []
+                input[6]  = []
+                input[7]  = []
+                input[8]  = []
+                input[9]  = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
                 """
             }
         }
