@@ -34,7 +34,7 @@ process INTERPROSCAN {
     sed -i "/^bin\.directory=/ s/.*/bin.directory=\$INTERPROSCAN_DIR\/bin/" interproscan.properties
     export INTERPROSCAN_CONF=interproscan.properties
 
-    if [ "${is_compressed}" == "true" ]; then
+    if ${is_compressed} ; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
