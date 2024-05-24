@@ -2,7 +2,7 @@ process XENIUMRANGER_RELABEL {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/khersameesh24/xeniumranger2.0"
+    container "nf-core/xeniumranger:2.0.0"
 
     input:
     path(xenium_bundle)
