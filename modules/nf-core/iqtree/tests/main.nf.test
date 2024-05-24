@@ -8,9 +8,45 @@ nextflow_process {
     tag "modules_nfcore"
     tag "iqtree"
 
-    test("setoxin - treels") {
+    test("setoxin - basic") {
 
-        config "./iqtree_basic.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
+                input[1]  = [ [ id: "test" ] , [] ]
+                input[2]  = [ [ id: "test" ] , [] ]
+                input[3]  = [ [ id: "test" ] , [] ]
+                input[4]  = [ [ id: "test" ] , [] ]
+                input[5]  = [ [ id: "test" ] , [] ]
+                input[6]  = [ [ id: "test" ] , [] ]
+                input[7]  = [ [ id: "test" ] , [] ]
+                input[8]  = [ [ id: "test" ] , [] ]
+                input[9]  = [ [ id: "test" ] , [] ]
+                input[10] = [ [ id: "test" ] , [] ]
+                input[11] = [ [ id: "test" ] , [] ]
+                input[12] = [ [ id: "test" ] , [] ]
+                input[13] = [ [ id: "test" ] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.phylogeny.get(0).get(1)).readLines().first().contains("1apf") },
+                { assert snapshot(  path(process.out.mldist.get(0).get(1)).readLines().first(),
+                                    path(process.out.report.get(0).get(1)).readLines().first(),
+                                    path(process.out.log.get(0).get(1)).readLines().first(),
+                                    process.out.versions ).match() }
+            )
+        }
+    }
+
+test("setoxin - treels") {
+
+        config "./iqtree_treels.config"
 
         when {
             process {

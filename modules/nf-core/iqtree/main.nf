@@ -8,20 +8,20 @@ process IQTREE {
         'biocontainers/iqtree:2.3.3--h21ec9f0_0' }"
 
     input:
-    tuple val(meta), path(alignment)
-    tuple val(meta), path(tree)
-    tuple val(meta), path(tree_te)
-    tuple val(meta), path(lmclust)
-    tuple val(meta), path(mdef)
-    tuple val(meta), path(partitions_equal)
-    tuple val(meta), path(partitions_proportional)
-    tuple val(meta), path(partitions_unlinked)
-    tuple val(meta), path(guide_tree)
-    tuple val(meta), path(sitefreq_in)
-    tuple val(meta), path(constraint_tree)
-    tuple val(meta), path(trees_z)
-    tuple val(meta), path(suptree)
-    tuple val(meta), path(trees_rf)
+    tuple val(meta),   path(alignment)
+    tuple val(meta2),  path(tree)
+    tuple val(meta3),  path(tree_te)
+    tuple val(meta4),  path(lmclust)
+    tuple val(meta5),  path(mdef)
+    tuple val(meta6),  path(partitions_equal)
+    tuple val(meta7),  path(partitions_proportional)
+    tuple val(meta8),  path(partitions_unlinked)
+    tuple val(meta9),  path(guide_tree)
+    tuple val(meta10), path(sitefreq_in)
+    tuple val(meta11), path(constraint_tree)
+    tuple val(meta11), path(trees_z)
+    tuple val(meta12), path(suptree)
+    tuple val(meta13), path(trees_rf)
 
     output:
     tuple val(meta), path("*.treefile")      , emit: phylogeny     , optional: true
