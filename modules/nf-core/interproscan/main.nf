@@ -27,12 +27,14 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
     """
-    # Find interproscan.properties to link data/ from work directory
-    INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
-    INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR" -name "interproscan.properties" )"
-    cp "\$INTERPROSCAN_PROPERTIES" .
-    sed -i "/^bin\.directory=/ s/.*/bin.directory=\$INTERPROSCAN_DIR\/bin/" interproscan.properties
-    export INTERPROSCAN_CONF=interproscan.properties
+    if [ -d 'data' ]; then
+        # Find interproscan.properties to link data/ from work directory
+        INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
+        INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR" -name "interproscan.properties" )"
+        cp "\$INTERPROSCAN_PROPERTIES" .
+        sed -i "/^bin\.directory=/ s/.*/bin.directory=\$INTERPROSCAN_DIR\/bin/" interproscan.properties
+        export INTERPROSCAN_CONF=interproscan.properties
+    fi # else use sample DB included with conda ( testing only! )
 
     if ${is_compressed} ; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -46,7 +48,7 @@ process INTERPROSCAN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        interproscan: \$( interproscan.sh --version | sed '1!d ; s/.*version //' )
+        interproscan: \$( interproscan.sh --version | sed '1!d; s/.*version //' )
     END_VERSIONS
     """
 
@@ -57,7 +59,7 @@ process INTERPROSCAN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        interproscan: \$( interproscan.sh --version | sed '1!d ; s/.*version //' )
+        interproscan: \$( interproscan.sh --version | sed '1!d; s/.*version //' )
     END_VERSIONS
     """
 }
