@@ -9,7 +9,7 @@ process INTERPROSCAN {
 
     input:
     tuple val(meta), path(fasta)
-    path(interproscan_database, stageAs: data)
+    path(interproscan_database, stageAs: 'data')
 
     output:
     tuple val(meta), path('*.tsv') , optional: true, emit: tsv
@@ -27,6 +27,13 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
     """
+    # Find interproscan.properties to link data/ from work directory
+    INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
+    INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR" -name "interproscan.properties" )"
+    cp "\$INTERPROSCAN_PROPERTIES" .
+    sed -i "/^bin\.directory=/ s/.*/bin.directory=\$INTERPROSCAN_DIR\/bin/" interproscan.properties
+    export INTERPROSCAN_CONF=interproscan.properties
+
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
