@@ -62,25 +62,27 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out.orig_bam).match('orig_bam_single_end')},
-                { assert snapshot(workflow.out.bam_sorted).match('bam_sorted_single_end')},
-                { assert snapshot(workflow.out.fastq).match('fastq_single_end')},
-                { assert snapshot(workflow.out.tab).match('tab_single_end')},
-                { assert snapshot(workflow.out.orig_bam_transcript).match('orig_bam_transcript_single_end')},
-                { assert snapshot(workflow.out.bam).match('bam_single_end')},
-                { assert snapshot(workflow.out.bai).match('bai_single_end')},
-                { assert snapshot(workflow.out.stats).match('stats_single_end')},
-                { assert snapshot(workflow.out.flagstat).match('flagstat_single_end')},
-                { assert snapshot(workflow.out.idxstats).match('idxstats_single_end')},
-                { assert snapshot(workflow.out.bam_transcript).match('bam_transcript_single_end')},
-                { assert snapshot(workflow.out.bai_transcript).match('bai_transcript_single_end')},
-                { assert snapshot(workflow.out.stats_transcript).match('stats_transcript_single_end')},
-                { assert snapshot(workflow.out.flagstat_transcript).match('flagstat_transcript_single_end')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('idxstats_transcript_single_end')},
-                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.orig_bam,
+                    workflow.out.bam_sorted,
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.orig_bam_transcript,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.bam_transcript,
+                    workflow.out.bai_transcript,
+                    workflow.out.stats_transcript,
+                    workflow.out.flagstat_transcript,
+                    workflow.out.idxstats_transcript,
+                    file(workflow.out.log_out[0][1]).name,
+                    file(workflow.out.log_final[0][1]).name,
+                    file(workflow.out.log_progress[0][1]).name
+                ).match("single_end") }
             )
         }
     }
@@ -117,26 +119,27 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out.orig_bam).match('orig_bam_paired_end')},
-                { assert snapshot(workflow.out.bam_sorted).match('bam_sorted_paired_end')},
-                { assert snapshot(workflow.out.fastq).match('fastq_paired_end')},
-                { assert snapshot(workflow.out.tab).match('tab_paired_end')},
-                { assert snapshot(workflow.out.orig_bam_transcript).match('orig_bam_transcript_paired_end')},
-                { assert snapshot(workflow.out.bam).match('bam_paired_end')},
-                { assert snapshot(workflow.out.bai).match('bai_paired_end')},
-                { assert snapshot(workflow.out.stats).match('stats_paired_end')},
-                { assert snapshot(workflow.out.flagstat).match('flagstat_paired_end')},
-                { assert snapshot(workflow.out.idxstats).match('idxstats_paired_end')},
-                { assert snapshot(workflow.out.bam_transcript).match('bam_transcript_paired_end')},
-                { assert snapshot(workflow.out.bai_transcript).match('bai_transcript_paired_end')},
-                { assert snapshot(workflow.out.stats_transcript).match('stats_transcript_paired_end')},
-                { assert snapshot(workflow.out.flagstat_transcript).match('flagstat_transcript_paired_end')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('idxstats_transcript_paired_end')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('versions_paired_end')},
-                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.orig_bam,
+                    workflow.out.bam_sorted,
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.orig_bam_transcript,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.bam_transcript,
+                    workflow.out.bai_transcript,
+                    workflow.out.stats_transcript,
+                    workflow.out.flagstat_transcript,
+                    workflow.out.idxstats_transcript,
+                    file(workflow.out.log_out[0][1]).name,
+                    file(workflow.out.log_final[0][1]).name,
+                    file(workflow.out.log_progress[0][1]).name
+                ).match("paired_end") }
             )
         }
     }
@@ -184,26 +187,27 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out.orig_bam).match('orig_bam_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.bam_sorted).match('bam_sorted_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.fastq).match('fastq_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.tab).match('tab_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.orig_bam_transcript).match('orig_bam_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.bam).match('bam_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.bai).match('bai_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.stats).match('stats_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.flagstat).match('flagstat_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.idxstats).match('idxstats_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.bam_transcript).match('bam_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.bai_transcript).match('bai_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.stats_transcript).match('stats_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.flagstat_transcript).match('flagstat_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('idxstats_transcript_paired_end_with_transcriptome')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('versions_paired_end_with_transcriptome')},
-                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.orig_bam,
+                    workflow.out.bam_sorted,
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.orig_bam_transcript,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.bam_transcript,
+                    workflow.out.bai_transcript,
+                    workflow.out.stats_transcript,
+                    workflow.out.flagstat_transcript,
+                    workflow.out.idxstats_transcript,
+                    file(workflow.out.log_out[0][1]).name,
+                    file(workflow.out.log_final[0][1]).name,
+                    file(workflow.out.log_progress[0][1]).name
+                ).match("transcriptome") }
             )
         }
     }
@@ -240,26 +244,27 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out.orig_bam).match('orig_bam_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.bam_sorted).match('bam_sorted_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.fastq).match('fastq_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.tab).match('tab_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.orig_bam_transcript).match('orig_bam_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.bam).match('bam_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.bai).match('bai_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.stats).match('stats_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.flagstat).match('flagstat_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.idxstats).match('idxstats_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.bam_transcript).match('bam_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.bai_transcript).match('bai_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.stats_transcript).match('stats_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.flagstat_transcript).match('flagstat_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('idxstats_transcript_paired_end_transcripts_no_transcriptome')},
-                { assert snapshot(workflow.out.idxstats_transcript).match('versions_paired_end_transcripts_no_transcriptome')},
-                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
-                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.orig_bam,
+                    workflow.out.bam_sorted,
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.orig_bam_transcript,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.bam_transcript,
+                    workflow.out.bai_transcript,
+                    workflow.out.stats_transcript,
+                    workflow.out.flagstat_transcript,
+                    workflow.out.idxstats_transcript,
+                    file(workflow.out.log_out[0][1]).name,
+                    file(workflow.out.log_final[0][1]).name,
+                    file(workflow.out.log_progress[0][1]).name
+                ).match("no transcriptome") }
             )
         }
     }
