@@ -31,7 +31,6 @@ process INTERPROSCAN {
     if ( args.contains("-appl") || args.contains("--applications") ) {
         appl = ""
     }
-    // --disable-precalc (disable precalculation) is on so no online dependency
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -40,7 +39,6 @@ process INTERPROSCAN {
     interproscan.sh \\
         --cpu ${task.cpus} \\
         --input ${fasta_name} \\
-        --disable-precalc \\
         ${appl} \\
         ${args} \\
         --outfile ${prefix}.${out_ext}
