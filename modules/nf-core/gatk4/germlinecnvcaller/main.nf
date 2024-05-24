@@ -39,8 +39,7 @@ process GATK4_GERMLINECNVCALLER {
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
 
-
-    gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
+    gatk --java-options "-Xmx${avail_mem}m -XX:-UsePerfData" \\
         GermlineCNVCaller \\
         $input_list \\
         $ploidy_command \\
