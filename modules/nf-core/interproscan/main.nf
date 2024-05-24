@@ -35,7 +35,7 @@ process INTERPROSCAN {
         --cpu ${task.cpus} \\
         --input ${fasta_name} \\
         ${args} \\
-        --outfile ${prefix}.${out_ext}
+        --output-file-base ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
