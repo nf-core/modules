@@ -10,7 +10,6 @@ process INTERPROSCAN {
     input:
     tuple val(meta), path(fasta)
     path(interproscan_database, stageAs: data)
-    val(out_ext)
 
     output:
     tuple val(meta), path('*.tsv') , optional: true, emit: tsv
@@ -32,16 +31,6 @@ process INTERPROSCAN {
     if ( args.contains("-appl") || args.contains("--applications") ) {
         appl = ""
     }
-    switch ( out_ext ) {
-        case "tsv": break
-        case "xml": break
-        case "gff3": break
-        case "json": break
-        default:
-            out_ext = 'tsv';
-            log.warn("Unknown output file format provided (${out_ext}): selecting tsv as fallback");
-            break
-    }
     // --disable-precalc (disable precalculation) is on so no online dependency
     """
     if [ "${is_compressed}" == "true" ]; then
@@ -51,7 +40,6 @@ process INTERPROSCAN {
     interproscan.sh \\
         --cpu ${task.cpus} \\
         --input ${fasta_name} \\
-        --formats ${out_ext} \\
         --disable-precalc \\
         ${appl} \\
         ${args} \\
