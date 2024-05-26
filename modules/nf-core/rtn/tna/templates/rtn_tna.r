@@ -60,10 +60,7 @@ sink(NULL, type="message") # close the sink
 # Input 2: 'phenotype', a named numeric vector, usually log2 differential expression levels
 # Input 3: 'hits', a character vector, usually a set of differentially expressed genes
 # Input 4: 'phenoIDs', an optional data frame with gene anottation mapped to the phenotype
-rtna <- tni2tna.preprocess(object = tni_object,
-                           phenotype = degs_log2,
-                           hits = degs,
-                           phenoIDs = degs_annotation)
+rtna <- tni2tna.preprocess(object = tni_object, phenotype = degs_log2, hits = degs, phenoIDs = degs_annotation)
 
 # TNA analysis here
 
