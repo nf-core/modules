@@ -1,8 +1,9 @@
 import groovy.json.JsonSlurper
 
-include { BBMAP_BBSPLIT } from '../../../modules/nf-core/bbmap/bbsplit'
-include { CAT_FASTQ }     from '../../../modules/nf-core/cat/fastq/main'
-include { SORTMERNA }     from '../../../modules/nf-core/sortmerna/main'
+include { BBMAP_BBSPLIT                   } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ                       } from '../../../modules/nf-core/cat/fastq/main'
+include { SORTMERNA                       } from '../../../modules/nf-core/sortmerna/main'
+include { SORTMERNA as SORTMERNA_INDEX    } from '../../../modules/nf-core/sortmerna/main'
 
 include { FASTQ_SUBSAMPLE_FQ_SALMON        } from '../fastq_subsample_fq_salmon'
 include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from '../fastq_fastqc_umitools_trimgalore'
@@ -40,24 +41,26 @@ public static String multiqcTsvFromList(tsv_data, header) {
 workflow PREPROCESS_RNASEQ {
 
     take:
-    ch_reads            // channel: [ val(meta), [ reads ] ]
-    ch_fasta            // channel: /path/to/genome.fasta
-    ch_transcript_fasta // channel: /path/to/transcript.fasta
-    ch_gtf              // channel: /path/to/genome.gtf
-    ch_salmon_index     // channel: /path/to/salmon/index/ (optional)
-    ch_bbsplit_index    // channel: /path/to/bbsplit/index/ (optional)
-    ch_ribo_db          // channel: /path/to/ Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA. (optional)
-    skip_bbsplit        // boolean: Skip BBSplit for removal of non-reference genome reads.
-    skip_fastqc         // boolean: true/false
-    skip_trimming       // boolean: true/false
-    skip_umi_extract    // boolean: true/false
-    make_salmon_index   // boolean: Whether to create salmon index before running salmon quant
-    trimmer             // string (enum): 'fastp' or 'trimgalore'
-    min_trimmed_reads   // integer: > 0
-    save_trimmed        // boolean: true/false
-    remove_ribo_rna     // boolean: true/false: whether to run sortmerna to remove rrnas
-    with_umi            // boolean: true/false: Enable UMI-based read deduplication.
-    umi_discard_read    // integer: 0, 1 or 2
+    ch_reads             // channel: [ val(meta), [ reads ] ]
+    ch_fasta             // channel: /path/to/genome.fasta
+    ch_transcript_fasta  // channel: /path/to/transcript.fasta
+    ch_gtf               // channel: /path/to/genome.gtf
+    ch_salmon_index      // channel: /path/to/salmon/index/ (optional)
+    ch_sortmerna_index   // channel: /path/to/sortmerna/index/ (optional)
+    ch_bbsplit_index     // channel: /path/to/bbsplit/index/ (optional)
+    ch_ribo_db           // channel: /path/to/ Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA. (optional)
+    skip_bbsplit         // boolean: Skip BBSplit for removal of non-reference genome reads.
+    skip_fastqc          // boolean: true/false
+    skip_trimming        // boolean: true/false
+    skip_umi_extract     // boolean: true/false
+    make_salmon_index    // boolean: Whether to create salmon index before running salmon quant
+    make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
+    trimmer              // string (enum): 'fastp' or 'trimgalore'
+    min_trimmed_reads    // integer: > 0
+    save_trimmed         // boolean: true/false
+    remove_ribo_rna      // boolean: true/false: whether to run sortmerna to remove rrnas
+    with_umi             // boolean: true/false: Enable UMI-based read deduplication.
+    umi_discard_read     // integer: 0, 1 or 2
 
     main:
 
@@ -89,26 +92,6 @@ workflow PREPROCESS_RNASEQ {
     ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
 
     //
-    // MODULE: Remove ribosomal RNA reads
-    //
-    if (remove_ribo_rna) {
-        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
-            .map { row -> file(row, checkIfExists: true) }
-            .collect()
-
-        SORTMERNA (
-            ch_filtered_reads,
-            ch_sortmerna_fastas
-        )
-        .reads
-        .set { ch_filtered_reads }
-
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log.map{ it[1] })
-
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-    }
-
-    //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
     //
     if (trimmer == 'trimgalore') {
@@ -128,7 +111,6 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
-            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
@@ -155,7 +137,6 @@ workflow PREPROCESS_RNASEQ {
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json.map{tuple(it[0], [it[1]])})
-            .map{ it[1] }
             .mix(ch_multiqc_files)
     }
 
@@ -196,9 +177,44 @@ workflow PREPROCESS_RNASEQ {
             [ [], [] ],
             false
         )
-        .primary_fastq
-        .set { ch_filtered_reads }
+
+        BBMAP_BBSPLIT.out.primary_fastq
+            .set { ch_filtered_reads }
+
         ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
+    }
+
+    //
+    // MODULE: Remove ribosomal RNA reads
+    //
+    if (remove_ribo_rna) {
+        ch_sortmerna_fastas = Channel.from(ch_ribo_db.readLines())
+            .map { row -> file(row, checkIfExists: true) }
+            .collect()
+            .map{ ['rrna_refs', it] }
+
+        if (make_sortmerna_index) {
+            SORTMERNA_INDEX (
+                [[],[]],
+                ch_sortmerna_fastas,
+                [[],[]]
+            )
+            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+        }
+
+        SORTMERNA (
+            ch_filtered_reads,
+            ch_sortmerna_fastas,
+            ch_sortmerna_index
+        )
+
+        SORTMERNA.out.reads
+            .set { ch_filtered_reads }
+
+        ch_multiqc_files = ch_multiqc_files
+            .mix(SORTMERNA.out.log)
+
+        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
     }
 
     // Branch FastQ channels if 'auto' specified to infer strandedness
@@ -248,7 +264,7 @@ workflow PREPROCESS_RNASEQ {
     reads           = ch_strand_inferred_fastq
     trim_read_count = ch_trim_read_count
 
-    multiqc_files   = ch_multiqc_files
+    multiqc_files   = ch_multiqc_files.transpose().map{it[1]}
     versions        = ch_versions                     // channel: [ versions.yml ]
 }
 

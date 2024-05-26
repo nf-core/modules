@@ -4,8 +4,8 @@ process CENTRIFUGE_CENTRIFUGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuge-core:1.0.4.1--h43eeafb_0' :
-        'biocontainers/centrifuge-core:1.0.4.1--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.1--hdcf5f25_1' :
+        'biocontainers/centrifuge:1.0.4.1--hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(reads)
