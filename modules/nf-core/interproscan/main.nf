@@ -28,18 +28,22 @@ process INTERPROSCAN {
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name = fasta.name.replace(".gz", "")
     """
-    # Find interproscan.properties to link data/ from work directory
-    INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
-    INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR" -name "interproscan.properties" )"
-    cp "\$INTERPROSCAN_PROPERTIES" .
     if [ -d 'data' ]; then
+        # Find interproscan.properties to link data/ from work directory
+        INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
+        INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR" -name "interproscan.properties" )"
+        cp "\$INTERPROSCAN_PROPERTIES" .
         sed -i "/^bin\\.directory=/ s|.*|bin.directory=\$INTERPROSCAN_DIR/bin|" interproscan.properties
+        export INTERPROSCAN_CONF=interproscan.properties
     else
         # Use sample DB included with conda ( testing only! )
+        echo "Running Test mode!"
         # Reduce memory for tests
-        sed -i '/-Xms2028M -Xmx9216M/ s|-Xms2028M -Xmx9216M|-Xms1G -Xmx2G|' interproscan.properties
+        mkdir bin
+        cp $( which interproscan.sh ) bin/
+        sed -i '/-Xms2028M -Xmx9216M/ s|-Xms2028M -Xmx9216M|-Xms1G -Xmx2G|' bin/interproscan.sh
+        export PATH="\$PWD/bin:\$PATH"
     fi
-    export INTERPROSCAN_CONF=interproscan.properties
 
     if ${is_compressed} ; then
         gzip -c -d ${fasta} > ${fasta_name}
