@@ -26,6 +26,7 @@ process SAMBAMBA_MARKDUP {
         markdup \\
         $args \\
         -t $task.cpus \\
+        --tmpdir ./ \\
         $bam \\
         ${prefix}.bam
 
