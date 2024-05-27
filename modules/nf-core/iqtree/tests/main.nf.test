@@ -14,8 +14,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
-                input[1]  = [ [ id: "test" ] , [] ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
+                    [] ]
+                input[1]  = []
                 input[2]  = []
                 input[3]  = []
                 input[4]  = []
@@ -27,7 +28,6 @@ nextflow_process {
                 input[10] = []
                 input[11] = []
                 input[12] = []
-                input[13] = []
                 """
             }
         }
@@ -52,8 +52,9 @@ test("setoxin - treels") {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
-                input[1]  = [ [ id: "test" ] , [] ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
+                    [] ]
+                input[1]  = []
                 input[2]  = []
                 input[3]  = []
                 input[4]  = []
@@ -65,7 +66,6 @@ test("setoxin - treels") {
                 input[10] = []
                 input[11] = []
                 input[12] = []
-                input[13] = []
                 """
             }
         }
@@ -92,8 +92,9 @@ test("setoxin - treels") {
             process {
                 """
                 input[0] = [ [ id: "test" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true) ]
-                input[1]  = [ [ id: "test" ] , [] ]
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
+                    [] ]
+                input[1]  = []
                 input[2]  = []
                 input[3]  = []
                 input[4]  = []
@@ -105,7 +106,6 @@ test("setoxin - treels") {
                 input[10] = []
                 input[11] = []
                 input[12] = []
-                input[13] = []
                 """
             }
         }
@@ -131,9 +131,10 @@ test("setoxin - treels") {
         when {
             process {
                 """
-                input[0]  = [ [], [] ]
-                input[1]  = [ [ id: "test2" ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true) ]
+                input[0]  = [ [ id: "test" ],
+                    [],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)]
+                input[1]  = []
                 input[2]  = []
                 input[3]  = []
                 input[4]  = []
@@ -143,12 +144,11 @@ test("setoxin - treels") {
                 input[8]  = []
                 input[9]  = []
                 input[10] = []
-                input[11] = []
-                input[12] = Channel.of(
+                input[11] = Channel.of(
                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
                                 .text)
                                 .collectFile(name: 'hydrogenase.newick')
-                input[13] = []
+                input[12] = []
                 """
             }
         }
@@ -171,10 +171,11 @@ test("setoxin - treels") {
         when {
             process {
                 """
-                input[0]  = [ [ id: "test" ] ,
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true) ]
-                input[1]  = [ [ id: "test" ] , [] ]
-                input[2]  = file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
+                input[0]  = [ [ id: "test" ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true),
+                    [] ]
+                input[1]  = file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)
+                input[2]  = []
                 input[3]  = []
                 input[4]  = []
                 input[5]  = []
@@ -185,7 +186,6 @@ test("setoxin - treels") {
                 input[10] = []
                 input[11] = []
                 input[12] = []
-                input[13] = []
                 """
             }
         }
@@ -219,8 +219,8 @@ test("setoxin - treels") {
         when {
             process {
                 """
-                input[0]  = [ [ id: "test" ] , [] ]
-                input[1]  = [ [ id: "test" ] , [] ]
+                input[0]  = [ [ id: "test" ] , [], []]
+                input[1]  = []
                 input[2]  = []
                 input[3]  = []
                 input[4]  = []
@@ -232,7 +232,6 @@ test("setoxin - treels") {
                 input[10] = []
                 input[11] = []
                 input[12] = []
-                input[13] = []
                 """
             }
         }

@@ -8,8 +8,7 @@ process IQTREE {
         'biocontainers/iqtree:2.3.4--h21ec9f0_0' }"
 
     input:
-    tuple val(meta), path(alignment)
-    tuple val(meta2), path(tree)
+    tuple val(meta), path(alignment), path(tree)
     path(tree_te)
     path(lmclust)
     path(mdef)
@@ -52,7 +51,6 @@ process IQTREE {
     task.ext.when == null || task.ext.when
 
     script:
-    def meta                        = meta                    ?: meta2
     def args                        = task.ext.args           ?: ''
     def alignment_arg               = alignment               ? "-s $alignment"                 : ''
     def tree_arg                    = tree                    ? "-t $tree"                      : ''
