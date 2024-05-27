@@ -10,7 +10,7 @@ process ARRIBA_DOWNLOAD {
     output:
     tuple val(meta), path("blacklist*.tsv.gz")        , emit: blacklist
     tuple val(meta), path("protein_domains*.gff3")    , emit: protein_domains
-    tuple val(meta), path("cytobands*.tsv")           , emit: cytoband
+    tuple val(meta), path("cytobands*.tsv")           , emit: cytobands
     tuple val(meta), path("known_fusions*.tsv.gz")    , emit: known_fusions
     path "versions.yml"                               , emit: versions
 
