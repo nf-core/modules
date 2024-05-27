@@ -10,6 +10,8 @@ nextflow_process {
     tag "star/starsolo"
     tag "star/genomegenerate"
 
+    config "./nextflow.config"
+
     setup {
         run("STAR_GENOMEGENERATE") {
             script "../../../star/genomegenerate/main.nf"
