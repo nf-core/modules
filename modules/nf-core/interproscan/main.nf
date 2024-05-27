@@ -35,15 +35,7 @@ process INTERPROSCAN {
         cp "\$INTERPROSCAN_PROPERTIES" .
         sed -i "/^bin\\.directory=/ s|.*|bin.directory=\$INTERPROSCAN_DIR/bin|" interproscan.properties
         export INTERPROSCAN_CONF=interproscan.properties
-    else
-        # Use sample DB included with conda ( testing only! )
-        echo "Running Test mode!"
-        # Reduce memory for tests
-        mkdir bin
-        cp $( which interproscan.sh ) bin/
-        sed -i '/-Xms2028M -Xmx9216M/ s|-Xms2028M -Xmx9216M|-Xms1G -Xmx2G|' bin/interproscan.sh
-        export PATH="\$PWD/bin:\$PATH"
-    fi
+    fi # else use sample DB included with conda ( testing only! )
 
     if ${is_compressed} ; then
         gzip -c -d ${fasta} > ${fasta_name}
