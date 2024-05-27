@@ -26,11 +26,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.tsv[0][1].readLines()[0]
+                    path(process.out.tsv[0][1]).readLines()[0]
                         .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
                     process.out.xml,
                     process.out.json,
-                    process.out.gff3[0][1].readLines()[0..4,6..31],
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
                     process.out.versions,
                     ).match()
                 }
@@ -57,11 +57,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.tsv[0][1].readLines()[0]
+                    path(process.out.tsv[0][1]).readLines()[0]
                         .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
                     process.out.xml,
                     process.out.json,
-                    process.out.gff3[0][1].readLines()[0..4,6..31],
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
                     process.out.versions,
                     ).match()
                 }
