@@ -11,6 +11,7 @@ nextflow_process {
 
     setup {
         run("STAR_GENOMEGENERATE") {
+            config "./nextflow.config"
             script "../../../star/genomegenerate/main.nf"
             process {
                 """
@@ -66,7 +67,7 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     process.out.junction,
-                    process.out.log_progress,
+                    file(process.out.log_progress[0][1]).name,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
@@ -116,7 +117,7 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     process.out.junction,
-                    process.out.log_progress,
+                    file(process.out.log_progress[0][1]).name,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
@@ -166,7 +167,7 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     process.out.junction,
-                    process.out.log_progress,
+                    file(process.out.log_progress[0][1]).name,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
@@ -216,7 +217,7 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     file(process.out.junction[0][1]).name,
-                    process.out.log_progress,
+                    file(process.out.log_progress[0][1]).name,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
@@ -268,7 +269,7 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     process.out.junction,
-                    process.out.log_progress,
+                    file(process.out.log_progress[0][1]).name,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
