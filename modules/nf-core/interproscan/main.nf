@@ -1,5 +1,6 @@
 process INTERPROSCAN {
     tag "$meta.id"
+    label 'process_medium'
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
