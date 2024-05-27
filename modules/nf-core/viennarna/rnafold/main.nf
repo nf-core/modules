@@ -8,18 +8,19 @@ process VIENNARNA_RNAFOLD {
         'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "*.fold"         , emit: rnafold_txt
-    path "*.ps"           , emit: rnafold_ps
-    path "versions.yml"   , emit: versions
+    tuple val(meta), path("*.fold")      , emit: rnafold_txt
+    tuple val(meta), path("*.ps")        , emit: rnafold_ps
+    tuple val(meta), path("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = meta.id ?: "${fasta.getName()}"
     """
     RNAfold \\
         ${args} \\
