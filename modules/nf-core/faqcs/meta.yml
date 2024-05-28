@@ -51,10 +51,10 @@ output:
       type: file
       description: trimming/qc text stats file
       pattern: "*.stats.txt"
-  - txt:
-      type: file
-      description: trimming/qc text txt files from --debug option
-      pattern: "*.txt"
+  - debug:
+      type: path
+      description: trimming/qc files from --debug option
+      pattern: "./debug"
   - statspdf:
       type: file
       description: trimming/qc pdf report file
