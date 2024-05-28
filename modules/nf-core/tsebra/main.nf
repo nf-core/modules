@@ -2,10 +2,11 @@ process TSEBRA {
     tag "$meta.id"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tsebra:1.1.2.4--pyhca03a8a_0':
-        'biocontainers/tsebra:1.1.2.4--pyhca03a8a_0' }"
+        'https://depot.galaxyproject.org/singularity/tsebra:1.1.2.5--pyhca03a8a_0':
+        'biocontainers/tsebra:1.1.2.5--pyhca03a8a_0' }"
 
     input:
     tuple val(meta), path(gtfs)
@@ -28,7 +29,7 @@ process TSEBRA {
     def hints_arg   = '-e ' + hints_files.collect { "$it" }.join(',')
     def keep_arg    = keep_gtfs                                         ? ( '-k ' + keep_gtfs.collect { "$it" }.join(',') ) : ''
     def config_arg  = config                                            ? "-c $config"                                      : ''
-    def VERSION     = '1.1.2.4'
+    def VERSION     = '1.1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tsebra.py \\
         $gtf_arg \\
@@ -48,7 +49,7 @@ process TSEBRA {
     stub:
     def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
-    def VERSION     = '1.1.2.4'
+    def VERSION     = '1.1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.gtf
     touch ${prefix}.tsv
