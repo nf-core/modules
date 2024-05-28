@@ -13,10 +13,10 @@ process ULTRAPLEX {
     val(adapter_seq)
 
     output:
-    tuple val(meta), path("*[!no_match].fastq.gz"),              emit: fastq
-    tuple val(meta), path("*no_match.fastq.gz"), optional: true, emit: no_match_fastq
-    path "*.log",                                                emit: report
-    path "versions.yml",                                         emit: versions
+    tuple val(meta), path("*[!no_match].fastq.gz"),               emit: fastq
+    tuple val(meta), path("*no_match*.fastq.gz"), optional: true, emit: no_match_fastq
+    path "*.log",                                                 emit: report
+    path "versions.yml",                                          emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,6 +47,21 @@ process ULTRAPLEX {
 
     """
     ${ultraplex_command}
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ultraplex: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def VERSION = "1.2.5" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args    = task.ext.args ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ultraplex_demux_Sample1.fastq.gz
+    echo "" | gzip > ultraplex_demux_Sample2.fastq.gz
+    touch ultraplex.log
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ultraplex: $VERSION
