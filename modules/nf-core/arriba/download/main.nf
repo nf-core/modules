@@ -8,11 +8,10 @@ process ARRIBA_DOWNLOAD {
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
     output:
-    tuple val(meta), path("blacklist*.tsv.gz")        , emit: blacklist
-    tuple val(meta), path("protein_domains*.gff3")    , emit: protein_domains
-    tuple val(meta), path("cytobands*.tsv")           , emit: cytobands
-    tuple val(meta), path("known_fusions*.tsv.gz")    , emit: known_fusions
-    path "versions.yml"                               , emit: versions
+    path "blacklist*.tsv.gz"       , emit: blacklist
+    path "protein_domains*.gff3"   , emit: protein_domains
+    path "known_fusions*.tsv.gz"   , emit: known_fusions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
