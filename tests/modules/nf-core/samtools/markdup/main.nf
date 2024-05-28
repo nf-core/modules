@@ -22,6 +22,6 @@ workflow test_samtools_markdup {
     SAMTOOLS_COLLATE ( input, [[],[]] )
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
     SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam, fasta )
-    SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, [] )
+    SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, fasta )
 
 }
