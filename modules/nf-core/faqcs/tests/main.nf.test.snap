@@ -1,6 +1,8 @@
 {
     "sarscov2 paired-end [fastq] options": {
         "content": [
+            "test_qc_report.pdf",
+            "test.log",
             [
                 [
                     {
@@ -57,15 +59,6 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.log:md5,be79dc893f87de1f82faf749cdfb848c"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
                     "test.trimmed.discard.fastq.gz:md5,e1b7e9d6ded4d0c74117f2535f86aa7c"
                 ]
             ],
@@ -77,7 +70,38 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-05-28T14:44:13.016209191"
+        "timestamp": "2024-05-28T17:04:08.475020232"
+    },
+    "sarscov2 single-end [fastq] qc_only": {
+        "content": [
+            "test_qc_report.pdf",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.stats.txt:md5,4b9f14d42827407ff76f3e861a77d618"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                "versions.yml:md5,f0382c2c367b48365a7094f21513fb4a"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-28T17:04:40.865641339"
     },
     "stub": {
         "content": [
@@ -208,7 +232,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-05-28T14:44:24.637484551"
+        "timestamp": "2024-05-28T17:05:17.316771256"
     },
     "sarscov2 paired-end [fastq]": {
         "content": [
@@ -254,7 +278,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-05-28T14:43:59.974802028"
+        "timestamp": "2024-05-28T17:03:35.638069521"
     },
     "sarscov2 single-end [fastq]": {
         "content": [
@@ -294,6 +318,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-05-28T14:43:46.59969994"
+        "timestamp": "2024-05-28T17:03:03.345481706"
     }
 }
