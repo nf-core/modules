@@ -9,7 +9,7 @@ process SAMTOOLS_MARKDUP {
 
     input:
     tuple val(meta), path(input)
-    path fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"),  emit: bam, optional: true
