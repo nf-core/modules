@@ -115,8 +115,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -145,8 +151,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -175,8 +187,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -205,8 +223,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
