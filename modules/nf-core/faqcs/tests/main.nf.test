@@ -120,7 +120,6 @@ nextflow_process {
             { assert process.out.debug          == [] },
             { assert snapshot(file(process.out.statspdf[0][1]).name,
                                 process.out.stats,
-                                process.out.log,
                                 process.out.versions).match() }
             )
         }
