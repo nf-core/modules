@@ -5,13 +5,17 @@ keywords:
   - msa
   - multiple sequence alignment
 tools:
-  - mafft:
+  - "mafft":
       description: Multiple alignment program for amino acid or nucleotide sequences based on fast Fourier transform
       homepage: https://mafft.cbrc.jp/alignment/software/
       documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
       doi: "10.1093/nar/gkf436"
       licence: ["BSD"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 input:
   - meta:
       type: map
@@ -20,8 +24,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: FASTA file containing the sequences to align
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing the sequences to align. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
   - meta2:
       type: map
       description: |
@@ -29,8 +33,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - add:
       type: file
-      description: FASTA file containing sequences to align to the sequences in `fasta` using `--add`
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing sequences to align to the sequences in `fasta` using `--add`. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
   - meta3:
       type: map
       description: |
@@ -38,8 +42,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - addfragments:
       type: file
-      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfragments`
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfragments`. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
   - meta4:
       type: map
       description: |
@@ -47,8 +51,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - addfull:
       type: file
-      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfull`
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfull`. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
   - meta5:
       type: map
       description: |
@@ -56,8 +60,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - addprofile:
       type: file
-      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addprofile`
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addprofile`. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
   - meta6:
       type: map
       description: |
@@ -65,8 +69,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - addlong:
       type: file
-      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addlong`
-      pattern: "*.{fa,fasta}"
+      description: FASTA file containing sequences to align to the sequences in `fasta` using `--addlong`. May be gzipped or uncompressed.
+      pattern: "*.{fa,fasta}{.gz,}"
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   - meta:
       type: map
@@ -79,8 +86,8 @@ output:
       pattern: "versions.yml"
   - fas:
       type: file
-      description: Aligned sequences in FASTA format
-      pattern: "*.{fas}"
+      description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+      pattern: "*.fas{.gz,}"
 authors:
   - "@MillironX"
 maintainers:

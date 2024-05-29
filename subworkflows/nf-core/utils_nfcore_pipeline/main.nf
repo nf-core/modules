@@ -2,6 +2,9 @@
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
 
+import org.yaml.snakeyaml.Yaml
+import nextflow.extension.FilesEx
+
 /*
 ========================================================================================
     SUBWORKFLOW DEFINITION
@@ -11,14 +14,14 @@
 workflow UTILS_NFCORE_PIPELINE {
 
     take:
-    monochrome_logs // boolean: Disable ANSI colour codes in log output
+    nextflow_cli_args
 
     main:
-    checkConfigProvided()
+    valid_config = checkConfigProvided()
+    checkProfileProvided(nextflow_cli_args)
 
     emit:
-    success = true
-
+    valid_config
 }
 
 /*
@@ -31,6 +34,7 @@ workflow UTILS_NFCORE_PIPELINE {
 //  Warn if a -profile or Nextflow config has not been provided to run the pipeline
 //
 def checkConfigProvided() {
+    valid_config = true
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
         log.warn "[$workflow.manifest.name] You are attempting to run the pipeline without any custom configuration!\n\n" +
             "This will be dependent on your local compute environment but can be achieved via one or more of the following:\n" +
@@ -38,6 +42,22 @@ def checkConfigProvided() {
             "   (2) Using an existing nf-core/configs for your Institution e.g. `-profile crick` or `-profile uppmax`\n" +
             "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" +
             "Please refer to the quick start section and usage docs for the pipeline.\n "
+        valid_config = false
+    }
+    return valid_config
+}
+
+//
+// Exit pipeline if --profile contains spaces
+//
+def checkProfileProvided(nextflow_cli_args) {
+    if (workflow.profile.endsWith(',')) {
+        error "The `-profile` option cannot end with a trailing comma, please remove it and re-run the pipeline!\n" +
+            "HINT: A common mistake is to provide multiple values separated by spaces e.g. `-profile test, docker`.\n"
+    }
+    if (nextflow_cli_args[0]) {
+        log.warn "nf-core pipelines do not accept positional arguments. The positional argument `${nextflow_cli_args[0]}` has been detected.\n" +
+            "HINT: A common mistake is to provide multiple values separated by spaces e.g. `-profile test, docker`.\n"
     }
 }
 
@@ -45,9 +65,15 @@ def checkConfigProvided() {
 // Citation string for pipeline
 //
 def workflowCitation() {
+    def temp_doi_ref = ""
+    String[] manifest_doi = workflow.manifest.doi.tokenize(",")
+    // Using a loop to handle multiple DOIs
+    // Removing `https://doi.org/` to handle pipelines using DOIs vs DOI resolvers
+    // Removing ` ` since the manifest.doi is a string and not a proper list
+    for (String doi_ref: manifest_doi) temp_doi_ref += "  https://doi.org/${doi_ref.replace('https://doi.org/', '').replace(' ', '')}\n"
     return "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" +
         "* The pipeline\n" +
-        "  ${workflow.manifest.doi}\n\n" +
+        temp_doi_ref + "\n" +
         "* The nf-core framework\n" +
         "  https://doi.org/10.1038/s41587-020-0439-x\n\n" +
         "* Software dependencies\n" +
@@ -55,9 +81,86 @@ def workflowCitation() {
 }
 
 //
+// Generate workflow version string
+//
+def getWorkflowVersion() {
+    String version_string = ""
+    if (workflow.manifest.version) {
+        def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
+        version_string += "${prefix_v}${workflow.manifest.version}"
+    }
+
+    if (workflow.commitId) {
+        def git_shortsha = workflow.commitId.substring(0, 7)
+        version_string += "-g${git_shortsha}"
+    }
+
+    return version_string
+}
+
+//
+// Get software versions for pipeline
+//
+def processVersionsFromYAML(yaml_file) {
+    Yaml yaml = new Yaml()
+    versions = yaml.load(yaml_file).collectEntries { k, v -> [ k.tokenize(':')[-1], v ] }
+    return yaml.dumpAsMap(versions).trim()
+}
+
+//
+// Get workflow version for pipeline
+//
+def workflowVersionToYAML() {
+    return """
+    Workflow:
+        $workflow.manifest.name: ${getWorkflowVersion()}
+        Nextflow: $workflow.nextflow.version
+    """.stripIndent().trim()
+}
+
+//
+// Get channel of software versions used in pipeline in YAML format
+//
+def softwareVersionsToYAML(ch_versions) {
+    return ch_versions
+                .unique()
+                .map { processVersionsFromYAML(it) }
+                .unique()
+                .mix(Channel.of(workflowVersionToYAML()))
+}
+
+//
+// Get workflow summary for MultiQC
+//
+def paramsSummaryMultiqc(summary_params) {
+    def summary_section = ''
+    for (group in summary_params.keySet()) {
+        def group_params = summary_params.get(group)  // This gets the parameters of that particular group
+        if (group_params) {
+            summary_section += "    <p style=\"font-size:110%\"><b>$group</b></p>\n"
+            summary_section += "    <dl class=\"dl-horizontal\">\n"
+            for (param in group_params.keySet()) {
+                summary_section += "        <dt>$param</dt><dd><samp>${group_params.get(param) ?: '<span style=\"color:#999999;\">N/A</a>'}</samp></dd>\n"
+            }
+            summary_section += "    </dl>\n"
+        }
+    }
+
+    String yaml_file_text  = "id: '${workflow.manifest.name.replace('/','-')}-summary'\n"
+    yaml_file_text        += "description: ' - this information is collected when the pipeline is started.'\n"
+    yaml_file_text        += "section_name: '${workflow.manifest.name} Workflow Summary'\n"
+    yaml_file_text        += "section_href: 'https://github.com/${workflow.manifest.name}'\n"
+    yaml_file_text        += "plot_type: 'html'\n"
+    yaml_file_text        += "data: |\n"
+    yaml_file_text        += "${summary_section}"
+
+    return yaml_file_text
+}
+
+//
 // nf-core logo
 //
-def nfCoreLogo(workflow_version, monochrome_logs = true) {
+def nfCoreLogo(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     String.format(
         """\n
@@ -67,7 +170,7 @@ def nfCoreLogo(workflow_version, monochrome_logs = true) {
         ${colors.blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${colors.yellow}}  {${colors.reset}
         ${colors.blue}  | \\| |       \\__, \\__/ |  \\ |___     ${colors.green}\\`-._,-`-,${colors.reset}
                                                 ${colors.green}`._,._,\'${colors.reset}
-        ${colors.purple}  ${workflow.manifest.name} ${workflow_version}${colors.reset}
+        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
         ${dashedLine(monochrome_logs)}
         """.stripIndent()
     )
@@ -76,7 +179,7 @@ def nfCoreLogo(workflow_version, monochrome_logs = true) {
 //
 // Return dashed line
 //
-def dashedLine(monochrome_logs = true) {
+def dashedLine(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
@@ -84,7 +187,7 @@ def dashedLine(monochrome_logs = true) {
 //
 // ANSII colours used for terminal logging
 //
-def logColours(monochrome_logs = true) {
+def logColours(monochrome_logs=true) {
     Map colorcodes = [:]
 
     // Reset / Meta
@@ -150,9 +253,32 @@ def logColours(monochrome_logs = true) {
 }
 
 //
+// Attach the multiqc report to email
+//
+def attachMultiqcReport(multiqc_report) {
+    def mqc_report = null
+    try {
+        if (workflow.success) {
+            mqc_report = multiqc_report.getVal()
+            if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
+                if (mqc_report.size() > 1) {
+                    log.warn "[$workflow.manifest.name] Found multiple reports from process 'MULTIQC', will use only one"
+                }
+                mqc_report = mqc_report[0]
+            }
+        }
+    } catch (all) {
+        if (multiqc_report) {
+            log.warn "[$workflow.manifest.name] Could not attach MultiQC report to summary email"
+        }
+    }
+    return mqc_report
+}
+
+//
 // Construct and send completion email
 //
-def completionEmail(summary_params, monochrome_logs = true) {
+def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true, multiqc_report=null) {
 
     // Set up the e-mail variables
     def subject = "[$workflow.manifest.name] Successful: $workflow.runName"
@@ -178,7 +304,7 @@ def completionEmail(summary_params, monochrome_logs = true) {
     misc_fields['Nextflow Compile Timestamp'] = workflow.nextflow.timestamp
 
     def email_fields = [:]
-    email_fields['version']      = NfcoreTemplate.version(workflow)
+    email_fields['version']      = getWorkflowVersion()
     email_fields['runName']      = workflow.runName
     email_fields['success']      = workflow.success
     email_fields['dateComplete'] = workflow.complete
@@ -190,10 +316,13 @@ def completionEmail(summary_params, monochrome_logs = true) {
     email_fields['projectDir']   = workflow.projectDir
     email_fields['summary']      = summary << misc_fields
 
+    // On success try attach the multiqc report
+    def mqc_report = attachMultiqcReport(multiqc_report)
+
     // Check if we are only sending emails on failure
-    def email_address = params.email
-    if (!params.email && params.email_on_fail && !workflow.success) {
-        email_address = params.email_on_fail
+    def email_address = email
+    if (!email && email_on_fail && !workflow.success) {
+        email_address = email_on_fail
     }
 
     // Render the TXT template
@@ -208,7 +337,8 @@ def completionEmail(summary_params, monochrome_logs = true) {
     def email_html    = html_template.toString()
 
     // Render the sendmail template
-    def smail_fields           = [ email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}" ]
+    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as nextflow.util.MemoryUnit
+    def smail_fields           = [ email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report, mqcMaxSize: max_multiqc_email_size.toBytes() ]
     def sf                     = new File("${workflow.projectDir}/assets/sendmail_template.txt")
     def sendmail_template      = engine.createTemplate(sf).make(smail_fields)
     def sendmail_html          = sendmail_template.toString()
@@ -217,8 +347,10 @@ def completionEmail(summary_params, monochrome_logs = true) {
     Map colors = logColours(monochrome_logs)
     if (email_address) {
         try {
-            if (params.plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
+            if (plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
             // Try to send HTML e-mail using sendmail
+            def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
+            sendmail_tf.withWriter { w -> w << sendmail_html }
             [ 'sendmail', '-t' ].execute() << sendmail_html
             log.info "-${colors.purple}[$workflow.manifest.name]${colors.green} Sent summary e-mail to $email_address (sendmail)-"
         } catch (all) {
@@ -230,20 +362,22 @@ def completionEmail(summary_params, monochrome_logs = true) {
     }
 
     // Write summary e-mail HTML to a file
-    def output_d = new File("${params.outdir}/pipeline_info/")
-    if (!output_d.exists()) {
-        output_d.mkdirs()
-    }
-    def output_hf = new File(output_d, "pipeline_report.html")
+    def output_hf = new File(workflow.launchDir.toString(), ".pipeline_report.html")
     output_hf.withWriter { w -> w << email_html }
-    def output_tf = new File(output_d, "pipeline_report.txt")
+    FilesEx.copyTo(output_hf.toPath(), "${outdir}/pipeline_info/pipeline_report.html");
+    output_hf.delete()
+
+    // Write summary e-mail TXT to a file
+    def output_tf = new File(workflow.launchDir.toString(), ".pipeline_report.txt")
     output_tf.withWriter { w -> w << email_txt }
+    FilesEx.copyTo(output_tf.toPath(), "${outdir}/pipeline_info/pipeline_report.txt");
+    output_tf.delete()
 }
 
 //
 // Print pipeline summary on completion
 //
-def completionSummary(monochrome_logs = true) {
+def completionSummary(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     if (workflow.success) {
         if (workflow.stats.ignoredCount == 0) {
@@ -259,9 +393,7 @@ def completionSummary(monochrome_logs = true) {
 //
 // Construct and send a notification to a web server as JSON e.g. Microsoft Teams and Slack
 //
-def imNotification(summary_params) {
-    def hook_url = params.hook_url
-
+def imNotification(summary_params, hook_url) {
     def summary = [:]
     for (group in summary_params.keySet()) {
         summary << summary_params[group]
@@ -280,7 +412,7 @@ def imNotification(summary_params) {
     misc_fields['nxf_timestamp']                        = workflow.nextflow.timestamp
 
     def msg_fields = [:]
-    msg_fields['version']      = NfcoreTemplate.version(workflow)
+    msg_fields['version']      = getWorkflowVersion()
     msg_fields['runName']      = workflow.runName
     msg_fields['success']      = workflow.success
     msg_fields['dateComplete'] = workflow.complete

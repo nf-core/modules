@@ -23,15 +23,23 @@ process SURVIVOR_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = vcf.getName().endsWith(".gz") ? true : false
+    vcf_name = vcf.getName().replace(".gz", "")
 
     """
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $vcf > $vcf_name
+    fi
+
     SURVIVOR \\
         stats \\
-        $vcf \\
+        $vcf_name \\
         $minsv \\
         $maxsv \\
         $minnumreads \\
         ${prefix}.stats
+
+    rm $vcf_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
