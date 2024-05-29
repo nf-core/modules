@@ -43,6 +43,10 @@ process DEEPBGC_PIPELINE {
         mv "${genome.baseName}/" "${prefix}/"
     fi
 
+    for i in \$(find -name '${genome.baseName}*' -type f); do
+        mv \$i \${i/${genome.baseName}/${prefix}};
+    done
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         deepbgc: \$(echo \$(deepbgc info 2>&1 /dev/null/ | grep 'version' | cut -d " " -f3) )
