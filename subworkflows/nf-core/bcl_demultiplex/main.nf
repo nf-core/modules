@@ -9,7 +9,7 @@ include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
-        ch_flowcell     // [[id:"", lane:""],samplesheet.csv, path/to/bcl/files]
+        ch_flowcell     // [[id:"", lane:""], samplesheet.csv, path/to/bcl/files]
         demultiplexer   // bclconvert or bcl2fastq
 
     main:
@@ -65,20 +65,21 @@ workflow BCL_DEMULTIPLEX {
 
         // Generate meta for each fastq
         ch_fastq_with_meta = ch_fastq
-            .map{ fc_meta, fastq -> 
+            // reshapes the channel from a single emit of [meta, [fastq, fastq, fastq...]] 
+            // to emits per fastq file like [meta, fastq]
+            .transpose()
+            .map{ fc_meta, fastq ->
                 def meta = [
                     "id": fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/,
                     "samplename": fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/,
                     "fcid": fc_meta.id,
-                    "lane": fc_meta.lane
+                    "lane": fc_meta.lane,
                 ]
-                [meta, fastq] 
+                return [meta, fastq]
             }
+            // Group by the meta id so that we can find mate pairs if they exist
             .groupTuple(by: [0])
-            .map { meta, fastq -> // Add meta.single_end
-                meta.single_end = fastq.size() == 1
-                return [meta, fastq.flatten()]
-            }
+            .dump(tag: 'fastq_with_meta')
 
     emit:
         fastq    = ch_fastq_with_meta
