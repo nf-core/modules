@@ -6,7 +6,7 @@ include { CAT_CAT                   } from '../../../modules/nf-core/cat/cat/mai
 include { LTRRETRIEVER_LAI          } from '../../../modules/nf-core/ltrretriever/lai/main'
 include { CUSTOM_RESTOREGFFIDS      } from '../../../modules/nf-core/custom/restoregffids/main'
 
-workflow FASTA_LTRRETRIEVER_LAI {
+workflow fasta_ltrharvest_ltrfinder_ltrretriever_lai {
 
     take:
     ch_fasta                        // channel: [ val(meta), fasta ]
