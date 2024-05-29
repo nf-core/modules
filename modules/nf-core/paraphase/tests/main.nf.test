@@ -48,7 +48,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
                     process.out.versions,
-                    process.out.vcf,
+                    file(process.out.vcf.get(0).get(1)).readLines()[0..963],
                     process.out.bam ==~ "test.paraphase.bam",
                     process.out.bai ==~ "test.paraphase.bam.bai",
                     ).match()
@@ -85,7 +85,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
                     process.out.versions,
-                    process.out.vcf,
+                    file(process.out.vcf.get(0).get(1)).readLines()[0..963],
                     process.out.bam ==~ "test.paraphase.bam",
                     process.out.bai ==~ "test.paraphase.bam.bai",
                     ).match()

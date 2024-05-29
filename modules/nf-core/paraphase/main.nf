@@ -39,7 +39,9 @@ process PARAPHASE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        minimap2: \$(minimap2 --version 2>&1)
         paraphase: \$(paraphase --version)
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -56,7 +58,9 @@ process PARAPHASE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        minimap2: \$(minimap2 --version 2>&1)
         paraphase: \$(paraphase --version)
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
