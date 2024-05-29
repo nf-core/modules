@@ -23,7 +23,6 @@ nextflow_process {
         }
 
         then {
-            print(process.out.undetermined)
             assertAll(
                 { assert process.success },
                 { assert snapshot(
