@@ -1,6 +1,6 @@
 process PARAPHASE {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
