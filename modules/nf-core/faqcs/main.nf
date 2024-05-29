@@ -123,6 +123,8 @@ process FAQCS {
     touch "${prefix}.log"
     echo "" | gzip > "${prefix}.discard.fastq.gz"
     echo "" | gzip > "${prefix}.trimmed.unpaired.fastq.gz"
+    mkdir debug
+    touch "debug/${prefix}.for_qual_histogram.txt"
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
