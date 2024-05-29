@@ -9,20 +9,30 @@ nextflow_process {
     tag "modules_nfcore"
     tag "paraphase"
 
-    test("homo_sapiens - [ bam, bai ] , []") {
+    setup {
+        run("TABIX_BGZIP") {
+            script "../../tabix/bgzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_ref' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+    }
 
+    test("homo_sapiens - [ bam, bai ], []") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam", checkIfExists: true),
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'test_ref' ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/genomics/homo_sapiens/genome/PRODH_chr22_chr22_KI270734v1_random.fa.gz", checkIfExists: true)
-                ]
+                input[1] = TABIX_BGZIP.out.output
                 input[2] = [
                     [:],
                     []
@@ -49,23 +59,20 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [ bam, bai ] , config") {
+    test("homo_sapiens - [ bam, bai ], config") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam", checkIfExists: true),
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'test_ref' ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/genomics/homo_sapiens/genome/PRODH_chr22_chr22_KI270734v1_random.fa.gz", checkIfExists: true)
-                ]
+                input[1] = TABIX_BGZIP.out.output
                 input[2] = [
                     [ id:'test_config' ],
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/paraphase_config.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
                 ]
                 """
             }
@@ -97,16 +104,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam", checkIfExists: true),
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new_reheader.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'test_ref' ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/PRODH.chr22_chr22_KI270734v1_random.fa.gz", checkIfExists: true)
-                ]
+                input[1] = TABIX_BGZIP.out.output
                 input[2] = [
-                    [ id:'test_config' ],
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/paraphase_config.yaml", checkIfExists: true),
+                    [:],
+                    []
                 ]
                 """
             }
@@ -129,16 +133,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new.bam", checkIfExists: true),
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/new.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'test_ref' ], // meta map
-                    file("/media/ssd_4tb/felix/projects/fellen31/modules/PRODH.chr22_chr22_KI270734v1_random.fa.gz", checkIfExists: true)
-                ]
+                input[1] = TABIX_BGZIP.out.output
                 input[2] = [
-                    [:],
-                    []
+                    [ id:'test_config' ],
+                    file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
                 ]
                 """
             }

@@ -20,7 +20,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1', single_end:true ]`
 
   - bam:
       type: file
@@ -45,8 +45,8 @@ input:
       type: map
       description: |
         Groovy Map containing config information
-        e.g. [ id:'genome' ]
-  - fasta:
+        e.g. [ id:'config' ]
+  - config:
       type: file
       description: Config file
       pattern: "*.yaml"
@@ -55,8 +55,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
+        e.g. `[ id:'sample1', single_end:true ]`
   - versions:
       type: file
       description: File containing software versions

@@ -3,7 +3,7 @@ process PARAPHASE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    // Needs mulled container with minimap2
+
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-058de387f9917a7a63953f496cdd203bca83b790:86215829f86df9201683956877a19d025261ff66-0':
         'biocontainers/mulled-v2-058de387f9917a7a63953f496cdd203bca83b790:86215829f86df9201683956877a19d025261ff66-0' }"
@@ -26,7 +26,6 @@ process PARAPHASE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     def config_file = config ? "--config $config" : ""
     """
     paraphase \\
@@ -35,6 +34,7 @@ process PARAPHASE {
         --bam $bam \\
         --reference $fasta \\
         --prefix $prefix \\
+        $config_file \\
         --out .
 
     cat <<-END_VERSIONS > versions.yml
