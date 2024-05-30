@@ -15,8 +15,8 @@ process SEGEMEHL_ALIGN {
     output:
     tuple val(meta), path("${prefix}/${prefix}.${suffix}"), emit: alignment
     tuple val(meta), path("${prefix}/${prefix}.trns.txt") , emit: trans_alignments, optional: true
-    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multibed, optional: true
-    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: singlebed, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed, optional: true
     path "versions.yml"                                   , emit: versions
 
     when:
