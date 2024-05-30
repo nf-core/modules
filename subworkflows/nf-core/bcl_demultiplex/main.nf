@@ -65,7 +65,7 @@ workflow BCL_DEMULTIPLEX {
 
         // Generate meta for each fastq
         ch_fastq_with_meta = ch_fastq
-            // reshapes the channel from a single emit of [meta, [fastq, fastq, fastq...]] 
+            // reshapes the channel from a single emit of [meta, [fastq, fastq, fastq...]]
             // to emits per fastq file like [meta, fastq]
             .transpose()
             .map{ fc_meta, fastq ->
