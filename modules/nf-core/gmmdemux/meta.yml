@@ -5,7 +5,7 @@ name: "gmmdemux"
 description: GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample barcoding data (cell hashing and MULTI-seq).
 keywords:
   - demultiplexing
-  - hashing-based deconvoltion
+  - hashing-based deconvolution
   - single-cell
 tools:
   - "gmmdemux":
@@ -21,7 +21,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1']`
   - cell_hashing_matrix:
       type: file
       description: path to file containing matrix from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
@@ -32,7 +32,7 @@ input:
       type: file
       description: path to file containing features from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
   - csv:
-      type: string
+      type: boolean
       description: |
         Take input in csv format, instead of mmx format.
   - hto_names:
@@ -47,25 +47,13 @@ input:
       type: string
       description: |
         Load a full classification report and skip the mtx folder as input. Require a path argument.
-  - extract:
-      type: string
-      description: |
-        Names of the sample barcoding tag(s) to extract, separated by ','. Joint tags are linked with '+'.
-  - examine:
-      type: file
-      description: |
-        Provide the cell list. Requires a file argument. Only executes if num_cells is set
-  - ambigous:
-      type: integer
-      description: |
-        The estimated chance of having a phony GEM getting included in a pure type GEM cluster by the clustering algorithm.Only if exclude is executed
 
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
   - versions:
       type: file
       description: File containing software versions
