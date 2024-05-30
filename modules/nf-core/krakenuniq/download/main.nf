@@ -3,8 +3,8 @@ process KRAKENUNIQ_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h19e8d03_0':
-        'biocontainers/krakenuniq:1.0.4--pl5321h19e8d03_0' }"
+        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h6dccd9a_2':
+        'biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2' }"
 
     input:
     val pattern
