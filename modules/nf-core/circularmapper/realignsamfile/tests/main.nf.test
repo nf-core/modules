@@ -15,9 +15,9 @@ nextflow_process {
 
         setup {
 
-                run("CIRCULARMAPPER_CIRCULARGENERATOR") {
-                    script "../../circulargenerator/main.nf"
-                    process {
+            run("CIRCULARMAPPER_CIRCULARGENERATOR") {
+                script "../../circulargenerator/main.nf"
+                process {
                     """
                     input[0] = [
                         [ id:'test' ], // meta map
@@ -27,13 +27,54 @@ nextflow_process {
                     """
                 }
             }
+
+            run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                    ]
+                    """
+                }
+            }
+
+            run("BWA_ALN") {
+                script "../../../bwa/aln/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                    input [1] = BWA_INDEX.out.index
+                    """
+                }
+            }
+
+            run("BWA_SAMSE") {
+                script "../../../bwa/samse/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ].join(BWA_ALN.out.bam)
+                    input[1] = BWA_INDEX.out.index
+                    """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                input[0] = BWA_SAMSE.out.bam
+                input[1] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
                 input[2] = 500
                 """
             }
@@ -54,27 +95,17 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-
-                run("CIRCULARMAPPER_CIRCULARGENERATOR") {
-                    script "../../circulargenerator/main.nf"
-                    process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
-                    input[1] = 500
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                input[0] = [
+                    [ id: "test" ], //meta map
+                    file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
                 input[2] = 500
                 """
             }
