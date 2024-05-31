@@ -4,8 +4,8 @@ process LAST_LASTAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
-        'biocontainers/last:1418--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
+        'biocontainers/last:1542--h43eeafb_1' }"
 
     input:
     tuple val(meta), path(fastx), path (param_file)
