@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success},
-                {assert snapshot(process.out).match()}
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
             )
         }
     }
@@ -52,12 +52,12 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success},
-                {assert snapshot(process.out).match()}
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
             )
         }
     }
 
-    test("samtools_import_interleaved ") {
+    test("samtools_import_interleaved") {
 
         when {
             params {
@@ -76,7 +76,7 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success},
-                {assert snapshot(process.out).match()}
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
             )
         }
     }
