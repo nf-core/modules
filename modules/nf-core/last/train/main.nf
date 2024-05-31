@@ -12,7 +12,7 @@ process LAST_TRAIN {
     path  index
 
     output:
-    tuple val(meta), path("*.par"), emit: param_file
+    tuple val(meta), path("*.train"), emit: param_file
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,7 +29,7 @@ process LAST_TRAIN {
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
-        > ${prefix}.\$INDEX_NAME.par
+        > ${prefix}.\$INDEX_NAME.train
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
