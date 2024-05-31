@@ -11,29 +11,29 @@ nextflow_process {
     tag "circularmapper"
     tag "circularmapper/realignsamfile"
 
-    test("sarscov2 - bam") {
+    test("sarscov2 - bam - fasta") {
 
-    setup {
+        setup {
 
-            run("CIRCULARMAPPER_CIRCULARGENERATOR") {
-                script "../../run/main.nf"
-                process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    ]
-                input[1] = 500
-                """
+                run("CIRCULARMAPPER_CIRCULARGENERATOR") {
+                    script "../../circulargenerator/main.nf"
+                    process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                    input[1] = 500
+                    """
+                }
             }
         }
-    }
 
         when {
             process {
                 """
                 input[0] = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta.collect{ meta, fasta -> fasta }.map{ fasta -> [[ id: 'test_summary'], fasta]}
+                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
                 input[2] = 500
                 """
             }
@@ -50,31 +50,31 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("sarscov2 - bam - fasta - stub") {
 
         options "-stub"
 
         setup {
 
-            run("CIRCULARMAPPER_CIRCULARGENERATOR") {
-                script "../../run/main.nf"
-                process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                    ]
-                input[1] = 500
-                """
+                run("CIRCULARMAPPER_CIRCULARGENERATOR") {
+                    script "../../circulargenerator/main.nf"
+                    process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        ]
+                    input[1] = 500
+                    """
+                }
             }
         }
-    }
 
         when {
             process {
                 """
                 input[0] = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta.collect{ meta, fasta -> fasta }.map{ fasta -> [[ id: 'test_summary'], fasta]}
+                input[1] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
                 input[2] = 500
                 """
             }
