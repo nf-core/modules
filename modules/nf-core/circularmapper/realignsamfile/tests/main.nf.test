@@ -56,11 +56,12 @@ nextflow_process {
             run("BWA_SAMSE") {
                 script "../../../bwa/samse/main.nf"
                 process {
+                    // TODO The operation below complains. Need to find a way to convert BWA_ALN:[meta, bam] -> [ meta, reads, bam]
                     """
-                    input[0] = [
+                    input[0] = Channel.fromList([[
                         [ id:'test', single_end:true ], // meta map
                         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                    ].join(BWA_ALN.out.bam)
+                    ]]).join(BWA_ALN.out.bam)
                     input[1] = BWA_INDEX.out.index
                     """
                 }
