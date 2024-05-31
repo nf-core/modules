@@ -21,7 +21,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" // Module actually has a hard-coded output of {input}_realigned.bam
     def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     realignsamfile \\
