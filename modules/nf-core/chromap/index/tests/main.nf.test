@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process CHROMAP_INDEX"
+    script "../main.nf"
+    process "CHROMAP_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "chromap"
+    tag "chromap/index"
+
+    test("test_chromap_idx") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(file(process.out.index[0][1]).name).match() }
+            )
+        }
+    }
+}
