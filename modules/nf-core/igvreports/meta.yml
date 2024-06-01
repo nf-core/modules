@@ -25,13 +25,19 @@ input:
 
   - sites:
       type: file
-      description: VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
+      description: |
+        VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
   - tracks:
       type: file
-      description: List of any set of files of the types that IGV can display, eg BAM/CRAM, GTF/GFF, VCF, BED, etc
+      description: |
+        List of any set of files of the types that IGV can display,
+        eg BAM/CRAM, GTF/GFF, VCF, BED, etc
   - tracks:
       type: file
-      description: Track index files, eg bai/crai files. This may not be required, but for some file types, eg BAM/CRAM, they are.
+      description: |
+        Track index files, eg bai/crai files. This may not be required,
+        but for some file types, eg BAM/CRAM, they are. They are not used in the
+        igvreports cmds, but may need to exist in the working directory
   - genomeFasta:
       type: file
       description: Reference fasta file
@@ -44,7 +50,9 @@ output:
       pattern: "versions.yml"
   - report:
       type: file
-      description: html report  with a table of genomic sites and an embedded IGV genome browser for viewing data for each site
+      description: |
+        html report  with a table of genomic sites and an embedded
+        IGV genome browser for viewing data for each site
       pattern: "*.{html}"
 
 authors:
