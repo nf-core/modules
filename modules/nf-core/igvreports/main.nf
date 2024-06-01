@@ -8,7 +8,7 @@ process IGVREPORTS {
         'biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
 
     input:
-    tuple val(meta), path(sites)
+    tuple val(meta), path(sites), path(tracks), path(tracks_indicies)
     path genomeFasta //optional genome fasta file
 
     output:
@@ -22,11 +22,21 @@ process IGVREPORTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta = genomeFasta ? "--fasta ${genomeFasta}" : ""
+    // If tracks is not null, create a string of the track paths
+    def track_arg = tracks ? "--tracks "+ tracks.collect { it.toString() }.join(' ') : ""
+    // if "--tracks" is in the args, then add track_string immediately after it in
+    // the args string and set the trag_arg to ""
+    if (args.contains("--tracks") && track_string) {
+        args.replace("--tracks", track_arg)
+        track_arg = ""
+    }
+
     """
     create_report $sites \
     $args \
     $fasta \
-    --output ${meta.id}_report.html
+    $track_arg \
+    --output ${prefix}_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,7 +48,7 @@ process IGVREPORTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${meta.id}_report.html
+    touch ${prefix}_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

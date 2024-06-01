@@ -26,6 +26,12 @@ input:
   - sites:
       type: file
       description: VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
+  - tracks:
+      type: file
+      description: List of any set of files of the types that IGV can display, eg BAM/CRAM, GTF/GFF, VCF, BED, etc
+  - tracks:
+      type: file
+      description: Track index files, eg bai/crai files. This may not be required, but for some file types, eg BAM/CRAM, they are.
   - genomeFasta:
       type: file
       description: Reference fasta file
