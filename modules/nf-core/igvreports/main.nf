@@ -9,7 +9,7 @@ process IGVREPORTS {
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indicies)
-    path fasta 
+    path fasta
 
     output:
     tuple val(meta), path("*.html") , emit: report
@@ -21,7 +21,7 @@ process IGVREPORTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fasta = genomeFasta ? "--fasta ${genomeFasta}" : ""
+    def fasta = fasta ? "--fasta ${fasta}" : ""
     // If tracks is not null, create a string of the track paths
     def track_arg = tracks ? "--tracks "+ tracks.collect { it.toString() }.join(' ') : ""
     // if "--tracks" is in the args, then add track_string immediately after it in
