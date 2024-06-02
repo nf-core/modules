@@ -4,8 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PEAR"
 
-    config "./nextflow.config"
-
     tag "modules"
     tag "modules_nfcore"
     tag "pear"
@@ -29,7 +27,9 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.assembled,
+                                  process.out.unassembled,
+                                  process.out.versions).match() }
             )
         }
 
