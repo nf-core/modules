@@ -10,8 +10,7 @@ process GMMDEMUX {
 
     input:
     tuple val(meta), path(cell_hashing_barcodes,stageAs: "hto_files/*"), path(cell_hashing_matrix,stageAs: "hto_files/*"),path(cell_hashing_features,stageAs: "hto_files/*"),val(hto_names)
-    val csv
-    val simplified_report
+    val type_report
     val skip
 
     output:
@@ -24,18 +23,14 @@ process GMMDEMUX {
     task.ext.when == null || task.ext.when
 
     script:
-    //since this tool has many optional inputs that can be passed in, we need to check if they are null or not
-    // in order to produce or not certain reports or outputs
     def args           = task.ext.args ?: ''
     def prefix         = task.ext.prefix ?: "${meta.id}"
-    def simplified_rep = simplified_report ? "--simplified $simplified_report" : ""
+    def type_report    = type_report ? "-s simplfied_report_${prefix}" : "-f full_report_${prefix}"
     def skip           = skip ? "--skip $skip" : ""
-    def type           = csv ? "-c" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    GMM-demux $type \\
-        $args \\
-        $simplified_rep \\
+    GMM-demux $args \\
+        $type_report \\
         $skip \\
         hto_files \\
         $hto_names

@@ -31,18 +31,14 @@ input:
   - cell_hashing_features:
       type: file
       description: path to file containing features from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
-  - csv:
-      type: boolean
-      description: |
-        Take input in csv format, instead of mmx format.
   - hto_names:
       type: string
       description: |
         Comma separated list of HTO names, without whitespace
-  - simplified_report:
-      type: string
+  - type_report:
+      type: boolean
       description: |
-        Generate the simplified classification report. Require a path argument.
+        If true, full report is generated, otherwise the simplified classification report.
   - skip:
       type: string
       description: |
