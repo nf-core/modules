@@ -9,7 +9,7 @@ process IGVREPORTS {
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indicies)
-    path genomeFasta //optional genome fasta file
+    path fasta 
 
     output:
     tuple val(meta), path("*.html") , emit: report
