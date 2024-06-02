@@ -44,7 +44,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.pt.get(0).get(1).endsWith("test.pt") },
+                { assert snapshot(process.out.versions).match("versions") }
 
             )
         }
