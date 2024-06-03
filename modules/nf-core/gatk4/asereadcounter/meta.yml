@@ -29,11 +29,6 @@ input:
       type: file
       description: index file for input file
       pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'reference' ]`
   - vcf:
       type: file
       description: VCF file
@@ -42,7 +37,7 @@ input:
       type: file
       description: index file for VCF file
       pattern: "*.{vcf.gz.tbi}"
-  - meta3:
+  - meta2:
       type: map
       description: |
         Groovy Map containing reference information
@@ -51,7 +46,7 @@ input:
       type: file
       description: fasta file
       pattern: "*.{fasta,fa}"
-  - meta4:
+  - meta3:
       type: map
       description: |
         Groovy Map containing reference information
@@ -60,7 +55,7 @@ input:
       type: file
       description: fasta index file
       pattern: "*.{fai}"
-  - meta5:
+  - meta4:
       type: map
       description: |
         Groovy Map containing reference information
