@@ -16,13 +16,11 @@ tools:
       licence: ["MIT"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - sites:
       type: file
       description: |
@@ -38,10 +36,20 @@ input:
         Track index files, eg bai/crai files. This may not be required,
         but for some file types, eg BAM/CRAM, they are. They are not used in the
         igvreports cmds, but may need to exist in the working directory
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing genome information
+        e.g. [ id:'genome_name' ]
   - fasta:
       type: file
       description: Reference fasta file
       pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: Reference fasta file index
+      pattern: "*.{fai}"
 
 output:
   - versions:
