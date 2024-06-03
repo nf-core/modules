@@ -37,6 +37,9 @@ input:
   - bam_format:
       type: boolean
       description: Specify that output should be in BAM format
+  - bam_index_extension:
+      type: string
+      description: BAM alignment index extension (e.g. "bai")
   - cigar_paf_format:
       type: boolean
       description: Specify that output CIGAR should be in PAF format
@@ -59,6 +62,10 @@ output:
       type: file
       description: Alignment in BAM format
       pattern: "*.bam"
+  - index:
+      type: file
+      description: BAM alignment index
+      pattern: "*.bam.*"
   - versions:
       type: file
       description: File containing software versions
@@ -68,8 +75,10 @@ authors:
   - "@sofstam"
   - "@sateeshperi"
   - "@jfy133"
+  - "@fellen31"
 maintainers:
   - "@heuermh"
   - "@sofstam"
   - "@sateeshperi"
   - "@jfy133"
+  - "@fellen31"
