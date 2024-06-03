@@ -9,7 +9,7 @@ nextflow_process {
     tag "samtools"
     tag "samtools/cramsize"
 
-    test("sarscov2 - bam") {
+    test("human - cram") {
 
         when {
             process {
@@ -30,7 +30,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("human - cram - stub") {
 
         options "-stub"
 
