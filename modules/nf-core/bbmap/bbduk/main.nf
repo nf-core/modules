@@ -4,8 +4,8 @@ process BBMAP_BBDUK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap%3A38.18--0':
-        'biocontainers/bbmap:38.18--0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.06--h92535d8_1':
+        'biocontainers/bbmap:39.06--h92535d8_1' }"
 
     input:
     tuple val(meta), path(reads)
