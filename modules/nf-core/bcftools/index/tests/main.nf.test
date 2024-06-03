@@ -79,7 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match("vcf_csi_stub") }
             )
         }
 
@@ -104,7 +104,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match("vcf_tbi_stub") }
             )
         }
 

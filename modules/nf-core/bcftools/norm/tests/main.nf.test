@@ -213,7 +213,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(process.out).match("vcf_stub")
                 }
             )
         }
@@ -244,7 +244,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(process.out).match("vcf_tbi_stub")
                 }
             )
         }
@@ -275,7 +275,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(process.out).match("vcf_tbi_vcf_out_stub")
                 }
             )
         }
@@ -305,7 +305,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(process.out).match("vcf_tbi_vcf_gz_out_stub")
                 }
             )
         }
@@ -336,7 +336,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(process.out).match("vcf_tbi_bcf_out_stub")
                 }
             )
         }
@@ -367,8 +367,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
-                }
+                { assert snapshot(process.out).match("vcf_tbi_bcf__gz_out_stub") }
             )
         }
 
