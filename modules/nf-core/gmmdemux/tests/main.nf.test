@@ -24,8 +24,8 @@ nextflow_process {
                     "MS-11,MS-12"
                     ]
                 input[1] = true
-                input[2] = ""
-
+                input[2] = true
+                input[3] = ""
 
                 """
             }
@@ -35,6 +35,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.matrix.get(0).get(1)).exists() },
+                { assert path(process.out.barcodes.get(0).get(1)).exists() },
+                { assert path(process.out.features.get(0).get(1)).exists() },
 
             )
         }
@@ -57,7 +59,8 @@ nextflow_process {
                     "MS-11,MS-12"
                     ]
                 input[1] = true
-                input[2] = ""
+                input[2] = true
+                input[3] = ""
                 """
             }
         }
@@ -66,6 +69,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.matrix.get(0).get(1)).exists() },
+                { assert path(process.out.barcodes.get(0).get(1)).exists() },
+                { assert path(process.out.features.get(0).get(1)).exists() },
             )
         }
 

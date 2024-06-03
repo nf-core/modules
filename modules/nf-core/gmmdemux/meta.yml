@@ -38,7 +38,11 @@ input:
   - type_report:
       type: boolean
       description: |
-        If true, full report is generated, otherwise the simplified classification report.
+        If true, full classification report is generated, otherwise the simplified classification report.
+  - summary_report:
+      type: boolean
+      description: |
+        If true, summary report is generated.
   - skip:
       type: string
       description: |
@@ -69,6 +73,16 @@ output:
       description: |
         features tsv file with removed cell-hashing-identifiable multiplets
       pattern: "test/*.tsv.gz"
+  - classification_report: 
+      type: file
+      description: |
+        full or simplified classification report 
+      pattern: "test/*_report_*.txt"
+  - summary_report:
+      type: file
+      description: |
+        summary report, optional output
+      pattern: "test/summary_report_*.txt"
 authors:
   - "@mari-ga"
   - "@maxozo"

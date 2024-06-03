@@ -11,12 +11,15 @@ process GMMDEMUX {
     input:
     tuple val(meta), path(cell_hashing_barcodes,stageAs: "hto_files/*"), path(cell_hashing_matrix,stageAs: "hto_files/*"),path(cell_hashing_features,stageAs: "hto_files/*"),val(hto_names)
     val type_report
+    val summary_report
     val skip
 
     output:
-    tuple val(meta), path('test/barcodes.tsv.gz'), emit: barcodes
-    tuple val(meta), path('test/*.mtx.gz'       ), emit: matrix
-    tuple val(meta), path('test/features.tsv.gz'), emit: features
+    tuple val(meta), path("${meta.id}/barcodes.tsv.gz"                          ), emit: barcodes
+    tuple val(meta), path("${meta.id}/*.mtx.gz"                                 ), emit: matrix
+    tuple val(meta), path("${meta.id}/features.tsv.gz"                          ), emit: features
+    tuple val(meta), path("${meta.id}/classification_report_${meta.id}"     ), emit: classification_report
+    tuple val(meta), path("summary_report_${meta.id}.txt"                       ), emit: summary_report, optional: true
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,12 +28,18 @@ process GMMDEMUX {
     script:
     def args           = task.ext.args ?: ''
     def prefix         = task.ext.prefix ?: "${meta.id}"
-    def type_report    = type_report ? "-s simplfied_report_${prefix}" : "-f full_report_${prefix}"
+    def type_report    = type_report ? "-f test/classification_report_${prefix}" : "-s test/classification_report_${prefix}"
     def skip           = skip ? "--skip $skip" : ""
+    def summary_rep    = summary_report ? "-r summary_report_${prefix}.txt" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
+    if [[ ${summary_report} == true ]]; then
+        cat /dev/null >  summary_report_${prefix}.txt
+        echo "summary report file created"
+    fi 
     GMM-demux $args \\
         $type_report \\
+        $summary_rep \\
         $skip \\
         hto_files \\
         $hto_names
@@ -48,7 +57,7 @@ process GMMDEMUX {
     touch test/barcodes.tsv.gz
     touch test/features.tsv.gz
     touch test/matrix.mtx.gz
-
+    touch test/classification_report_test
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
