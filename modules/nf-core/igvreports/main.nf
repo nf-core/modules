@@ -9,7 +9,7 @@ process IGVREPORTS {
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indicies)
-    path fasta
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.html") , emit: report
