@@ -1,0 +1,76 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_BAMCMP_BWA"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_BAMCMP_BWA"
+    config "./nextflow.config"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_bamcmp_bwa"
+    tag "subworkflows/bam_sort_stats_samtools"
+    tag "bwa/index"
+    tag "bwa/mem"
+    tag "bamcmp"
+
+    test("human - cov2") {
+
+        setup {
+
+            run("BWA_INDEX", alias: "BWA_INDEX_HUMAN") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'homo_sapiens_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    """
+                }
+            }
+
+            run("BWA_INDEX", alias: "BWA_INDEX_COV2") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'sarscov2_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    """
+                }
+            }
+
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = [[ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                input[1] = BWA_INDEX_HUMAN.out.index
+                input[2] = BWA_INDEX_COV2.out.index
+                input[3] = [[ id:'homo_sapiens_genome' ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bai,
+                    workflow.out.csi,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    file(workflow.out.contaminant_bam[0][1]).name,
+                    file(workflow.out.unfiltered_bam[0][1]).name,
+                    workflow.out.unfiltered_bai,
+                    workflow.out.unfiltered_csi,
+                    workflow.out.unfiltered_stats,
+                    workflow.out.unfiltered_flagstat,
+                    workflow.out.unfiltered_idxstats,
+                    workflow.out.versions
+                    ).match()}
+            )
+        }
+    }
+}
