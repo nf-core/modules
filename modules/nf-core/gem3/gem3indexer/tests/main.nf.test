@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process GEM3_GEM3INDEXER"
+    script "../main.nf"
+    process "GEM3_GEM3INDEXER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gem3"
+    tag "gem3/gem3indexer"
+
+    test("GEM3 INDEX") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("GEM3 INDEX - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

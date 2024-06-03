@@ -10,7 +10,7 @@ process MTMALIGN_ALIGN {
         'biocontainers/mulled-v2-5bcf71dc66dac33d8e003c5e78043b80f5c7f269:8f0e486d46f7ab38892c1a8f78d2894a549d03b5-0' }"
 
     input:
-    tuple val(meta), path('*.pdb', arity: '2..*')
+    tuple val(meta), path(pdbs)
     val(compress)
 
     output:
@@ -38,12 +38,13 @@ process MTMALIGN_ALIGN {
     mtm-align -i input_list.txt -o ${prefix}.pdb
     # -o does not affect the fasta naming, so move it to the new name
     mv ./mTM_result/result.fasta ./mTM_result/${prefix}.aln
+    # Remove ".pdb" from the ids in the alignment file
+    sed -i 's/\\.pdb//g' ./mTM_result/${prefix}.aln
 
     # compress both output files
     if ${compress}; then
         pigz -p ${task.cpus} ./mTM_result/${prefix}.aln ./mTM_result/${prefix}.pdb
     fi
-    tree
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
@@ -54,7 +55,6 @@ process MTMALIGN_ALIGN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mTM_result
