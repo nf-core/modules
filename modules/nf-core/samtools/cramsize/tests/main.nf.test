@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ]
                 """
             }
