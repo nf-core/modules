@@ -59,6 +59,10 @@ output:
       type: file
       description: Alignment in BAM format
       pattern: "*.bam"
+  - index:
+      type: file
+      description: BAM alignment index
+      pattern: "*.bam.*"
   - versions:
       type: file
       description: File containing software versions
@@ -68,8 +72,10 @@ authors:
   - "@sofstam"
   - "@sateeshperi"
   - "@jfy133"
+  - "@fellen31"
 maintainers:
   - "@heuermh"
   - "@sofstam"
   - "@sateeshperi"
   - "@jfy133"
+  - "@fellen31"
