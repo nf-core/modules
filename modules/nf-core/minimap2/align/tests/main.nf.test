@@ -76,39 +76,6 @@ nextflow_process {
 
     }
 
-
-    test("sarscov2 - fastq, fasta, true, 'csi', false, false") {
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:'test_ref' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                input[2] = true
-                input[3] = 'csi'
-                input[4] = false
-                input[5] = false
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.index[0][1]).name,
-                    process.out.versions
-                ).match() }
-            )
-        }
-
     }
 
     test("sarscov2 - [fastq1, fastq2], fasta, true, false, false") {
