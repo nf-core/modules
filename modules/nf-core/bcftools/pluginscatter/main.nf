@@ -58,10 +58,12 @@ process BCFTOOLS_PLUGINSCATTER {
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
 
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+
     """
-    touch ${prefix}1.${extension}
-    touch ${prefix}2.${extension}
-    touch ${prefix}3.${extension}
+    ${create_cmd} ${prefix}1.${extension}
+    ${create_cmd} ${prefix}2.${extension}
+    ${create_cmd} ${prefix}3.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
