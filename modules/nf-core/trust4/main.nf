@@ -62,7 +62,7 @@ process TRUST4 {
     else {
         umi = ''
     }
-    
+
     """
     run-trust4 \\
         ${bam_mode} \\
