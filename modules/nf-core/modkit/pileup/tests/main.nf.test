@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process MODKIT_PILEUP"
+    script "../main.nf"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/pileup"
+    process "MODKIT_PILEUP"
+
+    test("modkit_pileup") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true) ]
+                ]
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam.bai', checkIfExists: true) 
+                input[2] = file("test.bed") 
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
