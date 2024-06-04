@@ -1,0 +1,173 @@
+nextflow_process {
+
+    name "Test Process SEQKIT_RMDUP"
+    script "../main.nf"
+    process "SEQKIT_RMDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqkit"
+    tag "seqkit/rmdup"
+
+    test("sarscov2-genome_fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
+            )
+        }
+
+    }
+
+    test("repeated-fasta") {
+        when {
+            process {
+                """
+                def repeated_fasta = file('repeated.fasta')
+                repeated_fasta.text = '>A\\nAGCTAGCTAGCT\\n>B\\nAGCTAGCTAGCT\\n>A\\nAGCTAGCTAGCT'
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    repeated_fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.log[0][1]).text.contains('1 duplicated records removed') }
+            )
+        }
+
+    }
+
+    test("sarscov2-genome_fasta_gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
+            )
+        }
+
+    }
+
+    test("sarscov2-test_1_fastq_gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
+            )
+        }
+
+    }
+
+    test("file_name_conflict-fail_with_error") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+    test("sarscov2-genome_fasta-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.log[0][1]).text.contains('0 duplicated records removed') }
+            )
+        }
+
+    }
+
+    test("file_name_conflict-fail_with_error-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+}
