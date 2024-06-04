@@ -29,10 +29,12 @@ process BTYPER3 {
         gzip -c -d $fasta > $fasta_name
     fi
 
+    mv $fasta_name ${prefix}.fasta
+
     btyper3 \\
         $args \\
         --output ./ \\
-        --input ${fasta_name}
+        --input ${prefix}.fasta
 
     mv btyper3_final_results/ results/
 
