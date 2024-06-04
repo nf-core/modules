@@ -25,10 +25,20 @@ input:
       type: file
       description: Associated index file for BAM
       pattern: "*.bai"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'hg38' ]`
   - fasta:
       type: file
       description: Reference sequence in FASTA format. Required for motif (e.g. CpG) filtering
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing BED file information
+        e.g. `[ id:'regions' ]`
   - bed:
       type: file
       description: BED file that will restrict threshold estimation and pileup results to positions overlapping intervals in the
