@@ -12,17 +12,17 @@ process DEEPBGC_PIPELINE {
     path(db)
 
     output:
-    tuple val(meta), path("${prefix}/README.txt")                        ,   optional: true, emit: readme
-    tuple val(meta), path("${prefix}/LOG.txt")                           ,   emit: log
-    tuple val(meta), path("${prefix}/${prefix}.antismash.json")          ,   optional: true, emit: json
-    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk")                 ,   optional: true, emit: bgc_gbk
-    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv")                 ,   optional: true, emit: bgc_tsv
-    tuple val(meta), path("${prefix}/${prefix}.full.gbk")                ,   optional: true, emit: full_gbk
-    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv")                ,   optional: true, emit: pfam_tsv
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png")      ,   optional: true, emit: bgc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png")       ,   optional: true, emit: pr_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png")      ,   optional: true, emit: roc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png")    ,   optional: true, emit: score_png
+    tuple val(meta), path("${prefix}/README.txt")                    ,   optional: true, emit: readme
+    tuple val(meta), path("${prefix}/LOG.txt")                       ,   emit: log
+    tuple val(meta), path("${prefix}/${prefix}.antismash.json")      ,   optional: true, emit: json
+    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk")             ,   optional: true, emit: bgc_gbk
+    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv")             ,   optional: true, emit: bgc_tsv
+    tuple val(meta), path("${prefix}/${prefix}.full.gbk")            ,   optional: true, emit: full_gbk
+    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv")            ,   optional: true, emit: pfam_tsv
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png")  ,   optional: true, emit: bgc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png")   ,   optional: true, emit: pr_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png")  ,   optional: true, emit: roc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"),   optional: true, emit: score_png
     path "versions.yml"                                                                    ,   emit: versions
 
     when:
