@@ -30,8 +30,57 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - vcf_gz_index") {
+
+        config "./vcf_gz_index.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - vcf - stub") {
         options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf_gz_index - stub") {
+
+        config "./vcf_gz_index.config"
+        options "-stub"
+
         when {
             process {
                 """

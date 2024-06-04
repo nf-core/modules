@@ -76,6 +76,14 @@ output:
       type: file
       description: hap format used by IMPUTE2 and SHAPEIT
       pattern: "*.hap.gz"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - legend:
       type: file
       description: legend format used by IMPUTE2 and SHAPEIT

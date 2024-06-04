@@ -11,8 +11,10 @@ process BCFTOOLS_CONCAT {
     tuple val(meta), path(vcfs), path(tbi)
 
     output:
-    tuple val(meta), path("*.gz"), emit: vcf
-    path  "versions.yml"         , emit: versions
+    tuple val(meta), path("*.gz") , emit: vcf
+    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    path  "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,8 +37,14 @@ process BCFTOOLS_CONCAT {
 
     stub:
     prefix   = task.ext.prefix ?: "${meta.id}"
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

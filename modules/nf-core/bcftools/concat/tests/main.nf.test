@@ -9,18 +9,50 @@ nextflow_process {
     tag "bcftools"
     tag "bcftools/concat"
 
-    config "./nextflow.config"
 
     test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
+
+        config "./nextflow.config"
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test3' ], // meta map
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) 
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true)
+                    ],
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index") {
+
+        config "./vcf_gz_index.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true)
                     ],
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
@@ -42,14 +74,16 @@ nextflow_process {
 
     test("sarscov2 - [[vcf1, vcf2], []]") {
 
+        config "./nextflow.config"
+
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test3' ], // meta map
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) 
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true)
                     ],
                     []
                 ]
@@ -68,15 +102,49 @@ nextflow_process {
 
     test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - stub") {
 
+        config "./nextflow.config"
         options "-stub"
+
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test3' ], // meta map
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) 
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true)
+                    ],
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index - stub") {
+
+        config "./vcf_gz_index.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true)
                     ],
                     [
                         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),

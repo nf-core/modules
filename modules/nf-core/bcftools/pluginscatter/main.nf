@@ -17,6 +17,8 @@ process BCFTOOLS_PLUGINSCATTER {
 
     output:
     tuple val(meta), path("*{vcf,vcf.gz,bcf,bcf.gz}")   , emit: scatter
+    tuple val(meta), path("*.tbi")                      , emit: tbi, optional: true
+    tuple val(meta), path("*.csi")                      , emit: csi, optional: true
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -57,13 +59,23 @@ process BCFTOOLS_PLUGINSCATTER {
                 args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
-
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index_1 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_index_2 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_index_3 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
 
     """
     ${create_cmd} ${prefix}1.${extension}
     ${create_cmd} ${prefix}2.${extension}
     ${create_cmd} ${prefix}3.${extension}
+
+    ${create_index_1}
+    ${create_index_3}
+    ${create_index_3}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

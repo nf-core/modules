@@ -15,8 +15,10 @@ process BCFTOOLS_PLUGINSPLIT {
     path(targets)
 
     output:
-    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}")  , emit: vcf
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
+    tuple val(meta), path("*.csi")                    , emit: csi, optional: true
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,12 +58,17 @@ process BCFTOOLS_PLUGINSPLIT {
                 args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
-
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
     def determination_file = samples ?: targets
     """
     cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt
 
     touch \$(<files.txt)
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
