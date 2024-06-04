@@ -21,7 +21,7 @@ process BCFTOOLS_CONCAT {
 
     script:
     def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def prefix   = task.ext.prefix ?: "${meta.id}"
     """
     bcftools concat \\
         --output ${prefix}.vcf.gz \\
@@ -36,7 +36,8 @@ process BCFTOOLS_CONCAT {
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
     def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
                 args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
                 args.contains("--write-index") || args.contains("-W") ? "csi" :
