@@ -37,4 +37,18 @@ process MAGECK_MLE {
         mageck: \$(mageck -v)
     END_VERSIONS
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.gene_summary.txt
+    touch ${prefix}.sgrna_summary.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mageck: \$(mageck -v)
+    END_VERSIONS
+    """
+
+
 }
