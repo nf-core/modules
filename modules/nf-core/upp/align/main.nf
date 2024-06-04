@@ -2,14 +2,17 @@ process UPP_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::sepp"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sepp:4.5.1--py38h9ee0642_4':
+        'biocontainers/sepp:4.5.1--py38h9ee0642_4' }"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(tree)
 
     output:
-    tuple val(meta), path("*_alignment.fasta"), emit: alignment
+    tuple val(meta), path("*.aln"), emit: alignment
     path "versions.yml", emit: versions
 
     when:

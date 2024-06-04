@@ -39,21 +39,21 @@ input:
         Groovy Map containing meta information for the input fasta file
         e.g. `[ id:'test', single_end:false ]`
 
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format
+      pattern: "*.{fa,fna,fasta}"
+
   - meta2:
       type: map
       description: |
         Groovy Map containing meta information for the specified guide tree (if supplied)
         e.g. `[ id:'test', single_end:false ]`
 
-  - fasta:
-      type: file
-      description: Input sequences in FASTA format
-      pattern: "*.{fa,fna,fasta}"
-
   - tree:
       type: file
       description: Optional path to a file containing a guide tree in newick format to use as input.
-         If empty, `fasttree` is used as a default.
+        If empty, `fasttree` is used as a default.
       pattern: "*.{dnd,tree}"
 
 output:
@@ -72,7 +72,7 @@ output:
       type: file
       description: File containing the output alignment, in FASTA format containing gaps.
         The sequences may be in a different order than in the input FASTA.
-      pattern: "*_alignment.fasta"
+      pattern: "*.fasta"
 
 authors:
   - "@lrauschning"
