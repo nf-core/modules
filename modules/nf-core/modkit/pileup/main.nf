@@ -1,21 +1,22 @@
 process MODKIT_PILEUP {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
-    conda "bioconda::ont-modkit=0.2.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.2.2--hdcf5f25_0':
-        'biocontainers/ont-modkit:0.2.2--hdcf5f25_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.3.0--h5c23e0d_0':
+        'biocontainers/ont-modkit:0.3.0--h5c23e0d_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path bai
-    path out_bed
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(bed)
 
     output:
-    tuple val(meta), path(out_bed), emit: bed
-    tuple val(meta), path("*_pileup.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bed")     , emit: bed     , optional: true
+    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
+    tuple val(meta), path("*.log")     , emit: log     , optional: true
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,36 +24,46 @@ process MODKIT_PILEUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def filename = "${bam}"[0..<"${bam}".lastIndexOf('.')]
+    def reference = fasta ? "--ref ${fasta}" : ""
+    def include_bed = bed ? "--include-bed ${bed}" : ''
+
     """
-    mkdir -p tmp/ &&
-    cp $bam $bai tmp/ &&
     modkit \\
         pileup \\
-        tmp/$bam \\
-        $out_bed \\
-        --threads $task.cpus \\
-        --log-filepath ${filename}_pileup.log \\
-        $args
+        $args \\
+        --threads ${task.cpus} \\
+        $reference \\
+        $include_bed \\
+        $bam \\
+        ${prefix}.tmp
 
+    if test -d ${prefix}.tmp; then
+        for file in ${prefix}.tmp/*; do
+            if test -f \$file; then
+                mv \$file \$(basename \$file)
+            fi
+        done
+    else
+        mv ${prefix}.tmp ${prefix}.bed
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(modkit --version 2>&1) | sed 's/^.*modkit //; s/Using.*\$//' ))
+        modkit: \$( modkit --version | sed 's/mod_kit //' )
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def filename = "${bam}"[0..<"${bam}".lastIndexOf('.')]
     """
-    touch $out_bed
-    touch ${filename}_pileup.log
+    touch ${prefix}.bed
+    touch ${prefix}.bedgraph
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        modkit: \$( modkit --version | sed 's/mod_kit //' )
     END_VERSIONS
     """
 }
