@@ -15,8 +15,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [[],[]]
                 input[2] = [[],[]]
@@ -40,12 +40,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
                 """
@@ -68,12 +68,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -100,12 +100,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -132,12 +132,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -164,12 +164,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -196,8 +196,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [[],[]]
                 input[2] = [[],[]]
@@ -223,12 +223,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
                 """
@@ -253,12 +253,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -286,12 +286,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -319,12 +319,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)
@@ -352,12 +352,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'bc_anchored' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/bc_anchored_10_reads.haplotyped.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id: 'CGI_ladder' ],
-                    file('/media/ssd_4tb/felix/projects/fellen31/test-datasets/data/delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/modkit/CGI_ladder_3.6kb_ref.fa', checkIfExists: true)
                 ]
                 input[2] = Channel.of('oligo_1512_adapters\t0\t155')
                     .collectFile(name: 'oligo_1512_adapters.bed', newLine: true)

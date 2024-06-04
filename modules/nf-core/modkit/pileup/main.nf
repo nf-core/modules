@@ -22,9 +22,9 @@ process MODKIT_PILEUP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--ref ${fasta}" : ""
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def reference   = fasta ? "--ref ${fasta}" : ""
     def include_bed = bed ? "--include-bed ${bed}" : ''
 
     """
@@ -54,7 +54,7 @@ process MODKIT_PILEUP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
