@@ -78,26 +78,9 @@ process SALMON_QUANT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-    mkdir ${prefix}/aux_info
-    touch ${prefix}/aux_info/ambig_info.tsv
-    touch ${prefix}/aux_info/expected_bias.gz
-    touch ${prefix}/aux_info/exp_gc.gz
-    touch ${prefix}/aux_info/fld.gz
-    touch ${prefix}/aux_info/meta_info.json
-    touch ${prefix}/aux_info/observed_bias_3p.gz
-    touch ${prefix}/aux_info/observed_bias.gz
-    touch ${prefix}/aux_info/obs_gc.gz
-    touch ${prefix}/cmd_info.json
-    touch ${prefix}/lib_format_counts.json
-    mkdir ${prefix}/libParams
-    touch ${prefix}/libParams/flenDist.txt
-    mkdir ${prefix}/logs
-    touch ${prefix}/logs/salmon_quant.log
-    mkdir ${prefix}/quant.genes.sf
-    mkdir ${prefix}/quant.sf
     touch ${prefix}_meta_info.json
 
     cat <<-END_VERSIONS > versions.yml

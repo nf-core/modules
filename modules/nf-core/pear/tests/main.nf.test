@@ -1,0 +1,38 @@
+nextflow_process {
+
+    name "Test Process PEAR"
+    script "../main.nf"
+    process "PEAR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pear"
+
+    test("sarscov2 - [fastq_gz_1, fastq_gz_2]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.assembled,
+                                  process.out.unassembled,
+                                  process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
