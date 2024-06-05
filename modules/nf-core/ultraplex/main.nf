@@ -13,10 +13,10 @@ process ULTRAPLEX {
     val(adapter_seq)
 
     output:
-    tuple val(meta), path("*matched.fastq.gz") , emit: fastq
-    tuple val(meta), path("*no_match.fastq.gz"), emit: no_match_fastq, optional: true
-    path "*.log"                               , emit: report
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*_matched.fastq.gz")    , emit: fastq
+    tuple val(meta), path("*_no_match_*.fastq.gz") , emit: no_match_fastq, optional: true
+    path "*.log"                                   , emit: report
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,12 +37,18 @@ process ULTRAPLEX {
         --inputfastq ${read_list[0]} \\
         --input_2 ${read_list[1]} \\
         --barcodes $barcode_file \\
-        --threads $task.cpus $args $adapter_seq_command"""
+        --threads $task.cpus \\
+        --outputprefix ${prefix} \\
+        $args \\
+        $adapter_seq_command"""
     } else {
         ultraplex_command = """ultraplex \\
         --inputfastq ${read_list[0]} \\
         --barcodes $barcode_file \\
-        --threads $task.cpus $args $adapter_seq_command"""
+        --threads $task.cpus \\
+        --outputprefix ${prefix} \\
+        $args \\
+        $adapter_seq_command"""
     }
 
     """
@@ -65,10 +71,12 @@ process ULTRAPLEX {
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ultraplex_demux_Sample1_matched.fastq.gz
-    echo "" | gzip > ultraplex_demux_Sample2_matched.fastq.gz
-    echo "" | gzip > ultraplex_demux_Sample1_no_match.fastq.gz
-    echo "" | gzip > ultraplex_demux_Sample2_no_match.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_Sample1_Fwd_matched.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_Sample1_Rev_matched.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_Sample2_Fwd_matched.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_Sample2_Rev_matched.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_no_match_Fwd.fastq.gz
+    echo "" | gzip > ultraplex_${prefix}_no_match_Rev.fastq.gz
 
     touch ultraplex.log
 
