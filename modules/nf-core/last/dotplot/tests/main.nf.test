@@ -56,4 +56,29 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - contigs - genome - png - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                ]
+                input[1] = channel.of("png")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert process.out.png.get(0).get(1).endsWith("test.png") }
+            )
+        }
+
+    }
+
 }
