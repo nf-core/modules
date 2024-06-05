@@ -25,14 +25,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    // Following lines were used to test out the nft-bam plugin. Feel free to remove these later
                     process.out.bam.collect { bam(it[1]).getReads() },
                     process.out.bam.collect { bam(it[1]).getReads(10) },
                     process.out.bam.collect { bam(it[1]).getSamLines() },
                     process.out.bam.collect { bam(it[1]).getSamLines(10) },
                     process.out.bam.collect { bam(it[1]).getHeader() },
                     process.out.bam.collect { bam(it[1]).getFileType() },
+                    process.out.versions
                 ).match() }
             )
         }
