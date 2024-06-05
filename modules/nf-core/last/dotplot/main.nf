@@ -34,4 +34,18 @@ process LAST_DOTPLOT {
         last: \$(lastal --version | sed 's/lastal //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.$format
+
+    # last-dotplot has no --version option so let's use lastal from the same suite
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastal --version | sed 's/lastal //')
+    END_VERSIONS
+    """
+
 }
