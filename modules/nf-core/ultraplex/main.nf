@@ -13,7 +13,7 @@ process ULTRAPLEX {
     val(adapter_seq)
 
     output:
-    tuple val(meta), path("*matched.fastq.gz")   , emit: fastq
+    tuple val(meta), path("*matched.fastq.gz") , emit: fastq
     tuple val(meta), path("*no_match.fastq.gz"), emit: no_match_fastq, optional: true
     path "*.log"                               , emit: report
     path "versions.yml"                        , emit: versions
