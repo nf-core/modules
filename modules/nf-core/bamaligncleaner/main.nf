@@ -44,5 +44,5 @@ process BAMALIGNCLEANER {
     "${task.process}":
         bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
     END_VERSIONS
-    """ 
+    """
 }
