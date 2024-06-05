@@ -25,11 +25,12 @@ process METAMAPS_MAPDIRECTLY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    db=`find -L ${database} -name "DB.fa"`
     metamaps \\
         mapDirectly \\
         $args \\
         --all \\
-        --reference $database \\
+        --reference \$db \\
         --threads $task.cpus \\
         --query $reads \\
         --output ${prefix}.classification_res
