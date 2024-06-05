@@ -27,6 +27,7 @@ process TCOFFEE_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
+    def outfile = compress ? "stdout" : "${prefix}.aln"
     def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
     // using >() is necessary to preserve the tcoffee return value,
     // so nextflow knows to display an error when it failed
@@ -37,8 +38,15 @@ process TCOFFEE_ALIGN {
         $template_args \
         $args \
         -thread ${task.cpus} \
-        -outfile stdout \
+        -outfile $outfile \
         $write_output
+
+    # If stdout file exist and compress is true, then compress the file
+    # This is a patch for the current behaviour of the regressive algorithm
+    # that does not support the stdout redirection
+    if [ -f stdout ] && [ "$compress" = true ]; then
+        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
