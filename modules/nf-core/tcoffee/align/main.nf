@@ -28,9 +28,7 @@ process TCOFFEE_ALIGN {
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     def outfile = compress ? "stdout" : "${prefix}.aln"
-    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
-    // using >() is necessary to preserve the tcoffee return value,
-    // so nextflow knows to display an error when it failed
+    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
     t_coffee -seq ${fasta} \
@@ -46,6 +44,7 @@ process TCOFFEE_ALIGN {
     # that does not support the stdout redirection
     if [ -f stdout ] && [ "$compress" = true ]; then
         pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
+        rm stdout
     fi
 
     cat <<-END_VERSIONS > versions.yml
