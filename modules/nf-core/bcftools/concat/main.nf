@@ -42,7 +42,7 @@ process BCFTOOLS_CONCAT {
                 args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
                 args.contains("--write-index") || args.contains("-W") ? "csi" :
                 ""
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     ${create_index}
