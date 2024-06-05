@@ -64,17 +64,17 @@ process BCFTOOLS_PLUGINSCATTER {
                 args.contains("--write-index") || args.contains("-W") ? "csi" :
                 ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
-    def create_index_1 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
-    def create_index_2 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
-    def create_index_3 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_index_1 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}0.${extension}.${index}" : ""
+    def create_index_2 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}1.${extension}.${index}" : ""
+    def create_index_3 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}2.${extension}.${index}" : ""
 
     """
+    ${create_cmd} ${prefix}0.${extension}
     ${create_cmd} ${prefix}1.${extension}
     ${create_cmd} ${prefix}2.${extension}
-    ${create_cmd} ${prefix}3.${extension}
 
     ${create_index_1}
-    ${create_index_3}
+    ${create_index_2}
     ${create_index_3}
 
     cat <<-END_VERSIONS > versions.yml
