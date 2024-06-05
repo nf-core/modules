@@ -13,10 +13,10 @@ process ULTRAPLEX {
     val(adapter_seq)
 
     output:
-    tuple val(meta), path("*[!no_match].fastq.gz"),               emit: fastq
-    tuple val(meta), path("*no_match*.fastq.gz"), optional: true, emit: no_match_fastq
-    path "*.log",                                                 emit: report
-    path "versions.yml",                                          emit: versions
+    tuple val(meta), path("*matched.fastq.gz")   , emit: fastq
+    tuple val(meta), path("*no_match.fastq.gz"), emit: no_match_fastq, optional: true
+    path "*.log"                               , emit: report
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,6 +47,13 @@ process ULTRAPLEX {
 
     """
     ${ultraplex_command}
+
+    ## rename the matched files to be able to emit only the matched files
+    MATCHES=\$( find . -type f -name '*.fastq.gz' ! -name '*_no_match_*.fastq.gz' )
+    for MATCH in \$MATCHES; do
+        mv \$MATCH \${MATCH/.fastq.gz/_matched.fastq.gz}
+    done
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ultraplex: $VERSION
@@ -58,8 +65,11 @@ process ULTRAPLEX {
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ultraplex_demux_Sample1.fastq.gz
-    echo "" | gzip > ultraplex_demux_Sample2.fastq.gz
+    echo "" | gzip > ultraplex_demux_Sample1_matched.fastq.gz
+    echo "" | gzip > ultraplex_demux_Sample2_matched.fastq.gz
+    echo "" | gzip > ultraplex_demux_Sample1_no_match.fastq.gz
+    echo "" | gzip > ultraplex_demux_Sample2_no_match.fastq.gz
+
     touch ultraplex.log
 
     cat <<-END_VERSIONS > versions.yml
