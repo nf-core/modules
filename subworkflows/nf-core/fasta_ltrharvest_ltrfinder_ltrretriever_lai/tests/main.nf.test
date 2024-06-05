@@ -1,22 +1,20 @@
 nextflow_workflow {
 
-    name "Test Workflow FASTA_LTRRETRIEVER_LAI"
+    name "Test Workflow FASTA_LTRHARVEST_LTRFINDER_LTRRETRIEVER_LAI"
     script "../main.nf"
-    workflow "FASTA_LTRRETRIEVER_LAI"
+    workflow "FASTA_LTRHARVEST_LTRFINDER_LTRRETRIEVER_LAI"
     config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/fasta_ltrretriever_lai"
-    tag "fasta_ltrretriever_lai"
+    tag "subworkflows/fasta_ltrharvest_ltrfinder_ltrretriever_lai"
+    tag "fasta_ltrharvest_ltrfinder_ltrretriever_lai"
     tag "gunzip"
-    tag "custom/shortenfastaids"
     tag "ltrharvest"
     tag "ltrfinder"
     tag "ltrretriever/ltrretriever"
     tag "cat/cat"
     tag "ltrretriever/lai"
-    tag "custom/restoregffids"
 
     setup {
         run("GUNZIP") {
@@ -33,7 +31,7 @@ nextflow_workflow {
         }
     }
 
-    test("actinidia_chinensis-genome_1_fasta_gz") {
+    test("actinidia_chinensis-genome_21_fasta_gz") {
 
         when {
             workflow {
@@ -52,12 +50,13 @@ nextflow_workflow {
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
                 { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
-                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
+                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') },
+                { assert snapshot(workflow.out.versions).match("fasta_gz_versions") }
             )
         }
     }
 
-    test("actinidia_chinensis-genome_1_fasta_gz-with_mono") {
+    test("actinidia_chinensis-genome_21_fasta_gz-with_mono") {
 
         when {
             workflow {
@@ -87,44 +86,13 @@ nextflow_workflow {
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
                 { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
-                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
+                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') },
+                { assert snapshot(workflow.out.versions).match("with_mono_versions") }
             )
         }
     }
 
-    test("actinidia_chinensis-genome_1_fasta_gz-with_empty_mono_channel") {
-
-        when {
-            workflow {
-                """
-                GUNZIP.out.gunzip.map { meta, fasta ->
-                    def fa          = new File('test.fa')
-                    fa.write(fasta.text.replaceAll('>chr1', '>chr_xxxxxxxxxxxxxxx_1'))
-
-                    [ meta, fa.toPath() ]
-                }
-                | set { ch_fa }
-
-                input[0]            = ch_fa
-                input[1]            = ch_fa.map { meta, fasta -> [ meta, [] ] }
-                input[2]            = false
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert file(workflow.out.annotation_gff[0][1]).text.contains('Copia_LTR_retrotransposon') },
-                { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
-                { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
-                { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
-                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
-            )
-        }
-    }
-
-    test("actinidia_chinensis-genome_1_fasta_gz-with_empty_mono") {
+    test("actinidia_chinensis-genome_21_fasta_gz-with_empty_mono") {
 
         when {
             workflow {
@@ -151,43 +119,8 @@ nextflow_workflow {
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Calculate LAI:') },
                 { assert file(workflow.out.lai_log[0][1]).text.contains('Done!') },
                 { assert Math.abs(Float.parseFloat(path(workflow.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 },
-                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') }
-            )
-        }
-    }
-
-    test("actinidia_chinensis-genome_1_fasta_gz-without_lai") {
-
-        options '-stub'
-
-        when {
-            workflow {
-                """
-                GUNZIP.out.gunzip.map { meta, fasta ->
-                    def fa          = new File('test.fa')
-                    fa.write(fasta.text.replaceAll('>chr1', '>chr_xxxxxxxxxxxxxxx_1'))
-
-                    [ meta, fa.toPath() ]
-                }
-                | set { ch_fa }
-
-                def monoploid_seqs  = new File('test.mono.seq.txt')
-                monoploid_seqs.write("chr_xxxxxxxxxxxxxxx_1")
-
-                input[0]            = ch_fa
-                input[1]            = Channel.of( [ [ id:'test' ], monoploid_seqs.toPath() ] )
-                input[2]            = true
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert workflow.out.annotation_gff != null },
-                { assert workflow.out.ltrlib != null },
-                { assert workflow.out.lai_log == [] },
-                { assert workflow.out.lai_out == [] }
+                { assert file(workflow.out.ltrlib[0][1]).text.contains('#LTR/Copia') },
+                { assert snapshot(workflow.out.versions).match("with_empty_mono_versions") }
             )
         }
     }
@@ -200,9 +133,9 @@ nextflow_workflow {
             workflow {
                 """
                 def monoploid_seqs  = new File('test.mono.seq.txt')
-                monoploid_seqs.write("chr_xxxxxxxxxxxxxxx_1")
+                monoploid_seqs.write("chr1")
 
-                input[0]            = Channel.empty()
+                input[0]            = GUNZIP.out.gunzip
                 input[1]            = Channel.of( [ [ id:'test' ], monoploid_seqs.toPath() ] )
                 input[2]            = false
                 """
@@ -211,7 +144,8 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success }
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

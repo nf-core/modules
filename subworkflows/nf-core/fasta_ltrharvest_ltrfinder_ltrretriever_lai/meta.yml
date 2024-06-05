@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "fasta_ltrretriever_lai"
+name: "fasta_ltrharvest_ltrfinder_ltrretriever_lai"
 description: |
   Performs long terminal retrotransposons (LTR) annotation with gt/ltrharvest, ltrfinder
   and ltrretriever along with LTR assembly index (LAI).
@@ -13,13 +13,11 @@ keywords:
   - stats
   - qc
 components:
-  - custom/shortenfastaids
   - ltrharvest
   - ltrfinder
   - ltrretriever/ltrretriever
   - cat/cat
   - ltrretriever/lai
-  - custom/restoregffids
 input:
   - ch_fasta:
       type: file
