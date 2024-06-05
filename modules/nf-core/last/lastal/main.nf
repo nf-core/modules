@@ -25,9 +25,9 @@ process LAST_LASTAL {
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
     lastal \\
+        -P $task.cpus \\
         $trained_params \\
         $args \\
-        -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
         | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
