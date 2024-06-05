@@ -17,7 +17,6 @@ nextflow_process {
                             file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/reads/multiplexed.fastq.gz", checkIfExists: true)
                             ]
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/barcodes.csv", checkIfExists: true)
-                input[2] = ""
                 """
             }
         }
@@ -37,7 +36,7 @@ nextflow_process {
     }
 
     test("ultraplex - adaptor") {
-
+        config "./adapter.config"
         when {
             process {
                 """
@@ -45,7 +44,6 @@ nextflow_process {
                             file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/reads/multiplexed.fastq.gz", checkIfExists: true)
                            ]
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/barcodes.csv", checkIfExists: true)
-                input[2] = "AGATCGGAAGAGCGGTTCAG"
                 """
             }
         }
@@ -73,7 +71,6 @@ nextflow_process {
                             file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/reads/multiplexed2.fastq.gz", checkIfExists: true)]
                             ]
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/barcodes.csv", checkIfExists: true)
-                input[2] = ""
                 """
             }
         }
@@ -101,7 +98,6 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                             ]
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/barcodes.csv", checkIfExists: true)
-                input[2] = ""
                 """
             }
         }
@@ -131,7 +127,6 @@ nextflow_process {
                             file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/reads/multiplexed.fastq.gz", checkIfExists: true)
                             ]
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/barcodes.csv", checkIfExists: true)
-                input[2] = ""
                 """
             }
         }

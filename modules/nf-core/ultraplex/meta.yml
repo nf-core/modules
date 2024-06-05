@@ -18,10 +18,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fastq:
+  - reads:
       type: file
       description: Zipped FASTQ file
       pattern: "*.{fastq.gz}"
+  - barcode_file:
+      type: file
+      description: File containing barcodes to demultiplex by
+      pattern: "*.csv"
+
 output:
   - meta:
       type: map
@@ -31,11 +36,11 @@ output:
   - fastq:
       type: file
       description: Demultiplexed sample FASTQ files
-      pattern: "*[!no_match].fastq.gz"
+      pattern: "*matched.fastq.gz"
   - no_match_fastq:
       type: file
       description: FASTQ file containing reads that could not be demultiplexed
-      pattern: "*no_match.fastq.gz"
+      pattern: "*_no_match_*.fastq.gz"
   - report:
       type: file
       description: File containing demultiplexing log
