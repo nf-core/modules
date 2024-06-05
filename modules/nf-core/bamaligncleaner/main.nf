@@ -32,4 +32,17 @@ process BAMALIGNCLEANER {
         bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
+    END_VERSIONS
+    """ 
 }
