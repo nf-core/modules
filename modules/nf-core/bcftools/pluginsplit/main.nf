@@ -4,8 +4,8 @@ process BCFTOOLS_PLUGINSPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -15,8 +15,10 @@ process BCFTOOLS_PLUGINSPLIT {
     path(targets)
 
     output:
-    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}")  , emit: vcf
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
+    tuple val(meta), path("*.csi")                    , emit: csi, optional: true
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,7 +58,6 @@ process BCFTOOLS_PLUGINSPLIT {
                 args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
-
     def determination_file = samples ?: targets
     """
     cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt

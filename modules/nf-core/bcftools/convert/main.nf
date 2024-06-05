@@ -4,8 +4,8 @@ process BCFTOOLS_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -13,14 +13,16 @@ process BCFTOOLS_CONVERT {
     path(bed)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),      optional:true , emit: vcf_gz
-    tuple val(meta), path("*.vcf")   ,      optional:true , emit: vcf
-    tuple val(meta), path("*.bcf.gz"),      optional:true , emit: bcf_gz
-    tuple val(meta), path("*.bcf")   ,      optional:true , emit: bcf
-    tuple val(meta), path("*.hap.gz"),      optional:true , emit: hap
-    tuple val(meta), path("*.legend.gz"),   optional:true , emit: legend
-    tuple val(meta), path("*.samples"),     optional:true , emit: samples
-    path "versions.yml",                                    emit: versions
+    tuple val(meta), path("*.vcf.gz")   , optional: true , emit: vcf_gz
+    tuple val(meta), path("*.vcf")      , optional: true , emit: vcf
+    tuple val(meta), path("*.bcf.gz")   , optional: true , emit: bcf_gz
+    tuple val(meta), path("*.bcf")      , optional: true , emit: bcf
+    tuple val(meta), path("*.tbi")      , optional: true , emit: tbi
+    tuple val(meta), path("*.csi")      , optional: true , emit: csi
+    tuple val(meta), path("*.hap.gz")   , optional: true , emit: hap
+    tuple val(meta), path("*.legend.gz"), optional: true , emit: legend
+    tuple val(meta), path("*.samples")  , optional: true , emit: samples
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -62,8 +64,16 @@ process BCFTOOLS_CONVERT {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
