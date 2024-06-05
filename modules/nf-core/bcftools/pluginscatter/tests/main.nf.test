@@ -65,9 +65,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
-                    process.out.csi.collect(),
-                    process.out.tbi.collect(),
+                    process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.versions
                 ).match("vcf_gz_index") },
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
@@ -101,9 +101,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
-                    process.out.csi.collect(),
-                    process.out.tbi.collect(),
+                    process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.versions
                 ).match("vcf_gz_index_csi") },
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
@@ -137,9 +137,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
-                    process.out.csi.collect(),
-                    process.out.tbi.collect(),
+                    process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.versions
                 ).match("vcf_gz_index_tbi") },
                 { assert process.out.tbi[0][1][0] =~ ".*/test_vcf0.vcf.gz.tbi" }
