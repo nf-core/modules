@@ -33,4 +33,23 @@ process LAST_LASTDB {
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir lastdb
+    touch lastdb/${prefix}.bck
+    touch lastdb/${prefix}.des
+    touch lastdb/${prefix}.prj
+    touch lastdb/${prefix}.sds
+    touch lastdb/${prefix}.ssp
+    touch lastdb/${prefix}.suf
+    touch lastdb/${prefix}.tis
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+    END_VERSIONS
+    """
 }
