@@ -39,4 +39,18 @@ process LAST_LASTAL {
         last: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def trained_params = param_file ? "-p ${param_file}"  : ''
+    """
+    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastal --version 2>&1 | sed 's/lastal //')
+    END_VERSIONS
+    """
 }
