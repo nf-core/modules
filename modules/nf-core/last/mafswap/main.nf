@@ -29,4 +29,17 @@ process LAST_MAFSWAP {
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo stub | gzip --no-name > ${prefix}.swapped.maf.gz
+
+    # maf-swap has no --version option but lastdb, part of the same package, has.
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+    END_VERSIONS
+    """
 }
