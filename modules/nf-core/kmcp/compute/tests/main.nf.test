@@ -4,7 +4,7 @@ nextflow_process {
     name "Test Process KMCP_COMPUTE"
     script "../main.nf"
     process "KMCP_COMPUTE"
-
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "kmcp"
