@@ -16,7 +16,7 @@ nextflow_process {
             script "../../../untar/main.nf"
             process {
                 """
-                input[0] = [[],file(params.modules_testdata_base_path + 'delete_me/kmcp/kmcp_profile.tar.gz', checkIfExists: true)]
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'delete_me/kmcp/kmcp_profile.tar.gz', checkIfExists: true)]
                 """
             }
         }
@@ -46,7 +46,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 """
             }
         }
@@ -67,7 +67,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 """
             }
         }
