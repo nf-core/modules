@@ -21,14 +21,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - db:
-      type: directory
-      description: Database directory created by "kmcp index"
-      pattern: "*"
   - reads:
       type: file
       description: gzipped fasta or fastq files
       pattern: "*.{fq.gz,fastq.gz,fa.gz}"
+  - db:
+      type: directory
+      description: Database directory created by "kmcp index"
+      pattern: "*"
 output:
   - meta:
       type: map
