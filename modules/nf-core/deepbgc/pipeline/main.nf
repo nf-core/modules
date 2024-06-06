@@ -12,18 +12,18 @@ process DEEPBGC_PIPELINE {
     path(db)
 
     output:
-    tuple val(meta), path("${prefix}/README.txt")                    ,   optional: true, emit: readme
-    tuple val(meta), path("${prefix}/LOG.txt")                       ,   emit: log
-    tuple val(meta), path("${prefix}/${prefix}.antismash.json")      ,   optional: true, emit: json
-    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk")             ,   optional: true, emit: bgc_gbk
-    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv")             ,   optional: true, emit: bgc_tsv
-    tuple val(meta), path("${prefix}/${prefix}.full.gbk")            ,   optional: true, emit: full_gbk
-    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv")            ,   optional: true, emit: pfam_tsv
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png")  ,   optional: true, emit: bgc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png")   ,   optional: true, emit: pr_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png")  ,   optional: true, emit: roc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"),   optional: true, emit: score_png
-    path "versions.yml"                                                                    ,   emit: versions
+    tuple val(meta), path("${prefix}/README.txt")                    , optional: true, emit: readme
+    tuple val(meta), path("${prefix}/LOG.txt")                       ,               , emit: log
+    tuple val(meta), path("${prefix}/${prefix}.antismash.json")      , optional: true, emit: json
+    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk")             , optional: true, emit: bgc_gbk
+    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv")             ,               , emit: bgc_tsv
+    tuple val(meta), path("${prefix}/${prefix}.full.gbk")            , optional: true, emit: full_gbk
+    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv")            , optional: true, emit: pfam_tsv
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png")  , optional: true, emit: bgc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png")   , optional: true, emit: pr_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png")  , optional: true, emit: roc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"), optional: true, emit: score_png
+    path "versions.yml"                                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,6 +46,11 @@ process DEEPBGC_PIPELINE {
     for i in \$(find -name '${genome.baseName}*' -type f); do
         mv \$i \${i/${genome.baseName}/${prefix}};
     done
+
+    bgc_tsv="${prefix}/${prefix}.bgc.tsv"
+    if [ ! -f \$bgc_tsv ]; then
+        echo "sequence_id\tdetector\tdetector_version\tdetector_label\tbgc_candidate_id\tnucl_start\tnucl_end\tnucl_length\tnum_proteins\tnum_domains\tnum_bio_domains\tdeepbgc_score\tproduct_activity\tantibacterial\tcytotoxic\tinhibitor\tantifungal\tproduct_class\tAlkaloid\tNRP\tOther\tPolyketide\tRiPP\tSaccharide\tTerpene\tprotein_ids\tbio_pfam_ids\tpfam_ids" > \$bgc_tsv
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
