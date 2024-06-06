@@ -29,4 +29,17 @@ process LAST_SPLIT {
         last: \$(last-split --version 2>&1 | sed 's/last-split //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    """
+    echo stub | gzip --no-name > ${prefix}.maf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(last-split --version 2>&1 | sed 's/last-split //')
+    END_VERSIONS
+    """
 }
