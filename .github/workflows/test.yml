@@ -65,7 +65,7 @@ jobs:
           node-version: "20"
 
       - name: Install editorconfig-checker
-        run: npm install -g editorconfig-checker
+        run: npm install -g editorconfig-checker@5.1.5 ## Due to error with 5.1.6, unpin once 5.1.7 is out
 
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
