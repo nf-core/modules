@@ -36,4 +36,18 @@ process LAST_TRAIN {
         last: \$(lastdb --version | sed 's/lastdb //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+
+    touch ${prefix}.\$INDEX_NAME.train
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastdb --version | sed 's/lastdb //')
+    END_VERSIONS
+    """
 }
