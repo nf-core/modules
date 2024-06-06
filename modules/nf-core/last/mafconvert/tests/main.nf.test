@@ -32,4 +32,28 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                ]
+                input[1] = 'psl'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
