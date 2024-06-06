@@ -45,7 +45,7 @@ process LAST_LASTAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    INDEX_NAME=STUB
     echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
 
     cat <<-END_VERSIONS > versions.yml

@@ -41,8 +41,7 @@ process LAST_TRAIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
-
+    INDEX_NAME=STUB
     touch ${prefix}.\$INDEX_NAME.train
 
     cat <<-END_VERSIONS > versions.yml
