@@ -2,6 +2,8 @@
     $schema: "https://docs.renovatebot.com/renovate-schema.json",
     extends: [
         "github>nf-core/ops//.github/renovate/default.json5",
+        // TODO waiting on https://github.com/nf-core/modules/pull/4080
+        // "github>nf-core/ops//.github/renovate/process_updaters.json5"
     ],
     prHeader: "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
 }
