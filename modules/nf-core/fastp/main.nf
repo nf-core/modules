@@ -19,9 +19,9 @@ process FASTP {
     tuple val(meta), path('*.json')           , emit: json
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
-    path "versions.yml"                       , emit: versions
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,14 +30,10 @@ process FASTP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
-<<<<<<< HEAD
-    def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
+    def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--failed_out ${prefix}.paired.fail.fastq.gz --unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
     def out_fq  = save_trimmed_pass ? "${prefix}.fastp.fastq.gz" : '/dev/null'
     def out_fq1 = save_trimmed_pass ? ( meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_1.fastp.fastq.gz" ) : ''
     def out_fq2 = save_trimmed_pass ? "--out2 ${prefix}_2.fastp.fastq.gz" : ''
-=======
-    def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--failed_out ${prefix}.paired.fail.fastq.gz --unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
->>>>>>> origin/master
     // Added soft-links to original fastqs for consistent naming in MultiQC
     // Use single ended for interleaved. Add --interleaved_in in config.
     if ( task.ext.args?.contains('--interleaved_in') ) {
@@ -53,13 +49,8 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $args \\
-<<<<<<< HEAD
-            2> ${prefix}.fastp.log \\
-        | gzip -c > $out_fq
-=======
             2> >(tee ${prefix}.fastp.log >&2) \\
         | gzip -c > ${prefix}.fastp.fastq.gz
->>>>>>> origin/master
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
