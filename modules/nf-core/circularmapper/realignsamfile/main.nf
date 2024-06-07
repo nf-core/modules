@@ -27,12 +27,12 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     realignsamfile \\
         -Xmx${task.memory.toGiga()}g \\
         ${args} \\
-        -e $elong \\
+        -e ${elong} \\
         -i ${bam} \\
         -r ${fasta}
 
     ## realignsamfile has a hardcoded output name. Rename to use prefix.
-    mv ${bam.baseName()}_realigned.bam ${prefix}_realigned.bam
+    mv ${bam.getBaseName()}_realigned.bam ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
