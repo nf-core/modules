@@ -25,7 +25,7 @@ nextflow_process {
 
                 input[1] = kill_list_file.toPath()
 
-                input[2] = []
+                input[2] = file('https://raw.githubusercontent.com/NBISweden/AGAT/v1.4.0/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
