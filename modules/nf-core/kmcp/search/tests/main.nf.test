@@ -17,7 +17,10 @@ nextflow_process {
             script "../../../kmcp/compute/main.nf"
             process {
                 """
-                input[0] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[0] = [
+                                [id: 'test'],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
                 """
             }
         }
