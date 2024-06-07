@@ -10,7 +10,6 @@ process KMCP_PROFILE {
     input:
     tuple val(meta), path(search_results)
     path (db)
-    val mode
 
     output:
     tuple val(meta), path("*.profile"), emit: profile
@@ -30,7 +29,6 @@ process KMCP_PROFILE {
         $args \\
         -X \$taxdump \\
         -T \$taxid \\
-        -m $mode \\
         -j $task.cpus \\
         -o ${prefix}.profile \\
         $search_results
