@@ -54,7 +54,6 @@ nextflow_process {
 
             run("BWA_SAMSE") {
                 script "../../../bwa/samse/main.nf"
-                config "./nextflow.config"
                 process {
                     """
                     fastq = Channel.of([
@@ -94,7 +93,6 @@ nextflow_process {
     test("sarscov2 - bam - fasta - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
