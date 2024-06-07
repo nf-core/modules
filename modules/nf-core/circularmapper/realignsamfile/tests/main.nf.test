@@ -32,10 +32,7 @@ nextflow_process {
             script "../../../bwa/index/main.nf"
                 process {
                     """
-                    input[0] = [
-                        [id: 'test'],
-                        CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
-                    ]
+                    input[0] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
                     """
                 }
             }
@@ -55,13 +52,16 @@ nextflow_process {
 
             run("BWA_SAMSE") {
                 script "../../../bwa/samse/main.nf"
+                config "./nextflow.config"
                 process {
                     // TODO The operation below complains. Need to find a way to convert BWA_ALN:[meta, bam] -> [ meta, reads, bam]
                     """
-                    input[0] = Channel.fromList([[
+                    fastq = Channel.of([
                         [ id:'test', single_end:true ], // meta map
                         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                    ]]).join(BWA_ALN.out.bam)
+                    ])
+
+                    input[0] = fastq.join(BWA_ALN.out.sai)
                     input[1] = BWA_INDEX.out.index
                     """
                 }
@@ -95,6 +95,7 @@ nextflow_process {
     test("sarscov2 - bam - fasta - stub") {
 
         options "-stub"
+        config "./nextflow.config"
 
         when {
             process {
