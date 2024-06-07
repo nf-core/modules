@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process BAMALIGNCLEANER"
+    script "../main.nf"
+    process "BAMALIGNCLEANER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamaligncleaner"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([ 
+                    [ id:'test', single_end:false ], // meta map                                                                                                        
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.single_end.sorted.bam", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { bam(it[1]).getReads() },
+                    process.out.bam.collect { bam(it[1]).getReads(10) },
+                    process.out.bam.collect { bam(it[1]).getSamLines() },
+                    process.out.bam.collect { bam(it[1]).getSamLines(10) },
+                    process.out.bam.collect { bam(it[1]).getHeader() },
+                    process.out.bam.collect { bam(it[1]).getFileType() },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([ 
+                    [ id:'test', single_end:false ], // meta map                                                                                                        
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.single_end.sorted.bam", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

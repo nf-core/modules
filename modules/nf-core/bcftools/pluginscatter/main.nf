@@ -4,8 +4,8 @@ process BCFTOOLS_PLUGINSCATTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -58,10 +58,12 @@ process BCFTOOLS_PLUGINSCATTER {
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
 
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+
     """
-    touch ${prefix}1.${extension}
-    touch ${prefix}2.${extension}
-    touch ${prefix}3.${extension}
+    ${create_cmd} ${prefix}1.${extension}
+    ${create_cmd} ${prefix}2.${extension}
+    ${create_cmd} ${prefix}3.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
