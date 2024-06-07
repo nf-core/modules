@@ -41,19 +41,21 @@ nextflow_process {
                 all_files << file
             }
 
-            def all_file_names = all_files.collect { it.name }
+            def all_file_names = all_files.collect { it.name }.sort(false)
 
-            def stable_files = [
+            def stable_file_names = [
                 'Statistics_PerSpecies.tsv',
                 'SpeciesTree_Gene_Duplications_0.5_Support.txt',
                 'SpeciesTree_rooted.txt',
                 'SpeciesTree_unrooted.txt'
             ]
 
+            def stable_files = all_files.findAll { it.name in stable_file_names }
+
             assert snapshot(
-                all_files.findAll { it.name in stable_files },
-                process.out.versions[0],
-                all_file_names
+                all_file_names,
+                stable_files,
+                process.out.versions[0]
             ).match()
         }
 
