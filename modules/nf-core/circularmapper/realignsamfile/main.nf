@@ -31,8 +31,10 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
         -i ${bam} \\
         -r ${fasta}
 
-    ## realignsamfile has a hardcoded output name. Rename to use prefix.
-    mv ${bam.getBaseName()}_realigned.bam ${prefix}_realigned.bam
+    ## realignsamfile has a hardcoded output name. Rename if necessary to use prefix.
+    if [[ "${bam.getBaseName()}_realigned.bam" != "${prefix}_realigned.bam" ]]; then
+        mv ${bam.getBaseName()}_realigned.bam ${prefix}_realigned.bam
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
