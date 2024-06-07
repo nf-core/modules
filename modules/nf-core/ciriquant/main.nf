@@ -2,7 +2,7 @@ process CIRIQUANT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::ciriquant=1.1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ciriquant:1.1.2--pyhdfd78af_2' :
         'biocontainers/ciriquant:1.1.2--pyhdfd78af_2' }"
@@ -25,7 +25,7 @@ process CIRIQUANT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.1.0'
+    def VERSION = '1.1.2'
     """
     BWA=`which bwa`
     HISAT2=`which hisat2`
@@ -59,4 +59,24 @@ process CIRIQUANT {
         hisat2: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.1.2'
+    """
+
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}.gtf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        ciriquant: \$(echo \$(CIRIquant --version 2>&1) | sed 's/CIRIquant //g' )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        stringtie: \$(stringtie --version 2>&1)
+        hisat2: $VERSION
+    END_VERSIONS
+    """
+
 }
