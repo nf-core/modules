@@ -79,7 +79,12 @@ output:
       type: file
       description: |
         Spades log file
-      pattern: "*.log"
+      pattern: "*.spades.log"
+  - log:
+      type: file
+      description: |
+        Spades warning log file
+      pattern: "*.warning.log"
   - versions:
       type: file
       description: File containing software versions
