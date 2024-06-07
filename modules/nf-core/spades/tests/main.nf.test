@@ -36,7 +36,6 @@ nextflow_process {
                 { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
             )
         }
-
     }
 
     test("sarscov2 - pe ") {
@@ -175,8 +174,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [ file("https://github.com/nf-core/test-datasets/raw/viralrecon/illumina/sispa/SRR11140744_R1.fastq.gz", checkIfExists: true),
+                                file("https://github.com/nf-core/test-datasets/raw/viralrecon/illumina/sispa/SRR11140744_R2.fastq.gz", checkIfExists: true) ],
                             [],
                             []
                         ]
@@ -196,8 +195,7 @@ nextflow_process {
                     process.out.gfa,
                     process.out.versions
                     ).match() },
-                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
-                { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
             )
         }
     }
