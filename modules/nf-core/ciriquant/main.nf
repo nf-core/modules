@@ -16,7 +16,6 @@ process CIRIQUANT {
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.gtf"), emit: gtf
-    path("${prefix}")                               , emit: results
     path "versions.yml"                             , emit: versions
 
     when:
