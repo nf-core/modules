@@ -18,7 +18,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -32,6 +32,8 @@ nextflow_process {
                     process.out.reads,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_fail == [] },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 99") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("single end (151 cycles)") }
             )
@@ -50,7 +52,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -83,7 +85,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -97,6 +99,8 @@ nextflow_process {
                     process.out.reads,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_fail == [] },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("Q30 bases: 12281(88.3716%)") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") }
             )
@@ -117,7 +121,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -143,7 +147,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -157,6 +161,8 @@ nextflow_process {
                     process.out.reads,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_fail == [] },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 162") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("paired end (151 cycles + 151 cycles)") }
             )
@@ -177,7 +183,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = false
                 """
@@ -203,7 +209,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = true
                 input[4] = false
                 """
@@ -218,9 +224,9 @@ nextflow_process {
                     process.out.reads_fail,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 99") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("single end (151 cycles)") },
-                //{ assert path(process.out.reads_fail.get(0).get(1)).getText().contains("@ERR5069949.885966 NS500628:121:HK3MMAFX2:4:11610:19682:20132/1 failed_quality_filter") },
             )
         }
     }
@@ -237,7 +243,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = true
                 input[4] = false
                 """
@@ -252,9 +258,9 @@ nextflow_process {
                     process.out.reads_fail,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 162") },
-                { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") },
-                //{ assert path(process.out.reads_fail.get(0).get(1).get(1)).getText().contains("@ERR5069949.973930 NS500628:121:HK3MMAFX2:2:21105:5548:5659/2") },
+                { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") }
             )
         }
     }
@@ -270,7 +276,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = true
                 """
@@ -285,9 +291,9 @@ nextflow_process {
                     process.out.reads_merged,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_fail == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("total reads: 75") },
-                { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") },
-            //    { assert path(process.out.reads_merged.get(0).get(1).get(1)).getText().contains("@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/1 merged_150_37") },
+                { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") }
             )
         }
     }
@@ -305,7 +311,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = true
                 """
@@ -331,7 +337,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] =  Channel.of([ file(params.modules_testdata_base_path + 'delete_me/fastp/adapters.fasta', checkIfExists: true) ])
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 input[4] = true
                 """
@@ -346,9 +352,9 @@ nextflow_process {
                     process.out.reads_merged,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads_fail == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("total bases: 13683") },
-                { assert path(process.out.html.get(0).get(1)).getText().contains("<div id='After_filtering__merged__quality'>") },
-            //    { assert path(process.out.reads_merged.get(0).get(1).get(1)).getText().contains("@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/1 merged_150_37") },
+                { assert path(process.out.html.get(0).get(1)).getText().contains("<div id='After_filtering__merged__quality'>") }
             )
         }
     }
@@ -363,7 +369,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = false
+                input[2] = true
                 input[3] = false
                 input[4] = false
                 """
@@ -375,9 +381,13 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.reads,
+                    process.out.reads_fail,
                     process.out.reads_merged,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads == [] },
+                { assert process.out.reads_fail == [] },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 99") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("single end (151 cycles)") },
             )
@@ -396,7 +406,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = false
+                input[2] = true
                 input[3] = false
                 input[4] = false
                 """
@@ -426,7 +436,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = false
+                input[2] = true
                 input[3] = false
                 input[4] = false
                 """
@@ -439,8 +449,12 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.reads_merged,
+                    process.out.reads_fail,
                     process.out.json,
                     process.out.versions).match() },
+                { assert process.out.reads == [] },
+                { assert process.out.reads_fail == [] },
+                { assert process.out.reads_merged == [] },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("Q30 bases: 12281(88.3716%)") },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") },
             )
@@ -460,7 +474,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = []
-                input[2] = false
+                input[2] = true
                 input[3] = false
                 input[4] = false
                 """

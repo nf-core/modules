@@ -10,7 +10,7 @@ process FASTP {
     input:
     tuple val(meta), path(reads)
     path  adapter_fasta
-    val   save_trimmed_pass
+    val   discard_trimmed_pass
     val   save_trimmed_fail
     val   save_merged
 
@@ -31,9 +31,8 @@ process FASTP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
     def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--failed_out ${prefix}.paired.fail.fastq.gz --unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
-    def out_fq  = save_trimmed_pass ? "${prefix}.fastp.fastq.gz" : '/dev/null'
-    def out_fq1 = save_trimmed_pass ? ( meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_1.fastp.fastq.gz" ) : ''
-    def out_fq2 = save_trimmed_pass ? "--out2 ${prefix}_2.fastp.fastq.gz" : ''
+    def out_fq1 = discard_trimmed_pass ?: ( meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_1.fastp.fastq.gz" )
+    def out_fq2 = discard_trimmed_pass ?: "--out2 ${prefix}_2.fastp.fastq.gz"
     // Added soft-links to original fastqs for consistent naming in MultiQC
     // Use single ended for interleaved. Add --interleaved_in in config.
     if ( task.ext.args?.contains('--interleaved_in') ) {
@@ -107,7 +106,7 @@ process FASTP {
     stub:
     def prefix              = task.ext.prefix ?: "${meta.id}"
     def is_single_output    = task.ext.args?.contains('--interleaved_in') || meta.single_end
-    def touch_reads         = is_single_output ? "echo '' | gzip > ${prefix}.fastp.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastp.fastq.gz ; echo '' | gzip > ${prefix}_2.fastp.fastq.gz"
+    def touch_reads         = (is_single_output && !discard_trimmed_pass) ? "echo '' | gzip > ${prefix}.fastp.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastp.fastq.gz ; echo '' | gzip > ${prefix}_2.fastp.fastq.gz"
     def touch_merged        = (!is_single_output && save_merged) ? "echo '' | gzip >  ${prefix}.merged.fastq.gz" : ""
     """
     $touch_reads
