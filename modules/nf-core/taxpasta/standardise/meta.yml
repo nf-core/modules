@@ -25,6 +25,10 @@ input:
       type: file
       description: profiler output file (mandatory)
       pattern: "*"
+  - profiler:
+      type: string
+      description: Name of the profiler used to generate the profile (mandatory)
+      pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
   - taxonomy:
       type: directory
       description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
