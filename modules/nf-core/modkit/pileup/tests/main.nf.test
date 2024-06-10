@@ -14,7 +14,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
@@ -39,12 +39,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
@@ -67,12 +67,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -99,12 +99,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -131,12 +131,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -163,12 +163,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -195,7 +195,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
@@ -222,12 +222,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
@@ -252,12 +252,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -285,12 +285,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -318,12 +318,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
@@ -351,12 +351,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'bc_anchored' ],
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id: 'CGI_ladder' ],
+                    [ id: 'test_ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')

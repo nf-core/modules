@@ -32,6 +32,7 @@ process MODKIT_PILEUP {
         pileup \\
         $args \\
         --threads ${task.cpus} \\
+        --prefix ${prefix} \\
         $reference \\
         $include_bed \\
         $bam \\
