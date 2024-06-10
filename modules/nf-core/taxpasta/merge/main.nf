@@ -22,9 +22,7 @@ process TAXPASTA_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    // N.B.: Taxpasta requires a --profiler option and will fail without it.
-    // This must be specified via a `nextflow.config` or `modules.config`, for
-    // example, as "--profiler kraken2". Additionally, it requires a --output
+    // N.B.: Taxpasta requires a --output
     // option with the output file name. The desired format will be parsed from
     // the name and should correspond to the output pattern specified above,
     // e.g., "--output ${task.ext.prefix}.tsv".
