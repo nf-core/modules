@@ -8,14 +8,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "nonpareil"
     tag "nonpareil/nonpareil"
+    tag "gunzip"
 
     test("candidatus_portiera_aleyrodidarum - gzipped") {
 
         when {
-            params {
-                // define parameters here. Example:
-            // outdir = "tests/results"
-            }
             process {
                 """
                 input[0] = [
@@ -35,10 +32,10 @@ nextflow_process {
                         file(process.out.npa[0][1]).name,
                         file(process.out.npc[0][1]).name,
                         path(process.out.npo[0][1]).readLines()[0],
-                        path(process.out.npl[0][1])
+                        path(process.out.npl[0][1]),
+                        process.out.versions
                     ).match()
-                },
-                { assert snapshot(process.out.versions).match("versions") },
+                }
             )
         }
 
@@ -62,10 +59,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                // define parameters here. Example:
-            // outdir = "tests/results"
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -82,10 +75,10 @@ nextflow_process {
                         file(process.out.npa[0][1]).name,
                         file(process.out.npc[0][1]).name,
                         path(process.out.npo[0][1]).readLines()[0],
-                        path(process.out.npl[0][1])
+                        path(process.out.npl[0][1]),
+                        process.out.versions
                     ).match()
-                },
-                { assert snapshot(process.out.versions).match("versions") },
+                }
             )
         }
 
