@@ -4,8 +4,8 @@ process MAPAD_MAP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mapad:0.42.1--hc9368f3_2':
-        'biocontainers/mapad:0.42.1--hc9368f3_2' }"
+        'https://depot.galaxyproject.org/singularity/mapad:0.43.0--hc9368f3_0':
+        'biocontainers/mapad:0.43.0--hc9368f3_0' }"
 
     input:
     tuple val(meta) , path(reads) // Supports only single-end or merged paired-end data
