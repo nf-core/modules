@@ -438,12 +438,9 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Install Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        run: |
-          wget https://github.com/sylabs/singularity/releases/download/v4.0.2/singularity-ce_4.0.2-jammy_amd64.deb
-          sudo apt-get install -y libfuse2
-          sudo dpkg -i singularity-ce_4.0.2-jammy_amd64.deb
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
@@ -666,12 +663,9 @@ jobs:
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
 
-      - name: Install Singularity
+      - name: Setup apptainer
         if: matrix.profile == 'singularity'
-        run: |
-          wget https://github.com/sylabs/singularity/releases/download/v4.0.2/singularity-ce_4.0.2-jammy_amd64.deb
-          sudo apt-get install -y libfuse2
-          sudo dpkg -i singularity-ce_4.0.2-jammy_amd64.deb
+        uses: eWaterCycle/setup-apptainer@main
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
