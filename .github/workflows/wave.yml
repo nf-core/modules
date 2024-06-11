@@ -63,7 +63,7 @@ jobs:
         if: matrix.profile == 'docker'
         run: |
           wave --conda-file "${{ matrix.files }}" \
-              --name-strategy tagPrefix \
+              --name-strategy imageSuffix \
               --freeze \
               --await \
               --cache-repository quay.io/nf-core/wave-cache \
