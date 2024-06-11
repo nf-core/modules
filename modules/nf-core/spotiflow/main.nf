@@ -14,9 +14,9 @@ process SPOTIFLOW {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.1"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "0.0.3"
 
     """
     spotiflow-predict \\
@@ -31,9 +31,9 @@ process SPOTIFLOW {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.1"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "0.0.3"
     """
     touch ${prefix}.csv
 
