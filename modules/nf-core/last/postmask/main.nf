@@ -22,6 +22,7 @@ process LAST_POSTMASK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    set -o pipefail
     last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz
 
     # last-postmask does not have a --version option

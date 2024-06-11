@@ -24,6 +24,7 @@ process LAST_LASTAL {
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    set -o pipefail
     lastal \\
         -P $task.cpus \\
         $trained_params \\

@@ -22,6 +22,7 @@ process LAST_SPLIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    set -o pipefail
     zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz
 
     cat <<-END_VERSIONS > versions.yml

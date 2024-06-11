@@ -21,6 +21,7 @@ process LAST_MAFSWAP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    set -o pipefail
     maf-swap $args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
 
     # maf-swap has no --version option but lastdb, part of the same package, has.

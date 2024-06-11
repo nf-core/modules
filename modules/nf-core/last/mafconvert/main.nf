@@ -30,8 +30,8 @@ process LAST_MAFCONVERT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    maf-convert $args $format $maf > ${prefix}.${format}
-    gzip ${prefix}.${format}
+    set -o pipefail
+    maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml
