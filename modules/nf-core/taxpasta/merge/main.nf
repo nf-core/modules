@@ -11,6 +11,7 @@ process TAXPASTA_MERGE {
     input:
     tuple val(meta), path(profiles)
     val profiler
+    val format
     path taxonomy
     path samplesheet
 
@@ -33,6 +34,7 @@ process TAXPASTA_MERGE {
     """
     taxpasta merge \\
         --profiler $profiler \\
+        --output ${prefix}.${format} \\
         $args \\
         $taxonomy_option \\
         $samplesheet_input \\

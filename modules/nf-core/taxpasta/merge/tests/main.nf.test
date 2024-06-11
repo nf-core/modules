@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process TAXPASTA_MERGE"
     script "../main.nf"
     process "TAXPASTA_MERGE"
-    config './nextflow.config'
     tag "modules"
     tag "modules_nfcore"
     tag "taxpasta"
@@ -27,8 +26,9 @@ nextflow_process {
 
                             }
                 input[1] = 'kraken2'
-                input[2] = []
+                input[2] = 'tsv'
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -62,8 +62,9 @@ nextflow_process {
                                     [meta, files.sort()]
                             }
                 input[1] = 'kraken2'
-                input[2] = []
-                input[3] = file(params.modules_testdata_base_path + 'delete_me/taxpasta/samplesheet.tsv', checkIfExists: true)
+                input[2] = 'tsv'
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'delete_me/taxpasta/samplesheet.tsv', checkIfExists: true)
                 """
             }
         }
@@ -86,8 +87,9 @@ nextflow_process {
                 """
                 input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)]
                 input[1] = 'kraken2'
-                input[2] = []
+                input[2] = 'tsv'
                 input[3] = []
+                input[4] = []
                 """
             }
         }

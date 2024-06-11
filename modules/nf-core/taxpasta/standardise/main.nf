@@ -10,6 +10,7 @@ process TAXPASTA_STANDARDISE {
     input:
     tuple val(meta), path(profile)
     val profiler
+    val format
     path taxonomy
 
     output:
@@ -30,6 +31,7 @@ process TAXPASTA_STANDARDISE {
     """
     taxpasta standardise \\
         --profiler $profiler \\
+        --output ${prefix}.${format} \\
         $args \\
         $taxonomy_option \\
         $profile
