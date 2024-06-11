@@ -1,7 +1,7 @@
 process SPOTIFLOW {
     tag "$meta.id"
     label 'process_medium'
-    container "docker.io/miguelib/spotiflow:0.0.1"
+    container "docker.io/miguelib/spotiflow:0.0.3"
 
     input:
     tuple val(meta), path(image_2d)
