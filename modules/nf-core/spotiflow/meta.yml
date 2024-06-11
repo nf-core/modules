@@ -18,7 +18,6 @@ tools:
 
 ## Spotiflow requires only an input image file
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -31,12 +30,11 @@ input:
       pattern: "*.{tif,tiff,png,jpg,jpeg}"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
 
   - versions:
       type: file
