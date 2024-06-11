@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: Calculate file differences
         id: diff
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@v44
         with:
           json: true
           quotepath: false
@@ -44,8 +43,7 @@ jobs:
       fail-fast: false
       matrix: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
     steps:
-      # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: Install wave-cli
         run: |
