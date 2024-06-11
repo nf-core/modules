@@ -47,17 +47,17 @@ output:
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
 
-  - schema_dir:
+  - schema:
       type: directory
       description: schema directory
       pattern: "*/"
 
-  - tsv:
+  - cds_coordinates:
       type: file
       description: file contains the coordinates of the CDS in the input sample
       pattern: "*_cds_coordinates.tsv"
 
-  - txt:
+  - invalid_cds:
       type: file
       description: file contains the list of alleles predicted by Prodigal that were excluded
       pattern: "*_invalid_cds.txt"
