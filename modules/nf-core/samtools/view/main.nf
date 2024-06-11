@@ -3,7 +3,7 @@ process SAMTOOLS_VIEW {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/modules/samtools_view:samtools_view--033f764f39eb1f2d"
+    container "community.wave.seqera.io/library/htslib_samtools:1.20--11a4e6daa46930ec"
 
     input:
     tuple val(meta), path(input), path(index)
