@@ -23,7 +23,7 @@ nextflow_process {
                                         def meta = [:]
                                         meta['id'] = 'kraken2'
                                         meta['profiler'] = 'kraken2'
-                                    [meta, files]
+                                    [meta, files.sort()]
 
                             }
                 input[1] = 'kraken2'
