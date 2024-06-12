@@ -41,10 +41,10 @@ process METAMAPS_CLASSIFY {
         metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
     END_VERSIONS
     """
+    
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}_classification_res.EM.WIMP
     touch ${prefix}_classification_res.EM.evidenceUnknownSpecies
@@ -53,7 +53,6 @@ process METAMAPS_CLASSIFY {
     touch ${prefix}_classification_res.EM.contigCoverage
     touch ${prefix}_classification_res.EM.lengthAndIdentitiesPerMappingUnit
     touch ${prefix}_classification_res.EM.reads2Taxon.krona
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
