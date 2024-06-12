@@ -1,0 +1,52 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test srahumanscrubber/initdb
+nextflow_process {
+
+    name "Test Process SRAHUMANSCRUBBER_INITDB"
+    script "../main.nf"
+    process "SRAHUMANSCRUBBER_INITDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "srahumanscrubber"
+    tag "srahumanscrubber/initdb"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
