@@ -4,8 +4,8 @@ process SAMBAMBA_MARKDUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity//sambamba:1.0--h98b6b92_0':
-        'biocontainers/sambamba:1.0--h98b6b92_0' }"
+        'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0':
+        'biocontainers/sambamba:1.0.1--h6f6fda4_0 ' }"
 
     input:
     tuple val(meta), path(bam)
@@ -26,6 +26,7 @@ process SAMBAMBA_MARKDUP {
         markdup \\
         $args \\
         -t $task.cpus \\
+        --tmpdir ./ \\
         $bam \\
         ${prefix}.bam
 
