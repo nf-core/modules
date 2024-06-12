@@ -2,8 +2,10 @@ process DEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
 
-    //Conda is not supported at the moment
-    container "nf-core/deepvariant:1.5.0"
+    // FIXME Conda is not supported at the moment
+    // BUG https://github.com/nf-core/modules/issues/1754
+    // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
+    container "nf-core/deepvariant:1.6.1"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
