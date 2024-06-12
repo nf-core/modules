@@ -26,6 +26,10 @@ input:
       type: file
       description: New header to add to the VCF
       pattern: "*.{header.txt}"
+  - samples:
+      type: file
+      description: File containing sample names to update (one sample per line)
+      pattern: "*.{samples.txt}"
   - meta2:
       type: map
       description: |

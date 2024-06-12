@@ -43,6 +43,7 @@ process NGSCHECKMATE_VAFNCM {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}_corr_matrix.txt
@@ -52,7 +53,7 @@ process NGSCHECKMATE_VAFNCM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        : \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
     END_VERSIONS
     """
 }

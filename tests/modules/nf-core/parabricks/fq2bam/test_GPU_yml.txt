@@ -8,6 +8,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_se_default
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_se_default -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -19,6 +20,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_noqc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_noqc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -32,6 +34,7 @@
       should_exist: true
     - path: output/parabricks/duplicate-metrics.txt
       md5sum: e3bd79a85934aaf66d76ea02958a0364
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_nomkdup_noqc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_nomkdup_noqc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -43,6 +46,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_qc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_qc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -98,6 +102,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_nomkdup_qc
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_nomkdup_qc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -151,6 +156,7 @@
       should_exist: true
     - path: output/parabricks/test.bam.bai
       should_exist: true
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -164,6 +170,7 @@
       should_exist: true
     - path: output/parabricks/test.table
       md5sum: a63b35267493ab63ae58c348caaaf28f
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr2
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr2 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -177,6 +184,7 @@
       should_exist: true
     - path: output/parabricks/test.table
       md5sum: a63b35267493ab63ae58c348caaaf28f
+    - path: output/parabricks/versions.yml
 
 - name: parabricks fq2bam test_parabricks_fq2bam_pe_bqsr_intervals
   command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_bqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
@@ -190,3 +198,4 @@
       should_exist: true
     - path: output/parabricks/test.table
       md5sum: f703648007481982782952c040137594
+    - path: output/parabricks/versions.yml

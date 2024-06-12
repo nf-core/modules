@@ -27,8 +27,8 @@ process CUSTOM_TABULARTOGSEACLS {
     """
     cls_file=${prefix}.cls
 
-    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$variable" | awk -F':' '{print \$1}')
-    classes=\$(tail -n +2 $samples | awk -F'$separator' '{print \$'\$column_number'}')
+    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$variable\$" | awk -F':' '{print \$1}')
+    classes=\$(tail -n +2 $samples | awk -F'$separator' '{print \$'\$column_number'}' | sed 's/^\$/empty/g')
     unique_classes=\$(echo -e "\$classes" | awk '!x[\$0]++')
 
     echo -e "\$(echo -e \"\$classes\" | wc -l) \$(echo -e \"\$unique_classes\" | wc -l) 1" > \$cls_file
